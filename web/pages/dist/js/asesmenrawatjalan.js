@@ -31,7 +31,7 @@ function saveRJ(jenis, ket) {
     }
 
     if ("anamnesa_pemeriksaan_fisik" == jenis) {
-        var va1 = $('#af1').val();
+        var va1 = $('#e1e1e1').val();
         var va2 = $('#af2').val();
         var va3 = $('#af3').val();
         var va4 = "";
@@ -415,32 +415,33 @@ function saveRJ(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_rj_' + jenis).hide();
+            $('#load_rj_' + jenis).show();
+            dwr.engine.setAsync(true);
+            KeperawatanRawatJalanAction.saveAsesmenRawat(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_rj_' + jenis).show();
+                        $('#load_rj_' + jenis).hide();
+                        $('#modal-rj-' + jenis).modal('hide');
+                        $('#warning_rj_' + ket).show().fadeOut(5000);
+                        $('#msg_rj_' + ket).text("Berhasil menambahkan data...");
+                        $('#modal-rj-' + jenis).scrollTop(0);
+                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
 
-        $('#save_rj_' + jenis).hide();
-        $('#load_rj_' + jenis).show();
-        dwr.engine.setAsync(true);
-        KeperawatanRawatJalanAction.saveAsesmenRawat(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_rj_' + jenis).show();
-                    $('#load_rj_' + jenis).hide();
-                    $('#modal-rj-' + jenis).modal('hide');
-                    $('#warning_rj_' + ket).show().fadeOut(5000);
-                    $('#msg_rj_' + ket).text("Berhasil menambahkan data...");
-                    $('#modal-rj-' + jenis).scrollTop(0);
-                    getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-
-                } else {
-                    $('#save_rj_' + jenis).show();
-                    $('#load_rj_' + jenis).hide();
-                    $('#warning_rj_' + jenis).show().fadeOut(5000);
-                    $('#msg_rj_' + jenis).text(res.msg);
-                    $('#modal-rj-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_rj_' + jenis).show();
+                        $('#load_rj_' + jenis).hide();
+                        $('#warning_rj_' + jenis).show().fadeOut(5000);
+                        $('#msg_rj_' + jenis).text(res.msg);
+                        $('#modal-rj-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_rj_' + jenis).show().fadeOut(5000);
         $('#msg_rj_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -449,88 +450,90 @@ function saveRJ(jenis, ket) {
 }
 
 function detailRJ(jenis) {
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
-        KeperawatanRawatJalanAction.getListAsesmenRawat(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    if (item.jawaban != null) {
-                        jwb = item.jawaban;
-                    }
-                    if ("ttd" == item.tipe) {
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
-                            '<p>'+item.namaTerang+'</p>' +
-                            '<p>'+item.sip+'</p>' +
-                            '</td>' +
-                            '</tr>';
-                    }else if("gambar" == item.tipe){
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<img src="' + jwb + '" style="width: 100%">' + '</td>' +
-                            '</tr>';
-                    }else if("resiko_jatuh" == jenis || "skrining_gizi" == jenis){
-                        if("total" == item.tipe){
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
+            KeperawatanRawatJalanAction.getListAsesmenRawat(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        if (item.jawaban != null) {
+                            jwb = item.jawaban;
+                        }
+                        if ("ttd" == item.tipe) {
                             body += '<tr>' +
-                                '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="width: 100px">' +
+                                '<p>'+item.namaTerang+'</p>' +
+                                '<p>'+item.sip+'</p>' +
+                                '</td>' +
                                 '</tr>';
-                        }else if("kesimpulan" == item.tipe){
-                            body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                                '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
+                        }else if("gambar" == item.tipe){
+                            body += '<tr>' +
+                                '<td width="40%">' + item.parameter + '</td>' +
+                                '<td>' + '<img src="' + jwb + '" style="width: 100%">' + '</td>' +
                                 '</tr>';
-                        }else{
+                        }else if("resiko_jatuh" == jenis || "skrining_gizi" == jenis){
+                            if("total" == item.tipe){
+                                body += '<tr>' +
+                                    '<td width="40%" colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }else if("kesimpulan" == item.tipe){
+                                body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                                    '<td width="40%" colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '<td>' + cekItemIsNull(item.score) + '</td>' +
+                                    '</tr>';
+                            }
+                        }else {
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
                                 '<td>' + jwb + '</td>' +
-                                '<td>' + cekItemIsNull(item.score) + '</td>' +
                                 '</tr>';
                         }
-                    }else {
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '</tr>';
-                    }
-                    cekData = true;
-                    tgl = item.createdDate;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if(cekData){
-                if("skrining_gizi" == jenis || "resiko_jatuh" == jenis){
-                    head = '<tr style="font-weight: bold">' +
-                        '<td>Parameter</td>' +
-                        '<td>Jawaban</td>' +
-                        '<td>Score</td>' +
-                        '</tr>'
+                        cekData = true;
+                        tgl = item.createdDate;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
                 }
-            }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + '</tbody>' +
-                '</table>';
+                if(cekData){
+                    if("skrining_gizi" == jenis || "resiko_jatuh" == jenis){
+                        head = '<tr style="font-weight: bold">' +
+                            '<td>Parameter</td>' +
+                            '<td>Jawaban</td>' +
+                            '<td>Score</td>' +
+                            '</tr>'
+                    }
+                }
 
-            var newRow = $('<tr id="del_rj_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_rj_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_rj_' + jenis).attr('src', url);
-            $('#btn_rj_' + jenis).attr('onclick', 'delRowRJ(\'' + jenis + '\')');
-        });
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_rj_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_rj_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_rj_' + jenis).attr('src', url);
+                $('#btn_rj_' + jenis).attr('onclick', 'delRowRJ(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -557,26 +560,28 @@ function conKepRJ(jenis, ket){
 
 function delKepRJ(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('del_'+jenis);
-    dwr.engine.setAsync(true);
-    KeperawatanRawatJalanAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('del_'+jenis);
-                $('#warning_rj_' + ket).show().fadeOut(5000);
-                $('#msg_rj_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('del_'+jenis);
-                $('#modal_warning').show().fadeOut(5000);
-                $('#msg_warning').text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('del_'+jenis);
+        dwr.engine.setAsync(true);
+        KeperawatanRawatJalanAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('del_'+jenis);
+                    $('#warning_rj_' + ket).show().fadeOut(5000);
+                    $('#msg_rj_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('del_'+jenis);
+                    $('#modal_warning').show().fadeOut(5000);
+                    $('#msg_warning').text(res.msg);
+                }
+            }
+        });
+    }
 }

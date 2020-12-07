@@ -626,7 +626,7 @@ public class UserBoImpl implements UserBo {
                     if(itemMenu.get(1) != null){
 
                         if(menuName.equalsIgnoreCase("Dashboard")){
-                                menuNameString = "<li id=\"dashboard\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
+                            menuNameString = "<li id=\"dashboard\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Jalan")) {
                             menuNameString = "<li id=\"pendaftaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Ply. Rawat Jalan")) {
@@ -652,7 +652,7 @@ public class UserBoImpl implements UserBo {
                         }else if (menuName.equalsIgnoreCase("Verifikasi BPJS RJ")) {
                             menuNameString = "<li id=\"verifikasi_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Verifikasi BPJS RI")) {
-                                menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
+                            menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Permintaan Gizi")) {
                             menuNameString = "<li id=\"permintaan_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Pembayaran")) {
@@ -693,8 +693,10 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"rawat_bersalin\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Verifikasi Cover Asuransi")) {
                             menuNameString = "<li id=\"verifikasi_cover\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
-                        }else{
+                        }else if (menuName.equalsIgnoreCase("Logout")) {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
+                        }else{
+                            menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }
                     }else{
 
@@ -2091,89 +2093,89 @@ public class UserBoImpl implements UserBo {
                 }
 
 
-                    //update old to be N, and add new data
-                    //deactive old data, set Flag = N
-                    Map hsCriteria = new HashMap();
-                    hsCriteria.put("user_id",userId);
+                //update old to be N, and add new data
+                //deactive old data, set Flag = N
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("user_id",userId);
 
-                    List<ImUsersRoles> listOfImUsersRoleses = new ArrayList<ImUsersRoles>();
+                List<ImUsersRoles> listOfImUsersRoleses = new ArrayList<ImUsersRoles>();
+                try {
+                    listOfImUsersRoleses = userRoleDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e) {
+                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data users roles, please info to your admin..." + e.getMessage());
+                }
+
+                for (ImUsersRoles imUsersRoles : listOfImUsersRoleses) {
                     try {
-                        listOfImUsersRoleses = userRoleDao.getByCriteria(hsCriteria);
+                        userRoleDao.deleteAndSave(imUsersRoles);
                     } catch (HibernateException e) {
                         logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data users roles, please info to your admin..." + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
                     }
+                }
 
-                    for (ImUsersRoles imUsersRoles : listOfImUsersRoleses) {
-                        try {
-                            userRoleDao.deleteAndSave(imUsersRoles);
-                        } catch (HibernateException e) {
-                            logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
-                        }
-                    }
+                //create new data
+                ImUsersRoles imUsersRolesNew = new ImUsersRoles();
+                ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
+                primaryKeyUserRole.setUserId(userId);
+                primaryKeyUserRole.setRoleId(Long.valueOf(usersNew.getRoleId()));
+                imUsersRolesNew.setPrimaryKey(primaryKeyUserRole);
+                imUsersRolesNew.setCreatedDate(usersNew.getLastUpdate());
+                imUsersRolesNew.setCreatedWho(usersNew.getLastUpdateWho());
+                imUsersRolesNew.setLastUpdate(usersNew.getLastUpdate());
+                imUsersRolesNew.setLastUpdateWho(usersNew.getLastUpdateWho());
+                imUsersRolesNew.setFlag("Y");
 
-                    //create new data
-                    ImUsersRoles imUsersRolesNew = new ImUsersRoles();
-                    ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
-                    primaryKeyUserRole.setUserId(userId);
-                    primaryKeyUserRole.setRoleId(Long.valueOf(usersNew.getRoleId()));
-                    imUsersRolesNew.setPrimaryKey(primaryKeyUserRole);
-                    imUsersRolesNew.setCreatedDate(usersNew.getLastUpdate());
-                    imUsersRolesNew.setCreatedWho(usersNew.getLastUpdateWho());
-                    imUsersRolesNew.setLastUpdate(usersNew.getLastUpdate());
-                    imUsersRolesNew.setLastUpdateWho(usersNew.getLastUpdateWho());
-                    imUsersRolesNew.setFlag("Y");
+                try {
+                    userRoleDao.addAndSave(imUsersRolesNew);
+                } catch (HibernateException e) {
+                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data users roles, please info to your admin..." + e.getMessage());
+                }
 
+
+                //update old to be N, and add new data
+                //deactive old data, set Flag = N
+                hsCriteria = new HashMap();
+                hsCriteria.put("user_id", userId);
+
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = null;
+                try {
+                    imAreasBranchesUsersList = areasBranchesUsersDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e) {
+                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data area branch users, please info to your admin..." + e.getMessage());
+                }
+
+                for (ImAreasBranchesUsers imAreasBranchesUsers : imAreasBranchesUsersList) {
                     try {
-                        userRoleDao.addAndSave(imUsersRolesNew);
+                        areasBranchesUsersDao.deleteAndSave(imAreasBranchesUsers);
                     } catch (HibernateException e) {
                         logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving new data users roles, please info to your admin..." + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data area-branch-user, please info to your admin..." + e.getMessage());
                     }
+                }
 
+                ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
+                ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
+                imAreasBranchesUsersPK.setUserId(userId);
+                imAreasBranchesUsersPK.setAreaId(areaId);
+                imAreasBranchesUsersPK.setBranchId(branchId);
 
-                    //update old to be N, and add new data
-                    //deactive old data, set Flag = N
-                    hsCriteria = new HashMap();
-                    hsCriteria.put("user_id", userId);
+                imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
+                imAreasBranchesUsers.setCreatedDate(usersNew.getLastUpdate());
+                imAreasBranchesUsers.setCreatedWho(usersNew.getLastUpdateWho());
+                imAreasBranchesUsers.setLastUpdate(usersNew.getLastUpdate());
+                imAreasBranchesUsers.setLastUpdateWho(usersNew.getLastUpdateWho());
+                imAreasBranchesUsers.setFlag("Y");
 
-                    List<ImAreasBranchesUsers> imAreasBranchesUsersList = null;
-                    try {
-                        imAreasBranchesUsersList = areasBranchesUsersDao.getByCriteria(hsCriteria);
-                    } catch (HibernateException e) {
-                        logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data area branch users, please info to your admin..." + e.getMessage());
-                    }
-
-                    for (ImAreasBranchesUsers imAreasBranchesUsers : imAreasBranchesUsersList) {
-                        try {
-                            areasBranchesUsersDao.deleteAndSave(imAreasBranchesUsers);
-                        } catch (HibernateException e) {
-                            logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving deactive data area-branch-user, please info to your admin..." + e.getMessage());
-                        }
-                    }
-
-                    ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
-                    ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
-                    imAreasBranchesUsersPK.setUserId(userId);
-                    imAreasBranchesUsersPK.setAreaId(areaId);
-                    imAreasBranchesUsersPK.setBranchId(branchId);
-
-                    imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
-                    imAreasBranchesUsers.setCreatedDate(usersNew.getLastUpdate());
-                    imAreasBranchesUsers.setCreatedWho(usersNew.getLastUpdateWho());
-                    imAreasBranchesUsers.setLastUpdate(usersNew.getLastUpdate());
-                    imAreasBranchesUsers.setLastUpdateWho(usersNew.getLastUpdateWho());
-                    imAreasBranchesUsers.setFlag("Y");
-
-                    try {
-                        areasBranchesUsersDao.addAndSave(imAreasBranchesUsers);
-                    } catch (HibernateException e) {
-                        logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving new data area-branch-users, please info to your admin..." + e.getMessage());
-                    }
+                try {
+                    areasBranchesUsersDao.addAndSave(imAreasBranchesUsers);
+                } catch (HibernateException e) {
+                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data area-branch-users, please info to your admin..." + e.getMessage());
+                }
 
             } else {
                 logger.error("[UserBoImpl.saveEdit] Error, Found problem when saving update data users, cause no have userId in database, please info to your admin.");

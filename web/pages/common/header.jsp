@@ -493,6 +493,22 @@ apply the skin class to the body tag so the changes take effect.
         $('[data-mask]').inputmask();
     });
 
+    function cekSession(){
+        var timeout = false;
+        UserLoginAction.getTimeOutSession(function (isTimeout) {
+            if (isTimeout) {
+                timeout = isTimeout;
+                $('#modal-session').modal({show:true, backdrop:'static'});
+            }
+        });
+        return timeout;
+    }
+
+    function toLogin(){
+        var contextPath = '<%= request.getContextPath() %>';
+        document.location = contextPath + '/loginUser.action';
+    }
+
     window.checkDec = function(el){
         var ex = /^[0-9]+\.?[0-9]*$/;
         if(ex.test(el.value)==false){

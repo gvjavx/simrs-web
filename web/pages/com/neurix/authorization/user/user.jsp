@@ -69,7 +69,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.username">Username :</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="userId" name="users.username" required="true" cssClass="form-control"/>
+                                            <s:textfield id="username" name="users.username" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -146,6 +146,7 @@
                                                     <img border="0" src="<s:url value="/pages/images/loading11.gif"/>" name="image_indicator_read">
                                                 </center>
                                             </sj:dialog>
+
                                             <sj:submit type="button" cssClass="btn btn-primary" formIds="userForm" id="search"
                                                        name="search"
                                                        onClickTopics="showDialog" onCompleteTopics="closeDialog">

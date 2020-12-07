@@ -58,7 +58,6 @@
     <section class="content-header">
         <h1>
             Obat
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -305,18 +304,18 @@
                     <p id="msg_exits"></p>
                 </div>
                 <div class="row" id="row-check-id-pabrik">
-                    <label class="col-md-3" style="margin-top: 7px">Generate Id Obat</label>
-                    <label class="switch">
-                        <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
-                        <span class="slider round"></span>
-                    </label>
-                    <%--<input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">--%>
-
-
+                    <div class="form-group">
+                        <label class="col-md-3">Generate Id Obat</label>
+                        <div class="col-md-7">
+                            <label class="switch" style="margin-top: 4px">
+                                <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
-
                     <div class="form-group" id="dis-id-pabrik">
                         <label class="col-md-3" style="margin-top: 7px">ID Obat</label>
                         <div class="col-md-7">
@@ -856,7 +855,6 @@
             $('#load_obat').show();
 
             if (id != '') {
-                console.log(" edit --> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.editObat(id, nama, jenis, merek, pabrik, lembarBox, bijiLembar, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori,  function (response) {
                     dwr.engine.setAsync(false);
@@ -874,8 +872,6 @@
                     }
                 })
             } else {
-
-                console.log("save Add 2 -> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori, function (response) {
                     console.log(response);
@@ -982,9 +978,6 @@
         $('#modal-obat').modal({show:true, backdrop:'static'});
         $("#row-check-id-pabrik").hide();
         $("#add_pabrik").attr('readOnly', "true");
-
-        console.log( "kronis" + flagKronis);
-        console.log( "generic " + flagGeneric);
         showListKandunganObat(idObat);
     }
 
@@ -1057,7 +1050,7 @@
 
                         table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
                             '<td>'+item.idBarang+'</td>'+
-                            '<td>'+formaterDate(item.expiredDate)+'</td>'+
+                            '<td>'+converterDate(item.expiredDate)+'</td>'+
                             '<td>'+item.qtyBox+'</td>'+
                             '<td>'+item.qtyLembar+'</td>'+
                             '<td>'+item.qtyBiji+'</td>'+
@@ -1143,9 +1136,6 @@
         var bentuk = $('#sel_fin_bentuk_kandungan_obat').val();
         var sediaan = $("#fin_sediaan_kandungan_obat").val();
         var satuan = $("#fin_satuan_kandungan_obat").val();
-
-        console.log(kandungan);
-        console.log(bentuk);
 
         if (id == null || id == ""){
             ObatAction.addKandunganObat(idObat, kandungan, bentuk, sediaan, satuan, function (res) {

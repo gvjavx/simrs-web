@@ -60,10 +60,11 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Unit</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control select2" id="branch" name="tindakan.branchId"
+                                        <select class="form-control select2" id="branch"
                                                 onchange="getPelayanan(this.value)">
                                             <option value="">[Select One]</option>
                                         </select>
+                                        <s:hidden id="h_branch_id" name="tindakan.branchId"></s:hidden>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -692,7 +693,7 @@
             $.each(data, function (i, item) {
                 var idTindakan = $('#id_tindakan_' + i).val();
                 var idKategori = $('#id_kategori_' + i).val();
-                if (idTindakan == tindakan && idKategori == kategori) {
+                if (idTindakan == tindakan) {
                     cek = true;
                 }
             });
@@ -705,6 +706,7 @@
                         var table = '<tr id="row_' + tindakan + '">' +
                             '<td style="vertical-align: middle">' + namaTindakan +
                             '<input id="id_tindakan_' + id + '" type="hidden" value="' + tindakan + '"></td>' +
+                            '<input id="nama_tindakan_' + id + '" type="hidden" value="' + namaTindakan + '"></td>' +
                             '<td style="vertical-align: middle">' + kategoriName +
                             '<input id="id_kategori_' + id + '" type="hidden" value="' + kategori + '"></td>' +
                             '<td>' +
@@ -766,165 +768,171 @@
 
     function saveTindakan(id) {
         var data = "";
-        if (id != '') {
-            var namaUnit = $('#edit_nama_unit').val();
-            var namaPelayanan = $('#edit_nama_pelayanan').val();
-            var idKategori = $('#edit_kategori_tindakan').val();
-            var namaTindakan = $('#edit_nama_tindakan').val();
-            var tarif = $('#h_tarif').val();
-            var tarifBpjs = $('#h_tarif_bpjs').val();
-            var diskon = $('#edit_diskon').val();
-            if (namaUnit && namaPelayanan && idKategori && tarif && tarifBpjs && namaTindakan != '') {
-                $('#save_edit').hide();
-                $('#load_edit').show();
-                var isEleftif = $('#edit_is_elektif').is(':checked');
-                var isIna = $('#edit_is_ina').is(':checked');
-                var ina = "N";
-                var elektif = "N";
-                if (isEleftif) {
-                    elektif = "Y";
-                }
-                if (isIna) {
-                    ina = "Y";
-                }
-                if(diskon == ''){
-                    diskon = '0';
-                }
-                data = {
-                    'id_tindakan': id,
-                    'id_kategori_tindakan': idKategori,
-                    'id_header_tindakan': namaTindakan,
-                    'id_pelayanan': namaPelayanan,
-                    'branch_id': namaUnit,
-                    'tarif': tarif,
-                    'tarif_bpjs': tarifBpjs,
-                    'diskon': diskon,
-                    'is_ina': ina,
-                    'is_elektif': elektif,
-                };
-                var dataString = JSON.stringify(data);
-                dwr.engine.setAsync(true);
-                TindakanAction.saveEdit(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-edit').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_edit').show();
-                            $('#load_edit').hide();
-                            $('body').scrollTop(0);
-
-                        } else {
-                            $('#warning_edit').show().fadeOut(5000);
-                            $('#msg_edit').text(response.msg);
-                            $('#save_edit').show();
-                            $('#load_edit').hide();
-                        }
+        if(!cekSession()){
+            if (id != '') {
+                var namaUnit = $('#edit_nama_unit').val();
+                var namaPelayanan = $('#edit_nama_pelayanan').val();
+                var idKategori = $('#edit_kategori_tindakan').val();
+                var namaTindakan = $('#edit_nama_tindakan').val();
+                var tarif = $('#h_tarif').val();
+                var tarifBpjs = $('#h_tarif_bpjs').val();
+                var diskon = $('#edit_diskon').val();
+                if (namaUnit && namaPelayanan && idKategori && tarif && tarifBpjs && namaTindakan != '') {
+                    $('#save_edit').hide();
+                    $('#load_edit').show();
+                    var isEleftif = $('#edit_is_elektif').is(':checked');
+                    var isIna = $('#edit_is_ina').is(':checked');
+                    var ina = "N";
+                    var elektif = "N";
+                    if (isEleftif) {
+                        elektif = "Y";
                     }
-                });
-            } else {
-                $('#warning_edit').show().fadeOut(5000);
-                $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
-
-                if (namaUnit == '') {
-                    $('#war_edit_nama_unit').show();
-                }
-                if (namaPelayanan == '' || namaPelayanan == null) {
-                    $('#war_edit_nama_pelayanan').show();
-                }
-                if (idKategori == '') {
-                    $('#war_edit_kategori_tindakan').show();
-                }
-                if (namaTindakan == '') {
-                    $('#war_edit_nama_tindakan').show();
-                }
-                if (tarif == '') {
-                    $('#war_edit_tarif').show();
-                }
-                if (tarifBpjs == '') {
-                    $('#war_edit_tarif_bpjs').show();
-                }
-            }
-        } else {
-            var dataPelayanan = $('#table_pelayanan').tableToJSON();
-            var namaUnit = $('#set_nama_unit').val();
-            var namaPelayanan = $('#set_nama_pelayanan').val();
-            var kete = $('#set_kategori_tindakan').val();
-            var namaTindakan = $('#set_nama_tindakan').val();
-            var tarif = $('#h_tarif').val();
-            var tarifBpjs = $('#h_tarif_bpjs').val();
-            var diskon = $('#h_diskon').val();
-
-            if (namaUnit && namaPelayanan && namaTindakan != '' && dataPelayanan.length > 0) {
-                if (dataPelayanan.length > 0) {
-                    var dataSave = [];
-                    $('#save_add').hide();
-                    $('#load_add').show();
-                    $.each(dataPelayanan, function (i, item) {
-                        var idHeaderTindakan = $('#id_tindakan_' + i).val();
-                        var idKategori = $('#id_kategori_' + i).val();
-                        var tarif = $('#h_tarif_' + i).val();
-                        var tarifBpjs = $('#h_tarif_bpjs_' + i).val();
-                        var diskon = $('#diskon_' + i).val();
-                        var isEleftif = $('#is_elektif_' + i).is(':checked');
-                        var isIna = $('#is_ina_' + i).is(':checked');
-                        var ina = "N";
-                        var elektif = "N";
-                        if (isEleftif) {
-                            elektif = "Y";
-                        }
-                        if (isIna) {
-                            ina = "Y";
-                        }
-                        dataSave.push({
-                            'id_kategori_tindakan': idKategori,
-                            'id_header_tindakan': idHeaderTindakan,
-                            'id_pelayanan': namaPelayanan,
-                            'branch_id': namaUnit,
-                            'tarif': tarif,
-                            'tarif_bpjs': tarifBpjs,
-                            'diskon': diskon,
-                            'is_ina': ina,
-                            'is_elektif': elektif,
-                        });
-                    });
-                    var dataString = JSON.stringify(dataSave);
+                    if (isIna) {
+                        ina = "Y";
+                    }
+                    if(diskon == ''){
+                        diskon = '0';
+                    }
+                    data = {
+                        'id_tindakan': id,
+                        'id_kategori_tindakan': idKategori,
+                        'id_header_tindakan': namaTindakan,
+                        'id_pelayanan': namaPelayanan,
+                        'branch_id': namaUnit,
+                        'tarif': tarif,
+                        'tarif_bpjs': tarifBpjs,
+                        'diskon': diskon,
+                        'is_ina': ina,
+                        'is_elektif': elektif,
+                    };
+                    var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
-                    TindakanAction.saveAdd(dataString, {
+                    TindakanAction.saveEdit(dataString, {
                         callback: function (response) {
                             if (response.status == "success") {
-                                $('#modal-add').modal('hide');
+                                $('#modal-edit').modal('hide');
                                 $('#info_dialog').dialog('open');
-                                $('#save_add').show();
-                                $('#load_add').hide();
+                                $('#save_edit').show();
+                                $('#load_edit').hide();
                                 $('body').scrollTop(0);
 
                             } else {
-                                $('#warning_add').show().fadeOut(5000);
-                                $('#msg_add').text(response.msg);
-                                $('#save_add').show();
-                                $('#load_add').hide();
+                                $('#warning_edit').show().fadeOut(5000);
+                                $('#msg_edit').text(response.msg);
+                                $('#save_edit').show();
+                                $('#load_edit').hide();
                             }
                         }
                     });
                 } else {
-                    $('#warning_add').show().fadeOut(5000);
-                    $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                    $('#warning_edit').show().fadeOut(5000);
+                    $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
+
+                    if (namaUnit == '') {
+                        $('#war_edit_nama_unit').show();
+                    }
+                    if (namaPelayanan == '' || namaPelayanan == null) {
+                        $('#war_edit_nama_pelayanan').show();
+                    }
+                    if (idKategori == '') {
+                        $('#war_edit_kategori_tindakan').show();
+                    }
+                    if (namaTindakan == '') {
+                        $('#war_edit_nama_tindakan').show();
+                    }
+                    if (tarif == '') {
+                        $('#war_edit_tarif').show();
+                    }
+                    if (tarifBpjs == '') {
+                        $('#war_edit_tarif_bpjs').show();
+                    }
                 }
             } else {
-                $('#warning_add').show().fadeOut(5000);
-                $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                var dataPelayanan = $('#table_pelayanan').tableToJSON();
+                var namaUnit = $('#set_nama_unit').val();
+                var idPelayanan = $('#set_nama_pelayanan').val();
+                var namaPelayanan = $('#set_nama_pelayanan option:selected').text();
+                var kete = $('#set_kategori_tindakan').val();
+                var namaTindakan = $('#set_nama_tindakan').val();
+                var tarif = $('#h_tarif').val();
+                var tarifBpjs = $('#h_tarif_bpjs').val();
+                var diskon = $('#h_diskon').val();
 
-                if (namaUnit == '') {
-                    $('#war_set_nama_unit').show();
-                }
-                if (namaPelayanan == '') {
-                    $('#war_set_nama_pelayanan').show();
-                }
-                if (kete == '') {
-                    $('#war_set_kategori_tindakan').show();
-                }
-                if (namaTindakan == '') {
-                    $('#war_set_nama_tindakan').show();
+                if (namaUnit && namaPelayanan && namaTindakan != '' && dataPelayanan.length > 0) {
+                    if (dataPelayanan.length > 0) {
+                        var dataSave = [];
+                        $('#save_add').hide();
+                        $('#load_add').show();
+                        $.each(dataPelayanan, function (i, item) {
+                            var idHeaderTindakan = $('#id_tindakan_' + i).val();
+                            var namaHeaderTindakan = $('#nama_tindakan_'+i).val();
+                            var idKategori = $('#id_kategori_' + i).val();
+                            var tarif = $('#h_tarif_' + i).val();
+                            var tarifBpjs = $('#h_tarif_bpjs_' + i).val();
+                            var diskon = $('#diskon_' + i).val();
+                            var isEleftif = $('#is_elektif_' + i).is(':checked');
+                            var isIna = $('#is_ina_' + i).is(':checked');
+                            var ina = "N";
+                            var elektif = "N";
+                            if (isEleftif) {
+                                elektif = "Y";
+                            }
+                            if (isIna) {
+                                ina = "Y";
+                            }
+                            dataSave.push({
+                                'id_kategori_tindakan': idKategori,
+                                'id_header_tindakan': idHeaderTindakan,
+                                'nama_header_tindakan': namaHeaderTindakan,
+                                'id_pelayanan': idPelayanan,
+                                'nama_pelayanan': namaPelayanan,
+                                'branch_id': namaUnit,
+                                'tarif': tarif,
+                                'tarif_bpjs': tarifBpjs,
+                                'diskon': diskon,
+                                'is_ina': ina,
+                                'is_elektif': elektif,
+                            });
+                        });
+                        var dataString = JSON.stringify(dataSave);
+                        dwr.engine.setAsync(true);
+                        TindakanAction.saveAdd(dataString, {
+                            callback: function (response) {
+                                if (response.status == "success") {
+                                    $('#modal-add').modal('hide');
+                                    $('#info_dialog').dialog('open');
+                                    $('#save_add').show();
+                                    $('#load_add').hide();
+                                    $('body').scrollTop(0);
+
+                                } else {
+                                    $('#warning_add').show().fadeOut(5000);
+                                    $('#msg_add').text(response.msg);
+                                    $('#save_add').show();
+                                    $('#load_add').hide();
+                                }
+                            }
+                        });
+                    } else {
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                    }
+                } else {
+                    $('#warning_add').show().fadeOut(5000);
+                    $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+
+                    if (namaUnit == '') {
+                        $('#war_set_nama_unit').show();
+                    }
+                    if (namaPelayanan == '') {
+                        $('#war_set_nama_pelayanan').show();
+                    }
+                    if (kete == '') {
+                        $('#war_set_kategori_tindakan').show();
+                    }
+                    if (namaTindakan == '') {
+                        $('#war_set_nama_tindakan').show();
+                    }
                 }
             }
         }
@@ -944,31 +952,52 @@
     }
 
     function getBranch() {
-        var option = '<option value="">[Select One]</option>';
+        var selectOne = '<option value="">[Select One]</option>';
+        var option = '';
+        var idDef = "";
+        var isDis = "";
         TindakanAction.getComboBranch(function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
-                    option += '<option value="' + item.branchId + '">' + item.branchName + '</option>'
+                    if(i == 0){
+                        idDef = item.branchId;
+                    }
+                    if(item.isDisabled == "Y"){
+                        isDis = "Y";
+                    }
+                    option += '<option value="' + item.branchId + '">' + item.branchName + '</option>';
                 });
             }
-            $('#set_nama_unit').html(option);
+            if(isDis == "Y"){
+                $('#set_nama_unit').html(option);
+                $('#branch').html(option);
+                $('#set_nama_unit').val(idDef).trigger('change');
+                $('#branch').val(idDef).trigger('change');
+                $('#set_nama_unit, #branch').attr('disabled', true);
+                $('#h_branch_id').val(idDef);
+            }else{
+                $('#set_nama_unit').html(selectOne+option);
+                $('#branch').html(selectOne+option);
+            }
             $('#edit_nama_unit').html(option);
-            $('#branch').html(option);
         });
     }
 
     function getPelayanan(idPelayanan) {
-        var option = '<option value="">[Select One]</option>';
-        TindakanAction.getComboPelayanan(idPelayanan, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>'
-                })
-            }
-            $('#set_nama_pelayanan').html(option);
-            $('#edit_nama_pelayanan').html(option);
-            $('#pelayanan').html(option);
-        });
+        if(idPelayanan != ''){
+            $('#h_branch_id').val(idPelayanan);
+            var option = '<option value="">[Select One]</option>';
+            TindakanAction.getComboPelayanan(idPelayanan, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>'
+                    })
+                }
+                $('#set_nama_pelayanan').html(option);
+                $('#edit_nama_pelayanan').html(option);
+                $('#pelayanan').html(option);
+            });
+        }
     }
 
     function getTindakan() {
@@ -985,62 +1014,66 @@
     }
 
     function getDataTindakan(id) {
-        TindakanAction.initTindakan(id, function (res) {
-            if (res.idTindakan != null) {
-                $('#v_unit').text(res.branchName);
-                $('#v_id_tindakan').text(res.idTindakan);
-                $('#v_nama_tindakan').text(res.tindakan);
-                $('#v_diskon').text(res.diskon + " %");
-                $('#v_nama_pelayanan').text(res.namaPelayanan);
-                $('#v_kategori_ina_bpjs').text(res.namaKategoriTindakanIna);
-                $('#v_kategori_tindakan').text(res.namaKategoriTindakan);
-                $('#v_tarif').text("Rp. " + formatRupiahAtas(res.tarif));
-                $('#v_tarif_bpjs').text("Rp. " + formatRupiahAtas(res.tarifBpjs));
-                $('#v_is_ina').text(res.isIna);
-                $('#v_is_elektif').text(res.isElektif);
+        if(!cekSession()){
+            TindakanAction.initTindakan(id, function (res) {
+                if (res.idTindakan != null) {
+                    $('#v_unit').text(res.branchName);
+                    $('#v_id_tindakan').text(res.idTindakan);
+                    $('#v_nama_tindakan').text(res.tindakan);
+                    $('#v_diskon').text(res.diskon + " %");
+                    $('#v_nama_pelayanan').text(res.namaPelayanan);
+                    $('#v_kategori_ina_bpjs').text(res.namaKategoriTindakanIna);
+                    $('#v_kategori_tindakan').text(res.namaKategoriTindakan);
+                    $('#v_tarif').text("Rp. " + formatRupiahAtas(res.tarif));
+                    $('#v_tarif_bpjs').text("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                    $('#v_is_ina').text(res.isIna);
+                    $('#v_is_elektif').text(res.isElektif);
 
-                $('#edit_nama_unit').val(res.branchId).trigger('change');
-                $('#edit_nama_pelayanan').val(res.idPelayanan).trigger('change');
-                $('#edit_kategori_tindakan').val(res.idKategoriTindakan).trigger('change');
-                $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
-                $('#edit_tarif').val(formatRupiahAtas(res.tarif));
-                $('#h_tarif').val(res.tarif);
-                $('#edit_tarif_bpjs').val(formatRupiahAtas(res.tarifBpjs));
-                $('#h_tarif_bpjs').val(res.tarifBpjs);
-                $('#edit_diskon').val(res.diskon);
+                    $('#edit_nama_unit').val(res.branchId).trigger('change');
+                    $('#edit_nama_pelayanan').val(res.idPelayanan).trigger('change');
+                    $('#edit_kategori_tindakan').val(res.idKategoriTindakan).trigger('change');
+                    $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
+                    $('#edit_tarif').val(formatRupiahAtas(res.tarif));
+                    $('#h_tarif').val(res.tarif);
+                    $('#edit_tarif_bpjs').val(formatRupiahAtas(res.tarifBpjs));
+                    $('#h_tarif_bpjs').val(res.tarifBpjs);
+                    $('#edit_diskon').val(res.diskon);
 
-                if (res.isIna == "Y") {
-                    $('#edit_is_ina').attr('checked', true);
-                } else {
-                    $('#edit_is_ina').attr('checked', false);
+                    if (res.isIna == "Y") {
+                        $('#edit_is_ina').attr('checked', true);
+                    } else {
+                        $('#edit_is_ina').attr('checked', false);
+                    }
+                    if (res.isElektif == "Y") {
+                        $('#edit_is_elektif').attr('checked', true);
+                    } else {
+                        $('#edit_is_elektif').attr('checked', false);
+                    }
                 }
-                if (res.isElektif == "Y") {
-                    $('#edit_is_elektif').attr('checked', true);
-                } else {
-                    $('#edit_is_elektif').attr('checked', false);
-                }
-            }
-        });
+            });
+        }
     }
 
     function saveDelete(id) {
         $('#modal-confirm-dialog').modal('hide');
         $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        TindakanAction.saveDelete(id, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
-                    $('body').scrollTop(0);
-                } else {
-                    $('#waiting_dialog').dialog('close');
-                    $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(res.msg);
-                    $('body').scrollTop(0);
+        if(!cekSession()){
+            dwr.engine.setAsync(true);
+            TindakanAction.saveDelete(id, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                    } else {
+                        $('#waiting_dialog').dialog('close');
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text(res.msg);
+                        $('body').scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 </script>

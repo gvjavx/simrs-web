@@ -84,41 +84,54 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
         CrudResponse response = new CrudResponse();
         if(bean != null){
             String id = null;
+            List<ImSimrsHeaderTindakanEntity> headerTindakanList = new ArrayList<>();
             try {
-                id = headerTindakanDao.getNextSeq();
-                response.setStatus("success");
-                response.setMsg("success");
+               headerTindakanList = headerTindakanDao.getHeaderTindakan(bean.getNamaTindakan());
             }catch (HibernateException e){
                 response.setStatus("error");
-                response.setMsg("SEQ Header Tindakan sudah ada...!"+ e.getMessage());
+                response.setMsg("Error mencari data header tindakan...!"+ e.getMessage());
                 logger.error(e.getMessage());
             }
-            if(id != null){
-                ImSimrsHeaderTindakanEntity imSimrsHeaderTindakanEntity = new ImSimrsHeaderTindakanEntity();
-                imSimrsHeaderTindakanEntity.setIdHeaderTindakan(id);
-                imSimrsHeaderTindakanEntity.setNamaTindakan(bean.getNamaTindakan());
-                imSimrsHeaderTindakanEntity.setKategoriInaBpjs(bean.getKategoriInaBpjs());
-                imSimrsHeaderTindakanEntity.setStandardCost(bean.getStandardCost());
-                imSimrsHeaderTindakanEntity.setAction(bean.getAction());
-                imSimrsHeaderTindakanEntity.setFlag(bean.getFlag());
-                imSimrsHeaderTindakanEntity.setCreatedDate(bean.getCreatedDate());
-                imSimrsHeaderTindakanEntity.setCreatedWho(bean.getCreatedWho());
-                imSimrsHeaderTindakanEntity.setLastUpdate(bean.getLastUpdate());
-                imSimrsHeaderTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
-                imSimrsHeaderTindakanEntity.setFlagKonsulTele(bean.getFlagKonsulTele());
+            if(headerTindakanList.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Mohon maaf data tindakan dengan nama "+bean.getNamaTindakan()+" sudah ada...!");
+            }else{
                 try {
-                    headerTindakanDao.addAndSave(imSimrsHeaderTindakanEntity);
+                    id = headerTindakanDao.getNextSeq();
                     response.setStatus("success");
                     response.setMsg("success");
                 }catch (HibernateException e){
                     response.setStatus("error");
-                    response.setMsg("Error saat insert ke database...!, dikarenakan "+ e.getMessage());
+                    response.setMsg("SEQ Header Tindakan sudah ada...!"+ e.getMessage());
                     logger.error(e.getMessage());
                 }
-            }else{
-                response.setStatus("error");
-                response.setMsg("Mohon Maaf ID tindakan tidak bisa digenerate");
+                if(id != null){
+                    ImSimrsHeaderTindakanEntity imSimrsHeaderTindakanEntity = new ImSimrsHeaderTindakanEntity();
+                    imSimrsHeaderTindakanEntity.setIdHeaderTindakan(id);
+                    imSimrsHeaderTindakanEntity.setNamaTindakan(bean.getNamaTindakan());
+                    imSimrsHeaderTindakanEntity.setKategoriInaBpjs(bean.getKategoriInaBpjs());
+                    imSimrsHeaderTindakanEntity.setStandardCost(bean.getStandardCost());
+                    imSimrsHeaderTindakanEntity.setAction(bean.getAction());
+                    imSimrsHeaderTindakanEntity.setFlag(bean.getFlag());
+                    imSimrsHeaderTindakanEntity.setCreatedDate(bean.getCreatedDate());
+                    imSimrsHeaderTindakanEntity.setCreatedWho(bean.getCreatedWho());
+                    imSimrsHeaderTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                    imSimrsHeaderTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imSimrsHeaderTindakanEntity.setFlagKonsulTele(bean.getFlagKonsulTele());
+
+                    try {
+                        headerTindakanDao.addAndSave(imSimrsHeaderTindakanEntity);
+                        response.setStatus("success");
+                        response.setMsg("success");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Error saat insert ke database...!, dikarenakan "+ e.getMessage());
+                        logger.error(e.getMessage());
+                    }
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Mohon Maaf ID tindakan tidak bisa digenerate");
+                }
             }
         }
         return response;
@@ -139,8 +152,18 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 logger.error(e.getMessage());
             }
             if(entity != null){
-                entity.setNamaTindakan(bean.getNamaTindakan());
-                entity.setStandardCost(bean.getStandardCost());
+                if(bean.getNamaTindakan() != null){
+                    entity.setNamaTindakan(bean.getNamaTindakan());
+                }
+                if(bean.getStandardCost() != null){
+                    entity.setStandardCost(bean.getStandardCost());
+                }
+                if(bean.getFlagKonsulTele() != null){
+                    entity.setFlagKonsulTele(bean.getFlagKonsulTele());
+                }
+                if(bean.getKategoriInaBpjs() != null){
+                    entity.setKategoriInaBpjs(bean.getKategoriInaBpjs());
+                }
                 entity.setAction(bean.getAction());
                 entity.setFlag(bean.getFlag());
                 entity.setLastUpdate(bean.getLastUpdate());

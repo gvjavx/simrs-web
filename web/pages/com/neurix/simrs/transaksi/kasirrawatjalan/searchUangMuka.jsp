@@ -612,7 +612,6 @@
 <script type='text/javascript'>
 
     function pilihMetode(val){
-        console.log(val);
         if(val != ''){
             if(val == 'transfer'){
                 $('#pilih_bank').show();
@@ -623,38 +622,39 @@
     }
 
     function showInvoice(idCheckup, idDetailCheckup, pasiendId) {
-        selectPembayaran();
-        var table = "";
-        var dataTindakan = [];
-        var dataPasien = [];
-        var noCheckup = "";
-        var nik = "";
-        var namaPasien = "";
-        var jenisKelamin = "";
-        var tglLahir = "";
-        var agama = "";
-        var suku = "";
-        var alamat = "";
-        var provinsi = "";
-        var kabupaten = "";
-        var kecamatan = "";
-        var desa = "";
-        var noSep;
-        var cekTindakan = false;
-        var jenisPasien = "";
-        var jenisPasienName = "";
-        var total = 0;
-        var idPasien = "";
-        var id = "";
+        if(!cekSession()){
+            selectPembayaran();
+            var table = "";
+            var dataTindakan = [];
+            var dataPasien = [];
+            var noCheckup = "";
+            var nik = "";
+            var namaPasien = "";
+            var jenisKelamin = "";
+            var tglLahir = "";
+            var agama = "";
+            var suku = "";
+            var alamat = "";
+            var provinsi = "";
+            var kabupaten = "";
+            var kecamatan = "";
+            var desa = "";
+            var noSep;
+            var cekTindakan = false;
+            var jenisPasien = "";
+            var jenisPasienName = "";
+            var total = 0;
+            var idPasien = "";
+            var id = "";
 
-        var url = '<s:url value="/pages/images/spinner.gif"/>';
-        $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
+            var url = '<s:url value="/pages/images/spinner.gif"/>';
+            $('#t_'+idDetailCheckup).attr('src',url).css('width', '30px', 'height', '40px');
 
-        setTimeout(function () {
-            var url = '<s:url value="/pages/images/icon_payment.ico"/>';
-            $('#t_'+idDetailCheckup).attr('src',url).css('width', '', 'height', '');
-            CheckupAction.listDataPasien(idDetailCheckup, function (response) {
-                if (response != null) {
+            setTimeout(function () {
+                var url = '<s:url value="/pages/images/icon_payment.ico"/>';
+                $('#t_'+idDetailCheckup).attr('src',url).css('width', '', 'height', '');
+                CheckupAction.listDataPasien(idDetailCheckup, function (response) {
+                    if (response != null) {
                         var tanggal = response.tglLahir;
                         var dateFormat = converterDate(new Date(tanggal));
                         noCheckup = response.noCheckup;
@@ -679,66 +679,67 @@
                         jenisPasien = response.idJenisPeriksaPasien;
                         jenisPasienName = response.statusPeriksaName;
                         $('#fin_no_rm').html(response.idPasien);
+                    }
+                });
+
+                KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
+                    dataTindakan = response;
+                    if (dataTindakan.length > 0) {
+                        var totalUangMuka = 0;
+                        $.each(dataTindakan, function (i, item) {
+                            var tanggal = "";
+                            var uangmuka    = 0;
+
+
+                            if (item.createdDate != null && item.createdDate !=  '') {
+                                tanggal = item.createdDate;
+                            }
+
+                            if (item.jumlah != null && item.jumlah != '') {
+                                uangmuka = item.jumlah;
+                            }
+
+                            table += '<tr id="row'+item.id+'" >' +
+                                "<td >"+formateDate(tanggal)+"</td>" +
+                                "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
+                                "</tr>";
+                            total = parseInt(total) + parseInt(uangmuka);
+                            id = item.id;
+                            $("#jumlah_um").val(total);
+                        });
+                        $('#nominal_uang_muka').val(formatRupiah(total));
+                        $('#val_uang_muka').val(total);
+                    }
+                });
+
+                if(jenisPasien == "bpjs"){
+                    $('#no_sep_show').show();
+                }else {
+                    $('#no_sep_show').hide();
                 }
-            });
 
-            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
-                dataTindakan = response;
-                if (dataTindakan.length > 0) {
-                    var totalUangMuka = 0;
-                    $.each(dataTindakan, function (i, item) {
-                        var tanggal = "";
-                        var uangmuka    = 0;
-
-
-                        if (item.createdDate != null && item.createdDate !=  '') {
-                            tanggal = item.createdDate;
-                        }
-
-                        if (item.jumlah != null && item.jumlah != '') {
-                            uangmuka = item.jumlah;
-                        }
-
-                        table += '<tr id="row'+item.id+'" >' +
-                            "<td >"+formateDate(tanggal)+"</td>" +
-                            "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
-                            "</tr>";
-                        total = parseInt(total) + parseInt(uangmuka);
-                        id = item.id;
-                        $("#jumlah_um").val(total);
-                    });
-                    $('#nominal_uang_muka').val(formatRupiah(total));
-                    $('#val_uang_muka').val(total);
-                }
-            });
-
-            if(jenisPasien == "bpjs"){
-                $('#no_sep_show').show();
-            }else {
-                $('#no_sep_show').hide();
-            }
-
-            $('#fin_jenis_pasien').html(jenisPasien);
-            setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
-            $('#fin_no_sep').html(noSep);
-            $('#fin_no_checkup').html(idDetailCheckup);
-            $('#fin_nik').html(nik);
-            $('#fin_nama').html(namaPasien);
-            $('#fin_jenis_kelamin').html(jenisKelamin);
-            $('#fin_tgl').html(tglLahir);
-            $('#fin_agama').html(agama);
-            $('#fin_suku').html(suku);
-            $('#fin_alamat').html(alamat);
-            $('#fin_provinsi').html(provinsi);
-            $('#fin_kabupaten').html(kabupaten);
-            $('#fin_kecamatan').html(kecamatan);
-            $('#fin_desa').html(desa);
-            $('#body_tindakan_fin').html(table);
-            $('#total_uang_muka').val(total);
-            $('#fin_id_detail_checkup').val(idDetailCheckup);
-            $('#save_fin').attr('onclick','confirmSaveUangMuka(\''+id+'\',\''+pasiendId+'\',\''+total+'\')');
-            $('#modal-invoice').modal({show:true, backdrop:'static'});
-        }, 100);
+                $('#fin_jenis_pasien').html(jenisPasien);
+                setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
+                $('#fin_no_sep').html(noSep);
+                $('#fin_no_checkup').html(idDetailCheckup);
+                $('#fin_nik').html(nik);
+                $('#fin_nama').html(namaPasien);
+                $('#fin_jenis_kelamin').html(jenisKelamin);
+                $('#fin_tgl').html(tglLahir);
+                $('#fin_agama').html(agama);
+                $('#fin_suku').html(suku);
+                $('#fin_alamat').html(alamat);
+                $('#fin_provinsi').html(provinsi);
+                $('#fin_kabupaten').html(kabupaten);
+                $('#fin_kecamatan').html(kecamatan);
+                $('#fin_desa').html(desa);
+                $('#body_tindakan_fin').html(table);
+                $('#total_uang_muka').val(total);
+                $('#fin_id_detail_checkup').val(idDetailCheckup);
+                $('#save_fin').attr('onclick','confirmSaveUangMuka(\''+id+'\',\''+pasiendId+'\',\''+total+'\')');
+                $('#modal-invoice').modal({show:true, backdrop:'static'});
+            }, 100);
+        }
     }
 
     function formateDate(tanggal){
@@ -783,135 +784,124 @@
         var kodeBank = $('#bank').val();
         var noRekening = $('#no_rekening').val();
         var idDetailCheckup = $('#fin_id_detail_checkup').val();
-
-        dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
-            if(response.status == "success"){
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#success_fin').show().fadeOut(10000);
-                $('#msg_fin2').text(response.msg);
-                $('#modal-invoice').modal('hide');
-                $('#info_dialog').dialog('open');
-                $('body').scrollTop(0);
-                printInvoice(idDetailCheckup);
-            }else{
-                $('#save_fin').show();
-                $('#load_fin').hide();
-                $('#warning_fin').show().fadeOut(10000);
-                $('#msg_fin').text(response.msg);
-            }
-        }});
+        if(!cekSession()){
+            dwr.engine.setAsync(true);
+            KasirRawatJalanAction.saveUangMuka(id, idPasien, uangmuka, jumlah, metodeBayar, kodeBank, noRekening, {callback: function (response) {
+                    if(response.status == "success"){
+                        $('#save_fin').show();
+                        $('#load_fin').hide();
+                        $('#success_fin').show().fadeOut(10000);
+                        $('#msg_fin2').text(response.msg);
+                        $('#modal-invoice').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                        printInvoice(idDetailCheckup);
+                    }else{
+                        $('#save_fin').show();
+                        $('#load_fin').hide();
+                        $('#warning_fin').show().fadeOut(10000);
+                        $('#msg_fin').text(response.msg);
+                    }
+                }});
+        }
     }
 
     function showRefund(idDetailCheckup){
-        $('#modal-refund').modal({show:true, backdrop:'static'});
-        CheckupAction.listDataPasien(idDetailCheckup, function (response) {
-            if (response != null) {
-                var tanggal = response.tglLahir;
-                var dateFormat = converterDate(new Date(tanggal));
-                var jenisKelamin = "";
+        if(!cekSession()){
+            $('#modal-refund').modal({show:true, backdrop:'static'});
+            CheckupAction.listDataPasien(idDetailCheckup, function (response) {
+                if (response != null) {
+                    var tanggal = response.tglLahir;
+                    var dateFormat = converterDate(new Date(tanggal));
+                    var jenisKelamin = "";
 
-                if (response.jenisKelamin == "L") {
-                    jenisKelamin = "Laki-Laki";
-                } else {
-                    jenisKelamin = "Perempuan";
-                }
-                if(response.noSep != ''){
-                    $('#ref_no_sep_show').show();
-                }else{
-                    $('#ref_no_sep_show').hide();
-                }
-                $('#ref_no_rm').html(response.idPasien);
-                $('#ref_jenis_pasien').html(response.idJenisPeriksaPasien.toUpperCase());
-                $('#ref_no_sep').html(response.noSep);
-                $('#ref_no_checkup').html(idDetailCheckup);
-                $('#ref_nik').html(response.noKtp);
-                $('#ref_nama').html(response.nama);
-                $('#ref_jenis_kelamin').html(jenisKelamin);
-                $('#ref_tgl').html(response.tempatLahir + ", " + dateFormat);
-                $('#ref_agama').html(response.agama);
-                $('#ref_suku').html(response.suku);
-                $('#ref_alamat').html(response.jalan);
-                $('#ref_provinsi').html(response.namaProvinsi);
-                $('#ref_kabupaten').html(response.namaKota);
-                $('#ref_kecamatan').html(response.namaKecamatan);
-                $('#ref_desa').html(response.namaDesa);
-            }
-        });
-        KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
-            dataTindakan = response;
-            if (dataTindakan != null) {
-                var table = "";
-                var total = 0;
-                var id = "";
-                $.each(dataTindakan, function (i, item) {
-                    var tanggal = "";
-                    var uangmuka    = 0;
-
-
-                    if (item.createdDate != null && item.createdDate !=  '') {
-                        tanggal = item.createdDate;
+                    if (response.jenisKelamin == "L") {
+                        jenisKelamin = "Laki-Laki";
+                    } else {
+                        jenisKelamin = "Perempuan";
                     }
-
-                    if (item.dibayar != null && item.dibayar != '') {
-                        uangmuka = item.dibayar;
+                    if(response.noSep != ''){
+                        $('#ref_no_sep_show').show();
+                    }else{
+                        $('#ref_no_sep_show').hide();
                     }
+                    $('#ref_no_rm').html(response.idPasien);
+                    $('#ref_jenis_pasien').html(response.idJenisPeriksaPasien.toUpperCase());
+                    $('#ref_no_sep').html(response.noSep);
+                    $('#ref_no_checkup').html(idDetailCheckup);
+                    $('#ref_nik').html(response.noKtp);
+                    $('#ref_nama').html(response.nama);
+                    $('#ref_jenis_kelamin').html(jenisKelamin);
+                    $('#ref_tgl').html(response.tempatLahir + ", " + dateFormat);
+                    $('#ref_agama').html(response.agama);
+                    $('#ref_suku').html(response.suku);
+                    $('#ref_alamat').html(response.jalan);
+                    $('#ref_provinsi').html(response.namaProvinsi);
+                    $('#ref_kabupaten').html(response.namaKota);
+                    $('#ref_kecamatan').html(response.namaKecamatan);
+                    $('#ref_desa').html(response.namaDesa);
+                }
+            });
+            KasirRawatJalanAction.getListUangMuka(idDetailCheckup, null, function (response) {
+                dataTindakan = response;
+                if (dataTindakan != null) {
+                    var table = "";
+                    var total = 0;
+                    var id = "";
+                    $.each(dataTindakan, function (i, item) {
+                        var tanggal = "";
+                        var uangmuka    = 0;
 
-                    table += '<tr id="row'+item.id+'" >' +
-                        "<td >"+formateDate(tanggal)+"</td>" +
-                        "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
-                        "</tr>";
-                    total = parseInt(total) + parseInt(uangmuka);
-                    id = item.id;
-                });
 
-                $('#body_tindakan_ref').html(table);
-                $('#ref_total_uang_muka').val(total);
+                        if (item.createdDate != null && item.createdDate !=  '') {
+                            tanggal = item.createdDate;
+                        }
 
-                $('#save_refund').attr('onclick','confirmRefund(\''+id+'\',\''+total+'\')');
+                        if (item.dibayar != null && item.dibayar != '') {
+                            uangmuka = item.dibayar;
+                        }
 
-            }
-        });
+                        table += '<tr id="row'+item.id+'" >' +
+                            "<td >"+formateDate(tanggal)+"</td>" +
+                            "<td align='right' style='padding-right: 20px'>" + formatRupiah(uangmuka) + "</td>" +
+                            "</tr>";
+                        total = parseInt(total) + parseInt(uangmuka);
+                        id = item.id;
+                    });
+                    $('#body_tindakan_ref').html(table);
+                    $('#ref_total_uang_muka').val(total);
+                    $('#save_refund').attr('onclick','confirmRefund(\''+id+'\',\''+total+'\')');
+                }
+            });
+        }
     }
 
     function confirmRefund(id, total){
-        // var refund = $('#ref_val_uang_muka').val();
-        //
-        // if(total != '' && refund != ''){
-        //
-        //     if(total == total){
         $('#modal-confirm-dialog').modal('show');
         $('#save_con').attr('onclick','saveRefund(\''+id+'\')');
-        //     }else{
-        //         $('#warning_refund').show().fadeOut(5000);
-        //         $('#msg_refund').text("Refund Uang muka tidak boleh lebih atau kurang dari uang muka yang sudah dibayar...!");
-        //     }
-        // }else{
-        //     $('#warning_refund').show().fadeOut(5000);
-        //     $('#msg_refund').text("Silahkan cek kembali data inputan anda..!");
-        // }
     }
 
     function saveRefund(id){
         $('#modal-confirm-dialog').modal('hide');
-        $('#save_refund').hide();
-        $('#load_refund').show();
-        dwr.engine.setAsync(true);
-        KasirRawatJalanAction.saveRefund(id, {callback: function (response) {
-            if(response.status == "success"){
-                $('#info_dialog').dialog('open');
-                $('#modal-refund').modal('hide');
-                $('#save_refund').show();
-                $('#load_refund').hide();
-                $('body').scrollTop(0);
-            }else{
-                $('#save_refund').show();
-                $('#load_refund').hide();
-                $('#warning_refund').show().fadeOut(5000);
-                $('#msg_refund').text(response.message);
-            }
-        }});
+        if(!cekSession()){
+            $('#save_refund').hide();
+            $('#load_refund').show();
+            dwr.engine.setAsync(true);
+            KasirRawatJalanAction.saveRefund(id, {callback: function (response) {
+                    if(response.status == "success"){
+                        $('#info_dialog').dialog('open');
+                        $('#modal-refund').modal('hide');
+                        $('#save_refund').show();
+                        $('#load_refund').hide();
+                        $('body').scrollTop(0);
+                    }else{
+                        $('#save_refund').show();
+                        $('#load_refund').hide();
+                        $('#warning_refund').show().fadeOut(5000);
+                        $('#msg_refund').text(response.message);
+                    }
+                }});
+        }
     }
 
     function hitungKembalian( jumlah ) {
@@ -921,17 +911,19 @@
     }
 
     function selectPembayaran(){
-        var option = '<option value="">[Select One]</option>';
-        KasirRawatJalanAction.getListPembayaran(function (res) {
-            if(res.length > 0){
-                $.each(res, function (i, item) {
-                    option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
-                });
-                $('#bank').html(option);
-            }else{
-                $('#bank').html(option);
-            }
-        });
+        if(!cekSession()){
+            var option = '<option value="">[Select One]</option>';
+            KasirRawatJalanAction.getListPembayaran(function (res) {
+                if(res.length > 0){
+                    $.each(res, function (i, item) {
+                        option += '<option value="'+item.coa+'">'+item.pembayaranName+'</option>';
+                    });
+                    $('#bank').html(option);
+                }else{
+                    $('#bank').html(option);
+                }
+            });
+        }
     }
 
     function printInvoice(id){

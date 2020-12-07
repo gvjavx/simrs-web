@@ -1234,19 +1234,6 @@ ALTER TABLE im_simrs_pasien
 ADD COLUMN pendidikan VARCHAR(100),
 ADD COLUMN status_perkawinan VARCHAR(100);
 
----------- SUDAH DI PROD -----------
-====================================
-
-            /\   /\   /\
-           |__| |__| |__|
-            ||   ||   ||
-            ||   ||   ||
-            ||   ||   ||
------------ ||   ||   || -----------
----------- SUDAH DI PROD -----------
------------ +++++++++++ ------------
-
---INI BELOM DI PROD
 --KEMMIS MALAM JUMAT
 ALTER TABLE im_simrs_pelayanan
 ADD COLUMN kode_poli_vclaim VARCHAR(100);
@@ -1473,9 +1460,22 @@ FROM im_hris_position_bagian_migrasi  a
 LEFT JOIN im_hris_position_bagian b ON a.bagian_id = b.bagian_id
 WHERE b.bagian_id IS NULL;
 
+---------- SUDAH DI PROD -----------
+====================================
 
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||
+----------- ||   ||   || -----------
+---------- SUDAH DI PROD -----------
+----------- +++++++++++ ------------
 
-
+--BELUM DIPROD INI YA...
+--SENIN 30-11-2020 16:07
+ALTER TABLE im_simrs_tindakan
+DROP COLUMN kategori_ina_bpjs;
 
 
 

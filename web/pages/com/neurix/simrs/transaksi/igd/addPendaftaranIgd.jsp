@@ -2930,61 +2930,63 @@
             'img_ktp': ktpFinal
         };
         var objectString = JSON.stringify(data);
-        $('#save_add').hide();
-        $('#load_add').show();
-        dwr.engine.setAsync(true);
-        PaketPeriksaAction.saveNewPasien(objectString, {
-            callback: function (response) {
-                if (response.status == "success") {
-                    $('#save_add').show();
-                    $('#load_add').hide();
-                    $('#info_dialog').dialog('open');
-                    $('#id_pasien').val(response.idPasien);
-                    $('#no_bpjs').val(response.noBpjs);
-                    $('#no_ktp').val(response.noKtp);
-                    $('#nama_pasien').val(response.nama);
-                    $('#jenis_kelamin').val(response.jenisKelamin);
-                    $('#tempat_lahir').val(response.tempatLahir);
-                    $('#tanggal_lahir').val(response.tglLahir);
-                    $('#agama').val(response.agama);
-                    $('#profesi').val(response.profesi).trigger('change');
-                    $('#jalan').val(response.jalan);
-                    $('#suku').val(response.suku).trigger('change');
-                    $('#img_ktp').val(response.imgKtp);
-                    if(response.urlKtp != null && response.urlKtp != ''){
-                        var cek = cekImages(response.urlKtp);
-                        if(cek){
-                            $('#img-upload').attr('src', response.urlKtp);
+        if(!cekSession()){
+            $('#save_add').hide();
+            $('#load_add').show();
+            dwr.engine.setAsync(true);
+            PaketPeriksaAction.saveNewPasien(objectString, {
+                callback: function (response) {
+                    if (response.status == "success") {
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#info_dialog').dialog('open');
+                        $('#id_pasien').val(response.idPasien);
+                        $('#no_bpjs').val(response.noBpjs);
+                        $('#no_ktp').val(response.noKtp);
+                        $('#nama_pasien').val(response.nama);
+                        $('#jenis_kelamin').val(response.jenisKelamin);
+                        $('#tempat_lahir').val(response.tempatLahir);
+                        $('#tanggal_lahir').val(response.tglLahir);
+                        $('#agama').val(response.agama);
+                        $('#profesi').val(response.profesi).trigger('change');
+                        $('#jalan').val(response.jalan);
+                        $('#suku').val(response.suku).trigger('change');
+                        $('#img_ktp').val(response.imgKtp);
+                        if(response.urlKtp != null && response.urlKtp != ''){
+                            var cek = cekImages(response.urlKtp);
+                            if(cek){
+                                $('#img-upload').attr('src', response.urlKtp);
+                            }else{
+                                $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                            }
                         }else{
                             $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                         }
-                    }else{
-                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        $('#provinsi').val(response.provinsi);
+                        $('#kabupaten').val(response.kota);
+                        $('#kecamatan').val(response.kecamatan);
+                        $('#desa').val(response.desa);
+                        $('#provinsi11').val(response.provinsiId);
+                        $('#kabupaten11').val(response.kotaId);
+                        $('#kecamatan11').val(response.kecamatanId);
+                        $('#desa11').val(response.desaId);
+                        $('#no_telp').val(response.noTelp);
+                        $('#status_perkawinan').val(response.statusPerkawinan).trigger('change');
+                        $('#pendidikan').val(response.pendidikan).trigger('change');
+                        $('#close_pos').val(1);
+                        $('#btn-finger').show();
+                        $('#modal-daftar-pasien').modal('hide');
+                        $('body').scrollTop(0);
+                        $('#kunjungan_val').val("Baru");
+                    } else {
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#warning_add').show();
+                        $('#msg_add').text(response.msg).fadeOut(5000);
                     }
-                    $('#provinsi').val(response.provinsi);
-                    $('#kabupaten').val(response.kota);
-                    $('#kecamatan').val(response.kecamatan);
-                    $('#desa').val(response.desa);
-                    $('#provinsi11').val(response.provinsiId);
-                    $('#kabupaten11').val(response.kotaId);
-                    $('#kecamatan11').val(response.kecamatanId);
-                    $('#desa11').val(response.desaId);
-                    $('#no_telp').val(response.noTelp);
-                    $('#status_perkawinan').val(response.statusPerkawinan).trigger('change');
-                    $('#pendidikan').val(response.pendidikan).trigger('change');
-                    $('#close_pos').val(1);
-                    $('#btn-finger').show();
-                    $('#modal-daftar-pasien').modal('hide');
-                    $('body').scrollTop(0);
-                    $('#kunjungan_val').val("Baru");
-                } else {
-                    $('#save_add').show();
-                    $('#load_add').hide();
-                    $('#warning_add').show();
-                    $('#msg_add').text(response.msg).fadeOut(5000);
                 }
-            }
-        });
+            });
+        }
     }
 
     function closePos(){

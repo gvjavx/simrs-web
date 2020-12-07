@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.ruangan.bo;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganTempatTidurEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -13,4 +14,5 @@ public interface TempatTidurBo{
     public CrudResponse saveEdit(TempatTidur ruangan) throws GeneralBOException;
     public List<TempatTidur> getDataTempatTidur(TempatTidur bean)throws GeneralBOException;
     public List<Ruangan> getComboRuangan(Ruangan bean)throws GeneralBOException;
+    public List<MtSimrsRuanganTempatTidurEntity> cekTT(String namaTt, String idRuangan)throws GeneralBOException;
 }

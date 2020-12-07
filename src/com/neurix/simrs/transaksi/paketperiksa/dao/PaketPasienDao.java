@@ -347,10 +347,11 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "a.id_paket,\n" +
                     "b.id_kategori_item,\n" +
                     "b.id_item,\n" +
-                    "d.nama_detail_periksa\n" +
+                    "e.nama_pemeriksaan\n" +
                     "FROM mt_simrs_paket a\n" +
                     "INNER JOIN mt_simrs_item_paket_periksa b ON a.id_paket = b.id_paket\n" +
                     "INNER JOIN im_simrs_lab_detail d ON b.id_item = d.id_lab_detail\n" +
+                    "INNER JOIN im_simrs_parameter_pemeriksaan e ON d.id_parameter_pemeriksaan = e.id_parameter_pemeriksaan\n" +
                     "WHERE a.id_paket = :id \n" +
                     "AND b.id_kategori_item = :idLab \n" +
                     "AND b.flag = 'Y'\n" +

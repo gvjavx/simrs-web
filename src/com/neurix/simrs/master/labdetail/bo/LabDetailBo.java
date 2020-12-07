@@ -14,4 +14,5 @@ public interface LabDetailBo{
     public ImSimrsLabDetailEntity getLabDetailEntityById(String idParameter) throws GeneralBOException;
     public List<LabDetail> getDetaillab(String idLab, String branchId) throws GeneralBOException;
     public List<LabDetail> getDataParameterPemeriksaan(LabDetail bean) throws GeneralBOException;
+    public List<ImSimrsLabDetailEntity> cekDataParameterPemeriksaan(String idParameter, String idLab) throws GeneralBOException;
 }
