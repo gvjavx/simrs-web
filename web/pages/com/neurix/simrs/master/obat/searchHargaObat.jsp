@@ -189,7 +189,7 @@
                                     <tr style="background-color: #d9534f; color: #ffffff">
                                 </s:if>
                                 <s:elseif test='#row.flagKurangMargin == "R"'>
-                                    <tr style="background-color: #EBEADF; color: #ffffff">
+                                    <tr style="background-color: #EBEADF; color: black">
                                 </s:elseif>
                                 <s:else>
                                     <tr>

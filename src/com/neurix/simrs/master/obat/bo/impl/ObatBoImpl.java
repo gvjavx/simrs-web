@@ -879,11 +879,13 @@ public class ObatBoImpl implements ObatBo {
         CheckObatResponse response = new CheckObatResponse();
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik()))
+            hsCriteria.put("id_pabrik", bean.getIdPabrik());
         hsCriteria.put("branch_id", bean.getBranchId());
         hsCriteria.put("lembar_per_box", bean.getLembarPerBox());
         hsCriteria.put("biji_per_lembar", bean.getBijiPerLembar());
         hsCriteria.put("flag", "Y");
+        hsCriteria.put("nama_obat_fix", bean.getNamaObat());
 
 
         List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
@@ -905,6 +907,37 @@ public class ObatBoImpl implements ObatBo {
         }
 
         logger.info("[ObatPoliBoImpl.checkFisikObatByIdPabrik] END <<<<<<<<<<");
+        return response;
+    }
+
+    @Override
+    public CheckObatResponse checkFisikIdObatByIdPabrik(Obat bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkFisikIdObatByIdPabrik] START >>>>>>>>>>");
+
+        CheckObatResponse response = new CheckObatResponse();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat", bean.getIdPabrik());
+
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[ObatBoImpl.checkFisikIdObatByIdPabrik] error when check fisik obat" + e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.checkFisikIdObatByIdPabrik] check fisik obat " + e.getMessage());
+        }
+
+        if (obatEntities.size() > 0) {
+            ImSimrsObatEntity obatEntity = obatEntities.get(0);
+            response.setStatus("warning");
+            response.setMessage(obatEntity.getIdObat());
+        } else {
+            response.setStatus("success");
+            response.setMessage("Silahkan dilanjutkan");
+        }
+
+        logger.info("[ObatPoliBoImpl.checkFisikIdObatByIdPabrik] END <<<<<<<<<<");
         return response;
     }
 

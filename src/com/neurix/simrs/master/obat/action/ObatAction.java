@@ -334,6 +334,17 @@ public class ObatAction extends BaseMasterAction {
             obat.setKandunganObats(kandunganObats);
         }
 
+        // check apakah sudah ada id_obat dengan id_pabrik
+        // untuk validasi jika id tidak generate
+        try {
+            checkObatResponse = obatBo.checkFisikIdObatByIdPabrik(obat);
+        } catch (GeneralBOException e) {
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+            return checkObatResponse;
+        }
+
+
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
         } catch (GeneralBOException e) {
