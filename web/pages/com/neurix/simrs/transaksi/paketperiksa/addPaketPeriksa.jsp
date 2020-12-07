@@ -1123,82 +1123,84 @@
     }
 
     function savePaket() {
-        var namaPaket = $('#nama_paket').val();
-        var tarifPaket = $('#tarif_paket').val();
-        var tindakan = $('#table_tindakan').tableToJSON();
-        var lab = $('#table_lab').tableToJSON();
-        var pelayanan = $('#table_pelayanan').tableToJSON();
-        var result = [];
-        var resultPel = [];
+        if(!cekSession()){
+            var namaPaket = $('#nama_paket').val();
+            var tarifPaket = $('#tarif_paket').val();
+            var tindakan = $('#table_tindakan').tableToJSON();
+            var lab = $('#table_lab').tableToJSON();
+            var pelayanan = $('#table_pelayanan').tableToJSON();
+            var result = [];
+            var resultPel = [];
 
-        $.each(tindakan, function (i, item) {
-            var idPoli = $('#poli_id' + i).val();
-            var idTindakan = $('#tindakan_id' + i).val();
-            var idKategori = $('#kategori_id' + i).val();
-            var tarifTindakan = $('#tin_tarif_id' + i).val();
+            $.each(tindakan, function (i, item) {
+                var idPoli = $('#poli_id' + i).val();
+                var idTindakan = $('#tindakan_id' + i).val();
+                var idKategori = $('#kategori_id' + i).val();
+                var tarifTindakan = $('#tin_tarif_id' + i).val();
 
-            result.push({
-                'kategori_item': idKategori,
-                'id_item': idTindakan,
-                'jenis_item': 'tindakan',
-                'tarif': tarifTindakan,
-                'id_pelayanan': idPoli
+                result.push({
+                    'kategori_item': idKategori,
+                    'id_item': idTindakan,
+                    'jenis_item': 'tindakan',
+                    'tarif': tarifTindakan,
+                    'id_pelayanan': idPoli
+                });
             });
-        });
 
-        $.each(lab, function (i, item) {
-            var idPoli = $('#poli_id' + i).val();
-            var idKategori = $('#kategori_lab' + i).val();
-            var idLab = $('#lab_id' + i).val();
-            var idParameter = $('#parameter_id' + i).val();
-            var jenisLab = lab[i]["Jenis Lab"];
-            var tarifpaket = $('#lab_tarif_id' + i).val();
+            $.each(lab, function (i, item) {
+                var idPoli = $('#poli_id' + i).val();
+                var idKategori = $('#kategori_lab' + i).val();
+                var idLab = $('#lab_id' + i).val();
+                var idParameter = $('#parameter_id' + i).val();
+                var jenisLab = lab[i]["Jenis Lab"];
+                var tarifpaket = $('#lab_tarif_id' + i).val();
 
-            result.push({
-                'kategori_item': idLab,
-                'id_item': idParameter,
-                'jenis_item': jenisLab.toLowerCase(),
-                'tarif': tarifpaket,
-                'id_pelayanan': idPoli
+                result.push({
+                    'kategori_item': idLab,
+                    'id_item': idParameter,
+                    'jenis_item': jenisLab.toLowerCase(),
+                    'tarif': tarifpaket,
+                    'id_pelayanan': idPoli
+                });
             });
-        });
 
-        $.each(pelayanan, function (i, item) {
-            i = i + 1
-            var idPoli = $('#poli_id_' + i).val();
-            var urutan = $('#urut_val_' + i).val();
-            resultPel.push({
-                'id_pelayanan': idPoli,
-                'urutan': urutan
+            $.each(pelayanan, function (i, item) {
+                i = i + 1
+                var idPoli = $('#poli_id_' + i).val();
+                var urutan = $('#urut_val_' + i).val();
+                resultPel.push({
+                    'id_pelayanan': idPoli,
+                    'urutan': urutan
+                });
             });
-        });
 
-        if (result.length > 0 && namaPaket != '' && tarifPaket != '') {
-            $("#waiting_dialog").dialog('open');
-            var jsonStinng = JSON.stringify(result);
-            var jsonStinngPel = JSON.stringify(resultPel);
-            dwr.engine.setAsync(true);
-            PaketPeriksaAction.savePaket(namaPaket, jsonStinng, jsonStinngPel, {
-                callback: function (response) {
-                    if (response.status == "success") {
-                        $("#waiting_dialog").dialog('close');
-                        $('#info_dialog').dialog('open');
-                        $('body').scrollTop(0);
-                    } else {
-                        $("#waiting_dialog").dialog('close');
-                        $('#error_dialog').dialog('open');
-                        $('#errorMessage').text(response.msg);
+            if (result.length > 0 && namaPaket != '' && tarifPaket != '') {
+                $("#waiting_dialog").dialog('open');
+                var jsonStinng = JSON.stringify(result);
+                var jsonStinngPel = JSON.stringify(resultPel);
+                dwr.engine.setAsync(true);
+                PaketPeriksaAction.savePaket(namaPaket, jsonStinng, jsonStinngPel, {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            $("#waiting_dialog").dialog('close');
+                            $('#info_dialog').dialog('open');
+                            $('body').scrollTop(0);
+                        } else {
+                            $("#waiting_dialog").dialog('close');
+                            $('#error_dialog').dialog('open');
+                            $('#errorMessage').text(response.msg);
+                        }
                     }
+                });
+            } else {
+                $('#warning_paket').show().fadeOut(5000);
+                $('#msg_paket').text("Silahkan cek kembali data inputan anda..!");
+                if (namaPaket == '') {
+                    $('#war_paket').show();
                 }
-            });
-        } else {
-            $('#warning_paket').show().fadeOut(5000);
-            $('#msg_paket').text("Silahkan cek kembali data inputan anda..!");
-            if (namaPaket == '') {
-                $('#war_paket').show();
-            }
-            if (tarifPaket == '') {
-                $('#war_tarif_paket').show();
+                if (tarifPaket == '') {
+                    $('#war_tarif_paket').show();
+                }
             }
         }
     }
