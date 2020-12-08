@@ -385,12 +385,13 @@ public class ObatBoImpl implements ObatBo {
         // header obat
         if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
             headerObatEntity.setIdObat(bean.getIdPabrik());
+            headerObatEntity.setIdPabrik(bean.getIdPabrik());
         } else {
             headerObatEntity.setIdObat("OBT" + id);
+            headerObatEntity.setIdPabrik(bean.getIdObat());
         }
         headerObatEntity.setNamaObat(bean.getNamaObat());
         headerObatEntity.setMerk(bean.getMerk());
-        headerObatEntity.setIdPabrik(bean.getIdPabrik());
         headerObatEntity.setLembarPerBox(bean.getLembarPerBox());
         headerObatEntity.setBijiPerLembar(bean.getBijiPerLembar());
         headerObatEntity.setFlag(bean.getFlag());
@@ -881,11 +882,14 @@ public class ObatBoImpl implements ObatBo {
         Map hsCriteria = new HashMap();
         if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik()))
             hsCriteria.put("id_pabrik", bean.getIdPabrik());
+
         hsCriteria.put("branch_id", bean.getBranchId());
         hsCriteria.put("lembar_per_box", bean.getLembarPerBox());
         hsCriteria.put("biji_per_lembar", bean.getBijiPerLembar());
         hsCriteria.put("flag", "Y");
-        hsCriteria.put("nama_obat_fix", bean.getNamaObat());
+
+        if (bean.getNamaObat() != null)
+            hsCriteria.put("nama_obat_fix", bean.getNamaObat());
 
 
         List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
