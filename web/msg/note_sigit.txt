@@ -1351,7 +1351,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
         branch_id character varying(5) COLLATE pg_catalog."default",
         harga_terakhir numeric,
         flag character varying(1) COLLATE pg_catalog."default",
-        action abstime[],
+        action character varying(1) COLLATE pg_catalog."default",
         created_date timestamp without time zone,
         created_who character varying(100) COLLATE pg_catalog."default",
         last_update timestamp without time zone,
@@ -1367,9 +1367,11 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
         OWNER to postgres;
 
     ALTER TABLE mt_simrs_harga_obat
-    ADD COLUMN harga_terakhir numeric,
     ADD COLUMN diskon_umum numeric,
     ADD COLUMN harga_jual_umum numeric;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN margin_umum integer;
 
 --
 

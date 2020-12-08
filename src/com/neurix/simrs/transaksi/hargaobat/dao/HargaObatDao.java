@@ -35,6 +35,10 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
             criteria.add(Restrictions.eq("idObat", mapCriteria.get("id_obat").toString()));
         }
 
+        if (mapCriteria.get("branch_id") != null){
+            criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
+        }
+
         if (mapCriteria.get("flag") != null){
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
@@ -66,7 +70,10 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "ho.harga_net,\n" +
                 "ho.diskon,\n" +
                 "ob.id_barang,\n" +
-                "mg.standar_margin\n" +
+                "mg.standar_margin,\n" +
+                "ho.harga_beli,\n" +
+                "ho.diskon_umum,\n" +
+                "ho.harga_jual_umum\n" +
                 "FROM im_simrs_obat ob\n" +
                 "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat WHERE branch_id = :branch GROUP BY id_obat ) \n" +
                 "obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
@@ -98,7 +105,11 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setDiskon(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
                 obat.setIdBarang(obj[11].toString());
                 obat.setStandarMargin(obj[12] == null ? null : (Integer) obj[12]);
+                obat.setHargaBeli(obj[13] == null ? null : (BigDecimal) obj[13]);
+                obat.setDiskonUmum(obj[14] == null ? null : (BigDecimal) obj[14]);
+                obat.setHargaJualUmum(obj[15] == null ? null : (BigDecimal) obj[15]);
 
+                // Sigit 2020-12-08, hitung margin obat khusus, Start
                 BigDecimal hargaRata    = obat.getAverageHargaBiji();
                 BigDecimal hargaJual    = obat.getHargaJual();
                 BigDecimal selisih      = hargaJual.subtract(hargaRata);
@@ -106,9 +117,23 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 Integer intMargin       = margin.intValue();
 
                 obat.setMargin(intMargin);
+                // END
 
-                if (obat.getStandarMargin() != null){
+                // Sigit 2020-12-08, hitung margin obat umum, Start
+                BigDecimal hargaBeli        = obat.getHargaBeli();
+                BigDecimal hargaJualUmum    = obat.getHargaJualUmum();
+                BigDecimal selisihUmum      = hargaJualUmum.subtract(hargaBeli);
+                BigDecimal marginUmum       = hargaJualUmum.intValue() != 0 ? selisihUmum.divide(hargaBeli, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
+                Integer intMarginUmum       = marginUmum.intValue();
+
+                obat.setMarginUmum(intMarginUmum);
+                // END
+
+                if (obat.getStandarMargin() != null || obat.getMarginUmum() != null){
                     if (obat.getStandarMargin().compareTo(intMargin) == 1){
+                        obat.setFlagKurangMargin("Y");
+                    }
+                    if (obat.getStandarMargin().compareTo(intMarginUmum) == 1){
                         obat.setFlagKurangMargin("Y");
                     }
                 } else {

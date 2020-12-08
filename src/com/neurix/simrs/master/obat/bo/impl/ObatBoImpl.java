@@ -622,7 +622,7 @@ public class ObatBoImpl implements ObatBo {
                     obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     obatEntity.setLembarPerBox(bean.getLembarPerBox());
                     obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-                    obatEntity.setIdPabrik(bean.getIdPabrik());
+                    obatEntity.setIdPabrik(obatEntity.getIdPabrik());
                     obatEntity.setMerk(bean.getMerk());
                     obatEntity.setAction(bean.getAction());
                     obatEntity.setMinStok(bean.getMinStok());
