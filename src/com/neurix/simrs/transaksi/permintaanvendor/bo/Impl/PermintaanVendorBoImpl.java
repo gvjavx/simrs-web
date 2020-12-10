@@ -1054,8 +1054,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                 // update jika harga terakhir beli lebih besar dari pada harga terakhir pada table
                 MtSimrsHargaTerakhirEntity hargaTerakhirEntity = hargaTerakhirEntities.get(0);
-                if (hargaTerakhirEntity.getHargaTerakhir().compareTo(hargaObat.getHargaBeli()) == 1){
+                if (hargaObat.getHargaBeli().compareTo(hargaTerakhirEntity.getHargaTerakhir()) == 1){
 
+                    hargaTerakhirEntity.setHargaTerakhir(hargaObat.getHargaBeli());
                     hargaTerakhirEntity.setAction("U");
                     hargaTerakhirEntity.setLastUpdate(hargaObat.getLastUpdate());
                     hargaTerakhirEntity.setLastUpdateWho(hargaObat.getLastUpdateWho());

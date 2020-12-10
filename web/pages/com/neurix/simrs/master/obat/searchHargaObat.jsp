@@ -443,7 +443,7 @@
 
         var arJson = [];
         arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual, "margin" : margin,
-            "harga_net_umum" : netUmum, "diskon_umum" : diskonUmum, "jual_umum" : jualUmum, "margin_umum" : marginUmum
+            "harga_net_umum" : netUmum, "diskon_umum" : diskonUmum, "harga_jual_umum" : jualUmum, "margin_umum" : marginUmum
         });
         var stJson = JSON.stringify(arJson);
         ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {
