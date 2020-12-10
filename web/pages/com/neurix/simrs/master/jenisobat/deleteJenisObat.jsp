@@ -20,8 +20,6 @@
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
            window.location.reload(true);
-
-
         };
 
         $.subscribe('beforeProcessSaveDelete', function (event, data) {
@@ -105,7 +103,7 @@
                                 <s:textfield id="idJenisObatdelete" name="jenisObat.idJenisObat" disabled="true"
                                              required="true" readonly="true" cssClass="form-control"/>
 
-                                    <s:hidden id="idJenisObatdelete" name="jenisObat.idJenisObat" />
+                                    <%--<s:hidden id="idJenisObatdelete" name="jenisObat.idJenisObat" />--%>
                             </table>
                         </td>
                     </tr>

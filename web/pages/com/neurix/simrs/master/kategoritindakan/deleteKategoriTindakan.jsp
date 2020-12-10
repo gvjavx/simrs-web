@@ -7,61 +7,47 @@
 <html>
 <head>
     <script type="text/javascript">
-
-        function callSearch() {
+        $(document).ready(function(){
+            // var cek = document.getElementById("eksekutif").value;
+            //
+            // if (cek == 'Y'){
+            //     console.log(cek);
+            //     document.getElementById("isEksekutif").checked = true;
+            // }
+        });
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
+            // $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-//            window.location.reload(true);
-            document.positionBagianForm.action = 'search_positionBagian.action';
-            document.positionBagianForm.submit();
+           // window.location.reload(true);
+            document.SearchKategoriTindakanForm.submit();
+
+
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            var bagianId = document.getElementById("bagianId1").value;
-            var bagianName = document.getElementById("bagianName1").value;
+        $.subscribe('beforeProcessSaveDelete', function (event, data) {
+            var idKategoriTindakan = document.getElementById("idKategoriTindakan").value;
 
-
-
-            if (bagianName!= '' ) {
-                if (confirm('Do you want to Delete this record?')) {
+            if (idKategoriTindakan != '') {
+                if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
-
                 } else {
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
                 }
-
-
             } else {
-
                 event.originalEvent.options.submit = false;
-
                 var msg = "";
-
-                if (bagianName == '') {
-                    msg += 'Field <strong>Sub Bidang/Name Name</strong> is required.' + '<br/>';
+                if (idKategoriTindakan == '') {
+                    msg += 'Field <strong> idKategoriTindakan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
-
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -91,14 +77,15 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/positionBagian" action="saveDelete_positionBagian" cssClass="well form-horizontal">
+            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/kategoritindakan"
+                    action="saveDelete_kategoritindakan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Delete Sub Bidang/Name Id</legend>
+                <legend align="left">Delete Jenis Obat</legend>
 
 
                 <table>
@@ -111,49 +98,34 @@
 
                 <table >
                     <tr>
-                        <td>
-                            <label class="control-label"><small>Sub Bidang/Name Id :</small></label>
+                        <td width="30%">
+                            <label class="control-label"><small>ID Jenis Obat :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="bagianId1" name="positionBagian.bagianId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idKategoriTindakan" name="kategoriTindakan.idKategoriTindakan" disabled="true"
+                                             required="true" readonly="true" cssClass="form-control"/>
+
+                                    <s:hidden id="idKategoriTindakan" name="kategoriTindakan.idKategoriTindakan" />
                             </table>
                         </td>
                     </tr>
 
+
+
                     <tr>
-                        <td>
-                            <label class="control-label"><small>Sub Bidang/Name Name :</small></label>
+                        <td >
+                            <label class="control-label"><small>Kategori Tindakan:</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="bagianName1" name="positionBagian.bagianName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="kategoriTindakandel" name="kategoriTindakan.kategoriTindakan" required="true"
+                                             cssStyle="margin-top: 7px" readonly="true"
+                                             disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Bidang/Divisi Name :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="combo" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#combo.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                <s:hidden name ="positionBagian.divisiId" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Kodering :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kodering1" name="positionBagian.kodering" readonly="true" required="true" disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
+
 
                 </table>
 
@@ -163,10 +135,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
+                                   name="save"
+                                   onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-trash"></i>
+                            <i class="fa fa-check"></i>
                             Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
@@ -186,7 +159,7 @@
                                                    closeTopics="closeDialog" modal="true"
                                                    resizable="false"
                                                    height="250" width="600" autoOpen="false"
-                                                   title="Delete Data ...">
+                                                   title="Save Data ...">
                                             Please don't close this window, server is processing your request ...
                                             <br>
                                             <center>
@@ -205,7 +178,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch();
+                                                                      callSearch2();
                                                                    }
                                                             }"
                                         >
@@ -216,7 +189,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -252,3 +225,13 @@
 </table>
 </body>
 </html>
+<script>
+    window.cekEksekutif = function () {
+        if (document.getElementById("isEksekutif").checked == true) {
+            $("#eksekutif").val("Y");
+        } else {
+            $("#eksekutif").val("N");
+        }
+    }
+</script>
+

@@ -2,12 +2,17 @@ package com.neurix.simrs.master.kategoritindakan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.kategoritindakan.model.ImSimrsKategoriTindakanEntity;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -94,4 +99,22 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
 
         return tindakanList;
     }
+
+    public List<ImSimrsKategoriTindakanEntity> getKategoriTindakan(String kategoriTindakan ) throws HibernateException {
+        List<ImSimrsKategoriTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKategoriTindakanEntity.class)
+                .add(Restrictions.ilike("kategoriTindakan", kategoriTindakan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+//        ne (not equal / tidak samadengan)
+        return results;
+    }
+
+    public String getNextId() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kategori_tindakan')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%05d", iter.next());
+
+        return "KT"+sId;
+    }
+
 }

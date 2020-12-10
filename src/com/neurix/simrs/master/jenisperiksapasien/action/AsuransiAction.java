@@ -36,7 +36,7 @@ public class AsuransiAction extends BaseMasterAction {
     }
 
     public Asuransi init(String kode, String flag){
-        logger.info("[PayrollSkalaGajiAction.init] start process >>>");
+        logger.info("[AsuransiAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Asuransi> listOfResult = (List<Asuransi>) session.getAttribute("listOfResultAsuransi");
 
@@ -52,7 +52,7 @@ public class AsuransiAction extends BaseMasterAction {
                 setAsuransi(new Asuransi());
             }
 
-            logger.info("[PayrollSkalaGajiAction.init] end process >>>");
+            logger.info("[AsuransiAction.init] end process >>>");
         }
         return getAsuransi();
     }
@@ -67,13 +67,13 @@ public class AsuransiAction extends BaseMasterAction {
 //        HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
-        logger.info("[PayrollSkalaGajiAction.add] stop process >>>");
+        logger.info("[AsuransiAction.add] stop process >>>");
         return "init_add";
     }
 
     @Override
     public String edit() {
-        logger.info("[PayrollSkalaGajiAction.edit] start process >>>");
+        logger.info("[AsuransiAction.edit] start process >>>");
         String itemId = getId();
         String itemFlag = getFlag();
 
@@ -84,7 +84,7 @@ public class AsuransiAction extends BaseMasterAction {
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
-                    logId = asuransiBoProxy.saveErrorMessage(e.getMessage(), "AsuransiBoImpl.getPayrollSkalaGajiByCriteria");
+                    logId = asuransiBoProxy.saveErrorMessage(e.getMessage(), "AsuransiBoImpl.getAsuransiByCriteria");
                 } catch (GeneralBOException e1) {
                     logger.error("[AsuransiAction.edit] Error when retrieving edit data,", e1);
                 }
@@ -97,13 +97,13 @@ public class AsuransiAction extends BaseMasterAction {
                 setAsuransi(editAsuransi);
             } else {
                 editAsuransi.setFlag(itemFlag);
-                //editPayrollSkalaGaji.getSkalaGajiId(itemId);
+                //editAsuransi.getSkalaGajiId(itemId);
                 setAsuransi(editAsuransi);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            //editPayrollSkalaGaji.getSkalaGajiId(itemId);
+            //editAsuransi.getSkalaGajiId(itemId);
             editAsuransi.setFlag(getFlag());
             setAsuransi(editAsuransi);
             addActionError("Error, Unable to edit again with flag = N.");
@@ -142,14 +142,14 @@ public class AsuransiAction extends BaseMasterAction {
                 setAsuransi(deleteAsuransi);
 
             } else {
-                //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+                //deleteAsuransi.getSkalaGajiId(itemId);
                 deleteAsuransi.setFlag(itemFlag);
                 setAsuransi(deleteAsuransi);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+            //deleteAsuransi.getSkalaGajiId(itemId);
             deleteAsuransi.setFlag(itemFlag);
             setAsuransi(deleteAsuransi);
             addActionError("Error, Unable to delete again with flag = N.");
@@ -244,7 +244,7 @@ public class AsuransiAction extends BaseMasterAction {
     }
 
     public String saveDelete(){
-        logger.info("[PayrollSkalaGajiAction.saveDelete] start process >>>");
+        logger.info("[AsuransiAction.saveDelete] start process >>>");
         try {
 
             Asuransi deleteAsuransi = getAsuransi();

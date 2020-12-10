@@ -10,4 +10,8 @@ public interface KategoriTindakanBo extends BaseMasterBo<KategoriTindakan>{
     public List<KategoriTindakan> getByCriteria(KategoriTindakan bean) throws GeneralBOException;
     public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori) throws GeneralBOException;
     public List<KategoriTindakan> getDataByCriteria(KategoriTindakan bean) throws GeneralBOException;
+
+    public KategoriTindakan saveAdd(KategoriTindakan bean) throws GeneralBOException;
+////    public void saveEdit(KategoriTindakan bean) throws GeneralBOException;
+////    public void saveDelete(KategoriTindakan bean) throws GeneralBOException;
 }

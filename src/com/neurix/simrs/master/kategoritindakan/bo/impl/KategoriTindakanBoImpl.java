@@ -22,16 +22,121 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
 
     @Override
     public void saveDelete(KategoriTindakan bean) throws GeneralBOException {
+        logger.info("[saveDelete.saveDelete] start process >>>");
+        if (bean != null) {
+            String idKategoriTindakan = bean.getIdKategoriTindakan();
+
+            ImSimrsKategoriTindakanEntity imSimrsKategoriTindakanEntity = null;
+
+            try {
+                // Get data from database by ID
+                imSimrsKategoriTindakanEntity = kategoriTindakanDao.getById("idKategoriTindakan", idKategoriTindakan);
+            } catch (HibernateException e) {
+                logger.error("[KategoriTindakanBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+            }
+
+            if (imSimrsKategoriTindakanEntity != null) {
+                imSimrsKategoriTindakanEntity.setKategoriTindakan(bean.getKategoriTindakan());
+
+                imSimrsKategoriTindakanEntity.setFlag(bean.getFlag());
+                imSimrsKategoriTindakanEntity.setAction(bean.getAction());
+                imSimrsKategoriTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imSimrsKategoriTindakanEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Delete (Edit) into database
+                    kategoriTindakanDao.updateAndSave(imSimrsKategoriTindakanEntity);
+                } catch (HibernateException e) {
+                    logger.error("[KategoriTindakanBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data KategoriTindakan, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[KategoriTindakanBoImpl.saveDelete] Error, not found data KategoriTindakan with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data KategoriTindakan with request id, please check again your data ...");
+            }
+        }
+        logger.info("[KategoriTindakanBoImpl.saveDelete] end process <<<");
 
     }
 
     @Override
     public void saveEdit(KategoriTindakan bean) throws GeneralBOException {
+        logger.info("[KategoriTindakanBoImpl.saveEdit] start process >>>");
+        if (bean!=null) {
+            String idKategoriTindakan = bean.getIdKategoriTindakan();
+            ImSimrsKategoriTindakanEntity imSimrsKategoriTindakanEntity = null;
+            try {
+                // Get data from database by ID
+                imSimrsKategoriTindakanEntity = kategoriTindakanDao.getById("idKategoriTindakan", idKategoriTindakan);
 
+            } catch (HibernateException e) {
+                logger.error("[KategoriTindakanBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data KategoriTindakan by Kode KategoriTindakan, please inform to your admin...," + e.getMessage());
+            }
+            if (imSimrsKategoriTindakanEntity != null) {
+//                imSimrsKategoriTindakanEntity.setIdKategoriTindakan(idKategoriTindakan);
+                imSimrsKategoriTindakanEntity.setKategoriTindakan(bean.getKategoriTindakan());
+
+                imSimrsKategoriTindakanEntity.setFlag(bean.getFlag());
+                imSimrsKategoriTindakanEntity.setAction(bean.getAction());
+                imSimrsKategoriTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imSimrsKategoriTindakanEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Update into database
+                    kategoriTindakanDao.updateAndSave(imSimrsKategoriTindakanEntity);
+                } catch (HibernateException e) {
+                    logger.error("[KategoriTindakanBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update dataKategoriTindakan, please info to your admin..." + e.getMessage());
+                }
+            }
+        } else {
+            logger.error("[KategoriTindakanBoImpl.saveEdit] Error, not found data KategoriTindakan with request id, please check again your data ...");
+            throw new GeneralBOException("Error, not found data KategoriTindakani with request id, please check again your data ...");
+        }
     }
 
     @Override
     public KategoriTindakan saveAdd(KategoriTindakan bean) throws GeneralBOException {
+        if (bean!=null) {
+            List<ImSimrsKategoriTindakanEntity> cekList = new ArrayList<>();
+            try {
+                cekList = kategoriTindakanDao.getKategoriTindakan(bean.getKategoriTindakan());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+            if(cekList.size() > 0){
+                throw new GeneralBOException("Nama kategori tindakan sudah ada...!");
+            }else{
+                String idKategoriTindakan;
+                try {
+                    // Generating ID, get from postgre sequence
+                    idKategoriTindakan = kategoriTindakanDao.getNextId();
+                } catch (HibernateException e) {
+                    logger.error("[kategoritindakanDaoBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence kategori tindakan id, please info to your admin..." + e.getMessage());
+                }
+                // creating object entity serializable
+                ImSimrsKategoriTindakanEntity imSimrsKategoriTindakanEntity = new ImSimrsKategoriTindakanEntity();
+                imSimrsKategoriTindakanEntity.setIdKategoriTindakan(idKategoriTindakan);
+
+                imSimrsKategoriTindakanEntity.setKategoriTindakan(bean.getKategoriTindakan());
+                imSimrsKategoriTindakanEntity.setFlag(bean.getFlag());
+                imSimrsKategoriTindakanEntity.setAction(bean.getAction());
+                imSimrsKategoriTindakanEntity.setCreatedWho(bean.getCreatedWho());
+                imSimrsKategoriTindakanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imSimrsKategoriTindakanEntity.setCreatedDate(bean.getCreatedDate());
+                imSimrsKategoriTindakanEntity.setLastUpdate(bean.getLastUpdate());
+                try {
+                    // insert into database
+                    kategoriTindakanDao.addAndSave(imSimrsKategoriTindakanEntity);
+                } catch (HibernateException e) {
+                    logger.error("[jenisObatBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data kategoritindakan, please info to your admin..." + e.getMessage());
+                }
+            }
+        }
         return null;
     }
 
@@ -68,7 +173,7 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
 
     @Override
     public List<KategoriTindakan> getDataByCriteria(KategoriTindakan bean) throws GeneralBOException {
-        List<KategoriTindakan> kategoriTindakanList = new ArrayList<>();
+        List<KategoriTindakan> listOfResultKategoriTindakan = new ArrayList<>();
         if(bean != null){
 
             Map hsCriteria = new HashMap();
@@ -96,7 +201,7 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
             try {
                 kategoriTindakanEntities = kategoriTindakanDao.getByCriteria(hsCriteria);
             }catch (HibernateException e){
-                logger.error("Found Error when search asuransi "+e.getMessage());
+                logger.error("Found Error when search kategori tindakan "+e.getMessage());
             }
 
             if(kategoriTindakanEntities.size() > 0){
@@ -113,12 +218,12 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
                     kategoriTindakan.setLastUpdate(entity.getLastUpdate());
                     kategoriTindakan.setLastUpdateWho(entity.getLastUpdateWho());
                     kategoriTindakan.setBranchId(entity.getBranchId());
-                    kategoriTindakanList.add(kategoriTindakan);
+                    listOfResultKategoriTindakan.add(kategoriTindakan);
                 }
             }
         }
 
-        return kategoriTindakanList;
+        return listOfResultKategoriTindakan;
     }
 
     protected List<ImSimrsKategoriTindakanEntity> getListEntityKategoriTindakan(KategoriTindakan bean) throws GeneralBOException {
