@@ -487,6 +487,7 @@
                     sshconfig/com/neurix/simrs/master/kategoripersediaan/hibernate/ImSimrsKategoriPersediaanEntity.hbm.xml
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebra.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/hargaterakhir/hibernate/MtSimrsHargaTerakhirEntity.xml</value>
 
                 <value>
                     sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml

@@ -2367,7 +2367,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
 
-            // Sigit 2020-12-10, check jika tipe rekanan adalah rekanan ptpn / khusus, Start
+            // Sigit 2020-12-10, check jika tipe rekanan adalah rekanan ptpn / khusus, START
             boolean isKhusus = transaksiObatDetailDao.checkIfRekananKhususByIdResep(idPermintaan);
 
             // jika khusus maka menggunakan tarif khusus yng dihitung dari harga rata-rata pada master harga obat
@@ -2384,7 +2384,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 } catch (HibernateException e) {
                     logger.error("Found Error when cek obat kronis");
                 }
-            }
+            } //END
 
 
         }

@@ -388,7 +388,7 @@ public class ObatBoImpl implements ObatBo {
             headerObatEntity.setIdPabrik(bean.getIdPabrik());
         } else {
             headerObatEntity.setIdObat("OBT" + id);
-            headerObatEntity.setIdPabrik(bean.getIdObat());
+            headerObatEntity.setIdPabrik(headerObatEntity.getIdObat());
         }
         headerObatEntity.setNamaObat(bean.getNamaObat());
         headerObatEntity.setMerk(bean.getMerk());
