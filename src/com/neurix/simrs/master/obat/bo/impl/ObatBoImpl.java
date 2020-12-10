@@ -1216,9 +1216,17 @@ public class ObatBoImpl implements ObatBo {
 
                 // update harga obat entities
                 for (MtSimrsHargaObatEntity obatEntity : hargaObatEntities) {
+
+                    // obat khusus
                     obatEntity.setHargaJual(bean.getHargaJual());
                     obatEntity.setDiskon(bean.getDiskon());
                     obatEntity.setHargaNet(bean.getHargaNet());
+
+                    // obat umum
+                    obatEntity.setHargaJualUmum(bean.getHargaJualUmum());
+                    obatEntity.setDiskonUmum(bean.getDiskonUmum());
+                    obatEntity.setHargaNetUmum(bean.getHargaNetUmum());
+
                     obatEntity.setFlag("Y");
                     obatEntity.setAction("U");
                     obatEntity.setLastUpdate(bean.getLastUpdate());
@@ -1245,10 +1253,18 @@ public class ObatBoImpl implements ObatBo {
                     hargaObatEntity.setIdObat(obatEntity.getIdObat());
                     hargaObatEntity.setNamaObat(obatEntity.getNamaObat());
                     hargaObatEntity.setHargaBeli(obatEntity.getHargaTerakhir());
-                    hargaObatEntity.setHargaJual(bean.getHargaJual());
                     hargaObatEntity.setHargaRata(obatEntity.getAverageHargaBiji());
+
+                    // harga obat khusus
+                    hargaObatEntity.setHargaJual(bean.getHargaJual());
                     hargaObatEntity.setDiskon(bean.getDiskon());
                     hargaObatEntity.setHargaNet(bean.getHargaNet());
+
+                    // harga obat umu,
+                    hargaObatEntity.setHargaJualUmum(bean.getHargaJual());
+                    hargaObatEntity.setDiskonUmum(bean.getDiskonUmum());
+                    hargaObatEntity.setHargaNetUmum(bean.getHargaNetUmum());
+
                     hargaObatEntity.setSatuan("biji");
                     hargaObatEntity.setFlag("Y");
                     hargaObatEntity.setAction("C");

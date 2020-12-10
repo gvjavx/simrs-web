@@ -26,6 +26,24 @@ public class MtSimrsHargaObatEntity implements Serializable {
     private BigDecimal hargaTerakhir;
     private BigDecimal diskonUmum;
     private BigDecimal hargaJualUmum;
+    private BigDecimal hargaNetUmum;
+    private Integer marginUmum;
+
+    public Integer getMarginUmum() {
+        return marginUmum;
+    }
+
+    public void setMarginUmum(Integer marginUmum) {
+        this.marginUmum = marginUmum;
+    }
+
+    public BigDecimal getHargaNetUmum() {
+        return hargaNetUmum;
+    }
+
+    public void setHargaNetUmum(BigDecimal hargaNetUmum) {
+        this.hargaNetUmum = hargaNetUmum;
+    }
 
     public BigDecimal getHargaTerakhir() {
         return hargaTerakhir;

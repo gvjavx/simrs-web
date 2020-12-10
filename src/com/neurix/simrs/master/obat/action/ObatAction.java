@@ -613,10 +613,17 @@ public class ObatAction extends BaseMasterAction {
             hargaObat.setIdHargaObat(branchId+idObat);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
+            // harga obat khusus
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
             hargaObat.setMargin(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin")) ? null : Integer.valueOf(obj.getString("margin")));
+            // harga obat umum
+            hargaObat.setHargaNetUmum(new BigDecimal(obj.getString("harga_net_umum")));
+            hargaObat.setDiskonUmum(new BigDecimal(obj.getString("diskon_umum")));
+            hargaObat.setHargaJualUmum(new BigDecimal(obj.getString("harga_jual_umum")));
+            hargaObat.setMarginUmum(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin_umum")) ? null : Integer.valueOf(obj.getString("margin_umum")));
+
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
             hargaObat.setLastUpdate(time);

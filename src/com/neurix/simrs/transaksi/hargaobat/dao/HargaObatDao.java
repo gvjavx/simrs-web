@@ -73,6 +73,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "mg.standar_margin,\n" +
                 "ho.harga_beli,\n" +
                 "ho.diskon_umum,\n" +
+                "ho.harga_net_umum,\n" +
                 "ho.harga_jual_umum\n" +
                 "FROM im_simrs_obat ob\n" +
                 "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat WHERE branch_id = :branch GROUP BY id_obat ) \n" +
@@ -107,33 +108,38 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setStandarMargin(obj[12] == null ? null : (Integer) obj[12]);
                 obat.setHargaBeli(obj[13] == null ? null : (BigDecimal) obj[13]);
                 obat.setDiskonUmum(obj[14] == null ? null : (BigDecimal) obj[14]);
-                obat.setHargaJualUmum(obj[15] == null ? null : (BigDecimal) obj[15]);
+                obat.setHargaNetUmum(obj[15] == null ? null : (BigDecimal) obj[15]);
+                obat.setHargaJualUmum(obj[16] == null ? null : (BigDecimal) obj[16]);
 
                 // Sigit 2020-12-08, hitung margin obat khusus, Start
                 BigDecimal hargaRata    = obat.getAverageHargaBiji();
                 BigDecimal hargaJual    = obat.getHargaJual();
-                BigDecimal selisih      = hargaJual.subtract(hargaRata);
-                BigDecimal margin       = hargaJual.intValue() != 0 ? selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
-                Integer intMargin       = margin.intValue();
-
+                Integer intMargin       = new Integer(0);
+                if (hargaJual != null){
+                    BigDecimal selisih      = hargaJual.subtract(hargaRata);
+                    BigDecimal margin       = hargaJual.intValue() != 0 ? selisih.divide(hargaRata, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
+                    intMargin               = margin.intValue();
+                }
                 obat.setMargin(intMargin);
                 // END
 
                 // Sigit 2020-12-08, hitung margin obat umum, Start
                 BigDecimal hargaBeli        = obat.getHargaBeli();
                 BigDecimal hargaJualUmum    = obat.getHargaJualUmum();
-                BigDecimal selisihUmum      = hargaJualUmum.subtract(hargaBeli);
-                BigDecimal marginUmum       = hargaJualUmum.intValue() != 0 ? selisihUmum.divide(hargaBeli, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
-                Integer intMarginUmum       = marginUmum.intValue();
-
+                Integer intMarginUmum       = new Integer(0);
+                if (hargaJualUmum != null){
+                    BigDecimal selisihUmum      = hargaJualUmum.subtract(hargaBeli);
+                    BigDecimal marginUmum       = hargaJualUmum.intValue() != 0 ? selisihUmum.divide(hargaBeli, BigDecimal.ROUND_HALF_UP, 2).multiply(new BigDecimal(100)) : new BigDecimal(0);
+                    intMarginUmum               = marginUmum.intValue();
+                }
                 obat.setMarginUmum(intMarginUmum);
                 // END
 
-                if (obat.getStandarMargin() != null || obat.getMarginUmum() != null){
-                    if (obat.getStandarMargin().compareTo(intMargin) == 1){
+                if (obat.getStandarMargin() != null){
+                    if (Integer.compare(obat.getStandarMargin(), obat.getMargin()) == 1){
                         obat.setFlagKurangMargin("Y");
                     }
-                    if (obat.getStandarMargin().compareTo(intMarginUmum) == 1){
+                    if (Integer.compare(obat.getStandarMargin(), obat.getMarginUmum()) == 1){
                         obat.setFlagKurangMargin("Y");
                     }
                 } else {

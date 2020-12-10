@@ -2364,12 +2364,29 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     @Override
     public TransaksiObatDetail getTotalHargaResep(String idPermintaan) throws GeneralBOException {
         TransaksiObatDetail response = new TransaksiObatDetail();
+
         if (idPermintaan != null && !"".equalsIgnoreCase(idPermintaan)) {
-            try {
-                response = transaksiObatDetailDao.getTotalHargaResepApprove(idPermintaan);
-            } catch (HibernateException e) {
-                logger.error("Found Error when cek obat kronis");
+
+            // Sigit 2020-12-10, check jika tipe rekanan adalah rekanan ptpn / khusus, Start
+            boolean isKhusus = transaksiObatDetailDao.checkIfRekananKhususByIdResep(idPermintaan);
+
+            // jika khusus maka menggunakan tarif khusus yng dihitung dari harga rata-rata pada master harga obat
+            if (isKhusus){
+                try {
+                    response = transaksiObatDetailDao.getTotalHargaResepApprove(idPermintaan);
+                } catch (HibernateException e) {
+                    logger.error("Found Error when cek obat kronis");
+                }
+            } else {
+                // jika umum maka menggunakan tarif umum yng dihitung dari harga beli pada master harga obat
+                try {
+                    response = transaksiObatDetailDao.getTotalHargaResepApproveUmum(idPermintaan);
+                } catch (HibernateException e) {
+                    logger.error("Found Error when cek obat kronis");
+                }
             }
+
+
         }
 
         return response;

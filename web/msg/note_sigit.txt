@@ -1373,5 +1373,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE mt_simrs_harga_obat
     ADD COLUMN margin_umum integer;
 
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN harga_net_umum numeric;
+
 --
 

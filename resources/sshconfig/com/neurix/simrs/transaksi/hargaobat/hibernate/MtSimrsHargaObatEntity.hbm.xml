@@ -68,5 +68,8 @@
         <property name="hargaJualUmum">
             <column name="harga_jual_umum" sql-type="numeric" length="5" not-null="false"/>
         </property>
+        <property name="marginUmum">
+            <column name="margin_umum" sql-type="int" not-null="false"/>
+        </property>
     </class>
 </hibernate-mapping>
