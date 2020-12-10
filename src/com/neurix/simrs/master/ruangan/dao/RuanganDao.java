@@ -107,7 +107,6 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "b.id_ruangan, \n" +
                     "b.nama_ruangan, \n" +
                     "b.no_ruangan, \n" +
-                    "b.status_ruangan,\n" +
                     "c.id_detail_checkup, \n" +
                     "c.tgl_masuk, \n" +
                     "tt.id_tempat_tidur, \n" +
@@ -150,7 +149,6 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     ruangan.setIdRuangan(obj[1] == null ? "" : obj[1].toString());
                     ruangan.setNamaRuangan(obj[2] == null ? "" : obj[2].toString());
                     ruangan.setNoRuangan(obj[3] == null ? "" : obj[3].toString());
-//                ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
                     ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
                     ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
                     if(obj[7] != null){
