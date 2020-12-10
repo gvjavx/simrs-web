@@ -782,8 +782,8 @@
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
                                                         <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir"
-                                                                     cssClass="form-control datemask"
-                                                                     onchange="$('#st_tgl_lahir').css('border','')"/>
+                                                                     cssClass="form-control datemask" cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
+                                                                     onchange="$('#st_tgl_lahir').css('border','')" readonly="true"/>
                                                     </div>
                                                 </div>
                                             </div>
