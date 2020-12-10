@@ -2415,6 +2415,7 @@
     var noRujukan = '<s:property value="headerDetailCheckup.noRujukan"/>';
     var tglRujukan = '<s:property value="headerDetailCheckup.tglRujukan"/>';
     var suratRujukan = '<s:property value="headerDetailCheckup.suratRujukan"/>';
+    var idKelasRuangan = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

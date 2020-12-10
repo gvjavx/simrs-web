@@ -17,9 +17,6 @@
         <property name="noRuangan">
             <column name="no_ruangan" sql-type="varchar" length="20" not-null="false"/>
         </property>
-        <property name="statusRuangan">
-            <column name="status_ruangan" sql-type="varchar" length="1" not-null="false"/>
-        </property>
         <property name="idKelasRuangan">
             <column name="id_kelas_ruangan" not-null="true"/>
         </property>
@@ -55,12 +52,5 @@
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="id_kelas_ruangan"></column>
         </many-to-one>
-
-        <property name="sisaKuota">
-            <column name="sisa_kuota" sql-type="integer" not-null="false" />
-        </property>
-        <property name="kuota">
-            <column name="kuota" sql-type="integer" not-null="false" />
-        </property>
     </class>
 </hibernate-mapping>

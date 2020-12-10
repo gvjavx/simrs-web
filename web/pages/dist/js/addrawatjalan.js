@@ -779,7 +779,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_c
 function listSelectTindakan(idKategori) {
     var option = "<option value=''>[Select One]</option>";
     if (idKategori != '') {
-        CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
+        CheckupDetailAction.getListComboTindakan(idKategori,idKelasRuangan, function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
