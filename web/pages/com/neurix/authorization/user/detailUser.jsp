@@ -32,6 +32,7 @@
             document.getElementById("branchid_edit").disabled = true;
             document.getElementById("divisiId").disabled = true;
             document.getElementById("pelayananId-edit").disabled = true;
+            document.getElementById("ruanganId-edit").disabled = true;
         }
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -83,7 +84,7 @@
                     msg = msg + 'Field <strong>Position Id</strong> is required.' + '<br/>';
                 }
 
-                if (document.getElementById("roleid").value == '') {
+                if (document.getElementById("roleid-edit").value == '') {
                     msg = msg + 'Field <strong>Role Id</strong> is required.' + '<br/>';
                 }
 
@@ -137,6 +138,7 @@
     </script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RoleAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RuanganAction.js"/>'></script>
 
 </head>
 
@@ -308,6 +310,17 @@
                                 </td>
                                 <td>
                                     <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId-edit">
+                                        <option value="">[Select One]</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr style="display: none" id="form-ruangan-edit">
+                                <td>
+                                    <label class="control-label"  for="users.roleId">Ruangan</label>
+                                </td>
+                                <td>
+                                    <select style="width: 100%" class="form-control select2" name="users.idRuangan" id="ruanganId-edit">
                                         <option value="">[Select One]</option>
                                     </select>
                                 </td>
@@ -573,27 +586,34 @@
 <script>
 
     var pelayananId = '<s:property value="users.idPelayanan" />';
+    var ruanganId = '<s:property value="users.idRuangan" />';
 
     $( document ).ready(function() {
-
         console.log("pelayanan Id edit -> "+pelayananId);
+        console.log("ruangan Id edit -> "+ruanganId);
         console.log("role Id edit -> "+ $("#roleid-edit").val());
+        if(ruanganId != null && ruanganId != "") {
+            var roleIdEdit = $("#roleid-edit").val();
+            showPelayananEdit(roleIdEdit, ruanganId);
+        }
         if(pelayananId != null && pelayananId != "") {
-            $("#form-pelayanan-edit").show();
             var roleIdEdit = $("#roleid-edit").val();
             showPelayananEdit(roleIdEdit, pelayananId);
         }
     });
 
-    function showPelayananEdit(role, pelayanan){
+    function showPelayananEdit(role, idComponent){
         var branch = $('#branchid_edit').val();
         if (branch == null || branch == "")
             alert("Pilih Unit Dahulu");
         RoleAction.getRoleById(role, function (res) {
             console.log(res);
-            if(res.tipePelayanan != "" && res.tipePelayanan != null){
-                $('#form-pelayanan').show();
-                getListPelayananByBranchAndTipeEdit(branch, res.tipePelayanan, pelayanan);
+            if(res.tipePelayanan == "rawat_inap") {
+                $('#form-ruangan-edit').show();
+                getListRuanganByBranchEdit(branch, idComponent);
+            } else if(res.tipePelayanan != "" && res.tipePelayanan != null){
+                $('#form-pelayanan-edit').show();
+                getListPelayananByBranchAndTipeEdit(branch, res.tipePelayanan, idComponent);
             }
         });
     }
@@ -616,6 +636,27 @@
                 $('#form-pelayanan-edit').hide();
             }
             $('#pelayananId-edit').html(option);
+        });
+    }
+
+    function getListRuanganByBranchEdit(branch, ruangan) {
+        var option = "";
+        RuanganAction.getListRuangan(branch, function(response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+
+                    if (item.idRuangan == ruangan){
+                        option += "<option value='" + item.idRuangan + "' selected>" + item.namaRuangan + "</option>";
+                    } else {
+                        option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
+                    }
+                });
+            } else {
+                option = option;
+                $('#form-ruangan-edit').hide();
+            }
+            $('#ruanganId-edit').html(option);
         });
     }
 

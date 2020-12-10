@@ -172,6 +172,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RoleAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/RuanganAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -284,6 +285,15 @@
                                         <label class="control-label col-sm-5" for="users.roleId">Pelayanan :</label>
                                         <div class="col-sm-3">
                                             <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId">
+                                                <option value="">[Select One]</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="display: none" id="form-ruangan">
+                                        <label class="control-label col-sm-5" for="users.roleId">Ruangan :</label>
+                                        <div class="col-sm-3">
+                                            <select style="width: 100%" class="form-control select2" name="users.idRuangan" id="ruanganId">
                                                 <option value="">[Select One]</option>
                                             </select>
                                         </div>
@@ -453,11 +463,17 @@
         if (branch == null || branch == "")
             alert("Pilih Unit Dahulu");
         RoleAction.getRoleById(role, function (res) {
-            if(res.tipePelayanan != "" && res.tipePelayanan != null){
+            if(res.tipePelayanan == "rawat_inap"){
+                $('#form-pelayanan').hide();
+                $('#form-ruangan').show();
+                getListRuanganByBranch(branch);
+            } else if(res.tipePelayanan != "" && res.tipePelayanan != null){
                 $('#form-pelayanan').show();
+                $('#form-ruangan').hide();
                 getListPelayananByBranchAndTipe(branch, res.tipePelayanan);
             }else{
                 $('#form-pelayanan').hide();
+                $('#form-ruangan').hide();
             }
 
         });
@@ -475,6 +491,21 @@
                 option = option;
             }
             $('#pelayananId').html(option);
+        });
+    }
+
+    function getListRuanganByBranch(branch) {
+        var option = "";
+        RuanganAction.getListRuangan(branch, function (response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idRuangan + "'>" + item.namaRuangan + "</option>";
+                });
+            } else {
+                option = option;
+            }
+            $('#ruanganId').html(option);
         });
     }
 

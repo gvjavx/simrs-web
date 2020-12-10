@@ -1811,7 +1811,7 @@ public class UserBoImpl implements UserBo {
                         resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
                         resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                        resultUsers.setFlag(imUsers.getFlag());
+                        resultUsers.setFlag(imUsers.getFlag());n
                         resultUsers.setAction(imUsers.getAction());
                         resultUsers.setCreatedDate(imUsers.getCreatedDate());
                         resultUsers.setLastUpdate(imUsers.getLastUpdate());
@@ -1821,6 +1821,8 @@ public class UserBoImpl implements UserBo {
 
                         resultUsers.setDivisiId(imUsers.getDivisiId());
                         resultUsers.setIdPelayanan(imUsers.getIdPelayanan());
+                        resultUsers.setIdRuangan(imUsers.getIdRuangan());
+
                         resultUsers.setIdDevice(imUsers.getIdDevice());
 
                         StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
@@ -1899,6 +1901,7 @@ public class UserBoImpl implements UserBo {
 
                 //sodiq, 10/12/2019, penambahan id pelayanan
                 imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
+                imUsersNew.setIdRuangan(addUsers.getIdRuangan());
 
                 String userid = addUsers.getUserId();
                 boolean isAda ;
@@ -2078,6 +2081,8 @@ public class UserBoImpl implements UserBo {
                 imUsersOld.setEmail(usersNew.getEmail());
                 if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan()))
                     imUsersOld.setIdPelayanan(usersNew.getIdPelayanan());
+                if (usersNew.getIdRuangan() != null && !"".equalsIgnoreCase(usersNew.getIdRuangan()))
+                    imUsersOld.setIdRuangan(usersNew.getIdRuangan());
 //                if (usersNew.getContentFile()!=null) imUsersOld.setPhoto(usersNew.getContentFile());
                 if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
                 imUsersOld.setPositionId(String.valueOf(usersNew.getPositionId()));

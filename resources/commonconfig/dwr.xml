@@ -903,5 +903,10 @@
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.department.action.DepartmentAction"/>
         </create>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.ruangan.action.RuanganAction"/>
+        </create>
+
     </allow>
 </dwr>

@@ -14,6 +14,10 @@ import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
+import org.hibernate.HibernateException;
+
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -373,6 +377,26 @@ public class RuanganAction extends BaseMasterAction {
         listOfComboKelasRuangan.addAll(listOfKelasRuangan);
 
         return "init_combo_kelasruangan";
+    }
+
+    public List<Ruangan> getListRuangan(String branchId){
+        logger.info("[RuanganAction.getListRuangan] START process >>>");
+
+        List<Ruangan> ruanganList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        Ruangan ruangan = new Ruangan();
+        ruangan.setBranchId(branchId);
+
+        try {
+            ruanganList = ruanganBo.getByCriteria(ruangan);
+        } catch (HibernateException e) {
+            logger.error("[RuanganAction.getListRuangan] Error when get data for combo list of Ruangan", e);
+            addActionError(" Error when get data for combo list of Ruangan" + e.getMessage());
+        }
+
+        logger.info("[RuanganAction.getListRuangan] END process <<<");
+        return ruanganList;
     }
 
     @Override

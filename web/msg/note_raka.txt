@@ -27,3 +27,6 @@
             CACHE 1;
 
     CREATE SEQUENCE public.seq_payroll_ptkp_history;
+
+-- 2020-12-10 ===> User
++ Menambahakan tipe pelayanan "rawat_inap"
