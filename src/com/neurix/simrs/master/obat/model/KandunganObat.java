@@ -23,6 +23,10 @@ public class KandunganObat {
     private String namaObat;
     private String namaBentuk;
 
+    private String isKp;
+
+    private String branchId;
+
     public String getNamaBentuk() {
         return namaBentuk;
     }
@@ -141,5 +145,17 @@ public class KandunganObat {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getIsKp() {
+        return isKp;
+    }
+
+    public void setIsKp(String isKp) {
+        this.isKp = isKp;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 }

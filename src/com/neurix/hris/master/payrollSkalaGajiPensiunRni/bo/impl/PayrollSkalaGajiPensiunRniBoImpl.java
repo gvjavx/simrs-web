@@ -187,6 +187,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                 }
 
                 imPayrollSkalaGajiPensiunEntity.setNilai(bean.getNilai());
+                imPayrollSkalaGajiPensiunEntity.setPoin(bean.getPoin());
                 imPayrollSkalaGajiPensiunEntity.setFlag(bean.getFlag());
                 imPayrollSkalaGajiPensiunEntity.setAction(bean.getAction());
                 imPayrollSkalaGajiPensiunEntity.setLastUpdateWho(bean.getLastUpdateWho());

@@ -13,6 +13,7 @@ import com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -73,7 +74,7 @@ public class LabDetailAction extends BaseTransactionAction {
     @Override
     public String initForm() {
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultLabDetail");
+        session.removeAttribute("listOfResult");
         setLabDetail(new LabDetail());
         return "search";
     }
@@ -91,8 +92,10 @@ public class LabDetailAction extends BaseTransactionAction {
                 for (int i = 0; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
                     LabDetail detail = new LabDetail();
+                    String idLab = "";
                     if (obj.has("id_lab")) {
                         detail.setIdLab(obj.getString("id_lab"));
+                        idLab = obj.getString("id_lab");
                     }
                     if (obj.has("nama_lab")) {
                         detail.setNamaLab(obj.getString("nama_lab"));
@@ -106,9 +109,27 @@ public class LabDetailAction extends BaseTransactionAction {
                     detail.setLastUpdateWho(userLogin);
                     detail.setAction("C");
                     detail.setFlag("Y");
-                    labDetailList.add(detail);
+                    List<ImSimrsLabDetailEntity> labDetailEntityList = new ArrayList<>();
+                    try {
+                        labDetailEntityList = labDetailBo.cekDataParameterPemeriksaan(obj.getString("id_parameter_pemeriksaan"), idLab);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil...!");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf tidak dapat menukan data...!");
+                        return response;
+                    }
+                    if(labDetailEntityList.size() > 0){
+                        response.setStatus("error");
+                        response.setMsg("Mohon Maaf Data "+obj.getString("nama_parameter_pemeriksaan")+" di paket "+obj.getString("nama_paket")+" sudah ada...!");
+                        return response;
+                    }else{
+                        labDetailList.add(detail);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil...!");
+                    }
                 }
-                if (labDetailList.size() > 0) {
+                if (labDetailList.size() > 0 && "success".equalsIgnoreCase(response.getStatus())) {
                     response = labDetailBo.saveAdd(labDetailList, isNew);
                 } else {
                     response.setStatus("error");

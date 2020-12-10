@@ -95,7 +95,7 @@
                         <div class="form-group">
                             <label class="col-md-3">No Telp</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="ter3">
+                                <input class="form-control" id="ter3" type="number">
                             </div>
                         </div>
                     </div>
@@ -157,29 +157,29 @@
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input class="form-control" id="ter09" placeholder="Nadi">
+                                <input class="form-control" id="ter09" placeholder="Nadi" type="number">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input class="form-control" id="ter010" placeholder="Suhu">
+                                <input class="form-control" id="ter010" placeholder="Suhu" type="number">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input class="form-control" id="ter011" placeholder="RR">
+                                <input class="form-control" id="ter011" placeholder="RR" type="number">
                             </div>
                         </div>
                     </div>
                     <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input class="form-control" id="ter012" placeholder="BB">
+                                <input class="form-control" id="ter012" placeholder="BB" type="number">
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="col-md-3">
-                                <input class="form-control" id="ter013" placeholder="TB">
+                                <input class="form-control" id="ter013" placeholder="TB" type="number">
                             </div>
                         </div>
                         <div class="form-group">
@@ -539,7 +539,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button id="save_icu_terminal" class="btn btn-success pull-right"
-                        onclick="saveICU('terminal','asesmen_icu')"><i class="fa fa-check"></i>
+                        onclick="saveICU('terminal','tahap_terminal')"><i class="fa fa-check"></i>
                     Save
                 </button>
                 <button id="load_icu_terminal" style="display: none; cursor: no-drop" type="button"

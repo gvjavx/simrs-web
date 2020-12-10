@@ -147,6 +147,22 @@ public class CatatanPemberianObatAction {
         return list;
     }
 
+    public CrudResponse saveDelete(String idCatatan) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CatatanPemberianObatBo catatanPemberianObatBo = (CatatanPemberianObatBo) ctx.getBean("catatanPemberianObatBoProxy");
+        if (!"".equalsIgnoreCase(idCatatan)) {
+            try {
+                CatatanPemberianObat catatan = new CatatanPemberianObat();
+                catatan.setIdCatatanPemberianObat(idCatatan);
+                response = catatanPemberianObatBo.saveDelete(catatan);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

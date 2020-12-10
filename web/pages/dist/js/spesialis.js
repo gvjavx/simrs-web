@@ -2631,32 +2631,33 @@ function saveSPS(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_sps_' + jenis).hide();
+            $('#load_sps_' + jenis).show();
+            dwr.engine.setAsync(true);
+            AsesmenSpesialisAction.save(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_sps_' + jenis).show();
+                        $('#load_sps_' + jenis).hide();
+                        $('#modal-sps-' + jenis).modal('hide');
+                        $('#warning_sps_' + ket).show().fadeOut(5000);
+                        $('#msg_sps_' + ket).text("Berhasil menambahkan data...");
+                        $('#modal-sps-' + jenis).scrollTop(0);
+                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
 
-        $('#save_sps_' + jenis).hide();
-        $('#load_sps_' + jenis).show();
-        dwr.engine.setAsync(true);
-        AsesmenSpesialisAction.save(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_sps_' + jenis).show();
-                    $('#load_sps_' + jenis).hide();
-                    $('#modal-sps-' + jenis).modal('hide');
-                    $('#warning_sps_' + ket).show().fadeOut(5000);
-                    $('#msg_sps_' + ket).text("Berhasil menambahkan data...");
-                    $('#modal-sps-' + jenis).scrollTop(0);
-                    getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-
-                } else {
-                    $('#save_sps_' + jenis).show();
-                    $('#load_sps_' + jenis).hide();
-                    $('#warning_sps_' + jenis).show().fadeOut(5000);
-                    $('#msg_sps_' + jenis).text(res.msg);
-                    $('#modal-sps-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_sps_' + jenis).show();
+                        $('#load_sps_' + jenis).hide();
+                        $('#warning_sps_' + jenis).show().fadeOut(5000);
+                        $('#msg_sps_' + jenis).text(res.msg);
+                        $('#modal-sps-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            })
+        }
     } else {
         $('#warning_sps_' + jenis).show().fadeOut(5000);
         $('#msg_sps_' + jenis).text("Silahkan cek kembali data inputan anda...!");

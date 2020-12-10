@@ -91,7 +91,9 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/positionBagian" action="saveDelete_positionBagian" cssClass="well form-horizontal">
+            <s:form id="modifyRolefuncForm" method="post" theme="simple"
+                    namespace="/positionBagian" action="saveDelete_positionBagian"
+                    cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -116,7 +118,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="bagianId1" name="positionBagian.bagianId" required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield  id="bagianId1" name="positionBagian.bagianId"
+                                              required="true" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -127,7 +130,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="bagianName1" name="positionBagian.bagianName" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                <s:textfield id="bagianName1" name="positionBagian.bagianName"
+                                             readonly="true" required="true" disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -137,8 +141,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="combo" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#combo.listOfResultDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
+                                <s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>
+                                <s:select list="#comboDept.listComboDepartment" id="divisiId1" name="positionBagian.divisiId" disabled="true"
                                           listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                 <s:hidden name ="positionBagian.divisiId" />
                             </table>

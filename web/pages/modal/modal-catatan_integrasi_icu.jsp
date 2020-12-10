@@ -123,7 +123,7 @@
                                 <label class="col-md-3" ><b>O</b>bjective</label>
                                 <div class="col-md-4">
                                     <span>Tensi </span> <small>(mmHg)</small>
-                                    <input class="form-control" id="cppt5_tensi">
+                                    <input class="form-control" id="cppt5_tensi" data-inputmask="'mask': ['999/999']">
                                 </div>
                                 <div class="col-md-4">
                                     <span>Suhu </span> <small>(&#8451)</small>
@@ -192,8 +192,8 @@
                                     <label>TTD DPJP</label>
                                     <canvas class="paint-canvas-ttd" id="cppt10" width="220"
                                             onmouseover="paintTtd('cppt10')"></canvas>
-                                    <input class="form-control" id="nama_dpjp" placeholder="Nama Terang">
-                                    <input style="margin-top: 3px" class="form-control" id="sip_dpjp" placeholder="SIP">
+                                    <input class="form-control nama_dokter_ri" id="nama_dpjp" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dpjp" placeholder="SIP">
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                             onclick="removePaint('cppt10')"><i
                                             class="fa fa-trash"></i> Clear

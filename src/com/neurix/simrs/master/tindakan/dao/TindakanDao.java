@@ -1,8 +1,11 @@
 package com.neurix.simrs.master.tindakan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
+import io.agora.recording.common.Common;
+import io.agora.recording.common.RecordingConfig;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -214,6 +217,16 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             }
         }
         return tindakanList;
+    }
+
+    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan) throws HibernateException {
+        List<ImSimrsTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                .add(Restrictions.eq("idPelayanan", idPelayanan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 
 }

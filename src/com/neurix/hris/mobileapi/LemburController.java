@@ -219,7 +219,7 @@ public class    LemburController implements ModelDriven<Object> {
             editLembur.setJamAwal(jamAwal);
             editLembur.setJamAkhir(jamAkhir);
 
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
             java.util.Date tanggalAwalst = simpleDateFormat.parse(tanggalAwal);
             java.util.Date tanggalAkhirst = simpleDateFormat.parse(tanggalAkhir);
 

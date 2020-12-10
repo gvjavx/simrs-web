@@ -215,15 +215,15 @@
                         </div>
                         <div class="col-md-3">
                             <span>Nadi</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control nadi-pasien" id="in10">
+                            <input class="form-control nadi-pasien" id="in10" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>RR</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control rr-pasien" id="in11">
+                            <input class="form-control rr-pasien" id="in11" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>Suhu</span> <small><b>(C)</b></small>
-                            <input class="form-control suhu-pasien" id="in12">
+                            <input class="form-control suhu-pasien" id="in12" type="number">
                         </div>
                     </div>
                     <hr class="garis">

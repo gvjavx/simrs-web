@@ -2406,6 +2406,7 @@
     var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
     var isBpjsRekanan = "";
     var isLanjutPaket = false;
+    var isLaka = '<s:property value="headerDetailCheckup.isLaka"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

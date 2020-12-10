@@ -336,28 +336,30 @@ function saveFisio(jenis) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_' + jenis).hide();
-        $('#load_' + jenis).show();
-        dwr.engine.setAsync(true);
-        FisioterapiAction.saveFisio(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_' + jenis).show();
-                    $('#load_' + jenis).hide();
-                    $('#modal-fisio-' + jenis).modal('hide');
-                    $('#warning_pengkajian_pengkajian').show().fadeOut(5000);
-                    $('#msg_pengkajian_pengkajian').text("Berhasil menambahkan data fisioterapi...");
-                    getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-                } else {
-                    $('#save_' + jenis).show();
-                    $('#load_' + jenis).hide();
-                    $('#warning_' + jenis).show().fadeOut(5000);
-                    $('#msg_' + jenis).text(res.msg);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_' + jenis).hide();
+            $('#load_' + jenis).show();
+            dwr.engine.setAsync(true);
+            FisioterapiAction.saveFisio(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_' + jenis).show();
+                        $('#load_' + jenis).hide();
+                        $('#modal-fisio-' + jenis).modal('hide');
+                        $('#warning_pengkajian_pengkajian').show().fadeOut(5000);
+                        $('#msg_pengkajian_pengkajian').text("Berhasil menambahkan data fisioterapi...");
+                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
+                    } else {
+                        $('#save_' + jenis).show();
+                        $('#load_' + jenis).hide();
+                        $('#warning_' + jenis).show().fadeOut(5000);
+                        $('#msg_' + jenis).text(res.msg);
+                    }
                 }
-            }
-        });
+            });
+        }
     } else {
         $('#warning_' + jenis).show().fadeOut(5000);
         $('#msg_' + jenis).text("Silahkan cek kembali inputan anda...!");
@@ -365,83 +367,101 @@ function saveFisio(jenis) {
 }
 
 function detailFisio(jenis) {
-    if (jenis != '') {
-        var body = "";
-        var cekData = false;
-        var head = "";
-        FisioterapiAction.getListFisioTerapi(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
+    if(!cekSession()){
+        if (jenis != '') {
+            var body = "";
+            var cekData = false;
+            var head = "";
+            FisioterapiAction.getListFisioTerapi(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
 
-                $.each(res, function (i, item) {
+                    $.each(res, function (i, item) {
 
-                    if ("psikologis" == item.keterangan) {
-                        var jwb = "";
-                        var li = "";
-                        if (item.jawaban != null) {
-                            jwb = item.jawaban.split(",");
-                            $.each(jwb, function (i, item) {
-                                li += '<li>' + item + '</li>'
-                            });
-                        }
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + '<ul style="margin-left: 10px;">' + li + '</ul>' + '</td>' +
-                            '</tr>';
-                    } else if ("jatuh" == jenis) {
-                        if ("total" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '</tr>';
-                        } else if ("kesimpulan" == item.tipe) {
-                            body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                                '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '</tr>';
-                        } else {
+                        if ("psikologis" == item.keterangan) {
+                            var jwb = "";
+                            var li = "";
+                            if (item.jawaban != null) {
+                                jwb = item.jawaban.split(",");
+                                $.each(jwb, function (i, item) {
+                                    li += '<li>' + item + '</li>'
+                                });
+                            }
                             body += '<tr>' +
                                 '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + item.jawaban + '</td>' +
-                                '<td>' + cekItemIsNull(item.skor) + '</td>' +
+                                '<td>' + '<ul style="margin-left: 10px;">' + li + '</ul>' + '</td>' +
                                 '</tr>';
+                        } else if ("jatuh" == jenis) {
+                            if ("total" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="40%" colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban + '</td>' +
+                                    '</tr>';
+                            } else if ("kesimpulan" == item.tipe) {
+                                body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
+                                    '<td width="40%" colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban + '</td>' +
+                                    '<td>' + cekItemIsNull(item.skor) + '</td>' +
+                                    '</tr>';
+                            }
+                        } else {
+                            console.log(item.tipe);
+                            if(item.tipe == 'gambar'){
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="'+item.jawaban+'" style="width: 100%; height: 300px">' + '</td>' +
+                                    '</tr>';
+                            }else if(item.tipe == 'ttd'){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + item.jawaban + '</td>' +
+                                    '</tr>';
+                            }
                         }
-                    } else {
-                        body += '<tr>' +
-                            '<td width="40%">' + item.parameter + '</td>' +
-                            '<td>' + item.jawaban + '</td>' +
-                            '</tr>';
-                    }
 
-                    cekData = true;
-                });
+                        cekData = true;
+                    });
 
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            if(cekData){
-                if("jatuh" == jenis){
-                    head = '<tr style="font-weight: bold">' +
-                        '<td>Parameter</td>' +
-                        '<td>Jawaban</td>' +
-                        '<td>Score</td>' +
-                        '</tr>'
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
                 }
-            }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered"><tr bgcolor="#ffebcd">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + body + '</tbody>' +
-                '</table>';
+                if(cekData){
+                    if("jatuh" == jenis){
+                        head = '<tr style="font-weight: bold">' +
+                            '<td>Parameter</td>' +
+                            '<td>Jawaban</td>' +
+                            '<td>Score</td>' +
+                            '</tr>'
+                    }
+                }
 
-            var newRow = $('<tr id="del_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_' + jenis).attr('src', url);
-            $('#btn_' + jenis).attr('onclick', 'delRow(\'' + jenis + '\')');
-        });
+                var table = '<table style="font-size: 12px" class="table table-bordered"><tr bgcolor="#ffebcd">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + body + '</tbody>' +
+                    '</table>';
+
+                var newRow = $('<tr id="del_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_' + jenis).attr('src', url);
+                $('#btn_' + jenis).attr('onclick', 'delRow(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -472,18 +492,20 @@ function addMonitoringFisioterapi() {
 }
 
 function listMonitoringFisioterapi() {
-    var table = "";
-    FisioterapiAction.getKunjunganFisioterapi(idPasien, function (res) {
-        $.each(res, function (i, item) {
-            table += '<tr>' +
-                '<td>' + converterDateTime(item.createdDate) + '</td>' +
-                '<td>' + item.tindakan + '</td>' +
-                // '<td>' + item.keterangan + '</td>' +
-                '<td>' + item.fisioterapi + '</td>' +
-                '</tr>';
+    if(!cekSession()){
+        var table = "";
+        FisioterapiAction.getKunjunganFisioterapi(idPasien, function (res) {
+            $.each(res, function (i, item) {
+                table += '<tr>' +
+                    '<td>' + converterDateTime(item.createdDate) + '</td>' +
+                    '<td>' + item.tindakan + '</td>' +
+                    // '<td>' + item.keterangan + '</td>' +
+                    '<td>' + item.fisioterapi + '</td>' +
+                    '</tr>';
+            });
+            $('#body_monitoring_fisioterapi').html(table);
         });
-        $('#body_monitoring_fisioterapi').html(table);
-    });
+    }
 }
 
 function addMonitoringFisio() {
@@ -499,43 +521,45 @@ function addMonitoringFisio() {
 }
 
 function saveMonitoringFisio() {
-    var tanggal = $('#mon_tanggal').val();
-    var tindakan = $('#mon_tindakan').val();
-    var keterangan = $('#mon_keterangan').val();
-    var fisioterapi = $('#mon_fisio').val();
-    var data = "";
-    if (tanggal != '' && tindakan != '' && keterangan != '' && fisioterapi != '') {
-        data = {
-            'tanggal': tanggal.split("-").reverse().join("-"),
-            'tindakan': tindakan,
-            'keterangan': keterangan,
-            'fisioterapi': fisioterapi,
-            'id_detail_checkup': idDetailCheckup
-        }
-        var result = JSON.stringify(data);
-        $('#save_mon_pengkajian').hide();
-        $('#load_mon_pengkajian').show();
-        dwr.engine.setAsync(true);
-        FisioterapiAction.saveMonFisio(result, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_mon_pengkajian').show();
-                    $('#load_mon_pengkajian').hide();
-                    listMonitoringFisioterapi();
-                    $('#modal-add-monitoring').modal('hide');
-                    $('#warning_monitoring_pengkajian').show().fadeOut(5000);
-                    $('#msg_monitoring_pengkajian').text("Berhasil menambahakan data monitoring...");
-                } else {
-                    $('#save_mon_pengkajian').show();
-                    $('#load_mon_pengkajian').hide();
-                    $('#warning_mon_fisio').show().fadeOut(5000);
-                    $('#msg_mon_fisio').text(res.msg);
-                }
+    if(!cekSession()){
+        var tanggal = $('#mon_tanggal').val();
+        var tindakan = $('#mon_tindakan').val();
+        var keterangan = $('#mon_keterangan').val();
+        var fisioterapi = $('#mon_fisio').val();
+        var data = "";
+        if (tanggal != '' && tindakan != '' && keterangan != '' && fisioterapi != '') {
+            data = {
+                'tanggal': tanggal.split("-").reverse().join("-"),
+                'tindakan': tindakan,
+                'keterangan': keterangan,
+                'fisioterapi': fisioterapi,
+                'id_detail_checkup': idDetailCheckup
             }
-        });
-    } else {
-        $('#warning_mon_fisio').show().fadeOut(5000);
-        $('#msg_mon_fisio').text("Silahkan cek kembali data inputan anda...!");
+            var result = JSON.stringify(data);
+            $('#save_mon_pengkajian').hide();
+            $('#load_mon_pengkajian').show();
+            dwr.engine.setAsync(true);
+            FisioterapiAction.saveMonFisio(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_mon_pengkajian').show();
+                        $('#load_mon_pengkajian').hide();
+                        listMonitoringFisioterapi();
+                        $('#modal-add-monitoring').modal('hide');
+                        $('#warning_monitoring_pengkajian').show().fadeOut(5000);
+                        $('#msg_monitoring_pengkajian').text("Berhasil menambahakan data monitoring...");
+                    } else {
+                        $('#save_mon_pengkajian').show();
+                        $('#load_mon_pengkajian').hide();
+                        $('#warning_mon_fisio').show().fadeOut(5000);
+                        $('#msg_mon_fisio').text(res.msg);
+                    }
+                }
+            });
+        } else {
+            $('#warning_mon_fisio').show().fadeOut(5000);
+            $('#msg_mon_fisio').text("Silahkan cek kembali data inputan anda...!");
+        }
     }
 }
 
@@ -591,26 +615,28 @@ function conFS(jenis, ket) {
 
 function delFS(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_' + jenis);
-    dwr.engine.setAsync(true);
-    FisioterapiAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_' + jenis);
-                $('#warning_' + ket).show().fadeOut(5000);
-                $('#msg_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_' + jenis);
-                $('#modal_warning').show().fadeOut(5000);
-                $('#msg_warning').text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_' + jenis);
+        dwr.engine.setAsync(true);
+        FisioterapiAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_' + jenis);
+                    $('#warning_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_' + jenis);
+                    $('#modal_warning').show().fadeOut(5000);
+                    $('#msg_warning').text(res.msg);
+                }
+            }
+        });
+    }
 }

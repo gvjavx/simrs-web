@@ -182,7 +182,7 @@
                                                 <label class="col-md-4">No BPJS</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group">
-                                                        <s:textfield id="no_bpjs" name="pasien.noBpjs"
+                                                        <s:textfield id="no_bpjs" name="pasien.noBpjs" type="number"
                                                                      cssClass="form-control" onchange="checkBpjs()"/>
                                                         <div class="input-group-btn" onclick="checkBpjs()">
                                                             <a class="btn btn-success">
@@ -343,10 +343,10 @@
                                                         </div>
                                                         <s:textfield id="no_telp" data-inputmask="'mask': ['9999-9999-9999']"
                                                                      data-mask=""
+                                                                     name="pasien.noTelp"
                                                                      onkeypress="$(this).css('border','')"
-                                                                     cssClass="form-control" oninput="replaceStrip(this.value, 'h_no_hp')"/>
+                                                                     cssClass="form-control"/>
                                                     </div>
-                                                    <s:hidden id="h_no_hp" name="pasien.noTelp" ></s:hidden>
                                                 </div>
                                             </div>
                                         </div>

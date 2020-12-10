@@ -69,24 +69,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-5" for="users.username">Username :</label>
                                         <div class="col-sm-3">
-                                            <s:textfield id="userId" name="users.username" required="true" cssClass="form-control"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.positionId">Posisi :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
-                                            <s:select list="#comboPosition.listOfComboPositions" id="positionId" name="users.positionId"
-                                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control" />
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.divisiId">Divisi :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                            <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId" name="users.divisiId"
-                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
+                                            <s:textfield id="username" name="users.username" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -102,8 +85,25 @@
                                         <label class="control-label col-sm-5" for="users.branchId">Unit :</label>
                                         <div class="col-sm-3">
                                             <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                            <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="users.branchId"
+                                            <s:select list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" onchange="listPosisi()"
                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" for="users.divisiId">Divisi/Bidang :</label>
+                                        <div class="col-sm-3">
+                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                            <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId" name="users.divisiId"
+                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" for="users.positionId">Posisi/Jabatan :</label>
+                                        <div class="col-sm-3">
+                                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
+                                            <s:select list="#comboPosition.listOfComboPositions" id="positionId" name="users.positionId"
+                                                      listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control" />
                                         </div>
                                     </div>
@@ -146,6 +146,7 @@
                                                     <img border="0" src="<s:url value="/pages/images/loading11.gif"/>" name="image_indicator_read">
                                                 </center>
                                             </sj:dialog>
+
                                             <sj:submit type="button" cssClass="btn btn-primary" formIds="userForm" id="search"
                                                        name="search"
                                                        onClickTopics="showDialog" onCompleteTopics="closeDialog">

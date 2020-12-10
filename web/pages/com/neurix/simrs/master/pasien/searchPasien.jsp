@@ -15,7 +15,6 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
 
     <script type='text/javascript'>
-
         $(document).ready(function () {
             $('#pasien').addClass('active');
             searchPasien();
@@ -25,15 +24,11 @@
             var url_string = window.location.href;
             var url = new URL(url_string);
             var idPasien = url.searchParams.get("id_pasien");
-
             if (idPasien != null) {
                 $('#modal-success-pasien').modal('show');
                 $('#val_id_pasien').val(idPasien);
-
             }
         }
-
-
     </script>
 </head>
 
@@ -521,11 +516,11 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NO BPJS</label>
-                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_no_bpjs" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">NIK</label>
-                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                                <input class="form-control" id="add_nik" oninput="$(this).css('border','')" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Nama</label>
@@ -575,7 +570,7 @@
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">No Telp</label>
-                                <input class="form-control" id="add_no_telp">
+                                <input class="form-control" id="add_no_telp" type="number">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Provinsi</label>

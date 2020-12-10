@@ -45,7 +45,8 @@ public class SettingReportKeuanganKonsolDao extends GenericDao<ImAkunSettingRepo
         }
 
         // Order by
-        criteria.addOrder(Order.desc("settingReportKonsolId"));
+//        criteria.addOrder(Order.desc("settingReportKonsolId"));
+        criteria.addOrder(Order.asc("settingReportKonsolId"));
         List<ImAkunSettingReportKeuanganKonsol> results = criteria.list();
 
         return results;

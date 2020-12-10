@@ -191,7 +191,7 @@
                                     <td><s:property value="labName"/></td>
                                     <%--<td><s:property value="idPeriksaLab"/></td>--%>
                                     <td align="center">
-                                        <s:if test='#row.approveFlag == "Y"'>
+                                        <s:if test='#row.statusPeriksa == "3"'>
                                             <a target="_blank" href="printLab_periksalab.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
                                             </a>

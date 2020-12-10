@@ -130,7 +130,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="positionId3" cssClass="form-control" readonly="true" name="position.stPositionId"/>
+                                <s:textfield id="positionId3" cssClass="form-control" readonly="true" name="position.PositionId"/>
                             </table>
                         </td>
                     </tr>
