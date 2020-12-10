@@ -20,5 +20,5 @@ public interface TindakanBo{
     public ImSimrsTindakanEntity getEntityTindakanById(String idTindakan) throws GeneralBOException;
 
     public List<Tindakan> getDataTindakan(Tindakan bean) throws GeneralBOException;
-    public List<ImSimrsTindakanEntity> cekTindakan(String idHeader, String idPelayanan) throws GeneralBOException;
+    public List<ImSimrsTindakanEntity> cekTindakan(String idHeader, String idPelayanan, String idKelas) throws GeneralBOException;
 }

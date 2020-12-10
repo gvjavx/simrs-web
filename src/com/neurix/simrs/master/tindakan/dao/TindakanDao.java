@@ -237,13 +237,24 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         return tindakanList;
     }
 
-    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan) throws HibernateException {
-        List<ImSimrsTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
-                .add(Restrictions.eq("idHeaderTindakan", idHeader))
-                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
-                .add(Restrictions.eq("idPelayanan", idPelayanan))
-                .add(Restrictions.eq("flag", "Y"))
-                .list();
+    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan, String idKelas) throws HibernateException {
+        List<ImSimrsTindakanEntity> results = new ArrayList<>();
+        if("empty".equalsIgnoreCase(idKelas)){
+            results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                    .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                    .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                    .add(Restrictions.eq("idPelayanan", idPelayanan))
+                    .add(Restrictions.eq("flag", "Y"))
+                    .list();
+        }else{
+            results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                    .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                    .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                    .add(Restrictions.eq("idPelayanan", idPelayanan))
+                    .add(Restrictions.eq("idKelasRuangan", idKelas))
+                    .add(Restrictions.eq("flag", "Y"))
+                    .list();
+        }
         return results;
     }
 

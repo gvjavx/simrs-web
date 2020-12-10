@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/HeaderTindakanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -290,7 +292,7 @@
                         <label class="col-md-3" style="margin-top: 7px">Nama Pelayanan</label>
                         <div class="col-md-7">
                             <select class="form-control select2" id="set_nama_pelayanan" style="width: 100%"
-                                    onchange="var warn =$('#war_set_nama_pelayanan').is(':visible'); if (warn){$('#cor_set_nama_pelayanan').show().fadeOut(3000);$('#war_set_nama_pelayanan').hide()}">
+                                    onchange="cekTipePelayanan(this.value); var warn =$('#war_set_nama_pelayanan').is(':visible'); if (warn){$('#cor_set_nama_pelayanan').show().fadeOut(3000);$('#war_set_nama_pelayanan').hide()}">
                                 <option value="">[Select One]</option>
                             </select>
                         </div>
@@ -333,6 +335,33 @@
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_nama_tindakan"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas" style="display: none" id="form-cek_id_kelas">
+                    <div class="form-group">
+                        <label class="col-md-3">Tarif Per Kelas Ruangan</label>
+                        <div class="col-md-7">
+                            <div class="form-check">
+                                <input type="checkbox" id="is_kelas_ruangan" value="Y">
+                                <label for="is_kelas_ruangan"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="display: none" id="form-kelas-ruangan">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Kelas Ruangan</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="set_kelas_tindakan" style="width: 100%"
+                                    onchange="var warn =$('#war_set_kelas_tindakan').is(':visible'); if (warn){$('#cor_set_kelas_tindakan').show().fadeOut(3000);$('#war_set_kelas_tindakan').hide()}"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_kelas_tindakan">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_kelas_tindakan"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -686,15 +715,37 @@
         var kategori = $('#set_kategori_tindakan').val();
         var tindakan = $('#set_nama_tindakan').val();
         var namaTindakan = $('#set_nama_tindakan option:selected').text();
+        var namaKelas = $('#set_kelas_tindakan option:selected').text();
+        var kkelas = $('#set_kelas_tindakan').val();
+        var idKelas = "empty";
+        if(kkelas != '' && kkelas != null){
+            idKelas = kkelas;
+        }
+        var isKelas = $('#is_kelas_ruangan').is(':checked');
+        var cekAdd = false;
+        if(isKelas){
+            if(idKelas != ''){
+                cekAdd = true;
+            }
+        }else{
+            cekAdd = true;
+        }
         var id = data.length;
 
-        if (branch && pelayanan && kategori && tindakan) {
+        if (branch && pelayanan && kategori && tindakan != '' && cekAdd) {
             var cek = false;
             $.each(data, function (i, item) {
                 var idTindakan = $('#id_tindakan_' + i).val();
                 var idKategori = $('#id_kategori_' + i).val();
-                if (idTindakan == tindakan) {
-                    cek = true;
+                var idKel = $('#id_kelas_' + i).val();
+                if(isKelas){
+                    if (idTindakan == tindakan && idKelas == idKel) {
+                        cek = true;
+                    }
+                }else{
+                    if (idTindakan == tindakan) {
+                        cek = true;
+                    }
                 }
             });
             if (cek) {
@@ -704,11 +755,12 @@
                 HeaderTindakanAction.initHeaderTindakan(tindakan, function (res) {
                     if (res.idHeaderTindakan != null) {
                         var table = '<tr id="row_' + tindakan + '">' +
-                            '<td style="vertical-align: middle">' + namaTindakan +
+                            '<td style="vertical-align: middle">' + namaTindakan +" "+ namaKelas +
                             '<input id="id_tindakan_' + id + '" type="hidden" value="' + tindakan + '"></td>' +
                             '<input id="nama_tindakan_' + id + '" type="hidden" value="' + namaTindakan + '"></td>' +
                             '<td style="vertical-align: middle">' + kategoriName +
                             '<input id="id_kategori_' + id + '" type="hidden" value="' + kategori + '"></td>' +
+                            '<input id="id_kelas_' + id + '" type="hidden" value="' + idKelas + '"></td>' +
                             '<td>' +
                             '<input id="tarif_' + id + '" class="form-control" value="' + formatRupiahAtas(res.standardCost) + '" oninput="convertRpAtas(this.id, this.value, \'h_tarif_' + id + '\')">' +
                             '<input type="hidden" id="h_tarif_' + id + '" class="form-control" value="' + res.standardCost + '">' +
@@ -758,6 +810,9 @@
             }
             if (tindakan == '') {
                 $('#war_set_nama_tindakan').show();
+            }
+            if (!cekAdd) {
+                $('#war_set_kelas_tindakan').show();
             }
         }
     }
@@ -870,6 +925,7 @@
                             var tarif = $('#h_tarif_' + i).val();
                             var tarifBpjs = $('#h_tarif_bpjs_' + i).val();
                             var diskon = $('#diskon_' + i).val();
+                            var idKelas = $('#id_kelas_'+i).val();
                             var isEleftif = $('#is_elektif_' + i).is(':checked');
                             var isIna = $('#is_ina_' + i).is(':checked');
                             var ina = "N";
@@ -887,6 +943,7 @@
                                 'id_pelayanan': idPelayanan,
                                 'nama_pelayanan': namaPelayanan,
                                 'branch_id': namaUnit,
+                                'id_kelas': idKelas,
                                 'tarif': tarif,
                                 'tarif_bpjs': tarifBpjs,
                                 'diskon': diskon,
@@ -1073,6 +1130,45 @@
                     }
                 }
             });
+        }
+    }
+
+    function cekTipePelayanan(idPelayanan){
+        dwr.engine.setAsync(true);
+        PelayananAction.getDataPelayanan(idPelayanan, function (res) {
+            if(res != null){
+                if(res.tipePelayanan == 'rawat_inap' ||
+                    res.tipePelayanan == 'ruang_bersalin' ||
+                res.tipePelayanan == 'kamar_operasi'){
+                    $('#form-cek_id_kelas').show();
+                    $('#is_kelas_ruangan').attr('onclick','cekKelasRuangan(\'is_kelas_ruangan\',\''+res.tipePelayanan+'\')');
+                }else{
+                    $('#form-cek_id_kelas').hide();
+                }
+            }else{
+                $('#form-cek_id_kelas').hide();
+            }
+        });
+    }
+
+    function cekKelasRuangan(id, kategori){
+        if($('#'+id).is(':checked')){
+            var option = '<option value="">[Select One]</option>';
+            $('#form-kelas-ruangan').show();
+            dwr.engine.setAsync(true);
+            CheckupDetailAction.getListKelasKamar(kategori, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
+                    });
+                    $('#set_kelas_tindakan').html(option);
+                } else {
+                    $('#set_kelas_tindakan').html(option);
+                }
+            });
+        }else{
+            $('#set_kelas_tindakan').html('');
+            $('#form-kelas-ruangan').hide();
         }
     }
 
