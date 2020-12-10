@@ -592,7 +592,7 @@
         RoleAction.getRoleById(role, function (res) {
             console.log(res);
             if(res.tipePelayanan != "" && res.tipePelayanan != null){
-                $('#form-pelayanan').show();
+                $('#form-pelayanan-edit').show();
                 getListPelayananByBranchAndTipeEdit(branch, res.tipePelayanan, pelayanan);
             }
         });
