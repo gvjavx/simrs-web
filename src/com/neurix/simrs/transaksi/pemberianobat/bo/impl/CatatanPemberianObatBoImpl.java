@@ -114,6 +114,35 @@ public class CatatanPemberianObatBoImpl implements CatatanPemberianObatBo {
         return response;
     }
 
+    @Override
+    public CrudResponse saveDelete(CatatanPemberianObat bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        if(bean.getIdCatatanPemberianObat() != null){
+            ItSimrsCatatanPemberianObatEntity catatanPemberianObatEntity = new ItSimrsCatatanPemberianObatEntity();
+            try {
+                catatanPemberianObatEntity = catatanPemberianObatDao.getById("idCatatanPemberianObat", bean.getIdCatatanPemberianObat());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error mencari data pemberian obat "+e.getMessage());
+            }
+            if(catatanPemberianObatEntity != null){
+                catatanPemberianObatEntity.setAction("D");
+                catatanPemberianObatEntity.setFlag("N");
+                catatanPemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                catatanPemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    catatanPemberianObatDao.updateAndSave(catatanPemberianObatEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Error mencari data pemberian obat "+e.getMessage());
+                }
+            }
+        }
+        return response;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

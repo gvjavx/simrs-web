@@ -271,6 +271,17 @@ public class LabDetailBoImpl implements LabDetailBo {
         return result;
     }
 
+    @Override
+    public List<ImSimrsLabDetailEntity> cekDataParameterPemeriksaan(String idParameter, String idLab) throws GeneralBOException {
+        List<ImSimrsLabDetailEntity> result = new ArrayList<>();
+        try {
+            result = labDetailDao.cekDataLabDetail(idParameter, idLab);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return result;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

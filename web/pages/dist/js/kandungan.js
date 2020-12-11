@@ -91,7 +91,7 @@ function saveRB(jenis, ket) {
         var sip3 = $('#sip_ttd3').val();
         var sip4 = $('#sip_ttd4').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && nama1 && nama2 && nama3 && nama4 && sip1 && sip2 && sip3 && sip4 &&
             va11 && va12 && va13 && va14 && va15 != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4) {
 
             data.push({
@@ -350,7 +350,7 @@ function saveRB(jenis, ket) {
         var sip1 = $('#sip_ttd1').val();
         var sip2 = $('#sip_ttd2').val();
 
-        if (!cekTtd1 && !cekTtd2 && !cekTtd3) {
+        if (!cekTtd1 && !cekTtd2 && !cekTtd3 && nama1 && nama2 && nama3 && sip1 && sip2 != '') {
 
             data.push({
                 'parameter': 'Tanggal Jam',
@@ -705,7 +705,7 @@ function saveRB(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1) {
+        if (!cekTtd1 && nama1 && sip1 != '') {
 
             data.push({
                 'parameter': 'Tempat Lahir',
@@ -1000,7 +1000,7 @@ function saveRB(jenis, ket) {
         var sip1 = $('#sip_ttd1').val();
 
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
-            va11 && va12 != '' && !cekTtd1) {
+            va11 && va12 != '' && !cekTtd1 && nama1 && sip1 != '') {
 
             data.push({
                 'parameter': 'Persiapan Operasi',
@@ -1182,7 +1182,7 @@ function saveRB(jenis, ket) {
         var nama1 = $('#nama_terang_ttd1').val();
         var sip1 = $('#sip_ttd1').val();
 
-        if (va1 && va2 && va3 && va4 != '' && !cekTtd1) {
+        if (va1 && va2 && va3 && va4 && nama1 && sip1 != '' && !cekTtd1) {
 
             data.push({
                 'parameter': 'Kala I',
@@ -2048,16 +2048,6 @@ function saveRB(jenis, ket) {
         var va6 = $('#dp6').val();
         var va7 = $('#dp7').val();
         var va8 = $('#dp8').val();
-        console.log(va1);
-        console.log(va2);
-        console.log(va3);
-        console.log(va4);
-        console.log(va5);
-        console.log(va6);
-        console.log(va7);
-        console.log(va8);
-        // if (va1 && va2 && va3 && va4 && va5 && va6 & va7 && va8 != '') {
-        //     console.log('tes');
         data.push({
             'parameter': 'Nama',
             'jawaban': va1,
@@ -2249,8 +2239,6 @@ function saveRB(jenis, ket) {
             if (parseInt(isIsi) + 1 >= jml.length) {
                 cek = true;
             }
-            console.log(isIsi);
-            console.log(jml.length);
         } else {
             if (jml.length == isIsi) {
                 cek = true;
@@ -2283,50 +2271,52 @@ function saveRB(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_rb_' + jenis).hide();
-        $('#load_rb_' + jenis).show();
-        dwr.engine.setAsync(true);
-        if ("janin_ibu_persalinan" == jenis) {
-            var tempData = JSON.stringify(dataTemp);
-            KandunganAction.savePartograf(tempData, pasienData, {
-                callback: function (res) {
-                    if (res.status == "success") {
-                        $('#save_rb_' + jenis).show();
-                        $('#load_rb_' + jenis).hide();
-                        $('#modal-rb-' + jenis).modal('hide');
-                        $('#warning_rb_' + ket).show().fadeOut(5000);
-                        $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
-                        $('#modal-rb-' + jenis).scrollTop(0);
-                    } else {
-                        $('#save_rb_' + jenis).show();
-                        $('#load_rb_' + jenis).hide();
-                        $('#warning_rb_' + jenis).show().fadeOut(5000);
-                        $('#msg_rb_' + jenis).text(res.msg);
-                        $('#modal-rb-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_rb_' + jenis).hide();
+            $('#load_rb_' + jenis).show();
+            dwr.engine.setAsync(true);
+            if ("janin_ibu_persalinan" == jenis) {
+                var tempData = JSON.stringify(dataTemp);
+                KandunganAction.savePartograf(tempData, pasienData, {
+                    callback: function (res) {
+                        if (res.status == "success") {
+                            $('#save_rb_' + jenis).show();
+                            $('#load_rb_' + jenis).hide();
+                            $('#modal-rb-' + jenis).modal('hide');
+                            $('#warning_rb_' + ket).show().fadeOut(5000);
+                            $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
+                            $('#modal-rb-' + jenis).scrollTop(0);
+                        } else {
+                            $('#save_rb_' + jenis).show();
+                            $('#load_rb_' + jenis).hide();
+                            $('#warning_rb_' + jenis).show().fadeOut(5000);
+                            $('#msg_rb_' + jenis).text(res.msg);
+                            $('#modal-rb-' + jenis).scrollTop(0);
+                        }
                     }
-                }
-            });
-        } else {
-            KandunganAction.save(result, pasienData, {
-                callback: function (res) {
-                    if (res.status == "success") {
-                        $('#save_rb_' + jenis).show();
-                        $('#load_rb_' + jenis).hide();
-                        $('#modal-rb-' + jenis).modal('hide');
-                        $('#warning_rb_' + ket).show().fadeOut(5000);
-                        $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
-                        $('#modal-rb-' + jenis).scrollTop(0);
-                    } else {
-                        $('#save_rb_' + jenis).show();
-                        $('#load_rb_' + jenis).hide();
-                        $('#warning_rb_' + jenis).show().fadeOut(5000);
-                        $('#msg_rb_' + jenis).text(res.msg);
-                        $('#modal-rb-' + jenis).scrollTop(0);
+                });
+            } else {
+                KandunganAction.save(result, pasienData, {
+                    callback: function (res) {
+                        if (res.status == "success") {
+                            $('#save_rb_' + jenis).show();
+                            $('#load_rb_' + jenis).hide();
+                            $('#modal-rb-' + jenis).modal('hide');
+                            $('#warning_rb_' + ket).show().fadeOut(5000);
+                            $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
+                            $('#modal-rb-' + jenis).scrollTop(0);
+                        } else {
+                            $('#save_rb_' + jenis).show();
+                            $('#load_rb_' + jenis).hide();
+                            $('#warning_rb_' + jenis).show().fadeOut(5000);
+                            $('#msg_rb_' + jenis).text(res.msg);
+                            $('#modal-rb-' + jenis).scrollTop(0);
+                        }
                     }
-                }
-            });
+                });
+            }
         }
     } else {
         $('#warning_rb_' + jenis).show().fadeOut(5000);
@@ -2336,347 +2326,348 @@ function saveRB(jenis, ket) {
 }
 
 function detailRB(jenis) {
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var cekSkor = false;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
+            var rowTotal = "";
+            var kesimpulan = "";
+            var isKesimpulan = false;
+            var forTTD = "";
 
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var cekSkor = false;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
-        var rowTotal = "";
-        var kesimpulan = "";
-        var isKesimpulan = false;
-        var forTTD = "";
+            if ("janin_ibu_persalinan" == jenis) {
+                KandunganAction.getListDetailPartograf(idDetailCheckup, function (res) {
+                    if (res.length > 0) {
+                        $.each(res, function (i, item) {
+                            var tanggal = converterDate(new Date(item.createdDate));
+                            var tempTgl = "";
+                            var btn1 = "";
+                            var btn2 = "";
+                            var btn3 = "";
 
-        if ("janin_ibu_persalinan" == jenis) {
-            KandunganAction.getListDetailPartograf(idDetailCheckup, function (res) {
-                if (res.length > 0) {
-                    $.each(res, function (i, item) {
-                        var tanggal = converterDate(new Date(item.createdDate));
-                        var tempTgl = "";
-                        var btn1 = "";
-                        var btn2 = "";
-                        var btn3 = "";
-
-                        if (i == 0) {
-                            tempTgl = tanggal;
-                            btn1 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #1aff1a" onclick="showChart(\'janin\', \'' + tanggal + '\')"></i>';
-                            btn2 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #ff751a; margin-left: 8px" onclick="showChart(\'kemajuan\', \'' + tanggal + '\')"></i>';
-                            btn3 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #0066ff; margin-left: 8px" onclick="showChart(\'ibu\', \'' + tanggal + '\')"></i>';
-                        } else {
-                            var tgl = res[i - 1]["createdDate"];
-                            var tglB = converterDate(new Date(tgl));
-                            if (tanggal == tglB) {
-                                tempTgl = "";
-                            } else {
+                            if (i == 0) {
                                 tempTgl = tanggal;
                                 btn1 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #1aff1a" onclick="showChart(\'janin\', \'' + tanggal + '\')"></i>';
                                 btn2 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #ff751a; margin-left: 8px" onclick="showChart(\'kemajuan\', \'' + tanggal + '\')"></i>';
                                 btn3 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #0066ff; margin-left: 8px" onclick="showChart(\'ibu\', \'' + tanggal + '\')"></i>';
+                            } else {
+                                var tgl = res[i - 1]["createdDate"];
+                                var tglB = converterDate(new Date(tgl));
+                                if (tanggal == tglB) {
+                                    tempTgl = "";
+                                } else {
+                                    tempTgl = tanggal;
+                                    btn1 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #1aff1a" onclick="showChart(\'janin\', \'' + tanggal + '\')"></i>';
+                                    btn2 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #ff751a; margin-left: 8px" onclick="showChart(\'kemajuan\', \'' + tanggal + '\')"></i>';
+                                    btn3 = '<i class="fa fa-line-chart hvr-grow" style="cursor: pointer; color: #0066ff; margin-left: 8px" onclick="showChart(\'ibu\', \'' + tanggal + '\')"></i>';
+                                }
                             }
-                        }
 
-                        body += '<tr>' +
-                            '<td align="center">' + btn1 + '&nbsp;' + btn2 + '&nbsp;' + btn3 + '</td>' +
-                            '<td>' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span></td>' +
-                            '<td align="center">' + cekItemIsNull(item.djj) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.airKetuban) + '</td>' +
-                            '<td align="center">' + cekIconsIsNotNull(item.molase) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.pembukaan) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.kontraksi) + '</td>' +
-                            '<td align="center">' + cekIconsIsNotNull(item.oksitosin) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.tetes) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.obatCairan) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.nadi) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.tensi) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.suhu) + '</td>' +
-                            '<td align="center">' + cekItemIsNull(item.rr) + '</td>' +
-                            '<td align="center">' + '<i id="delete_' + item.idPartograf + '" onclick="conRB(\'' + jenis + '\',\'partograf\', \'' + item.idPartograf + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                            body += '<tr>' +
+                                '<td align="center">' + btn1 + '&nbsp;' + btn2 + '&nbsp;' + btn3 + '</td>' +
+                                '<td>' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span></td>' +
+                                '<td align="center">' + cekItemIsNull(item.djj) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.airKetuban) + '</td>' +
+                                '<td align="center">' + cekIconsIsNotNull(item.molase) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.pembukaan) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.kontraksi) + '</td>' +
+                                '<td align="center">' + cekIconsIsNotNull(item.oksitosin) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.tetes) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.obatCairan) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.nadi) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.tensi) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.suhu) + '</td>' +
+                                '<td align="center">' + cekItemIsNull(item.rr) + '</td>' +
+                                '<td align="center">' + '<i id="delete_' + item.idPartograf + '" onclick="conRB(\'' + jenis + '\',\'partograf\', \'' + item.idPartograf + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                                '</tr>';
+                            cekData = true;
+                        });
+                    } else {
+                        body = '<tr>' +
+                            '<td>Data belum ada</td>' +
                             '</tr>';
-                        cekData = true;
-                    });
-                } else {
-                    body = '<tr>' +
-                        '<td>Data belum ada</td>' +
-                        '</tr>';
-                }
+                    }
 
-                if (cekData) {
-                    head = '<tr style="font-weight: bold">' +
-                        '<td width="10%" rowspan="2" align="center" style="vertical-align: middle">Grafik</td>' +
-                        '<td width="15%" rowspan="2" align="center" style="vertical-align: middle">Waktu</td>' +
-                        '<td colspan="3" align="center" style="vertical-align: middle">Kondisi Janin</td>' +
-                        '<td colspan="2" align="center" style="vertical-align: middle">Kemajuan Persalinan</td>' +
-                        '<td colspan="7" align="center" style="vertical-align: middle">Kondisi Ibu</td>' +
-                        '<td rowspan="2" align="center" style="vertical-align: middle">Action</td>' +
-                        '</tr>' +
-                        '<tr style="font-weight: bold">' +
-                        '<td>DJJ</td>' +
-                        '<td>AKT</td>' +
-                        '<td>MOL</td>' +
-                        '<td>PEM</td>' +
-                        '<td>KON</td>' +
-                        '<td>OKS</td>' +
-                        '<td>TTS</td>' +
-                        '<td>ODC</td>' +
-                        '<td>Nadi</td>' +
-                        '<td>Tensi</td>' +
-                        '<td>Suhu</td>' +
-                        '<td>RR</td>' +
-                        '</tr>';
-                }
-                var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                    '<thead>' + head + '</thead>' +
-                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
-                    '</table>' +
-                    '<div class="row">' +
-                    '<label class="col-md-12" style="font-size: 12">Keterangan</label>' +
-                    '<div class="form-group" style="font-size: 12px">' +
-                    '<div class="col-md-4">' +
-                    '<ul style="margin-left: 15px">' +
-                    '<li>DJJ (Detak Jantung Janin)</li>' +
-                    '<li>AKT (Air Kebutan)</li>' +
-                    '<li>MOL (Molase)</li>' +
-                    '<li>PEM (Pembukaan serviks)</li>' +
-                    '</ul>' +
-                    '</div>' +
-                    '<div class="col-md-4">' +
-                    '<ul>' +
-                    '<li>KON (Kontrkasi)</li>' +
-                    '<li>OKS (Oksitosin)</li>' +
-                    '<li>TTS (Tetes/menit)</li>' +
-                    '<li>ODC (Obat dan cairan infus)</li>' +
-                    '</ul>' +
-                    '</div>' +
-                    '<div class="col-md-4">' +
-                    '<ul class="fa-ul">' +
-                    '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #1aff1a"></i></span> Kondisi Janin</li>' +
-                    '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #ff751a"></i></span> Kemajuan Persalinan</li>' +
-                    '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #0066ff"></i></span> Kondisi Ibu</li>' +
-                    '</ul>' +
-                    '</div>' +
-                    '</div>' +
-                    '</div>';
+                    if (cekData) {
+                        head = '<tr style="font-weight: bold">' +
+                            '<td width="10%" rowspan="2" align="center" style="vertical-align: middle">Grafik</td>' +
+                            '<td width="15%" rowspan="2" align="center" style="vertical-align: middle">Waktu</td>' +
+                            '<td colspan="3" align="center" style="vertical-align: middle">Kondisi Janin</td>' +
+                            '<td colspan="2" align="center" style="vertical-align: middle">Kemajuan Persalinan</td>' +
+                            '<td colspan="7" align="center" style="vertical-align: middle">Kondisi Ibu</td>' +
+                            '<td rowspan="2" align="center" style="vertical-align: middle">Action</td>' +
+                            '</tr>' +
+                            '<tr style="font-weight: bold">' +
+                            '<td>DJJ</td>' +
+                            '<td>AKT</td>' +
+                            '<td>MOL</td>' +
+                            '<td>PEM</td>' +
+                            '<td>KON</td>' +
+                            '<td>OKS</td>' +
+                            '<td>TTS</td>' +
+                            '<td>ODC</td>' +
+                            '<td>Nadi</td>' +
+                            '<td>Tensi</td>' +
+                            '<td>Suhu</td>' +
+                            '<td>RR</td>' +
+                            '</tr>';
+                    }
+                    var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                        '<thead>' + head + '</thead>' +
+                        '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                        '</table>' +
+                        '<div class="row">' +
+                        '<label class="col-md-12" style="font-size: 12">Keterangan</label>' +
+                        '<div class="form-group" style="font-size: 12px">' +
+                        '<div class="col-md-4">' +
+                        '<ul style="margin-left: 15px">' +
+                        '<li>DJJ (Detak Jantung Janin)</li>' +
+                        '<li>AKT (Air Kebutan)</li>' +
+                        '<li>MOL (Molase)</li>' +
+                        '<li>PEM (Pembukaan serviks)</li>' +
+                        '</ul>' +
+                        '</div>' +
+                        '<div class="col-md-4">' +
+                        '<ul>' +
+                        '<li>KON (Kontrkasi)</li>' +
+                        '<li>OKS (Oksitosin)</li>' +
+                        '<li>TTS (Tetes/menit)</li>' +
+                        '<li>ODC (Obat dan cairan infus)</li>' +
+                        '</ul>' +
+                        '</div>' +
+                        '<div class="col-md-4">' +
+                        '<ul class="fa-ul">' +
+                        '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #1aff1a"></i></span> Kondisi Janin</li>' +
+                        '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #ff751a"></i></span> Kemajuan Persalinan</li>' +
+                        '<li><span class="fa-li"><i class="fa fa-line-chart" style="color: #0066ff"></i></span> Kondisi Ibu</li>' +
+                        '</ul>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>';
 
-                var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-                newRow.insertAfter($('table').find('#row_rb_' + jenis));
-                var url = contextPath + '/pages/images/minus-allnew.png';
-                $('#btn_rb_' + jenis).attr('src', url);
-                $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
-            });
-        } else {
-            KandunganAction.getListDetail(idDetailCheckup, jenis, function (res) {
-                if (res.length > 0) {
-                    $.each(res, function (i, item) {
-                        var jwb = "";
-                        if (item.jawaban != '') {
-                            jwb = item.jawaban;
-                        }
-                        if ("pernyataan_bayi_lahir" == jenis) {
-                            if ("colspan" == item.parameter) {
-                                body += '<tr>' +
-                                    '<td colspan="2">' + jwb + '</td>' +
-                                    '</tr>';
-                            } else if ("TTD Bidan/Perawat" == item.parameter) {
-                                body += '<tr>' +
-                                    '<td colspan="2">' + '<p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px">' + '</td>' +
-                                    '</tr>';
-                            } else if ("TTD Ibu" == item.parameter) {
-                                body += '<tr>' +
-                                    '<td colspan="2">' + '<div class="pull-right" style="margin-top: -122px"><p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px"></div>' + '</td>' +
-                                    '</tr>';
-                            } else {
-                                body += '<tr>' +
-                                    '<td width="30%">' + item.parameter + '</td>' +
-                                    '<td>' + jwb + '</td>' +
-                                    '</tr>';
+                    var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                    newRow.insertAfter($('table').find('#row_rb_' + jenis));
+                    var url = contextPath + '/pages/images/minus-allnew.png';
+                    $('#btn_rb_' + jenis).attr('src', url);
+                    $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
+                });
+            } else {
+                KandunganAction.getListDetail(idDetailCheckup, jenis, function (res) {
+                    if (res.length > 0) {
+                        $.each(res, function (i, item) {
+                            var jwb = "";
+                            if (item.jawaban != '') {
+                                jwb = item.jawaban;
                             }
-                        } else if ("tindakan_rb" == jenis) {
-                            if ("colspan" == item.tipe) {
-                                body += '<tr>' +
-                                    '<td colspan="3">' + jwb + '</td>' +
-                                    '</tr>';
-                            } else if ("info" == item.tipe) {
-                                body += '<tr>' +
-                                    '<td width="25%">' + item.parameter + '</td>' +
-                                    '<td >' + item.informasi + '</td>' +
-                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
-                                    '</tr>';
-                            } else if ("ttd" == item.tipe) {
-                                body += '<tr>' +
-                                    '<td colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
-                                    '</tr>';
-                            } else if ("bold" == item.tipe) {
-                                body += '<tr style="font-weight: bold">' +
-                                    '<td width="25%">' + item.parameter + '</td>' +
-                                    '<td >' + item.informasi + '</td>' +
-                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
-                                    '</tr>';
-                            } else {
-                                body += '<tr>' +
-                                    '<td width="30%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + jwb + '</td>' +
-                                    '</tr>';
-                            }
-                        } else {
-                            if ("ttd" == item.tipe) {
-                                forTTD += '<tr>' +
-                                    '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
-                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
-                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
-                                    '</td>' +
-                                    '</tr>';
-                            } else if ("tabel_pemantau" == item.tipe) {
-                                var jml = item.informasi.split("|");
-                                var td = '<td>' + item.jawaban + '</td>';
-                                $.each(jml, function (ix, itemx) {
-                                    td += '<td>' + itemx + '</td>';
-                                });
-
-                                var action = '<td align="center">' +
-                                    '<i id="delete_' + item.idAsesmenKandungan + '" onclick="conRB(\'' + jenis + '\', \'partograf\', \'' + item.idAsesmenKandungan + '\', \'Y\')" class="fa fa-trash hvr-grow" style="color: red"></i>' +
-                                    '</td>';
-
-                                if (td != '') {
-                                    body += '<tr>' + td + action + '</tr>';
-                                }
-                            } else if ("riwayat_kandungan" == item.tipe) {
-
-                                var jml = item.jawaban.split("#");
-                                var tempTr = '';
-                                $.each(jml, function (ix, itemx) {
-                                    var td = itemx.split("|");
-                                    var tempTd = "<td>"+(ix+1)+"</td>";
-                                    $.each(td, function (ir, itemr) {
-                                        tempTd += '<td>' + itemr + '</td>';
-                                    });
-                                    tempTr += '<tr>' + tempTd + '</tr>';
-                                });
-                                if (tempTr != '') {
+                            if ("pernyataan_bayi_lahir" == jenis) {
+                                if ("colspan" == item.parameter) {
                                     body += '<tr>' +
-                                        '<td colspan="2">' +
-                                        '<table style="font-size: 12px" class="table table-bordered">' +
-                                        '<thead>' +
-                                        '<tr style="font-weight: bold">' +
-                                        '<td>No</td>' +
-                                        '<td>Tahun</td>' +
-                                        '<td>Kehamilan</td>' +
-                                        '<td>Persalinan</td>' +
-                                        '<td>Oleh</td>' +
-                                        '<td>Jenis</td>' +
-                                        '<td>Beratnya</td>' +
-                                        '<td>Hidup/Mati</td>' +
-                                        '<td>Perdarahan</td>' +
-                                        '<td>Nifas</td>' +
-                                        '</tr>' + '</thead>' +
-                                        '<tbody>' + tempTr + '</tbody>' +
-                                        '</table>' +
-                                        '</td></tr>';
-                                }
-                            } else if ("riwayat_kebidanan" == item.tipe) {
-                                var jml = item.jawaban.split("#");
-                                var tempTr = '';
-
-                                $.each(jml, function (ix, itemx) {
-                                    var td = itemx.split("|");
-                                    var tempTd = "<td>"+(ix+1)+"</td>";
-                                    $.each(td, function (ir, itemr) {
-                                        tempTd += '<td>' + itemr + '</td>';
-                                    });
-                                    tempTr += '<tr>' + tempTd + '</tr>';
-                                });
-
-                                if (tempTr != '') {
+                                        '<td colspan="2">' + jwb + '</td>' +
+                                        '</tr>';
+                                } else if ("TTD Bidan/Perawat" == item.parameter) {
                                     body += '<tr>' +
-                                        '<td colspan="2">' +
-                                        '<table style="font-size: 12px" class="table table-bordered">' +
-                                        '<thead>' +
-                                        '<tr style="font-weight: bold">' +
-                                        '<td>No</td>' +
-                                        '<td>Tahun</td>' +
-                                        '<td>Tempat</td>' +
-                                        '<td>Umur Hamil</td>' +
-                                        '<td>Jenis</td>' +
-                                        '<td>Penolong</td>' +
-                                        '<td>Penyulit</td>' +
-                                        '<td>JK</td>' +
-                                        '<td>Perdarahan</td>' +
-                                        '<td>Hidup/Mati</td>' +
-                                        '</tr>' + '</thead>' +
-                                        '<tbody>' + tempTr + '</tbody>' +
-                                        '</table>' +
-                                        '</td>' +
+                                        '<td colspan="2">' + '<p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px">' + '</td>' +
+                                        '</tr>';
+                                } else if ("TTD Ibu" == item.parameter) {
+                                    body += '<tr>' +
+                                        '<td colspan="2">' + '<div class="pull-right" style="margin-top: -122px"><p>' + item.parameter + '</p><img src="' + jwb + '" style="height: 80px"></div>' + '</td>' +
+                                        '</tr>';
+                                } else {
+                                    body += '<tr>' +
+                                        '<td width="30%">' + item.parameter + '</td>' +
+                                        '<td>' + jwb + '</td>' +
+                                        '</tr>';
+                                }
+                            } else if ("tindakan_rb" == jenis) {
+                                if ("colspan" == item.tipe) {
+                                    body += '<tr>' +
+                                        '<td colspan="3">' + jwb + '</td>' +
+                                        '</tr>';
+                                } else if ("info" == item.tipe) {
+                                    body += '<tr>' +
+                                        '<td width="25%">' + item.parameter + '</td>' +
+                                        '<td >' + item.informasi + '</td>' +
+                                        '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                        '</tr>';
+                                } else if ("ttd" == item.tipe) {
+                                    body += '<tr>' +
+                                        '<td colspan="2">' + item.parameter + '</td>' +
+                                        '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                        '</tr>';
+                                } else if ("bold" == item.tipe) {
+                                    body += '<tr style="font-weight: bold">' +
+                                        '<td width="25%">' + item.parameter + '</td>' +
+                                        '<td >' + item.informasi + '</td>' +
+                                        '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                        '</tr>';
+                                } else {
+                                    body += '<tr>' +
+                                        '<td width="30%">' + item.parameter + '</td>' +
+                                        '<td colspan="2">' + jwb + '</td>' +
                                         '</tr>';
                                 }
                             } else {
-                                body += '<tr>' +
-                                    '<td width="40%">' + item.parameter + '</td>' +
-                                    '<td>' + jwb + '</td>' +
-                                    '</tr>';
+                                if ("ttd" == item.tipe) {
+                                    forTTD += '<tr>' +
+                                        '<td width="40%">' + item.parameter + '</td>' +
+                                        '<td colspan="2">' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                        '<p style="margin-top: -3px">' + cekItemIsNull(item.namaTerang) + '</p>' +
+                                        '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                        '</td>' +
+                                        '</tr>';
+                                } else if ("tabel_pemantau" == item.tipe) {
+                                    var jml = item.informasi.split("|");
+                                    var td = '<td>' + item.jawaban + '</td>';
+                                    $.each(jml, function (ix, itemx) {
+                                        td += '<td>' + itemx + '</td>';
+                                    });
+
+                                    var action = '<td align="center">' +
+                                        '<i id="delete_' + item.idAsesmenKandungan + '" onclick="conRB(\'' + jenis + '\', \'partograf\', \'' + item.idAsesmenKandungan + '\', \'Y\')" class="fa fa-trash hvr-grow" style="color: red"></i>' +
+                                        '</td>';
+
+                                    if (td != '') {
+                                        body += '<tr>' + td + action + '</tr>';
+                                    }
+                                } else if ("riwayat_kandungan" == item.tipe) {
+
+                                    var jml = item.jawaban.split("#");
+                                    var tempTr = '';
+                                    $.each(jml, function (ix, itemx) {
+                                        var td = itemx.split("|");
+                                        var tempTd = "<td>"+(ix+1)+"</td>";
+                                        $.each(td, function (ir, itemr) {
+                                            tempTd += '<td>' + itemr + '</td>';
+                                        });
+                                        tempTr += '<tr>' + tempTd + '</tr>';
+                                    });
+                                    if (tempTr != '') {
+                                        body += '<tr>' +
+                                            '<td colspan="2">' +
+                                            '<table style="font-size: 12px" class="table table-bordered">' +
+                                            '<thead>' +
+                                            '<tr style="font-weight: bold">' +
+                                            '<td>No</td>' +
+                                            '<td>Tahun</td>' +
+                                            '<td>Kehamilan</td>' +
+                                            '<td>Persalinan</td>' +
+                                            '<td>Oleh</td>' +
+                                            '<td>Jenis</td>' +
+                                            '<td>Beratnya</td>' +
+                                            '<td>Hidup/Mati</td>' +
+                                            '<td>Perdarahan</td>' +
+                                            '<td>Nifas</td>' +
+                                            '</tr>' + '</thead>' +
+                                            '<tbody>' + tempTr + '</tbody>' +
+                                            '</table>' +
+                                            '</td></tr>';
+                                    }
+                                } else if ("riwayat_kebidanan" == item.tipe) {
+                                    var jml = item.jawaban.split("#");
+                                    var tempTr = '';
+
+                                    $.each(jml, function (ix, itemx) {
+                                        var td = itemx.split("|");
+                                        var tempTd = "<td>"+(ix+1)+"</td>";
+                                        $.each(td, function (ir, itemr) {
+                                            tempTd += '<td>' + itemr + '</td>';
+                                        });
+                                        tempTr += '<tr>' + tempTd + '</tr>';
+                                    });
+
+                                    if (tempTr != '') {
+                                        body += '<tr>' +
+                                            '<td colspan="2">' +
+                                            '<table style="font-size: 12px" class="table table-bordered">' +
+                                            '<thead>' +
+                                            '<tr style="font-weight: bold">' +
+                                            '<td>No</td>' +
+                                            '<td>Tahun</td>' +
+                                            '<td>Tempat</td>' +
+                                            '<td>Umur Hamil</td>' +
+                                            '<td>Jenis</td>' +
+                                            '<td>Penolong</td>' +
+                                            '<td>Penyulit</td>' +
+                                            '<td>JK</td>' +
+                                            '<td>Perdarahan</td>' +
+                                            '<td>Hidup/Mati</td>' +
+                                            '</tr>' + '</thead>' +
+                                            '<tbody>' + tempTr + '</tbody>' +
+                                            '</table>' +
+                                            '</td>' +
+                                            '</tr>';
+                                    }
+                                } else {
+                                    body += '<tr>' +
+                                        '<td width="40%">' + item.parameter + '</td>' +
+                                        '<td>' + jwb + '</td>' +
+                                        '</tr>';
+                                }
                             }
-                        }
-                        cekData = true;
-                        tgl = item.createdDate;
-                        isKesimpulan = true;
-                    });
-                } else {
-                    body = '<tr>' +
-                        '<td>Data belum ada</td>' +
-                        '</tr>';
-                }
-
-                if (cekSkor) {
-                    first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
-                    last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
-
-                    if ("resiko_jatuh" == jenis) {
-                        var jwb = "";
-                        if (totalSkor >= 0 && totalSkor <= 24) {
-                            jwb = "Rendah";
-                        } else if (totalSkor >= 25 && totalSkor <= 44) {
-                            jwb = "Sedang";
-                        } else if (totalSkor >= 45) {
-                            jwb = "Tinggi";
-                        }
-
-                        if (isKesimpulan) {
-                            kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
-                        }
-                    }
-                }
-
-                if (cekData) {
-                    if ("pemantauan_kalan4" == jenis) {
-                        head = '<tr style="font-weight: bold">' +
-                            '<td>Waktu</td>' +
-                            '<td>Tensi</td>' +
-                            '<td>Nadi</td>' +
-                            '<td>Suhu</td>' +
-                            '<td>Tinggi Fundus</td>' +
-                            '<td>Kontraksi Uterus</td>' +
-                            '<td>Kandung Kemih</td>' +
-                            '<td>Darah yang keluar</td>' +
-                            '<td align="center">Action</td>' +
+                            cekData = true;
+                            tgl = item.createdDate;
+                            isKesimpulan = true;
+                        });
+                    } else {
+                        body = '<tr>' +
+                            '<td>Data belum ada</td>' +
                             '</tr>';
                     }
-                }
 
-                var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                    '<thead>' + head + '</thead>' +
-                    '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
-                    '</table>';
+                    if (cekSkor) {
+                        first = '<tr style="font-weight: bold"><td>Parameter</td><td>Jawaban</td><td align="center">Skor</td></tr>';
+                        last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>'
 
-                var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-                newRow.insertAfter($('table').find('#row_rb_' + jenis));
-                var url = contextPath + '/pages/images/minus-allnew.png';
-                $('#btn_rb_' + jenis).attr('src', url);
-                $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
-            });
+                        if ("resiko_jatuh" == jenis) {
+                            var jwb = "";
+                            if (totalSkor >= 0 && totalSkor <= 24) {
+                                jwb = "Rendah";
+                            } else if (totalSkor >= 25 && totalSkor <= 44) {
+                                jwb = "Sedang";
+                            } else if (totalSkor >= 45) {
+                                jwb = "Tinggi";
+                            }
+
+                            if (isKesimpulan) {
+                                kesimpulan = '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Resiko Jatuh</td><td align="center">' + jwb + '</td></tr>';
+                            }
+                        }
+                    }
+
+                    if (cekData) {
+                        if ("pemantauan_kalan4" == jenis) {
+                            head = '<tr style="font-weight: bold">' +
+                                '<td>Waktu</td>' +
+                                '<td>Tensi</td>' +
+                                '<td>Nadi</td>' +
+                                '<td>Suhu</td>' +
+                                '<td>Tinggi Fundus</td>' +
+                                '<td>Kontraksi Uterus</td>' +
+                                '<td>Kandung Kemih</td>' +
+                                '<td>Darah yang keluar</td>' +
+                                '<td align="center">Action</td>' +
+                                '</tr>';
+                        }
+                    }
+
+                    var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                        '<thead>' + head + '</thead>' +
+                        '<tbody>' + first + body + last + kesimpulan + forTTD + '</tbody>' +
+                        '</table>';
+
+                    var newRow = $('<tr id="del_rb_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                    newRow.insertAfter($('table').find('#row_rb_' + jenis));
+                    var url = contextPath + '/pages/images/minus-allnew.png';
+                    $('#btn_rb_' + jenis).attr('src', url);
+                    $('#btn_rb_' + jenis).attr('onclick', 'delRowRB(\'' + jenis + '\')');
+                });
+            }
         }
     }
 }
@@ -3120,31 +3111,32 @@ function saveAsuhanKeperawatanRB(jenis, ket) {
             'ttd_perawat': ttd
         }
 
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-
-        $('#save_rb_' + jenis).hide();
-        $('#load_rb_' + jenis).show();
-        dwr.engine.setAsync(true);
-        RencanaAsuhanKeperawatanAction.save(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_rb_' + jenis).show();
-                    $('#load_rb_' + jenis).hide();
-                    $('#modal-rb-' + jenis).modal('hide');
-                    $('#warning_rb_' + ket).show().fadeOut(5000);
-                    $('#msg_rb_' + ket).text("Berhasil menambahkan data ....");
-                    $('#modal-rb-' + jenis).scrollTop(0);
-                    listAsuhanKeperawatanRB(ket);
-                } else {
-                    $('#save_rb_' + jenis).show();
-                    $('#load_rb_' + jenis).hide();
-                    $('#warning_rb_' + jenis).show().fadeOut(5000);
-                    $('#msg_rb_' + jenis).text(res.msg);
-                    $('#modal-rb-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_rb_' + jenis).hide();
+            $('#load_rb_' + jenis).show();
+            dwr.engine.setAsync(true);
+            RencanaAsuhanKeperawatanAction.save(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_rb_' + jenis).show();
+                        $('#load_rb_' + jenis).hide();
+                        $('#modal-rb-' + jenis).modal('hide');
+                        $('#warning_rb_' + ket).show().fadeOut(5000);
+                        $('#msg_rb_' + ket).text("Berhasil menambahkan data ....");
+                        $('#modal-rb-' + jenis).scrollTop(0);
+                        listAsuhanKeperawatanRB(ket);
+                    } else {
+                        $('#save_rb_' + jenis).show();
+                        $('#load_rb_' + jenis).hide();
+                        $('#warning_rb_' + jenis).show().fadeOut(5000);
+                        $('#msg_rb_' + jenis).text(res.msg);
+                        $('#modal-rb-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     } else {
         $('#save_rb_' + jenis).show();
         $('#load_rb_' + jenis).hide();
@@ -3155,91 +3147,93 @@ function saveAsuhanKeperawatanRB(jenis, ket) {
 }
 
 function listAsuhanKeperawatanRB(jenis) {
-    var table = "";
-    RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
+    if(!cekSession()){
+        var table = "";
+        RencanaAsuhanKeperawatanAction.getListDetail(idDetailCheckup, jenis, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
 
-                var diagnosa = "";
-                var hasil = "";
-                var intervensi = "";
-                var implementasi = "";
-                var evaluasi = "";
+                    var diagnosa = "";
+                    var hasil = "";
+                    var intervensi = "";
+                    var implementasi = "";
+                    var evaluasi = "";
 
-                var ul1 = "";
-                var ul2 = "";
-                var ul3 = "";
-                var ul4 = "";
-                var ul5 = "";
+                    var ul1 = "";
+                    var ul2 = "";
+                    var ul3 = "";
+                    var ul4 = "";
+                    var ul5 = "";
 
-                if (item.diagnosa != null) {
-                    var v = item.diagnosa.split("|");
-                    $.each(v, function (i, item) {
-                        diagnosa += '<li>' + item + '</li>';
-                    });
-                }
+                    if (item.diagnosa != null) {
+                        var v = item.diagnosa.split("|");
+                        $.each(v, function (i, item) {
+                            diagnosa += '<li>' + item + '</li>';
+                        });
+                    }
 
-                if (item.hasil != null) {
-                    var v = item.hasil.split("|");
-                    $.each(v, function (i, item) {
-                        hasil += '<li>' + item + '</li>';
-                    });
-                }
+                    if (item.hasil != null) {
+                        var v = item.hasil.split("|");
+                        $.each(v, function (i, item) {
+                            hasil += '<li>' + item + '</li>';
+                        });
+                    }
 
-                if (item.intervensi != null) {
-                    var v = item.intervensi.split("|");
-                    $.each(v, function (i, item) {
-                        intervensi += '<li>' + item + '</li>';
-                    });
-                }
+                    if (item.intervensi != null) {
+                        var v = item.intervensi.split("|");
+                        $.each(v, function (i, item) {
+                            intervensi += '<li>' + item + '</li>';
+                        });
+                    }
 
-                if (item.implementasi != null) {
-                    var v = item.implementasi.split("|");
-                    $.each(v, function (i, item) {
-                        implementasi += '<li>' + item + '</li>';
-                    });
-                }
+                    if (item.implementasi != null) {
+                        var v = item.implementasi.split("|");
+                        $.each(v, function (i, item) {
+                            implementasi += '<li>' + item + '</li>';
+                        });
+                    }
 
-                if (item.evaluasi != null) {
-                    var v = item.evaluasi.split("|");
-                    $.each(v, function (i, item) {
-                        evaluasi += '<li>' + item + '</li>';
-                    });
-                }
+                    if (item.evaluasi != null) {
+                        var v = item.evaluasi.split("|");
+                        $.each(v, function (i, item) {
+                            evaluasi += '<li>' + item + '</li>';
+                        });
+                    }
 
-                if (item.ttdPerawat != null) {
-                    evaluasi += '<li style="list-style-type: none; margin-top: 10px">' + '<label>Perawat</label><img style="width: 50px; height: 20px" src="' + item.ttdPerawat + '">' + '</li>';
-                }
+                    if (item.ttdPerawat != null) {
+                        evaluasi += '<li style="list-style-type: none; margin-top: 10px">' + '<label>Perawat</label><img style="width: 50px; height: 20px" src="' + item.ttdPerawat + '">' + '</li>';
+                    }
 
-                if (diagnosa != '') {
-                    ul1 = '<ul style="margin-left: 12px">' + diagnosa + '</ul>'
-                }
-                if (hasil != '') {
-                    ul2 = '<ul style="margin-left: 12px">' + hasil + '</ul>'
-                }
-                if (intervensi != '') {
-                    ul3 = '<ul style="margin-left: 12px">' + intervensi + '</ul>'
-                }
-                if (implementasi != '') {
-                    ul4 = '<ul style="margin-left: 12px">' + implementasi + '</ul>'
-                }
-                if (evaluasi != '') {
-                    ul5 = '<ul style="margin-left: 12px">' + evaluasi + '</ul>'
-                }
+                    if (diagnosa != '') {
+                        ul1 = '<ul style="margin-left: 12px">' + diagnosa + '</ul>'
+                    }
+                    if (hasil != '') {
+                        ul2 = '<ul style="margin-left: 12px">' + hasil + '</ul>'
+                    }
+                    if (intervensi != '') {
+                        ul3 = '<ul style="margin-left: 12px">' + intervensi + '</ul>'
+                    }
+                    if (implementasi != '') {
+                        ul4 = '<ul style="margin-left: 12px">' + implementasi + '</ul>'
+                    }
+                    if (evaluasi != '') {
+                        ul5 = '<ul style="margin-left: 12px">' + evaluasi + '</ul>'
+                    }
 
-                table += '<tr>' +
-                    '<td>' + item.waktu + '</td>' +
-                    '<td>' + ul1 + '</td>' +
-                    '<td>' + ul2 + '</td>' +
-                    '<td>' + ul3 + '</td>' +
-                    '<td>' + ul4 + '</td>' +
-                    '<td>' + ul5 + '</td>' +
-                    '</tr>';
-            });
+                    table += '<tr>' +
+                        '<td>' + item.waktu + '</td>' +
+                        '<td>' + ul1 + '</td>' +
+                        '<td>' + ul2 + '</td>' +
+                        '<td>' + ul3 + '</td>' +
+                        '<td>' + ul4 + '</td>' +
+                        '<td>' + ul5 + '</td>' +
+                        '</tr>';
+                });
 
-            $('#body_asuhan_rb').html(table);
-        }
-    });
+                $('#body_asuhan_rb').html(table);
+            }
+        });
+    }
 }
 
 function setRiwayatHamil(jenis) {
@@ -3504,58 +3498,62 @@ function conRB(jenis, ket, idAsesmen, isKala) {
 
 function delRBC(jenis, ket, idAsesmen, isKala) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startIconSpin('delete_' + idAsesmen);
-    dwr.engine.setAsync(true);
-    KandunganAction.deletePartograf(idAsesmen, isKala, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopIconSpin('delete_' + idAsesmen);
-                $('#modal-rb-' + ket).scrollTop(0);
-                $('#warning_rb_' + ket).show().fadeOut(5000);
-                $('#msg_rb_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopIconSpin('delete_' + idAsesmen);
-                $('#modal-rb-' + ket).scrollTop(0);
-                $('#warn_' + ket).show().fadeOut(5000);
-                $('#msg_' + ket).text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startIconSpin('delete_' + idAsesmen);
+        dwr.engine.setAsync(true);
+        KandunganAction.deletePartograf(idAsesmen, isKala, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-rb-' + ket).scrollTop(0);
+                    $('#warning_rb_' + ket).show().fadeOut(5000);
+                    $('#msg_rb_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-rb-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+            }
+        });
+    }
 }
 
 function delRB(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_' + jenis);
-    dwr.engine.setAsync(true);
-    KandunganAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_' + jenis);
-                $('#modal-rb-' + ket).scrollTop(0);
-                $('#warning_rb_' + ket).show().fadeOut(5000);
-                $('#msg_rb_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_' + jenis);
-                $('#modal-rb-' + ket).scrollTop(0);
-                $('#warn_' + ket).show().fadeOut(5000);
-                $('#msg_' + ket).text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_' + jenis);
+        dwr.engine.setAsync(true);
+        KandunganAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_' + jenis);
+                    $('#modal-rb-' + ket).scrollTop(0);
+                    $('#warning_rb_' + ket).show().fadeOut(5000);
+                    $('#msg_rb_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_' + jenis);
+                    $('#modal-rb-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+            }
+        });
+    }
 }
 
 function setHPL(idTujuan, idHPHT, idLama){

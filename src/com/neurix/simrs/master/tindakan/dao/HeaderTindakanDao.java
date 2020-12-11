@@ -3,6 +3,7 @@ package com.neurix.simrs.master.tindakan.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
@@ -11,9 +12,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by reza on 13/08/20.
- */
 public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, String> {
     @Override
     protected Class<ImSimrsHeaderTindakanEntity> getEntityClass() {
@@ -39,6 +37,14 @@ public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, S
             criteria.add(Restrictions.eq("flagKonsulTele", mapCriteria.get("konsul_tele").toString()));
         }
         return criteria.list();
+    }
+
+    public List<ImSimrsHeaderTindakanEntity> getHeaderTindakan(String namaTindakan) throws HibernateException {
+        List<ImSimrsHeaderTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsHeaderTindakanEntity.class)
+                .add(Restrictions.ilike("namaTindakan", namaTindakan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 
     public String getNextSeq() {

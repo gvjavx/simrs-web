@@ -21,6 +21,7 @@ import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -248,11 +249,16 @@ public class TindakanAction extends BaseTransactionAction {
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         Branch branch = new Branch();
         branch.setFlag("Y");
-
+        branch.setNotLike("KP");
+        branch.setRoleName(CommonUtil.roleAsLogin());
+        if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            branch.setBranchId(CommonUtil.userBranchLogin());
+        }
         try {
             branchList = branchBo.getByCriteria(branch);
         } catch (GeneralBOException e) {
-            logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[TindakanAction.getComboBranch] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            throw new GeneralBOException("[TindakanAction.getComboBranch] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
         return branchList;
     }
@@ -261,6 +267,7 @@ public class TindakanAction extends BaseTransactionAction {
         List<ImSimrsPelayananEntity> branchList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
             try {
                 branchList = pelayananBo.getJustPelayananByBranch(branchId);
@@ -345,16 +352,42 @@ public class TindakanAction extends BaseTransactionAction {
                     tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
                     tindakan.setIsIna(object.getString("is_ina"));
                     tindakan.setIsElektif(object.getString("is_elektif"));
+                    if(object.has("id_kelas")){
+                        if("empty".equalsIgnoreCase(object.getString("id_kelas"))){
+                            tindakan.setFlagIdKelasRuangan("N");
+                        }else{
+                            tindakan.setFlagIdKelasRuangan("Y");
+                            tindakan.setIdKelasRuangan(object.getString("id_kelas"));
+                        }
+                    }
                     tindakan.setCreatedWho(userLogin);
                     tindakan.setLastUpdate(updateTime);
                     tindakan.setCreatedDate(updateTime);
                     tindakan.setLastUpdateWho(userLogin);
                     tindakan.setAction("C");
                     tindakan.setFlag("Y");
-                    tindakanList.add(tindakan);
+                    List<ImSimrsTindakanEntity> entityList = new ArrayList<>();
+                    try {
+                        entityList = tindakanBo.cekTindakan(object.getString("id_header_tindakan"), object.getString("id_pelayanan"), object.getString("id_kelas"));
+                        response.setStatus("success");
+                        response.setMsg("Berhasil...!");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Kesalahan dalam mencari data tindakan...!");
+                        return response;
+                    }
+                    if(entityList.size() > 0){
+                        response.setStatus("error");
+                        response.setMsg("Mohon Maaf Data "+object.getString("nama_header_tindakan")+" di "+object.getString("nama_pelayanan")+" sudah ada...!");
+                        return response;
+                    }else{
+                        tindakanList.add(tindakan);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil...!");
+                    }
                 }
 
-                if(tindakanList.size() > 0){
+                if(tindakanList.size() > 0 && "success".equalsIgnoreCase(response.getStatus())){
                     response = tindakanBo.saveAdd(tindakanList);
                 }else{
                     response.setStatus("error");

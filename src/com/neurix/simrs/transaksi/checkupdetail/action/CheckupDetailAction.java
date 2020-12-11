@@ -889,7 +889,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         try {
-            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan, null);
+            kategoriTindakanList = kategoriTindakanBoProxy.getListKategoriTindakan(pelayanan, null, CommonUtil.userBranchLogin());
         } catch (GeneralBOException e) {
             logger.error("[CheckupDetailAction.getListComboKategoriTIndakan] Error when get kategori tindakan ," + "Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error Found problem when get kategori tindakan , please inform to your admin.\n" + e.getMessage());
@@ -900,11 +900,12 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<Tindakan> getListComboTindakan(String idKategoriTindakan) {
+    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan) {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
         List<Tindakan> tindakanList = new ArrayList<>();
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
+        tindakan.setIdKelasRuangan(idKelasRuangan);
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
         try {
@@ -926,7 +927,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             try {
-                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, kategori);
+                kategoriTindakans = kategoriTindakanBo.getListKategoriTindakan(idPelayanan, kategori, CommonUtil.userBranchLogin());
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.listOfDokter] Error when searching data, Found problem when searching data, please inform to your admin.", e);
             }
@@ -1190,7 +1191,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return response;
     }
 
-    public CrudResponse savePeriksaPasien(String data) {
+    public CrudResponse savePeriksaPasien(String data, String asuransi) {
         CrudResponse response = new CrudResponse();
         logger.info("[CheckupDetailAction.savePeriksaPasien] START process >>>");
 
@@ -1313,6 +1314,44 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
                     }
 
+                    if("asuransi".equalsIgnoreCase(jenisPasien)){
+                        if(asuransi != null && !"".equalsIgnoreCase(asuransi)){
+                            try {
+                                JSONObject oj = new JSONObject(asuransi);
+                                if(oj != null){
+                                    if (oj.has("no_polisi")) {
+                                        headerDetailCheckup.setNoRujukan(oj.getString("no_polisi"));
+                                    }
+                                    if (oj.has("tgl_kejadian")) {
+                                        headerDetailCheckup.setTglRujukan(oj.getString("tgl_kejadian"));
+                                    }
+                                    if (oj.has("surat_rujukan")) {
+                                        if(oj.getString("surat_rujukan") != null && !"".equalsIgnoreCase(oj.getString("surat_rujukan"))){
+                                            BASE64Decoder decoder = new BASE64Decoder();
+                                            byte[] decodedBytes = decoder.decodeBuffer(oj.getString("surat_rujukan"));
+                                            logger.info("Decoded upload data : " + decodedBytes.length);
+                                            String fileName = idDetailCheckup + "-" + dateFormater("MM") + dateFormater("yy") + ".png";
+                                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_DOC_RUJUK_PASIEN + fileName;
+                                            logger.info("File save path : " + uploadFile);
+                                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                                            if (image == null) {
+                                                logger.error("Buffered Image is null");
+                                            } else {
+                                                File f = new File(uploadFile);
+                                                ImageIO.write(image, "png", f);
+                                                headerDetailCheckup.setSuratRujukan(fileName);
+                                            }
+                                        }
+                                    }
+                                }
+                            }catch (Exception e){
+                                response.setStatus("error");
+                                response.setMsg("[Found Error] JSON data asuransi tidak bisa dilakukan...!");
+                            }
+                        }
+                    }
+
                     if ("pindah_poli".equalsIgnoreCase(tindakLanjut)) {
                         response = pindahPoli(idDetailCheckup, poliLain, idDokter, metodeBayar, uangMuka);
                     } else if ("lanjut_paket".equalsIgnoreCase(tindakLanjut)) {
@@ -1394,11 +1433,13 @@ public class CheckupDetailAction extends BaseMasterAction {
         String tglToday = new SimpleDateFormat("yyyy-MM-dd").format(date);
         String user = CommonUtil.userLogin();
         String branchId = CommonUtil.userBranchLogin();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
 
         if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(idPoliRujukan)) {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BpjsBo bpjsBo = (BpjsBo) ctx.getBean("bpjsBoProxy");
             CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+            CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
             DiagnosaRawatBo diagnosaRawatBo = (DiagnosaRawatBo) ctx.getBean("diagnosaRawatBoProxy");
             PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
             HeaderCheckup detailCheckup = new HeaderCheckup();
@@ -1433,7 +1474,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         request.setJnsPelayanan("2");
                         request.setCatatan(catatan);
                         request.setDiagRujukan(diagnosaRawat.getIdDiagnosa());
-                        request.setTipeRujukan("1");
+                        request.setTipeRujukan("0");
                         request.setPoliRujukan(pelayananEntity.getKodePoliVclaim());
                         request.setUserPembuatRujukan(user);
                         try {
@@ -1444,8 +1485,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
 
                         if("200".equalsIgnoreCase(rujukanResponse.getStatus())){
-                            finalResponse.setStatus("success");
-                            finalResponse.setMsg("Berhasil");
+                            HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
+                            headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
+                            headerDetailCheckup.setPoliRujukanInternal(idPoliRujukan);
+                            headerDetailCheckup.setNoRujukanInternal(rujukanResponse.getNoRujukan());
+                            headerDetailCheckup.setLastUpdate(now);
+                            headerDetailCheckup.setLastUpdateWho(user);
+                            finalResponse = checkupDetailBo.setNoRujukan(headerDetailCheckup);
                         }else{
                             finalResponse.setStatus("error");
                             finalResponse.setMsg(rujukanResponse.getMessage());
@@ -2676,6 +2722,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                             diagnosaRawatList = diagnosaRawatBo.getByCriteria(diagnosaRawat);
                         } catch (GeneralBOException e) {
                             logger.error("[Foun Error] when search diagnosa awal " + e);
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Error saat mencari data diagnosa, "+e.getMessage());
+                            return finalResponse;
                         }
 
                         if (diagnosaRawatList.size() > 0) {
@@ -2694,6 +2743,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                             pelayananList = pelayananBo.getByCriteria(pelayanan);
                         } catch (GeneralBOException e) {
                             logger.error("[Found Error] when search pelayanan " + e.getMessage());
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Error saat mencari data pelayanan, "+e.getMessage());
+                            return finalResponse;
                         }
 
                         if (pelayananList.size() > 0) {
@@ -5162,6 +5214,66 @@ public class CheckupDetailAction extends BaseMasterAction {
         } else {
             return "print_radiologi";
         }
+    }
+
+    public String printNoRujukan() {
+        HeaderCheckup checkup = new HeaderCheckup();
+        String id = getId();
+        String jk = "";
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        try {
+            checkup = checkupBoProxy.getDataDetailPasien(id);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when search data detail pasien " + e.getMessage());
+        }
+
+        if (checkup != null) {
+            reportParams.put("area", CommonUtil.userAreaName());
+            reportParams.put("unit", CommonUtil.userBranchNameLogin());
+            reportParams.put("idPasien", checkup.getIdPasien());
+            reportParams.put("idDetailCheckup", id);
+            reportParams.put("logo", logo);
+            reportParams.put("nik", checkup.getNoKtp());
+            reportParams.put("nama", checkup.getNama());
+            reportParams.put("noBpjs", checkup.getNoBpjs());
+
+            if (checkup.getTglLahir() != null) {
+                String tahun = calculateAge(checkup.getTglLahir(), false);
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                reportParams.put("umur", tahun);
+            }
+
+            if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
+                jk = "Laki-Laki";
+            } else {
+                jk = "Perempuan";
+            }
+
+            reportParams.put("jenisKelamin", jk);
+            reportParams.put("diagnosa", "("+checkup.getDiagnosa()+") "+checkup.getNamaDiagnosa());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                return "init_add";
+            }
+        }
+        return "print_rujukan";
     }
 
     private String calculateAge(java.sql.Date birthDate, boolean justTahun) {

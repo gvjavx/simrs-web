@@ -47,47 +47,40 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
         return result;
     }
 
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori) {
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori, String branchId) {
 
         List<KategoriTindakan> tindakanList = new ArrayList<>();
         String pelayanan = "%";
-        String union = "";
-        String branchId = CommonUtil.userBranchLogin();
+        String SQL = "";
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             pelayanan = idPelayanan;
         }
-
         if (kategori != null && !"".equalsIgnoreCase(kategori)) {
-            union = "UNION ALL\n" +
-                    "SELECT * FROM (SELECT \n" +
+            SQL = "SELECT \n" +
                     "a.id_kategori_tindakan,\n" +
                     "a.kategori_tindakan\n" +
                     "FROM im_simrs_kategori_tindakan a\n" +
                     "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE c.tipe_pelayanan = '" + kategori + "'\n" +
-                    "AND b.branch_id = '" + branchId + "'\n" +
+                    "WHERE c.tipe_pelayanan = '"+kategori+"'\n" +
+                    "AND b.branch_id = '"+branchId+"'\n" +
                     "GROUP BY a.id_kategori_tindakan,\n" +
+                    "a.kategori_tindakan";
+        }else{
+            SQL = "SELECT \n" +
+                    "a.id_kategori_tindakan,\n" +
                     "a.kategori_tindakan\n" +
-                    ")b";
+                    "FROM im_simrs_kategori_tindakan a\n" +
+                    "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
+                    "WHERE b.id_pelayanan = '"+pelayanan+"' \n" +
+                    "GROUP BY a.id_kategori_tindakan,\n" +
+                    "a.kategori_tindakan";
         }
-
-        String SQL = "SELECT * FROM (SELECT \n" +
-                "a.id_kategori_tindakan,\n" +
-                "a.kategori_tindakan\n" +
-                "FROM im_simrs_kategori_tindakan a\n" +
-                "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
-                "WHERE b.id_pelayanan = :idPel \n" +
-                "GROUP BY a.id_kategori_tindakan,\n" +
-                "a.kategori_tindakan\n" +
-                ") a \n" + union;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idPel", pelayanan)
                 .list();
-
         if (results.size() > 0) {
             for (Object[] obj : results) {
                 KategoriTindakan tindakan = new KategoriTindakan();

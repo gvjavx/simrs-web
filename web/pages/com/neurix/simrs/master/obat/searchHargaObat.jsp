@@ -43,7 +43,6 @@
     <section class="content-header">
         <h1>
             Harga Obat
-            <small>e-HEALTH</small>
         </h1>
     </section>
 

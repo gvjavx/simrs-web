@@ -124,7 +124,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "a.keterangan,\n" +
                     "d.id_jenis_periksa_pasien,\n"+
                     "um.id, \n"+
-                    "um.status_bayar \n"+
+                    "um.status_bayar, \n"+
+                    "a.is_pending \n"+
                     "FROM it_simrs_periksa_lab a\n" +
                     "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                     "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
@@ -160,6 +161,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     dataLab.setApproveFlag(obj[11] != null ? obj[11].toString() : null);
                     dataLab.setKeterangan(obj[12] != null ? obj[12].toString() : null);
                     dataLab.setIdJenisPeriksa(obj[13] != null ? obj[13].toString() : "");
+                    dataLab.setIsPending(obj[16] != null ? obj[16].toString() : "");
                     if(obj[14] != null){
                         if("umum".equalsIgnoreCase(dataLab.getIdJenisPeriksa())){
                             String bayar = (obj[15] != null ? obj[15].toString() : "");
@@ -416,6 +418,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "AND c.is_read IS NULL\n" +
                 "AND c.status_periksa = '0'\n" +
                 "AND d.kategori = :kategori\n" +
+                "AND CAST(c.created_date AS DATE) = CURRENT_DATE \n" +
                 "ORDER BY c.created_date ASC";
 
         List<Objects[]> result = new ArrayList<>();

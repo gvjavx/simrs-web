@@ -434,6 +434,42 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
+    public CrudResponse setNoRujukan(HeaderDetailCheckup bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
+        ItSimrsHeaderDetailCheckupEntity entity = new ItSimrsHeaderDetailCheckupEntity();
+        if(bean.getNoRujukanInternal() != null && !"".equalsIgnoreCase(bean.getNoRujukanInternal())){
+            try {
+                entity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error when search data detail checkup, "+e.getMessage());
+            }
+            if(entity != null){
+                entity.setNoRujukanInternal(bean.getNoRujukanInternal());
+                entity.setAction("U");
+                entity.setLastUpdate(bean.getLastUpdate());
+                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                entity.setPoliRujukanInternal(bean.getPoliRujukanInternal());
+                try {
+                    checkupDetailDao.updateAndSave(entity);
+                    response.setStatus("success");
+                    response.setMsg("Berhasil");
+                }catch (HibernateException e){
+                    response.setStatus("error");
+                    response.setMsg("Error when search data detail checkup, "+e.getMessage());
+                }
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("No rujukan tidak ditemukan...!");
+        }
+        return response;
+    }
+
+    @Override
     public HeaderDetailCheckup getTotalBiayaTindakanBpjs(String idDetailCheckup) throws GeneralBOException {
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
         try {
@@ -561,6 +597,15 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             entity.setTindakLanjut(bean.getTindakLanjut());
             if ("".equalsIgnoreCase(bean.getCatatan()) && bean.getCatatan() != null) {
                 entity.setCatatan(bean.getCatatan());
+            }
+            if(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan())){
+                entity.setNoRujukan(bean.getNoRujukan());
+            }
+            if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
+                entity.setTglRujukan(java.sql.Date.valueOf(bean.getTglRujukan()));
+            }
+            if(bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan())){
+                entity.setUrlDocRujuk(bean.getSuratRujukan());
             }
             entity.setRsRujukan(bean.getRsRujukan());
 

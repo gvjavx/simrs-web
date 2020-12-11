@@ -762,29 +762,31 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if (cek) {
-        var result1 = JSON.stringify(data);
-        var result2 = JSON.stringify(dataPasien);
-        $('#save_ring_' + jenis).hide();
-        $('#load_ring_' + jenis).show();
-        dwr.engine.setAsync(true);
-        RingkasanPasienAction.save(result1, result2, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_ring_' + jenis).show();
-                    $('#load_ring_' + jenis).hide();
-                    $('#modal-ring-' + jenis).modal('hide');
-                    $('#warning_ring_' + ket).show().fadeOut(5000);
-                    $('#msg_ring_' + ket).text("Berhasil menambahkan data ringkasan pasien...");
-                    $('#modal-ring-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_ring_' + jenis).show();
-                    $('#load_ring_' + jenis).hide();
-                    $('#warning_ring_' + jenis).show().fadeOut(5000);
-                    $('#msg_ring_' + jenis).text(res.msg);
-                    $('#modal-ring-' + jenis).scrollTop(0);
-                }
-            }
-        })
+       if(!cekSession()){
+           var result1 = JSON.stringify(data);
+           var result2 = JSON.stringify(dataPasien);
+           $('#save_ring_' + jenis).hide();
+           $('#load_ring_' + jenis).show();
+           dwr.engine.setAsync(true);
+           RingkasanPasienAction.save(result1, result2, {
+               callback: function (res) {
+                   if (res.status == "success") {
+                       $('#save_ring_' + jenis).show();
+                       $('#load_ring_' + jenis).hide();
+                       $('#modal-ring-' + jenis).modal('hide');
+                       $('#warning_ring_' + ket).show().fadeOut(5000);
+                       $('#msg_ring_' + ket).text("Berhasil menambahkan data ringkasan pasien...");
+                       $('#modal-ring-' + jenis).scrollTop(0);
+                   } else {
+                       $('#save_ring_' + jenis).show();
+                       $('#load_ring_' + jenis).hide();
+                       $('#warning_ring_' + jenis).show().fadeOut(5000);
+                       $('#msg_ring_' + jenis).text(res.msg);
+                       $('#modal-ring-' + jenis).scrollTop(0);
+                   }
+               }
+           })
+       }
     } else {
         $('#warning_ring_' + jenis).show().fadeOut(5000);
         $('#msg_ring_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -793,179 +795,190 @@ function saveRingkasanPasien(jenis, ket) {
 }
 
 function detailRingkasanPasien(jenis) {
-    var cekId = "";
-    var idDetail = $('#h_id_detail_pasien').val();
-    if(idDetail != null && idDetail != ''){
-        cekId = idDetail;
-    }else{
-        cekId = idDetailCheckup;
-    }
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        var totalSkor = 0;
-        var first = "";
-        var last = "";
-        var tgl = "";
-        var cekData = false;
+    if(!cekSession()){
+        var cekId = "";
+        var idDetail = $('#h_id_detail_pasien').val();
+        if(idDetail != null && idDetail != ''){
+            cekId = idDetail;
+        }else{
+            cekId = idDetailCheckup;
+        }
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            var totalSkor = 0;
+            var first = "";
+            var last = "";
+            var tgl = "";
+            var cekData = false;
 
-        RingkasanPasienAction.getListDetail(cekId, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    if (item.jawaban != null) {
-                        jwb = item.jawaban;
-                    }
+            RingkasanPasienAction.getListDetail(cekId, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        if (item.jawaban != null) {
+                            jwb = item.jawaban;
+                        }
 
-                    if ("ringkasan_pulang_pasien" == item.keterangan) {
-                        if ("Terapi Pulang" == item.parameter) {
-                            var table = "";
-                            if (jwb != '') {
-                                var temp1 = "";
-                                var tr = jwb.split("=");
-                                $.each(tr, function (i, item) {
-                                    var td = item.split("|");
-                                    var temp2 = "";
-                                    $.each(td, function (i, item) {
-                                        if (temp2 != '') {
-                                            temp2 = temp2 + '<td>' + item + '</td>';
+                        if ("ringkasan_pulang_pasien" == item.keterangan) {
+                            if ("Terapi Pulang" == item.parameter) {
+                                var table = "";
+                                if (jwb != '') {
+                                    var temp1 = "";
+                                    var tr = jwb.split("=");
+                                    $.each(tr, function (i, item) {
+                                        var td = item.split("|");
+                                        var temp2 = "";
+                                        $.each(td, function (i, item) {
+                                            if (temp2 != '') {
+                                                temp2 = temp2 + '<td>' + item + '</td>';
+                                            } else {
+                                                temp2 = '<td>' + item + '</td>';
+                                            }
+                                        });
+                                        if (temp1 != '') {
+                                            temp1 = temp1 + '<tr>' + temp2 + '</tr>';
                                         } else {
-                                            temp2 = '<td>' + item + '</td>';
+                                            temp1 = '<tr>' + temp2 + '</tr>';
                                         }
                                     });
-                                    if (temp1 != '') {
-                                        temp1 = temp1 + '<tr>' + temp2 + '</tr>';
-                                    } else {
-                                        temp1 = '<tr>' + temp2 + '</tr>';
-                                    }
-                                });
-                                table = '<label>Terapi Pulang</label>' +
-                                    '<table class="table table-bordered table-striped" style="font-size: 12px">' +
-                                    '<thead>' +
-                                    '<tr>' +
-                                    '<td>Nama Obat</td>' +
-                                    '<td>Jumlah</td>' +
-                                    '<td>Dosis</td>' +
-                                    '<td>Cara Pemberian</td>' +
-                                    '</tr>' +
-                                    '</thead>' +
-                                    '<tbody>' +
-                                    temp1 +
-                                    '</tbody>' +
-                                    '</table>';
+                                    table = '<label>Terapi Pulang</label>' +
+                                        '<table class="table table-bordered table-striped" style="font-size: 12px">' +
+                                        '<thead>' +
+                                        '<tr>' +
+                                        '<td>Nama Obat</td>' +
+                                        '<td>Jumlah</td>' +
+                                        '<td>Dosis</td>' +
+                                        '<td>Cara Pemberian</td>' +
+                                        '</tr>' +
+                                        '</thead>' +
+                                        '<tbody>' +
+                                        temp1 +
+                                        '</tbody>' +
+                                        '</table>';
 
-                                body += '<tr>' +
-                                    '<td colspan="2">' + table + '</td>' +
-                                    '</tr>';
-                            }
-                        } else {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("resume_medis_pasien" == item.keterangan) {
-                        console.log(jwb);
-                        if ("Prognosis" == item.parameter) {
-                            var isi = jwb.split("|");
-                            var li = "";
-                            $.each(isi, function (i, item) {
-                                if ("Prognosis" == item) {
-                                    li += '<li style="list-style-type: none; margin-left: -15px">' + item + '</li>';
-                                } else if ("Usulan Tindak Lanjut Kontrol Poli" == item) {
-                                    li += '<li style="list-style-type: none; margin-left: -15px">' + item + '</li>';
-                                } else {
-                                    li += '<li>' + item + '</li>';
+                                    body += '<tr>' +
+                                        '<td colspan="2">' + table + '</td>' +
+                                        '</tr>';
                                 }
-                            });
-
-                            if (li != '') {
+                            } else {
                                 body += '<tr>' +
-                                    '<td colspan="2">' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
                                     '</tr>';
                             }
-                        } else {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("ringkasan_keluar_pasien" == item.keterangan) {
-                        if ("Operasi/Tindakan" == item.parameter) {
-                            var table = "";
-                            if (jwb != '') {
-                                var temp1 = "";
-                                var tr = jwb.split("=");
-                                $.each(tr, function (i, item) {
-                                    var td = item.split("|");
-                                    var temp2 = "";
-                                    $.each(td, function (i, item) {
-                                        if (temp2 != '') {
-                                            temp2 = temp2 + '<td>' + item + '</td>';
-                                        } else {
-                                            temp2 = '<td>' + item + '</td>';
-                                        }
-                                    });
-                                    if (temp1 != '') {
-                                        temp1 = temp1 + '<tr>' + temp2 + '</tr>';
+                        } else if ("resume_medis_pasien" == item.keterangan) {
+                            if ("Prognosis" == item.parameter) {
+                                var isi = jwb.split("|");
+                                var li = "";
+                                $.each(isi, function (i, item) {
+                                    if ("Prognosis" == item) {
+                                        li += '<li style="list-style-type: none; margin-left: -15px">' + item + '</li>';
+                                    } else if ("Usulan Tindak Lanjut Kontrol Poli" == item) {
+                                        li += '<li style="list-style-type: none; margin-left: -15px">' + item + '</li>';
                                     } else {
-                                        temp1 = '<tr>' + temp2 + '</tr>';
+                                        li += '<li>' + item + '</li>';
                                     }
                                 });
-                                table = '<label>' + item.parameter + '</label>' +
-                                    '<table class="table table-bordered table-striped" style="font-size: 12px">' +
-                                    '<thead>' +
-                                    '<tr>' +
-                                    '<td>Tanggal</td>' +
-                                    '<td>Tindakan</td>' +
-                                    '<td>ICD9CM</td>' +
-                                    '<td>B</td>' +
-                                    '<td>S</td>' +
-                                    '<td>K</td>' +
-                                    '<td>Anastesi</td>' +
-                                    '</tr>' +
-                                    '</thead>' +
-                                    '<tbody>' +
-                                    temp1 +
-                                    '</tbody>' +
-                                    '</table>';
 
+                                if (li != '') {
+                                    body += '<tr>' +
+                                        '<td colspan="2">' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                        '</tr>';
+                                }
+                            } else {
                                 body += '<tr>' +
-                                    '<td colspan="2">' + table + '</td>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("ringkasan_keluar_pasien" == item.keterangan) {
+                            if ("Operasi/Tindakan" == item.parameter) {
+                                var table = "";
+                                if (jwb != '') {
+                                    var temp1 = "";
+                                    var tr = jwb.split("=");
+                                    $.each(tr, function (i, item) {
+                                        var td = item.split("|");
+                                        var temp2 = "";
+                                        $.each(td, function (i, item) {
+                                            if (temp2 != '') {
+                                                temp2 = temp2 + '<td>' + item + '</td>';
+                                            } else {
+                                                temp2 = '<td>' + item + '</td>';
+                                            }
+                                        });
+                                        if (temp1 != '') {
+                                            temp1 = temp1 + '<tr>' + temp2 + '</tr>';
+                                        } else {
+                                            temp1 = '<tr>' + temp2 + '</tr>';
+                                        }
+                                    });
+                                    table = '<label>' + item.parameter + '</label>' +
+                                        '<table class="table table-bordered table-striped" style="font-size: 12px">' +
+                                        '<thead>' +
+                                        '<tr>' +
+                                        '<td>Tanggal</td>' +
+                                        '<td>Tindakan</td>' +
+                                        '<td>ICD9CM</td>' +
+                                        '<td>B</td>' +
+                                        '<td>S</td>' +
+                                        '<td>K</td>' +
+                                        '<td>Anastesi</td>' +
+                                        '</tr>' +
+                                        '</thead>' +
+                                        '<tbody>' +
+                                        temp1 +
+                                        '</tbody>' +
+                                        '</table>';
+
+                                    body += '<tr>' +
+                                        '<td colspan="2">' + table + '</td>' +
+                                        '</tr>';
+                                }
+                            } else {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
                                     '</tr>';
                             }
                         } else {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + jwb + '</td>' +
-                                '</tr>';
+                            if(item.tipe == 'ttd'){
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 100px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + jwb + '</td>' +
+                                    '</tr>';
+                            }
                         }
-                    } else {
-                        body += '<tr>' +
-                            '<td>' + item.parameter + '</td>' +
-                            '<td>' + jwb + '</td>' +
-                            '</tr>';
-                    }
-                    cekData = true;
-                    tgl = item.createdDate;
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
+                        cekData = true;
+                        tgl = item.createdDate;
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + first + body + last + '</tbody>' +
-                '</table>';
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + first + body + last + '</tbody>' +
+                    '</table>';
 
-            var newRow = $('<tr id="del_ring_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_ring_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_ring_' + jenis).attr('src', url);
-            $('#btn_ring_' + jenis).attr('onclick', 'delRowRingkasanPasien(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_ring_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_ring_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_ring_' + jenis).attr('src', url);
+                $('#btn_ring_' + jenis).attr('onclick', 'delRowRingkasanPasien(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -1137,29 +1150,31 @@ function conRing(jenis, id){
 }
 
 function delRing(jenis, ket) {
-    $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_'+jenis);
-    dwr.engine.setAsync(true);
-    RingkasanPasienAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_'+jenis);
-                $('#modal-ring-'+ket).scrollTop(0);
-                $('#warning_ring_' + ket).show().fadeOut(5000);
-                $('#msg_ring_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_'+jenis);
-                $('#modal-ring-'+ket).scrollTop(0);
-                $('#warn_'+ket).show().fadeOut(5000);
-                $('#msg_'+ket).text(res.msg);
-            }
+    if(!cekSession()){
+        $('#modal-confirm-rm').modal('hide');
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_'+jenis);
+        dwr.engine.setAsync(true);
+        RingkasanPasienAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_'+jenis);
+                    $('#modal-ring-'+ket).scrollTop(0);
+                    $('#warning_ring_' + ket).show().fadeOut(5000);
+                    $('#msg_ring_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_'+jenis);
+                    $('#modal-ring-'+ket).scrollTop(0);
+                    $('#warn_'+ket).show().fadeOut(5000);
+                    $('#msg_'+ket).text(res.msg);
+                }
+            }
+        });
+    }
 }

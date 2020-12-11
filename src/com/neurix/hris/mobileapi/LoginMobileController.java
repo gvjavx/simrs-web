@@ -88,6 +88,7 @@ public class LoginMobileController extends ValidationAwareSupport implements Mod
             UserDetailsLogin userDetailsLogin = null;
             try {
                 userDetailsLogin = userBoProxy.getMobileUserByUsername(userId,"Y");
+
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {

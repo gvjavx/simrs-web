@@ -8,6 +8,8 @@ import com.neurix.hris.master.department.bo.DepartmentBo;
 import com.neurix.hris.master.department.model.Department;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -398,6 +400,50 @@ public class DepartmentAction extends BaseMasterAction{
         logger.info("[DepartmentAction.search] end process <<<");
 
         return "";
+    }
+
+    public String initComboDepartment() {
+        logger.info("[DepartmentAction.search] start process >>>");
+
+        Department searchDepartment = new Department();
+        searchDepartment.setFlag("Y");
+        List<Department> listOfsearchDepartment = new ArrayList();
+
+        try {
+            listOfsearchDepartment = departmentBoProxy.getByCriteria(searchDepartment);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = departmentBoProxy.saveErrorMessage(e.getMessage(), "DepartmentBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[DepartmentAction.search] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[DepartmentAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+        listComboDepartment.addAll(listOfsearchDepartment);
+
+        logger.info("[DepartmentAction.search] end process <<<");
+
+        return "init_combo_department";
+    }
+
+    public List<Department> getListDepartmentAll(){
+
+        List<Department> departmentList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DepartmentBo departmentBo = (DepartmentBo) ctx.getBean("departmentBoProxy");
+
+        try {
+            departmentList = departmentBo.getListDepartmentByDepartmenId("");
+        } catch (GeneralBOException e){
+            logger.error("[DepartmentAction.save] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+
+        return departmentList;
     }
 
     public String paging(){

@@ -159,8 +159,8 @@
                                                     <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
                                             <%--</ul>--%>
                                         <%--</div>--%>
-                                        <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
-                                                class="fa fa-plus"></i> With Finger Print</a>
+                                        <%--<a type="button" class="btn btn-warning" id="btnFingerPrint"><i--%>
+                                                <%--class="fa fa-plus"></i> With Finger Print</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>

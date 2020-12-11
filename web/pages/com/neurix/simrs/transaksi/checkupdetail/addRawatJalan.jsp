@@ -277,13 +277,9 @@
                             <s:hidden value="headerDetailCheckup.jenisPeriksaPasien" id="jenis_periksa"></s:hidden>
 
                             <div class="col-md-6">
-                                <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                                     class="card card-4 pull-right">
-                                    <img border="2" id="img_ktp" src="<s:property value="headerDetailCheckup.urlKtp"/>"
-                                         style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                                </div>
-                                <%--<img border="2" class="card card-4 pull-right" src="<s:url value="/pages/images/ktp-tes.jpg"/>"--%>
-                                <%--style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px;">--%>
+                                <script>
+                                    document.write(imagesDefault('<s:property value="headerDetailCheckup.urlKtp"/>'));
+                                </script>
                                 <table class="table table-striped">
                                     <tr id="row_jenis_pasien">
                                         <td><b>Jenis Pasien</b></td>
@@ -1063,7 +1059,7 @@
                                                 <div class="input-group-addon">
                                                     <i class="fa fa-calendar"></i>
                                                 </div>
-                                                <s:textfield cssClass="form-control datepicker2 datemask2" id="tgl_kontrol"></s:textfield>
+                                                <s:textfield cssStyle="cursor: pointer;" placeholder="mm-dd-yyyy" cssClass="form-control datepicker2 datemask2" id="tgl_kontrol" readonly="true"></s:textfield>
                                             </div>
                                         </div>
                                     </div>
@@ -1871,7 +1867,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Pemberian</label>
                         <div class="col-md-7">
-                            <s:select list="#{'sebelum':'Sebelum'}"
+                            <s:select list="#{'Saat':'Saat','Sebelum':'Sebelum'}"
                                       cssStyle="margin-top: 7px; width: 100%"
                                       onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()}"
                                       id="resep_waktu"
@@ -2075,7 +2071,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Data Asuransi</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Silahkan Isi Data Asuransi</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_laka">
@@ -2099,8 +2095,13 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Tgl Kejadian</label>
                         <div class="col-md-7">
-                            <input class="form-control datepicker" style="margin-top: 7px" id="laka_tgl_kejadian"
-                                   onchange="var warn =$('#war_laka_tgl_kejadian').is(':visible'); if (warn){$('#cor_laka_tgl_kejadian').show().fadeOut(3000);$('#war_laka_tgl_kejadian').hide()}">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input class="form-control datepicker" id="laka_tgl_kejadian" readonly="true" placeholder="yyyy-mm-dd" style="cursor: pointer"
+                                       onchange="var warn =$('#war_laka_tgl_kejadian').is(':visible'); if (warn){$('#cor_laka_tgl_kejadian').show().fadeOut(3000);$('#war_laka_tgl_kejadian').hide()}">
+                            </div>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -2112,11 +2113,11 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Foto Surat Polisi</label>
                         <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px" id="img_url">
+                            <div class="input-group" style="margin-top: 7px">
                                   <span class="input-group-btn">
-                                  <span class="btn btn-default btn-file">
+                                  <span class="btn btn-default btn-file" style="margin-top: 0px">
                                   Browse… <s:file id="url_do" accept=".jpg"
-                                  onchange="$('#img_file').css('border','')"></s:file>
+                                  onchange="$('#img_file').css('border',''); setCanvasAtasWithText('laka_surat_rujukan', 'temp_surat_rujuk')"></s:file>
                                   </span>
                                   </span>
                                 <input type="text" class="form-control" readonly id="laka_surat_rujukan">
@@ -2410,6 +2411,11 @@
     var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
     var isBpjsRekanan = "";
     var isLanjutPaket = false;
+    var isLaka = '<s:property value="headerDetailCheckup.isLaka"/>';
+    var noRujukan = '<s:property value="headerDetailCheckup.noRujukan"/>';
+    var tglRujukan = '<s:property value="headerDetailCheckup.tglRujukan"/>';
+    var suratRujukan = '<s:property value="headerDetailCheckup.suratRujukan"/>';
+    var idKelasRuangan = "";
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

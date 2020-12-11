@@ -183,11 +183,21 @@
                         <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien Periksa Pada Tanggal <s:property value="detailCheckup.stTanggalMasuk"/></h3>
                     </div>
                     <div class="box-body">
-                        <div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"
-                             class="card card-4 pull-right">
-                            <img border="2" id="img_ktp" src="<s:property value="imgKtp"/>"
-                                 style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">
-                        </div>
+                        <script>
+                            var cek = cekImages('<s:property value="imgKtp"/>');
+                            var url = '';
+                            if(cek){
+                                url = '<s:property value="imgKtp"/>';
+                            }else{
+                                url = contextPathHeader+'/pages/images/no-images.png';
+                            }
+                            var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+                                'class="card card-4 pull-right">\n' +
+                                '<img border="2" id="img_ktp" src="'+url+'"\n' +
+                                'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+                                '</div>';
+                            document.write(set);
+                        </script>
                     </div>
                     <div class="box-body">
                         <div class="row">

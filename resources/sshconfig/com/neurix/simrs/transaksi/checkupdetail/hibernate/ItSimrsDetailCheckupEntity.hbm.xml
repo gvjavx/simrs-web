@@ -171,7 +171,7 @@
         </property>
 
         <property name="noCheckupUlang">
-            <column name="no_checkup_ulang" sql-type="varchar"/>
+            <column name="no_checkup_ulang"/>
         </property>
         <property name="isOrderLab">
             <column name="is_order_lab" sql-type="varchar"/>
@@ -208,6 +208,17 @@
         <property name="berkas">
             <column name="berkas"/>
         </property>
-
+        <property name="flagSendKlaim">
+            <column name="flag_send_klaim"/>
+        </property>
+        <property name="noAntrian">
+            <column name="no_antrian"/>
+        </property>
+        <property name="poliRujukanInternal">
+            <column name="poli_rujukan_internal"/>
+        </property>
+        <property name="noRujukanInternal">
+            <column name="no_rujukan_internal"/>
+        </property>
     </class>
 </hibernate-mapping>

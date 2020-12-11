@@ -120,6 +120,13 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_rujukan" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printSuratRujukanInternal.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

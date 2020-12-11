@@ -229,8 +229,8 @@
                                 <label style="margin-left: 8px">TTD Bidan Kamar Bersalin</label>
                                 <canvas class="paint-canvas-ttd" id="ttd3" width="220"
                                         onmouseover="paintTtd('ttd3')"></canvas>
-                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd3" placeholder="Nama Terang">
-                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd3" placeholder="SIP">
+                                <input style="margin-left: 10px" class="form-control nama_petugas" id="nama_terang_ttd3" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control nip_petugas" id="sip_ttd3" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd3')"><i
                                         class="fa fa-trash"></i> Clear
@@ -310,8 +310,8 @@
                                 <label style="margin-left: 8px">TTD Bidan/Perawat</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_pernyataan_bayi_lahir" width="220"
                                         onmouseover="paintTtd('ttd1_pernyataan_bayi_lahir')"></canvas>
-                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd11" placeholder="Nama Terang">
-                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd11" placeholder="SIP">
+                                <input style="margin-left: 10px" class="form-control nama_petugas" id="nama_terang_ttd11" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control nip_petugas" id="sip_ttd11" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1_pernyataan_bayi_lahir')"><i
                                         class="fa fa-trash"></i> Clear

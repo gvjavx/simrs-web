@@ -1,3 +1,11 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: User
+  Date: 01/12/2020
+  Time: 16:18
+  To change this template use File | Settings | File Templates.
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -44,7 +52,6 @@
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog');
             }
         });
@@ -67,13 +74,9 @@
             $('#view_dialog_menu').dialog('close');
         };
 
-
     </script>
-
 </head>
-
 <body bgcolor="#FFFFFF">
-
 <table width="100%" align="center">
     <tr>
         <td align="center">
@@ -122,15 +125,15 @@
                                 <s:textfield id="kategoriTindakandel" name="kategoriTindakan.kategoriTindakan" required="true"
                                              cssStyle="margin-top: 7px" readonly="true"
                                              disabled="false" cssClass="form-control"/>
+
                             </table>
                         </td>
                     </tr>
 
 
                 </table>
-
-
-
+                <br>
+                <br>
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -138,6 +141,7 @@
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
                                    name="save"
                                    onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
+
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Delete
@@ -155,22 +159,9 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
-                                                   closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="250" width="600" autoOpen="false"
-                                                   title="Save Data ...">
-                                            Please don't close this window, server is processing your request ...
-                                            <br>
-                                            <center>
-                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                     name="image_indicator_write">
-                                                <br>
-                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                     name="image_indicator_write">
-                                            </center>
+                                                   height="350" width="600" autoOpen="false" title="Saving ...">
                                         </sj:dialog>
 
                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
@@ -178,7 +169,10 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
+
                                                                       callSearch2();
+
+
                                                                    }
                                                             }"
                                         >

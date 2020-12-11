@@ -215,24 +215,20 @@ public class JenisObatAction extends BaseMasterAction {
         return null;
     }
 
-//    public String getListJenisObat(){
-//
-//        logger.info("[CheckupDetailAction.getListJenisObat] start process >>>");
-//
-//        List<JenisObat> jenisObatList = new ArrayList<>();
-//        JenisObat jenisObat = new JenisObat();
-//
-//        try {
-//            jenisObatList = jenisObatBoProxy.getByCriteria(jenisObat);
-//        }catch (GeneralBOException e){
-//            logger.error("[CheckupDetailAction.getListJenisObat] Error when get jenis obat ," + "Found problem when saving add data, please inform to your admin.", e);
-//        }
-//
-//        listOfJenisObat.addAll(jenisObatList);
-//        logger.info("[CheckupDetailAction.getListJenisObat] end process <<<");
-//        return SUCCESS;
-//
-//    }
+    public String getListJenisObat(){
+        logger.info("[CheckupDetailAction.getListJenisObat] start process >>>");
+        List<JenisObat> jenisObatList = new ArrayList<>();
+        JenisObat jenisObat = new JenisObat();
+        try {
+            jenisObatList = jenisObatBoProxy.getByCriteria(jenisObat);
+        }catch (GeneralBOException e){
+            logger.error("[CheckupDetailAction.getListJenisObat] Error when get jenis obat ," + "Found problem when saving add data, please inform to your admin.", e);
+        }
+        listOfJenisObat.addAll(jenisObatList);
+        logger.info("[CheckupDetailAction.getListJenisObat] end process <<<");
+        return SUCCESS;
+    }
+
     public String saveAdd(){
         logger.info("[JenisObatAction.saveAdd] start process >>>");
 

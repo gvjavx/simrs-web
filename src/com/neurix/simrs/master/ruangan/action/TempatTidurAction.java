@@ -5,11 +5,13 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
+import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganTempatTidurEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -89,6 +91,7 @@ public class TempatTidurAction extends BaseTransactionAction {
                 for (int i = 0; i < json.length(); i++) {
                     JSONObject obj = json.getJSONObject(i);
                     TempatTidur tempatTidur = new TempatTidur();
+                    String idRuangan = "";
                     if (obj.has("nama_ruangan")) {
                         tempatTidur.setNamaRuangan(obj.getString("nama_ruangan"));
                     }
@@ -105,6 +108,7 @@ public class TempatTidurAction extends BaseTransactionAction {
                     }
                     if (obj.has("id_ruangan")) {
                         tempatTidur.setIdRuangan(obj.getString("id_ruangan"));
+                        idRuangan = obj.getString("id_ruangan");
                     }
                     tempatTidur.setNamaTempatTidur(obj.getString("nama_tempat_tidur"));
                     tempatTidur.setCreatedWho(userLogin);
@@ -114,9 +118,25 @@ public class TempatTidurAction extends BaseTransactionAction {
                     tempatTidur.setAction("C");
                     tempatTidur.setFlag("Y");
                     tempatTidur.setBranchId(branchId);
-                    tempatTidurList.add(tempatTidur);
+                    List<MtSimrsRuanganTempatTidurEntity> tidurEntity = new ArrayList<>();
+                    try {
+                        tidurEntity = tempatTidurBo.cekTT(obj.getString("nama_tempat_tidur"), idRuangan);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil...!");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf tidak dapat menukan data...!");
+                    }
+                    if(tidurEntity.size() > 0){
+                        response.setStatus("error");
+                        response.setMsg("Data tempat tidur "+obj.getString("nama_tempat_tidur")+" sudah ada..!");
+                    }else{
+                        tempatTidurList.add(tempatTidur);
+                        response.setStatus("success");
+                        response.setMsg("Berhasil...!");
+                    }
                 }
-                if (tempatTidurList.size() > 0) {
+                if (tempatTidurList.size() > 0 && "success".equalsIgnoreCase(response.getStatus())) {
                     response = tempatTidurBo.saveAdd(tempatTidurList, isNew);
                 } else {
                     response.setStatus("error");

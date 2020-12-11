@@ -277,7 +277,7 @@
                                 <tr style="display: none" id="form_no_sep">
                                     <td><b>No SEP</b></td>
                                     <td style="vertical-align: middle">
-                                        <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px"
+                                        <span class="span-success"
                                               id="det_no_sep"></span></td>
                                 </tr>
                                 <tr>
@@ -576,272 +576,255 @@
     }
 
     function detailTindakan(idCheckup, idDetailCheckup) {
-        $('#sts_cover_biaya').html('');
-        $('#b_bpjs').html('');
-        $('#sts_biaya_tindakan').html('');
-        $('#b_tindakan').html('');
-        $('#body_tindakan').html('');
-        var table = "";
-        var total = 0;
-        var cek = "";
-        dwr.engine.setAsync(true);
-        startSpinner('v_', idDetailCheckup);
-        CheckupAction.listDataPasien(idDetailCheckup, {
-            callback: function (response) {
-                if (response.idPasien != null) {
-                    stopSpinner('v_', idDetailCheckup);
-                    var tanggal = response.tglLahir;
-                    var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
-                    var jenisKelamin = "";
+        if(!cekSession()){
+            $('#sts_cover_biaya').html('');
+            $('#b_bpjs').html('');
+            $('#sts_biaya_tindakan').html('');
+            $('#b_tindakan').html('');
+            $('#body_tindakan').html('');
+            var table = "";
+            var total = 0;
+            var cek = "";
+            dwr.engine.setAsync(true);
+            startSpinner('v_', idDetailCheckup);
+            CheckupAction.listDataPasien(idDetailCheckup, {
+                callback: function (response) {
+                    if (response.idPasien != null) {
+                        stopSpinner('v_', idDetailCheckup);
+                        var tanggal = response.tglLahir;
+                        var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(tanggal));
+                        var jenisKelamin = "";
 
-                    if (response.jenisKelamin == "L") {
-                        jenisKelamin = "Laki-Laki";
-                    } else {
-                        jenisKelamin = "Perempuan";
-                    }
+                        if (response.jenisKelamin == "L") {
+                            jenisKelamin = "Laki-Laki";
+                        } else {
+                            jenisKelamin = "Perempuan";
+                        }
 
-                    if (response.noSep != '' && response.noSep != null) {
-                        $('#form_no_sep').show();
-                        $('#form_kategori').show();
-                        $('#form_status').show();
-                        hitungStatusBiaya(idDetailCheckup);
-                    } else {
-                        $('#form_no_sep').hide();
-                        $('#form_kategori').hide();
-                        $('#form_status').hide();
-                    }
+                        if (response.noSep != '' && response.noSep != null) {
+                            $('#form_no_sep').show();
+                            $('#form_kategori').show();
+                            $('#form_status').show();
+                            hitungStatusBiaya(idDetailCheckup);
+                        } else {
+                            $('#form_no_sep').hide();
+                            $('#form_kategori').hide();
+                            $('#form_status').hide();
+                        }
 
-                    $('#det_no_sep').html(response.noSep);
-                    $('#det_id_detail_checkup').html(idDetailCheckup);
-                    $('#det_nik').html(response.noKtp);
-                    $('#det_nama').html(response.nama);
-                    $('#det_jenis_kelamin').html(jenisKelamin);
-                    $('#det_tgl').html(response.tempatLahir + ", " + dateFormat);
-                    $('#det_agama').html(response.agama);
-                    $('#det_suku').html(response.suku);
-                    $('#det_alamat').html(response.jalan);
-                    $('#det_provinsi').html(response.namaProvinsi);
-                    $('#det_kabupaten').html(response.namaKota);
-                    $('#det_kecamatan').html(response.namaKecamatan);
-                    $('#det_desa').html(response.namaDesa);
-                    $('#tin_id_detail_checkup').val(idDetailCheckup);
-                    $('#det_no_rm').html(response.idPasien);
-                    $('#det_nama_poli').html(response.namaPelayanan);
-                    if (response.idJenisPeriksaPasien == "rekanan") {
-                        CheckupAction.cekRekananOpsByDetail(idDetailCheckup, function (res) {
-                            if (res.namaRekanan != null && res.namaRekanan != '') {
-                                $('#det_jenis_pasien').html(response.statusPeriksaName + " " + res.namaRekanan);
-                                $('#h_id_paket').val(res.idPaket);
-                                $('#h_is_bpjs').val(res.isBpjs);
-                            }
-                        });
-                    } else {
-                        $('#det_jenis_pasien').html(response.statusPeriksaName);
+                        $('#det_no_sep').html(response.noSep);
+                        $('#det_id_detail_checkup').html(idDetailCheckup);
+                        $('#det_nik').html(response.noKtp);
+                        $('#det_nama').html(response.nama);
+                        $('#det_jenis_kelamin').html(jenisKelamin);
+                        $('#det_tgl').html(response.tempatLahir + ", " + dateFormat);
+                        $('#det_agama').html(response.agama);
+                        $('#det_suku').html(response.suku);
+                        $('#det_alamat').html(response.jalan);
+                        $('#det_provinsi').html(response.namaProvinsi);
+                        $('#det_kabupaten').html(response.namaKota);
+                        $('#det_kecamatan').html(response.namaKecamatan);
+                        $('#det_desa').html(response.namaDesa);
+                        $('#tin_id_detail_checkup').val(idDetailCheckup);
+                        $('#det_no_rm').html(response.idPasien);
+                        $('#det_nama_poli').html(response.namaPelayanan);
+                        if (response.idJenisPeriksaPasien == "rekanan") {
+                            CheckupAction.cekRekananOpsByDetail(idDetailCheckup, function (res) {
+                                if (res.namaRekanan != null && res.namaRekanan != '') {
+                                    $('#det_jenis_pasien').html(changeJenisPasien(response.idJenisPeriksaPasien, response.statusPeriksaName+" "+res.namaRekanan));
+                                    $('#h_id_paket').val(res.idPaket);
+                                    $('#h_is_bpjs').val(res.isBpjs);
+                                }
+                            });
+                        } else {
+                            $('#det_jenis_pasien').html(changeJenisPasien(response.idJenisPeriksaPasien, response.statusPeriksaName));
+                        }
+                        $('#h_no_checkup').val(response.noCheckup);
+                        $('#h_jenis_pasien').val(response.idDetailCheckup);
+                        $('#h_id_pasien').val(response.idPasien);
+                        startLoad();
+                        listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien, response.noSep);
+                        $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
                     }
-                    setLabelJenisPasien('det_jenis_pasien', response.idJenisPeriksaPasien);
-                    $('#h_no_checkup').val(response.noCheckup);
-                    $('#h_jenis_pasien').val(response.idDetailCheckup);
-                    $('#h_id_pasien').val(response.idPasien);
-                    startLoad();
-                    listTindakan(idCheckup, idDetailCheckup, response.idJenisPeriksaPasien, response.idPasien, response.noSep);
-                    $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
                 }
-            }
-        });
+            });
+        }
     }
 
     function listTindakan(idCheckup, idDetailCheckup, jenisPasien, idPasien, sep) {
-        var table = "";
-        var total = 0;
-        var cekPending = false;
-        var cekTindakan = false;
-        dwr.engine.setAsync(true);
-        VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, jenisPasien,
-            {
-                callback: function (response) {
-                    if (response.length > 0) {
-                        dwr.engine.setAsync(false);
-                        stopLoad();
-                        $.each(response, function (i, item) {
-                            if (i == 0) {
-                                if (item.isPendingTindakan == "Y") {
-                                    $('#form-tindakan').hide();
-                                    $('#warning_pending').show();
-                                    $('#msg_pending').text(item.msg);
-                                    cekPending = true;
-                                } else {
-                                    $('#form-tindakan').show();
-                                    $('#warning_pending').hide();
-                                    $('#msg_pending').text('');
-                                }
-                            }
-                            var tarif = "";
-                            var tgl = "";
-                            var tindakan = "";
-                            var statusVal = "";
-                            var btn = "<s:url value="/pages/images/icons8-edit-25.png"/>";
-                            var onclick = 'onclick="updateApproveFlag(\'' + item.idRiwayatTindakan + '\',\'' + i + '\', \'' + idDetailCheckup + '\')"';
-                            var disabledJenis = "";
-
-                            var tindakanina = "";
-                            VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
-                                $.each(restindakanina, function (i, itemTindakan) {
-                                    if (item.kategoriTindakanBpjs == itemTindakan.kategoriInaBpjs) {
-                                        tindakanina += "<option value=\"" + itemTindakan.id + "\" selected>" + itemTindakan.nama + "</option>";
+        if(!cekSession()){
+            var table = "";
+            var total = 0;
+            var cekPending = false;
+            var cekTindakan = false;
+            dwr.engine.setAsync(true);
+            VerifikatorAction.getListTindakanRawat(idCheckup, idDetailCheckup, jenisPasien, {
+                    callback: function (response) {
+                        if (response.length > 0) {
+                            dwr.engine.setAsync(false);
+                            stopLoad();
+                            $.each(response, function (i, item) {
+                                if (i == 0) {
+                                    if (item.isPendingTindakan == "Y") {
+                                        $('#form-tindakan').hide();
+                                        $('#warning_pending').show();
+                                        $('#msg_pending').text(item.msg);
+                                        cekPending = true;
                                     } else {
-                                        tindakanina += "<option value=\"" + itemTindakan.id + "\">" + itemTindakan.nama + "</option>";
+                                        $('#form-tindakan').show();
+                                        $('#warning_pending').hide();
+                                        $('#msg_pending').text('');
                                     }
-                                })
-                            });
-
-                            var kategori =
-                                '<select style="width: 100%;" class="form-control select-2" id="kategori_' + i + '">' +
-                                '<option value="">[Select One]</option>' +
-                                tindakanina +
-                                '</select>';
-
-                            if (item.namaTindakan != null && item.namaTindakan != '') {
-                                tindakan = item.namaTindakan;
-                            }
-
-                            if (item.kategoriTindakanBpjs != null && item.kategoriTindakanBpjs != '') {
-                                kategori = '<select class="form-control" id="kategori_' + i + '" disabled>' +
-                                    '<option value="' + item.kategoriTindakanBpjs + '">' + item.kategoriTindakanBpjs + '</option>';
-                                '</select>';
-                                statusVal = 1;
-                                btn = "<s:url value="/pages/images/icon_success.ico"/>";
-                                onclick = "";
-                                disabledJenis = "disabled";
-                            }
-
-                            if (item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null) {
-                                cekTindakan = true;
-                            }
-
-                            if (item.stTglTindakan != null) {
-                                tgl = item.stTglTindakan;
-                            }
-
-                            if (item.totalTarif != null) {
-                                tarif = item.totalTarif;
-                                total = (parseInt(total) + parseInt(tarif));
-                            }
-
-                            if (jenisPasien == "rekanan") {
-                                $('#jp').show();
-                                var choice1 = "";
-                                var choice2 = "";
-                                if (item.jenisPasien == "rekanan") {
-                                    choice1 = "selected";
                                 }
-                                if (item.jenisPasien == "bpjs") {
-                                    choice2 = "selected";
+                                var tarif = "";
+                                var tgl = "";
+                                var tindakan = "";
+                                var statusVal = "";
+                                var btn = "<s:url value="/pages/images/icons8-edit-25.png"/>";
+                                var onclick = 'onclick="updateApproveFlag(\'' + item.idRiwayatTindakan + '\',\'' + i + '\', \'' + idDetailCheckup + '\')"';
+                                var disabledJenis = "";
+
+                                var tindakanina = "";
+                                VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
+                                    $.each(restindakanina, function (i, itemTindakan) {
+                                        if (item.kategoriTindakanBpjs == itemTindakan.kategoriInaBpjs) {
+                                            tindakanina += "<option value=\"" + itemTindakan.id + "\" selected>" + itemTindakan.nama + "</option>";
+                                        } else {
+                                            tindakanina += "<option value=\"" + itemTindakan.id + "\">" + itemTindakan.nama + "</option>";
+                                        }
+                                    })
+                                });
+
+                                var kategori =
+                                    '<select style="width: 100%;" class="form-control select-2" id="kategori_' + i + '">' +
+                                    '<option value="">[Select One]</option>' +
+                                    tindakanina +
+                                    '</select>';
+
+                                if (item.namaTindakan != null && item.namaTindakan != '') {
+                                    tindakan = item.namaTindakan;
                                 }
-                                var kater = "";
-                                var disab = "";
-                                if (sep != null && sep != '') {
-                                    kater = '<td>' + kategori + '</td>';
+
+                                if (item.kategoriTindakanBpjs != null && item.kategoriTindakanBpjs != '') {
+                                    kategori = '<select class="form-control" id="kategori_' + i + '" disabled>' +
+                                        '<option value="' + item.kategoriTindakanBpjs + '">' + item.kategoriTindakanBpjs + '</option>';
+                                    '</select>';
+                                    statusVal = 1;
+                                    btn = "<s:url value="/pages/images/icon_success.ico"/>";
+                                    onclick = "";
+                                    disabledJenis = "disabled";
+                                }
+
+                                if (item.flagUpdateKlaim == '' || item.flagUpdateKlaim == null) {
+                                    cekTindakan = true;
+                                }
+
+                                if (item.stTglTindakan != null) {
+                                    tgl = item.stTglTindakan;
+                                }
+
+                                if (item.totalTarif != null) {
+                                    tarif = item.totalTarif;
+                                    total = (parseInt(total) + parseInt(tarif));
+                                }
+
+                                if (jenisPasien == "rekanan") {
+                                    $('#jp').show();
+                                    var choice1 = "";
+                                    var choice2 = "";
+                                    if (item.jenisPasien == "rekanan") {
+                                        choice1 = "selected";
+                                    }
+                                    if (item.jenisPasien == "bpjs") {
+                                        choice2 = "selected";
+                                    }
+                                    var kater = "";
+                                    var disab = "";
+                                    if (sep != null && sep != '') {
+                                        kater = '<td>' + kategori + '</td>';
+                                    } else {
+                                        disabledJenis = 'disabled';
+                                    }
+                                    table += "<tr>" +
+                                        "<td>" + tgl + '<input type="hidden" id="id_riwayat_' + i + '" value="' + item.idRiwayatTindakan + '">' + "</td>" +
+                                        "<td>" + tindakan + "</td>" +
+                                        "<td align='right'>" + formatRupiah(tarif) + "</td>" +
+                                        kater +
+                                        "<td>" +
+                                        '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\'' + item.idRiwayatTindakan + '\', \'' + i + '\', \'' + idDetailCheckup + '\', this.value)" ' + disabledJenis + '>' +
+                                        '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
+                                        '<option value="rekanan" ' + choice1 + '>REKANAN</option>' +
+                                        '</select>' +
+                                        "</td>" +
+                                        "</tr>";
                                 } else {
-                                    disabledJenis = 'disabled';
+                                    $('#jp').show();
+                                    var choice1 = "";
+                                    var choice2 = "";
+                                    if (item.jenisPasien == "umum") {
+                                        choice1 = "selected";
+                                    }
+                                    if (item.jenisPasien == "bpjs") {
+                                        choice2 = "selected";
+                                    }
+                                    table += "<tr>" +
+                                        "<td>" + tgl + '<input type="hidden" id="id_riwayat_' + i + '" value="' + item.idRiwayatTindakan + '">' + "</td>" +
+                                        "<td>" + tindakan + "</td>" +
+                                        "<td align='right'>" + formatRupiah(tarif) + "</td>" +
+                                        "<td>" + kategori + "</td>" +
+                                        "<td>" +
+                                        '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\'' + item.idRiwayatTindakan + '\', \'' + i + '\', \'' + idDetailCheckup + '\', this.value)" ' + disabledJenis + '>' +
+                                        '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
+                                        '<option value="umum" ' + choice1 + '>UMUM</option>' +
+                                        '</select>' +
+                                        "</td>" +
+                                        "</tr>";
                                 }
-                                table += "<tr>" +
-                                    "<td>" + tgl + '<input type="hidden" id="id_riwayat_' + i + '" value="' + item.idRiwayatTindakan + '">' + "</td>" +
-                                    "<td>" + tindakan + "</td>" +
-                                    "<td align='right'>" + formatRupiah(tarif) + "</td>" +
-                                    kater +
-                                    "<td>" +
-                                    '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\'' + item.idRiwayatTindakan + '\', \'' + i + '\', \'' + idDetailCheckup + '\', this.value)" ' + disabledJenis + '>' +
-                                    '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
-                                    '<option value="rekanan" ' + choice1 + '>REKANAN</option>' +
-                                    '</select>' +
-                                    "</td>" +
-                                    // "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
-                                    "</tr>";
-                            } else {
-                                $('#jp').show();
-                                var choice1 = "";
-                                var choice2 = "";
-                                if (item.jenisPasien == "umum") {
-                                    choice1 = "selected";
-                                }
-                                if (item.jenisPasien == "bpjs") {
-                                    choice2 = "selected";
-                                }
-                                table += "<tr>" +
-                                    "<td>" + tgl + '<input type="hidden" id="id_riwayat_' + i + '" value="' + item.idRiwayatTindakan + '">' + "</td>" +
-                                    "<td>" + tindakan + "</td>" +
-                                    "<td align='right'>" + formatRupiah(tarif) + "</td>" +
-                                    "<td>" + kategori + "</td>" +
-                                    "<td>" +
-                                    '<select style="width: 100%;" class="form-control select-2" id="jenis_pasien_' + i + '" onchange="updateApproveFlag(\'' + item.idRiwayatTindakan + '\', \'' + i + '\', \'' + idDetailCheckup + '\', this.value)" ' + disabledJenis + '>' +
-                                    '<option value="bpjs" ' + choice2 + '>BPJS</option>' +
-                                    '<option value="umum" ' + choice1 + '>UMUM</option>' +
-                                    '</select>' +
-                                    "</td>" +
-                                    // "<td align='center'>" + '<input value="' + statusVal + '" type="hidden" id="status' + i + '">' + '<img id="btn' + i + '" class="hvr-grow" style="cursor: pointer" ' + onclick + ' src="' + btn + '">' + "</td>" +
-                                    "</tr>";
-                            }
-                        });
-
-                        table = table + '<tr><td colspan="2">Total Semua Tindakan</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>';
-                        // if (jenisPasien == "ptpn") {
-                        //
-                        // } else {
-                        //     table = table + '<tr><td colspan="2">Total</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>'
-                        // }
-                        $('#body_tindakan').html(table);
-                    }
-                    if (cekPending) {
-                        $('#save_verif').hide();
-                    } else {
-                        if (cekTindakan) {
-                            $('#save_verif').show();
-                            $('#save_verif').html("<i class='fa fa-check'></i> Verifikasi");
-                            $('#save_verif').attr('onclick', 'confirmSaveApproveTindakan(\'' + idDetailCheckup + '\')');
+                            });
+                            table = table + '<tr><td colspan="2">Total Semua Tindakan</td><td align="right">' + formatRupiah(total) + '</td><td></td><td></td></tr>';
+                            $('#body_tindakan').html(table);
+                        }
+                        if (cekPending) {
+                            $('#save_verif').hide();
                         } else {
-                            $('#save_verif').show();
-                            $('#save_verif').html("<i class='fa fa-check'></i> Final Claim");
-                            $('#save_verif').attr('onclick', 'confirmSaveFinalClaim(\'' + idDetailCheckup + '\', \'' + idPasien + '\')');
+                            if (cekTindakan) {
+                                $('#save_verif').show();
+                                $('#save_verif').html("<i class='fa fa-check'></i> Verifikasi");
+                                $('#save_verif').attr('onclick', 'confirmSaveApproveTindakan(\'' + idDetailCheckup + '\')');
+                            } else {
+                                $('#save_verif').show();
+                                $('#save_verif').html("<i class='fa fa-check'></i> Final Claim");
+                                $('#save_verif').attr('onclick', 'confirmSaveFinalClaim(\'' + idDetailCheckup + '\', \'' + idPasien + '\')');
+                            }
+                        }
+                        var select2 = $('.select-2').length;
+                        if (select2 > 0) {
+                            $('.select-2').select2({});
                         }
                     }
-
-                    var select2 = $('.select-2').length;
-                    if (select2 > 0) {
-                        $('.select-2').select2({});
-                    }
-                }
-            });
+                });
+        }
     }
 
     function updateApproveFlag(idTindakan, i, idDetailCheckup, jenisPasien) {
-        var kategoriBpjs = $('#kategori_' + i).val();
-        if (kategoriBpjs != '' && jenisPasien != '') {
-            <%--var url = '<s:url value="/pages/images/spinner.gif"/>'--%>
-            <%--$('#btn'+i).attr('src',url).css('width', '30px', 'height', '40px');--%>
-            dwr.engine.setAsync(true);
-            VerifikatorAction.updateApproveBpjsFlag(idTindakan, kategoriBpjs, jenisPasien, {
-                callback: function (response) {
-                    if (response.status == "success") {
-                        hitungStatusBiaya(idDetailCheckup);
-                        <%--var url = "<s:url value="/pages/images/icon_success.ico"/>";--%>
-                        <%--$('#btn'+i).attr('src',url).css('width', '', 'height', '');--%>
-                        <%--$('#btn'+i).removeAttr("class");--%>
-                        <%--$('#btn'+i).removeAttr("style");--%>
-                        <%--$('#btn'+i).removeAttr("onclick");--%>
-                        <%--$('#status'+i).val(1);--%>
-                        <%--$('#msg_tin2').text(response.message);--%>
-                        <%--$('#success_tin').show().fadeOut(5000);--%>
-                    } else {
-                        <%--var url = "<s:url value="/pages/images/icons8-edit-25.png"/>";--%>
-                        <%--$('#btn'+i).attr('src',url).css('width', '', 'height', '');--%>
-                        $('#msg_jen').text(response.message);
-                        $('#warning_jen').show().fadeOut(5000);
+        if(!cekSession()){
+            var kategoriBpjs = $('#kategori_' + i).val();
+            if (kategoriBpjs != '' && jenisPasien != '') {
+                dwr.engine.setAsync(true);
+                VerifikatorAction.updateApproveBpjsFlag(idTindakan, kategoriBpjs, jenisPasien, {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            hitungStatusBiaya(idDetailCheckup);
+                        } else {
+                            $('#msg_jen').text(response.message);
+                            $('#warning_jen').show().fadeOut(5000);
+                        }
                     }
-                }
-            });
-        } else {
-            $('#msg_jen').text("Silahkan pilih kategori tindakan terlebih dahulu...!");
-            $('#warning_jen').show().fadeOut(5000);
+                });
+            } else {
+                $('#msg_jen').text("Silahkan pilih kategori tindakan terlebih dahulu...!");
+                $('#warning_jen').show().fadeOut(5000);
+            }
         }
     }
 
@@ -871,50 +854,52 @@
 
     function saveApproveTindakan(idDetailCheckup) {
         $('#modal-confirm-dialog').modal('hide');
-        var data = $('#tabel_tindakan_ts').tableToJSON();
-        var dataRiwayat = [];
-        var jml = data.length - 1;
+        if(!cekSession()){
+            var data = $('#tabel_tindakan_ts').tableToJSON();
+            var dataRiwayat = [];
+            var jml = data.length - 1;
 
-        $.each(data, function (i, item) {
-            var idRiwayat = $('#id_riwayat_' + i).val();
-            var kategori = $('#kategori_' + i).val();
-            var jenisPasien = $('#jenis_pasien_' + i).val();
-            if (jml != i) {
-                dataRiwayat.push({
-                    'id_riwayat_tindakan': idRiwayat,
-                    'kategori': kategori,
-                    'jenis_pasien': jenisPasien
-                });
-            }
-        });
-
-        $('#load_verif').show();
-        $('#save_verif').hide();
-        var result = JSON.stringify(dataRiwayat);
-        var noCheckup = $('#h_no_checkup').val();
-        var jenisPasien = $('#h_jenis_pasien').val();
-        var idPasien = $('#h_id_pasien').val();
-        dwr.engine.setAsync(true);
-        VerifikatorAction.saveApproveTindakan(idDetailCheckup, result, {
-            callback: function (response) {
-                if (response.status == "200") {
-                    hitungStatusBiaya(idDetailCheckup);
-                    $('#load_verif').hide();
-                    $('#save_verif').show();
-                    $('#success_tin').show().fadeOut(5000);
-                    $('#msg_tin2').text("Berhasil Verifikasi tindakan pasien..., Silahkan lanjutkan Menekan Tombol Final Claim Dibawah..!");
-                    $('#save_verif').html("<i class='fa fa-check'></i> Final Claim");
-                    $('#save_verif').attr('onclick', 'confirmSaveFinalClaim(\'' + idDetailCheckup + '\', \'' + idPasien + '\')');
-                    $('#modal-detail-pasien').scrollTop(0);
-                } else {
-                    $('#load_verif').hide();
-                    $('#save_verif').show();
-                    $('#msg_tin').text(response.message);
-                    $('#warning_tin').show().fadeOut(5000);
-                    $('#modal-detail-pasien').scrollTop(0);
+            $.each(data, function (i, item) {
+                var idRiwayat = $('#id_riwayat_' + i).val();
+                var kategori = $('#kategori_' + i).val();
+                var jenisPasien = $('#jenis_pasien_' + i).val();
+                if (jml != i) {
+                    dataRiwayat.push({
+                        'id_riwayat_tindakan': idRiwayat,
+                        'kategori': kategori,
+                        'jenis_pasien': jenisPasien
+                    });
                 }
-            }
-        });
+            });
+
+            $('#load_verif').show();
+            $('#save_verif').hide();
+            var result = JSON.stringify(dataRiwayat);
+            var noCheckup = $('#h_no_checkup').val();
+            var jenisPasien = $('#h_jenis_pasien').val();
+            var idPasien = $('#h_id_pasien').val();
+            dwr.engine.setAsync(true);
+            VerifikatorAction.saveApproveTindakan(idDetailCheckup, result, {
+                callback: function (response) {
+                    if (response.status == "200") {
+                        hitungStatusBiaya(idDetailCheckup);
+                        $('#load_verif').hide();
+                        $('#save_verif').show();
+                        $('#success_tin').show().fadeOut(5000);
+                        $('#msg_tin2').text("Berhasil Verifikasi tindakan pasien..., Silahkan lanjutkan Menekan Tombol Final Claim Dibawah..!");
+                        $('#save_verif').html("<i class='fa fa-check'></i> Final Claim");
+                        $('#save_verif').attr('onclick', 'confirmSaveFinalClaim(\'' + idDetailCheckup + '\', \'' + idPasien + '\')');
+                        $('#modal-detail-pasien').scrollTop(0);
+                    } else {
+                        $('#load_verif').hide();
+                        $('#save_verif').show();
+                        $('#msg_tin').text(response.message);
+                        $('#warning_tin').show().fadeOut(5000);
+                        $('#modal-detail-pasien').scrollTop(0);
+                    }
+                }
+            });
+        }
     }
 
     function confirmSaveFinalClaim(idDetailCheckup, idPasien) {
@@ -930,50 +915,54 @@
 
     function saveFinalClaim(idDetailCheckup, idPasien) {
         $('#modal-confirm-dialog').modal('hide');
-        $('#save_verif').hide();
-        $('#load_verif').show();
-        dwr.engine.setAsync(true);
-        VerifikatorAction.finalClaim(idDetailCheckup, idPasien, {
-            callback:
-                function (response) {
-                    if (response.status == "200") {
-                        $('#load_verif').hide();
-                        $('#save_verif').show();
-                        $('#tidak_online').attr('onclick', 'closeModal()');
-                        $('#save_online').attr('onclick', 'sendOnline(\'' + idDetailCheckup + '\')');
-                        $('#modal-send-online').modal({show: true, backdrop: 'static'});
-                    } else {
-                        $('#load_verif').hide();
-                        $('#save_verif').show();
-                        $('#msg_tin').text(response.message);
-                        $('#warning_tin').show().fadeOut(5000);
-                        $('#modal-detail-pasien').scrollTop(0);
+        if(!cekSession()){
+            $('#save_verif').hide();
+            $('#load_verif').show();
+            dwr.engine.setAsync(true);
+            VerifikatorAction.finalClaim(idDetailCheckup, idPasien, {
+                callback:
+                    function (response) {
+                        if (response.status == "200") {
+                            $('#load_verif').hide();
+                            $('#save_verif').show();
+                            $('#tidak_online').attr('onclick', 'closeModal()');
+                            $('#save_online').attr('onclick', 'sendOnline(\'' + idDetailCheckup + '\')');
+                            $('#modal-send-online').modal({show: true, backdrop: 'static'});
+                        } else {
+                            $('#load_verif').hide();
+                            $('#save_verif').show();
+                            $('#msg_tin').text(response.message);
+                            $('#warning_tin').show().fadeOut(5000);
+                            $('#modal-detail-pasien').scrollTop(0);
+                        }
                     }
-                }
-        });
+            });
+        }
     }
 
     function sendOnline(idDetailCheckup) {
-        $('#load_online').show();
-        $('#save_online').hide();
-        dwr.engine.setAsync(true);
-        VerifikatorAction.sendClaimOnline(idDetailCheckup, {
-            callback : function (res) {
-                if (res.status == "200") {
-                    $('#load_online').show();
-                    $('#save_online').hide();
-                    $('#modal-send-online').modal('hide');
-                    $('#modal-detail-pasien').modal('hide');
-                    $('#info_dialog').dialog('open');
-                    $('body').scrollTop(0);
-                } else {
-                    $('#load_online').hide();
-                    $('#save_online').show();
-                    $('#msg_online').text(res.message);
-                    $('#warning_online').show().fadeOut(5000);
+        if(!cekSession()){
+            $('#load_online').show();
+            $('#save_online').hide();
+            dwr.engine.setAsync(true);
+            VerifikatorAction.sendClaimOnline(idDetailCheckup, {
+                callback : function (res) {
+                    if (res.status == "200") {
+                        $('#load_online').show();
+                        $('#save_online').hide();
+                        $('#modal-send-online').modal('hide');
+                        $('#modal-detail-pasien').modal('hide');
+                        $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                    } else {
+                        $('#load_online').hide();
+                        $('#save_online').show();
+                        $('#msg_online').text(res.message);
+                        $('#warning_online').show().fadeOut(5000);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function closeModal() {

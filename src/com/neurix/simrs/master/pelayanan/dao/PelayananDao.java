@@ -130,6 +130,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
                 .add(Restrictions.eq("namaPelayanan", namaPelayanan))
                 .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
                 .list();
 
         return results;

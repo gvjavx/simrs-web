@@ -33,6 +33,28 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/FunctionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RoleAction.js"/>'></script>
 
+    <script type="text/javascript">
+        function showAlert(){
+            var verif = document.getElementById('verif').value;
+            var erVerif = document.getElementById('erVerif').value;
+            if(verif !=  ""){
+                document.getElementById('succesAlert').style.display = 'block';
+                var sc = document.getElementById('succesAlert').value;
+                if ( sc != ""){
+                    sc = "";
+                }
+                $("#succesAlert").fadeTo(1000, 500).slideUp(500, function(){
+                    $("succesAlert").slideUp(500);
+                });
+            }else if(erVerif != "") {
+                document.getElementById('errorAlert').style.display = 'block';
+                erVerif = null;
+                $("#errorAlert").fadeTo(1000, 500).slideUp(500, function(){
+                    $("errorAlert").slideUp(500);
+                });
+            }
+        }
+    </script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" onload="showAlert()">

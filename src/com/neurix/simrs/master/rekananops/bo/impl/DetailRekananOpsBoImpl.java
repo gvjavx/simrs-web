@@ -7,7 +7,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 
 
-import com.neurix.hris.master.payrollPtkp.model.ImHrisDetailRekananOpsEntity;
+
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;

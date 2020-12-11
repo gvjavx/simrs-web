@@ -62,6 +62,7 @@ public class CommonConstant {
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.external.dir");
     public final static String RESOURCE_PATH_IMG_ASSET = CommonUtil.getPropertyParams("resource.dir");
     public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = CommonUtil.getPropertyParams("upload.folder");
+    public final static String RESOURCE_PATH_LOGS = CommonUtil.getPropertyParams("base.dir.logs");
 
 //    public final static String RESOURCE_PATH_IMG_ASSET = "C:\\apache-tomcat-8.5.40\\webapps";
 //    public final static String RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY = "C:\\Users\\pc001\\Pictures";
@@ -125,12 +126,12 @@ public class CommonConstant {
     public final static String EKLAIM_SERVICE_DEBUG = "/E-Klaim/ws.php?mode=debug";
 
     //FINGER
-    public final static String baseUrl = "http://192.168.43.222:8080/simrs/";
+//    public final static String baseUrl = "/go-medsys/";
     public final static String timeLimitReg = "15";
     public final static String timeLimitVer = "10";
-    public final static String verAddress = baseUrl + "prosesLoginFinger.action";
-    public final static String regAddress = baseUrl + "prosesRegisterFinger.action";
-    public final static String addRawatPasien = baseUrl + "checkup/add_checkup.action";
+//    public final static String verAddress = APP_NAME + "prosesLoginFinger.action";
+//    public final static String regAddress = APP_NAME + "prosesRegisterFinger.action";
+//    public final static String addRawatPasien = APP_NAME + "checkup/add_checkup.action";
 
 
     public final static String LOGO_RS01 = "/pages/images/RS01.png";
@@ -204,7 +205,7 @@ public class CommonConstant {
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
     //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final int ADD_JAM_BAYAR = 5; //MENIT
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");

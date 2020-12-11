@@ -5,6 +5,7 @@ import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganTempatTidurEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
@@ -147,5 +148,14 @@ public class TempatTidurDao extends GenericDao<MtSimrsRuanganTempatTidurEntity, 
             }
         }
         return ruanganList;
+    }
+
+    public List<MtSimrsRuanganTempatTidurEntity> cekDataTT(String namaTt, String idRuangan) throws HibernateException {
+        List<MtSimrsRuanganTempatTidurEntity> results = this.sessionFactory.getCurrentSession().createCriteria(MtSimrsRuanganTempatTidurEntity.class)
+                .add(Restrictions.ilike("namaTempatTidur", namaTt))
+                .add(Restrictions.eq("idRuangan", idRuangan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 }

@@ -387,8 +387,8 @@
                                 <label style="margin-left: 8px">TTD Dokter Operator</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_laporan_pembedahan_rb" width="220"
                                         onmouseover="paintTtd('ttd1_laporan_pembedahan_rb')"></canvas>
-                                <input style="margin-left: 10px" class="form-control" id="nama_terang_ttd1" placeholder="Nama Terang">
-                                <input style="margin-left: 10px; margin-top: 3px" class="form-control" id="sip_ttd1" placeholder="SIP">
+                                <input style="margin-left: 10px" class="form-control nama_dokter_ri" id="nama_terang_ttd1" placeholder="Nama Terang">
+                                <input style="margin-left: 10px; margin-top: 3px" class="form-control sip_dokter_ri" id="sip_ttd1" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1_laporan_pembedahan_rb')"><i
                                         class="fa fa-trash"></i> Clear

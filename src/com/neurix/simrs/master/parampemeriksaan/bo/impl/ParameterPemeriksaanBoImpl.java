@@ -27,38 +27,52 @@ public class ParameterPemeriksaanBoImpl implements ParameterPemeriksaanBo {
         if(bean != null){
             ImSimrsParameterPemeriksaanEntity pemeriksaanEntity = new ImSimrsParameterPemeriksaanEntity();
             String id = null;
+            List<ImSimrsParameterPemeriksaanEntity> cekParameterList = new ArrayList<>();
             try {
-                id = parameterPemeriksaanDao.getNextId();
-                response.setStatus("success");
-                response.setMsg("success");
+                cekParameterList = parameterPemeriksaanDao.getHeaderParameter(bean.getNamaPemeriksaan(), bean.getIdKategoriLab());
             }catch (HibernateException e){
                 response.setStatus("error");
-                response.setMsg("Mohon maaf error saat mencari ID...!, "+e.getMessage());
+                response.setMsg("Mohon maaf error saat mencari data pemeriksaan...!, "+e.getMessage());
                 logger.error(e.getMessage());
             }
-            if(id != null){
-                pemeriksaanEntity.setIdParameterPemeriksaan(id);
-                pemeriksaanEntity.setIdKategoriLab(bean.getIdKategoriLab());
-                pemeriksaanEntity.setNamaPemeriksaan(bean.getNamaPemeriksaan());
-                pemeriksaanEntity.setKeteranganAcuanL(bean.getKeteranganAcuanL());
-                pemeriksaanEntity.setKeteranganAcuanP(bean.getKeteranganAcuanP());
-                pemeriksaanEntity.setSatuan(bean.getSatuan());
-                pemeriksaanEntity.setTarif(bean.getTarif());
-                pemeriksaanEntity.setFlag(bean.getFlag());
-                pemeriksaanEntity.setAction(bean.getAction());
-                pemeriksaanEntity.setCreatedDate(bean.getCreatedDate());
-                pemeriksaanEntity.setCreatedWho(bean.getCreatedWho());
-                pemeriksaanEntity.setLastUpdate(bean.getLastUpdate());
-                pemeriksaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
-
+            if(cekParameterList.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Mohon Maaf Data Parameter Pemeriksaan "+bean.getNamaPemeriksaan()+" sudah ada...!");
+                logger.error("");
+            }else{
                 try {
-                    parameterPemeriksaanDao.addAndSave(pemeriksaanEntity);
+                    id = parameterPemeriksaanDao.getNextId();
                     response.setStatus("success");
                     response.setMsg("success");
                 }catch (HibernateException e){
                     response.setStatus("error");
-                    response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
+                    response.setMsg("Mohon maaf error saat mencari ID...!, "+e.getMessage());
                     logger.error(e.getMessage());
+                }
+                if(id != null){
+                    pemeriksaanEntity.setIdParameterPemeriksaan(id);
+                    pemeriksaanEntity.setIdKategoriLab(bean.getIdKategoriLab());
+                    pemeriksaanEntity.setNamaPemeriksaan(bean.getNamaPemeriksaan());
+                    pemeriksaanEntity.setKeteranganAcuanL(bean.getKeteranganAcuanL());
+                    pemeriksaanEntity.setKeteranganAcuanP(bean.getKeteranganAcuanP());
+                    pemeriksaanEntity.setSatuan(bean.getSatuan());
+                    pemeriksaanEntity.setTarif(bean.getTarif());
+                    pemeriksaanEntity.setFlag(bean.getFlag());
+                    pemeriksaanEntity.setAction(bean.getAction());
+                    pemeriksaanEntity.setCreatedDate(bean.getCreatedDate());
+                    pemeriksaanEntity.setCreatedWho(bean.getCreatedWho());
+                    pemeriksaanEntity.setLastUpdate(bean.getLastUpdate());
+                    pemeriksaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                    try {
+                        parameterPemeriksaanDao.addAndSave(pemeriksaanEntity);
+                        response.setStatus("success");
+                        response.setMsg("success");
+                    }catch (HibernateException e){
+                        response.setStatus("error");
+                        response.setMsg("Mohon maaf error saat insert database...!, "+e.getMessage());
+                        logger.error(e.getMessage());
+                    }
                 }
             }
         }

@@ -237,8 +237,8 @@
                             <div class="col-md-offset-6 col-md-6">
                                 <label>TTD Dokter Spesialis Anestesi</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ttd1')" class="paint-canvas-ttd" id="ttd1"></canvas>
-                                <input class="form-control" id="nama_terang_sps" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_sps" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_sps" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_sps" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ttd1')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

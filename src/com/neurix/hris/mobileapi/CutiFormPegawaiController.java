@@ -256,13 +256,21 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
             cutiPegawai.setJenisCuti(model.getJenisCuti());
             cutiPegawai.setCutiTanggunganId(model.getCutiTanggunganId());
 
-            List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
+            try {
+                List<Notifikasi> notifCuti = cutiPegawaiBoProxy.saveAddCuti(cutiPegawai);
 
-            for (Notifikasi notifikasi : notifCuti ){
-                notifikasiBoProxy.sendNotif(notifikasi);
+                for (Notifikasi notifikasi : notifCuti ){
+                    notifikasiBoProxy.sendNotif(notifikasi);
+                }
+
+            } catch (GeneralBOException e){
+                model.setActionError(e.getMessage());
+                logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
             }
+
+
         } catch (GeneralBOException e) {
-            result.setActionError(e.getMessage());
             Long logId = null;
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiFormPegawaiController.isFoundOtherSessionActiveUserSessionLog");

@@ -542,7 +542,7 @@ public class PositionBagianAction extends BaseMasterAction{
         return positionBagianObj;
     }
 
-    public CrudResponse saveEditDwr(String iddevisi, String namadevisi){
+    public CrudResponse saveEditDwr(String iddevisi, String namadevisi, String bidangId){
         CrudResponse crudResponse = new CrudResponse();
         try {
             positionBagian editPositionBagian = new positionBagian();
@@ -551,6 +551,7 @@ public class PositionBagianAction extends BaseMasterAction{
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             editPositionBagian.setBagianId(iddevisi);
             editPositionBagian.setBagianName(namadevisi);
+            editPositionBagian.setDivisiId(bidangId);
             editPositionBagian.setLastUpdateWho(userLogin);
             editPositionBagian.setLastUpdate(updateTime);
             editPositionBagian.setAction("U");

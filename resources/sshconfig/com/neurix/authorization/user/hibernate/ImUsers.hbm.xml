@@ -16,7 +16,7 @@
             <column name="user_name" sql-type="varchar" length="100" not-null="true"/>
         </property>
         <property name="divisiId">
-            <column name="department_id" sql-type="varchar" length="3" not-null="false"/>
+            <column name="department_id" sql-type="varchar" length="5" not-null="false"/>
         </property>
         <property name="password">
             <column name="password" sql-type="varchar" length="100" not-null="true"/>

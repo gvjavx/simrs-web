@@ -28,6 +28,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
+import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.commons.beanutils.BeanUtils;
@@ -37,6 +38,7 @@ import org.apache.struts2.components.Div;
 import org.hibernate.HibernateException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
+import javax.persistence.EntityExistsException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -624,7 +626,7 @@ public class UserBoImpl implements UserBo {
                     if(itemMenu.get(1) != null){
 
                         if(menuName.equalsIgnoreCase("Dashboard")){
-                                menuNameString = "<li id=\"dashboard\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
+                            menuNameString = "<li id=\"dashboard\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Jalan")) {
                             menuNameString = "<li id=\"pendaftaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Ply. Rawat Jalan")) {
@@ -650,7 +652,7 @@ public class UserBoImpl implements UserBo {
                         }else if (menuName.equalsIgnoreCase("Verifikasi BPJS RJ")) {
                             menuNameString = "<li id=\"verifikasi_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Verifikasi BPJS RI")) {
-                                menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
+                            menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Permintaan Gizi")) {
                             menuNameString = "<li id=\"permintaan_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Pembayaran")) {
@@ -691,8 +693,10 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"rawat_bersalin\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Verifikasi Cover Asuransi")) {
                             menuNameString = "<li id=\"verifikasi_cover\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
-                        }else{
+                        }else if (menuName.equalsIgnoreCase("Logout")) {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
+                        }else{
+                            menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }
                     }else{
 
@@ -1557,6 +1561,9 @@ public class UserBoImpl implements UserBo {
         userPK.setId(username);
 
         ImUsers loginUser = (ImUsers) userDao.getById(userPK,active);
+        if(loginUser == null) {
+            loginUser = getUserByEmailId(username);
+        }
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
             String namaPosisi = "";
@@ -1598,35 +1605,34 @@ public class UserBoImpl implements UserBo {
 
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
-            userDetailsLogin = new UserDetailsLogin();
-            userDetailsLogin.setUserId(userId);
-            userDetailsLogin.setUsername(username);
-            userDetailsLogin.setUserNameDetail(userName);
-            userDetailsLogin.setPassword(password);
-            userDetailsLogin.setRoles(listRoles);
-            userDetailsLogin.setEnabled(true);
-            userDetailsLogin.setNonBlocked(true);
-            userDetailsLogin.setNonExpired(true);
-            userDetailsLogin.setUserCredentialsNonExpired(true);
-            userDetailsLogin.setPositionId(positionId);
-            userDetailsLogin.setPositionName(positionName);
-            userDetailsLogin.setBranchId(branchId);
-            userDetailsLogin.setBranchName(branchName);
-            userDetailsLogin.setCompanyId(companyId);
-            userDetailsLogin.setCompanyName(companyName);
-            userDetailsLogin.setAreaId(areaId);
-            userDetailsLogin.setAreaName(areaName);
-            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
-            try {
-                userDetailsLogin.setPin(biodata.getPin());
-            } catch (NullPointerException e){
-                e.printStackTrace();
-            }
-            userDetailsLogin.setIdDevice(loginUser.getIdDevice());
-
             if  (biodata != null) {
+                userDetailsLogin = new UserDetailsLogin();
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
+                userDetailsLogin.setUserId(userId);
+                userDetailsLogin.setUsername(userId);
+                userDetailsLogin.setUserNameDetail(userName);
+                userDetailsLogin.setPassword(password);
+                userDetailsLogin.setRoles(listRoles);
+                userDetailsLogin.setEnabled(true);
+                userDetailsLogin.setNonBlocked(true);
+                userDetailsLogin.setNonExpired(true);
+                userDetailsLogin.setUserCredentialsNonExpired(true);
+                userDetailsLogin.setPositionId(positionId);
+                userDetailsLogin.setPositionName(positionName);
+                userDetailsLogin.setBranchId(branchId);
+                userDetailsLogin.setBranchName(branchName);
+                userDetailsLogin.setCompanyId(companyId);
+                userDetailsLogin.setCompanyName(companyName);
+                userDetailsLogin.setAreaId(areaId);
+                userDetailsLogin.setAreaName(areaName);
+                userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+                try {
+                    userDetailsLogin.setPin(biodata.getPin());
+                } catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+                userDetailsLogin.setIdDevice(loginUser.getIdDevice());
             }
 
 
@@ -1725,14 +1731,43 @@ public class UserBoImpl implements UserBo {
                 hsCriteria.put("id_device", searchUsers.getIdDevice());
             }
 
-            if (searchUsers.getFlag() != null && !"".equalsIgnoreCase(searchUsers.getFlag())) {
-                if ("N".equalsIgnoreCase(searchUsers.getFlag())) {
-                    hsCriteria.put("flag", "N");
-                } else {
-                    hsCriteria.put("flag", searchUsers.getFlag());
-                }
-            } else {
-                hsCriteria.put("flag", "Y");
+            // Sigit, 2020-11-30 penambahan filter search user, START
+            if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId()))
+                hsCriteria.put("branch_id", searchUsers.getBranchId());
+
+            if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId()))
+                hsCriteria.put("area_id", searchUsers.getAreaId());
+
+            if (searchUsers.getRoleId() != null && !"".equalsIgnoreCase(searchUsers.getRoleId()))
+                hsCriteria.put("role_id", searchUsers.getRoleId());
+
+            if (searchUsers.getDepartmentId() != null && !"".equalsIgnoreCase(searchUsers.getDepartmentId()))
+                hsCriteria.put("department_id", searchUsers.getDepartmentId());
+            // END
+
+            String flag = "Y";
+            if (searchUsers.getFlag() != null && !"".equalsIgnoreCase(searchUsers.getFlag()))
+                flag = searchUsers.getFlag();
+
+            hsCriteria.put("flag", flag);
+
+            // Sigit, 2020-11-30 mencari list user id berdasrkan criteria filter yang dicari, START
+            List<String> stringListUserId = new ArrayList<>();
+
+            try {
+                stringListUserId = userDao.getListUserIdByCriteria(hsCriteria);
+            } catch (HibernateException e) {
+                logger.error("[UserBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when slist user id, please info to your admin..." + e.getMessage());
+            }
+            // END
+
+            // Sigit, 2020-11-30 jika terdapat list user berdasarkan criteria yang dicari, START
+            // maka cari berdasarkan list user untuk mendapatkan data lengkap user
+            if (stringListUserId.size() > 0){
+                hsCriteria = new HashMap();
+                hsCriteria.put("list_user_id", stringListUserId);
+                hsCriteria.put("flag", flag);
             }
 
             List<ImUsers> listOfUsers = null;
@@ -1743,421 +1778,70 @@ public class UserBoImpl implements UserBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            if (listOfUsers != null) {
-                User resultUsers;
-                for (ImUsers imUsers : listOfUsers) {
+            // END
 
-                    if (searchUsers.getRoleId() != null && !"".equalsIgnoreCase(searchUsers.getRoleId())) {
+            try {
+                if (listOfUsers.size() > 0){
+                    for (ImUsers imUsers : listOfUsers){
 
-                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
-                            ImRoles itemImRoles = listOfImRoles.get(0);
-                            if (itemImRoles.getRoleId().toString().equalsIgnoreCase(searchUsers.getRoleId())) { //jika search berdasarkan role
+                        ImRoles itemImRoles = new ImRoles();
+                        List<ImRoles> imRolesList = new ArrayList<>(imUsers.getImRoles());
+                        if (imRolesList.size() > 0)
+                            itemImRoles = imRolesList.get(0);
 
-                                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+                        ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
+                        List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<>(imUsers.getImAreasBranchesUsers());
+                        if (imAreasBranchesUsersList.size() > 0)
+                            imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
 
-                                if (imAreasBranchesUsersList!=null) {
+                        User resultUsers = new User();
+                        resultUsers.setUserId(imUsers.getPrimaryKey().getId());
+                        resultUsers.setUsername(imUsers.getUserName());
+                        resultUsers.setPassword(imUsers.getPassword());
+                        resultUsers.setEmail(imUsers.getEmail());
 
-                                    ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
+                        resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
+                        resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
 
-                                    if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId())) {
+                        resultUsers.setRoleId(itemImRoles.getRoleId().toString());
+                        resultUsers.setRoleName(itemImRoles.getRoleName());
 
-                                        if (imAreasBranchesUsers.getImArea().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getAreaId())) { //jika search berdasarkan area
+                        resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
+                        resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
+                        resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
+                        resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
 
-                                            if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-
-                                                if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-
-                                                    resultUsers = new User();
-                                                    resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                    resultUsers.setUsername(imUsers.getUserName());
-                                                    resultUsers.setPassword(imUsers.getPassword());
-                                                    resultUsers.setEmail(imUsers.getEmail());
-
-                                                    resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                    resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                    resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                    resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                    resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                    resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                    resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                    resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                    resultUsers.setFlag(imUsers.getFlag());
-                                                    resultUsers.setAction(imUsers.getAction());
-                                                    resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                    resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                    resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                    resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
+                        resultUsers.setFlag(imUsers.getFlag());
+                        resultUsers.setAction(imUsers.getAction());
+                        resultUsers.setCreatedDate(imUsers.getCreatedDate());
+                        resultUsers.setLastUpdate(imUsers.getLastUpdate());
+                        resultUsers.setCreatedWho(imUsers.getCreatedWho());
+                        resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
 
 
-                                                    StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                    imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                    imageUpload.append(CommonUtil.getUploadFolderValue() + CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                    if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                        imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                    } else {
-                                                        imageUpload.append(imUsers.getPhotoUrl());
-                                                    }
-                                                    imageUpload.append("\" border=\"none\" >");
+                        resultUsers.setDivisiId(imUsers.getDivisiId());
+                        resultUsers.setIdPelayanan(imUsers.getIdPelayanan());
+                        resultUsers.setIdDevice(imUsers.getIdDevice());
 
-                                                    resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                    listOfResultUsers.add(resultUsers);
-
-                                                }
-
-                                            } else {
-
-                                                resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
-
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
-                                                }
-                                                imageUpload.append("\" border=\"none\" >");
-
-                                                resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                listOfResultUsers.add(resultUsers);
-                                            }
-
-                                        }
-
-                                    } else {
-
-                                        if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-                                            if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-                                                resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
-
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
-                                                }
-                                                imageUpload.append("\" border=\"none\" >");
-
-                                                resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                listOfResultUsers.add(resultUsers);
-                                            }
-                                        } else {
-
-                                            resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                            resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                            } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
-                                            }
-                                            imageUpload.append("\" border=\"none\" >");
-
-                                            resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                            listOfResultUsers.add(resultUsers);
-
-                                        }
-
-                                    }
-
-                                }
-
-                            }
+                        StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
+                        imageUpload.append(ServletActionContext.getRequest().getContextPath());
+                        imageUpload.append(CommonUtil.getUploadFolderValue() + CommonConstant.RESOURCE_PATH_USER_UPLOAD);
+                        if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                            imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+                        } else {
+                            imageUpload.append(imUsers.getPhotoUrl());
                         }
+                        imageUpload.append("\" border=\"none\" >");
 
-                    } else {
+                        resultUsers.setPreviewPhoto(imageUpload.toString());
 
-                        if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
-                            List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
-                            ImRoles itemImRoles = listOfImRoles.get(0);
+                        listOfResultUsers.add(resultUsers);
 
-                            List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
-
-                            if (imAreasBranchesUsersList!=null) {
-
-                                ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
-
-                                if (searchUsers.getAreaId() != null && !"".equalsIgnoreCase(searchUsers.getAreaId())) {
-
-                                    if (imAreasBranchesUsers.getImArea().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getAreaId())) { //jika search berdasarkan area
-
-                                        if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-
-                                            if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-
-                                                resultUsers = new User();
-                                                resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                                resultUsers.setUsername(imUsers.getUserName());
-                                                resultUsers.setPassword(imUsers.getPassword());
-                                                resultUsers.setEmail(imUsers.getEmail());
-
-                                                resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                                resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                                resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                                resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                                resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                                resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                                resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                                resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                                resultUsers.setFlag(imUsers.getFlag());
-                                                resultUsers.setAction(imUsers.getAction());
-                                                resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                                resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                                resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                                resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                                StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                                imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                    imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                                } else {
-                                                    imageUpload.append(imUsers.getPhotoUrl());
-                                                }
-                                                imageUpload.append("\" border=\"none\" >");
-
-                                                resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                                listOfResultUsers.add(resultUsers);
-
-                                            }
-
-                                        } else {
-
-                                            resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                            resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                            } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
-                                            }
-                                            imageUpload.append("\" border=\"none\" >");
-
-                                            resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                            listOfResultUsers.add(resultUsers);
-                                        }
-
-                                    }
-
-                                } else {
-
-                                    if (searchUsers.getBranchId() != null && !"".equalsIgnoreCase(searchUsers.getBranchId())) {
-                                        if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equalsIgnoreCase(searchUsers.getBranchId())) { //jika search berdasarkan unit
-                                            resultUsers = new User();
-                                            resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                            resultUsers.setUsername(imUsers.getUserName());
-                                            resultUsers.setPassword(imUsers.getPassword());
-                                            resultUsers.setEmail(imUsers.getEmail());
-                                            if(imUsers.getDivisiId() != null){
-                                                resultUsers.setDivisiId(imUsers.getDivisiId());
-                                                resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
-                                            }
-                                            else{
-                                                resultUsers.setDivisiName("");
-                                                resultUsers.setDivisiId("");
-                                            }
-
-                                            resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                            resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                            resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                            resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                            resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                            resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                            resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                            resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                            resultUsers.setFlag(imUsers.getFlag());
-                                            resultUsers.setAction(imUsers.getAction());
-                                            resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                            resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                            resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                            resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                            StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
-                                            imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                            if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                                imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                            } else {
-                                                imageUpload.append(imUsers.getPhotoUrl());
-                                            }
-                                            imageUpload.append("\" border=\"none\" >");
-
-                                            resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                            listOfResultUsers.add(resultUsers);
-                                        }
-                                    } else {
-
-                                        resultUsers = new User();
-                                        resultUsers.setUserId(imUsers.getPrimaryKey().getId());
-                                        resultUsers.setUsername(imUsers.getUserName());
-                                        resultUsers.setPassword(imUsers.getPassword());
-                                        resultUsers.setEmail(imUsers.getEmail());
-                                        if(imUsers.getDivisiId() != null){
-                                            resultUsers.setDivisiName(imUsers.getImDepartmentEntity().getDepartmentName());
-                                        }
-                                        else{
-                                            resultUsers.setDivisiName("");
-                                        }
-                                        resultUsers.setDivisiId(imUsers.getDivisiId());
-
-                                        resultUsers.setPositionId(imUsers.getImPosition().getPositionId().toString());
-                                        resultUsers.setPositionName(imUsers.getImPosition().getPositionName());
-
-                                        resultUsers.setRoleId(itemImRoles.getRoleId().toString());
-                                        resultUsers.setRoleName(itemImRoles.getRoleName());
-
-                                        resultUsers.setAreaId(imAreasBranchesUsers.getImArea().getPrimaryKey().getId());
-                                        resultUsers.setAreaName(imAreasBranchesUsers.getImArea().getAreaName());
-                                        resultUsers.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                                        resultUsers.setBranchName(imAreasBranchesUsers.getImBranch().getBranchName());
-
-                                        resultUsers.setFlag(imUsers.getFlag());
-                                        resultUsers.setAction(imUsers.getAction());
-                                        resultUsers.setCreatedDate(imUsers.getCreatedDate());
-                                        resultUsers.setLastUpdate(imUsers.getLastUpdate());
-                                        resultUsers.setCreatedWho(imUsers.getCreatedWho());
-                                        resultUsers.setLastUpdateWho(imUsers.getLastUpdateWho());
-
-
-                                        StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg img-cirle \" width='50px' src=\"");
-                                        imageUpload.append(ServletActionContext.getRequest().getContextPath());
-                                        imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                                        if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
-                                            imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
-                                        } else {
-                                            imageUpload.append(imUsers.getPhotoUrl());
-                                        }
-                                        imageUpload.append("\" border=\"none\" >");
-
-                                        resultUsers.setPreviewPhoto(imageUpload.toString());
-
-                                        listOfResultUsers.add(resultUsers);
-
-                                    }
-
-                                }
-                            }
-
-                        }
                     }
                 }
+            } catch (Exception e){
+                logger.error("[UserBoImpl.getByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
         }
 
@@ -2203,9 +1887,10 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setPhotoUrl(addUsers.getPhotoUserUrl());
                 imUsersNew.setPositionId(String.valueOf(addUsers.getPositionId()));
                 imUsersNew.setCreatedDate(addUsers.getCreatedDate());
-                if(imUsersNew.getDivisiId() != null){
+
+                if(addUsers.getDivisiId() != null && !"".equalsIgnoreCase(addUsers.getDivisiId()))
                     imUsersNew.setDivisiId(addUsers.getDivisiId());
-                }
+
                 imUsersNew.setCreatedWho(addUsers.getCreatedWho());
                 imUsersNew.setLastUpdate(addUsers.getLastUpdate());
                 imUsersNew.setLastUpdateWho(addUsers.getLastUpdateWho());
@@ -2362,31 +2047,6 @@ public class UserBoImpl implements UserBo {
                 ImAreasBranchesUsers imAreasBranchesUsersOld = imAreasBranchesUsersListOld.get(0);
                 String branchIdOld = imAreasBranchesUsersOld.getPrimaryKey().getBranchId();
 
-                if (!branchIdOld.equalsIgnoreCase(branchId) || !sPositionIdOld.equalsIgnoreCase(positionId)) {
-
-                    //jika asmud maka akan dicek transaksi list task dan notification
-                    //jika opsgps maka akna dicek transaksi list task
-                    //jika asman maka akan dicek transaksi approval kontrak dan cetak kontrak
-                    //jika mantan maka akan dicek transaksi pembatalan kontrak
-
-                    if (sPositionIdOld.equalsIgnoreCase("1")) { // mantan
-
-
-
-                    } else if (sPositionIdOld.equalsIgnoreCase("8")) { //asman
-
-
-                    } else if (sPositionIdOld.equalsIgnoreCase("7")) { //asmud
-
-
-
-                    } else if (sPositionIdOld.equalsIgnoreCase("4")) { //ops gps
-
-
-                    }
-
-                }
-
                 // move last data to table history
                 ImUsersHistory imUsersDeactive = new ImUsersHistory();
                 try {
@@ -2416,9 +2076,12 @@ public class UserBoImpl implements UserBo {
                 imUsersOld.setUserName(usersNew.getUsername());
                 imUsersOld.setPassword(usersNew.getPassword());
                 imUsersOld.setEmail(usersNew.getEmail());
+                if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan()))
+                    imUsersOld.setIdPelayanan(usersNew.getIdPelayanan());
 //                if (usersNew.getContentFile()!=null) imUsersOld.setPhoto(usersNew.getContentFile());
                 if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
                 imUsersOld.setPositionId(String.valueOf(usersNew.getPositionId()));
+                imUsersOld.setDivisiId(usersNew.getDivisiId());
                 imUsersOld.setLastUpdate(usersNew.getLastUpdate());
                 imUsersOld.setLastUpdateWho(usersNew.getLastUpdateWho());
                 imUsersOld.setAction(usersNew.getAction());
@@ -2429,137 +2092,90 @@ public class UserBoImpl implements UserBo {
                     throw new GeneralBOException("Found problem when saving edit data user, please info to your admin..." + e.getMessage());
                 }
 
-                // if no found data then create new data
 
+                //update old to be N, and add new data
+                //deactive old data, set Flag = N
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("user_id",userId);
+
+                List<ImUsersRoles> listOfImUsersRoleses = new ArrayList<ImUsersRoles>();
+                try {
+                    listOfImUsersRoleses = userRoleDao.getByCriteria(hsCriteria);
+                } catch (HibernateException e) {
+                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data users roles, please info to your admin..." + e.getMessage());
+                }
+
+                for (ImUsersRoles imUsersRoles : listOfImUsersRoleses) {
+                    try {
+                        userRoleDao.deleteAndSave(imUsersRoles);
+                    } catch (HibernateException e) {
+                        logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
+                    }
+                }
+
+                //create new data
+                ImUsersRoles imUsersRolesNew = new ImUsersRoles();
                 ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
                 primaryKeyUserRole.setUserId(userId);
                 primaryKeyUserRole.setRoleId(Long.valueOf(usersNew.getRoleId()));
+                imUsersRolesNew.setPrimaryKey(primaryKeyUserRole);
+                imUsersRolesNew.setCreatedDate(usersNew.getLastUpdate());
+                imUsersRolesNew.setCreatedWho(usersNew.getLastUpdateWho());
+                imUsersRolesNew.setLastUpdate(usersNew.getLastUpdate());
+                imUsersRolesNew.setLastUpdateWho(usersNew.getLastUpdateWho());
+                imUsersRolesNew.setFlag("Y");
 
-                ImUsersRoles imUsersRolesOld = null;
                 try {
-                    imUsersRolesOld = userRoleDao.getByCompositeKey(primaryKeyUserRole, "Y");
+                    userRoleDao.addAndSave(imUsersRolesNew);
                 } catch (HibernateException e) {
                     logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data users roles, please info to your admin..." + e.getMessage());
                 }
 
-                if (imUsersRolesOld==null) {
 
-                    //update old to be N, and add new data
-                    //deactive old data, set Flag = N
-                    Map hsCriteria = new HashMap();
-                    hsCriteria.put("user_id",userId);
-                    hsCriteria.put("flag","Y");
-
-                    List<ImUsersRoles> listOfImUsersRoleses = new ArrayList<ImUsersRoles>();
-                    try {
-                        listOfImUsersRoleses = userRoleDao.getByCriteria(hsCriteria);
-                    } catch (HibernateException e) {
-                        logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data users roles, please info to your admin..." + e.getMessage());
-                    }
-
-                    for (ImUsersRoles imUsersRoles : listOfImUsersRoleses) {
-
-                        imUsersRoles.setLastUpdate(usersNew.getLastUpdate());
-                        imUsersRoles.setLastUpdateWho(usersNew.getLastUpdateWho());
-                        imUsersRoles.setFlag("N");
-
-                        try {
-                            userRoleDao.updateAndSave(imUsersRoles);
-                        } catch (HibernateException e) {
-                            logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
-                        }
-                    }
-
-                    //create new data
-                    ImUsersRoles imUsersRolesNew = new ImUsersRoles();
-                    primaryKeyUserRole = new ImUsersRolesPK();
-                    primaryKeyUserRole.setUserId(userId);
-                    primaryKeyUserRole.setRoleId(Long.valueOf(usersNew.getRoleId()));
-                    imUsersRolesNew.setPrimaryKey(primaryKeyUserRole);
-                    imUsersRolesNew.setCreatedDate(usersNew.getLastUpdate());
-                    imUsersRolesNew.setCreatedWho(usersNew.getLastUpdateWho());
-                    imUsersRolesNew.setLastUpdate(usersNew.getLastUpdate());
-                    imUsersRolesNew.setLastUpdateWho(usersNew.getLastUpdateWho());
-                    imUsersRolesNew.setFlag("Y");
-
-                    try {
-                        userRoleDao.addAndSave(imUsersRolesNew);
-                    } catch (HibernateException e) {
-                        logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving new data users roles, please info to your admin..." + e.getMessage());
-                    }
-
-                }
-
-                //update im_areas_branches_users, if old same new one, skip, otherwise then non active old, and create new, update by ferdi, 10-10-2016
-                Map hsCriteria = new HashMap();
-                hsCriteria.put("user_id",userId);
-                hsCriteria.put("area_id",areaId);
-                hsCriteria.put("branch_id",branchId);
-                hsCriteria.put("flag","Y");
+                //update old to be N, and add new data
+                //deactive old data, set Flag = N
+                hsCriteria = new HashMap();
+                hsCriteria.put("user_id", userId);
 
                 List<ImAreasBranchesUsers> imAreasBranchesUsersList = null;
                 try {
                     imAreasBranchesUsersList = areasBranchesUsersDao.getByCriteria(hsCriteria);
                 } catch (HibernateException e) {
                     logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when searching data users, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data area branch users, please info to your admin..." + e.getMessage());
                 }
 
-                if (imAreasBranchesUsersList.isEmpty()) {
-
-                    //update old to be N, and add new data
-                    //deactive old data, set Flag = N
-                    hsCriteria = new HashMap();
-                    hsCriteria.put("user_id", userId);
-                    hsCriteria.put("flag", "Y");
-
-                    imAreasBranchesUsersList = null;
+                for (ImAreasBranchesUsers imAreasBranchesUsers : imAreasBranchesUsersList) {
                     try {
-                        imAreasBranchesUsersList = areasBranchesUsersDao.getByCriteria(hsCriteria);
+                        areasBranchesUsersDao.deleteAndSave(imAreasBranchesUsers);
                     } catch (HibernateException e) {
                         logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data area branch users, please info to your admin..." + e.getMessage());
-                    }
-
-                    for (ImAreasBranchesUsers imAreasBranchesUsers : imAreasBranchesUsersList) {
-
-                        imAreasBranchesUsers.setLastUpdate(usersNew.getLastUpdate());
-                        imAreasBranchesUsers.setLastUpdateWho(usersNew.getLastUpdateWho());
-                        imAreasBranchesUsers.setFlag("N");
-
-                        try {
-                            areasBranchesUsersDao.updateAndSave(imAreasBranchesUsers);
-                        } catch (HibernateException e) {
-                            logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving deactive data area-branch-user, please info to your admin..." + e.getMessage());
-                        }
-                    }
-
-                    ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
-                    ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
-                    imAreasBranchesUsersPK.setUserId(userId);
-                    imAreasBranchesUsersPK.setAreaId(areaId);
-                    imAreasBranchesUsersPK.setBranchId(branchId);
-
-                    imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
-                    imAreasBranchesUsers.setCreatedDate(usersNew.getLastUpdate());
-                    imAreasBranchesUsers.setCreatedWho(usersNew.getLastUpdateWho());
-                    imAreasBranchesUsers.setLastUpdate(usersNew.getLastUpdate());
-                    imAreasBranchesUsers.setLastUpdateWho(usersNew.getLastUpdateWho());
-                    imAreasBranchesUsers.setFlag("Y");
-
-                    try {
-                        areasBranchesUsersDao.addAndSave(imAreasBranchesUsers);
-                    } catch (HibernateException e) {
-                        logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving new data area-branch-users, please info to your admin..." + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data area-branch-user, please info to your admin..." + e.getMessage());
                     }
                 }
 
+                ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
+                ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
+                imAreasBranchesUsersPK.setUserId(userId);
+                imAreasBranchesUsersPK.setAreaId(areaId);
+                imAreasBranchesUsersPK.setBranchId(branchId);
+
+                imAreasBranchesUsers.setPrimaryKey(imAreasBranchesUsersPK);
+                imAreasBranchesUsers.setCreatedDate(usersNew.getLastUpdate());
+                imAreasBranchesUsers.setCreatedWho(usersNew.getLastUpdateWho());
+                imAreasBranchesUsers.setLastUpdate(usersNew.getLastUpdate());
+                imAreasBranchesUsers.setLastUpdateWho(usersNew.getLastUpdateWho());
+                imAreasBranchesUsers.setFlag("Y");
+
+                try {
+                    areasBranchesUsersDao.addAndSave(imAreasBranchesUsers);
+                } catch (HibernateException e) {
+                    logger.error("[UserBoImpl.saveEdit] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data area-branch-users, please info to your admin..." + e.getMessage());
+                }
 
             } else {
                 logger.error("[UserBoImpl.saveEdit] Error, Found problem when saving update data users, cause no have userId in database, please info to your admin.");
@@ -3194,4 +2810,6 @@ public class UserBoImpl implements UserBo {
     public ImUsers getUserByEmailId(String email) throws GeneralBOException {
         return userDao.getById("email", email);
     }
+
+
 }

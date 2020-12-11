@@ -560,8 +560,8 @@
                             <div class="col-md-6">
                                 <label>TTD Perawat</label>
                                 <canvas style="margin-left: -1px;" width="250" onmouseover="paintTtd('ttdPerawat')" class="paint-canvas-ttd" id="ttdPerawat"></canvas>
-                                <input id="nama_terang" class="form-control" placeholder="Nama Terang">
-                                <input id="nip_perawat" class="form-control" placeholder="NIP">
+                                <input id="nama_terang" class="form-control nama_petugas" placeholder="Nama Terang">
+                                <input id="nip_perawat" class="form-control nip_petugas" placeholder="NIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ttdPerawat')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

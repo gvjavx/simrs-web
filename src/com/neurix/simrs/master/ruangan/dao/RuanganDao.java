@@ -107,7 +107,6 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     "b.id_ruangan, \n" +
                     "b.nama_ruangan, \n" +
                     "b.no_ruangan, \n" +
-                    "b.status_ruangan,\n" +
                     "c.id_detail_checkup, \n" +
                     "c.tgl_masuk, \n" +
                     "tt.id_tempat_tidur, \n" +
@@ -150,23 +149,22 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                     ruangan.setIdRuangan(obj[1] == null ? "" : obj[1].toString());
                     ruangan.setNamaRuangan(obj[2] == null ? "" : obj[2].toString());
                     ruangan.setNoRuangan(obj[3] == null ? "" : obj[3].toString());
-//                ruangan.setStatusRuangan(obj[4] == null ? "" : obj[4].toString());
-                    ruangan.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
-                    ruangan.setTglMasuk(obj[6] == null ? "" : obj[6].toString());
+                    ruangan.setIdDetailCheckup(obj[4] == null ? "" : obj[4].toString());
+                    ruangan.setTglMasuk(obj[5] == null ? "" : obj[5].toString());
+                    if(obj[6] != null){
+                        ruangan.setIdTempatTidur(obj[6].toString());
+                    }
                     if(obj[7] != null){
-                        ruangan.setIdTempatTidur(obj[7].toString());
+                        ruangan.setNamaTempatTidur(obj[7].toString());
                     }
-                    if(obj[8] != null){
-                        ruangan.setNamaTempatTidur(obj[8].toString());
+                    if(obj[4] != null && !"".equalsIgnoreCase(obj[4].toString())){
+                        ruangan.setTarifTindakan(getSumAllTarifTindakan(obj[4].toString()));
                     }
-                    if(obj[5] != null && !"".equalsIgnoreCase(obj[5].toString())){
-                        ruangan.setTarifTindakan(getSumAllTarifTindakan(obj[5].toString()));
+                    if(obj[8] != null && !"".equalsIgnoreCase(obj[8].toString())){
+                        ruangan.setTarifBpjs((BigDecimal) obj[8]);
                     }
                     if(obj[9] != null && !"".equalsIgnoreCase(obj[9].toString())){
-                        ruangan.setTarifBpjs((BigDecimal) obj[9]);
-                    }
-                    if(obj[10] != null && !"".equalsIgnoreCase(obj[10].toString())){
-                        ruangan.setTipeTransaksi(obj[10].toString());
+                        ruangan.setTipeTransaksi(obj[9].toString());
                         if("bpjs".equalsIgnoreCase(ruangan.getTipeTransaksi())){
                             if(ruangan.getTarifBpjs() != null && ruangan.getTarifTindakan() != null && ruangan.getTarifTindakan().intValue() > 0){
                                 BigDecimal hasilKali = new BigDecimal(0);
@@ -177,8 +175,8 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                             }
                         }
                     }
-                    ruangan.setNamaPasien(obj[11] == null ? null : obj[11].toString());
-                    ruangan.setIdPasien(obj[12] == null ? "" : obj[12].toString());
+                    ruangan.setNamaPasien(obj[10] == null ? null : obj[10].toString());
+                    ruangan.setIdPasien(obj[11] == null ? "" : obj[11].toString());
                     ruanganList.add(ruangan);
                 }
             }
