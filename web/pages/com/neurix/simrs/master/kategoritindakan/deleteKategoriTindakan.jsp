@@ -1,3 +1,11 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: User
+  Date: 01/12/2020
+  Time: 16:18
+  To change this template use File | Settings | File Templates.
+--%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="sb" uri="/struts-bootstrap-tags" %>
 <%@ taglib prefix="s" uri="/struts-tags" %>
@@ -17,15 +25,18 @@
         });
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
+            // $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-           window.location.reload(true);
+           // window.location.reload(true);
+            document.SearchKategoriTindakanForm.submit();
+
+
         };
 
         $.subscribe('beforeProcessSaveDelete', function (event, data) {
-            var idJenisObatdelete = document.getElementById("idJenisObatdelete").value;
+            var idKategoriTindakan = document.getElementById("idKategoriTindakan").value;
 
-            if (idJenisObatdelete != '') {
+            if (idKategoriTindakan != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,12 +47,11 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idJenisObatdelete == '') {
-                    msg += 'Field <strong> id Jenis Obat</strong> is required.' + '<br/>';
+                if (idKategoriTindakan == '') {
+                    msg += 'Field <strong> idKategoriTindakan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog');
             }
         });
@@ -64,18 +74,14 @@
             $('#view_dialog_menu').dialog('close');
         };
 
-
     </script>
-
 </head>
-
 <body bgcolor="#FFFFFF">
-
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/jenisobat"
-                    action="saveDelete_jenisobat" cssClass="well form-horizontal">
+            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/kategoritindakan"
+                    action="saveDelete_kategoritindakan" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -100,10 +106,10 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idJenisObatdelete" name="jenisObat.idJenisObat" disabled="true"
+                                <s:textfield id="idKategoriTindakan" name="kategoriTindakan.idKategoriTindakan" disabled="true"
                                              required="true" readonly="true" cssClass="form-control"/>
 
-                                    <%--<s:hidden id="idJenisObatdelete" name="jenisObat.idJenisObat" />--%>
+                                    <s:hidden id="idKategoriTindakan" name="kategoriTindakan.idKategoriTindakan" />
                             </table>
                         </td>
                     </tr>
@@ -112,22 +118,22 @@
 
                     <tr>
                         <td >
-                            <label class="control-label"><small>Jenis Obat:</small></label>
+                            <label class="control-label"><small>Kategori Tindakan:</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jenisobatAdd" name="jenisObat.namaJenisObat" required="true"
+                                <s:textfield id="kategoriTindakandel" name="kategoriTindakan.kategoriTindakan" required="true"
                                              cssStyle="margin-top: 7px" readonly="true"
                                              disabled="false" cssClass="form-control"/>
+
                             </table>
                         </td>
                     </tr>
 
 
                 </table>
-
-
-
+                <br>
+                <br>
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
@@ -135,6 +141,7 @@
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
                                    name="save"
                                    onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
+
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Delete
@@ -152,22 +159,9 @@
                             <div id="crud">
                                 <td>
                                     <table>
-                                        <sj:dialog id="waiting_dialog" openTopics="showDialog"
-                                                   closeTopics="closeDialog" modal="true"
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
                                                    resizable="false"
-                                                   height="250" width="600" autoOpen="false"
-                                                   title="Save Data ...">
-                                            Please don't close this window, server is processing your request ...
-                                            <br>
-                                            <center>
-                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                     name="image_indicator_write">
-                                                <br>
-                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                     name="image_indicator_write">
-                                            </center>
+                                                   height="350" width="600" autoOpen="false" title="Saving ...">
                                         </sj:dialog>
 
                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
@@ -175,7 +169,10 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
+
                                                                       callSearch2();
+
+
                                                                    }
                                                             }"
                                         >

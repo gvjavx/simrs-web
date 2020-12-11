@@ -21,7 +21,6 @@
             /*font-size: 14px;*/
             /*margin-bottom: 30px;*/
         /*}*/
-
         /*#reset{*/
             /*-webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);*/
             /*box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);*/
@@ -38,7 +37,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_jenisobat'/>";
+            window.location.href="<s:url action='initForm_kategoritindakan'/>";
         }
 
     </script>
@@ -54,7 +53,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Jenis Obat
+            Kategori Tindakan
         </h1>
     </section>
     <!-- Main content -->
@@ -63,14 +62,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Jenis Obat</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Kategori Tindakan</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="SearchJenisObatForm" method="post"  theme="simple"
-                                            namespace="/jenisobat" action="search_jenisobat.action" cssClass="form-horizontal">
+                                    <s:form id="SearchKategoriTindakanForm" method="post"  theme="simple"
+                                            namespace="/kategoritindakan" action="search_kategoritindakan.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -82,11 +81,11 @@
 
                                             <tr>
                                                 <td width="18%" >
-                                                    <label class="control-label"><small>Jenis Obat:</small></label>
+                                                    <label class="control-label"><small>Kategori Tindakan:</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="jenisobat" name="jenisObat.namaJenisObat"
+                                                        <s:textfield id="kategoriTindakan1" name="kategoriTindakan.kategoriTindakan"
                                                                      required="true" cssStyle="margin-top: 7px"
                                                                      disabled="false" cssClass="form-control"/>
                                                     </table>
@@ -99,7 +98,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="rekananOps.flag"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="kategoriTindakan.flag"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
@@ -113,24 +112,24 @@
                                                 <tr>
                                                     <td >
                                                         <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
-                                                                   formIds="SearchJenisObatForm" id="search" name="search"
+                                                                   formIds="SearchKategoriTindakanForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd"  namespace="/jenisobat" action="add_jenisobat" escapeAmp="false">
+                                                        <s:url var="urlAdd"  namespace="/kategoritindakan" action="add_kategoritindakan" escapeAmp="false">
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add JenisObat
+                                                            Add KategoriTindakan
                                                         </sj:a>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" id="reset" cssStyle="margin-right: 5px"
                                                                 onclick="window.location.href='<s:url
-                                                                action="initForm_jenisobat"/>'">
+                                                                action="initForm_kategoritindakan"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -163,7 +162,7 @@
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="310" width="600" autoOpen="false"
-                                                                   title="JenisObat ">
+                                                                   title="KategoriTindakan ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -176,15 +175,15 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchJenisObat" value="#session.listOfResultJenisObat" scope="request" />
-                                                        <display:table name="listOfsearchJenisObat" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_rekananOps.action" export="true" id="row"
+                                                        <s:set name="listOfsearchKategoriTindakan" value="#session.listOfResultKategoriTindakan" scope="request" />
+                                                        <display:table name="listOfsearchKategoriTindakan" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_kategoritindakan.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/jenisobat" action="edit_jenisobat" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idJenisObat"/></s:param>
+                                                                    <s:url var="urlEdit" namespace="/kategoritindakan" action="edit_kategoritindakan" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idKategoriTindakan"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -195,8 +194,8 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/jenisobat" action="delete_jenisobat" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idJenisObat" /></s:param>
+                                                                    <s:url var="urlViewDelete" namespace="/kategoritindakan" action="delete_kategoritindakan" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idKategoriTindakan" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -204,9 +203,9 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <%--<display:column property="idJenisObat" sortable="true" title="ID JenisObat" />--%>
-                                                            <display:column property="namaJenisObat" sortable="true" title="Nama Jenis Obat" />
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
+                                                            <%--<display:column property="idKategoriTindakan" sortable="true" title="ID KategoriTindakan" />--%>
+                                                            <display:column property="kategoriTindakan" sortable="true" title="kategori Tindakan" />
+                                                            <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />

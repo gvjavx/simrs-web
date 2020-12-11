@@ -124,6 +124,8 @@ public class TindakanBoImpl implements TindakanBo {
                     entity.setIdPelayanan(bean.getIdPelayanan());
                     entity.setIsIna(bean.getIsIna());
                     entity.setIsElektif(bean.getIsElektif());
+                    entity.setFlagIdKelasRuangan(bean.getFlagIdKelasRuangan());
+                    entity.setIdKelasRuangan(bean.getIdKelasRuangan());
 
                     try {
                         tindakanDao.addAndSave(entity);
@@ -192,11 +194,11 @@ public class TindakanBoImpl implements TindakanBo {
     }
 
     @Override
-    public List<ImSimrsTindakanEntity> cekTindakan(String idHeader, String idPelayanan) throws GeneralBOException {
+    public List<ImSimrsTindakanEntity> cekTindakan(String idHeader, String idPelayanan, String idKelas) throws GeneralBOException {
         List<ImSimrsTindakanEntity> tindakanList = new ArrayList<>();
         if (idHeader != null && idPelayanan != null) {
             try {
-                tindakanList = tindakanDao.cekDataTindakan(idHeader, idPelayanan);
+                tindakanList = tindakanDao.cekDataTindakan(idHeader, idPelayanan, idKelas);
             } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }

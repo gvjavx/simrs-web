@@ -237,7 +237,6 @@ public class KategoriLabAction extends BaseMasterAction {
             throw new GeneralBOException(e.getMessage());
         }
 
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultKategoriLab");
 
@@ -393,15 +392,14 @@ public class KategoriLabAction extends BaseMasterAction {
             try {
                 logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+                logger.error("[KategoriLabAction.initComboPosition] Error when saving error,", e1);
             }
-            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[KategoriLabAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return "failure";
         }
 
         listOfComboPositions.addAll(listOfPosition);
-
         return "init_combo_position";
     }
 }

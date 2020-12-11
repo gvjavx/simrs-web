@@ -36,6 +36,8 @@
                                     class="fa fa-plus"></i> Asesmen Resiko Jatuh</a></li>
                             <li><a onclick="showModalRJ('nyeri')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Asesmen Nyeri</a></li>
+                            <li><a onclick="showModalRJ('france')" style="cursor: pointer"><i
+                                    class="fa fa-plus"></i> france wilson capur</a></li>
                         </ul>
                     </div>
                 </div>
@@ -82,6 +84,7 @@
                                 <img id="del_nyeri" class="hvr-grow btn-hide" onclick="conKepRJ('nyeri', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>

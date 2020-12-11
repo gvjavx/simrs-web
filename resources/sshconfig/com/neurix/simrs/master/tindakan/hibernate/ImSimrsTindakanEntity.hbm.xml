@@ -56,5 +56,11 @@
         <property name="isElektif">
             <column name="is_elektif"/>
         </property>
+        <property name="idKelasRuangan">
+            <column name="id_kelas_ruangan"/>
+        </property>
+        <property name="flagIdKelasRuangan">
+            <column name="flag_kelas_ruangan"/>
+        </property>
     </class>
 </hibernate-mapping>

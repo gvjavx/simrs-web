@@ -239,6 +239,8 @@ function setDataPasien() {
             $('.rr-pasien').val(tempRr);
         }
 
-        $('[data-mask]').inputmask();
+        $(function () {
+            $('[data-mask]').inputmask();
+        });
     }
 }

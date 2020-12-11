@@ -1162,8 +1162,9 @@
     }
 
     function listBentukObat(id) {
+        console.log("list bentuk klik");
 
-        if (id != null){
+        if (id != null && id != ""){
             ObatAction.getHeaderObatById(id, function (obat) {
 
                 ObatAction.listAllBentukBarang(function (res) {
@@ -1180,6 +1181,7 @@
                 });
             });
         } else {
+            console.log("list add bentuk klik");
             ObatAction.listAllBentukBarang(function (res) {
 
                 var str = "";

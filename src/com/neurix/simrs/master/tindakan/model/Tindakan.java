@@ -37,6 +37,25 @@ public class Tindakan {
     private String tipe;
     private String namaPelayanan;
     private String isElektif;
+    private String idKelasRuangan;
+    private String flagIdKelasRuangan;
+
+    public String getIdKelasRuangan() {
+        return idKelasRuangan;
+    }
+
+    public void setIdKelasRuangan(String idKelasRuangan) {
+        this.idKelasRuangan = idKelasRuangan;
+    }
+
+    public String getFlagIdKelasRuangan() {
+        return flagIdKelasRuangan;
+    }
+
+    public void setFlagIdKelasRuangan(String flagIdKelasRuangan) {
+        this.flagIdKelasRuangan = flagIdKelasRuangan;
+    }
+
 
     public String getIsElektif() {
         return isElektif;
