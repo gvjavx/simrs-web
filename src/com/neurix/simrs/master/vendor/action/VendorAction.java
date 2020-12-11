@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.vendor.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
@@ -95,10 +96,16 @@ public class VendorAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[VendorAction.initForm] START process >>>");
+        String userBranch = CommonUtil.userBranchLogin();
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
         Vendor vendor = new Vendor();
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch)){
+            vendor.setIsKP("Y");
+            logger.info("====>>> isKP ="+ vendor.getIsKP());
+        }
         setVendor(vendor);
 
         logger.info("[VendorAction.initForm] END process >>>");
