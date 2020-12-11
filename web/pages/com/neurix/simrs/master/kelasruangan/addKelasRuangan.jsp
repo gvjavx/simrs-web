@@ -18,8 +18,9 @@
         $.subscribe('beforeProcessSave1', function (event, data) {
             var namaKelasRuangan = document.getElementById("nama_kelasruangan1").value;
             var position = document.getElementById("positionId1").value;
+            var kategoriAdd = document.getElementById("kategoriAdd").value;
 
-            if (namaKelasRuangan != '' && position != '') {
+            if (namaKelasRuangan != '' && position != '' && kategoriAdd != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -35,6 +36,9 @@
                 }
                 if (position == ''){
                     msg += 'Field <strong>Divisi </strong> is required.' + '<br/>';
+                }
+                if (kategoriAdd == ''){
+                    msg += 'Field <strong>kategori </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage1').innerHTML = msg;
@@ -113,6 +117,21 @@
                                 <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="kelasRuangan.positionId"
                                           listKey="positionId" listValue="positionName"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr >
+                        <td>
+                            <label class="control-label"><small>Kategori :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'rawat_inap':'rawat inap','rawat_intensif':'rawat intensif',
+                                'kamar_operasi':'kamar operasi','rawat_isolasi':'rawat isolasi','ruang_bersalin':'ruang bersalin','ruang_recovery':'ruang recovery'
+                                }"
+                                          id="kategoriAdd" name="kelasRuangan.kategori"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
+                                />
                             </table>
                         </td>
                     </tr>
