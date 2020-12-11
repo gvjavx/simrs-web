@@ -408,6 +408,7 @@ public class ObatBoImpl implements ObatBo {
         headerObatEntity.setFlagGeneric(bean.getFlagGeneric());
         headerObatEntity.setFlagBpjs(bean.getFlagBpjs());
         headerObatEntity.setIdKategoriPersediaan(bean.getIdKategoriPersediaan());
+        headerObatEntity.setIdBentuk(bean.getIdBentuk());
 
         try {
             headerObatDao.addAndSave(headerObatEntity);
@@ -507,7 +508,7 @@ public class ObatBoImpl implements ObatBo {
                 kandunganObatDetailEntity.setId(kandunganObat.getId());
                 kandunganObatDetailEntity.setIdObat(obatEntity.getIdObat());
                 kandunganObatDetailEntity.setIdKandungan(kandunganObat.getIdKandungan());
-                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk());
+//                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk());
                 kandunganObatDetailEntity.setSediaan(kandunganObat.getSediaan());
                 kandunganObatDetailEntity.setSatuanSediaan(kandunganObat.getSatuanSediaan());
                 kandunganObatDetailEntity.setFlag("Y");
@@ -559,6 +560,7 @@ public class ObatBoImpl implements ObatBo {
                     headerObatEntity.setFlagKronis(bean.getFlagKronis());
                     headerObatEntity.setFlagBpjs(bean.getFlagBpjs());
                     headerObatEntity.setIdKategoriPersediaan(bean.getIdKategoriPersediaan());
+                    headerObatEntity.setIdBentuk(bean.getIdBentuk());
 
                     try {
                         headerObatDao.updateAndSave(headerObatEntity);
@@ -2416,6 +2418,31 @@ public class ObatBoImpl implements ObatBo {
 
     @Override
     public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException {
+        logger.info("[ObatBoImpl.getAllKategoriPersediaan] START >>>");
+        logger.info("[ObatBoImpl.getAllKategoriPersediaan] END <<<");
         return kategoriPersedianDao.getAll();
+    }
+
+    @Override
+    public List<ImSimrsBentukBarangEntity> getAllBentukBarang() throws GeneralBOException {
+        logger.info("[ObatBoImpl.getAllBentukBarang] START >>>");
+        logger.info("[ObatBoImpl.getAllBentukBarang] END <<<");
+        return bentukBarangDao.getAll();
+    }
+
+    @Override
+    public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getAllBentukBarang] START >>>");
+
+        ImSimrsHeaderObatEntity headerObatEntity = new ImSimrsHeaderObatEntity();
+        try {
+            headerObatEntity = headerObatDao.getById("idObat", id);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getHeaderObatById] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getHeaderObatById] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatBoImpl.getAllBentukBarang] END <<<");
+        return headerObatEntity;
     }
 }

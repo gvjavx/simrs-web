@@ -899,6 +899,8 @@
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.KandunganObat"/>
         <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.ImSimrsKandunganObatEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsHeaderObatEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsBentukBarangEntity"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.department.action.DepartmentAction"/>

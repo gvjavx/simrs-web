@@ -24,6 +24,15 @@ public class ImSimrsHeaderObatEntity {
     private String idKategoriPersediaan;
     private BigInteger minStok;
     private String merk;
+    private String idBentuk;
+
+    public String getIdBentuk() {
+        return idBentuk;
+    }
+
+    public void setIdBentuk(String idBentuk) {
+        this.idBentuk = idBentuk;
+    }
 
     public String getMerk() {
         return merk;

@@ -1382,3 +1382,10 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     CREATE SEQUENCE seq_harga_terakhir;
 --
 
+2020-12-11 --
+
+  ALTER TABLE im_simrs_header_obat
+  ADD COLUMN id_bentuk VARCHAR(30);
+
+--
+
