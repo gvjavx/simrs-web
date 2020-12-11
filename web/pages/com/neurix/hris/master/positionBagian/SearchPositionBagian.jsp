@@ -148,9 +148,9 @@
                                         <%--Search--%>
                                         <%--</sj:submit>--%>
                                         <%--</td>--%>
-                                            <td >
-                                                <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData() "><i class="fa fa-search"></i> Search</a>
-                                            </td>
+                                        <td>
+                                            <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData()"><i class="fa fa-search"></i> Search</a>
+                                        </td>
                                     <td>
                                         <s:url var="urlAdd" namespace="/positionBagian" action="add_positionBagian" escapeAmp="false">
                                     </s:url>
