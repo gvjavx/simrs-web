@@ -33,6 +33,7 @@
             document.getElementById("divisiId").disabled = true;
             document.getElementById("pelayananId-edit").disabled = true;
             document.getElementById("ruanganId-edit").disabled = true;
+            document.getElementById("vendorId-edit").disabled = true;
         }
 
         $.subscribe('beforeProcessSave', function (event, data) {
@@ -139,6 +140,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/RoleAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RuanganAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/VendorAction.js"/>'></script>
 
 </head>
 
@@ -299,7 +301,7 @@
                                     <table>
                                         <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
                                         <s:select cssClass="form-control" list="#comboRole.listOfComboRoles" id="roleid-edit" name="users.roleId" required="false"
-                                                  listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]" onchange="showPelayananEdit(this.value)"/>
+                                                  listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]" onchange="showComboEdit(this.value)"/>
                                     </table>
                                 </td>
                             </tr>
@@ -321,6 +323,17 @@
                                 </td>
                                 <td>
                                     <select style="width: 100%" class="form-control select2" name="users.idRuangan" id="ruanganId-edit">
+                                        <option value="">[Select One]</option>
+                                    </select>
+                                </td>
+                            </tr>
+
+                            <tr style="display: none" id="form-vendor-edit">
+                                <td>
+                                    <label class="control-label"  for="users.roleId">Vendor</label>
+                                </td>
+                                <td>
+                                    <select style="width: 100%" class="form-control select2" name="users.idVendor" id="vendorId-edit">
                                         <option value="">[Select One]</option>
                                     </select>
                                 </td>
@@ -587,22 +600,29 @@
 
     var pelayananId = '<s:property value="users.idPelayanan" />';
     var ruanganId = '<s:property value="users.idRuangan" />';
+    var vendorId = '<s:property value="users.idVendor" />';
 
     $( document ).ready(function() {
         console.log("pelayanan Id edit -> "+pelayananId);
         console.log("ruangan Id edit -> "+ruanganId);
+        console.log("vendor Id edit -> "+vendorId);
         console.log("role Id edit -> "+ $("#roleid-edit").val());
         if(ruanganId != null && ruanganId != "") {
             var roleIdEdit = $("#roleid-edit").val();
-            showPelayananEdit(roleIdEdit, ruanganId);
+            showComboEdit(roleIdEdit, ruanganId);
         }
-        if(pelayananId != null && pelayananId != "") {
+        else if(vendorId != null && vendorId != "") {
             var roleIdEdit = $("#roleid-edit").val();
-            showPelayananEdit(roleIdEdit, pelayananId);
+            showComboEdit(roleIdEdit, vendorId);
+        }
+        else if(pelayananId != null && pelayananId != "") {
+            var roleIdEdit = $("#roleid-edit").val();
+            showComboEdit(roleIdEdit, pelayananId);
         }
     });
 
-    function showPelayananEdit(role, idComponent){
+    function showComboEdit(role, idComponent){
+
         var branch = $('#branchid_edit').val();
         if (branch == null || branch == "")
             alert("Pilih Unit Dahulu");
@@ -610,9 +630,18 @@
             console.log(res);
             if(res.tipePelayanan == "rawat_inap") {
                 $('#form-ruangan-edit').show();
+                $('#form-pelayanan-edit').hide();
+                $('#form-vendor-edit').hide();
                 getListRuanganByBranchEdit(branch, idComponent);
+            } else if(res.tipePelayanan == "pbf"){
+                $('#form-vendor-edit').show();
+                $('#form-pelayanan-edit').hide();
+                $('#form-ruangan-edit').hide();
+                getListVendorEdit(idComponent);
             } else if(res.tipePelayanan != "" && res.tipePelayanan != null){
                 $('#form-pelayanan-edit').show();
+                $('#form-ruangan-edit').hide();
+                $('#form-vendor-edit').hide();
                 getListPelayananByBranchAndTipeEdit(branch, res.tipePelayanan, idComponent);
             }
         });
@@ -657,6 +686,27 @@
                 $('#form-ruangan-edit').hide();
             }
             $('#ruanganId-edit').html(option);
+        });
+    }
+
+    function getListVendorEdit(vendor) {
+        var option = "";
+        VendorAction.getListVendor(function(response) {
+            option = "<option value=''>[Select One]</option>";
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+
+                    if (item.idVendor == vendor){
+                        option += "<option value='" + item.idVendor + "' selected>" + item.namaVendor + "</option>";
+                    } else {
+                        option += "<option value='" + item.idVendor + "'>" + item.namaVendor + "</option>";
+                    }
+                });
+            } else {
+                option = option;
+                $('#form-vendor-edit').hide();
+            }
+            $('#vendorId-edit').html(option);
         });
     }
 

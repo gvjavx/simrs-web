@@ -358,6 +358,7 @@ public class UserAction extends BaseMasterAction {
                     editUser.setDivisiId(itemUser.getDivisiId());
                     editUser.setIdPelayanan(itemUser.getIdPelayanan());
                     editUser.setIdRuangan(itemUser.getIdRuangan());
+                    editUser.setIdVendor(itemUser.getIdVendor());
                     setUserId(itemUser.getUserId());
                     break;
                 }

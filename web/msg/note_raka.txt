@@ -16,7 +16,7 @@
         created_who character varying(100) NOT NULL,
         last_update timestamp without time zone NOT NULL,
         last_update_who character varying(100) NOT NULL,
-        CONSTRAINT im_im_hris_payroll_ptkp_history_pkey PRIMARY KEY (id)
+        CONSTRAINT im_hris_payroll_ptkp_history_pkey PRIMARY KEY (id)
     );
 
     CREATE SEQUENCE public.seq_payroll_ptkp
@@ -29,4 +29,8 @@
     CREATE SEQUENCE public.seq_payroll_ptkp_history;
 
 -- 2020-12-10 ===> User
-+ Menambahakan tipe pelayanan "rawat_inap"
++ Menambahakan (pada table [im_users]) [tipe_pelayanan] "rawat_inap" dan "pbf"
++ Menambahakan column [id_vendor] pada table [im_users]
+
+    ALTER TABLE im_users
+        ADD id_vendor character varying(30);

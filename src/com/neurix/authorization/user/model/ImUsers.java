@@ -242,6 +242,16 @@ public class ImUsers implements Serializable {
         this.idRuangan = idRuangan;
     }
 
+    private String idVendor;
+
+    public String getIdVendor() {
+        return idVendor;
+    }
+
+    public void setIdVendor(String idVendor) {
+        this.idVendor = idVendor;
+    }
+
     private ImBiodataEntity imBiodataEntity;
 
     public ImBiodataEntity getImBiodataEntity() {
