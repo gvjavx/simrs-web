@@ -1263,7 +1263,7 @@ public class ObatBoImpl implements ObatBo {
                     hargaObatEntity.setHargaNet(bean.getHargaNet());
 
                     // harga obat umu,
-                    hargaObatEntity.setHargaJualUmum(bean.getHargaJual());
+                    hargaObatEntity.setHargaJualUmum(bean.getHargaJualUmum());
                     hargaObatEntity.setDiskonUmum(bean.getDiskonUmum());
                     hargaObatEntity.setHargaNetUmum(bean.getHargaNetUmum());
 

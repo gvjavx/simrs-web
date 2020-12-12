@@ -108,9 +108,9 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setIdBarang(obj[11].toString());
                 obat.setStandarMargin(obj[12] == null ? null : (Integer) obj[12]);
                 obat.setHargaBeli(obj[13] == null ? null : (BigDecimal) obj[13]);
-                obat.setDiskonUmum(obj[14] == null ? null : (BigDecimal) obj[14]);
-                obat.setHargaNetUmum(obj[15] == null ? null : (BigDecimal) obj[15]);
-                obat.setHargaJualUmum(obj[16] == null ? null : (BigDecimal) obj[16]);
+                obat.setDiskonUmum(obj[14] == null ? new BigDecimal(0) : (BigDecimal) obj[14]);
+                obat.setHargaNetUmum(obj[15] == null ? new BigDecimal(0) : (BigDecimal) obj[15]);
+                obat.setHargaJualUmum(obj[16] == null ? new BigDecimal(0) : (BigDecimal) obj[16]);
 
                 // Sigit 2020-12-08, hitung margin obat khusus, Start
                 BigDecimal hargaRata    = obat.getAverageHargaBiji();
