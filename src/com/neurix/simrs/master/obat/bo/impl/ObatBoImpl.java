@@ -1720,20 +1720,16 @@ public class ObatBoImpl implements ObatBo {
                             trans.setTotal(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
                             trans.setSubTotal(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
 
-//                        trans.setQtyKredit(nolB);
-//                        trans.setTotalKredit(nol);
-//                        trans.setSubTotalKredit(nol);
 
-                            // qty saldo = qty masuk + qty lalu;
                             trans.setQtySaldo(minStok.getQtyLalu().add(trans.getQty()));
 
                             // total saldo = sub total lalu + sub total / qty saldo
-                            BigDecimal qtySaldo = new BigDecimal(trans.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : trans.getQtySaldo());
-                            BigDecimal subTotalLalu =  minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu();
-                            BigDecimal totalSubTotalLalu = subTotalLalu.add(trans.getSubTotal());
-                            BigDecimal totalSaldo = totalSubTotalLalu.compareTo(new BigDecimal(0)) == 1 ? totalSubTotalLalu.divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP) : new BigDecimal(0) ;
+//                            BigDecimal qtySaldo = new BigDecimal(trans.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : trans.getQtySaldo());
+//                            BigDecimal subTotalLalu =  minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu();
+//                            BigDecimal totalSubTotalLalu = subTotalLalu.add(trans.getSubTotal());
+//                            BigDecimal totalSaldo = totalSubTotalLalu.compareTo(new BigDecimal(0)) == 1 ? totalSubTotalLalu.divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP) : new BigDecimal(0) ;
 
-                            trans.setTotalSaldo(totalSaldo);
+                            trans.setTotalSaldo(trans.getTotal());
 
                             // sub total saldo = total saldo * qty saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
@@ -1776,7 +1772,8 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtySaldo(minStok.getQtySaldo().add(trans.getQty()));
 
                             // total saldo = sub total saldo lalu + sub total / qty saldo
-                            trans.setTotalSaldo(minStok.getSubTotalSaldo().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+//                            trans.setTotalSaldo(minStok.getSubTotalSaldo().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+                            trans.setTotalSaldo(trans.getTotal());
 
                             // sub total saldo = sub total saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
@@ -1790,7 +1787,7 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtySaldo((minStok.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : minStok.getQtySaldo()).subtract(trans.getQtyKredit()));
 
                             // total saldo = total saldo lalu
-                            trans.setTotalSaldo(minStok.getTotalSaldo() == null ? new BigDecimal(0) : minStok.getTotalSaldo());
+                            trans.setTotalSaldo(trans.getTotalKredit());
 
                             // sub total saldo = sub total saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
