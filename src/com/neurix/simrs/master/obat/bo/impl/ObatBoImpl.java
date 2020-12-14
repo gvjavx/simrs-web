@@ -227,8 +227,6 @@ public class ObatBoImpl implements ObatBo {
                         }
                         obat.setJenisObat(listJenisObat.toString());
                     }
-
-
                     result.add(obat);
                 }
             }
@@ -385,11 +383,10 @@ public class ObatBoImpl implements ObatBo {
         // header obat
         if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())){
             headerObatEntity.setIdObat(bean.getIdPabrik());
-            headerObatEntity.setIdPabrik(bean.getIdPabrik());
         } else {
             headerObatEntity.setIdObat("OBT" + id);
-            headerObatEntity.setIdPabrik(headerObatEntity.getIdObat());
         }
+        headerObatEntity.setIdPabrik(headerObatEntity.getIdObat());
         headerObatEntity.setNamaObat(bean.getNamaObat());
         headerObatEntity.setMerk(bean.getMerk());
         headerObatEntity.setLembarPerBox(bean.getLembarPerBox());
@@ -435,20 +432,12 @@ public class ObatBoImpl implements ObatBo {
             throw new GeneralBOException("[ObatBoImpl.saveAdd] error add data margin obat" + e.getMessage());
         }
 
-
         obatEntity.setIdSeqObat(idSeqObat);
         obatEntity.setIdObat(headerObatEntity.getIdObat());
         obatEntity.setNamaObat(bean.getNamaObat());
         obatEntity.setHarga(bean.getHarga());
         obatEntity.setQty(bean.getQty());
         obatEntity.setBranchId(bean.getBranchId());
-//        obatEntity.setMerk(bean.getMerk());
-//        obatEntity.setIdPabrik(bean.getIdPabrik());
-//        obatEntity.setQtyBox(bean.getQtyBox());
-//        obatEntity.setQtyLembar(bean.getQtyLembar());
-//        obatEntity.setLembarPerBox(bean.getLembarPerBox());
-//        obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-//        obatEntity.setQtyBiji(bean.getQtyBiji());
         obatEntity.setFlag(bean.getFlag());
         obatEntity.setAction(bean.getAction());
         obatEntity.setCreatedDate(time);
@@ -508,7 +497,6 @@ public class ObatBoImpl implements ObatBo {
                 kandunganObatDetailEntity.setId(kandunganObat.getId());
                 kandunganObatDetailEntity.setIdObat(obatEntity.getIdObat());
                 kandunganObatDetailEntity.setIdKandungan(kandunganObat.getIdKandungan());
-//                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk());
                 kandunganObatDetailEntity.setSediaan(kandunganObat.getSediaan());
                 kandunganObatDetailEntity.setSatuanSediaan(kandunganObat.getSatuanSediaan());
                 kandunganObatDetailEntity.setFlag("Y");
@@ -552,7 +540,6 @@ public class ObatBoImpl implements ObatBo {
                     headerObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     headerObatEntity.setLembarPerBox(bean.getLembarPerBox());
                     headerObatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-                    headerObatEntity.setIdPabrik(bean.getIdPabrik());
                     headerObatEntity.setMerk(bean.getMerk());
                     headerObatEntity.setAction(bean.getAction());
                     headerObatEntity.setMinStok(bean.getMinStok());
