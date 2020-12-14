@@ -782,8 +782,8 @@
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
                                                         <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir"
-                                                                     cssClass="form-control datemask"
-                                                                     onchange="$('#st_tgl_lahir').css('border','')"/>
+                                                                     cssClass="form-control datemask" cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
+                                                                     onchange="$('#st_tgl_lahir').css('border','')" readonly="true"/>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1172,7 +1172,7 @@
                             <div id="form-asuransi" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Asuransi</h3>
+                                    <h3 class="box-title"><i class="fa fa-user"></i> Silahkan Isi Data Asuransi</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">

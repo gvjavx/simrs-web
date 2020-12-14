@@ -2368,6 +2368,7 @@
     var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
     var isBpjsRekanan = "";
     var isLanjutPaket = false;
+    var idKelasRuangan = "";
 
     $(document).ready(function () {
         $('#igd').addClass('active');

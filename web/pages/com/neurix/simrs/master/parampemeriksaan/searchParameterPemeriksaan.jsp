@@ -470,85 +470,87 @@
 
     function saveParams(id) {
         var data = "";
-        var namaPemeriksaan = $('#set_nama_pemeriksaan').val();
-        var kategori = $('#set_kategori').val();
-        var ketAcuanL = $('#set_ket_acuan_l').val();
-        var ketAcuanP = $('#set_ket_acuan_p').val();
-        var satuan = $('#set_satuan').val();
-        var tarif = $('#h_tarif').val();
-        if (namaPemeriksaan && kategori && ketAcuanL && ketAcuanP && satuan && tarif != '') {
-            data = {
-                'id_parameter_pemeriksaan':id,
-                'nama_pemeriksaan': namaPemeriksaan,
-                'id_kategori_lab': kategori,
-                'keterangan_acuan_p': ketAcuanP,
-                'keterangan_acuan_l': ketAcuanL,
-                'tarif': tarif,
-                'satuan': satuan
-            }
-            var dataString = JSON.stringify(data);
-            $('#save_add').hide();
-            $('#load_add').show();
-            if(id != ''){
-                dwr.engine.setAsync(true);
-                ParameterPemeriksaanAction.saveEdit(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-add').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_add').show();
-                            $('#load_add').hide();
-                            $('body').scrollTop(0);
+        if(!cekSession()){
+            var namaPemeriksaan = $('#set_nama_pemeriksaan').val();
+            var kategori = $('#set_kategori').val();
+            var ketAcuanL = $('#set_ket_acuan_l').val();
+            var ketAcuanP = $('#set_ket_acuan_p').val();
+            var satuan = $('#set_satuan').val();
+            var tarif = $('#h_tarif').val();
+            if (namaPemeriksaan && kategori && ketAcuanL && ketAcuanP && satuan && tarif != '') {
+                data = {
+                    'id_parameter_pemeriksaan':id,
+                    'nama_pemeriksaan': namaPemeriksaan,
+                    'id_kategori_lab': kategori,
+                    'keterangan_acuan_p': ketAcuanP,
+                    'keterangan_acuan_l': ketAcuanL,
+                    'tarif': tarif,
+                    'satuan': satuan
+                }
+                var dataString = JSON.stringify(data);
+                $('#save_add').hide();
+                $('#load_add').show();
+                if(id != ''){
+                    dwr.engine.setAsync(true);
+                    ParameterPemeriksaanAction.saveEdit(dataString, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-add').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                                $('body').scrollTop(0);
 
-                        } else {
-                            $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.msg);
-                            $('#save_add').show();
-                            $('#load_add').hide();
+                            } else {
+                                $('#warning_add').show().fadeOut(5000);
+                                $('#msg_add').text(response.msg);
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                            }
                         }
-                    }
-                });
-            }else{
-                dwr.engine.setAsync(true);
-                ParameterPemeriksaanAction.saveAdd(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-add').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_add').show();
-                            $('#load_add').hide();
-                            $('body').scrollTop(0);
+                    });
+                }else{
+                    dwr.engine.setAsync(true);
+                    ParameterPemeriksaanAction.saveAdd(dataString, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-add').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                                $('body').scrollTop(0);
 
-                        } else {
-                            $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.msg);
-                            $('#save_add').show();
-                            $('#load_add').hide();
+                            } else {
+                                $('#warning_add').show().fadeOut(5000);
+                                $('#msg_add').text(response.msg);
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                            }
                         }
-                    }
-                });
-            }
-        }else {
-            $('#warning_add').show().fadeOut(5000);
-            $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                    });
+                }
+            }else {
+                $('#warning_add').show().fadeOut(5000);
+                $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
 
-            if (namaPemeriksaan == '') {
-                $('#war_set_nama_pemeriksaan').show();
-            }
-            if (kategori == '') {
-                $('#war_set_kategori').show();
-            }
-            if (ketAcuanP == '') {
-                $('#war_set_ket_acuan_p').show();
-            }
-            if (ketAcuanL == '') {
-                $('#war_set_ket_acuan_l').show();
-            }
-            if (satuan == '') {
-                $('#war_set_satuan').show();
-            }
-            if (tarif == '') {
-                $('#war_set_tarif').show();
+                if (namaPemeriksaan == '') {
+                    $('#war_set_nama_pemeriksaan').show();
+                }
+                if (kategori == '') {
+                    $('#war_set_kategori').show();
+                }
+                if (ketAcuanP == '') {
+                    $('#war_set_ket_acuan_p').show();
+                }
+                if (ketAcuanL == '') {
+                    $('#war_set_ket_acuan_l').show();
+                }
+                if (satuan == '') {
+                    $('#war_set_satuan').show();
+                }
+                if (tarif == '') {
+                    $('#war_set_tarif').show();
+                }
             }
         }
     }
@@ -578,21 +580,23 @@
     function saveDelete(id) {
         $('#modal-confirm-dialog').modal('hide');
         $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        ParameterPemeriksaanAction.saveDelete(id, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
-                    $('body').scrollTop(0);
-                } else {
-                    $('#waiting_dialog').dialog('close');
-                    $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(res.msg);
-                    $('body').scrollTop(0);
+        if(!cekSession()){
+            dwr.engine.setAsync(true);
+            ParameterPemeriksaanAction.saveDelete(id, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                    } else {
+                        $('#waiting_dialog').dialog('close');
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text(res.msg);
+                        $('body').scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
 </script>

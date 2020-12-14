@@ -352,6 +352,14 @@ public class TindakanAction extends BaseTransactionAction {
                     tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
                     tindakan.setIsIna(object.getString("is_ina"));
                     tindakan.setIsElektif(object.getString("is_elektif"));
+                    if(object.has("id_kelas")){
+                        if("empty".equalsIgnoreCase(object.getString("id_kelas"))){
+                            tindakan.setFlagIdKelasRuangan("N");
+                        }else{
+                            tindakan.setFlagIdKelasRuangan("Y");
+                            tindakan.setIdKelasRuangan(object.getString("id_kelas"));
+                        }
+                    }
                     tindakan.setCreatedWho(userLogin);
                     tindakan.setLastUpdate(updateTime);
                     tindakan.setCreatedDate(updateTime);
@@ -360,7 +368,7 @@ public class TindakanAction extends BaseTransactionAction {
                     tindakan.setFlag("Y");
                     List<ImSimrsTindakanEntity> entityList = new ArrayList<>();
                     try {
-                        entityList = tindakanBo.cekTindakan(object.getString("id_header_tindakan"), object.getString("id_pelayanan"));
+                        entityList = tindakanBo.cekTindakan(object.getString("id_header_tindakan"), object.getString("id_pelayanan"), object.getString("id_kelas"));
                         response.setStatus("success");
                         response.setMsg("Berhasil...!");
                     }catch (HibernateException e){

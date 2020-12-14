@@ -17,7 +17,7 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="alert alert-danger alert-dismissible" id="warning_finger">
-                            Your session has expired, please login again...!
+                            Your session has expired, please login again...! <span id="hitung_mundur"></span> to page login...!
                         </div>
                     </div>
                 </div>

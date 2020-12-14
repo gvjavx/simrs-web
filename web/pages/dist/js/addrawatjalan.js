@@ -779,7 +779,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, ket_selesai, tgl_cekup, ket_c
 function listSelectTindakan(idKategori) {
     var option = "<option value=''>[Select One]</option>";
     if (idKategori != '') {
-        CheckupDetailAction.getListComboTindakan(idKategori, function (response) {
+        CheckupDetailAction.getListComboTindakan(idKategori,idKelasRuangan, function (response) {
             if (response != null) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
@@ -2916,8 +2916,23 @@ function confirmPemeriksaanPasien() {
     }
 
     if (cek) {
-        $('#save_con').attr('onclick', 'savePemeriksaanPasien()');
-        $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+        if(jenisPasien == 'asuransi' && isLaka == 'Y'){
+            if(noRujukan == '' || noRujukan == null ||
+                tglRujukan == '' || tglRujukan == null ||
+                suratRujukan == '' || suratRujukan == null){
+                $('#laka_no_polisi').val(noRujukan);
+                $('#laka_tgl_kejadian').val(tglRujukan);
+                $('#laka_surat_rujukan').val(suratRujukan);
+                $('#save_laka').attr('onclick', 'cekDataAsuransi()');
+                $('#modal-laka').modal({show: true, backdrop: 'static'});
+            }else{
+                $('#save_con').attr('onclick', 'savePemeriksaanPasien()');
+                $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+            }
+        }else{
+            $('#save_con').attr('onclick', 'savePemeriksaanPasien()');
+            $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+        }
     } else {
         $('#warning_ket').show().fadeOut(5000);
         $('#warning_msg').text(message);
@@ -2927,6 +2942,7 @@ function confirmPemeriksaanPasien() {
 function savePemeriksaanPasien() {
     $('#modal-confirm-dialog').modal('hide');
     var data = "";
+    var dataAsuransi = "";
     var tindakLanjut = $('#keterangan').val();
     var catatan = $('#pesan_dokter').val();
     var keterangan = $('#ket_selesai').val();
@@ -2949,10 +2965,26 @@ function savePemeriksaanPasien() {
     if (valUangMuka != undefined) {
         uangMuka = valUangMuka.replace(/[.]/g, '');
     }
-
+    var noPolisi = $('#laka_no_polisi').val();
+    var tglKejadian = $('#laka_tgl_kejadian').val();
+    var canvas = document.getElementById('temp_surat_rujuk');
+    var dataURL = canvas.toDataURL("image/png"),
+        dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     var cek = false;
 
     if (tindakLanjut != '') {
+
+        if(jenisPeriksaPasien == 'asuransi' && isLaka == 'Y'){
+            if(noRujukan == '' || noRujukan == null ||
+                tglRujukan == '' || tglRujukan == null ||
+                suratRujukan == '' || suratRujukan == null){
+                dataAsuransi = {
+                    'no_polisi': noPolisi,
+                    'tgl_kejadian': tglKejadian,
+                    'surat_rujukan': dataURL
+                }
+            }
+        }
 
         if (tindakLanjut == "rawat_inap") {
             if (ketRawatInap != '') {
@@ -3072,9 +3104,11 @@ function savePemeriksaanPasien() {
     if (cek) {
         if(!cekSession()){
             var result = JSON.stringify(data);
+            var tempAsuransi = JSON.stringify(dataAsuransi);
+            $('#modal-laka').modal('hide');
             $('#waiting_dialog').dialog('open');
             dwr.engine.setAsync(true);
-            CheckupDetailAction.savePeriksaPasien(result, {
+            CheckupDetailAction.savePeriksaPasien(result, tempAsuransi, {
                 callback: function (res) {
                     if (res.status == "success") {
                         $('#waiting_dialog').dialog('close');
@@ -3094,6 +3128,31 @@ function savePemeriksaanPasien() {
     } else {
         $('#warning_ket').show().fadeOut(5000);
         $('#warning_msg').text("Silahkan cek kembali data inputan anda..!");
+    }
+}
+
+function cekDataAsuransi() {
+    var noPolisi = $('#laka_no_polisi').val();
+    var tglKejadian = $('#laka_tgl_kejadian').val();
+    var suratRujukan = $('#laka_surat_rujukan').val();
+    var canvas = document.getElementById('temp_surat_rujuk');
+    var dataURL = canvas.toDataURL("image/png"),
+        dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    if(noPolisi && tglKejadian && suratRujukan != ''){
+        $('#save_con').attr('onclick', 'savePemeriksaanPasien()');
+        $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+    }else{
+        $('#warning_laka').show().fadeOut(5000);
+        $('#msg_laka').text("Silahkan cek kembali inputan anda...!");
+        if (noPolisi == '') {
+            $('#war_laka_no_polisi').show();
+        }
+        if (tglKejadian == '') {
+            $('#war_laka_tgl_kejadian').show();
+        }
+        if (suratRujukan == '') {
+            $('#war_laka_surat_polisi').show();
+        }
     }
 }
 

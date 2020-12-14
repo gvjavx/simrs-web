@@ -548,7 +548,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_ce
 function listSelectTindakan(idKtg) {
     var option = "<option value=''>[Select One]</option>";
     if (idKtg != '') {
-        CheckupDetailAction.getListComboTindakan(idKtg, function (response) {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
@@ -681,6 +681,12 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 
     } else if (select == 4) {
+        $('.jam').timepicker();
+        $('.jam').inputmask('hh:mm', {'placeholder': 'hh:mm'});
+        $('.tgl').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         $('#form_ttd').show();
         $('#lab_kategori, #lab_lab').attr('disabled', false);
         $('#lab_kategori, #lab_lab').val('').trigger('change');
@@ -3060,8 +3066,6 @@ function getKelasKamar(kategori) {
             $('#ruangan_kelas').html(option);
         }
     });
-
-    console.log(option);
 }
 
 
@@ -3212,7 +3216,6 @@ function savePemeriksaanPasien() {
                     }
                 }
             } else {
-                console.log(tindakLanjut);
                 var stay = "N";
                 if (kategoriRuangan == 'rawat_inap') {
                     if (isStay) {
