@@ -1821,6 +1821,9 @@ public class UserBoImpl implements UserBo {
 
                         resultUsers.setDivisiId(imUsers.getDivisiId());
                         resultUsers.setIdPelayanan(imUsers.getIdPelayanan());
+                        resultUsers.setIdRuangan(imUsers.getIdRuangan());
+                        resultUsers.setIdVendor(imUsers.getIdVendor());
+
                         resultUsers.setIdDevice(imUsers.getIdDevice());
 
                         StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
@@ -1899,6 +1902,8 @@ public class UserBoImpl implements UserBo {
 
                 //sodiq, 10/12/2019, penambahan id pelayanan
                 imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
+                imUsersNew.setIdRuangan(addUsers.getIdRuangan());
+                imUsersNew.setIdVendor(addUsers.getIdVendor());
 
                 String userid = addUsers.getUserId();
                 boolean isAda ;
@@ -2078,6 +2083,10 @@ public class UserBoImpl implements UserBo {
                 imUsersOld.setEmail(usersNew.getEmail());
                 if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan()))
                     imUsersOld.setIdPelayanan(usersNew.getIdPelayanan());
+                if (usersNew.getIdRuangan() != null && !"".equalsIgnoreCase(usersNew.getIdRuangan()))
+                    imUsersOld.setIdRuangan(usersNew.getIdRuangan());
+                if (usersNew.getIdVendor() != null && !"".equalsIgnoreCase(usersNew.getIdVendor()))
+                    imUsersOld.setIdVendor(usersNew.getIdVendor());
 //                if (usersNew.getContentFile()!=null) imUsersOld.setPhoto(usersNew.getContentFile());
                 if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
                 imUsersOld.setPositionId(String.valueOf(usersNew.getPositionId()));

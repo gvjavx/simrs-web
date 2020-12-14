@@ -41,6 +41,9 @@ public class RoleDao extends GenericDao<ImRoles,Long> {
             if (mapCriteria.get("role_name")!=null) {
                 criteria.add(Restrictions.ilike("roleName", "%" + (String)mapCriteria.get("role_name") + "%"));
             }
+            if (mapCriteria.get("tipe_pelayanan")!=null) {
+                criteria.add(Restrictions.ilike("tipePelayanan", (String)mapCriteria.get("tipe_pelayanan")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

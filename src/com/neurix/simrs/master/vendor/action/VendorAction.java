@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.vendor.action;
 
 import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
@@ -8,6 +9,7 @@ import com.neurix.simrs.master.vendor.model.Vendor;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -94,10 +96,16 @@ public class VendorAction extends BaseMasterAction {
     @Override
     public String initForm() {
         logger.info("[VendorAction.initForm] START process >>>");
+        String userBranch = CommonUtil.userBranchLogin();
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
         Vendor vendor = new Vendor();
+        if (CommonConstant.BRANCH_KP.equalsIgnoreCase(userBranch)){
+            vendor.setIsKP("Y");
+            logger.info("====>>> isKP ="+ vendor.getIsKP());
+        }
         setVendor(vendor);
 
         logger.info("[VendorAction.initForm] END process >>>");
@@ -187,6 +195,25 @@ public class VendorAction extends BaseMasterAction {
         }
 
         return response;
+    }
+
+    public List<Vendor> getListVendor(){
+        logger.info("[VendorAction.getListVendor] START process >>>");
+
+        List<Vendor> vendorList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VendorBo vendorBo = (VendorBo) ctx.getBean("vendorBoProxy");
+        Vendor vendor = new Vendor();
+
+        try {
+            vendorList = vendorBo.getByCriteria(vendor);
+        } catch (HibernateException e) {
+            logger.error("[VendorAction.getListVendor] Error when get data for combo list of Vendor", e);
+            addActionError(" Error when get data for combo list of Vendor" + e.getMessage());
+        }
+
+        logger.info("[VendorAction.getListVendor] END process <<<");
+        return vendorList;
     }
 
     @Override

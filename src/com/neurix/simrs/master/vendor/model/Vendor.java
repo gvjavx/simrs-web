@@ -19,6 +19,8 @@ public class Vendor extends BaseModel {
     private String createdWho;
     private String npwp;
 
+    private String isKP;
+
     public String getNpwp() {
         return npwp;
     }
@@ -125,5 +127,13 @@ public class Vendor extends BaseModel {
     @Override
     public void setCreatedWho(String createdWho) {
         this.createdWho = createdWho;
+    }
+
+    public String getIsKP() {
+        return isKP;
+    }
+
+    public void setIsKP(String isKP) {
+        this.isKP = isKP;
     }
 }
