@@ -221,6 +221,7 @@ public class UserBoImpl implements UserBo {
             //userDetailsLogin.setPositionId(positionId.toString());
             //userDetailsLogin.setPositionName(positionName);
             userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+            userDetailsLogin.setIdVendor(loginUser.getIdVendor());
 
             /*ItPersonilPositionEntity itPersonilPositionEntity = null ;
             itPersonilPositionEntity = personilPositionDao.getById("nip", userId, "Y");

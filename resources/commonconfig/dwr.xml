@@ -403,6 +403,7 @@
         <create creator="new">
             <param name="class" value="com.neurix.simrs.transaksi.permintaanvendor.action.PermintaanVendorAction"/>
         </create>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor"/>
 
         <!--Verificator-->
         <create creator="new">

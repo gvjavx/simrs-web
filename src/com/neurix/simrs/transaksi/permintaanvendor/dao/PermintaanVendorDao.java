@@ -42,6 +42,9 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         if (mapCriteria.get("branch_id") != null) {
             criteria.add(Restrictions.eq("branchId", mapCriteria.get("branch_id").toString()));
         }
+        if (mapCriteria.get("id_vendor") != null) {
+            criteria.add(Restrictions.eq("idVendor", mapCriteria.get("id_vendor").toString()));
+        }
         if (mapCriteria.get("flag") != null) {
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
         }
