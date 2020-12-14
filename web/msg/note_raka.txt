@@ -33,4 +33,5 @@
 + Menambahakan column [id_vendor] pada table [im_users]
 
     ALTER TABLE im_users
-        ADD id_vendor character varying(30);
+        ADD id_vendor character varying(30)
+        ADD id_ruangan character varying(50);
