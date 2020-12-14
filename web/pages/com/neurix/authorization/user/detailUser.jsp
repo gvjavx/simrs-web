@@ -62,39 +62,39 @@
 
                 var msg = "";
                 if (document.getElementById("userid").value == '') {
-                    msg = 'Field <strong>User Id</strong> is required.' + '<br/>';
+                    msg = "Field <strong>User Id</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("name").value == '') {
-                    msg = msg + 'Field <strong>UserName</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>UserName</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("password").value == '') {
-                    msg = msg + 'Field <strong>Password</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>Password</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("confirmPassword").value == '') {
-                    msg = msg + 'Field <strong>ConfirmPassword</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>ConfirmPassword</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("password").value != document.getElementById("confirmPassword").value) {
-                    msg = msg + 'Field <strong>Password</strong> and <strong>confirmPassword</strong> not match.' + '<br/>';
+                    msg = msg + "Field <strong>Password</strong> and <strong>confirmPassword</strong> not match." + '<br/>';
                 }
 
                 if (document.getElementById("positionid").value == '') {
-                    msg = msg + 'Field <strong>Position Id</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>Position Id</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("roleid-edit").value == '') {
-                    msg = msg + 'Field <strong>Role Id</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>Role Id</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("areaid").value == '') {
-                    msg = msg + 'Field <strong>Area Id</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>Area Id</strong> is required." + '<br/>';
                 }
 
                 if (document.getElementById("branchid_edit").value == '') {
-                    msg = msg + 'Field <strong>Branch Id</strong> is required.' + '<br/>';
+                    msg = msg + "Field <strong>Branch Id</strong> is required." + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
