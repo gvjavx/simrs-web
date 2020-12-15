@@ -303,4 +303,8 @@
     <import resource="sshconfig/com/neurix/hris/master/payrollParamBpjs/spring/PayrollParamBpjsBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/kandunganObat/spring/KandunganObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenispersediaanobat/spring/JenisPersediaanObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenispersediaanobatsub/spring/JenisPersediaanObatSubBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/parameterketeranganobat/spring/ParameterKeteranganObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/keteranganobat/spring/KeteranganObatBean.xml"/>
 </beans>

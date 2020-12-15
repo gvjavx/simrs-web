@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="keteranganObatBo" class="com.neurix.simrs.master.keteranganobat.bo.impl.KeteranganObatBoImpl"-->
+          <!--p:jenisPersdiaanObatSubDao-ref=""-->
+          <!--p:keteranganObatDao-ref="keteranganObatDao"-->
+          <!--p:jenisPersediaanObatDao-ref=""-->
+    <!--/>-->
+
+    <!--<bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"-->
+          <!--p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"-->
+    <!--/>-->
+
+    <!--<bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"-->
+          <!--p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"-->
+    <!--/>-->
+    <!--<bean id="keteranganObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"-->
+          <!--p:target-ref="keteranganObatBo">-->
+        <!--<property name="interceptorNames">-->
+            <!--<list>-->
+                <!--<value>transactionKeteranganObatInterceptor</value>-->
+                <!--<value>hibernateInterceptor</value>-->
+            <!--</list>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <!--<bean id="transactionKeteranganObatInterceptor"-->
+          <!--class="org.springframework.transaction.interceptor.TransactionInterceptor"-->
+          <!--p:transactionManager-ref="transactionManager">-->
+        <!--<property name="transactionAttributes">-->
+            <!--<props>-->
+                <!--<prop key="getListKeteranganObatBySubJenisObatAndParam">readOnly</prop>-->
+            <!--</props>-->
+        <!--</property>-->
+    <!--</bean>-->
+
+    <bean id="jenisPersdiaanObatSubDao" class="com.neurix.simrs.master.jenispersediaanobatsub.dao.JenisPersdiaanObatSubDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>
