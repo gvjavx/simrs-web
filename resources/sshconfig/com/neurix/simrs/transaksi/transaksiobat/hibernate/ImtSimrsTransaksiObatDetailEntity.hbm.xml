@@ -110,9 +110,6 @@
         <property name="namaRacik">
             <column name="nama_racik" sql-type="varchar" length="100" not-null="false"/>
         </property>
-        <property name="keteranganRacik">
-            <column name="keterangan_racik" sql-type="varchar" length="1000" not-null="false"/>
-        </property>
         <property name="jenisResep">
             <column name="jenis_resep" sql-type="varchar" length="100" not-null="false"/>
         </property>

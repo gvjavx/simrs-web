@@ -25,7 +25,7 @@ public interface TransaksiObatBo {
     public void saveAntrianResep(PermintaanResep bean) throws GeneralBOException;
     public void updateAntrianResep(PermintaanResep bean) throws GeneralBOException;
     public void saveVerifikasiObat(List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities) throws GeneralBOException;
-    public void saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException;
+    public CheckObatResponse saveApproveResepPoli(TransaksiObatDetail bean) throws GeneralBOException;
     public List<MtSimrsHargaObatEntity> getListEntityHargaObat(HargaObat bean) throws GeneralBOException;
 
     public CheckObatResponse saveListObatPembelian(TransaksiObatDetail bean, List<TransaksiObatDetail> listBatch) throws GeneralBOException;

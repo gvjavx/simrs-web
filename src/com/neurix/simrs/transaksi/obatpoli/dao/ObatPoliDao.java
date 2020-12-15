@@ -233,6 +233,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
             if("bpjs".equalsIgnoreCase(flagBpjs)){
                 flag = "WHERE flag_bpjs LIKE 'Y'";
+            }else{
+                flag = "WHERE flag_bpjs IS NULL OR flag_bpjs = 'N'";
             }
 
             String SQL = "SELECT\n" +

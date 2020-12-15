@@ -46,7 +46,6 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private String flagObatBpjs;
     private String idRacik;
     private String namaRacik;
-    private String keteranganRacik;
     private String jenisResep;
 
     public String getJenisResep() {
@@ -71,14 +70,6 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
 
     public void setNamaRacik(String namaRacik) {
         this.namaRacik = namaRacik;
-    }
-
-    public String getKeteranganRacik() {
-        return keteranganRacik;
-    }
-
-    public void setKeteranganRacik(String keteranganRacik) {
-        this.keteranganRacik = keteranganRacik;
     }
 
     public String getFlagObatBpjs() {
