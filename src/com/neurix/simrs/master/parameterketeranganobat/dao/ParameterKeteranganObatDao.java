@@ -1,23 +1,23 @@
 package com.neurix.simrs.master.parameterketeranganobat.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParemeterKeteranganObatEntity;
+import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
 import java.util.Map;
 
-public class ParameterKeteranganObatDao extends GenericDao<ImSimrsParemeterKeteranganObatEntity, String>{
+public class ParameterKeteranganObatDao extends GenericDao<ImSimrsParameterKeteranganObatEntity, String>{
     @Override
-    protected Class<ImSimrsParemeterKeteranganObatEntity> getEntityClass() {
-        return ImSimrsParemeterKeteranganObatEntity.class;
+    protected Class<ImSimrsParameterKeteranganObatEntity> getEntityClass() {
+        return ImSimrsParameterKeteranganObatEntity.class;
     }
 
     @Override
-    public List<ImSimrsParemeterKeteranganObatEntity> getByCriteria(Map mapCriteria) {
+    public List<ImSimrsParameterKeteranganObatEntity> getByCriteria(Map mapCriteria) {
 
-        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsParemeterKeteranganObatEntity.class);
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsParameterKeteranganObatEntity.class);
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("nama") != null)

@@ -2,7 +2,7 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParemeterKeteranganObatEntity">
+    <entity class="com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity">
         <table name="im_simrs_paremeter_keterangan_obat" schema="public" />
         <attributes>
             <id name="id">

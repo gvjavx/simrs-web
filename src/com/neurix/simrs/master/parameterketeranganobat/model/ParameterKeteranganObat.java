@@ -2,7 +2,7 @@ package com.neurix.simrs.master.parameterketeranganobat.model;
 
 import java.sql.Timestamp;
 
-public class ImSimrsParemeterKeteranganObatEntity {
+public class ParameterKeteranganObat {
     private String id;
     private String nama;
     private String flag;
@@ -81,7 +81,7 @@ public class ImSimrsParemeterKeteranganObatEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ImSimrsParemeterKeteranganObatEntity that = (ImSimrsParemeterKeteranganObatEntity) o;
+        ParameterKeteranganObat that = (ParameterKeteranganObat) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (nama != null ? !nama.equals(that.nama) : that.nama != null) return false;

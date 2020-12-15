@@ -14,6 +14,24 @@ public class KeteranganObat {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaSubJenis;
+    private String namaParameterKeterangan;
+
+    public String getNamaSubJenis() {
+        return namaSubJenis;
+    }
+
+    public void setNamaSubJenis(String namaSubJenis) {
+        this.namaSubJenis = namaSubJenis;
+    }
+
+    public String getNamaParameterKeterangan() {
+        return namaParameterKeterangan;
+    }
+
+    public void setNamaParameterKeterangan(String namaParameterKeterangan) {
+        this.namaParameterKeterangan = namaParameterKeterangan;
+    }
 
     public String getId() {
         return id;
