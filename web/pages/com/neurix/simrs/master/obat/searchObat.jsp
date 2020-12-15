@@ -305,18 +305,18 @@
                     <p id="msg_exits"></p>
                 </div>
                 <div class="row" id="row-check-id-pabrik">
-                    <label class="col-md-3" style="margin-top: 7px">Generate Id Obat</label>
-                    <label class="switch">
-                        <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
-                        <span class="slider round"></span>
-                    </label>
-                    <%--<input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">--%>
-
-
+                    <div class="form-group">
+                        <label class="col-md-3">Generate Id Obat</label>
+                        <div class="col-md-7">
+                            <label class="switch" style="margin-top: 4px">
+                                <input type="checkbox" id="check-id-pabrik" onchange="hideIdPabrik()">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row">
-
                     <div class="form-group" id="dis-id-pabrik">
                         <label class="col-md-3" style="margin-top: 7px">ID Obat</label>
                         <div class="col-md-7">
@@ -486,12 +486,18 @@
                             <label style="margin-top: 10px">Kronis</label>
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
-                            <select class="form-control" id="flag-kronis">
+                            <select class="form-control" id="flag-kronis"
+                                    onkeypress="var warn =$('#war_flag_kronis').is(':visible'); if (warn){$('#cor_flag_kronis').show().fadeOut(3000);$('#war_flag_kronis').hide()}">
                                 <option value="N">No</option>
                                 <option value="Y">Yes</option>
                             </select>
                         </div>
-                        <div class="col-md-6"></div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_flag_kronis"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_flag_kronis"><i class="fa fa-check"></i> correct</p>
+                        </div>
                     </div>
                 </div>
 
@@ -501,12 +507,19 @@
                             <label style="margin-top: 10px">Generic</label>
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
-                            <select class="form-control" id="flag-generic">
+                            <select class="form-control" id="flag-generic"
+                                    onkeypress="var warn =$('#war_generic').is(':visible'); if (warn){$('#cor_generic').show().fadeOut(3000);$('#war_generic').hide()}"
+                            >
                                 <option value="N">No</option>
                                 <option value="Y">Yes</option>
                             </select>
                         </div>
-                        <div class="col-md-6"></div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_generic"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_generic"><i class="fa fa-check"></i> correct</p>
+                        </div>
                     </div>
                 </div>
 
@@ -516,12 +529,19 @@
                             <label style="margin-top: 10px">BPJS</label>
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
-                            <select class="form-control" id="flag-bpjs">
+                            <select class="form-control" id="flag-bpjs"
+                                    onkeypress="var warn =$('#war_flag_bpjs').is(':visible'); if (warn){$('#cor_flag_bpjs').show().fadeOut(3000);$('#war_flag_bpjs').hide()}"
+                            >
                                 <option value="N">No</option>
                                 <option value="Y">Yes</option>
                             </select>
                         </div>
-                        <div class="col-md-6"></div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_flag_bpjs"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_flag_bpjs"><i class="fa fa-check"></i> correct</p>
+                        </div>
                     </div>
                 </div>
 
@@ -532,13 +552,20 @@
                         </div>
                         <div class="col-md-3">
                             <div class="input-group" style="margin-top: 7px;">
-                                <input type="number" class="form-control" id="margin"/>
+                                <input type="number" class="form-control" id="margin"
+                                       onkeypress="var warn =$('#war_margin').is(':visible'); if (warn){$('#cor_margin').show().fadeOut(3000);$('#war_margin').hide()}"
+                                />
                                 <div class="input-group-addon">
                                     %
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-6"></div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_margin"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_margin"><i class="fa fa-check"></i> correct</p>
+                        </div>
                     </div>
                 </div>
 
@@ -548,13 +575,17 @@
                             <label style="margin-top: 10px">Kategori Persediaan</label>
                         </div>
                         <div class="col-md-3" style="margin-top: 7px;">
-                            <select class="form-control" id="id_kategori">
-                                <%--<option value="obat">Obat</option>--%>
-                                <%--<option value="alkses">Alkes</option>--%>
-                                <%--<option value="bhp">Barang Habis Pakai</option>--%>
+                            <select class="form-control" id="id_kategori"
+                                    onkeypress="var warn =$('#war_id_kategori').is(':visible'); if (warn){$('#cor_id_kategori').show().fadeOut(3000);$('#war_id_kategori').hide()}"
+                            >
                             </select>
                         </div>
-                        <div class="col-md-6"></div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_id_kategori"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_id_kategori"><i class="fa fa-check"></i> correct</p>
+                        </div>
                     </div>
                 </div>
 
@@ -638,7 +669,7 @@
                     <%--</div>--%>
                     <%--</div>--%>
                     <div class="row">
-                        <div class="col-md-3" align="right">Kandungan :</div>
+                        <div class="col-md-3" align="right">Kandungan</div>
                         <div class="col-md-7">
                             <select id="sel_fin_kandungan_obat" class="form-control select2" style="width: 100%">
                             </select>
@@ -788,6 +819,9 @@
         $('#add_box, #add_lembar_box, #add_lembar, #add_biji_lembar').css('border','');
         $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\')').show();
         $('#modal-obat').modal('show');
+        $("#row-check-id-pabrik").show();
+        $("#add_pabrik").removeAttr("readOnly");
+
         resetSessionKandunganObat();
         getFromSessionKandunganObat('');
     }
@@ -816,13 +850,13 @@
 
 
         if (nama != '' && jenis != null && lembarBox != '' && bijiLembar != ''
-            && merek != '' && minStok != '') {
+            && merek != '' && minStok != '' && flagKronis != '' && flagGeneric != ''
+            && flagBpjs != '' && margin != '' && idKategori != '') {
 
             $('#save_obat').hide();
             $('#load_obat').show();
 
             if (id != '') {
-                console.log(" edit --> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.editObat(id, nama, jenis, merek, pabrik, lembarBox, bijiLembar, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori,  function (response) {
                     dwr.engine.setAsync(false);
@@ -840,8 +874,6 @@
                     }
                 })
             } else {
-
-                console.log("save Add 2 -> KLIK");
                 dwr.engine.setAsync(true);
                 ObatAction.saveObat(nama, jenis, merek, pabrik, box, lembarBox, lembar, bijiLembar, biji, hargaBox, hargaLembar, hargaBiji, minStok, flagKronis, flagGeneric, flagBpjs, margin, idKategori, function (response) {
                     console.log(response);
@@ -906,6 +938,21 @@
             if (minStok == '') {
                 $('#war_min_stok').show();
             }
+            if (flagKronis == '') {
+                $('#war_flag_kronis').show();
+            }
+            if (flagGeneric == '') {
+                $('#war_generic').show();
+            }
+            if (flagBpjs == '') {
+                $('#war_flag_bpjs').show();
+            }
+            if (margin == '') {
+                $('#war_margin').show();
+            }
+            if (idKategori == '') {
+                $('#war_id_kategori').show();
+            }
         }
     }
 
@@ -932,9 +979,7 @@
         $("#margin").val(margin);
         $('#modal-obat').modal({show:true, backdrop:'static'});
         $("#row-check-id-pabrik").hide();
-
-        console.log( "kronis" + flagKronis);
-        console.log( "generic " + flagGeneric);
+        $("#add_pabrik").attr('readOnly', "true");
         showListKandunganObat(idObat);
     }
 
@@ -1007,7 +1052,7 @@
 
                         table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
                             '<td>'+item.idBarang+'</td>'+
-                            '<td>'+formaterDate(item.expiredDate)+'</td>'+
+                            '<td>'+converterDate(item.expiredDate)+'</td>'+
                             '<td>'+item.qtyBox+'</td>'+
                             '<td>'+item.qtyLembar+'</td>'+
                             '<td>'+item.qtyBiji+'</td>'+
@@ -1093,9 +1138,6 @@
         var bentuk = $('#sel_fin_bentuk_kandungan_obat').val();
         var sediaan = $("#fin_sediaan_kandungan_obat").val();
         var satuan = $("#fin_satuan_kandungan_obat").val();
-
-        console.log(kandungan);
-        console.log(bentuk);
 
         if (id == null || id == ""){
             ObatAction.addKandunganObat(idObat, kandungan, bentuk, sediaan, satuan, function (res) {

@@ -47,6 +47,78 @@
                 -webkit-transform: rotate(359deg);
             }
         }
+        .span-success{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: #0F9E5E;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-warning{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: darkorange;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-danger{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: #d33724;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-primary{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: #367fa9;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-biru{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: #4d4dff;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-hijau-muda{
+            font-size: 13px;
+            padding: 5px;
+            color: black;
+            background-color: #66ff33;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-ungu{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: #cc3399;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-kuning{
+            font-size: 13px;
+            padding: 5px;
+            color: black;
+            background-color: #ffff00;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
+        .span-orange{
+            font-size: 13px;
+            padding: 5px;
+            color: white;
+            background-color: #f56954;
+            border-radius: 5px;
+            box-shadow: 1px 3px 8px grey
+        }
     </style>
 
 </head>
@@ -67,8 +139,9 @@
                 <div class="collapse navbar-collapse pull-left">
                     <ul class="nav navbar-nav">
                         <li style="color: white; margin-top: 6px; margin-left: -10px; padding-bottom: -2px">
-                            <span id="nav_branch_id"></span><br>
                             <span> PT. NUSANTARA MEDIKA UTAMA</span>
+                            <br>
+                            <span id="nav_branch_id"></span>
                         </li>
                         <li style="margin-left: 50px; color: white;">
                             <h3 id="nav_judul"></h3>
@@ -249,17 +322,22 @@
                         }
 
                         var color = "";
-                        var classLbl = 'class="label label-warning"';
+                        var classLbl = 'class="span-biru"';
                         if(item.belumBayarUangMuka == "Y"){
                             color = 'style="color:red"';
-                            classLbl = 'class="label label-default"';
+                            classLbl = 'class="span-danger"';
+                        }
+
+                        var cocolor = "";
+                        if(item.noCheckupOnline != null){
+                            cocolor = "#0F9E5E";
                         }
 
                         tableAntrian += '<tr '+color+'>' +
                             '<td>'+pol.toUpperCase()+'</td>'+
-                            '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
+                            '<td><i class="fa fa-user" style="color: '+cocolor+'"></i> '+item.nama.toUpperCase()+'</td>'+
                             '<td>'+item.namaDesa.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label '+classLbl+'> '+item.noAntrian+'</label></td>' +
+                            '<td style="vertical-align: middle"><span '+classLbl+'> '+item.stNoAntrian+'</span></td>' +
                             '</tr>';
                     });
 
@@ -277,7 +355,7 @@
                         tablePeriksa += '<tr>' +
                             '<td>'+item.namaPelayanan.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'</td>'+
-                            '<td style="vertical-align: middle"><label class="label label-success"> Periksa</label></td>' +
+                            '<td style="vertical-align: middle"><span class="span-success"> Periksa</span></td>' +
                             '</tr>';
                     });
                     $('#body_periksa').html(tablePeriksa);
@@ -306,14 +384,14 @@
                                 pol = item.namaPelayanan;
                             }
                         }
-                        var classLabel = 'class="label label-warning"';
+                        var classLabel = 'class="span-warning"';
                         if(item.statusPeriksaName == "Proses"){
-                            classLabel = 'class="label label-success"';
+                            classLabel = 'class="span-success"';
                         }
                         tableApotek += '<tr>' +
                             '<td>'+pol.toUpperCase()+'</td>'+
                             '<td><i class="fa fa-user"></i> '+item.nama.toUpperCase()+'<br>'+'<small style="margin-left: 15px">'+item.idPermintaanResep+'</small></td>'+
-                            '<td style="vertical-align: middle"><label '+classLabel+' style="margin: 10px"> '+item.statusPeriksaName+ '</label>'+ isRacik(item.ketRacik) +'</td>' +
+                            '<td style="vertical-align: middle"><span '+classLabel+' style="margin: 10px"> '+item.statusPeriksaName+ '</span>'+ isRacik(item.ketRacik) +'</td>' +
                             '</tr>';
                     });
                     $('#body_antrian_apotek').html(tableApotek);
@@ -326,7 +404,7 @@
 
     function isRacik(racik) {
         if(racik != null){
-            return '<label class="label label-warning" style="margin: 10px">'+racik+'</label>';
+            return '<span class="span-warning" style="margin: 10px">'+racik+'</span>';
         } else {
             return '';
         }

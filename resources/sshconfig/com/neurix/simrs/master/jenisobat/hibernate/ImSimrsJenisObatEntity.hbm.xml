@@ -34,6 +34,5 @@
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
 
-
     </class>
 </hibernate-mapping>

@@ -100,6 +100,36 @@ public class HeaderCheckupMobile implements Serializable {
     private String keterangan;
     private String videoRm;
 
+    private String branchName;
+    private String total;
+
+    private String all;
+    private String tanggal;
+
+    public String getAll() {
+        return all;
+    }
+
+    public void setAll(String all) {
+        this.all = all;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public String getVideoRm() {
         return videoRm;
     }

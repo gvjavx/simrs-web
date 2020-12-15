@@ -2672,6 +2672,9 @@ public class RawatInapAction extends BaseMasterAction {
             String user = CommonUtil.userLogin();
             String branchId = CommonUtil.userBranchLogin();
             String genNoSep = "";
+            long millis = System.currentTimeMillis();
+            java.util.Date dateNow = new java.util.Date(millis);
+            String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
             if (obj != null) {
                 String jenisPasien = obj.getString("jenis_pasien");
@@ -2839,7 +2842,7 @@ public class RawatInapAction extends BaseMasterAction {
 
                                         SepRequest sepRequest = new SepRequest();
                                         sepRequest.setNoKartu(getPasien.getNoBpjs());
-                                        sepRequest.setTglSep(now.toString());
+                                        sepRequest.setTglSep(dateToday);
                                         sepRequest.setPpkPelayanan(getBranch.getPpkPelayanan());//cons id rumah sakit
                                         sepRequest.setJnsPelayanan("1");//jenis rawat inap, apa jalan 2 rawat jalan, 1 rawat inap
                                         sepRequest.setKlsRawat(obj.getString("id_kelas"));//kelas rawat dari bpjs
@@ -3184,8 +3187,8 @@ public class RawatInapAction extends BaseMasterAction {
                                             }
                                         } else {
                                             response.setStatus("error");
-                                            response.setMsg("Failed To Generate SEP " + response.getMsg());
-                                            logger.error("[CheckupAction.saveAdd] Failed To Generate SEP " + response.getMsg());
+                                            response.setMsg("Failed To Generate SEP " + responseSep.getMessage());
+                                            logger.error("[CheckupAction.saveAdd] Failed To Generate SEP " + responseSep.getMessage());
                                             return response;
                                         }
                                     }

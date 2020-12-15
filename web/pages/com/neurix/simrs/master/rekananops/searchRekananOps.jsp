@@ -25,7 +25,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_detailrekananops'/>";
+            window.location.href="<s:url action='initForm_rekananops'/>";
         }
 
     </script>
@@ -56,8 +56,8 @@
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="rekananOpsForm" method="post"  theme="simple"
-                                            namespace="/detailrekananops" action="search_detailrekananops.action" cssClass="form-horizontal">
+                                    <s:form id="SearchRekananOpsForm" method="post"  theme="simple"
+                                            namespace="/rekananops" action="search_rekananops.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -68,32 +68,16 @@
                                         <table>
 
                                             <tr>
-                                                <td width="18%">
-                                                    <label class="control-label"><small>RekananOps ID :</small></label>
-                                                </td>
                                                 <td>
+                                                    <label class="control-label"><small>Nama rekanan :</small></label>
+                                                </td>
+                                                <td width="70%">
                                                     <table>
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="idRekananOps"
-                                                                     name="rekananOps.idRekananOps"
-                                                                     required="false"
-                                                                     readonly="false" cssClass="form-control"/>
+                                                        <s:action id="initComboRekanan" namespace="/rekananops" name="initComboRekanan_rekananops"/>
+                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="rekananOps.idRekananOps"
+                                                        listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control" cssStyle="margin-top: 5px"/>
                                                     </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>No master :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="nomorMaster"
-                                                                     name="rekananOps.nomorMaster"
-                                                                     required="false"
-                                                                     readonly="false" cssClass="form-control"/>
-                                                    </table>
-
                                                 </td>
                                             </tr>
 
@@ -116,14 +100,15 @@
                                             <table align="center">
                                                 <tr>
                                                     <td >
-                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="rekananOpsForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
+                                                                   formIds="SearchRekananOpsForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/detailrekananops" action="add_detailrekananops" escapeAmp="false">
+                                                        <s:url var="urlAdd" namespace="/rekananops" action="add_rekananops" escapeAmp="false">
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
@@ -131,7 +116,9 @@
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px" onclick="window.location.href='<s:url action="initForm_rekananOps"/>'">
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
+                                                                onclick="window.location.href='<s:url
+                                                                action="initForm_rekananops"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -184,7 +171,7 @@
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/detailrekananops" action="edit_detailrekananops" escapeAmp="false">
+                                                                    <s:url var="urlEdit" namespace="/rekananops" action="edit_rekananops" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idRekananOps"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
@@ -196,7 +183,7 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/detailrekananops" action="delete_detailrekananops" escapeAmp="false">
+                                                                    <s:url var="urlViewDelete" namespace="/rekananops" action="delete_rekananops" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idRekananOps" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
@@ -206,11 +193,8 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
-                                                            <display:column property="nomorMaster" sortable="true" title="Nomor Master" />
-                                                            <display:column property="namaRekanan" sortable="true" title="Nama Rekanan" />
-                                                            <display:column property="branchName" sortable="true" title="Nama Branche" />
-                                                            <display:column property="tipe" sortable="true" title="tipe" />
-                                                            <display:column property="flag" sortable="true" title="flag"  />
+                                                            <display:column property="idRekananOps" sortable="true" title="id RekananOps" />
+                                                            <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
 
                                                             <display:column property="action" sortable="true" title="action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />

@@ -150,7 +150,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield cssStyle="margin-top: 7px"  id="id_ruangan3" name="ruangan.idRuangan" required="false" disabled="true" readonly="false" cssClass="form-control"/>
+                                <s:textfield cssStyle="margin-top: 7px"  id="id_ruangan3" name="ruangan.idRuangan"
+                                             required="false" disabled="true" readonly="false" cssClass="form-control"/>
                                 <s:hidden id="id_ruangan1" name="ruangan.idRuangan" />
                             </table>
                         </td>

@@ -252,7 +252,7 @@
                                                             <display:column property="namaPelayanan" sortable="true" title="Nama Pelayanan"  />
                                                             <display:column property="tipePelayanan" sortable="true" title="Tipe Pelayanan"  />
                                                             <display:column property="branchName" sortable="true" title="Unit"  />
-                                                            <display:column property="kodering" sortable="true" title="Kode"  />
+                                                            <%--<display:column property="kodering" sortable="true" title="Kode"  />--%>
                                                             <display:column property="divisiName" sortable="true" title="ID Divisi"  />
                                                             <display:column property="isEksekutif" sortable="true" title="Ekseskutif"  />
                                                             <%--<display:column property="flag" sortable="true" title="flag"  />--%>

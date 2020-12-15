@@ -493,6 +493,22 @@ apply the skin class to the body tag so the changes take effect.
         $('[data-mask]').inputmask();
     });
 
+    function cekSession(){
+        var timeout = false;
+        UserLoginAction.getTimeOutSession(function (isTimeout) {
+            if (isTimeout) {
+                timeout = isTimeout;
+                $('#modal-session').modal({show:true, backdrop:'static'});
+            }
+        });
+        return timeout;
+    }
+
+    function toLogin(){
+        var contextPath = '<%= request.getContextPath() %>';
+        document.location = contextPath + '/loginUser.action';
+    }
+
     window.checkDec = function(el){
         var ex = /^[0-9]+\.?[0-9]*$/;
         if(ex.test(el.value)==false){
@@ -951,6 +967,28 @@ apply the skin class to the body tag so the changes take effect.
                 ttd = ttd.replace(/^data:image\/(png|jpg);base64,/, "");
         }
         return ttd;
+    }
+
+    function cekImages(url){
+        var http = new XMLHttpRequest();
+        http.open('HEAD', url, false);
+        http.send();
+        return http.status!=404;
+    }
+
+    function imagesDefault(url){
+        var res = contextPathHeader+'/pages/images/no-images.png';
+        if(url != null && url != ''){
+            if(cekImages(url)){
+                res = url;
+            }
+        }
+        var set = '<div style="cursor: pointer; margin-top: -90px; height: 100px; width: 200px; text-align: center"\n' +
+            'class="card card-4 pull-right">\n' +
+            '<img border="2" id="img_ktp" src="'+res+'"\n' +
+            'style="cursor: pointer; height: 90px; width: 190px; margin-top: 4px">\n' +
+            '</div>';
+        return set;
     }
 
 </script>

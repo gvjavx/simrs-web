@@ -42,12 +42,11 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
         return result;
     }
 
-    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori) {
+    public List<KategoriTindakan> getListKategoriTindakan(String idPelayanan, String kategori, String branchId) {
 
         List<KategoriTindakan> tindakanList = new ArrayList<>();
         String pelayanan = "%";
         String union = "";
-        String branchId = CommonUtil.userBranchLogin();
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             pelayanan = idPelayanan;

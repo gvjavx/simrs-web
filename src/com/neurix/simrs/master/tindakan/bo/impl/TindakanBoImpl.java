@@ -191,6 +191,19 @@ public class TindakanBoImpl implements TindakanBo {
         return tindakanList;
     }
 
+    @Override
+    public List<ImSimrsTindakanEntity> cekTindakan(String idHeader, String idPelayanan) throws GeneralBOException {
+        List<ImSimrsTindakanEntity> tindakanList = new ArrayList<>();
+        if (idHeader != null && idPelayanan != null) {
+            try {
+                tindakanList = tindakanDao.cekDataTindakan(idHeader, idPelayanan);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+        }
+        return tindakanList;
+    }
+
     protected List<ImSimrsTindakanEntity> getListEntityTindakan(Tindakan bean) throws GeneralBOException {
         logger.info("[TindakanBoImpl.getListEntityTindakan] Start >>>>>>>");
         List<ImSimrsTindakanEntity> results = new ArrayList<>();

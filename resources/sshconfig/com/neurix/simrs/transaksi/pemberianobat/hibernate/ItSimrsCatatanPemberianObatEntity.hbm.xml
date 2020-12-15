@@ -69,7 +69,7 @@
             <column name="nama_terang_perawat" />
         </property>
         <property name="sipDokter">
-            <column name="sipDokter" />
+            <column name="sip_dokter" />
         </property>
 
     </class>

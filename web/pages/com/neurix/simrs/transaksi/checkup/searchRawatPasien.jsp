@@ -172,8 +172,8 @@
                                         <%--</div>--%>
                                         <%--<a type="button" class="btn btn-primary" href="add_checkup.action"><i--%>
                                                 <%--class="fa fa-plus"></i> Tambah Rawat Pasien</a>--%>
-                                        <a type="button" class="btn btn-warning" id="btnFingerPrint"><i
-                                                class="fa fa-plus"></i> With Finger Print</a>
+                                        <%--<a type="button" class="btn btn-warning" id="btnFingerPrint"><i--%>
+                                                <%--class="fa fa-plus"></i> With Finger Print</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_checkup.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -268,6 +268,9 @@
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
                                         </s:if>
+                                        <a target="_blank" href="printNoAntrian_checkup.action?id=<s:property value="idPasien"/>&tipe=<s:property value="idPelayanan"/>">
+                                            <img src="<s:url value="/pages/images/icons8-print-25-yellow.png"/>">
+                                        </a>
                                     </td>
                                 </tr>
                             </s:iterator>

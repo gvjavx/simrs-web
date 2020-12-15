@@ -833,6 +833,15 @@ public class HeaderCheckup {
     private String noCheckupOnline;
 
     private String metodePembayaran;
+    private String stNoAntrian;
+
+    public String getStNoAntrian() {
+        return stNoAntrian;
+    }
+
+    public void setStNoAntrian(String stNoAntrian) {
+        this.stNoAntrian = stNoAntrian;
+    }
 
     public String getMetodePembayaran() {
         return metodePembayaran;

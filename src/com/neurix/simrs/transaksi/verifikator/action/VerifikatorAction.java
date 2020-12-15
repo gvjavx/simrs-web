@@ -2939,7 +2939,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     }
 
                     // MENDAPATKAN SEMUA BIAYA RAWAT;
-                    jumlah = getJumlahNilaiBiayaByKeterangan("", "", "", "", noCheckup);
+                    jumlah = getJumlahNilaiBiayaByKeterangan("", detailCheckupEntity.getIdJenisPeriksaPasien(), "", "", noCheckup);
 
                     // create invoice nummber
                     if ("JRJ".equalsIgnoreCase(kode)) {

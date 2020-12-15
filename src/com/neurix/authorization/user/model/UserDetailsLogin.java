@@ -82,6 +82,8 @@ public class UserDetailsLogin implements UserDetails, Serializable {
 
     private String idPleyanan;
     private String idDevice;
+    private String idRuangan;
+    private String idVendor;
     private String pin;
 
     public String getPin() {
@@ -114,6 +116,22 @@ public class UserDetailsLogin implements UserDetails, Serializable {
 
     public String getIdPleyanan() {
         return idPleyanan;
+    }
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
+
+    public String getIdVendor() {
+        return idVendor;
+    }
+
+    public void setIdVendor(String idVendor) {
+        this.idVendor = idVendor;
     }
 
     public void setIdPleyanan(String idPleyanan) {

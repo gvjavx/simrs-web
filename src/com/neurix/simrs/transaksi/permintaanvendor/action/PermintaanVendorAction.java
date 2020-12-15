@@ -1506,7 +1506,10 @@ public class PermintaanVendorAction extends BaseMasterAction {
     }
 
     public String initFormVendor(){
+        logger.info("[PermintaanVendorAction.initFormVendor] START >>>>>>>");
         String userId = CommonUtil.userIdLogin();
+        String vendorId = CommonUtil.userVendorIdLogin();
+
         PermintaanVendor permintaanVendor = new PermintaanVendor();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
@@ -1514,12 +1517,17 @@ public class PermintaanVendorAction extends BaseMasterAction {
         if (userVendorEntity != null){
             permintaanVendor.setIdVendor(userVendorEntity.getIdVendor());
         }
+//        if (vendorId != null && !"".equalsIgnoreCase(vendorId)){
+            permintaanVendor.setIdVendor(vendorId);
+//        }
         setPermintaanVendor(permintaanVendor);
         eraseAllSession();
+        logger.info("[PermintaanVendorAction.initFormVendor] END <<<<<<<");
         return "search_vendor";
     }
 
     public String searchPoVendor(){
+        initFormVendor();
         return "search_vendor";
     }
 

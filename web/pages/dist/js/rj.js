@@ -54,30 +54,32 @@ function saveRekamMedisRJ(jenis, ket) {
             'keterangan': jenis
         }
 
-        var result = JSON.stringify(data);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
 
-        $('#save_rj_' + jenis).hide();
-        $('#load_rj_' + jenis).show();
-        dwr.engine.setAsync(true);
-        RekamMedisRawatJalanAction.saveRekamMedisRJ(result, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_rj_' + jenis).show();
-                    $('#load_rj_' + jenis).hide();
-                    $('#modal-rj-' + jenis).modal('hide');
-                    $('#warning_rj_' + ket).show().fadeOut(5000);
-                    $('#msg_rj_' + ket).text("Berhasil menambahkan data ....");
-                    $('#modal-rj-' + jenis).scrollTop(0);
-                    listRekamMedisRJ();
-                } else {
-                    $('#save_rj_' + jenis).show();
-                    $('#load_rj_' + jenis).hide();
-                    $('#warning_rj_' + jenis).show().fadeOut(5000);
-                    $('#msg_rj_' + jenis).text(res.msg);
-                    $('#modal-rj-' + jenis).scrollTop(0);
+            $('#save_rj_' + jenis).hide();
+            $('#load_rj_' + jenis).show();
+            dwr.engine.setAsync(true);
+            RekamMedisRawatJalanAction.saveRekamMedisRJ(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_rj_' + jenis).show();
+                        $('#load_rj_' + jenis).hide();
+                        $('#modal-rj-' + jenis).modal('hide');
+                        $('#warning_rj_' + ket).show().fadeOut(5000);
+                        $('#msg_rj_' + ket).text("Berhasil menambahkan data ....");
+                        $('#modal-rj-' + jenis).scrollTop(0);
+                        listRekamMedisRJ();
+                    } else {
+                        $('#save_rj_' + jenis).show();
+                        $('#load_rj_' + jenis).hide();
+                        $('#warning_rj_' + jenis).show().fadeOut(5000);
+                        $('#msg_rj_' + jenis).text(res.msg);
+                        $('#modal-rj-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     } else {
         $('#save_rj_' + jenis).show();
         $('#load_rj_' + jenis).hide();
@@ -88,21 +90,23 @@ function saveRekamMedisRJ(jenis, ket) {
 }
 
 function listRekamMedisRJ() {
-    var table = "";
-    RekamMedisRawatJalanAction.getListRekamMedisRJ(idDetailCheckup, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
-                table += '<tr>' +
-                    '<td width="15%">' + converterDateTime(item.waktu) + '</td>' +
-                    '<td>' + cekNull(item.anamnese) + '</td>' +
-                    '<td>' + cekNull(item.pemeriksaanFisik) + '</td>' +
-                    '<td>' + cekNull(item.diagnosa) + '</td>' +
-                    '<td>' + cekNull(item.planing) + '</td>' +
-                    '</tr>';
-            });
-            $('#body_ringkasan_rj').html(table);
-        }
-    });
+    if(!cekSession()){
+        var table = "";
+        RekamMedisRawatJalanAction.getListRekamMedisRJ(idDetailCheckup, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    table += '<tr>' +
+                        '<td width="15%">' + converterDateTime(item.waktu) + '</td>' +
+                        '<td>' + cekNull(item.anamnese) + '</td>' +
+                        '<td>' + cekNull(item.pemeriksaanFisik) + '</td>' +
+                        '<td>' + cekNull(item.diagnosa) + '</td>' +
+                        '<td>' + cekNull(item.planing) + '</td>' +
+                        '</tr>';
+                });
+                $('#body_ringkasan_rj').html(table);
+            }
+        });
+    }
 }
 
 function cekNull(item) {

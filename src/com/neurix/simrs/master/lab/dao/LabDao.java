@@ -120,7 +120,8 @@ public class LabDao extends GenericDao<ImSimrsLabEntity, String> {
                 "FROM im_simrs_lab_detail a\n" +
                 "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                 "INNER JOIN im_simrs_parameter_pemeriksaan c ON a.id_parameter_pemeriksaan = c.id_parameter_pemeriksaan\n" +
-                "WHERE c.id_kategori_lab LIKE :idKat \n" +
+                "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
+                "WHERE d.kategori LIKE :idKat OR d.id_kategori_lab = :idKat\n" +
                 "AND a.branch_id LIKE :branch \n" +
                 "GROUP BY b.id_lab, b.nama_lab";
         List<Object[]> result = new ArrayList<>();

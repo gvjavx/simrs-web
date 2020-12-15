@@ -2205,6 +2205,7 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     rujukanResponse.setStatus(response.getString("code"));
                     rujukanResponse.setMessage(response.getString("message"));
                 } else {
+                    JSONObject status = myResponseCheck.getJSONObject("metaData");
                     JSONObject response = myResponseCheck.getJSONObject("response");
                     JSONObject rujukan = response.getJSONObject("rujukan");
                     JSONObject AsalRujukan = rujukan.getJSONObject("AsalRujukan");
@@ -2271,8 +2272,13 @@ public class BpjsBoImpl extends BpjsService implements BpjsBo {
                     if (!tujuanRujukan.isNull("nama")){
                         rujukanResponse.setNamaTujuanRujukan(tujuanRujukan.getString("nama"));
                     }
-                    rujukanResponse.setStatus(response.getString("code"));
-                    rujukanResponse.setMessage(response.getString("message"));
+                    if(status.has("code")){
+                        rujukanResponse.setStatus(status.getString("code"));
+                    }
+                    if(status.has("message")){
+                        rujukanResponse.setMessage(status.getString("message"));
+                    }
+
                 }
 
             } catch (IOException | JSONException | GeneralSecurityException e) {

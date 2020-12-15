@@ -24,6 +24,15 @@ public class PengkajianUlangKeperawatan extends BaseModel {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String waktu;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getWaktu() {
         return waktu;

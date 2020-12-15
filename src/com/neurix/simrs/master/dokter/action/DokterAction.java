@@ -79,18 +79,20 @@ public class DokterAction extends BaseMasterAction {
                 for (Dokter dokter: listOfResult) {
                     if(kode.equalsIgnoreCase(dokter.getIdDokter()) && flag.equalsIgnoreCase(dokter.getFlag())){
                         String kodering = dokter.getKodering();
-                        String[] arrOfStr = kodering.split("\\.");
-                        String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
-                        String koder = kode1+"."+kode2+"."+kode3;
+//                        String[] arrOfStr = kodering.split("\\.");
+//                        String kode1 = arrOfStr[1];String kode2 = arrOfStr[2];String kode3 = arrOfStr[3];
+//                        String koder = kode1+"."+kode2+"."+kode3;
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                         Position position = new Position();
                         PositionBo positionBo = (PositionBo) context.getBean("positionBoProxy");
-                        position.setKodering(koder);
+                        position.setKodering(kodering);
                         position.setFlag("Y");
+                        String positionId = "";
                         List<Position> positions = positionBo.getByCriteria(position);
-                        String positionId = positions.get(0).getPositionId();
+                        if(positions.size()> 0 ){
+                           positionId = positions.get(0).getPositionId();
+                        }
                         dokter.setPositionId(positionId);
-
                         setDokter(dokter);
                         break;
                     }
@@ -326,8 +328,6 @@ public class DokterAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
-
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultDokter");
 

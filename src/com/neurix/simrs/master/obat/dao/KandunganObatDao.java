@@ -5,6 +5,8 @@ import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.HibernateException;
+import org.hibernate.criterion.Order;
 
 import java.math.BigInteger;
 import java.util.Iterator;
@@ -34,11 +36,21 @@ public class KandunganObatDao extends GenericDao<ImSimrsKandunganObatEntity, Str
         return criteria.list();
     }
 
-
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kandungan_obat')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    public List<ImSimrsKandunganObatEntity> checkData(String kandungan) throws HibernateException {
+
+        List<ImSimrsKandunganObatEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKandunganObatEntity.class)
+                .add(Restrictions.ilike("kandungan", kandungan))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("idKandungan"))
+                .list();
+
+        return results;
     }
 }

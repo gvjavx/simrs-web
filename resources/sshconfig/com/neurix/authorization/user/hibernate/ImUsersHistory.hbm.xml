@@ -44,7 +44,7 @@
             <column name="action" sql-type="varchar" length="1"/>
         </property>
         <property name="photoUrl">
-            <column name="photo_url" sql-type="varchar" length="1000" not-null="true"/>
+            <column name="photo_url" sql-type="varchar" length="1000" />
         </property>
     </class>
 </hibernate-mapping>

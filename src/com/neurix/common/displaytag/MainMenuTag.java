@@ -3,9 +3,10 @@ package com.neurix.common.displaytag;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
-import org.apache.log4j.Logger;
+import org.apache.log4j.*;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.session.SessionInformation;
@@ -20,8 +21,10 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.FileHandler;
 
 /**
  * Created by IntelliJ IDEA.
@@ -228,11 +231,6 @@ public class MainMenuTag extends TagSupport {
                 "    </section>\n" +
                 "    <!-- /.sidebar -->\n" +
                 "  </aside>");
-
-
-
-        addedScript.append("");
-
 
         logger.debug("end execute method getScriptCodes ");
 

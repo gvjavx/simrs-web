@@ -707,7 +707,7 @@ function saveDataOperasi(jenis, ket) {
         var ttd1 = document.getElementById("ttd_spesialis");
         var cekTtd1 = isBlank(ttd1);
 
-        if (pa1 && pa2 && pa3 != '' && !cekTtd1) {
+        if (nama && sip && pa1 && pa2 && pa3 != '' && !cekTtd1) {
             data.push({
                 'parameter': 'Makan minum terakhir',
                 'jawaban1': pa1,
@@ -784,7 +784,7 @@ function saveDataOperasi(jenis, ket) {
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
@@ -1002,7 +1002,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kesadaran',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1010,7 +1010,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Warna Kulit',
                 'jawaban1': isi2,
                 'skor': skor2,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1018,7 +1018,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Aktifitas',
                 'jawaban1': isi3,
                 'skor': skor3,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1026,7 +1026,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Respirasi',
                 'jawaban1': isi4,
                 'skor': skor4,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1034,7 +1034,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kardio Vaskuler',
                 'jawaban1': isi5,
                 'skor': skor5,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1063,7 +1063,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Kesadaran',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1071,7 +1071,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Respirasi',
                 'jawaban1': isi2,
                 'skor': skor2,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1079,7 +1079,7 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Aktifitas',
                 'jawaban1': isi3,
                 'skor': skor3,
-                'keterangan': ket,
+                'keterangan': jenis,
                 'jenis': 'pindah_rr',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1102,8 +1102,8 @@ function saveDataOperasi(jenis, ket) {
                 'parameter': 'Penilaian',
                 'jawaban1': isi1,
                 'skor': skor1,
-                'keterangan': ket,
-                'jenis': 'pindah_rr',
+                'keterangan': jenis,
+                'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1148,7 +1148,7 @@ function saveDataOperasi(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1 && isi.length == dataTemp.length) {
+        if (!cekTtd1 && isi.length == dataTemp.length && nama && sip != '') {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -1341,7 +1341,9 @@ function saveDataOperasi(jenis, ket) {
         var va25 = $('[name=pra25]:checked').val();
         var va26 = $('[name=pra26]:checked').val();
 
-        if (va1 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+            va14 && va15 && va16 && va17 && va18 && va19 && va21 && va22 != '' &&
+            va11 && va12 && va13 && va20 && va23 && va24 && va25 && va26 != undefined) {
 
             data.push({
                 'parameter': 'Tanggal',
@@ -1567,7 +1569,7 @@ function saveDataOperasi(jenis, ket) {
             }
         });
 
-        if (!cekTtd1 && v1 && v2 && v3 && va9 != '' && va3 && va4 && va5 && va7 && va8 && va10 && va11 && va12 != undefined) {
+        if (!cekTtd1 && nama && sip && v1 && v2 && v3 && va9 != '' && va3 && va4 && va5 && va7 && va8 && va10 && va11 && va12 != undefined) {
 
             data.push({
                 'parameter': 'Pre medikasi',
@@ -1985,6 +1987,7 @@ function saveDataOperasi(jenis, ket) {
                 'nama_terang': nama3,
                 'id_detail_checkup': idDetailCheckup
             });
+            console.log(data);
             cek = true;
         }
     }
@@ -2095,7 +2098,7 @@ function saveDataOperasi(jenis, ket) {
 
         var cekTtd1 = isCanvasBlank(ttd1);
 
-        if (!cekTtd1) {
+        if (!cekTtd1 && nama && sip != '') {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -2432,7 +2435,7 @@ function saveDataOperasi(jenis, ket) {
 
         if (va2 && va3 && va4 != undefined && va1 && va5 && va6 &&
             va7 && va8 && va9 && va10 && va11 && va12 && va13 && va14 && va15 &&
-            va16 && va17 && va18 != '' && !cekTtd1) {
+            va16 && va17 && va18 && nama && sip != '' && !cekTtd1) {
 
             var canv1 = ttd1.toDataURL("image/png"),
                 canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -2567,32 +2570,34 @@ function saveDataOperasi(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_op_' + jenis).hide();
-        $('#load_op_' + jenis).show();
-        dwr.engine.setAsync(true);
-        AsesmenOperasiAction.saveAsesmenOperasi(result, pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_op_' + jenis).show();
-                    $('#load_op_' + jenis).hide();
-                    $('#modal-op-' + jenis).modal('hide');
-                    if (mlt) {
-                        $('#modal-op-' + jenis + "-mlt").modal('hide');
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_op_' + jenis).hide();
+            $('#load_op_' + jenis).show();
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.saveAsesmenOperasi(result, pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_op_' + jenis).show();
+                        $('#load_op_' + jenis).hide();
+                        $('#modal-op-' + jenis).modal('hide');
+                        if (mlt) {
+                            $('#modal-op-' + jenis + "-mlt").modal('hide');
+                        }
+                        $('#warning_op_' + ket).show().fadeOut(5000);
+                        $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
+                        $('#modal-op-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_op_' + jenis).show();
+                        $('#load_op_' + jenis).hide();
+                        $('#warning_op_' + jenis).show().fadeOut(5000);
+                        $('#msg_op_' + jenis).text(res.msg);
+                        $('#modal-op-' + jenis).scrollTop(0);
                     }
-                    $('#warning_op_' + ket).show().fadeOut(5000);
-                    $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
-                    $('#modal-op-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_op_' + jenis).show();
-                    $('#load_op_' + jenis).hide();
-                    $('#warning_op_' + jenis).show().fadeOut(5000);
-                    $('#msg_op_' + jenis).text(res.msg);
-                    $('#modal-op-' + jenis).scrollTop(0);
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_op_' + jenis).show().fadeOut(5000);
         $('#msg_op_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -2601,327 +2606,329 @@ function saveDataOperasi(jenis, ket) {
 }
 
 function detailOperasi(jenis) {
-    if (jenis != '') {
-        var body = "";
-        var head = "";
-        var firt = "";
-        var last = "";
-        var tgl = "";
-        var totalSkor = 0;
-        var cekData = false;
-        var data = [];
+    if(!cekSession()){
+        if (jenis != '') {
+            var body = "";
+            var head = "";
+            var firt = "";
+            var last = "";
+            var tgl = "";
+            var totalSkor = 0;
+            var cekData = false;
+            var data = [];
 
-        AsesmenOperasiAction.getListAsesmenOperasi(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    if ("pre_operasi" == item.keterangan) {
-                        var jwb1 = "";
-                        var jwb2 = "";
-                        if (item.jawaban1 != null) {
-                            jwb1 = item.jawaban1;
-                        }
-                        if (item.jawaban2 != null) {
-                            jwb2 = item.jawaban2;
-                        }
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + jwb1 + '</td>' +
-                                '</tr>';
-                        } else if ("bold" == item.tipe) {
-                            body += '<tr style="font-weight: bold">' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td align="center">' + jwb1 + '</td>' +
-                                '<td align="center">' + jwb2 + '</td>' +
-                                '</tr>';
-                        } else {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td align="center">' + checkIcon(jwb1) + '</td>' +
-                                '<td align="center">' + checkIcon(jwb2) + '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("kondisi_pasien" == item.keterangan) {
-                        var jwb1 = "";
-                        var jwb2 = "";
-                        if (item.jawaban1 != null) {
-                            jwb1 = item.jawaban1;
-                        }
-                        if (item.jawaban2 != null) {
-                            jwb2 = item.jawaban2;
-                        }
-                        if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td colspan="2"><img src="' + item.jawaban1 + '" style="width: 100px; height: 70px"></td>' +
-                                '</tr>';
-                        } else {
-                            body += '<tr>' +
-                                '<td width="60%">' + item.parameter + '</td>' +
-                                '<td>' + jwb1 + '</td>' +
-                                '<td>' + jwb2 + '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("penandaan_area" == item.keterangan) {
-                        if ("penanda" == item.tipe) {
-                            body += '<tr>' +
-                                '<td align="center">' +
-                                '<img src="' + item.jawaban1 + '">' +
-                                '</td>' +
-                                '</tr>';
-                        }
-                        if ("Tanda Tangan Pasien" == item.parameter) {
-                            body += '<tr>' +
-                                '<td align="left">' +
-                                '<p>TTD Pasien</p>' +
-                                '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">' +
-                                '</td>' +
-                                '</tr>';
-                        }
-                        if ("Tanda Tangan Dokter" == item.parameter) {
-                            body += '<tr>' +
-                                '<td align="right">' +
-                                '<p style="margin-top: -113px">TTD Dokter</p>' +
-                                '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px;">' +
-                                '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("informasi_dan_persetujuan" == jenis) {
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="3">' + item.jawaban1 + '</td>' +
-                                '</tr>';
-                        } else if ("info" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.jawaban1 + '</td>' +
-                                '<td width="20%" align="center">' + checkIcon(item.jawaban2) + '</td>' +
-                                '</tr>';
-                        } else if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
-                        } else if ("bold" == item.tipe) {
-                            body += '<tr style="font-weight: bold">' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.jawaban1 + '</td>' +
-                                '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
-                                '</tr>';
-                        } else {
-                            body += '<tr>' +
-                                '<td width="30%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + item.jawaban1 + '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("perencanaan_anestesi" == jenis) {
-                        var temp = item.jawaban1.split("|");
-                        var li = "";
-                        $.each(temp, function (i, item) {
-                            li += '<li>' + item + '</li>';
-                        });
-                        if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
-                        } else {
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
-                                '</tr>';
-                        }
-                    } else if ("rr_dewasa" == item.keterangan || "rr_anak_anak" == item.keterangan || "rr_sab" == item.keterangan) {
-                        var jwb1 = "";
-                        var skor = "";
-                        if (item.jawaban1 != null) {
-                            jwb1 = item.jawaban1;
-                        }
-                        if (item.skor != null) {
-                            skor = item.skor;
-                            totalSkor = parseInt(totalSkor) + parseInt(item.skor);
-                        }
-                        body += '<tr>' +
-                            '<td width="30%">' + item.parameter + '</td>' +
-                            '<td>' + jwb1 + '</td>' +
-                            '<td align="center" width="10%">' + skor + '</td>' +
-                            '</tr>';
-                        cekData = true;
-                    } else if ("add_checklist_keselamatan" == jenis) {
-                        var p = "";
-                        var j1 = "";
-                        var j2 = "";
-                        if (item.parameter != null && item.parameter != '') {
-                            p = item.parameter;
-                        }
-                        if (item.jawaban1 != null && item.jawaban1 != '') {
-                            j1 = item.jawaban1;
-                        }
-                        if (item.jawaban2 != null && item.jawaban2 != '') {
-                            j2 = item.jawaban2;
-                        }
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td>' + p + '</td>' +
-                                '<td colspan="2">' + j1 + '</td>' +
-                                '</tr>';
-                        } else if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td>' + p + '</td>' +
-                                '<td colspan="2">' + '<img src="' + j1 + '" style="height: 80px">' + '</td>' +
-                                '</tr>';
-                        } else if ("bold" == item.tipe) {
-                            body += '<tr style="font-weight: bold">' +
-                                '<td>' + p + '</td>' +
-                                '<td>' + j1 + '</td>' +
-                                '<td>' + j2 + '</td>' +
-                                '</tr>';
-                        } else {
-                            body += '<tr>' +
-                                '<td width="35%">' + p + '</td>' +
-                                '<td width="30%">' + j1 + '</td>' +
-                                '<td width="35%">' + j2 + '</td>' +
-                                '</tr>';
-                        }
-                    }else if("tindakan_medis_op" == item.keterangan){
-                        if ("colspan" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="3">' + item.jawaban1 + '</td>' +
-                                '</tr>';
-                        } else if ("info" == item.tipe) {
-                            body += '<tr>' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.jawaban1 + '</td>' +
-                                '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
-                                '</tr>';
-                        } else if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td colspan="2">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
-                                '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
-                                '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                                '</tr>';
-                        } else if ("bold" == item.tipe) {
-                            body += '<tr style="font-weight: bold">' +
-                                '<td width="25%">' + item.parameter + '</td>' +
-                                '<td >' + item.jawaban1 + '</td>' +
-                                '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
-                                '</tr>';
-                        }else {
-                            body += '<tr>' +
-                                '<td width="30%">' + item.parameter + '</td>' +
-                                '<td colspan="2">' + item.jawaban1 + '</td>' +
-                                '</tr>';
-                        }
-                    } else {
-                        var jwb1 = "";
-                        if (item.jawaban1 != null) {
-                            jwb1 = item.jawaban1;
-                        }
-                        if ("ttd" == item.tipe) {
-                            body += '<tr>' +
-                                '<td>' + item.parameter + '</td>' +
-                                '<td colspan="2"><img src="' + jwb1 + '" style="width: 100px; height: 70px"></td>' +
-                                '</tr>';
-                        } else if ("li" == item.tipe) {
-                            var val = jwb1.split("|");
-                            var li = "";
-                            $.each(val, function (i, item) {
-                                li += '<li>' + item + '</li>'
-                            });
-                            if (li != '') {
+            AsesmenOperasiAction.getListAsesmenOperasi(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        if ("pre_operasi" == item.keterangan) {
+                            var jwb1 = "";
+                            var jwb2 = "";
+                            if (item.jawaban1 != null) {
+                                jwb1 = item.jawaban1;
+                            }
+                            if (item.jawaban2 != null) {
+                                jwb2 = item.jawaban2;
+                            }
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + jwb1 + '</td>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td align="center">' + jwb1 + '</td>' +
+                                    '<td align="center">' + jwb2 + '</td>' +
+                                    '</tr>';
+                            } else {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td><ul style="margin-left: 15px">' + li + '</ul></td>' +
+                                    '<td align="center">' + checkIcon(jwb1) + '</td>' +
+                                    '<td align="center">' + checkIcon(jwb2) + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("kondisi_pasien" == item.keterangan) {
+                            var jwb1 = "";
+                            var jwb2 = "";
+                            if (item.jawaban1 != null) {
+                                jwb1 = item.jawaban1;
+                            }
+                            if (item.jawaban2 != null) {
+                                jwb2 = item.jawaban2;
+                            }
+                            if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td colspan="2"><img src="' + item.jawaban1 + '" style="width: 100px; height: 70px"></td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="60%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb1 + '</td>' +
+                                    '<td>' + jwb2 + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("penandaan_area" == item.keterangan) {
+                            if ("penanda" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td align="center">' +
+                                    '<img src="' + item.jawaban1 + '">' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                            if ("Tanda Tangan Pasien" == item.parameter) {
+                                body += '<tr>' +
+                                    '<td align="left">' +
+                                    '<p>TTD Pasien</p>' +
+                                    '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                            if ("Tanda Tangan Dokter" == item.parameter) {
+                                body += '<tr>' +
+                                    '<td align="right">' +
+                                    '<p style="margin-top: -113px">TTD Dokter</p>' +
+                                    '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px;">' +
+                                    '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("informasi_dan_persetujuan" == jenis) {
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="3">' + item.jawaban1 + '</td>' +
+                                    '</tr>';
+                            } else if ("info" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.jawaban1 + '</td>' +
+                                    '<td width="20%" align="center">' + checkIcon(item.jawaban2) + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.jawaban1 + '</td>' +
+                                    '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + item.jawaban1 + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("perencanaan_anestesi" == jenis) {
+                            var temp = item.jawaban1.split("|");
+                            var li = "";
+                            $.each(temp, function (i, item) {
+                                li += '<li>' + item + '</li>';
+                            });
+                            if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + '<ul style="margin-left: 15px">' + li + '</ul>' + '</td>' +
+                                    '</tr>';
+                            }
+                        } else if ("rr_dewasa" == item.keterangan || "rr_anak_anak" == item.keterangan || "rr_sab" == item.keterangan) {
+                            var jwb1 = "";
+                            var skor = "";
+                            if (item.jawaban1 != null) {
+                                jwb1 = item.jawaban1;
+                            }
+                            if (item.skor != null) {
+                                skor = item.skor;
+                                totalSkor = parseInt(totalSkor) + parseInt(item.skor);
+                            }
+                            body += '<tr>' +
+                                '<td width="30%">' + item.parameter + '</td>' +
+                                '<td>' + jwb1 + '</td>' +
+                                '<td align="center" width="10%">' + skor + '</td>' +
+                                '</tr>';
+                            cekData = true;
+                        } else if ("add_checklist_keselamatan" == jenis) {
+                            var p = "";
+                            var j1 = "";
+                            var j2 = "";
+                            if (item.parameter != null && item.parameter != '') {
+                                p = item.parameter;
+                            }
+                            if (item.jawaban1 != null && item.jawaban1 != '') {
+                                j1 = item.jawaban1;
+                            }
+                            if (item.jawaban2 != null && item.jawaban2 != '') {
+                                j2 = item.jawaban2;
+                            }
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td>' + p + '</td>' +
+                                    '<td colspan="2">' + j1 + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td>' + p + '</td>' +
+                                    '<td colspan="2">' + '<img src="' + j1 + '" style="height: 80px">' + '</td>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td>' + p + '</td>' +
+                                    '<td>' + j1 + '</td>' +
+                                    '<td>' + j2 + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="35%">' + p + '</td>' +
+                                    '<td width="30%">' + j1 + '</td>' +
+                                    '<td width="35%">' + j2 + '</td>' +
+                                    '</tr>';
+                            }
+                        }else if("tindakan_medis_op" == item.keterangan){
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="3">' + item.jawaban1 + '</td>' +
+                                    '</tr>';
+                            } else if ("info" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.jawaban1 + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + item.jawaban1 + '</td>' +
+                                    '<td width="20%" align="center">' + item.jawaban2 + '</td>' +
+                                    '</tr>';
+                            }else {
+                                body += '<tr>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + item.jawaban1 + '</td>' +
                                     '</tr>';
                             }
                         } else {
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + jwb1 + '</td>' +
-                                '</tr>';
+                            var jwb1 = "";
+                            if (item.jawaban1 != null) {
+                                jwb1 = item.jawaban1;
+                            }
+                            if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td>' + item.parameter + '</td>' +
+                                    '<td colspan="2"><img src="' + jwb1 + '" style="width: 100px; height: 70px"></td>' +
+                                    '</tr>';
+                            } else if ("li" == item.tipe) {
+                                var val = jwb1.split("|");
+                                var li = "";
+                                $.each(val, function (i, item) {
+                                    li += '<li>' + item + '</li>'
+                                });
+                                if (li != '') {
+                                    body += '<tr>' +
+                                        '<td>' + item.parameter + '</td>' +
+                                        '<td><ul style="margin-left: 15px">' + li + '</ul></td>' +
+                                        '</tr>';
+                                }
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + jwb1 + '</td>' +
+                                    '</tr>';
+                            }
+                            tgl = item.createdDate;
                         }
-                        tgl = item.createdDate;
+
+                    });
+
+                    if ("kondisi_pasien" == jenis) {
+                        head = '<tr>' +
+                            '<td><b>Pemeriksaan</b></td>' +
+                            '<td><b>Sebelum Ditransfer</b></td>' +
+                            '<td><b>Saat Diterima</b></td>' +
+                            '</tr>';
+                    }
+                    if ("general_informasi" == jenis || "regional_informasi" == jenis) {
+                        head = '<tr>' +
+                            '<td><b>Jenis Informasi</b></td>' +
+                            '<td><b>Isi Informasi</b></td>' +
+                            '<td><b>Check (<i class="fa fa-check"></i>)</b></td>' +
+                            '</tr>';
+                    }
+                    if ("general_persetujuan" == jenis || "regional_persetujuan" == jenis) {
+                        firt = '<tr>' +
+                            '<td colspan="2">Yang bertanda tangan dibawah ini, saya :</td>' +
+                            '</tr>';
+                        last = '<tr>' +
+                            '<td colspan="2">Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya termasuk resiko dan komplikasi yang timbul. Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti. maka keberhasilan tindakan kedokteran bukan keniscayaan, tetapi bergantung kepada izin Tuhan Yang Maha Esa. Tanggal ' + formaterDate(tgl) + ', Jam ' + formaterTime(tgl) + '</td>' +
+                            '</tr>';
+                    }
+                    if ("rr_dewasa" == jenis || "rr_anak_anak" == jenis || "rr_sab" == jenis) {
+                        var con = "";
+                        head = '<tr>' +
+                            '<td><b>Variabel</b></td>' +
+                            '<td><b>Penilaian</b></td>' +
+                            '<td align="center"><b>Skor</b></td>' +
+                            '</tr>';
+
+                        if ("rr_dewasa" == jenis) {
+                            if (totalSkor >= 8 && totalSkor <= 10) {
+                                con = "Ya";
+                            } else {
+                                con = "Tidak"
+                            }
+                        }
+                        if ("rr_anak_anak" == jenis) {
+                            if (totalSkor >= 5 && totalSkor <= 6) {
+                                con = "Ya";
+                            } else {
+                                con = "Tidak"
+                            }
+                        }
+                        if ("rr_sab" == jenis) {
+                            if (totalSkor <= 2) {
+                                con = "Ya";
+                            } else {
+                                con = "Tidak"
+                            }
+                        }
+
+                        if (cekData) {
+                            last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>' +
+                                '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Kriteria Pindah Ruang</td><td align="center">' + con + '</td></tr>';
+                        }
                     }
 
-                });
-
-                if ("kondisi_pasien" == jenis) {
-                    head = '<tr>' +
-                        '<td><b>Pemeriksaan</b></td>' +
-                        '<td><b>Sebelum Ditransfer</b></td>' +
-                        '<td><b>Saat Diterima</b></td>' +
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
                         '</tr>';
                 }
-                if ("general_informasi" == jenis || "regional_informasi" == jenis) {
-                    head = '<tr>' +
-                        '<td><b>Jenis Informasi</b></td>' +
-                        '<td><b>Isi Informasi</b></td>' +
-                        '<td><b>Check (<i class="fa fa-check"></i>)</b></td>' +
-                        '</tr>';
-                }
-                if ("general_persetujuan" == jenis || "regional_persetujuan" == jenis) {
-                    firt = '<tr>' +
-                        '<td colspan="2">Yang bertanda tangan dibawah ini, saya :</td>' +
-                        '</tr>';
-                    last = '<tr>' +
-                        '<td colspan="2">Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti di atas kepada saya termasuk resiko dan komplikasi yang timbul. Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti. maka keberhasilan tindakan kedokteran bukan keniscayaan, tetapi bergantung kepada izin Tuhan Yang Maha Esa. Tanggal ' + formaterDate(tgl) + ', Jam ' + formaterTime(tgl) + '</td>' +
-                        '</tr>';
-                }
-                if ("rr_dewasa" == jenis || "rr_anak_anak" == jenis || "rr_sab" == jenis) {
-                    var con = "";
-                    head = '<tr>' +
-                        '<td><b>Variabel</b></td>' +
-                        '<td><b>Penilaian</b></td>' +
-                        '<td align="center"><b>Skor</b></td>' +
-                        '</tr>';
 
-                    if ("rr_dewasa" == jenis) {
-                        if (totalSkor >= 8 && totalSkor <= 10) {
-                            con = "Ya";
-                        } else {
-                            con = "Tidak"
-                        }
-                    }
-                    if ("rr_anak_anak" == jenis) {
-                        if (totalSkor >= 5 && totalSkor <= 6) {
-                            con = "Ya";
-                        } else {
-                            con = "Tidak"
-                        }
-                    }
-                    if ("rr_sab" == jenis) {
-                        if (totalSkor <= 2) {
-                            con = "Ya";
-                        } else {
-                            con = "Tidak"
-                        }
-                    }
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tr bgcolor="#ffebcd">' +
+                    '<tbody>' + firt + body + last + '</tbody>' +
+                    '</table>';
 
-                    if (cekData) {
-                        last = '<tr style="font-weight: bold"><td colspan="2">Total</td><td align="center">' + totalSkor + '</td></tr>' +
-                            '<tr style="font-weight: bold" bgcolor="#ffebcd"><td colspan="2">Kriteria Pindah Ruang</td><td align="center">' + con + '</td></tr>';
-                    }
-                }
-
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
-
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tr bgcolor="#ffebcd">' +
-                '<tbody>' + firt + body + last + '</tbody>' +
-                '</table>';
-
-            var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_op_' + jenis));
-            var url = contextPath + '/pages/images/minus-allnew.png';
-            $('#btn_op_' + jenis).attr('src', url);
-            $('#btn_op_' + jenis).attr('onclick', 'delRowOperasi(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_op_' + jenis));
+                var url = contextPath + '/pages/images/minus-allnew.png';
+                $('#btn_op_' + jenis).attr('src', url);
+                $('#btn_op_' + jenis).attr('onclick', 'delRowOperasi(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -3340,28 +3347,30 @@ function saveMonAnestesi(jenis, ket) {
             'keterangan': jenis,
             'jenis': ket
         };
-        var result = JSON.stringify(data);
-        $('#save_op_' + jenis).hide();
-        $('#load_op_' + jenis).show();
-        dwr.engine.setAsync(true);
-        AsesmenOperasiAction.saveMonAnestesi(result, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_op_' + jenis).show();
-                    $('#load_op_' + jenis).hide();
-                    $('#modal-op-' + jenis).modal('hide');
-                    $('#warning_op_' + ket).show().fadeOut(5000);
-                    $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
-                    $('#modal-op-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_op_' + jenis).show();
-                    $('#load_op_' + jenis).hide();
-                    $('#warning_op_' + jenis).show().fadeOut(5000);
-                    $('#msg_op_' + jenis).text(res.msg);
-                    $('#modal-op-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            $('#save_op_' + jenis).hide();
+            $('#load_op_' + jenis).show();
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.saveMonAnestesi(result, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_op_' + jenis).show();
+                        $('#load_op_' + jenis).hide();
+                        $('#modal-op-' + jenis).modal('hide');
+                        $('#warning_op_' + ket).show().fadeOut(5000);
+                        $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
+                        $('#modal-op-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_op_' + jenis).show();
+                        $('#load_op_' + jenis).hide();
+                        $('#warning_op_' + jenis).show().fadeOut(5000);
+                        $('#msg_op_' + jenis).text(res.msg);
+                        $('#modal-op-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_op_' + jenis).show().fadeOut(5000);
         $('#msg_op_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -3370,93 +3379,95 @@ function saveMonAnestesi(jenis, ket) {
 }
 
 function detailMonAnestesi(jenis) {
-    var body = "";
-    var head = "";
-    AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
-        if (res.length > 0) {
-            $.each(res, function (i, item) {
-                var tanggal = converterDate(new Date(item.createdDate));
+    if(!cekSession()){
+        var body = "";
+        var head = "";
+        AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var tanggal = converterDate(new Date(item.createdDate));
 
-                var tempTgl = "";
-                var btn = "";
+                    var tempTgl = "";
+                    var btn = "";
 
-                if (i == 0) {
-                    tempTgl = tanggal;
-                    btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartAnestesi(\'' + jenis + '\')"></i>';
-                } else {
-                    var tgl = res[i - 1]["createdDate"];
-                    var tglB = converterDate(new Date(tgl));
-                    if (tanggal == tglB) {
-                        tempTgl = "";
-                    } else {
+                    if (i == 0) {
                         tempTgl = tanggal;
                         btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartAnestesi(\'' + jenis + '\')"></i>';
+                    } else {
+                        var tgl = res[i - 1]["createdDate"];
+                        var tglB = converterDate(new Date(tgl));
+                        if (tanggal == tglB) {
+                            tempTgl = "";
+                        } else {
+                            tempTgl = tanggal;
+                            btn = '<i class="fa fa-line-chart" style="cursor: pointer; color: #1ab7ea" onclick="showChartAnestesi(\'' + jenis + '\')"></i>';
+                        }
                     }
-                }
+
+                    if ("mon_intra_anestesi" == jenis) {
+                        body += '<tr>' +
+                            '<td width="18%">' + btn + ' ' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span>' + '</td>' +
+                            '<td>' + item.rr + '</td>' +
+                            '<td>' + item.nadi + '</td>' +
+                            '<td>' + item.sistole + '</td>' +
+                            '<td>' + item.diastole + '</td>' +
+                            '<td>' + item.o2 + '</td>' +
+                            '<td>' + item.n2O + '</td>' +
+                            '<td>' + item.inhalasi + '</td>' +
+                            '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                            '</tr>';
+                    }
+                    if ("mon_pasca_anestesi" == jenis) {
+                        body += '<tr>' +
+                            '<td width="18%">' + btn + ' ' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span>' + '</td>' +
+                            '<td>' + item.rr + '</td>' +
+                            '<td>' + item.nadi + '</td>' +
+                            '<td>' + item.sistole + '</td>' +
+                            '<td>' + item.diastole + '</td>' +
+                            '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_pasca_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                            '</tr>';
+                    }
+                });
 
                 if ("mon_intra_anestesi" == jenis) {
-                    body += '<tr>' +
-                        '<td width="18%">' + btn + ' ' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span>' + '</td>' +
-                        '<td>' + item.rr + '</td>' +
-                        '<td>' + item.nadi + '</td>' +
-                        '<td>' + item.sistole + '</td>' +
-                        '<td>' + item.diastole + '</td>' +
-                        '<td>' + item.o2 + '</td>' +
-                        '<td>' + item.n2O + '</td>' +
-                        '<td>' + item.inhalasi + '</td>' +
-                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_intra_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                    head = '<tr style="font-weight: bold">' +
+                        '<td align="center">Waktu</td>' +
+                        '<td>RR</td>' +
+                        '<td>Nadi</td>' +
+                        '<td>Sistole</td>' +
+                        '<td>Diastole</td>' +
+                        '<td>O2</td>' +
+                        '<td>N2O</td>' +
+                        '<td>Inhalasi</td>' +
+                        '<td align="center">Action</td>' +
                         '</tr>';
                 }
                 if ("mon_pasca_anestesi" == jenis) {
-                    body += '<tr>' +
-                        '<td width="18%">' + btn + ' ' + tempTgl + ' ' + '<span class="pull-right">' + item.waktu + '</span>' + '</td>' +
-                        '<td>' + item.rr + '</td>' +
-                        '<td>' + item.nadi + '</td>' +
-                        '<td>' + item.sistole + '</td>' +
-                        '<td>' + item.diastole + '</td>' +
-                        '<td align="center">' + '<i onclick="conOP(\'' + jenis + '\', \'monitoring_pasca_anestesi\', \'' + item.idMonitoringAnestesi + '\')" class="fa fa-trash hvr-grow" style="color: red"></i>' + '</td>' +
+                    head = '<tr style="font-weight: bold">' +
+                        '<td align="center">Waktu</td>' +
+                        '<td>RR</td>' +
+                        '<td>Nadi</td>' +
+                        '<td>Sistole</td>' +
+                        '<td>Diastole</td>' +
+                        '<td align="center">Action</td>' +
                         '</tr>';
                 }
-            });
-
-            if ("mon_intra_anestesi" == jenis) {
-                head = '<tr style="font-weight: bold">' +
-                    '<td align="center">Waktu</td>' +
-                    '<td>RR</td>' +
-                    '<td>Nadi</td>' +
-                    '<td>Sistole</td>' +
-                    '<td>Diastole</td>' +
-                    '<td>O2</td>' +
-                    '<td>N2O</td>' +
-                    '<td>Inhalasi</td>' +
-                    '<td align="center">Action</td>' +
-                    '</tr>';
+            } else {
+                body = '<tr><td>Data belum ada</td></tr>';
             }
-            if ("mon_pasca_anestesi" == jenis) {
-                head = '<tr style="font-weight: bold">' +
-                    '<td align="center">Waktu</td>' +
-                    '<td>RR</td>' +
-                    '<td>Nadi</td>' +
-                    '<td>Sistole</td>' +
-                    '<td>Diastole</td>' +
-                    '<td align="center">Action</td>' +
-                    '</tr>';
-            }
-        } else {
-            body = '<tr><td>Data belum ada</td></tr>';
-        }
-        var table = '<table style="font-size: 12px" class="table table-bordered">' +
-            '<thead>' + head + '</thead>' +
-            '<tr bgcolor="#ffebcd">' +
-            '<tbody>' + body + '</tbody>' +
-            '</table>';
+            var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                '<thead>' + head + '</thead>' +
+                '<tr bgcolor="#ffebcd">' +
+                '<tbody>' + body + '</tbody>' +
+                '</table>';
 
-        var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-        newRow.insertAfter($('table').find('#row_op_' + jenis));
-        var url = contextPath + '/pages/images/minus-allnew.png';
-        $('#btn_op_' + jenis).attr('src', url);
-        $('#btn_op_' + jenis).attr('onclick', 'delRowMon(\'' + jenis + '\')');
-    });
+            var newRow = $('<tr id="del_op_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+            newRow.insertAfter($('table').find('#row_op_' + jenis));
+            var url = contextPath + '/pages/images/minus-allnew.png';
+            $('#btn_op_' + jenis).attr('src', url);
+            $('#btn_op_' + jenis).attr('onclick', 'delRowMon(\'' + jenis + '\')');
+        });
+    }
 }
 
 function delRowMon(id) {
@@ -3467,93 +3478,95 @@ function delRowMon(id) {
 }
 
 function showChartAnestesi(jenis) {
-    $('#modal-op-chart_' + jenis).modal({show: true, backdrop: 'static'});
-    var tempData = [];
-    AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
-        if (res.length > 0) {
-            var dataArray = [];
-            $.each(res, function (i, item) {
+    if(!cekSession()){
+        $('#modal-op-chart_' + jenis).modal({show: true, backdrop: 'static'});
+        var tempData = [];
+        AsesmenOperasiAction.getListMonAnestesi(idDetailCheckup, jenis, function (res) {
+            if (res.length > 0) {
+                var dataArray = [];
+                $.each(res, function (i, item) {
 
-                if ("mon_intra_anestesi" == jenis) {
-                    dataArray.push({
-                        y: item.waktu,
-                        a: item.rr,
-                        b: item.nadi,
-                        c: item.sistole,
-                        d: item.diastole
-                    });
+                    if ("mon_intra_anestesi" == jenis) {
+                        dataArray.push({
+                            y: item.waktu,
+                            a: item.rr,
+                            b: item.nadi,
+                            c: item.sistole,
+                            d: item.diastole
+                        });
 
-                    tempData.push({
-                        'waktu': item.waktu,
-                        'o2': item.o2,
-                        'n2o': item.n2O,
-                        'inhalasi': item.inhalasi
-                    });
-                }
-                if ("mon_pasca_anestesi" == jenis) {
-                    dataArray.push({
-                        y: item.waktu,
-                        a: item.rr,
-                        b: item.nadi,
-                        c: item.sistole,
-                        d: item.diastole
-                    });
-                }
-            });
-
-            $('#modal-op-chart_' + jenis).on('shown.bs.modal', function (event) {
-                $('#line-chart_' + jenis).empty();
-                if ("mon_intra_anestesi" == jenis) {
-                    var line = new Morris.Line({
-                        element: 'line-chart_' + jenis,
-                        resize: true,
-                        data: dataArray,
-                        xkey: 'y',
-                        ykeys: ['a', 'b', 'c', 'd'],
-                        labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
-                        lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
-                        hideHover: 'auto',
-                        parseTime: false,
-                        lineWidth: 1
-                    });
-
-                    var temp = "";
-                    var waktu = "<td style='font-weight: bold'>Waktu</td>";
-                    var temp1 = "<td style='font-weight: bold'>O2</td>";
-                    var temp2 = "<td style='font-weight: bold'>N2O</td>";
-                    var temp3 = "<td style='font-weight: bold'>Inhalasi</td>";
-
-                    $.each(tempData, function (i, item) {
-                        waktu += '<td>' + item.waktu + '</td>';
-                        temp1 += '<td>' + item.o2 + '</td>'
-                        temp2 += '<td>' + item.n2o + '</td>';
-                        temp3 += '<td>' + item.inhalasi + '</td>';
-                    });
-                    if (waktu != '') {
-                        temp = '<tr>'+waktu+'</tr>' +
-                            '<tr>'+temp1+'</tr>' +
-                            '<tr>'+temp2+'</tr>' +
-                            '<tr>'+temp3+'</tr>';
+                        tempData.push({
+                            'waktu': item.waktu,
+                            'o2': item.o2,
+                            'n2o': item.n2O,
+                            'inhalasi': item.inhalasi
+                        });
                     }
-                    $('#temp_body').html(temp);
-                }
-                if ("mon_pasca_anestesi" == jenis) {
-                    var line = new Morris.Line({
-                        element: 'line-chart_' + jenis,
-                        resize: true,
-                        data: dataArray,
-                        xkey: 'y',
-                        ykeys: ['a', 'b', 'c', 'd'],
-                        labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
-                        lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
-                        hideHover: 'auto',
-                        parseTime: false,
-                        lineWidth: 1
-                    });
-                }
-            });
-        }
-    });
+                    if ("mon_pasca_anestesi" == jenis) {
+                        dataArray.push({
+                            y: item.waktu,
+                            a: item.rr,
+                            b: item.nadi,
+                            c: item.sistole,
+                            d: item.diastole
+                        });
+                    }
+                });
+
+                $('#modal-op-chart_' + jenis).on('shown.bs.modal', function (event) {
+                    $('#line-chart_' + jenis).empty();
+                    if ("mon_intra_anestesi" == jenis) {
+                        var line = new Morris.Line({
+                            element: 'line-chart_' + jenis,
+                            resize: true,
+                            data: dataArray,
+                            xkey: 'y',
+                            ykeys: ['a', 'b', 'c', 'd'],
+                            labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
+                            lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
+                            hideHover: 'auto',
+                            parseTime: false,
+                            lineWidth: 1
+                        });
+
+                        var temp = "";
+                        var waktu = "<td style='font-weight: bold'>Waktu</td>";
+                        var temp1 = "<td style='font-weight: bold'>O2</td>";
+                        var temp2 = "<td style='font-weight: bold'>N2O</td>";
+                        var temp3 = "<td style='font-weight: bold'>Inhalasi</td>";
+
+                        $.each(tempData, function (i, item) {
+                            waktu += '<td>' + item.waktu + '</td>';
+                            temp1 += '<td>' + item.o2 + '</td>'
+                            temp2 += '<td>' + item.n2o + '</td>';
+                            temp3 += '<td>' + item.inhalasi + '</td>';
+                        });
+                        if (waktu != '') {
+                            temp = '<tr>'+waktu+'</tr>' +
+                                '<tr>'+temp1+'</tr>' +
+                                '<tr>'+temp2+'</tr>' +
+                                '<tr>'+temp3+'</tr>';
+                        }
+                        $('#temp_body').html(temp);
+                    }
+                    if ("mon_pasca_anestesi" == jenis) {
+                        var line = new Morris.Line({
+                            element: 'line-chart_' + jenis,
+                            resize: true,
+                            data: dataArray,
+                            xkey: 'y',
+                            ykeys: ['a', 'b', 'c', 'd'],
+                            labels: ['RR', 'Nadi', 'Sistole', 'Diastole'],
+                            lineColors: ['#ff0000', '#0000ff', '#00cc00', '#cc6699'],
+                            hideHover: 'auto',
+                            parseTime: false,
+                            lineWidth: 1
+                        });
+                    }
+                });
+            }
+        });
+    }
 }
 
 function conOP(jenis, ket, idAsesmen) {
@@ -3568,56 +3581,60 @@ function conOP(jenis, ket, idAsesmen) {
 
 function delOPM(jenis, ket, idAsesmen) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startIconSpin('delete_' + idAsesmen);
-    dwr.engine.setAsync(true);
-    AsesmenOperasiAction.deleteMonAnestesi(idAsesmen, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopIconSpin('delete_' + idAsesmen);
-                $('#modal-op-'+ket).scrollTop(0);
-                $('#warning_op_'+ket).show().fadeOut(5000);
-                $('#msg_op_'+ket).text("Berhasil menghapus data...");
-            } else {
-                stopIconSpin('delete_' + idAsesmen);
-                $('#modal-op-'+ket).scrollTop(0);
-                $('#warn_'+ket).show().fadeOut(5000);
-                $('#msg_'+ket).text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startIconSpin('delete_' + idAsesmen);
+        dwr.engine.setAsync(true);
+        AsesmenOperasiAction.deleteMonAnestesi(idAsesmen, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-op-'+ket).scrollTop(0);
+                    $('#warning_op_'+ket).show().fadeOut(5000);
+                    $('#msg_op_'+ket).text("Berhasil menghapus data...");
+                } else {
+                    stopIconSpin('delete_' + idAsesmen);
+                    $('#modal-op-'+ket).scrollTop(0);
+                    $('#warn_'+ket).show().fadeOut(5000);
+                    $('#msg_'+ket).text(res.msg);
+                }
+            }
+        });
+    }
 }
 
 function delOP(jenis, ket) {
     $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_' + jenis);
-    dwr.engine.setAsync(true);
-    AsesmenOperasiAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_' + jenis);
-                $('#modal-op-' + ket).scrollTop(0);
-                $('#warning_op_' + ket).show().fadeOut(5000);
-                $('#msg_op_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_' + jenis);
-                $('#modal-op-' + ket).scrollTop(0);
-                $('#warn_' + ket).show().fadeOut(5000);
-                $('#msg_' + ket).text(res.msg);
-            }
+    if(!cekSession()){
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_' + jenis);
+        dwr.engine.setAsync(true);
+        AsesmenOperasiAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_' + jenis);
+                    $('#modal-op-' + ket).scrollTop(0);
+                    $('#warning_op_' + ket).show().fadeOut(5000);
+                    $('#msg_op_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_' + jenis);
+                    $('#modal-op-' + ket).scrollTop(0);
+                    $('#warn_' + ket).show().fadeOut(5000);
+                    $('#msg_' + ket).text(res.msg);
+                }
+            }
+        });
+    }
 }

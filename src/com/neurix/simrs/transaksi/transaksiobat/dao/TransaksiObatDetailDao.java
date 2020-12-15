@@ -881,6 +881,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "AND a.branch_id = :branch\n" +
                     "AND a.status = '0'\n" +
                     "AND a.flag = 'Y'\n" +
+                    "AND CAST(a.created_date AS DATE) = CURRENT_DATE \n" +
                     "AND a.is_read IS NULL";
 
             List<Object[]> result = new ArrayList<>();

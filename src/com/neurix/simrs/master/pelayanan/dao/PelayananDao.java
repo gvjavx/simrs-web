@@ -130,6 +130,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
                 .add(Restrictions.eq("namaPelayanan", namaPelayanan))
                 .add(Restrictions.eq("flag", "Y"))
+                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
                 .list();
 
         return results;
@@ -189,7 +190,6 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kodering')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%01d", iter.next());
-
         return sId;
     }
 

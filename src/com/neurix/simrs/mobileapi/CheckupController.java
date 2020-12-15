@@ -2,9 +2,12 @@ package com.neurix.simrs.mobileapi;
 
 import com.google.gson.Gson;
 import com.neurix.akuntansi.transaksi.billingSystem.bo.BillingSystemBo;
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.dashboard.bo.DashboardBo;
 import com.neurix.simrs.bpjs.eklaim.bo.EklaimBo;
 import com.neurix.simrs.bpjs.eklaim.model.*;
 import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
@@ -32,6 +35,7 @@ import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
+import com.neurix.simrs.transaksi.initdashboard.bo.InitDashboardBo;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
@@ -94,6 +98,8 @@ public class CheckupController implements ModelDriven<Object> {
     private RawatInapBo rawatInapBoProxy;
     private RuanganBo ruanganBoProxy;
     private DokterBo dokterBoProxy;
+    private InitDashboardBo initDashboardBoProxy;
+    private BranchBo branchBoProxy;
 
     private String idDetailCheckup;
     private String noCheckup;
@@ -138,6 +144,51 @@ public class CheckupController implements ModelDriven<Object> {
 
     private String idTindakan;
     private String keterangan;
+
+    private String bulan;
+    private String tahun;
+
+    private String jenisKunjungan;
+
+    public String getJenisKunjungan() {
+        return jenisKunjungan;
+    }
+
+    public void setJenisKunjungan(String jenisKunjungan) {
+        this.jenisKunjungan = jenisKunjungan;
+    }
+
+    public BranchBo getBranchBoProxy() {
+        return branchBoProxy;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
+
+    public InitDashboardBo getInitDashboardBoProxy() {
+        return initDashboardBoProxy;
+    }
+
+    public void setInitDashboardBoProxy(InitDashboardBo initDashboardBoProxy) {
+        this.initDashboardBoProxy = initDashboardBoProxy;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getTahun() {
+        return tahun;
+    }
+
+    public void setTahun(String tahun) {
+        this.tahun = tahun;
+    }
 
     public String getIdTindakan() {
         return idTindakan;
@@ -557,6 +608,18 @@ public class CheckupController implements ModelDriven<Object> {
             case "getDetailHistoryPasien":
                 return listOfHeaderCheckup;
             case "getListAntrian":
+                return listOfCheckup;
+            case "getKunjunganRJ":
+                return listOfCheckup;
+            case "getDetailKunjunganRJ":
+                return listOfCheckup;
+            case "getTahunPeriksa":
+                return listOfCheckup;
+            case "getComboBranch":
+                return listOfCheckup;
+            case "getKamarTerpakai":
+                return listOfCheckup;
+            case "getDetailKunjunganJK":
                 return listOfCheckup;
             default:
                 return model;
@@ -1034,6 +1097,148 @@ public class CheckupController implements ModelDriven<Object> {
                 }
 
 
+            }
+        } else if(action.equalsIgnoreCase("getCountAll")){
+            HeaderCheckup result = new HeaderCheckup();
+
+            String branch = "";
+            if(!branchId.equalsIgnoreCase("KP")) {
+                branch = branchId;
+            }
+
+            try {
+                result = initDashboardBoProxy.getCountAll(bulan, tahun, branch);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getCountAll" + e);
+            }
+
+            model = new CheckupMobile();
+            model.setJmlIGD(result.getJmlIGD());
+            model.setJmlRI(result.getJmlRI());
+            model.setJmlRJ(result.getJmlRJ());
+            model.setJmlTelemedic(result.getJmlTelemedic());
+
+        } else if(action.equalsIgnoreCase("getKunjunganRJ")) {
+
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+                result = initDashboardBoProxy.getKunjunganRJ(bulan, tahun, branchId, jenisKunjungan);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getKunjunganRJ" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for (HeaderCheckup item : result){
+                CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setBranchId(item.getBranchId());
+                checkupMobile.setBranchName(item.getBranchName());
+                checkupMobile.setTanggal(item.getTanggal() != null ? CommonUtil.convertDateToString(item.getTanggal()) : "");
+                checkupMobile.setTotal(item.getTotal());
+
+                listOfCheckup.add(checkupMobile);
+            }
+        } else if(action.equalsIgnoreCase("getDetailKunjunganRj")) {
+
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try{
+              result = initDashboardBoProxy.getDetailKunjunganRJ(bulan, tahun, branchId, jenisKunjungan);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getDetailKunjunganRJ" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for (HeaderCheckup item : result) {
+                CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setBranchId(item.getBranchId());
+                checkupMobile.setBranchName(item.getBranchName());
+                checkupMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                checkupMobile.setStatusPeriksaName(item.getStatusPeriksaName());
+                checkupMobile.setTotal(item.getTotal());
+
+                listOfCheckup.add(checkupMobile);
+            }
+        } else if (action.equalsIgnoreCase("getTahunPeriksa")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try{
+                result = initDashboardBoProxy.getTahunPeriksa();
+            } catch (GeneralBOException e){
+                logger.error("Found Error getDetailKunjunganRJ" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for (HeaderCheckup item : result) {
+                CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setTahun(item.getTahun());
+
+                listOfCheckup.add(checkupMobile);
+            }
+
+        } else if (action.equalsIgnoreCase("getComboBranch")) {
+            List<Branch> result = new ArrayList<>();
+
+            Branch bean = new Branch();
+            if (!branchId.equalsIgnoreCase("KP")) {
+                bean.setBranchId(branchId);
+            }
+
+            try {
+                result = branchBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error getComboBranch" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for (Branch item : result) {
+                if(!item.getBranchId().equalsIgnoreCase("KP")) {
+                    CheckupMobile checkupMobile = new CheckupMobile();
+                    checkupMobile.setBranchName(item.getBranchName());
+                    checkupMobile.setBranchId(item.getBranchId());
+                    checkupMobile.setWarna(item.getWarna());
+
+                    listOfCheckup.add(checkupMobile);
+                }
+
+            }
+        } else if (action.equalsIgnoreCase("getKamarTerpakai")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+               result = initDashboardBoProxy.getKamarTerpakai(bulan, tahun, branchId);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getKamarTerpakai" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for(HeaderCheckup item : result) {
+                CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setBranchId(item.getBranchId());
+                checkupMobile.setBranchName(item.getBranchName());
+                checkupMobile.setTanggal(item.getTanggal() != null ? CommonUtil.convertDateToString(item.getTanggal()) : "");
+                checkupMobile.setAll(item.getAll());
+                checkupMobile.setTotal(item.getTotal());
+
+                listOfCheckup.add(checkupMobile);
+            }
+        } else if (action.equalsIgnoreCase("getDetailKunjunganJK")) {
+            List<HeaderCheckup> result = new ArrayList<>();
+
+            try {
+                result = initDashboardBoProxy.getDetailKunjunganJK(bulan, tahun, branchId, jenisKunjungan);
+            } catch (GeneralBOException e){
+                logger.error("Found Error getDetailKunjungan" + e);
+            }
+
+            listOfCheckup = new ArrayList<>();
+            for(HeaderCheckup item : result) {
+                CheckupMobile checkupMobile = new CheckupMobile();
+                checkupMobile.setBranchId(item.getBranchId());
+                checkupMobile.setBranchName(item.getBranchName());
+                checkupMobile.setTotal(item.getTotal());
+                checkupMobile.setJenisKelamin(item.getJenisKelamin());
+                listOfCheckup.add(checkupMobile);
             }
         }
 

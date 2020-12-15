@@ -580,15 +580,7 @@
 
         var cek = false;
 
-        if (namaObat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '' && tipe != '') {
-
-            // if (obat.split('|')[0] != 'null' && obat.split('|')[0] != '') {
-            //     idObat = obat.split('|')[0];
-            // }
-            // if (obat.split('|')[1] != 'null' && obat.split('|')[1] != '') {
-            //     namaObat = obat.split('|')[1];
-            // }
-
+        if (namaObat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '' && tipe != '' && tgl != '') {
             $.each(data, function (i, item) {
                 if (item.ID == idObat) {
                     cek = true;

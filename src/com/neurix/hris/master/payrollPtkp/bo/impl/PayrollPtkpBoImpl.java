@@ -113,7 +113,6 @@ public class PayrollPtkpBoImpl implements PayrollPtkpBo {
                 imPayrollPtkpHistoryEntity.setIdPtkp(imPayrollPtkpEntity.getIdPtkp());
                 imPayrollPtkpHistoryEntity.setStatusKeluarga(imPayrollPtkpEntity.getStatusKeluarga());
                 imPayrollPtkpHistoryEntity.setJumlahTanggungan(imPayrollPtkpEntity.getJumlahTanggungan());
-//                imPayrollPtkpEntity.getNilai().toString();
                 imPayrollPtkpHistoryEntity.setNilai(imPayrollPtkpEntity.getNilai().intValue());
                 imPayrollPtkpHistoryEntity.setFlag(imPayrollPtkpEntity.getFlag());
                 imPayrollPtkpHistoryEntity.setAction(imPayrollPtkpEntity.getAction());

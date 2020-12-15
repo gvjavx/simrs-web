@@ -57,6 +57,9 @@ public class UserDao extends GenericDao<ImUsers,String> {
             if (mapCriteria.get("lokasi_kebun")!=null) {
                 criteria.add(Restrictions.eq("lokasiKebun", (Long) mapCriteria.get("lokasi_kebun")));
             }
+            if (mapCriteria.get("list_user_id")!=null) {
+                criteria.add(Restrictions.in("primaryKey.id", (ArrayList<String>) mapCriteria.get("list_user_id")));
+            }
 
         }
 
@@ -400,5 +403,58 @@ public class UserDao extends GenericDao<ImUsers,String> {
                 .list();
 
         return results.size() > 0 ? (ImUsers) results.get(0) : null;
+    }
+
+    public List<String> getListUserIdByCriteria(Map mapCriteria){
+        List<String> results = new ArrayList<>();
+
+        String where = "";
+        if (mapCriteria.get("user_id") != null)
+            where += "AND u.user_id = '" +mapCriteria.get("user_id")+ "'\n ";
+
+        if (mapCriteria.get("user_name") != null)
+            where += "AND u.user_name LIKE '%" +mapCriteria.get("user_name")+ "%' \n ";
+
+        if (mapCriteria.get("position_id") != null)
+            where += "AND u.position_id = '" +mapCriteria.get("position_id")+ "' \n ";
+
+        if (mapCriteria.get("department_id") != null)
+            where += "AND u.department_id = '" +mapCriteria.get("department_id")+ "' \n ";
+
+        if (mapCriteria.get("id_pelayanan") != null)
+            where += "AND u.id_pelayanan = '" +mapCriteria.get("id_pelayanan")+ "' \n ";
+
+        if (mapCriteria.get("id_ruangan") != null)
+            where += "AND u.id_ruangan = '" +mapCriteria.get("id_ruangan")+ "' \n ";
+
+        if (mapCriteria.get("id_device") != null)
+            where += "AND u.id_device = '" +mapCriteria.get("id_device")+ "' \n ";
+
+        if (mapCriteria.get("role_id") != null)
+            where += "AND ur.role_id = '" +mapCriteria.get("role_id")+ "' \n ";
+
+        if (mapCriteria.get("area_id") != null)
+            where += "AND abu.area_id = '" +mapCriteria.get("area_id")+ "' \n ";
+
+        if (mapCriteria.get("branch_id") != null)
+            where += "AND abu.branch_id = '" +mapCriteria.get("branch_id")+ "' \n ";
+
+        String SQL = "SELECT \n" +
+                "u.user_id \n" +
+                "FROM im_users u\n" +
+                "INNER JOIN (SELECT * FROM im_users_roles WHERE flag = 'Y') ur ON ur.user_id = u.user_id \n" +
+                "INNER JOIN (SELECT * FROM im_areas_branches_users WHERE flag = 'Y') abu ON abu.user_id = u.user_id \n" +
+                "WHERE u.flag LIKE :flag \n" + where;
+
+        List<Object> listObj = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("flag", mapCriteria.get("flag"))
+                .list();
+
+        if (listObj.size() > 0){
+            for (Object obj : listObj){
+                results.add(obj.toString());
+            }
+        }
+        return results;
     }
 }

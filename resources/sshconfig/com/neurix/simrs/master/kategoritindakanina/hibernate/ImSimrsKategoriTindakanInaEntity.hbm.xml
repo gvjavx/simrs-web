@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.master.kategoritindakanina.model.ImSimrsKategoriTindakanInaEntity" dynamic-update="true"
            table="im_simrs_kategori_tindakan_ina" select-before-update="true" schema="public">
 
-
         <id name="id">
             <column name="id" sql-type="varchar" length="30" not-null="true" />
         </id>

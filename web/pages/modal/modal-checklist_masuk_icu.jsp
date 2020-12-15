@@ -26,10 +26,10 @@
                 <div class="box-body">
                     <table class="table" id="tabel_icu_checklist_masuk_icu">
                         <tbody>
-                        <tr id="row_icu_pre_checklist_masuk_icu">
+                        <tr id="row_icu_checklist_kriteria">
                             <td>Checklist Kriteria Pasien ICU</td>
                             <td width="20%" align="center">
-                                <img id="btn_icu_pre_checklist_masuk_icu" class="hvr-grow"
+                                <img id="btn_icu_checklist_kriteria" class="hvr-grow"
                                      onclick="detailICU('checklist_kriteria')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_checklist_kriteria" class="hvr-grow btn-hide" onclick="conICU('checklist_kriteria', 'checklist_masuk_icu')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
@@ -75,8 +75,8 @@
                             <label >TTD DPJP</label>
                             <canvas class="paint-canvas-ttd" id="ttd_dpjp"
                                     onmouseover="paintTtd('ttd_dpjp')"></canvas>
-                            <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                            <input class="form-control nama_dokter_ri" id="nama_terang_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_dpjp')"><i class="fa fa-trash"></i>
                                 Clear
@@ -97,7 +97,7 @@
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close</button>
-                <button id="save_icu_checklist_kriteria" class="btn btn-success pull-right" onclick="saveICU('checklist_kriteria', 'asesmen_icu')"><i class="fa fa-check"></i> Save
+                <button id="save_icu_checklist_kriteria" class="btn btn-success pull-right" onclick="saveICU('checklist_kriteria', 'checklist_masuk_icu')"><i class="fa fa-check"></i> Save
                 </button>
                 <button id="load_icu_checklist_kriteria" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...

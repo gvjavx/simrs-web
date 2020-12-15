@@ -457,29 +457,31 @@ function saveMpp(jenis, ket) {
     }
 
     if (cek) {
-        var result = JSON.stringify(data);
-        var pasienData = JSON.stringify(dataPasien);
-        $('#save_mpp_' + jenis).hide();
-        $('#load_mpp_' + jenis).show();
-        dwr.engine.setAsync(true);
-        MppAction.saveMpp(result,pasienData, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#save_mpp_' + jenis).show();
-                    $('#load_mpp_' + jenis).hide();
-                    $('#modal-mpp-' + jenis).modal('hide');
-                    $('#warning_mpp_' + ket).show().fadeOut(5000);
-                    $('#msg_mpp_' + ket).text("Berhasil menambahkan data mpp...");
-                    $('#modal-mpp-' + jenis).scrollTop(0);
-                } else {
-                    $('#save_mpp_' + jenis).show();
-                    $('#load_mpp_' + jenis).hide();
-                    $('#warning_mpp_' + jenis).show().fadeOut(5000);
-                    $('#msg_mpp_' + jenis).text(res.msg);
-                    $('#modal-mpp-' + jenis).scrollTop(0);
+        if(!cekSession()){
+            var result = JSON.stringify(data);
+            var pasienData = JSON.stringify(dataPasien);
+            $('#save_mpp_' + jenis).hide();
+            $('#load_mpp_' + jenis).show();
+            dwr.engine.setAsync(true);
+            MppAction.saveMpp(result,pasienData, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#save_mpp_' + jenis).show();
+                        $('#load_mpp_' + jenis).hide();
+                        $('#modal-mpp-' + jenis).modal('hide');
+                        $('#warning_mpp_' + ket).show().fadeOut(5000);
+                        $('#msg_mpp_' + ket).text("Berhasil menambahkan data mpp...");
+                        $('#modal-mpp-' + jenis).scrollTop(0);
+                    } else {
+                        $('#save_mpp_' + jenis).show();
+                        $('#load_mpp_' + jenis).hide();
+                        $('#warning_mpp_' + jenis).show().fadeOut(5000);
+                        $('#msg_mpp_' + jenis).text(res.msg);
+                        $('#modal-mpp-' + jenis).scrollTop(0);
+                    }
                 }
-            }
-        })
+            });
+        }
     } else {
         $('#warning_mpp_' + jenis).show().fadeOut(5000);
         $('#msg_mpp_' + jenis).text("Silahkan cek kembali data inputan anda...!");
@@ -488,58 +490,60 @@ function saveMpp(jenis, ket) {
 }
 
 function detailFormMpp(jenis) {
-    if (jenis != '') {
-        var head = "";
-        var body = "";
-        MppAction.getListMpp(idDetailCheckup, jenis, function (res) {
-            if (res.length > 0) {
-                $.each(res, function (i, item) {
-                    var jwb = "";
-                    if (item.jawaban != null) {
-                        jwb = item.jawaban;
-                    }
-                    if("advokasi" == item.keterangan){
-                        var li = "";
-                        var isi = jwb.split("|");
-                        if("Advokasi pelayanan pasien" == item.parameter){
-                            $.each(isi, function (i, item) {
-                                li += '<li>'+item+'</li>';
-                            });
-                            body += '<tr>' +
-                                '<td >'+item.parameter+'</td>' +
-                                '<td>'+'<ul style="margin-left: 10px">'+li+'</ul>'+'</td>' +
-                                '</tr>';
+    if(!cekSession()){
+        if (jenis != '') {
+            var head = "";
+            var body = "";
+            MppAction.getListMpp(idDetailCheckup, jenis, function (res) {
+                if (res.length > 0) {
+                    $.each(res, function (i, item) {
+                        var jwb = "";
+                        if (item.jawaban != null) {
+                            jwb = item.jawaban;
+                        }
+                        if("advokasi" == item.keterangan){
+                            var li = "";
+                            var isi = jwb.split("|");
+                            if("Advokasi pelayanan pasien" == item.parameter){
+                                $.each(isi, function (i, item) {
+                                    li += '<li>'+item+'</li>';
+                                });
+                                body += '<tr>' +
+                                    '<td >'+item.parameter+'</td>' +
+                                    '<td>'+'<ul style="margin-left: 10px">'+li+'</ul>'+'</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">'+item.parameter+'</td>' +
+                                    '<td>'+jwb+'</td>' +
+                                    '</tr>';
+                            }
+
                         }else{
                             body += '<tr>' +
                                 '<td width="40%">'+item.parameter+'</td>' +
                                 '<td>'+jwb+'</td>' +
                                 '</tr>';
                         }
+                    });
+                } else {
+                    body = '<tr>' +
+                        '<td>Data belum ada</td>' +
+                        '</tr>';
+                }
 
-                    }else{
-                        body += '<tr>' +
-                            '<td width="40%">'+item.parameter+'</td>' +
-                            '<td>'+jwb+'</td>' +
-                            '</tr>';
-                    }
-                });
-            } else {
-                body = '<tr>' +
-                    '<td>Data belum ada</td>' +
-                    '</tr>';
-            }
+                var table = '<table style="font-size: 12px" class="table table-bordered">' +
+                    '<thead>' + head + '</thead>' +
+                    '<tbody>' + body + '</tbody>' +
+                    '</table>';
 
-            var table = '<table style="font-size: 12px" class="table table-bordered">' +
-                '<thead>' + head + '</thead>' +
-                '<tbody>' + body + '</tbody>' +
-                '</table>';
-
-            var newRow = $('<tr id="del_mpp_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
-            newRow.insertAfter($('table').find('#row_mpp_' + jenis));
-            var url = contextPath+'/pages/images/minus-allnew.png';
-            $('#btn_mpp_' + jenis).attr('src', url);
-            $('#btn_mpp_' + jenis).attr('onclick', 'delRowMpp(\'' + jenis + '\')');
-        });
+                var newRow = $('<tr id="del_mpp_' + jenis + '"><td colspan="2">' + table + '</td></tr>');
+                newRow.insertAfter($('table').find('#row_mpp_' + jenis));
+                var url = contextPath+'/pages/images/minus-allnew.png';
+                $('#btn_mpp_' + jenis).attr('src', url);
+                $('#btn_mpp_' + jenis).attr('onclick', 'delRowMpp(\'' + jenis + '\')');
+            });
+        }
     }
 }
 
@@ -568,27 +572,29 @@ function conMPP(jenis, ket){
 }
 
 function delMPP(jenis, ket) {
-    $('#modal-confirm-rm').modal('hide');
-    var dataPasien = {
-        'no_checkup': noCheckup,
-        'id_detail_checkup': idDetailCheckup,
-        'id_pasien': idPasien,
-        'id_rm': tempidRm
-    }
-    var result = JSON.stringify(dataPasien);
-    startSpin('delete_'+jenis);
-    dwr.engine.setAsync(true);
-    MppAction.saveDelete(idDetailCheckup, jenis, result, {
-        callback: function (res) {
-            if (res.status == "success") {
-                stopSpin('delete_'+jenis);
-                $('#warning_mpp_' + ket).show().fadeOut(5000);
-                $('#msg_mpp_' + ket).text("Berhasil menghapus data...");
-            } else {
-                stopSpin('delete_'+jenis);
-                $('#warn_'+ket).show().fadeOut(5000);
-                $('#msg_'+ket).text(res.msg);
-            }
+    if(!cekSession()){
+        $('#modal-confirm-rm').modal('hide');
+        var dataPasien = {
+            'no_checkup': noCheckup,
+            'id_detail_checkup': idDetailCheckup,
+            'id_pasien': idPasien,
+            'id_rm': tempidRm
         }
-    });
+        var result = JSON.stringify(dataPasien);
+        startSpin('delete_'+jenis);
+        dwr.engine.setAsync(true);
+        MppAction.saveDelete(idDetailCheckup, jenis, result, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    stopSpin('delete_'+jenis);
+                    $('#warning_mpp_' + ket).show().fadeOut(5000);
+                    $('#msg_mpp_' + ket).text("Berhasil menghapus data...");
+                } else {
+                    stopSpin('delete_'+jenis);
+                    $('#warn_'+ket).show().fadeOut(5000);
+                    $('#msg_'+ket).text(res.msg);
+                }
+            }
+        });
+    }
 }

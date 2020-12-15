@@ -39,6 +39,36 @@ public class User extends BaseModel implements Serializable, Comparable<User> {
 
     private String logoBranch;
 
+    private String departmentId;
+
+    private String idRuangan;
+
+    private String idVendor;
+
+    public String getIdVendor() {
+        return idVendor;
+    }
+
+    public void setIdVendor(String idVendor) {
+        this.idVendor = idVendor;
+    }
+
+    public String getIdRuangan() {
+        return idRuangan;
+    }
+
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
+    }
+
+    public String getDepartmentId() {
+        return departmentId;
+    }
+
+    public void setDepartmentId(String departmentId) {
+        this.departmentId = departmentId;
+    }
+
     public String getIdDevice() {
         return idDevice;
     }
