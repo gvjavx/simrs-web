@@ -598,6 +598,15 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             if ("".equalsIgnoreCase(bean.getCatatan()) && bean.getCatatan() != null) {
                 entity.setCatatan(bean.getCatatan());
             }
+            if(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan())){
+                entity.setNoRujukan(bean.getNoRujukan());
+            }
+            if(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan())){
+                entity.setTglRujukan(java.sql.Date.valueOf(bean.getTglRujukan()));
+            }
+            if(bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan())){
+                entity.setUrlDocRujuk(bean.getSuratRujukan());
+            }
             entity.setRsRujukan(bean.getRsRujukan());
 
             try {

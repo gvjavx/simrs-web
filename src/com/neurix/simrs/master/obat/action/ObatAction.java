@@ -288,7 +288,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String margin, String idKategoriPersediaan) {
+    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String margin, String idKategoriPersediaan, String idBentuk) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -329,10 +329,22 @@ public class ObatAction extends BaseMasterAction {
         obat.setFlagBpjs(flagBpjs);
         obat.setMargin(intMargin);
         obat.setIdKategoriPersediaan(idKategoriPersediaan);
+        obat.setIdBentuk(idBentuk);
 
         if (kandunganObats != null && kandunganObats.size() > 0){
             obat.setKandunganObats(kandunganObats);
         }
+
+        // check apakah sudah ada id_obat dengan id_pabrik
+        // untuk validasi jika id tidak generate
+        try {
+            checkObatResponse = obatBo.checkFisikIdObatByIdPabrik(obat);
+        } catch (GeneralBOException e) {
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+            return checkObatResponse;
+        }
+
 
         try {
             checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
@@ -357,7 +369,7 @@ public class ObatAction extends BaseMasterAction {
         return checkObatResponse;
     }
 
-    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, Integer margin, String idKategoriPersediaan) {
+    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, Integer margin, String idKategoriPersediaan, String idBentuk) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
         CheckObatResponse response = new CheckObatResponse();
         try {
@@ -388,6 +400,7 @@ public class ObatAction extends BaseMasterAction {
             obat.setFlagBpjs(flagBpjs);
             obat.setIdKategoriPersediaan(idKategoriPersediaan);
             obat.setMargin(margin == null ? new Integer(0) : margin);
+            obat.setIdBentuk(idBentuk);
 
             if (kandunganObats != null && kandunganObats.size() > 0){
                 List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
@@ -602,10 +615,17 @@ public class ObatAction extends BaseMasterAction {
             hargaObat.setIdHargaObat(branchId+idObat);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
+            // harga obat khusus
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
             hargaObat.setMargin(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin")) ? null : Integer.valueOf(obj.getString("margin")));
+            // harga obat umum
+            hargaObat.setHargaNetUmum(new BigDecimal(obj.getString("harga_net_umum")));
+            hargaObat.setDiskonUmum(new BigDecimal(obj.getString("diskon_umum")));
+            hargaObat.setHargaJualUmum(new BigDecimal(obj.getString("harga_jual_umum")));
+            hargaObat.setMarginUmum(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin_umum")) ? null : Integer.valueOf(obj.getString("margin_umum")));
+
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
             hargaObat.setLastUpdate(time);
@@ -1291,7 +1311,36 @@ public class ObatAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        logger.info("[LaporanAkuntansiAction.getAllKategoriPersediaan] START END <<<");
         return obatBo.getAllKategoriPersediaan();
+    }
+
+    public List<ImSimrsBentukBarangEntity> listAllBentukBarang(){
+        logger.info("[LaporanAkuntansiAction.listAllBentukBarang] START Process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        logger.info("[LaporanAkuntansiAction.listAllBentukBarang] START END <<<");
+        return obatBo.getAllBentukBarang();
+    }
+
+    public ImSimrsHeaderObatEntity getHeaderObatById(String idObat){
+        logger.info("[LaporanAkuntansiAction.getHeaderObatById] START Process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        ImSimrsHeaderObatEntity headerObatEntity = new ImSimrsHeaderObatEntity();
+        try {
+            headerObatEntity = obatBo.getHeaderObatById(idObat);
+        } catch (GeneralBOException e){
+            logger.error("[LaporanAkuntansiAction.getHeaderObatById] Error when print report, Found problem when downloading data, please inform to your admin.", e);
+        }
+
+        logger.info("[LaporanAkuntansiAction.getHeaderObatById] START END <<<");
+        return headerObatEntity;
     }
 
 }

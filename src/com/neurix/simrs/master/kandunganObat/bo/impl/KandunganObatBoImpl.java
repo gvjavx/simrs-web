@@ -77,35 +77,50 @@ public class KandunganObatBoImpl implements KandunganObatBo {
     public void saveEdit(KandunganObat bean) throws GeneralBOException {
         logger.info("[KandunganObatBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
-            ImSimrsKandunganObatEntity kandunganObatEntity= null;
+
+            List<ImSimrsKandunganObatEntity> list = new ArrayList<>();
             try {
-                // Get data from database by ID
-                kandunganObatEntity = kandunganObatDao.getById("idKandungan", bean.getIdKandungan());
+                list = kandunganObatDao.checkData(bean.getKandungan());
             } catch (HibernateException e) {
                 logger.error("[KandunganObatBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence kanduunganObat id, please info to your admin..." + e.getMessage());
             }
 
-            if (kandunganObatEntity != null) {
-                if (("Y").equalsIgnoreCase(bean.getFlag())) {
-                    kandunganObatEntity.setIdKandungan(bean.getIdKandungan());
-                    kandunganObatEntity.setKandungan(bean.getKandungan());
-                }
-                kandunganObatEntity.setFlag(bean.getFlag());
-                kandunganObatEntity.setAction(bean.getAction());
-                kandunganObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                kandunganObatEntity.setLastUpdate(bean.getLastUpdate());
+            if (list.size() > 0) {
+                logger.error("Kandungan Obat sudah ada");
+                throw new GeneralBOException("Kandungan Obat sudah ada");
+            } else {
 
+                ImSimrsKandunganObatEntity kandunganObatEntity = null;
                 try {
-                    // Update into database
-                    kandunganObatDao.updateAndSave(kandunganObatEntity);
+                    // Get data from database by ID
+                    kandunganObatEntity = kandunganObatDao.getById("idKandungan", bean.getIdKandungan());
                 } catch (HibernateException e) {
                     logger.error("[KandunganObatBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
                 }
-            } else {
-                logger.error("[KandunganObatBoImpl.saveEdit] Error, not found data with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data with request id, please check again your data ...");
+
+                if (kandunganObatEntity != null) {
+                    if (("Y").equalsIgnoreCase(bean.getFlag())) {
+                        kandunganObatEntity.setIdKandungan(bean.getIdKandungan());
+                        kandunganObatEntity.setKandungan(bean.getKandungan());
+                    }
+                    kandunganObatEntity.setFlag(bean.getFlag());
+                    kandunganObatEntity.setAction(bean.getAction());
+                    kandunganObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    kandunganObatEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Update into database
+                        kandunganObatDao.updateAndSave(kandunganObatEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[KandunganObatBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data, please info to your admin..." + e.getMessage());
+                    }
+                } else {
+                    logger.error("[KandunganObatBoImpl.saveEdit] Error, not found data with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data with request id, please check again your data ...");
+                }
             }
         }
         logger.info("[KandunganObatBoImpl.saveEdit] end process <<<");
@@ -115,32 +130,47 @@ public class KandunganObatBoImpl implements KandunganObatBo {
     public KandunganObat saveAdd(KandunganObat bean) throws GeneralBOException {
         logger.info("[KandunganObatBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
-            String kandunganObatId;
+            List<ImSimrsKandunganObatEntity> list = new ArrayList<>();
+
             try {
-                // Generating ID, get from postgre sequence
-                kandunganObatId = kandunganObatDao.getNextId();
+                list = kandunganObatDao.checkData(bean.getKandungan());
             } catch (HibernateException e) {
                 logger.error("[KandunganObatBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence id, please info to your admin..." + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence kanduunganObat id, please info to your admin..." + e.getMessage());
             }
-            // creating object entity serializable
-            ImSimrsKandunganObatEntity imKandunganObatEntity = new ImSimrsKandunganObatEntity();
 
-            imKandunganObatEntity.setIdKandungan(kandunganObatId);
-            imKandunganObatEntity.setKandungan(bean.getKandungan());
-            imKandunganObatEntity.setFlag(bean.getFlag());
-            imKandunganObatEntity.setAction(bean.getAction());
-            imKandunganObatEntity.setCreatedWho(bean.getCreatedWho());
-            imKandunganObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            imKandunganObatEntity.setCreatedDate(bean.getCreatedDate());
-            imKandunganObatEntity.setLastUpdate(bean.getLastUpdate());
+            if (list.size() > 0) {
+                logger.error("Kandungan Obat sudah ada");
+                throw new GeneralBOException("Kandungan Obat sudah ada");
+            } else {
 
-            try {
-                // insert into database
-                kandunganObatDao.addAndSave(imKandunganObatEntity);
-            } catch (HibernateException e) {
-                logger.error("[KandunganObatBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data , please info to your admin..." + e.getMessage());
+                String kandunganObatId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    kandunganObatId = kandunganObatDao.getNextId();
+                } catch (HibernateException e) {
+                    logger.error("[KandunganObatBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence id, please info to your admin..." + e.getMessage());
+                }
+                // creating object entity serializable
+                ImSimrsKandunganObatEntity imKandunganObatEntity = new ImSimrsKandunganObatEntity();
+
+                imKandunganObatEntity.setIdKandungan(kandunganObatId);
+                imKandunganObatEntity.setKandungan(bean.getKandungan());
+                imKandunganObatEntity.setFlag(bean.getFlag());
+                imKandunganObatEntity.setAction(bean.getAction());
+                imKandunganObatEntity.setCreatedWho(bean.getCreatedWho());
+                imKandunganObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imKandunganObatEntity.setCreatedDate(bean.getCreatedDate());
+                imKandunganObatEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // insert into database
+                    kandunganObatDao.addAndSave(imKandunganObatEntity);
+                } catch (HibernateException e) {
+                    logger.error("[KandunganObatBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data , please info to your admin..." + e.getMessage());
+                }
             }
         }
 

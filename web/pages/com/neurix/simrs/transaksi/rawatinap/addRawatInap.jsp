@@ -4118,6 +4118,7 @@
     var IdAsuransi = '<s:property value="rawatInap.idAsuransi"/>';
     var isBpjsRekanan = "";
     var setNotif = "";
+    var idKelasRuangan = '<s:property value="rawatInap.idKelasRuangan"/>';
 
     if (month.length < 2) {
         month = "0"+month;

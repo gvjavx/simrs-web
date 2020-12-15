@@ -6,8 +6,10 @@ import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -494,6 +496,113 @@ public class PositionBagianAction extends BaseMasterAction{
         logger.info("[KodeRekeningAction.initKodeRekeningSearch] end process <<<");
         return listOfsearchPosisiBagian;
     }
+
+    public List<Department> searchHead(String id , String dp){
+        List<Department> list = new ArrayList<>();
+        //DWR FOR GET BEAN
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        try {
+            list = positionBagianBo.getHead(id,dp);
+        }catch (GeneralBOException e){
+            logger.error(e.getMessage());
+        }
+        return list;
+    }
+
+    public List<positionBagian> searchDetail(String id){
+        List<positionBagian> list = new ArrayList<>();
+        //DWR FOR GET BEAN
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        positionBagian pb = new positionBagian();
+        pb.setDivisiId(id);
+        pb.setFlag("Y");
+        try {
+            list = positionBagianBo.getByCriteria(pb);
+        }catch (GeneralBOException e){
+            logger.error(e.getMessage());
+        }
+        return list;
+    }
+
+    public positionBagian getDataById(String id){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+        positionBagian positionBagianObj = new positionBagian();
+
+        try {
+            positionBagianObj = positionBagianBo.getBagianById(id, "Y");
+        } catch (GeneralBOException e){
+            logger.error("id posisibagian salah");
+        }
+
+        return positionBagianObj;
+    }
+
+    public CrudResponse saveEditDwr(String iddevisi, String namadevisi, String bidangId){
+        CrudResponse crudResponse = new CrudResponse();
+        try {
+            positionBagian editPositionBagian = new positionBagian();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            editPositionBagian.setBagianId(iddevisi);
+            editPositionBagian.setBagianName(namadevisi);
+            editPositionBagian.setDivisiId(bidangId);
+            editPositionBagian.setLastUpdateWho(userLogin);
+            editPositionBagian.setLastUpdate(updateTime);
+            editPositionBagian.setAction("U");
+            editPositionBagian.setFlag("Y");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+            positionBagianBo.saveEdit(editPositionBagian);
+
+        } catch (GeneralBOException e) {
+            logger.error("[PositionBagianAction.saveEdit] Error when editing item alat," + " Found problem when saving edit data, please inform to your admin.", e);
+           crudResponse.setStatus("error");
+           crudResponse.setMsg("PositionBagianAction.saveEdit Error");
+        }
+        crudResponse.setStatus("succes");
+
+        return crudResponse;
+    }
+
+    public  CrudResponse saveDeleteDwr(String iddevisi){
+        CrudResponse crudResponse = new CrudResponse();
+        try {
+
+            positionBagian deletePositionBagian = new positionBagian();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deletePositionBagian.setBagianId(iddevisi);
+            deletePositionBagian.setLastUpdate(updateTime);
+            deletePositionBagian.setLastUpdateWho(userLogin);
+            deletePositionBagian.setAction("U");
+            deletePositionBagian.setFlag("N");
+
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+            positionBagianBo.saveDelete(deletePositionBagian);
+        } catch (GeneralBOException e) {
+
+            logger.error("[PositionBagianAction.saveDelete] Error when editing item alat," +" Found problem when saving edit data, please inform to your admin.", e);
+            crudResponse.setStatus("error");
+            crudResponse.setMsg("PositionBagianAction.savedelete Error");
+        }
+        crudResponse.setStatus("succes");
+
+        return crudResponse;
+    }
+
+
 
     public String paging(){
         return SUCCESS;

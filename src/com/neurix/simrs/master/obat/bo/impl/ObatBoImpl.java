@@ -227,8 +227,6 @@ public class ObatBoImpl implements ObatBo {
                         }
                         obat.setJenisObat(listJenisObat.toString());
                     }
-
-
                     result.add(obat);
                 }
             }
@@ -388,9 +386,9 @@ public class ObatBoImpl implements ObatBo {
         } else {
             headerObatEntity.setIdObat("OBT" + id);
         }
+        headerObatEntity.setIdPabrik(headerObatEntity.getIdObat());
         headerObatEntity.setNamaObat(bean.getNamaObat());
         headerObatEntity.setMerk(bean.getMerk());
-        headerObatEntity.setIdPabrik(bean.getIdPabrik());
         headerObatEntity.setLembarPerBox(bean.getLembarPerBox());
         headerObatEntity.setBijiPerLembar(bean.getBijiPerLembar());
         headerObatEntity.setFlag(bean.getFlag());
@@ -407,6 +405,7 @@ public class ObatBoImpl implements ObatBo {
         headerObatEntity.setFlagGeneric(bean.getFlagGeneric());
         headerObatEntity.setFlagBpjs(bean.getFlagBpjs());
         headerObatEntity.setIdKategoriPersediaan(bean.getIdKategoriPersediaan());
+        headerObatEntity.setIdBentuk(bean.getIdBentuk());
 
         try {
             headerObatDao.addAndSave(headerObatEntity);
@@ -433,20 +432,12 @@ public class ObatBoImpl implements ObatBo {
             throw new GeneralBOException("[ObatBoImpl.saveAdd] error add data margin obat" + e.getMessage());
         }
 
-
         obatEntity.setIdSeqObat(idSeqObat);
         obatEntity.setIdObat(headerObatEntity.getIdObat());
         obatEntity.setNamaObat(bean.getNamaObat());
         obatEntity.setHarga(bean.getHarga());
         obatEntity.setQty(bean.getQty());
         obatEntity.setBranchId(bean.getBranchId());
-//        obatEntity.setMerk(bean.getMerk());
-//        obatEntity.setIdPabrik(bean.getIdPabrik());
-//        obatEntity.setQtyBox(bean.getQtyBox());
-//        obatEntity.setQtyLembar(bean.getQtyLembar());
-//        obatEntity.setLembarPerBox(bean.getLembarPerBox());
-//        obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-//        obatEntity.setQtyBiji(bean.getQtyBiji());
         obatEntity.setFlag(bean.getFlag());
         obatEntity.setAction(bean.getAction());
         obatEntity.setCreatedDate(time);
@@ -506,7 +497,6 @@ public class ObatBoImpl implements ObatBo {
                 kandunganObatDetailEntity.setId(kandunganObat.getId());
                 kandunganObatDetailEntity.setIdObat(obatEntity.getIdObat());
                 kandunganObatDetailEntity.setIdKandungan(kandunganObat.getIdKandungan());
-                kandunganObatDetailEntity.setBentuk(kandunganObat.getBentuk());
                 kandunganObatDetailEntity.setSediaan(kandunganObat.getSediaan());
                 kandunganObatDetailEntity.setSatuanSediaan(kandunganObat.getSatuanSediaan());
                 kandunganObatDetailEntity.setFlag("Y");
@@ -550,7 +540,6 @@ public class ObatBoImpl implements ObatBo {
                     headerObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     headerObatEntity.setLembarPerBox(bean.getLembarPerBox());
                     headerObatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-                    headerObatEntity.setIdPabrik(bean.getIdPabrik());
                     headerObatEntity.setMerk(bean.getMerk());
                     headerObatEntity.setAction(bean.getAction());
                     headerObatEntity.setMinStok(bean.getMinStok());
@@ -558,6 +547,7 @@ public class ObatBoImpl implements ObatBo {
                     headerObatEntity.setFlagKronis(bean.getFlagKronis());
                     headerObatEntity.setFlagBpjs(bean.getFlagBpjs());
                     headerObatEntity.setIdKategoriPersediaan(bean.getIdKategoriPersediaan());
+                    headerObatEntity.setIdBentuk(bean.getIdBentuk());
 
                     try {
                         headerObatDao.updateAndSave(headerObatEntity);
@@ -621,7 +611,7 @@ public class ObatBoImpl implements ObatBo {
                     obatEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     obatEntity.setLembarPerBox(bean.getLembarPerBox());
                     obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-                    obatEntity.setIdPabrik(bean.getIdPabrik());
+                    obatEntity.setIdPabrik(obatEntity.getIdPabrik());
                     obatEntity.setMerk(bean.getMerk());
                     obatEntity.setAction(bean.getAction());
                     obatEntity.setMinStok(bean.getMinStok());
@@ -879,11 +869,16 @@ public class ObatBoImpl implements ObatBo {
         CheckObatResponse response = new CheckObatResponse();
 
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pabrik", bean.getIdPabrik());
+        if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik()))
+            hsCriteria.put("id_pabrik", bean.getIdPabrik());
+
         hsCriteria.put("branch_id", bean.getBranchId());
         hsCriteria.put("lembar_per_box", bean.getLembarPerBox());
         hsCriteria.put("biji_per_lembar", bean.getBijiPerLembar());
         hsCriteria.put("flag", "Y");
+
+        if (bean.getNamaObat() != null)
+            hsCriteria.put("nama_obat_fix", bean.getNamaObat());
 
 
         List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
@@ -905,6 +900,37 @@ public class ObatBoImpl implements ObatBo {
         }
 
         logger.info("[ObatPoliBoImpl.checkFisikObatByIdPabrik] END <<<<<<<<<<");
+        return response;
+    }
+
+    @Override
+    public CheckObatResponse checkFisikIdObatByIdPabrik(Obat bean) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.checkFisikIdObatByIdPabrik] START >>>>>>>>>>");
+
+        CheckObatResponse response = new CheckObatResponse();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_obat", bean.getIdPabrik());
+
+        List<ImSimrsObatEntity> obatEntities = new ArrayList<>();
+
+        try {
+            obatEntities = obatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error("[ObatBoImpl.checkFisikIdObatByIdPabrik] error when check fisik obat" + e.getMessage());
+            throw new GeneralBOException("[ObatBoImpl.checkFisikIdObatByIdPabrik] check fisik obat " + e.getMessage());
+        }
+
+        if (obatEntities.size() > 0) {
+            ImSimrsObatEntity obatEntity = obatEntities.get(0);
+            response.setStatus("warning");
+            response.setMessage(obatEntity.getIdObat());
+        } else {
+            response.setStatus("success");
+            response.setMessage("Silahkan dilanjutkan");
+        }
+
+        logger.info("[ObatPoliBoImpl.checkFisikIdObatByIdPabrik] END <<<<<<<<<<");
         return response;
     }
 
@@ -1179,9 +1205,17 @@ public class ObatBoImpl implements ObatBo {
 
                 // update harga obat entities
                 for (MtSimrsHargaObatEntity obatEntity : hargaObatEntities) {
+
+                    // obat khusus
                     obatEntity.setHargaJual(bean.getHargaJual());
                     obatEntity.setDiskon(bean.getDiskon());
                     obatEntity.setHargaNet(bean.getHargaNet());
+
+                    // obat umum
+                    obatEntity.setHargaJualUmum(bean.getHargaJualUmum());
+                    obatEntity.setDiskonUmum(bean.getDiskonUmum());
+                    obatEntity.setHargaNetUmum(bean.getHargaNetUmum());
+
                     obatEntity.setFlag("Y");
                     obatEntity.setAction("U");
                     obatEntity.setLastUpdate(bean.getLastUpdate());
@@ -1208,10 +1242,18 @@ public class ObatBoImpl implements ObatBo {
                     hargaObatEntity.setIdObat(obatEntity.getIdObat());
                     hargaObatEntity.setNamaObat(obatEntity.getNamaObat());
                     hargaObatEntity.setHargaBeli(obatEntity.getHargaTerakhir());
-                    hargaObatEntity.setHargaJual(bean.getHargaJual());
                     hargaObatEntity.setHargaRata(obatEntity.getAverageHargaBiji());
+
+                    // harga obat khusus
+                    hargaObatEntity.setHargaJual(bean.getHargaJual());
                     hargaObatEntity.setDiskon(bean.getDiskon());
                     hargaObatEntity.setHargaNet(bean.getHargaNet());
+
+                    // harga obat umu,
+                    hargaObatEntity.setHargaJualUmum(bean.getHargaJualUmum());
+                    hargaObatEntity.setDiskonUmum(bean.getDiskonUmum());
+                    hargaObatEntity.setHargaNetUmum(bean.getHargaNetUmum());
+
                     hargaObatEntity.setSatuan("biji");
                     hargaObatEntity.setFlag("Y");
                     hargaObatEntity.setAction("C");
@@ -1665,20 +1707,16 @@ public class ObatBoImpl implements ObatBo {
                             trans.setTotal(stok.getTotal() == null ? new BigDecimal(0) : stok.getTotal());
                             trans.setSubTotal(stok.getSubTotal() == null ? new BigDecimal(0) : stok.getSubTotal());
 
-//                        trans.setQtyKredit(nolB);
-//                        trans.setTotalKredit(nol);
-//                        trans.setSubTotalKredit(nol);
 
-                            // qty saldo = qty masuk + qty lalu;
                             trans.setQtySaldo(minStok.getQtyLalu().add(trans.getQty()));
 
                             // total saldo = sub total lalu + sub total / qty saldo
-                            BigDecimal qtySaldo = new BigDecimal(trans.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : trans.getQtySaldo());
-                            BigDecimal subTotalLalu =  minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu();
-                            BigDecimal totalSubTotalLalu = subTotalLalu.add(trans.getSubTotal());
-                            BigDecimal totalSaldo = totalSubTotalLalu.compareTo(new BigDecimal(0)) == 1 ? totalSubTotalLalu.divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP) : new BigDecimal(0) ;
+//                            BigDecimal qtySaldo = new BigDecimal(trans.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : trans.getQtySaldo());
+//                            BigDecimal subTotalLalu =  minStok.getSubTotalLalu() == null ? new BigDecimal(0) : minStok.getSubTotalLalu();
+//                            BigDecimal totalSubTotalLalu = subTotalLalu.add(trans.getSubTotal());
+//                            BigDecimal totalSaldo = totalSubTotalLalu.compareTo(new BigDecimal(0)) == 1 ? totalSubTotalLalu.divide(qtySaldo, 2, BigDecimal.ROUND_HALF_UP) : new BigDecimal(0) ;
 
-                            trans.setTotalSaldo(totalSaldo);
+                            trans.setTotalSaldo(trans.getTotal());
 
                             // sub total saldo = total saldo * qty saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
@@ -1721,7 +1759,8 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtySaldo(minStok.getQtySaldo().add(trans.getQty()));
 
                             // total saldo = sub total saldo lalu + sub total / qty saldo
-                            trans.setTotalSaldo(minStok.getSubTotalSaldo().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+//                            trans.setTotalSaldo(minStok.getSubTotalSaldo().add(trans.getSubTotal()).divide(new BigDecimal(trans.getQtySaldo()), 2, BigDecimal.ROUND_HALF_UP));
+                            trans.setTotalSaldo(trans.getTotal());
 
                             // sub total saldo = sub total saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
@@ -1735,7 +1774,7 @@ public class ObatBoImpl implements ObatBo {
                             trans.setQtySaldo((minStok.getQtySaldo() == null ? new BigInteger(String.valueOf(0)) : minStok.getQtySaldo()).subtract(trans.getQtyKredit()));
 
                             // total saldo = total saldo lalu
-                            trans.setTotalSaldo(minStok.getTotalSaldo() == null ? new BigDecimal(0) : minStok.getTotalSaldo());
+                            trans.setTotalSaldo(trans.getTotalKredit());
 
                             // sub total saldo = sub total saldo
                             trans.setSubTotalSaldo(trans.getTotalSaldo().multiply(new BigDecimal(trans.getQtySaldo())));
@@ -2363,6 +2402,31 @@ public class ObatBoImpl implements ObatBo {
 
     @Override
     public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException {
+        logger.info("[ObatBoImpl.getAllKategoriPersediaan] START >>>");
+        logger.info("[ObatBoImpl.getAllKategoriPersediaan] END <<<");
         return kategoriPersedianDao.getAll();
+    }
+
+    @Override
+    public List<ImSimrsBentukBarangEntity> getAllBentukBarang() throws GeneralBOException {
+        logger.info("[ObatBoImpl.getAllBentukBarang] START >>>");
+        logger.info("[ObatBoImpl.getAllBentukBarang] END <<<");
+        return bentukBarangDao.getAll();
+    }
+
+    @Override
+    public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException {
+        logger.info("[ObatBoImpl.getAllBentukBarang] START >>>");
+
+        ImSimrsHeaderObatEntity headerObatEntity = new ImSimrsHeaderObatEntity();
+        try {
+            headerObatEntity = headerObatDao.getById("idObat", id);
+        } catch (HibernateException e){
+            logger.error("[TransaksiObatBoImpl.getHeaderObatById] ERROR.", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getHeaderObatById] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatBoImpl.getAllBentukBarang] END <<<");
+        return headerObatEntity;
     }
 }

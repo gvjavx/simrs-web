@@ -11,7 +11,14 @@
     <style>
     </style>
 
+    <script type='text/javascript'>
+        function link(){
+            window.location.href="<s:url action='initForm_vendor'/>";
+        }
+    </script>
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/VendorAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         $(document).ready(function () {
@@ -49,6 +56,7 @@
                         <div class="form-group">
                             <s:form id="vendorForm" method="post" namespace="/vendor" action="search_vendor.action"
                                     theme="simple" cssClass="form-horizontal">
+                                <s:hidden name="vendor.isKP"/>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">NPWP</label>
                                     <div class="col-sm-4">
@@ -78,8 +86,10 @@
                                         <a type="button" class="btn btn-danger" href="initForm_vendor.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a onclick="addVendor()" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                            Add Vendor</a>
+                                        <s:if test='vendor.isKP == "Y"'>
+                                            <a onclick="addVendor()" class="btn btn-primary"><i class="fa fa-plus"></i>
+                                                Add Vendor</a>
+                                        </s:if>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -144,7 +154,9 @@
                                 <td>Nama</td>
                                 <td>Npwp</td>
                                 <td>email</td>
-                                <td align="center">Action</td>
+                                <s:if test='vendor.isKP == "Y"'>
+                                    <td align="center">Action</td>
+                                </s:if>
                             </tr>
                             </thead>
                             <tbody>
@@ -154,9 +166,12 @@
                                     <td><s:property value="namaVendor"/></td>
                                     <td><s:property value="npwp"/></td>
                                     <td><s:property value="email"/></td>
-                                    <td align="center">
-                                        <img class="hvr-grow" onclick="editVendor('<s:property value="idVendor"/>','<s:property value="namaVendor"/>','<s:property value="npwp"/>','<s:property value="email"/>','<s:property value="noTelp"/>','<s:property value="alamat"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
-                                    </td>
+                                    <s:if test='vendor.isKP == "Y"'>
+                                        <td align="center">
+                                            <img class="hvr-grow" onclick="editVendor('<s:property value="idVendor"/>','<s:property value="namaVendor"/>','<s:property value="npwp"/>','<s:property value="email"/>','<s:property value="noTelp"/>','<s:property value="alamat"/>')" style="cursor: pointer" src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        </td>
+                                    </s:if>
+
                                 </tr>
                             </s:iterator>
                             </tbody>

@@ -499,9 +499,25 @@ apply the skin class to the body tag so the changes take effect.
             if (isTimeout) {
                 timeout = isTimeout;
                 $('#modal-session').modal({show:true, backdrop:'static'});
+                countDownNumber();
             }
         });
         return timeout;
+    }
+
+    function countDownNumber(){
+        var jumlah = 10;
+        var i = 0;
+        var interval = setInterval(function () {
+            if (jumlah >= i) {
+                $('#hitung_mundur').text(jumlah);
+                jumlah--;
+            } else {
+                clearInterval(interval);
+                var contextPath = '<%= request.getContextPath() %>';
+                document.location = contextPath + '/loginUser.action';
+            }
+        }, 500);
     }
 
     function toLogin(){

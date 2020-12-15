@@ -170,8 +170,8 @@ public class RekananOpsAction extends BaseMasterAction {
             try {
                 editRekananOps = init (itemId,itemFlag);
             } catch (GeneralBOException e) {
-                logger.error("dfsdfdsf"+e.getMessage());
-                throw new GeneralBOException("sdfdsfdf, "+e.getMessage());
+                logger.error("error"+e.getMessage());
+                throw new GeneralBOException("error, "+e.getMessage());
             }
 
             if(editRekananOps != null) {

@@ -127,7 +127,7 @@
                                 <label class="col-md-3" ><b>O</b>bjective</label>
                                 <div class="col-md-4">
                                     <span>Tensi </span> <small>(mmHg)</small>
-                                    <input class="form-control" id="cppt5_tensi" data-inputmask="'mask': ['999/999']">
+                                    <input class="form-control" id="cppt5_tensi" data-inputmask="'mask': ['999/999']" data-mask="">
                                 </div>
                                 <div class="col-md-4">
                                     <span>Suhu </span> <small>(&#8451)</small>

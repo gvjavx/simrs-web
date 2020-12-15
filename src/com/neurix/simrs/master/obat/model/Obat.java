@@ -84,6 +84,60 @@ public class Obat extends BaseModel {
     private String flagGeneric;
     private String isKp;
     private String idKategoriPersediaan;
+    private BigDecimal hargaBeli;
+    private BigDecimal diskonUmum;
+    private BigDecimal hargaJualUmum;
+    private Integer marginUmum;
+    private BigDecimal hargaNetUmum;
+    private String idBentuk;
+
+    public String getIdBentuk() {
+        return idBentuk;
+    }
+
+    public void setIdBentuk(String idBentuk) {
+        this.idBentuk = idBentuk;
+    }
+
+    public BigDecimal getHargaNetUmum() {
+        return hargaNetUmum;
+    }
+
+    public void setHargaNetUmum(BigDecimal hargaNetUmum) {
+        this.hargaNetUmum = hargaNetUmum;
+    }
+
+    public Integer getMarginUmum() {
+        return marginUmum;
+    }
+
+    public void setMarginUmum(Integer marginUmum) {
+        this.marginUmum = marginUmum;
+    }
+
+    public BigDecimal getHargaBeli() {
+        return hargaBeli;
+    }
+
+    public void setHargaBeli(BigDecimal hargaBeli) {
+        this.hargaBeli = hargaBeli;
+    }
+
+    public BigDecimal getDiskonUmum() {
+        return diskonUmum;
+    }
+
+    public void setDiskonUmum(BigDecimal diskonUmum) {
+        this.diskonUmum = diskonUmum;
+    }
+
+    public BigDecimal getHargaJualUmum() {
+        return hargaJualUmum;
+    }
+
+    public void setHargaJualUmum(BigDecimal hargaJualUmum) {
+        this.hargaJualUmum = hargaJualUmum;
+    }
 
     public String getIdKategoriPersediaan() {
         return idKategoriPersediaan;

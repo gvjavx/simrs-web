@@ -725,134 +725,136 @@
 
     function saveLab(id) {
         var data = "";
-        if (id != '') {
-            var paket = $('#edit_paket').val();
-            var idPaket = $('#h_edit_paket').val();
-            var kategori = $('#edit_kategori_lab').val();
-            var parameter = $('#edit_nama_parameter').val();
-            var tarif = $('#edit_h_tarif').val();
-            if (paket && kategori && parameter && tarif != '') {
-                $('#save_edit').hide();
-                $('#load_edit').show();
-                data = {
-                    'id_lab_detail': id,
-                    'id_lab': idPaket,
-                    'nama_lab': paket,
-                    'id_parameter_pemeriksaan': parameter,
-                    'tarif': tarif,
-                };
-                var dataString = JSON.stringify(data);
-                dwr.engine.setAsync(true);
-                LabDetailAction.saveEdit(dataString, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-edit').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_edit').show();
-                            $('#load_edit').hide();
-                            $('body').scrollTop(0);
-
-                        } else {
-                            $('#warning_edit').show().fadeOut(5000);
-                            $('#msg_edit').text(response.msg);
-                            $('#save_edit').show();
-                            $('#load_edit').hide();
-                        }
-                    }
-                });
-            } else {
-                $('#warning_edit').show().fadeOut(5000);
-                $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
-
-                if (paket == '') {
-                    $('#war_edit_paket').show();
-                }
-                if (kategori == '') {
-                    $('#war_edit_kategori_lab').show();
-                }
-                if (parameter == '') {
-                    $('#war_edit_nama_parameter').show();
-                }
-                if (tarif == '') {
-                    $('#war_edit_tarif').show();
-                }
-            }
-        } else {
-            var dataLab = $('#table_lab').tableToJSON();
-            var branch = $('#set_nama_unit').val();
-            var paket = $('#set_paket').val();
-            var paketName = $('#set_paket option:selected').text();
-            var kategori = $('#set_kategori_lab').val();
-            var parameter = $('#set_nama_parameter').val();
-            var paketLab = "";
-            var isNew = "N";
-            var newPaket = "";
-
-            if (paket == "new") {
-                var ket = $('#set_paket_baru').val();
-                if (ket != '') {
-                    paketLab = ket;
-                    isNew = "Y";
-                    newPaket = ket;
-                }
-            } else {
-                paketLab = paket;
-            }
-
-            if (branch && paketLab && kategori && parameter != '' && dataLab.length > 0) {
-                var dataSave = [];
-                $('#save_add').hide();
-                $('#load_add').show();
-                $.each(dataLab, function (i, item) {
-                    var idParameter = $('#id_parameter_' + i).val();
-                    var namaParameter = $('#nama_parameter_' + i).val();
-                    var tarif = $('#h_tarif_' + i).val();
-                    dataSave.push({
-                        'id_lab': paketLab,
-                        'nama_lab': newPaket,
-                        'nama_paket':paketName,
-                        'id_parameter_pemeriksaan': idParameter,
-                        'nama_parameter_pemeriksaan': namaParameter,
+        if(!cekSession()){
+            if (id != '') {
+                var paket = $('#edit_paket').val();
+                var idPaket = $('#h_edit_paket').val();
+                var kategori = $('#edit_kategori_lab').val();
+                var parameter = $('#edit_nama_parameter').val();
+                var tarif = $('#edit_h_tarif').val();
+                if (paket && kategori && parameter && tarif != '') {
+                    $('#save_edit').hide();
+                    $('#load_edit').show();
+                    data = {
+                        'id_lab_detail': id,
+                        'id_lab': idPaket,
+                        'nama_lab': paket,
+                        'id_parameter_pemeriksaan': parameter,
                         'tarif': tarif,
-                        'branch_id': branch
+                    };
+                    var dataString = JSON.stringify(data);
+                    dwr.engine.setAsync(true);
+                    LabDetailAction.saveEdit(dataString, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-edit').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_edit').show();
+                                $('#load_edit').hide();
+                                $('body').scrollTop(0);
+
+                            } else {
+                                $('#warning_edit').show().fadeOut(5000);
+                                $('#msg_edit').text(response.msg);
+                                $('#save_edit').show();
+                                $('#load_edit').hide();
+                            }
+                        }
                     });
-                });
-                var dataString = JSON.stringify(dataSave);
-                dwr.engine.setAsync(true);
-                LabDetailAction.saveAdd(dataString, isNew, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            $('#modal-add').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#save_add').show();
-                            $('#load_add').hide();
-                            $('body').scrollTop(0);
+                } else {
+                    $('#warning_edit').show().fadeOut(5000);
+                    $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
+
+                    if (paket == '') {
+                        $('#war_edit_paket').show();
+                    }
+                    if (kategori == '') {
+                        $('#war_edit_kategori_lab').show();
+                    }
+                    if (parameter == '') {
+                        $('#war_edit_nama_parameter').show();
+                    }
+                    if (tarif == '') {
+                        $('#war_edit_tarif').show();
+                    }
+                }
+            } else {
+                var dataLab = $('#table_lab').tableToJSON();
+                var branch = $('#set_nama_unit').val();
+                var paket = $('#set_paket').val();
+                var paketName = $('#set_paket option:selected').text();
+                var kategori = $('#set_kategori_lab').val();
+                var parameter = $('#set_nama_parameter').val();
+                var paketLab = "";
+                var isNew = "N";
+                var newPaket = "";
+
+                if (paket == "new") {
+                    var ket = $('#set_paket_baru').val();
+                    if (ket != '') {
+                        paketLab = ket;
+                        isNew = "Y";
+                        newPaket = ket;
+                    }
+                } else {
+                    paketLab = paket;
+                }
+
+                if (branch && paketLab && kategori && parameter != '' && dataLab.length > 0) {
+                    var dataSave = [];
+                    $('#save_add').hide();
+                    $('#load_add').show();
+                    $.each(dataLab, function (i, item) {
+                        var idParameter = $('#id_parameter_' + i).val();
+                        var namaParameter = $('#nama_parameter_' + i).val();
+                        var tarif = $('#h_tarif_' + i).val();
+                        dataSave.push({
+                            'id_lab': paketLab,
+                            'nama_lab': newPaket,
+                            'nama_paket':paketName,
+                            'id_parameter_pemeriksaan': idParameter,
+                            'nama_parameter_pemeriksaan': namaParameter,
+                            'tarif': tarif,
+                            'branch_id': branch
+                        });
+                    });
+                    var dataString = JSON.stringify(dataSave);
+                    dwr.engine.setAsync(true);
+                    LabDetailAction.saveAdd(dataString, isNew, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                $('#modal-add').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                                $('body').scrollTop(0);
+                            } else {
+                                $('#warning_add').show().fadeOut(5000);
+                                $('#msg_add').text(response.msg);
+                                $('#save_add').show();
+                                $('#load_add').hide();
+                            }
+                        }
+                    });
+                } else {
+                    $('#warning_add').show().fadeOut(5000);
+                    $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                    if (branch == '') {
+                        $('#war_set_nama_unit').show();
+                    }
+                    if (paketLab == '') {
+                        if (paket == 'new') {
+                            $('#war_set_paket_baru').show();
                         } else {
-                            $('#warning_add').show().fadeOut(5000);
-                            $('#msg_add').text(response.msg);
-                            $('#save_add').show();
-                            $('#load_add').hide();
+                            $('#war_set_paket').show();
                         }
                     }
-                });
-            } else {
-                $('#warning_add').show().fadeOut(5000);
-                $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
-                if (branch == '') {
-                    $('#war_set_nama_unit').show();
-                }
-                if (paketLab == '') {
-                    if (paket == 'new') {
-                        $('#war_set_paket_baru').show();
-                    } else {
-                        $('#war_set_paket').show();
+                    if (kategori == '') {
+                        $('#war_set_kategori_lab').show();
                     }
-                }
-                if (kategori == '') {
-                    $('#war_set_kategori_lab').show();
-                }
-                if (parameter == '') {
-                    $('#war_set_nama_parameter').show();
+                    if (parameter == '') {
+                        $('#war_set_nama_parameter').show();
+                    }
                 }
             }
         }
@@ -957,21 +959,23 @@
     function saveDelete(id) {
         $('#modal-confirm-dialog').modal('hide');
         $('#waiting_dialog').dialog('open');
-        dwr.engine.setAsync(true);
-        LabDetailAction.saveDelete(id, {
-            callback: function (res) {
-                if (res.status == "success") {
-                    $('#waiting_dialog').dialog('close');
-                    $('#info_dialog').dialog('open');
-                    $('body').scrollTop(0);
-                } else {
-                    $('#waiting_dialog').dialog('close');
-                    $('#error_dialog').dialog('open');
-                    $('#errorMessage').text(res.msg);
-                    $('body').scrollTop(0);
+        if(!cekSession()){
+            dwr.engine.setAsync(true);
+            LabDetailAction.saveDelete(id, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#waiting_dialog').dialog('close');
+                        $('#info_dialog').dialog('open');
+                        $('body').scrollTop(0);
+                    } else {
+                        $('#waiting_dialog').dialog('close');
+                        $('#error_dialog').dialog('open');
+                        $('#errorMessage').text(res.msg);
+                        $('body').scrollTop(0);
+                    }
                 }
-            }
-        });
+            });
+        }
     }
 
     function cekPaket(val) {

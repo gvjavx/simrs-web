@@ -13,6 +13,7 @@ public class Department extends BaseModel {
     private String departmentId;
     private String departmentName;
     private String kodering;
+//    private String createdDate
 
     public String getKodering() {
         return kodering;

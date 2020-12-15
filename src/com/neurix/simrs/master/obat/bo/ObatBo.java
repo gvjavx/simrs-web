@@ -25,6 +25,7 @@ public interface ObatBo{
     public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
     public CheckObatResponse checkFisikObat(Obat bean) throws GeneralBOException;
     public CheckObatResponse checkFisikObatByIdPabrik(Obat bean) throws GeneralBOException;
+    public CheckObatResponse checkFisikIdObatByIdPabrik(Obat bean) throws GeneralBOException;
     public List<Obat> sortedListObat(List<Obat> obatList) throws GeneralBOException;
 
     public List<Obat> getEntityObatByCriteria(Obat bean) throws GeneralBOException;
@@ -56,4 +57,6 @@ public interface ObatBo{
     public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException;
     public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException;
     public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException;
+    public List<ImSimrsBentukBarangEntity> getAllBentukBarang() throws  GeneralBOException;
+    public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException;
 }

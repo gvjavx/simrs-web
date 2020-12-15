@@ -22,6 +22,9 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        #coba{
+            text-align: center;
+        }
     </style>
 
     <style>
@@ -181,14 +184,17 @@
             Function Information
         </h1>
     </section>
-
-
     <!-- Main content -->
     <section class="content">
         <!-- Your Page Content Here -->
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Search Form</h3>
+                    </div>
+
+
                     <s:if test="isAddOrEdit() || isDelete()">
                         <s:url id="urlProcess" namespace="/admin/function" action="save_function" includeContext="false"/>
                     </s:if>
@@ -196,36 +202,42 @@
                         <s:url id="urlProcess" namespace="/admin/function" action="search_function" includeContext="false"/>
                     </s:else>
 
-                    <s:form id="functionForm" method="post" action="%{urlProcess}"
-                            cssClass="well form-horizontal">
+
+
+                    <div class="box-body">
+                        <s:form id="functionForm" method="post" action="%{urlProcess}"
+                                cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden id="add" name="add"/>
-                        <s:hidden name="delete"/>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <div id="actions" class="form-actions">
-                                <table align="center">
+
+                        <%--<div class="form-group">--%>
+                            <%--<div id="actions" class="form-actions">--%>
+                            <table  width="100%" align="center">
+                                <tr>
+                                    <td align="center">
+                                        <table>
+
                                     <tr>
                                         <td>
                                             <label class="control-label" for="functions.stFuncId">Function Id :</label>
                                         </td>
 
-                                        <td>
+                                        <td >
                                             <table>
                                                 <s:if test="isAddOrEdit()">
                                                     <s:if test="isAdd()">
-                                                        <s:textfield id="funcId" name="functions.stFuncId" required="true"/>
+                                                        <s:textfield id="funcId" cssClass="form-control"  name="functions.stFuncId" required="true"/>
                                                     </s:if>
                                                     <s:else>
-                                                        <s:textfield id="funcId" name="functions.stFuncId" required="true" readonly="true"/>
+                                                        <s:textfield id="funcId" cssClass="form-control" name="functions.stFuncId" required="true" readonly="true"/>
                                                     </s:else>
                                                 </s:if>
                                                 <s:elseif test="isDelete()">
-                                                    <s:textfield id="funcId" cssClass="disabled" readonly="true" name="functions.stFuncId"/>
+                                                    <s:textfield id="funcId" cssClass="form-control" readonly="true" name="functions.stFuncId"/>
                                                 </s:elseif>
                                                 <s:else>
-                                                    <s:textfield id="funcId" name="functions.stFuncId" required="false"/>
+                                                    <s:textfield id="funcId" cssClass="form-control" name="functions.stFuncId" required="false"/>
                                                 </s:else>
                                             </table>
                                         </td>
@@ -235,16 +247,16 @@
                                             <label class="control-label" for="functions.funcName">Function Name :</label>
                                         </td>
 
-                                        <td>
+                                        <td >
                                             <table>
                                                 <s:if test="isAddOrEdit()">
-                                                    <s:textfield id="funcName" name="functions.funcName" required="true"/>
+                                                    <s:textfield id="funcName" cssClass="form-control" name="functions.funcName" required="true"/>
                                                 </s:if>
                                                 <s:elseif test="isDelete()">
-                                                    <s:textfield id="funcName" cssClass="disabled" readonly="true" name="functions.funcName" required="false"/>
+                                                    <s:textfield id="funcName" cssClass="form-control" readonly="true" name="functions.funcName" required="false"/>
                                                 </s:elseif>
                                                 <s:else>
-                                                    <s:textfield id="funcName" name="functions.funcName" required="false"/>
+                                                    <s:textfield id="funcName" cssClass="form-control" name="functions.funcName" required="false"/>
                                                 </s:else>
 
                                             </table>
@@ -258,10 +270,10 @@
                                         <td>
                                             <table>
                                                 <s:if test="isDelete()">
-                                                    <s:textfield id="url" cssClass="disabled" readonly="true" name="functions.url" required="false"/>
+                                                    <s:textfield id="url"  cssClass="form-control" readonly="true" name="functions.url" required="false"/>
                                                 </s:if>
                                                 <s:else>
-                                                    <s:textfield id="url" name="functions.url"/>
+                                                    <s:textfield id="url" cssClass="form-control" name="functions.url"/>
                                                 </s:else>
                                             </table>
                                         </td>
@@ -287,11 +299,11 @@
                                             <td>
                                                 <table>
                                                     <s:if test="isDelete()">
-                                                        <s:textfield id="menu" cssClass="disabled" readonly="true" name="functions.stMenu"
+                                                        <s:textfield id="menu"   readonly="true" name="functions.stMenu"
                                                                      required="false"/>
                                                     </s:if>
                                                     <s:else>
-                                                        <s:textfield id="menu" name="functions.stMenu" required="false"/>
+                                                        <s:textfield id="menu" cssClass="form-control" name="functions.stMenu" required="false"/>
                                                         <script>
                                                             var menus, mapped;
                                                             $('#menu').typeahead({
@@ -333,7 +345,7 @@
                                         <td>
                                             <table>
                                                 <s:if test="isDelete()">
-                                                    <s:textfield id="parent" cssClass="disabled" readonly="true" name="functions.stParent"/>
+                                                    <s:textfield id="parent" cssClass="form-control" readonly="true" name="functions.stParent"/>
                                                 </s:if>
                                                 <s:else>
                                                     <%--<s:action id="combo" name="initComboParent_function"/>--%>
@@ -341,7 +353,7 @@
                                                     <%--listKey="stFuncId" listValue="funcName" headerKey=""--%>
                                                     <%--headerValue="[Select None]" onchange="createLevel()"/>--%>
 
-                                                    <s:textfield id="parent" name="functions.stParent" required="true"/>
+                                                    <s:textfield id="parent" cssClass="form-control" name="functions.stParent" required="true"/>
                                                     <script>
                                                         var functions, mapped;
                                                         $('#parent').typeahead({
@@ -383,10 +395,10 @@
                                         <td>
                                             <table>
                                                 <s:if test="isAddOrEdit() || isDelete()">
-                                                    <s:textfield id="funcLevel" cssClass="disabled" readonly="true" name="functions.stFuncLevel"/>
+                                                    <s:textfield id="funcLevel"  cssClass="disabled form-control" readonly="true" name="functions.stFuncLevel"/>
                                                 </s:if>
                                                 <s:else>
-                                                    <s:textfield id="funcLevel" name="functions.stFuncLevel"/>
+                                                    <s:textfield id="funcLevel" cssClass="form-control" name="functions.stFuncLevel"/>
                                                 </s:else>
                                             </table>
                                         </td>
@@ -408,12 +420,17 @@
                                             </td>
                                         </tr>
                                     </s:if>
-                                </table>
+
+                                            <%--</table>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+
+                                <br><br>
                                 <table align="center">
                                     <tr>
                                         <div id="crud">
-                                            <td>
-                                                <table>
+                                            <td align="center">
+                                                <table  width="100%" align="center">
 
                                                     <s:if test="isAddOrEdit()">
                                                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="functionForm" id="save" name="save"
@@ -433,6 +450,7 @@
                                                             <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>"--%>
                                                                  <%--name="image_indicator_write">--%>
                                                         <%--</sj:dialog>--%>
+
                                                         <sj:dialog id="waiting_dialog" openTopics="showDialog"
                                                                    closeTopics="closeDialog" modal="true"
                                                                    resizable="false"
@@ -452,7 +470,7 @@
                                                         </sj:dialog>
 
                                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                                   position="center" height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                                   position="center" height="200" width="400" autoOpen="false" title="Informartion Dialog"
                                                                    buttons="{
                                                                     'OK':function() {
                                                                             $('#info_dialog').dialog('close');
@@ -521,19 +539,8 @@
                                                             </center>
                                                         </sj:dialog>
 
-                                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
-                                                                   <%--resizable="false"--%>
-                                                                   <%--height="250" width="600" autoOpen="false" title="Deleting ...">--%>
-                                                            <%--Please don't close this window, server is processing your request ...--%>
-                                                            <%--</br>--%>
-                                                            <%--</br>--%>
-                                                            <%--</br>--%>
-                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-trash.gif"/>"--%>
-                                                                 <%--name="image_indicator_trash">--%>
-                                                        <%--</sj:dialog>--%>
-
                                                         <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                                                   position="center" height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                                   position="center" height="200" width="400" autoOpen="false" title="Information Dialog"
                                                                    buttons="{
                                                                     'OK':function() { $('#info_dialog').dialog('close'); }
                                                                     }"
@@ -555,17 +562,6 @@
                                                         </sj:dialog>
                                                     </s:elseif>
                                                     <s:else>
-
-                                                        <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
-                                                                   <%--resizable="false"--%>
-                                                                   <%--position="center" height="250" width="600" autoOpen="false" title="Searching...">--%>
-                                                            <%--Please don't close this window, server is processing your request ...--%>
-                                                            <%--</br>--%>
-                                                            <%--</br>--%>
-                                                            <%--</br>--%>
-                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-read.gif"/>"--%>
-                                                                 <%--name="image_indicator_read">--%>
-                                                        <%--</sj:dialog>--%>
                                                         <sj:dialog id="waiting_dialog" openTopics="showDialog"
                                                                    closeTopics="closeDialog" modal="true"
                                                                    resizable="false"
@@ -596,7 +592,7 @@
                                             </td>
 
                                             <td>
-                                                <table>
+                                                <table >
 
                                                     <s:url id="urlAdd" namespace="/admin/function" action="add_function" escapeAmp="false"/>
 
@@ -636,8 +632,18 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <br>
+                                </table>
+                                </table>
+                            </td>
+                            </tr>
+                            </table>
+
+                                    <br>
+                                    <br><br>
                                     <tr>
-                                        <table align="center">
+                                        <center>
+                                        <table width="100%" align="center">
                                             <tr>
                                                 <td align="center">
                                                     <s:if test="!isAddOrEdit() && !isDelete()">
@@ -716,6 +722,7 @@
                                                 </td>
                                             </tr>
                                         </table>
+                                        </center>
                                     </tr>
                                 </table>
                             </div>
@@ -723,11 +730,8 @@
                     </div>
 
                     </s:form>
-                </div>
-            </div>
         </div>
     </section>
-    <!-- /.content -->
 </div>
 <!-- /.content-wrapper -->
 
