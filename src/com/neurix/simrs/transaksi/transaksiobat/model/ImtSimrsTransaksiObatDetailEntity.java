@@ -44,6 +44,42 @@ public class ImtSimrsTransaksiObatDetailEntity implements Serializable{
     private String idPelayanan;
 
     private String flagObatBpjs;
+    private String idRacik;
+    private String namaRacik;
+    private String keteranganRacik;
+    private String jenisResep;
+
+    public String getJenisResep() {
+        return jenisResep;
+    }
+
+    public void setJenisResep(String jenisResep) {
+        this.jenisResep = jenisResep;
+    }
+
+    public String getIdRacik() {
+        return idRacik;
+    }
+
+    public void setIdRacik(String idRacik) {
+        this.idRacik = idRacik;
+    }
+
+    public String getNamaRacik() {
+        return namaRacik;
+    }
+
+    public void setNamaRacik(String namaRacik) {
+        this.namaRacik = namaRacik;
+    }
+
+    public String getKeteranganRacik() {
+        return keteranganRacik;
+    }
+
+    public void setKeteranganRacik(String keteranganRacik) {
+        this.keteranganRacik = keteranganRacik;
+    }
 
     public String getFlagObatBpjs() {
         return flagObatBpjs;

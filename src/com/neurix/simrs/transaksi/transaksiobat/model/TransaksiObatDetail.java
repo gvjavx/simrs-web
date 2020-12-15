@@ -94,6 +94,33 @@ public class TransaksiObatDetail extends BaseModel {
     private String branchAsal;
     private BigDecimal hargaJual;
     private String tipePermintaan;
+    private String idRacik;
+    private String namaRacik;
+    private String keteranganRacik;
+
+    public String getIdRacik() {
+        return idRacik;
+    }
+
+    public void setIdRacik(String idRacik) {
+        this.idRacik = idRacik;
+    }
+
+    public String getNamaRacik() {
+        return namaRacik;
+    }
+
+    public void setNamaRacik(String namaRacik) {
+        this.namaRacik = namaRacik;
+    }
+
+    public String getKeteranganRacik() {
+        return keteranganRacik;
+    }
+
+    public void setKeteranganRacik(String keteranganRacik) {
+        this.keteranganRacik = keteranganRacik;
+    }
 
     public String getTipePermintaan() {
         return tipePermintaan;

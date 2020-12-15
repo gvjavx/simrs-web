@@ -1492,6 +1492,12 @@ DROP COLUMN kuota;
 ALTER TABLE im_simrs_pelayanan
 DROP COLUMN kodering;
 
+ALTER TABLE mt_simrs_transaksi_obat_detail
+ADD COLUMN id_racik VARCHAR(50),
+ADD COLUMN nama_racik VARCHAR(100),
+ADD COLUMN keterangan_racik VARCHAR(1000),
+ADD COLUMN jenis_resep VARCHAR(100);
+
 
 
 
