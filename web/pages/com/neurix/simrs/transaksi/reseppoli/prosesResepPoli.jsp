@@ -1175,7 +1175,7 @@
                 idObatR = idObat;
             }
             if(idRacik != undefined && idRacik != ''){
-                idRacikR = idObatR;
+                idRacikR = idRacik;
             }
             if(ket != undefined && ket != ''){
                 ketR = ket;
@@ -1189,7 +1189,7 @@
 
         var jenisBiaya = $('.jenis_biaya');
         var dataTambahan = [];
-        if(jenisBiaya.maxLength > 0){
+        if(jenisBiaya.length > 0){
             $.each(jenisBiaya, function (i, item) {
                 if(item.value != ''){
                     var total = $('#h_total_biaya_'+i).val();
@@ -1220,7 +1220,6 @@
             'keterangan': editKeterangan,
             'biaya_tambahan': editBiaya
         }
-
         var dataString = JSON.stringify(obj);
         $('#confirm_dialog').dialog('close');
         $('#waiting_dialog').dialog('open');
