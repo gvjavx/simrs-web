@@ -80,7 +80,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
 
     @Override
     public void saveEdit(Asuransi bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
+        logger.info("[AsuransiBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
             String asuransiId = bean.getIdAsuransi();
             ImSimrsAsuransiEntity imSimrsAsuransiEntity = null;
@@ -89,8 +89,8 @@ public class AsuransiBoImpl implements AsuransiBo  {
                 imSimrsAsuransiEntity = asuransiDao.getById("idAsuransi", asuransiId);
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
+                logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Asuransi by Kode Asuransi, please inform to your admin...," + e.getMessage());
             }
 //          mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
             ImMasterEntity masterEntity = new ImMasterEntity();
@@ -120,7 +120,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                     try {
                         // Update into database
                         asuransiDao.updateAndSave(imSimrsAsuransiEntity);
-                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imAsuransiHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());
@@ -146,7 +146,7 @@ public class AsuransiBoImpl implements AsuransiBo  {
                         try {
                             // Update into database
                             asuransiDao.updateAndSave(imSimrsAsuransiEntity);
-                            //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                            //payrollSkalaGajiDao.addAndSaveHistory(imAsuransiHistoryEntity);
                         } catch (HibernateException e) {
                             logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
                             throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());

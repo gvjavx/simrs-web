@@ -7,7 +7,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 
 
-import com.neurix.hris.master.payrollPtkp.model.ImHrisPayrollPtkpEntity;
+
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
@@ -257,7 +257,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
                 // Get data from database by ID
                 imSimrsDetailRekananOpsEntity = detailRekananOpsDao.getById("idDetailRekananOps", idDetailRekananOps);
             } catch (HibernateException e) {
-                logger.error("[PayrollPtkpBoImpl.saveDelete] Error, " + e.getMessage());
+                logger.error("[DetailRekananOpsBoImpl.saveDelete] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
             }
 
@@ -279,18 +279,18 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
                     // Delete (Edit) into database
                     detailRekananOpsDao.updateAndSave(imSimrsDetailRekananOpsEntity);
                 } catch (HibernateException e) {
-                    logger.error("[PayrollPtkpBoImpl.saveDelete] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data PayrollPtkp, please info to your admin..." + e.getMessage());
+                    logger.error("[DetailRekananOpsBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data DetailRekananOps, please info to your admin..." + e.getMessage());
                 }
 
 
             } else {
-                logger.error("[PayrollPtkpBoImpl.saveDelete] Error, not found data PayrollPtkp with request id, please check again your data ...");
-                throw new GeneralBOException("Error, not found data PayrollPtkp with request id, please check again your data ...");
+                logger.error("[DetailRekananOpsBoImpl.saveDelete] Error, not found data DetailRekananOps with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data DetailRekananOps with request id, please check again your data ...");
 
             }
         }
-        logger.info("[PayrollPtkpBoImpl.saveDelete] end process <<<");
+        logger.info("[DetailRekananOpsBoImpl.saveDelete] end process <<<");
         return null;
     }
 }

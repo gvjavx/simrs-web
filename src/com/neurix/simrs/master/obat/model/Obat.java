@@ -89,6 +89,15 @@ public class Obat extends BaseModel {
     private BigDecimal hargaJualUmum;
     private Integer marginUmum;
     private BigDecimal hargaNetUmum;
+    private String idBentuk;
+
+    public String getIdBentuk() {
+        return idBentuk;
+    }
+
+    public void setIdBentuk(String idBentuk) {
+        this.idBentuk = idBentuk;
+    }
 
     public BigDecimal getHargaNetUmum() {
         return hargaNetUmum;

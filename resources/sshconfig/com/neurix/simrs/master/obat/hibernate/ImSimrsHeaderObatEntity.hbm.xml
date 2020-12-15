@@ -56,6 +56,9 @@
             <basic name="merk">
                 <column name="merk"/>
             </basic>
+            <basic name="idBentuk">
+                <column name="id_bentuk"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

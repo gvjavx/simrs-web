@@ -224,7 +224,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResult" status="listOfPeriksaLab" var="row">
+                            <s:iterator value="#session.listOfResult" var="row">
                                 <s:if test='#row.isMinStok == "Y"'>
                                     <tr bgcolor="#dd4b39">
                                 </s:if>
@@ -588,6 +588,26 @@
                     </div>
                 </div>
 
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <label style="margin-top: 10px">Bentuk Obat</label>
+                        </div>
+                        <div class="col-md-3" style="margin-top: 7px;">
+                            <select class="form-control" id="id_bentuk"
+                                    onkeypress="var warn =$('#war_id_kategori').is(':visible'); if (warn){$('#cor_id_kategori').show().fadeOut(3000);$('#war_id_kategori').hide()}"
+                            >
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_id_bentuk"><i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_id_bentuk"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+
 
                 <%--<div class="row">--%>
                 <%--<div class="form-group">--%>
@@ -671,40 +691,6 @@
                         <div class="col-md-3" align="right">Kandungan</div>
                         <div class="col-md-7">
                             <select id="sel_fin_kandungan_obat" class="form-control select2" style="width: 100%">
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row top-7">
-                        <div class="col-md-3" align="right">Bentuk</div>
-                        <div class="col-md-7">
-                            <select id="sel_fin_bentuk_kandungan_obat" class="form-control select2" style="width: 100%">
-                                <option value="">[Select One]</option>
-                                <option value="tab">Tablet</option>
-                                <option value="sys">Syrup</option>
-                                <option value="inj">Injeksi</option>
-                                <option value="cap">Capsule</option>
-                                <option value="drop">Drop</option>
-                                <option value="inf">Infus</option>
-                                <option value="powder">Powder</option>
-                                <option value="oral">Oral</option>
-                                <option value="sachet">Sachet</option>
-                                <option value="supp">Suppositoria</option>
-                                <option value="pulvis">Pulvis</option>
-                                <option value="sol">Sol</option>
-                                <option value="akdr">AKDR</option>
-                                <option value="penfill">Penfill</option>
-                                <option value="enema">Enema</option>
-                                <option value="gel">Gel</option>
-                                <option value="oint">Oint</option>
-                                <option value="respule">Respule</option>
-                                <option value="inhaler">Inhaler</option>
-                                <option value="diskus">Diskus</option>
-                                <option value="nebule">Nebule</option>
-                                <option value="spray">Spray</option>
-                                <option value="cream">Cream</option>
-                                <option value="lar">Lar</option>
-                                <option value="sabun">Sabun</option>
-                                <option value="xr">XR</option>
                             </select>
                         </div>
                     </div>
@@ -822,6 +808,7 @@
 
         resetSessionKandunganObat();
         getFromSessionKandunganObat('');
+        listBentukObat('')
     }
 
     function saveObat(id){
@@ -845,11 +832,12 @@
         var flagBpjs    = $('#flag-generic').val();
         var margin      = $('#margin').val();
         var idKategori  = $('#id_kategori').val();
+        var idBentuk    = $('#id_bentuk').val();
 
 
         if (nama != '' && jenis != null && lembarBox != '' && bijiLembar != ''
             && merek != '' && minStok != '' && flagKronis != '' && flagGeneric != ''
-            && flagBpjs != '' && margin != '' && idKategori != '') {
+            && flagBpjs != '' && margin != '' && idKategori != '' && idBentuk != '') {
 
             $('#save_obat').hide();
             $('#load_obat').show();
@@ -951,6 +939,9 @@
             if (idKategori == '') {
                 $('#war_id_kategori').show();
             }
+            if (idBentuk == '') {
+                $('#war_id_bentuk').show();
+            }
         }
     }
 
@@ -979,6 +970,7 @@
         $("#row-check-id-pabrik").hide();
         $("#add_pabrik").attr('readOnly', "true");
         showListKandunganObat(idObat);
+        listBentukObat(idObat)
     }
 
     function listSelectObatEdit(idObat){
@@ -1107,7 +1099,6 @@
 
         if (tipe == "add"){
             $("#sel_fin_kandungan_obat").val("");
-            $("#sel_fin_bentuk_kandungan_obat").val("");
             $("#fin_sediaan_kandungan_obat").val("");
             $("#fin_satuan_kandungan_obat").val("");
             var strBtn = "<button class='btn btn-success' onclick=\"saveKandunganObat(\'\')\"><i class='fa fa-check'></i>Save Add</button>";
@@ -1116,7 +1107,6 @@
             ObatAction.initEditKandunganObat(idKandunganObat, function (res) {
                 if (res != null){
                     $("#sel_fin_kandungan_obat").val(res.idKandungan);
-                    $("#sel_fin_bentuk_kandungan_obat").val(res.bentuk);
                     $("#fin_sediaan_kandungan_obat").val(res.sediaan);
                     $("#fin_satuan_kandungan_obat").val(res.satuanSediaan);
                     var strBtn = "<button class='btn btn-success' onclick=\"saveKandunganObat(\'" + res.id + "\')\"><i class='fa fa-check'></i> Update</button>";
@@ -1133,12 +1123,11 @@
 
         var idObat = $("#fin_id_obat").val();
         var kandungan = $('#sel_fin_kandungan_obat').val();
-        var bentuk = $('#sel_fin_bentuk_kandungan_obat').val();
         var sediaan = $("#fin_sediaan_kandungan_obat").val();
         var satuan = $("#fin_satuan_kandungan_obat").val();
 
         if (id == null || id == ""){
-            ObatAction.addKandunganObat(idObat, kandungan, bentuk, sediaan, satuan, function (res) {
+            ObatAction.addKandunganObat(idObat, kandungan, "", sediaan, satuan, function (res) {
                 if (res.status == "success"){
                     $("#modal-view-kandugan-obat").modal('hide');
                     getFromSessionKandunganObat(idObat);
@@ -1147,7 +1136,7 @@
                 }
             });
         } else {
-            ObatAction.editKandunganObatDetail(id, idObat, kandungan, bentuk, sediaan, satuan, function (res) {
+            ObatAction.editKandunganObatDetail(id, idObat, kandungan, "", sediaan, satuan, function (res) {
                 if (res.status == "success"){
                     $("#modal-view-kandugan-obat").modal('hide');
                     getFromSessionKandunganObat(idObat);
@@ -1169,6 +1158,39 @@
             $("#dis-id-pabrik").hide();
         } else {
             $("#dis-id-pabrik").show();
+        }
+    }
+
+    function listBentukObat(id) {
+        console.log("list bentuk klik");
+
+        if (id != null && id != ""){
+            ObatAction.getHeaderObatById(id, function (obat) {
+
+                ObatAction.listAllBentukBarang(function (res) {
+
+                    var str = "";
+                    $.each(res, function (i, item) {
+                        if (obat.idBentuk == item.idBentuk)
+                            str += '<option value="' + item.idBentuk + '" selected>' + item.bentuk + '</option>';
+                        else
+                            str += '<option value="' + item.idBentuk + '">' + item.bentuk + '</option>';
+                    });
+
+                    $("#id_bentuk").html(str);
+                });
+            });
+        } else {
+            console.log("list add bentuk klik");
+            ObatAction.listAllBentukBarang(function (res) {
+
+                var str = "";
+                $.each(res, function (i, item) {
+                    str += '<option value="' + item.idBentuk + '">' + item.bentuk + '</option>';
+                });
+
+                $("#id_bentuk").html(str);
+            });
         }
     }
 

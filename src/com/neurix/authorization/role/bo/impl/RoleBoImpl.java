@@ -85,6 +85,10 @@ public class RoleBoImpl implements RoleBo {
                 hsCriteria.put("role_name", searchRoles.getRoleName());
             }
 
+            if (searchRoles.getTipePelayanan() != null && !"".equalsIgnoreCase(searchRoles.getTipePelayanan())) {
+                hsCriteria.put("tipe_pelayanan", searchRoles.getTipePelayanan());
+            }
+
             if (searchRoles.getFlag() != null && !"".equalsIgnoreCase(searchRoles.getFlag())) {
                 if ("N".equalsIgnoreCase(searchRoles.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -121,6 +125,7 @@ public class RoleBoImpl implements RoleBo {
                     resultRoles.setStRoleId(imRoles.getRoleId().toString());
                     resultRoles.setFlag(imRoles.getFlag());
                     resultRoles.setRoleName(imRoles.getRoleName());
+                    resultRoles.setTipePelayanan(imRoles.getTipePelayanan());
                     resultRoles.setAction(imRoles.getAction());
                     resultRoles.setCreatedDate(imRoles.getCreatedDate());
                     resultRoles.setCreatedWho(imRoles.getCreatedWho());
