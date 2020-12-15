@@ -5,6 +5,9 @@ import com.neurix.akuntansi.transaksi.tutupperiod.dao.BatasTutupPeriodDao;
 import com.neurix.akuntansi.transaksi.tutupperiod.model.ItSimrsBatasTutupPeriodEntity;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.bentukbarang.dao.BentukBarangDao;
+import com.neurix.simrs.master.bentukbarang.model.BentukBarang;
+import com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity;
 import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
@@ -70,6 +73,15 @@ public class ObatBoImpl implements ObatBo {
     private KandunganObatDetailDao kandunganObatDetailDao;
     private KandunganObatDao kandunganObatDao;
     private BentukBarangDao bentukBarangDao;
+
+    public BentukBarangDao getBentukBarangDao() {
+        return bentukBarangDao;
+    }
+
+    public void setBentukBarangDao(BentukBarangDao bentukBarangDao) {
+        this.bentukBarangDao = bentukBarangDao;
+    }
+
     private HeaderObatDao headerObatDao;
     private KategoriPersedianDao kategoriPersedianDao;
     private MarginObatDao marginObatDao;
@@ -86,9 +98,9 @@ public class ObatBoImpl implements ObatBo {
         this.headerObatDao = headerObatDao;
     }
 
-    public void setBentukBarangDao(BentukBarangDao bentukBarangDao) {
-        this.bentukBarangDao = bentukBarangDao;
-    }
+//    public void setBentukBarangDao(BentukBarangDao bentukBarangDao) {
+//        this.bentukBarangDao = bentukBarangDao;
+//    }
 
     public void setKandunganObatDetailDao(KandunganObatDetailDao kandunganObatDetailDao) {
         this.kandunganObatDetailDao = kandunganObatDetailDao;
@@ -2236,8 +2248,6 @@ public class ObatBoImpl implements ObatBo {
         List<KandunganObat> kandunganObats = new ArrayList<>();
         List<ImSimrsKandunganObatDetailEntity> kandunganObatDetailEntities = kandunganObatDetailDao.getByCriteria(hsCriteria);
         if (kandunganObatDetailEntities.size() > 0){
-
-
             for (ImSimrsKandunganObatDetailEntity kandunganObatDetailEntity : kandunganObatDetailEntities){
                 KandunganObat kandunganObat = new KandunganObat();
 
@@ -2353,10 +2363,8 @@ public class ObatBoImpl implements ObatBo {
                 }
             }
         }
-
         return listAgingObat;
     }
-
     private TransaksiStok getSumKreditTransaksiStok(String idBarang, String periode, String branchId, String idPelayanan){
         return obatDao.getSumKreditByPeriodeTransaksiStok(branchId, idPelayanan, periode, idBarang);
     }

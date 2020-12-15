@@ -7,25 +7,23 @@
 <html>
 <head>
     <script type="text/javascript">
-        $(document).ready(function(){
-            // var cek = document.getElementById("eksekutif").value;
-            //
-            // if (cek == 'Y'){
-            //     console.log(cek);
-            //     document.getElementById("isEksekutif").checked = true;
-            // }
-        });
+
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
+            //  $('#view_dialog_menu').dialog('close');
+            //  $('#info_dialog').dialog('close');
+            // window.location.reload(true);
+
             $('#info_dialog').dialog('close');
-           window.location.reload(true);
+            document.SearchBentukBarangForm.action = "search_bentukbarang.action";
+            document.SearchBentukBarangForm.submit();
         };
 
         $.subscribe('beforeProcessSaveDelete', function (event, data) {
-            var idJenisObatdelete = document.getElementById("idJenisObatdelete").value;
+            var idBentukBarangdelete = document.getElementById("idBentukBarangdelete").value;
+            var bentukbarangDelete = document.getElementById("bentukbarangDelete").value;
 
-            if (idJenisObatdelete != '') {
+            if (idBentukBarangdelete != '' && bentukbarangDelete != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,8 +34,11 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idJenisObatdelete == '') {
-                    msg += 'Field <strong> id Jenis Obat</strong> is required.' + '<br/>';
+                if (idBentukBarangdelete == '') {
+                    msg += 'Field <strong> id Bentuk barang</strong> is required.' + '<br/>';
+                }
+                if (bentukbarangDelete == '') {
+                    msg += 'Field <strong> id bentukba rang</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -57,7 +58,7 @@
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            $.publish('showErrorDialogDelete');
         });
 
         function cancelBtn() {
@@ -74,15 +75,13 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/jenisobat"
-                    action="saveDelete_jenisobat" cssClass="well form-horizontal">
+            <s:form id="deleteBentukBarangForm" method="post" theme="simple" namespace="/bentukbarang"
+                    action="saveDelete_bentukbarang" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-
-
-                <legend align="left">Delete Jenis Obat</legend>
+                <legend align="left">Delete Bentuk Barang</legend>
 
 
                 <table>
@@ -95,43 +94,38 @@
 
                 <table >
                     <tr>
-                        <td width="30%">
-                            <label class="control-label"><small>ID Jenis Obat :</small></label>
+                        <td width="35%">
+                            <label class="control-label"><small>ID Bentuk Barang :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idJenisObatdelete" name="jenisObat.idJenisObat" disabled="true"
-                                             required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idBentukBarangdelete" disabled="true" name="bentukBarang.idBentuk"
+                                             required="true" readonly="true" cssClass="form-control" />
 
-                                    <%--<s:hidden id="idJenisObatdelete" name="jenisObat.idJenisObat" />--%>
+                                    <s:hidden name="bentukBarang.idBentuk" />
                             </table>
                         </td>
                     </tr>
 
-
-
                     <tr>
                         <td >
-                            <label class="control-label"><small>Jenis Obat:</small></label>
+                            <label class="control-label"><small>Bentuk Barang:</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jenisobatAdd" name="jenisObat.namaJenisObat" required="true"
+                                <s:textfield id="bentukbarangDelete" name="bentukBarang.bentuk" required="true"
                                              cssStyle="margin-top: 7px" readonly="true"
                                              disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                 </table>
-
-
 
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteBentukBarangForm" id="save"
                                    name="save"
                                    onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
@@ -143,8 +137,6 @@
                         </button>
                     </div>
                 </div>
-
-
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>
@@ -182,7 +174,7 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogDelete" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
@@ -221,13 +213,4 @@
 </table>
 </body>
 </html>
-<script>
-    window.cekEksekutif = function () {
-        if (document.getElementById("isEksekutif").checked == true) {
-            $("#eksekutif").val("Y");
-        } else {
-            $("#eksekutif").val("N");
-        }
-    }
-</script>
 

@@ -1,10 +1,8 @@
-package com.neurix.simrs.master.obat.model;
+package com.neurix.simrs.master.bentukbarang.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
-/**
- * Created by reza on 13/07/20.
- */
 public class ImSimrsBentukBarangEntity {
     private String idBentuk;
     private String bentuk;
@@ -83,32 +81,19 @@ public class ImSimrsBentukBarangEntity {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         ImSimrsBentukBarangEntity that = (ImSimrsBentukBarangEntity) o;
-
-        if (idBentuk != null ? !idBentuk.equals(that.idBentuk) : that.idBentuk != null) return false;
-        if (bentuk != null ? !bentuk.equals(that.bentuk) : that.bentuk != null) return false;
-        if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
-        if (action != null ? !action.equals(that.action) : that.action != null) return false;
-        if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
-        if (createdWho != null ? !createdWho.equals(that.createdWho) : that.createdWho != null) return false;
-        if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
-        if (lastUpdateWho != null ? !lastUpdateWho.equals(that.lastUpdateWho) : that.lastUpdateWho != null)
-            return false;
-
-        return true;
+        return Objects.equals(idBentuk, that.idBentuk) &&
+                Objects.equals(bentuk, that.bentuk) &&
+                Objects.equals(flag, that.flag) &&
+                Objects.equals(action, that.action) &&
+                Objects.equals(createdDate, that.createdDate) &&
+                Objects.equals(createdWho, that.createdWho) &&
+                Objects.equals(lastUpdate, that.lastUpdate) &&
+                Objects.equals(lastUpdateWho, that.lastUpdateWho);
     }
 
     @Override
     public int hashCode() {
-        int result = idBentuk != null ? idBentuk.hashCode() : 0;
-        result = 31 * result + (bentuk != null ? bentuk.hashCode() : 0);
-        result = 31 * result + (flag != null ? flag.hashCode() : 0);
-        result = 31 * result + (action != null ? action.hashCode() : 0);
-        result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);
-        result = 31 * result + (createdWho != null ? createdWho.hashCode() : 0);
-        result = 31 * result + (lastUpdate != null ? lastUpdate.hashCode() : 0);
-        result = 31 * result + (lastUpdateWho != null ? lastUpdateWho.hashCode() : 0);
-        return result;
+        return Objects.hash(idBentuk, bentuk, flag, action, createdDate, createdWho, lastUpdate, lastUpdateWho);
     }
 }

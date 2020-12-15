@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <bean id="bentukBarangAction" class="com.neurix.simrs.master.bentukbarang.action.BentukBarangAction"
+          p:bentukBarangBoProxy-ref="bentukBarangBoProxy"/>
+
+    <!--<bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"-->
+          <!--p:bentukBarangBoProxy-ref="bentukBarangBoProxy"/>-->
+
+    <bean id="bentukBarangBo" class="com.neurix.simrs.master.bentukbarang.bo.impl.BentukBarangBoImpl"
+          p:bentukBarangDao-ref="bentukBarangDao"/>
+
+    <bean id="bentukBarangBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="bentukBarangBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionUserInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionUserInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="bentukBarangDao" class="com.neurix.simrs.master.bentukbarang.dao.BentukBarangDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+</beans>

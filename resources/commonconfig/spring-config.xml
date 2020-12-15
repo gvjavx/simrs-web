@@ -303,4 +303,7 @@
     <import resource="sshconfig/com/neurix/hris/master/payrollParamBpjs/spring/PayrollParamBpjsBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/kandunganObat/spring/KandunganObatBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/master/bentukBarang/spring/BentukBarangBean.xml"/>
+
 </beans>

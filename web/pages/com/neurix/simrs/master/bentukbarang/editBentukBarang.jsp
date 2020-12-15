@@ -6,26 +6,23 @@
 
 <html>
 <head>
+    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-        $(document).ready(function(){
-            // var cek = document.getElementById("eksekutif").value;
-            //
-            // if (cek == 'Y'){
-            //     console.log(cek);
-            //     document.getElementById("isEksekutif").checked = true;
-            // }
-        });
+
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
+            // $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
-           window.location.reload(true);
+            document.SearchBentukBarangForm.action = "search_bentukbarang.action";
+            document.SearchBentukBarangForm.submit();
         };
 
-        $.subscribe('beforeProcessSaveDelete', function (event, data) {
-            var idJenisObatdelete = document.getElementById("idJenisObatdelete").value;
+        $.subscribe('beforeProcessSaveEdit', function (event, data) {
+            var bentukbarangEdit = document.getElementById("bentukbarangEdit").value;
 
-            if (idJenisObatdelete != '') {
+            console.log(bentukbarangEdit);
+
+            if ( bentukbarangEdit != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -36,28 +33,30 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idJenisObatdelete == '') {
-                    msg += 'Field <strong> id Jenis Obat</strong> is required.' + '<br/>';
+
+                if (bentukbarangEdit == '') {
+                    msg += 'Field <strong>Bentuk Barang  </strong> is required.' + '<br/>';
                 }
 
-                document.getElementById('errorValidationMessage').innerHTML = msg;
 
-                $.publish('showErrorValidationDialog');
+                document.getElementById('errorValidationMessageEdit').innerHTML = msg;
+
+                $.publish('showErrorValidationDialogEdit');
             }
         });
 
-        $.subscribe('successDialog', function (event, data) {
+        $.subscribe('successDialogEdit', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
             }
         });
 
-        $.subscribe('errorDialog', function (event, data) {
+        $.subscribe('errorDialogEdit', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            document.getElementById('errorMessageEdit').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+            $.publish('showErrorDialogEdit');
         });
 
         function cancelBtn() {
@@ -74,15 +73,15 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/jenisobat"
-                    action="saveDelete_jenisobat" cssClass="well form-horizontal">
+            <s:form id="editBentukBarangForm" method="post" theme="simple"
+                    namespace="/bentukbarang" action="saveEdit_bentukbarang" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Delete Jenis Obat</legend>
+                <legend align="left">Edit Bentuk Barang</legend>
 
 
                 <table>
@@ -95,34 +94,32 @@
 
                 <table >
                     <tr>
-                        <td width="30%">
-                            <label class="control-label"><small>ID Jenis Obat :</small></label>
+                        <td width="35%">
+                            <label class="control-label"><small>ID Bentuk Barang :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idJenisObatdelete" name="jenisObat.idJenisObat" disabled="true"
-                                             required="true" readonly="true" cssClass="form-control"/>
+                                <s:textfield id="idBentukBarangedit" name="bentukBarang.idBentuk"
+                                               cssClass="form-control" readonly="true"/>
 
-                                    <%--<s:hidden id="idJenisObatdelete" name="jenisObat.idJenisObat" />--%>
+                                <%--<s:hidden id="idBentukBarangedit" name="bentukBarang.idBentuk" />--%>
                             </table>
                         </td>
                     </tr>
-
 
 
                     <tr>
                         <td >
-                            <label class="control-label"><small>Jenis Obat:</small></label>
+                            <label class="control-label"><small>Bentuk Barang:</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="jenisobatAdd" name="jenisObat.namaJenisObat" required="true"
-                                             cssStyle="margin-top: 7px" readonly="true"
-                                             disabled="false" cssClass="form-control"/>
+                                <s:textfield id="bentukbarangEdit" name="bentukBarang.bentuk"
+                                             cssStyle="margin-top: 7px"
+                                             cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
                 </table>
 
 
@@ -131,12 +128,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
-                                   name="save"
-                                   onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="editBentukBarangForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSaveEdit" onCompleteTopics="closeDialog,successDialogEdit"
+                                   onSuccessTopics="successDialogEdit" onErrorTopics="errorDialogEdit" >
                             <i class="fa fa-check"></i>
-                            Delete
+                            Save
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -182,30 +178,33 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogEdit" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_dialog').dialog('close');}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessageEdit"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog_edit" openTopics="showErrorValidationDialogEdit"
+                                                   modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                        'OK':function() { $('#error_validation_dialog_edit').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> Please check this field :
                                                     <br/>
-                                                    <center><div id="errorValidationMessage"></div></center>
+                                                    <center><div id="errorValidationMessageEdit"></div></center>
                                                 </label>
                                             </div>
                                         </sj:dialog>
@@ -221,13 +220,4 @@
 </table>
 </body>
 </html>
-<script>
-    window.cekEksekutif = function () {
-        if (document.getElementById("isEksekutif").checked == true) {
-            $("#eksekutif").val("Y");
-        } else {
-            $("#eksekutif").val("N");
-        }
-    }
-</script>
 
