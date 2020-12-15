@@ -2357,18 +2357,25 @@ function delRowObat(id, harga) {
 }
 
 function saveResepObatTtd() {
-
     var idDokter = $('#tin_id_dokter').val();
     var data = $('#tabel_rese_detail').tableToJSON();
-    var stringData = JSON.stringify(data);
-    var idPelayanan = $('#resep_apotek').val();
-    var apotek = $('#resep_apotek').val();
-
-    if (stringData != '[]') {
-        $('#modal-ttd').modal({show: true, backdrop: 'static'});
+    var canvas = document.getElementById('ttd_canvas');
+    var dataURL = canvas.toDataURL("image/png"),
+        dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+    var ttd = isBlank(canvas);
+    if(data.length > 0 && !ttd) {
+        $('#modal-confirm-dialog').modal({show: true, backdrop: 'static'});
+        $('#save_con').attr('onclick','saveResepObat()');
     } else {
+        var msg = "";
+        if(data.length == 0){
+            msg = "Data obat, ";
+        }
+        if(ttd){
+            msg = msg+ "TTD dokter";
+        }
         $('#warning_resep_head').show().fadeOut(5000);
-        $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+        $('#msg_resep').text("Silahkan cek "+msg+"...!");
         $('#modal-resep-head').scrollTop(0);
     }
 }
@@ -2380,27 +2387,60 @@ function clearConvas() {
 }
 
 function saveResepObat() {
-    $('#modal-ttd').modal('hide');
+    $('#modal-confirm-dialog').modal('hide');
     var idDokter = $('#tin_id_dokter').val();
-    var jenisResep = $('#select-jenis-resep').val();
     var data = $('#tabel_rese_detail').tableToJSON();
-    var stringData = JSON.stringify(data);
-    var idPelayanan = $('#resep_apotek').val();
     var apotek = $('#resep_apotek').val();
     var canvas = document.getElementById('ttd_canvas');
     var dataURL = canvas.toDataURL("image/png"),
         dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     var ttd = isBlank(canvas);
-    if (stringData != '[]' && !ttd) {
+    if (data.length > 0 && !ttd) {
         if(!cekSession()){
             var idPelayanan = apotek.split('|')[0];
             var namaPelayanan = apotek.split('|')[1];
+            var dataObat = [];
+            $.each(data, function (i, item) {
+                var idObat = $('#id_obat_'+i).val();
+                var qty = $('#qty_'+i).val();
+                var jenisSatuan = $('#jenis_satuan_'+i).val();
+                var keterangan = $('#keterangan_'+i).val();
+                var jenisResep = $('#jenis_resep_'+i).val();
+                var hariKronis = $('#hari_kronis_'+i).val();
+                var isRacik = $('#is_racik_'+i).val();
+                var namaRacik = $('#nama_racik_'+i).val();
+                var idRacik = $('#id_racik_'+i).val();
+                dataObat.push({
+                    'id_obat':idObat,
+                    'qty': qty,
+                    'jenis_satuan': jenisSatuan,
+                    'keterangan': keterangan,
+                    'jenis_resep': jenisResep,
+                    'hari_kronis': hariKronis,
+                    'nama_racik': namaRacik,
+                    'id_racik': idRacik,
+                    'is_racik': isRacik
+                });
+
+            });
+            var stringDataObat = JSON.stringify(dataObat);
+            var dataObj = {
+                'id_detail_checkup':idDetailCheckup,
+                'id_pelayanan':idPoli,
+                'id_dokter':idDokter,
+                'id_pasien':idPasien,
+                'id_apotek': idPelayanan,
+                'ttd': dataURL,
+                'data_obat':stringDataObat
+
+            }
+            var stringObj = JSON.stringify(dataObj);
             $('#save_resep_head').hide();
             $('#load_resep_head').show();
             dwr.engine.setAsync(true);
-            PermintaanResepAction.saveResepPasien(idDetailCheckup, idPoli, idDokter, idPasien, stringData, idPelayanan, dataURL, jenisResep, {
+            PermintaanResepAction.saveResepPasien(stringObj, {
                 callback: function (response) {
-                    if (response == "success") {
+                    if (response.status == "success") {
                         dwr.engine.setAsync(false);
                         $('#info_dialog').dialog('open');
                         $('#close_pos').val(9);
@@ -2410,7 +2450,7 @@ function saveResepObat() {
                         listResepPasien();
                     } else {
                         $('#warning_resep_head').show().fadeOut(5000);
-                        $('#msg_resep').text("Silahkan cek kembali data inputan anda..!");
+                        $('#msg_resep').text(response.msg);
                         $('#save_resep_head').show();
                         $('#load_resep_head').hide();
                     }

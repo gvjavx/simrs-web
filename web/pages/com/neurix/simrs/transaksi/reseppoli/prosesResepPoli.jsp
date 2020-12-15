@@ -545,7 +545,7 @@
                                                         onclick="$('#confirm_dialog').dialog('close')"><i
                                                         class="fa fa-times"></i> No
                                                 </button>
-                                                <button class="btn btn-success" onclick="saveApproveResep()"><i class="fa fa-arrow-right"></i> Yes</button>
+                                                <button class="btn btn-success" onclick="saveApproveResep()"><i class="fa fa-check"></i> Yes</button>
                                             </div>
                                         </sj:dialog>
 
