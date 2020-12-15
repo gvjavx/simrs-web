@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Iuran Pegawai DPLK
+            Payroll Skala Gaji Pensiun
         </h1>
     </section>
 
@@ -60,7 +60,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollSkalaGajiPensiunForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiun" action="search_payrollSkalaGajiPensiun.action" cssClass="well form-horizontal">
+                    <s:form id="payrollSkalaGajiPensiunForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiun" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiPensiun.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -76,7 +76,7 @@
                         <table >
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>ID :</small></label>
+                                    <label class="control-label"><small>Skala Gaji ID :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -84,7 +84,6 @@
                                     </table>
                                 </td>
                             </tr>
-
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Golongan :</small></label>
@@ -92,13 +91,23 @@
                                 <td>
                                     <table>
                                         <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                        <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golongan" name="payrollSkalaGajiPensiun.golonganId"
+                                        <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganDapenId" name="payrollSkalaGajiPensiun.golonganId" required="true"
                                                   listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
                                     </table>
                                 </td>
                             </tr>
-
-
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Tipe Dapen :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboGolongan" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
+                                        <s:select cssClass="form-control" list="#comboGolongan.listComboPayrollDanaPensiun" id="tipeDapenId" name="payrollSkalaGajiPensiun.tipeDapenId"
+                                                  listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="" />
+                                    </table>
+                                </td>
+                            </tr>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Flag :</small></label>
@@ -133,7 +142,7 @@
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Iuran Pensiun DPLK
+                                            Add Dana Pensiun
                                         </sj:a>
                                     </td>
                                     <td>
@@ -148,7 +157,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="40%">
+                            <table id="showdata" width="80%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -157,9 +166,9 @@
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollSkalaGajiPensiun.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                        <s:set name="listComboPayrollSkalaGajiPensiun" value="#session.listOfResult" scope="request" />
+                                        <display:table name="listComboPayrollSkalaGajiPensiun" class="table table-condensed table-striped table-hover"
+                                                       requestURI="paging_payrollSkalaGajiPensiun.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlEdit" namespace="/payrollSkalaGajiPensiun" action="edit_payrollSkalaGajiPensiun" escapeAmp="false">
@@ -173,21 +182,27 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGajiPensiun" action="delete_payrollSkalaGajiPensiun" escapeAmp="false">
-                                                    <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
-                                                    <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                </sj:a>
-
+                                                <s:if test="#attr.row.flagYes">
+                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGajiPensiun" action="delete_payrollSkalaGajiPensiun" escapeAmp="false">
+                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
+                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                    </s:url>
+                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                    </sj:a>
+                                                </s:if>
                                             </display:column>
-                                            <display:column property="skalaGajiPensiunId" sortable="true" title="ID" />
+                                            <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
+                                            <display:column property="tipeDapenName" sortable="true" title="Tipe Dapen"  />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="nilai" sortable="true" title="Nilai"  />
-                                            <display:setProperty name="export.excel.filename">IuranPensiunDPLK.xls</display:setProperty>
-                                            <display:setProperty name="export.csv.filename">IuranPensiunDPLK.csv</display:setProperty>
-                                            <display:setProperty name="export.pdf.filename">IuranPensiunDPLK.pdf</display:setProperty>
+                                            <display:column property="poin" sortable="true" title="Masa Golongan"  />
+                                            <display:column property="stNilai" sortable="true" title="Nilai"  />
+                                            <display:column property="flag" sortable="true" title="flag"  />
+                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                         </display:table>
                                     </td>
                                 </tr>

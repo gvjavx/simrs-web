@@ -93,7 +93,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="saveEdit_payrollSkalaGajiPensiunRni" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveEdit_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
                 <legend align="left">Edit Payroll Skala Gaji Pensiun</legend>

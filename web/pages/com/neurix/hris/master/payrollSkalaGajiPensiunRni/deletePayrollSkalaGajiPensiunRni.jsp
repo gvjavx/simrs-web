@@ -105,7 +105,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="saveDelete_payrollSkalaGajiPensiunRni" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveDelete_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>

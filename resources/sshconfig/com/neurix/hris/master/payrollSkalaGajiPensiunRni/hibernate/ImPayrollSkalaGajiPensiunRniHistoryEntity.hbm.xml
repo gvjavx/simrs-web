@@ -4,15 +4,15 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniHistoryEntity" dynamic-update="true"
-           table="im_hris_payroll_skala_gaji_dapenbun_history" select-before-update="true" schema="public">
+           table="im_hris_payroll_skala_gaji_pensiun_history" select-before-update="true" schema="public">
 
 
         <id name="skalaGajiPensiunIdHistory">
-            <column name="skala_gaji_pensiun_rni_id_history" sql-type="varchar" length="15" not-null="true" />
+            <column name="skala_gaji_pensiun_id_history" sql-type="varchar" length="15" not-null="true" />
         </id>
 
         <property name="skalaGajiPensiunId">
-            <column name="skala_gaji_pensiun_rni_id" sql-type="varchar" length="15" not-null="true" />
+            <column name="skala_gaji_pensiun_id" sql-type="varchar" length="15" not-null="true" />
         </property>
         <property name="golonganId">
             <column name="golongan_id" sql-type="integer" not-null="true" />

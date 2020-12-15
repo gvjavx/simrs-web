@@ -53,7 +53,7 @@ public class PayrollSkalaGajiPensiunRniDao extends GenericDao<ImPayrollSkalaGaji
     }
 
     public String getNextSkalaGajiPensiun() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_skala_gaji_pensiun_rni')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_skala_gaji_pensiun')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%05d", iter.next());
         return "SGP"+sId;

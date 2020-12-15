@@ -60,7 +60,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollSkalaGajiPensiunRniForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiunRni" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiPensiunRni.action" cssClass="well form-horizontal">
+                    <s:form id="payrollSkalaGajiPensiunRniForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiun" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiPensiun.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -168,10 +168,10 @@
 
                                         <s:set name="listComboPayrollSkalaGajiPensiun" value="#session.listOfResult" scope="request" />
                                         <display:table name="listComboPayrollSkalaGajiPensiun" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_payrollSkalaGajiPensiunRni.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_payrollSkalaGajiPensiun.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiPensiunRni" action="edit_payrollSkalaGajiPensiunRni" escapeAmp="false">
+                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiPensiun" action="edit_payrollSkalaGajiPensiun" escapeAmp="false">
                                                         <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
@@ -183,7 +183,7 @@
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGajiPensiunRni" action="delete_payrollSkalaGajiPensiunRni" escapeAmp="false">
+                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGajiPensiun" action="delete_payrollSkalaGajiPensiun" escapeAmp="false">
                                                         <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                     </s:url>

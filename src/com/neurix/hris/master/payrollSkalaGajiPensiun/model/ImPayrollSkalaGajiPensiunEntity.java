@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
     private String skalaGajiPensiunId;
     private String golonganId;
+    private String tipeDapenId;
     private int poin;
     private BigDecimal nilai;
 
@@ -114,5 +115,13 @@ public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
 
     public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
         this.skalaGajiPensiunId = skalaGajiPensiunId;
+    }
+
+    public String getTipeDapenId() {
+        return tipeDapenId;
+    }
+
+    public void setTipeDapenId(String tipeDapenId) {
+        this.tipeDapenId = tipeDapenId;
     }
 }

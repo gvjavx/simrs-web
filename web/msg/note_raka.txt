@@ -35,3 +35,8 @@
     ALTER TABLE im_users
         ADD id_vendor character varying(30)
         ADD id_ruangan character varying(50);
+
+-- 2020-12-15 ===> SkalaGajiPensiun
++ Mengalihkan table ke im_hris_pyroll_skala_gaji_pensiun
+
+    CREATE SEQUENCE public.seq_payroll_skala_gaji_pensiun_history;
