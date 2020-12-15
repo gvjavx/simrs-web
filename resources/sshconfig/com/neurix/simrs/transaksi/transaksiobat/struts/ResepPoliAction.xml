@@ -85,7 +85,7 @@
             </result>
 
             <result name="print_label_resep" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/labelResep.jasper</param>
+                <param name="location">/pages/report/com/neurix/simrs/printLabelResep.jasper</param>
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
