@@ -1505,8 +1505,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         return df.format(date);
     }
 
-    public String initFormVendor(){
-        logger.info("[PermintaanVendorAction.initFormVendor] START >>>>>>>");
+    public void userInfo(){
         String userId = CommonUtil.userIdLogin();
         String vendorId = CommonUtil.userVendorIdLogin();
 
@@ -1517,17 +1516,22 @@ public class PermintaanVendorAction extends BaseMasterAction {
         if (userVendorEntity != null){
             permintaanVendor.setIdVendor(userVendorEntity.getIdVendor());
         }
-//        if (vendorId != null && !"".equalsIgnoreCase(vendorId)){
+        if (vendorId != null && !"".equalsIgnoreCase(vendorId)){
             permintaanVendor.setIdVendor(vendorId);
-//        }
+        }
         setPermintaanVendor(permintaanVendor);
+    }
+
+    public String initFormVendor(){
+        logger.info("[PermintaanVendorAction.initFormVendor] START >>>>>>>");
+        userInfo();
         eraseAllSession();
         logger.info("[PermintaanVendorAction.initFormVendor] END <<<<<<<");
         return "search_vendor";
     }
 
     public String searchPoVendor(){
-        initFormVendor();
+        userInfo();
         return "search_vendor";
     }
 

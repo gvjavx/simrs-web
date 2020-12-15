@@ -405,6 +405,25 @@ public class  CommonUtil {
         }
     }
 
+    public static String userRuanganIdLogin() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+
+                String ruanganId = userDetailsLogin.getIdRuangan();
+
+                return ruanganId;
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
     public static String userVendorIdLogin() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
