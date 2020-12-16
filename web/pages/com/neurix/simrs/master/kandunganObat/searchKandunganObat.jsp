@@ -178,12 +178,12 @@
                                             <td><s:property value="lastUpdateWho"/></td>
                                             <s:if test='kandunganObat.isKp == "Y" && kandunganObat.flag == "Y"'>
                                                 <td align="center">
-                                                    <a href="javascript:" class="item-edit" data="<s:property value="idKandungan"/>">
+                                                    <a href="javascript:;" class="item-edit" data="<s:property value="idKandungan"/>">
                                                         <img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>
                                                     </a>
                                                 </td>
                                                 <td align="center">
-                                                    <a href="javascript:" class="item-delete" data="<s:property value="idKandungan"/>">
+                                                    <a href="javascript:;" class="item-delete" data="<s:property value="idKandungan"/>">
                                                         <img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_delete'>
                                                     </a>
                                                 </td>

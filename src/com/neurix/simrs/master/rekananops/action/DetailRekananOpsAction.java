@@ -122,7 +122,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     }
 
     public DetailRekananOps init(String kode, String flag){
-        logger.info("[PayrollSkalaGajiAction.init] start process >>>");
+        logger.info("[DetailRekananOpsAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<DetailRekananOps> listOfResult = (List<DetailRekananOps>) session.getAttribute("listOfResultRekananOps");
 
@@ -137,7 +137,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
             } else {
                 setDetailRekananOps(new DetailRekananOps());
             }
-            logger.info("[PayrollSkalaGajiAction.init] end process >>>");
+            logger.info("[DetailRekananOpsAction.init] end process >>>");
         }
         return getDetailRekananOps();
     }
@@ -211,21 +211,21 @@ public class DetailRekananOpsAction extends BaseMasterAction {
                 setDetailRekananOps(deleteDetailRekananOps);
 
             } else {
-                //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+                //deleteDetailRekananOps.getSkalaGajiId(itemId);
                 deleteDetailRekananOps.setFlag(itemFlag);
                 setDetailRekananOps(deleteDetailRekananOps);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
+            //deleteDetailRekananOps.getSkalaGajiId(itemId);
             deleteDetailRekananOps.setFlag(itemFlag);
             setDetailRekananOps(deleteDetailRekananOps);
             addActionError("Error, Unable to delete again with flag = N.");
             return "failure";
         }
 
-        logger.info("[PayrollSkalaGajiAction.delete] end process <<<");
+        logger.info("[DetailRekananOpsAction.delete] end process <<<");
 
         return "init_delete";
     }
@@ -243,7 +243,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     }
 
     public String saveDelete(){
-        logger.info("[PayrollSkalaGajiAction.saveDelete] start process >>>");
+        logger.info("[DetailRekananOpsAction.saveDelete] start process >>>");
         try {
 
             DetailRekananOps deleteDetailRekananOps = getDetailRekananOps();
@@ -268,7 +268,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     }
 
     public String saveEdit(){
-        logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
+        logger.info("[DetailRekananOpsAction.saveEdit] start process >>>");
         try {
 
             DetailRekananOps editDetailRekananOps = getDetailRekananOps();

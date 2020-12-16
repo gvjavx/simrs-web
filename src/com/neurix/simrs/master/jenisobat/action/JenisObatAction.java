@@ -86,13 +86,13 @@ public class JenisObatAction extends BaseMasterAction {
         setJenisObat(addJenisObat);
         setAddOrEdit(true);
         setAdd(true);
-        logger.info("[JenisObatAction.add] stop process >>>");
+        logger.info("[Jenis Obat Action.add] stop process >>>");
         return "init_add";
     }
 
     @Override
     public String edit() {
-        logger.info("[JenisObatAction.edit] start process >>>");
+        logger.info("[Jenis Obat Action.edit] start process >>>");
         String itemFlag = getFlag();
         String itemId = getId();
         JenisObat editJenisObat = new JenisObat();
@@ -100,8 +100,8 @@ public class JenisObatAction extends BaseMasterAction {
             try {
                 editJenisObat = init (itemId,itemFlag);
             } catch (GeneralBOException e) {
-                logger.error("editaction"+e.getMessage());
-                throw new GeneralBOException("editaction, "+e.getMessage());
+                logger.error("edit action"+e.getMessage());
+                throw new GeneralBOException("edit action, "+e.getMessage());
             }
 
             if(editJenisObat != null) {
@@ -158,7 +158,6 @@ public class JenisObatAction extends BaseMasterAction {
         }
 
         logger.info("[deleteJenisObatAction.delete] end process <<<");
-
         return "init_delete";
     }
 
@@ -171,6 +170,7 @@ public class JenisObatAction extends BaseMasterAction {
     public String save() {
         return null;
     }
+
 
     @Override
     public String search() {

@@ -159,7 +159,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
 
     @Override
     public CrudResponse saveEdit(RekananOps bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
+        logger.info("[RekananOpsBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
             String  idRekananOps = bean.getIdRekananOps();
             ImSimrsRekananOpsEntity imSimrsRekananOpsEntity = null;
@@ -169,7 +169,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
                 logger.error("[RekananOpsBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data RekananOps by Kode RekananOps, please inform to your admin...," + e.getMessage());
             }
 //          mengambil nama master / nama asuransi dari masterdao berdasarkan no master;
             ImMasterEntity masterEntity = new ImMasterEntity();
@@ -197,7 +197,7 @@ public class RekananOpsBoImpl implements RekananOpsBo {
                     try {
                         // Update into database
                         rekananOpsDao.updateAndSave(imSimrsRekananOpsEntity);
-                        //payrollSkalaGajiDao.addAndSaveHistory(imPayrollSkalaGajiHistoryEntity);
+                        //payrollSkalaGajiDao.addAndSaveHistory(imRekananOpsHistoryEntity);
                     } catch (HibernateException e) {
                         logger.error("[AsuransiBoImpl.saveEdit] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving update data Asuransi, please info to your admin..." + e.getMessage());

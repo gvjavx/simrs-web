@@ -1378,3 +1378,74 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
 --
 
+2020-12-10 --
+    CREATE SEQUENCE seq_harga_terakhir;
+--
+
+2020-12-11 --
+
+  ALTER TABLE im_simrs_header_obat
+  ADD COLUMN id_bentuk VARCHAR(30);
+
+--
+
+2020-12-14 --
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN flag_parenteral VARCHAR(1),
+    ADD COLUMN id_jenis_obat VARCHAR(30);
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN id_sub_jenis VARCHAR(30);
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN flag_is_formularium VARCHAR(1);
+
+    CREATE TABLE im_simrs_jenis_persediaan_obat(
+    	id varchar(30) NOT NULL primary key,
+    	nama varchar(100),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+    CREATE TABLE im_simrs_jenis_persediaan_obat_sub(
+    	id varchar(30) NOT NULL primary key,
+    	nama varchar(100),
+    	id_jenis_obat varchar(30),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+    CREATE TABLE im_simrs_paremeter_keterangan_obat(
+    	id varchar(30) NOT NULL primary key,
+    	nama varchar(100),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+    CREATE TABLE im_simrs_keterangan_obat(
+    	id varchar(30) NOT NULL primary key,
+    	id_sub_jenis varchar(30),
+    	id_parameter_keterangan varchar(30),
+    	keterangan varchar(100),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+--

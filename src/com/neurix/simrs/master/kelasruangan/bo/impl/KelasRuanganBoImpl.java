@@ -128,10 +128,11 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     // Generating ID, get from postgre sequence
                     kelasRuanganId = kelasRuanganDao.getNextIdKelasRuangan();
                 } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[KelasRuangan.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..."
                             + e.getMessage());
                 }
+
                 ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity = new ImSimrsKelasRuanganEntity();
                 imSimrsKelasRuanganEntity.setIdKelasRuangan("KR"+kelasRuanganId);
                 imSimrsKelasRuanganEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
@@ -171,7 +172,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 imSimrsPelayananEntity = kelasRuanganDao.getById("idKelasRuangan", kelasRuangan.getIdKelasRuangan());
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
+                logger.error("[KelasRuangan.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
 

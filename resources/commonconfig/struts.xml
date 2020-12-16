@@ -285,6 +285,9 @@
     <include file="sshconfig/com/neurix/hris/master/payrollParamBpjs/struts/PayrollParamBpjsAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/RekananOpsAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/DetailRekananOpsAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/kategoritindakan/struts/KategoriTindakanAction.xml"/>
+
+
 
     <include file="sshconfig/com/neurix/simrs/master/kandunganObat/struts/KandunganObatAction.xml"/>
 

@@ -5,14 +5,17 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kelasruangan.bo.KelasRuanganBo;
 import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
-import com.neurix.simrs.master.pasien.action.PasienAction;
-import com.neurix.simrs.master.pasien.model.Pasien;
+
+
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
-import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsRegistrasiOnlineEntity;
-import com.neurix.simrs.transaksi.antrianonline.model.RegistrasiOnline;
+
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
+import org.hibernate.HibernateException;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -271,19 +274,19 @@ public class RuanganAction extends BaseMasterAction {
         }catch (GeneralBOException e){
             Long logId = null;
             try {
-                logId = ruanganBoProxy.saveErrorMessage(e.getMessage(), "pasienBO.saveAdd");
+                logId = ruanganBoProxy.saveErrorMessage(e.getMessage(), "RuanganBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[pasienAction.saveAdd] Error when saving error,", e1);
+                logger.error("[RuanganAction.saveAdd] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[pasienAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[RuanganAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultRuangan");
-        logger.info("[pasienAction.saveAdd] end process >>>>");
+        logger.info("[RuanganAction.saveAdd] end process >>>>");
         return "add";
     }
 
@@ -342,7 +345,7 @@ public class RuanganAction extends BaseMasterAction {
                 logger.error("[RuanganAction.saveDelete] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[RuanganAction.saveDelete] Error when editing item pasien," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            logger.error("[RuanganAction.saveDelete] Error when editing item Ruangan," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
@@ -373,6 +376,26 @@ public class RuanganAction extends BaseMasterAction {
         listOfComboKelasRuangan.addAll(listOfKelasRuangan);
 
         return "init_combo_kelasruangan";
+    }
+
+    public List<Ruangan> getListRuangan(String branchId){
+        logger.info("[RuanganAction.getListRuangan] START process >>>");
+
+        List<Ruangan> ruanganList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RuanganBo ruanganBo = (RuanganBo) ctx.getBean("ruanganBoProxy");
+        Ruangan ruangan = new Ruangan();
+        ruangan.setBranchId(branchId);
+
+        try {
+            ruanganList = ruanganBo.getByCriteria(ruangan);
+        } catch (HibernateException e) {
+            logger.error("[RuanganAction.getListRuangan] Error when get data for combo list of Ruangan", e);
+            addActionError(" Error when get data for combo list of Ruangan" + e.getMessage());
+        }
+
+        logger.info("[RuanganAction.getListRuangan] END process <<<");
+        return ruanganList;
     }
 
     @Override

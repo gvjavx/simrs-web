@@ -272,7 +272,7 @@ public class KelasRuanganAction extends BaseMasterAction {
     }
 
     public String saveEdit(){
-        logger.info("[PasienAction.saveEdit] start process >>>");
+        logger.info("[KelasRuanganAction.saveEdit] start process >>>");
         try {
 
             KelasRuangan editRuangan = getKelasRuangan();
@@ -358,9 +358,9 @@ public class KelasRuanganAction extends BaseMasterAction {
             try {
                 logId = positionBoProxy.saveErrorMessage(e.getMessage(), "PositionBO.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[UserAction.initComboPosition] Error when saving error,", e1);
+                logger.error("[Kelasruanganction.initComboPosition] Error when saving error,", e1);
             }
-            logger.error("[UserAction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[Kelasruanganction.initComboPosition] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return "failure";
         }

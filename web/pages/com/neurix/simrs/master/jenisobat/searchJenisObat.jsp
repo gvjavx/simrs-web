@@ -10,17 +10,18 @@
     <%@ include file="/pages/common/header.jsp" %>
 
     <style>
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
+        /*.pagebanner{*/
+            /*background-color: #ededed;*/
+            /*width: 100%;*/
+            /*font-size: 14px;*/
+        /*}*/
+        /*.pagelinks{*/
+            /*background-color: #ededed;*/
+            /*width: 100%;*/
+            /*font-size: 14px;*/
+            /*margin-bottom: 30px;*/
+        /*}*/
+
         /*#reset{*/
             /*-webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);*/
             /*box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);*/

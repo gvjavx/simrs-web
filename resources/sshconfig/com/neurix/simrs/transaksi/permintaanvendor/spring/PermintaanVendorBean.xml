@@ -31,6 +31,7 @@
          p:docPoDao-ref="docPoDao"
          p:userVendorDao-ref="userVendorDao"
          p:hargaObatDao-ref="hargaObatDao"
+         p:hargaTerakhirDao-ref="hargaTerakhirDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -66,6 +67,8 @@
     <bean id="docPoDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.DocPoDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="userVendorDao" class="com.neurix.simrs.transaksi.permintaanvendor.dao.UserVendorDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="hargaTerakhirDao" class="com.neurix.simrs.master.hargaterakhir.dao.HargaTerakhirDao"
           p:sessionFactory-ref="sessionFactory" />
 
 

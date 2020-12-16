@@ -424,6 +424,9 @@ public class UserDao extends GenericDao<ImUsers,String> {
         if (mapCriteria.get("id_pelayanan") != null)
             where += "AND u.id_pelayanan = '" +mapCriteria.get("id_pelayanan")+ "' \n ";
 
+        if (mapCriteria.get("id_ruangan") != null)
+            where += "AND u.id_ruangan = '" +mapCriteria.get("id_ruangan")+ "' \n ";
+
         if (mapCriteria.get("id_device") != null)
             where += "AND u.id_device = '" +mapCriteria.get("id_device")+ "' \n ";
 

@@ -3,21 +3,21 @@
 + Membuat Sequence [seq_payroll_ptkp]
 + Membuat Sequence [seq_payroll_ptkp_history]
 
-    CREATE TABLE IF NOT EXISTS public.im_im_hris_payroll_ptkp_history
+    CREATE TABLE im_hris_payroll_ptkp_history
     (
-        id character varying(10) COLLATE pg_catalog."default" NOT NULL,
-        id_ptkp character varying(10) COLLATE pg_catalog."default" NOT NULL,
-        status_keluarga character varying(1) COLLATE pg_catalog."default" NOT NULL,
+        id character varying(10) NOT NULL,
+        id_ptkp character varying(10) NOT NULL,
+        status_keluarga character varying(1) NOT NULL,
         jumlah_tanggungan integer NOT NULL,
         nilai numeric(10,2) NOT NULL,
-        action character varying(1) COLLATE pg_catalog."default" NOT NULL,
-        flag character varying(1) COLLATE pg_catalog."default" NOT NULL,
+        action character varying(1) NOT NULL,
+        flag character varying(1) NOT NULL,
         created_date timestamp without time zone NOT NULL,
-        created_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
+        created_who character varying(100) NOT NULL,
         last_update timestamp without time zone NOT NULL,
-        last_update_who character varying(100) COLLATE pg_catalog."default" NOT NULL,
-        CONSTRAINT public.im_im_hris_payroll_ptkp_history_pkey PRIMARY KEY (id)
-    )
+        last_update_who character varying(100) NOT NULL,
+        CONSTRAINT im_hris_payroll_ptkp_history_pkey PRIMARY KEY (id)
+    );
 
     CREATE SEQUENCE public.seq_payroll_ptkp
             INCREMENT 1
@@ -27,3 +27,10 @@
             CACHE 1;
 
     CREATE SEQUENCE public.seq_payroll_ptkp_history;
+
+-- 2020-12-10 ===> User
++ Menambahakan (pada table [im_users]) [tipe_pelayanan] "rawat_inap" dan "pbf"
++ Menambahakan column [id_vendor] pada table [im_users]
+
+    ALTER TABLE im_users
+        ADD id_vendor character varying(30);

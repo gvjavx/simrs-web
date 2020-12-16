@@ -71,7 +71,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "ho.diskon,\n" +
                 "ob.id_barang,\n" +
                 "mg.standar_margin,\n" +
-                "ho.harga_beli,\n" +
+                "ht.harga_terakhir,\n" +
                 "ho.diskon_umum,\n" +
                 "ho.harga_net_umum,\n" +
                 "ho.harga_jual_umum\n" +
@@ -80,8 +80,9 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 "obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
                 "LEFT JOIN ( SELECT * FROM mt_simrs_harga_obat WHERE branch_id = :branch ) ho ON ho.id_obat = ob.id_obat \n" +
                 "LEFT JOIN im_simrs_margin_obat mg ON mg.id_obat = ob.id_obat\n" +
+                "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.id_obat = ob.id_obat AND ht.branch_id = ob.branch_id\n" +
                 "WHERE ob.id_obat LIKE :id \n" +
-                "AND ob.branch_id = :branch ";
+                "AND ob.branch_id = :branch";
 
         List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idObat)
@@ -107,9 +108,9 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                 obat.setIdBarang(obj[11].toString());
                 obat.setStandarMargin(obj[12] == null ? null : (Integer) obj[12]);
                 obat.setHargaBeli(obj[13] == null ? null : (BigDecimal) obj[13]);
-                obat.setDiskonUmum(obj[14] == null ? null : (BigDecimal) obj[14]);
-                obat.setHargaNetUmum(obj[15] == null ? null : (BigDecimal) obj[15]);
-                obat.setHargaJualUmum(obj[16] == null ? null : (BigDecimal) obj[16]);
+                obat.setDiskonUmum(obj[14] == null ? new BigDecimal(0) : (BigDecimal) obj[14]);
+                obat.setHargaNetUmum(obj[15] == null ? new BigDecimal(0) : (BigDecimal) obj[15]);
+                obat.setHargaJualUmum(obj[16] == null ? new BigDecimal(0) : (BigDecimal) obj[16]);
 
                 // Sigit 2020-12-08, hitung margin obat khusus, Start
                 BigDecimal hargaRata    = obat.getAverageHargaBiji();
