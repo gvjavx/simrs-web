@@ -911,6 +911,17 @@
             <param name="class" value="com.neurix.simrs.master.ruangan.action.RuanganAction"/>
         </create>
 
+        <!--Sigit 2020-12-16, jenis persediaan, START -->
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.jenispersediaanobat.action.JenisPersediaanObatAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobat.model.JenisPersediaanObat"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.jenispersediaanobatsub.action.JenisPersediaanObatSubAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobatsub.model.JenisPersediaanObatSub"/>
+
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.keteranganobat.action.KeteranganObatAction"/>
         </create>
@@ -920,6 +931,7 @@
             <param name="class" value="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat"/>
+        <!--END-->
 
     </allow>
 </dwr>

@@ -4,38 +4,34 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!--<bean id="keteranganObatBo" class="com.neurix.simrs.master.keteranganobat.bo.impl.KeteranganObatBoImpl"-->
-          <!--p:jenisPersdiaanObatSubDao-ref=""-->
-          <!--p:keteranganObatDao-ref="keteranganObatDao"-->
-          <!--p:jenisPersediaanObatDao-ref=""-->
-    <!--/>-->
+    <bean id="jenisPersediaanObatAction" class="com.neurix.simrs.master.jenispersediaanobat.action.JenisPersediaanObatAction"
+          p:jenisPersediaanObatBoProxy-ref="jenisPersediaanObatBoProxy"
+    />
 
-    <!--<bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"-->
-          <!--p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"-->
-    <!--/>-->
+    <bean id="jenisPersediaanObatBo" class="com.neurix.simrs.master.jenispersediaanobat.bo.impl.JenisPersediaanObatBoImpl"
+          p:jenisPersediaanObatDao-ref="jenisPersediaanObatDao"
+    />
 
-    <!--<bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"-->
-          <!--p:jenisPriksaPasienBoProxy-ref="jenisPriksaPasienBoProxy"-->
-    <!--/>-->
-    <!--<bean id="keteranganObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"-->
-          <!--p:target-ref="keteranganObatBo">-->
-        <!--<property name="interceptorNames">-->
-            <!--<list>-->
-                <!--<value>transactionKeteranganObatInterceptor</value>-->
-                <!--<value>hibernateInterceptor</value>-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="jenisPersediaanObatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="jenisPersediaanObatBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionJenisPersediaanObatInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
 
-    <!--<bean id="transactionKeteranganObatInterceptor"-->
-          <!--class="org.springframework.transaction.interceptor.TransactionInterceptor"-->
-          <!--p:transactionManager-ref="transactionManager">-->
-        <!--<property name="transactionAttributes">-->
-            <!--<props>-->
-                <!--<prop key="getListKeteranganObatBySubJenisObatAndParam">readOnly</prop>-->
-            <!--</props>-->
-        <!--</property>-->
-    <!--</bean>-->
+    <bean id="transactionJenisPersediaanObatInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getListEntity">readOnly</prop>
+                <prop key="getListSearchByCriteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
 
     <bean id="jenisPersediaanObatDao" class="com.neurix.simrs.master.jenispersediaanobat.dao.JenisPersediaanObatDao"
           p:sessionFactory-ref="sessionFactory" />

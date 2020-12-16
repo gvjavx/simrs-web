@@ -11,6 +11,8 @@
     <style>
     </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/JenisPersediaanObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/JenisPersediaanObatSubAction.js"/>'></script>
     <script type='text/javascript'>
 
         $( document ).ready(function() {
@@ -594,9 +596,7 @@
                             <label style="margin-top: 10px">Jenis Obat</label>
                         </div>
                         <div class="col-md-5" style="margin-top: 7px;">
-                            <select class="form-control" id="id_jenis_obat">
-                                <option value="N">No</option>
-                                <option value="Y">Yes</option>
+                            <select class="form-control" id="id_jenis_obat" onchange="listJenisSubObat('')">
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -614,8 +614,6 @@
                         </div>
                         <div class="col-md-5" style="margin-top: 7px;">
                             <select class="form-control" id="id_sub_jenis_obat">
-                                <option value="N">No</option>
-                                <option value="Y">Yes</option>
                             </select>
                         </div>
                         <div class="col-md-2">
@@ -834,7 +832,9 @@
 
         resetSessionKandunganObat();
         getFromSessionKandunganObat('');
-        listBentukObat('')
+        listBentukObat('');
+        listJenisObat('');
+        listJenisSubObat('');
     }
 
     function saveObat(id){
@@ -996,7 +996,9 @@
         $("#row-check-id-pabrik").hide();
         $("#add_pabrik").attr('readOnly', "true");
         showListKandunganObat(idObat);
-        listBentukObat(idObat)
+        listBentukObat(idObat);
+        listJenisObat(idObat);
+        listJenisSubObat(idObat);
     }
 
     function listSelectObatEdit(idObat){
@@ -1220,7 +1222,58 @@
         }
     }
 
+    function listJenisObat(id) {
+        if (id != null && id != "") {
+            ObatAction.getHeaderObatById(id, function (obat) {
+                JenisPersediaanObatAction.getJenisPersediaanAll(function (res) {
+                    var str = "";
+                    $.each(res, function (i, item) {
+                        if (obat.id == item.id)
+                            str += '<option value="' + item.id + '" selected>' + item.nama + '</option>';
+                        else
+                            str += '<option value="' + item.id + '">' + item.nama + '</option>';
+                    });
+                    $("#id_jenis_obat").html(str);
+                });
+            });
 
+        } else {
+            JenisPersediaanObatAction.getJenisPersediaanAll(function (res) {
+                var str = "";
+                $.each(res, function (i, item) {
+                    str += '<option value="'+item.id+'">'+item.nama+'</option>';
+                });
+                $("#id_jenis_obat").html(str);
+            });
+        }
+    }
+
+    function listJenisSubObat(id) {
+        var idJenis =  $("#id_jenis_obat").val();
+        if (id != null && id != "") {
+            ObatAction.getHeaderObatById(id, function (obat) {
+                JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis(idJenis, function (res) {
+                    var str = "";
+                    $.each(res, function (i, item) {
+                        if (obat.id == item.id)
+                            str += '<option value="' + item.id + '" selected>' + item.nama + '</option>';
+                        else
+                            str += '<option value="' + item.id + '">' + item.nama + '</option>';
+                    });
+                    $("#id_sub_jenis_obat").html(str);
+                });
+            });
+
+        } else {
+            JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis(idJenis, function (res) {
+                var str = "";
+                $.each(res, function (i, item) {
+                    str += '<option value="'+item.id+'">'+item.nama+'</option>';
+                });
+                $("#id_sub_jenis_obat").html(str);
+            });
+        }
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
