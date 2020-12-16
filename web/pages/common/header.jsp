@@ -1007,6 +1007,14 @@ apply the skin class to the body tag so the changes take effect.
         return set;
     }
 
+    function inputWarning(war, suc){
+        var warn =$('#'+war).is(':visible');
+        if (warn){
+            $('#'+suc).show().fadeOut(3000);
+            $('#'+war).hide()
+        }
+    }
+
 </script>
 
 

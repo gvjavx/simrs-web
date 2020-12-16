@@ -22,18 +22,16 @@ public class JenisPersediaanObatSubAction {
         logger.info("[JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis] START >>>");
         JenisPersediaanObatSub jenisPersediaanObatSub = new JenisPersediaanObatSub();
         jenisPersediaanObatSub.setIdJenisObat(idJenis);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JenisPersediaanObatSubBo jenisPersediaanObatSubBo = (JenisPersediaanObatSubBo) ctx.getBean("jenisPersediaanObatSubBoProxy");
-
         List<JenisPersediaanObatSub> jenisPersediaanObatSubs = new ArrayList<>();
-
-        try {
-            jenisPersediaanObatSubs = jenisPersediaanObatSubBo.getSearchByCriteria(jenisPersediaanObatSub);
-        } catch (GeneralBOException e){
-            logger.error("[JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+        if(idJenis != null && !"".equalsIgnoreCase(idJenis)){
+            try {
+                jenisPersediaanObatSubs = jenisPersediaanObatSubBo.getSearchByCriteria(jenisPersediaanObatSub);
+            } catch (GeneralBOException e){
+                logger.error("[JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+            }
         }
-
         logger.info("[JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis] END <<<");
         return jenisPersediaanObatSubs;
     }

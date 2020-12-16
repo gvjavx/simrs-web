@@ -547,23 +547,43 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "c.flag_generic, \n" +
                     "c.flag_bpjs, \n" +
                     "d.standar_margin, \n" +
-                    "c.id_kategori_persediaan \n" +
+                    "c.id_kategori_persediaan,\n" +
+                    "c.flag_parenteral, \n" +
+                    "c.flag_is_formularium, \n" +
+                    "c.id_jenis_obat,\n" +
+                    "c.id_sub_jenis,\n" +
+                    "c.id_bentuk\n" +
                     "FROM im_simrs_obat a\n" +
-                    "LEFT JOIN (SELECT id_obat FROM im_simrs_obat_gejala WHERE id_jenis_obat LIKE :idJenis GROUP BY id_obat) b ON a.id_obat = b.id_obat\n" +
+                    "LEFT JOIN (\n" +
+                    "\tSELECT id_obat \n" +
+                    "\tFROM im_simrs_obat_gejala \n" +
+                    "\tWHERE id_jenis_obat LIKE :idJenis \n" +
+                    "\tGROUP BY id_obat\n" +
+                    ") b ON a.id_obat = b.id_obat\n" +
                     "LEFT JOIN im_simrs_header_obat c ON a.id_obat = c.id_obat\n" +
                     "LEFT JOIN im_simrs_margin_obat d ON a.id_obat = d.id_obat\n" +
-                    "WHERE a.branch_id LIKE :branchId\n" +
-                    "AND a.id_pabrik LIKE :idPabrik\n" +
-                    "AND a.id_obat LIKE :idObat\n" +
+                    "WHERE a.branch_id LIKE :branchId \n" +
+                    "AND a.id_pabrik LIKE :idPabrik \n" +
+                    "AND a.id_obat LIKE :idObat \n" +
                     "AND a.flag LIKE :flag\n" +
                     "GROUP BY \n" +
                     "a.id_pabrik,\n" +
                     "a.id_obat,\n" +
                     "a.nama_obat,\n" +
                     "a.lembar_per_box,\n" +
-                    "a.biji_per_lembar," +
-                    "a.merk,\n" +
-                    "a.flag, c.min_stok, c.flag_kronis, c.flag_generic, c.flag_bpjs, d.standar_margin, c.id_kategori_persediaan";
+                    "a.biji_per_lembar,a.merk,\n" +
+                    "a.flag,\n" +
+                    "c.min_stok,\n" +
+                    "c.flag_kronis,\n" +
+                    "c.flag_generic,\n" +
+                    "c.flag_bpjs,\n" +
+                    "d.standar_margin,\n" +
+                    "c.id_kategori_persediaan,\n" +
+                    "c.flag_parenteral, \n" +
+                    "c.flag_is_formularium, \n" +
+                    "c.id_jenis_obat,\n" +
+                    "c.id_sub_jenis,\n" +
+                    "c.id_bentuk";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
@@ -592,6 +612,11 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setFlagBpjs(obj[13] == null ? "N" : obj[13].toString());
                     obat.setMargin(obj[14] == null ? 0 : (Integer) obj[14]);
                     obat.setIdKategoriPersediaan(obj[15] == null ? "" : (String) obj[15]);
+                    obat.setFlagParenteral(obj[16] == null ? "" : (String) obj[16]);
+                    obat.setFlagFormula(obj[17] == null ? "" : (String) obj[17]);
+                    obat.setIdJenisBentuk(obj[18] == null ? "" : (String) obj[18]);
+                    obat.setIdJenisSub(obj[19] == null ? "" : (String) obj[19]);
+                    obat.setIdBentuk(obj[20] == null ? "" : (String) obj[20]);
                     obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
 
                     if (obat.getQtyBox() != null && obat.getMinStok() != null) {
