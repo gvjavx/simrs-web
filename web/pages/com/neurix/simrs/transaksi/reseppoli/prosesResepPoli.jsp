@@ -28,6 +28,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
     <script type='text/javascript'>
 
         function formatRupiah(angka) {
