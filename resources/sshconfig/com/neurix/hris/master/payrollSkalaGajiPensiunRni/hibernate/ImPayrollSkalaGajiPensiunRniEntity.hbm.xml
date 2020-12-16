@@ -42,6 +42,9 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+        <property name="masaKerjaGol">
+            <column name="masa_kerja_gol" sql-type="integer" not-null="true" />
+        </property>
 
         <many-to-one name="imGolonganDapenEntity" class="com.neurix.hris.master.golonganDapen.model.ImGolonganDapenEntity"
                      insert="false" update="false" fetch="select" cascade="all">

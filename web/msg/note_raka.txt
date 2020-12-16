@@ -37,6 +37,14 @@
         ADD id_ruangan character varying(50);
 
 -- 2020-12-15 ===> SkalaGajiPensiun
-+ Mengalihkan table ke im_hris_pyroll_skala_gaji_pensiun
++ Mengalihkan table ke [im_hris_pyroll_skala_gaji_pensiun]
++ Menambahkan sequence [seq_payroll_skala_gaji_pensiun_history]
++ Menambahkan column [masa_kerja_gol] pada [im_hris_pyroll_skala_gaji_pensiun]
 
     CREATE SEQUENCE public.seq_payroll_skala_gaji_pensiun_history;
+
+    ALTER TABLE im_hris_payroll_skala_gaji_pensiun
+            ADD masa_kerja_gol int NOT NULL
+
+    ALTER TABLE im_hris_payroll_skala_gaji_pensiun_history
+                ADD masa_kerja_gol int NOT NULL

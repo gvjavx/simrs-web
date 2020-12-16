@@ -59,11 +59,11 @@ public class PayrollSkalaGajiPensiunRniDao extends GenericDao<ImPayrollSkalaGaji
         return "SGP"+sId;
     }
 
-    public List<ImPayrollSkalaGajiPensiunRniEntity> getSkalaGajiPensiunRni(String golonganId, int poin,String dapenId) throws HibernateException {
+    public List<ImPayrollSkalaGajiPensiunRniEntity> getSkalaGajiPensiunRni(String golonganId, int masaKerja,String dapenId) throws HibernateException {
         List<ImPayrollSkalaGajiPensiunRniEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunRniEntity.class)
                 .add(Restrictions.eq("golonganId", golonganId))
                 .add(Restrictions.eq("tipeDapenId", dapenId))
-                .add(Restrictions.eq("poin", poin))
+                .add(Restrictions.eq("masaKerjaGol", masaKerja))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

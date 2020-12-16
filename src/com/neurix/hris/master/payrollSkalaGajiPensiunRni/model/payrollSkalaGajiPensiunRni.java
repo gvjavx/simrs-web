@@ -20,6 +20,7 @@ public class payrollSkalaGajiPensiunRni extends BaseModel {
     private int poin;
     private BigDecimal nilai;
     private String stNilai;
+    private int masaKerjaGol;
 
     public String getTipeDapenName() {
         return tipeDapenName;
@@ -83,5 +84,13 @@ public class payrollSkalaGajiPensiunRni extends BaseModel {
 
     public void setStNilai(String stNilai) {
         this.stNilai = stNilai;
+    }
+
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
+    }
+
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
     }
 }

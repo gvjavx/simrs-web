@@ -28,7 +28,17 @@ public class ImPayrollSkalaGajiPensiunRniEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private int masaKerjaGol;
+
     private ImGolonganDapenEntity imGolonganDapenEntity;
+
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
+    }
+
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
+    }
 
     public String getTipeDapenId() {
         return tipeDapenId;

@@ -27,6 +27,8 @@ public class ImPayrollSkalaGajiPensiunRniHistoryEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private int masaKerjaGol;
+
     public String getSkalaGajiPensiunIdHistory() {
         return skalaGajiPensiunIdHistory;
     }
@@ -123,5 +125,13 @@ public class ImPayrollSkalaGajiPensiunRniHistoryEntity implements Serializable {
 
     public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
         this.skalaGajiPensiunId = skalaGajiPensiunId;
+    }
+
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
+    }
+
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
     }
 }
