@@ -22,9 +22,11 @@ public class JenisPersdiaanObatSubDao extends GenericDao<ImSimrsJenisPersediaanO
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsJenisPersediaanObatSubEntity.class);
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
+        if (mapCriteria.get("id_jenis_obat") != null)
+            criteria.add(Restrictions.eq("idJenisObat", mapCriteria.get("id_jenis_obat").toString()));
         if (mapCriteria.get("nama") != null)
             criteria.add(Restrictions.ilike("nama", "%" + mapCriteria.get("nama").toString() + "%"));
 
-        return null;
+        return criteria.list();
     }
 }

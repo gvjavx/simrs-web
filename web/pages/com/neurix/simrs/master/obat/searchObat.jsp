@@ -1228,7 +1228,7 @@
                 JenisPersediaanObatAction.getJenisPersediaanAll(function (res) {
                     var str = "";
                     $.each(res, function (i, item) {
-                        if (obat.id == item.id)
+                        if (obat.idOJenisObat == item.id)
                             str += '<option value="' + item.id + '" selected>' + item.nama + '</option>';
                         else
                             str += '<option value="' + item.id + '">' + item.nama + '</option>';
@@ -1255,7 +1255,7 @@
                 JenisPersediaanObatSubAction.getListJenisObatSubByIdJenis(idJenis, function (res) {
                     var str = "";
                     $.each(res, function (i, item) {
-                        if (obat.id == item.id)
+                        if (obat.idSubJenisObat == item.id)
                             str += '<option value="' + item.id + '" selected>' + item.nama + '</option>';
                         else
                             str += '<option value="' + item.id + '">' + item.nama + '</option>';

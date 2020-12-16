@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Created by Ferdi on 05/02/2015.
  */
-
+// MENU : Iuran DPLK
 public class PayrollSkalaGajiPensiunAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(PayrollSkalaGajiPensiunAction.class);
     private PayrollSkalaGajiPensiunBo payrollSkalaGajiPensiunBoProxy;
