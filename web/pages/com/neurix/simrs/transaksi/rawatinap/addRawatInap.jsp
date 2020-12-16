@@ -18,6 +18,16 @@
         .color-picker {
             margin: 1rem 1rem 0 1rem;
         }
+
+        .blink_me {
+            animation: blinker 3.0s linear infinite;
+        }
+
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
     </style>
 
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
@@ -2029,7 +2039,7 @@
                     <input type="hidden" id="h-qty-default"/>
                 </div>
                 <div class="row">
-                    <div id="obat-serupa" style="background-color: #fff4f0; height:100px; padding-top:5px; margin-top:5px">
+                    <div id="obat-serupa" style="background-color: #fff4f0; height:100px; padding-top:5px; margin-top:5px; display: none">
                         <label class="col-md-12" style="color: black"><b class="blink_me">Obat Kandungan Serupa</b></label>
                         <input type="hidden" value="N" id="flag-obat-serupa">
                         <label class="col-md-2" style="margin-top: 7px">Nama Obat</label>
