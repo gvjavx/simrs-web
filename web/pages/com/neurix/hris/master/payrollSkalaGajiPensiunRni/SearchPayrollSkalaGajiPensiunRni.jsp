@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_payrollSkalaGajiPensiunRni'/>";
+            window.location.href="<s:url action='initForm_payrollSkalaGajiPensiun'/>";
         }
 
     </script>
@@ -60,7 +60,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollSkalaGajiPensiunRniForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiun" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiPensiun.action" cssClass="well form-horizontal">
+                    <s:form id="payrollSkalaGajiPensiunForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiun" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiPensiun.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -131,14 +131,14 @@
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollSkalaGajiPensiunRniForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollSkalaGajiPensiunForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiPensiunRni" action="add_payrollSkalaGajiPensiunRni" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiPensiun" action="add_payrollSkalaGajiPensiun" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
@@ -146,7 +146,7 @@
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiPensiunRni"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiPensiun"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -195,7 +195,7 @@
                                             <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
                                             <display:column property="tipeDapenName" sortable="true" title="Tipe Dapen"  />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="poin" sortable="true" title="Masa Golongan"  />
+                                            <display:column property="masaKerjaGol" sortable="true" title="Masa Golongan"  />
                                             <display:column property="stNilai" sortable="true" title="Nilai"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />

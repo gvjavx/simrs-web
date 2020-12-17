@@ -145,7 +145,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="point1" name="payrollSkalaGajiPensiunRni.poin" required="true"  cssClass="form-control"/>
+                                <s:textfield type="number" id="point1" name="payrollSkalaGajiPensiunRni.masaKerjaGol" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

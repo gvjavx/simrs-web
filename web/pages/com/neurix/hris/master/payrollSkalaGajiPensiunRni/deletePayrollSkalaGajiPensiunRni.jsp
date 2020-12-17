@@ -158,11 +158,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Poin :</small></label>
+                            <label class="control-label"><small>Masa Kerja :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="point1" name="payrollSkalaGajiPensiunRni.poin" required="true"  cssClass="form-control" readonly="true"/>
+                                <s:textfield  id="point1" name="payrollSkalaGajiPensiunRni.masaKerjaGol" required="true"  cssClass="form-control" readonly="true"/>
                             </table>
                         </td>
                     </tr>

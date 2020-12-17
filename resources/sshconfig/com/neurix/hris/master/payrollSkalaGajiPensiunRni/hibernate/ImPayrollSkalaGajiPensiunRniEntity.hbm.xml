@@ -4,11 +4,11 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
     <class name="com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniEntity" dynamic-update="true"
-           table="im_hris_payroll_skala_gaji_pensiun" select-before-update="true" schema="public">
+           table="im_hris_payroll_skala_gaji_dapenbun" select-before-update="true" schema="public">
 
 
         <id name="skalaGajiPensiunId">
-            <column name="skala_gaji_pensiun_id" sql-type="varchar" length="3" not-null="true" />
+            <column name="skala_gaji_pensiun_rni_id" sql-type="varchar" length="3" not-null="true" />
         </id>
 
         <property name="golonganId">

@@ -35,7 +35,7 @@ public class PayrollSkalaGajiPensiunRniHistoryDao extends GenericDao<ImPayrollSk
         // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("skalaGajiPensiunId")!=null) {
-                criteria.add(Restrictions.eq("skalaGajiPensiunId", (String) mapCriteria.get("skalaGajiPensiunId")));
+                criteria.add(Restrictions.eq("skalaGajiPensiunRniId", (String) mapCriteria.get("skalaGajiPensiunId")));
             }
             if (mapCriteria.get("golonganId")!=null) {
                 criteria.add(Restrictions.eq("golonganId", (String) mapCriteria.get("golonganId")));
@@ -44,7 +44,7 @@ public class PayrollSkalaGajiPensiunRniHistoryDao extends GenericDao<ImPayrollSk
             criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
         }
         // Order by
-        criteria.addOrder(Order.desc("skalaGajiPensiunId"));
+        criteria.addOrder(Order.desc("skalaGajiPensiunRniId"));
 
         List<ImPayrollSkalaGajiPensiunRniHistoryEntity> results = criteria.list();
 
@@ -52,7 +52,7 @@ public class PayrollSkalaGajiPensiunRniHistoryDao extends GenericDao<ImPayrollSk
     }
 
     public String getNextSkalaGajiPensiunHistory() throws HibernateException {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_skala_gaji_pensiun_history')");
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_payroll_skala_gaji_pensiun_rni_history')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%05d", iter.next());
         return "SGPH"+sId;

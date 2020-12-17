@@ -96,6 +96,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                 historyEntity.setSkalaGajiPensiunId(imPayrollSkalaGajiEntity.getSkalaGajiPensiunId());
                 historyEntity.setGolonganId(imPayrollSkalaGajiEntity.getGolonganId());
                 historyEntity.setPoin(imPayrollSkalaGajiEntity.getPoin());
+                historyEntity.setMasaKerjaGol(imPayrollSkalaGajiEntity.getMasaKerjaGol());
                 historyEntity.setNilai(imPayrollSkalaGajiEntity.getNilai());
                 historyEntity.setAction(imPayrollSkalaGajiEntity.getAction());
                 historyEntity.setFlag("Y");
@@ -170,6 +171,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                 historyEntity.setSkalaGajiPensiunId(imPayrollSkalaGajiPensiunEntity.getSkalaGajiPensiunId());
                 historyEntity.setGolonganId(imPayrollSkalaGajiPensiunEntity.getGolonganId());
                 historyEntity.setPoin(imPayrollSkalaGajiPensiunEntity.getPoin());
+                historyEntity.setMasaKerjaGol(imPayrollSkalaGajiPensiunEntity.getMasaKerjaGol());
                 historyEntity.setNilai(imPayrollSkalaGajiPensiunEntity.getNilai());
                 historyEntity.setAction(imPayrollSkalaGajiPensiunEntity.getAction());
                 historyEntity.setFlag("Y");
@@ -188,6 +190,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
 
                 imPayrollSkalaGajiPensiunEntity.setNilai(bean.getNilai());
                 imPayrollSkalaGajiPensiunEntity.setPoin(bean.getPoin());
+                imPayrollSkalaGajiPensiunEntity.setMasaKerjaGol(bean.getMasaKerjaGol());
                 imPayrollSkalaGajiPensiunEntity.setFlag(bean.getFlag());
                 imPayrollSkalaGajiPensiunEntity.setAction(bean.getAction());
                 imPayrollSkalaGajiPensiunEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -234,6 +237,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                 imPayrollSkalaGajiPensiunEntity.setGolonganId(bean.getGolonganId());
                 imPayrollSkalaGajiPensiunEntity.setTipeDapenId(bean.getTipeDapenId());
                 imPayrollSkalaGajiPensiunEntity.setPoin(bean.getPoin());
+                imPayrollSkalaGajiPensiunEntity.setMasaKerjaGol(bean.getMasaKerjaGol());
                 imPayrollSkalaGajiPensiunEntity.setNilai(bean.getNilai());
                 imPayrollSkalaGajiPensiunEntity.setFlag(bean.getFlag());
                 imPayrollSkalaGajiPensiunEntity.setAction(bean.getAction());
@@ -315,6 +319,8 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                     returnPayrollSkalaGaji.setNilai(payrollSkalaGajiEntity.getNilai());
                     returnPayrollSkalaGaji.setStNilai(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getNilai(), "###,###"));
                     returnPayrollSkalaGaji.setPoin(payrollSkalaGajiEntity.getPoin());
+
+                    returnPayrollSkalaGaji.setMasaKerjaGol(payrollSkalaGajiEntity.getMasaKerjaGol());
 
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());
                     returnPayrollSkalaGaji.setCreatedDate(payrollSkalaGajiEntity.getCreatedDate());
