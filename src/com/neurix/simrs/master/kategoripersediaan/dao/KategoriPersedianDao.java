@@ -2,7 +2,6 @@ package com.neurix.simrs.master.kategoripersediaan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
-import com.neurix.simrs.master.obat.model.ImSimrsBentukBarangEntity;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;

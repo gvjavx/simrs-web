@@ -51,6 +51,7 @@
                 <prop key="hibernate.connection.username">postgres</prop>
                 <prop key="hibernate.connection.password">postgres</prop>
 
+
             </props>
         </property>
         <property name="mappingResources">
@@ -478,7 +479,7 @@
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsKandunganObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsKandunganObatDetailEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsBentukBarangEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/bentukBarang/hibernate/ImSimrsBentukBarangEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/telemedic/hibernate/ImSimrsRekeningTelemedicEntity.hbm.xml
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsHeaderTindakanEntity.hbm.xml</value>
@@ -979,9 +980,9 @@
                     sshconfig/com/neurix/hris/master/payrollParamBpjs/hibernate/ImHrisPayrollParamBpjsEntity.hbm.xml
                 </value>
             </list>
+
         </property>
     </bean>
-
     <bean id="transactionManager"
           class="org.springframework.orm.hibernate3.HibernateTransactionManager"
           p:sessionFactory-ref="sessionFactory"

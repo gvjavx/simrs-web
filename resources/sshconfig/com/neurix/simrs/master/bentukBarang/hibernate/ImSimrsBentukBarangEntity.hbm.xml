@@ -2,7 +2,7 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.master.obat.model.ImSimrsBentukBarangEntity">
+    <entity class="com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity">
         <table name="im_simrs_bentuk_barang" schema="public"/>
         <attributes>
             <id name="idBentuk">

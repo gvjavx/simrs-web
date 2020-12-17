@@ -1503,6 +1503,9 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (6534, 36, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE im_simrs_obat
+DROP COLUMN id_jenis_obat;
+
 
 
 

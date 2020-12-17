@@ -90,6 +90,42 @@ public class Obat extends BaseModel {
     private Integer marginUmum;
     private BigDecimal hargaNetUmum;
     private String idBentuk;
+    private String flagFormula;
+    private String flagParenteral;
+    private String idJenisBentuk;
+    private String idJenisSub;
+
+    public String getIdJenisBentuk() {
+        return idJenisBentuk;
+    }
+
+    public void setIdJenisBentuk(String idJenisBentuk) {
+        this.idJenisBentuk = idJenisBentuk;
+    }
+
+    public String getIdJenisSub() {
+        return idJenisSub;
+    }
+
+    public void setIdJenisSub(String idJenisSub) {
+        this.idJenisSub = idJenisSub;
+    }
+
+    public String getFlagParenteral() {
+        return flagParenteral;
+    }
+
+    public void setFlagParenteral(String flagParenteral) {
+        this.flagParenteral = flagParenteral;
+    }
+
+    public String getFlagFormula() {
+        return flagFormula;
+    }
+
+    public void setFlagFormula(String flagFormula) {
+        this.flagFormula = flagFormula;
+    }
 
     public String getIdBentuk() {
         return idBentuk;

@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity;
 import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -17,7 +18,7 @@ public interface ObatBo{
     public List<Obat> getByCriteria(Obat searchBean) throws GeneralBOException;
     public List<Obat> getListObatByJenisObat(String idObat, String branchId) throws GeneralBOException;
     public List<Obat> getJenisObat(Obat bean) throws GeneralBOException;
-    public void saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
+    public CheckObatResponse saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
     public CheckObatResponse saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
 
     public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException;

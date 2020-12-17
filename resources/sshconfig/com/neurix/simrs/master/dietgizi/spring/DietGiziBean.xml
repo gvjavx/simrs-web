@@ -6,7 +6,7 @@
 
     <bean id="dietGiziBo" class="com.neurix.simrs.master.dietgizi.bo.impl.DietGiziBoImpl"
           p:dietGiziDao-ref="dietGiziDao"
-          p:jenisDietDao-ref="jenisDietDao"
+
     />
 
     <bean id="dietGiziBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -32,7 +32,7 @@
 
     <bean id="dietGiziDao" class="com.neurix.simrs.master.dietgizi.dao.DietGiziDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="jenisDietDao" class="com.neurix.simrs.master.dietgizi.dao.JenisDietDao"
-          p:sessionFactory-ref="sessionFactory" />
+    <!--<bean id="jenisDietDao" class="com.neurix.simrs.master.dietgizi.dao.JenisDietDao"-->
+          <!--p:sessionFactory-ref="sessionFactory" />-->
 
 </beans>

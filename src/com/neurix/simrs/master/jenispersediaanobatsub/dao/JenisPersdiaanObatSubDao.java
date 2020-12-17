@@ -4,6 +4,7 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.jenispersediaanobat.model.ImSimrsJenisPersediaanObatEntity;
 import com.neurix.simrs.master.jenispersediaanobatsub.model.ImSimrsJenisPersediaanObatSubEntity;
 import org.hibernate.Criteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -20,13 +21,17 @@ public class JenisPersdiaanObatSubDao extends GenericDao<ImSimrsJenisPersediaanO
     public List<ImSimrsJenisPersediaanObatSubEntity> getByCriteria(Map mapCriteria) {
 
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsJenisPersediaanObatSubEntity.class);
-        if (mapCriteria.get("id") != null)
+        if (mapCriteria.get("id") != null){
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
-        if (mapCriteria.get("id_jenis_obat") != null)
-            criteria.add(Restrictions.eq("idJenisObat", mapCriteria.get("id_jenis_obat").toString()));
-        if (mapCriteria.get("nama") != null)
+        }
+        if (mapCriteria.get("nama") != null){
             criteria.add(Restrictions.ilike("nama", "%" + mapCriteria.get("nama").toString() + "%"));
-
-        return criteria.list();
+        }
+        if (mapCriteria.get("id_jenis_obat") != null){
+            criteria.add(Restrictions.ilike("idJenisObat", "%" + mapCriteria.get("id_jenis_obat").toString() + "%"));
+        }
+        criteria.addOrder(Order.asc("id"));
+        List<ImSimrsJenisPersediaanObatSubEntity> listOfResult = criteria.list();
+        return listOfResult;
     }
 }

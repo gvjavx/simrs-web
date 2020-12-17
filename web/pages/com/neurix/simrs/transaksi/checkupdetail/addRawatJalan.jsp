@@ -30,7 +30,6 @@
                 opacity: 0;
             }
         }
-
     </style>
 
     <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
@@ -2025,7 +2024,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                 <span onclick="cekScrol('fa_resep-head', 'temp_resep-head')" class="pull-left hvr-grow" style="color: black; margin-top: 11px">
+                 <span onclick="cekScrol('fa_resep-head', 'temp_resep-head')" class="pull-left hvr-grow" style="color: black; margin-top: 11px; cursor: pointer">
                     <i id="fa_resep-head" class="fa fa-unlock"></i>
                 </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
