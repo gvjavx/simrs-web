@@ -78,7 +78,7 @@
     <bean id="kandunganObatDetailDao" class="com.neurix.simrs.master.obat.dao.KandunganObatDetailDao"
           p:sessionFactory-ref="sessionFactory" />
 
-    <bean id="bentukBarangDao" class="com.neurix.simrs.master.obat.dao.BentukBarangDao"
+    <bean id="bentukBarangDao" class="com.neurix.simrs.master.bentukbarang.dao.BentukBarangDao"
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="headerObatDao" class="com.neurix.simrs.master.obat.dao.HeaderObatDao"

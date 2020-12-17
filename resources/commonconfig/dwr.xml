@@ -904,6 +904,12 @@
         <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsBentukBarangEntity"/>
 
         <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.dietgizi.action.DietGiziAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.DietGizi"/>
+        <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.DietGiziEntity"/>
+
+        <create creator="new">
             <param name="class" value="com.neurix.hris.master.department.action.DepartmentAction"/>
         </create>
 

@@ -30,8 +30,10 @@
             // var idRuangan = document.getElementById("id_ruangan2").value;
             var nameKelasRuangan = document.getElementById("nama_kelasruangan2").value;
             var position = document.getElementById("positionId2").value;
+            var kategoriEdit = document.getElementById("kategoriEdit").value;
 
-            if (nameKelasRuangan != '' && position != '') {
+
+            if (nameKelasRuangan != '' && position != '' && kategoriEdit != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -54,7 +56,9 @@
                 if (position == '') {
                     msg += 'Field <strong>Position</strong> is required.' + '<br/>';
                 }
-
+                if (kategoriEdit == '') {
+                    msg += 'Field <strong>Kategori</strong> is required.' + '<br/>';
+                }
                 document.getElementById('errorValidationMessageEdit').innerHTML = msg;
 
                 $.publish('showErrorValidationDialogEdit');
@@ -91,7 +95,6 @@
         function cancelBtn() {
             $('#view_dialog_menu').dialog('close');
         };
-
 
     </script>
 
@@ -163,6 +166,23 @@
                             </table>
                         </td>
                     </tr>
+
+                    <tr >
+                        <td>
+                            <label class="control-label"><small>Kategori :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'rawat_inap':'rawat inap','rawat_intensif':'rawat intensif',
+                                'kamar_operasi':'kamar operasi','rawat_isolasi':'rawat isolasi','ruang_bersalin':'ruang bersalin','ruang_recovery':'ruang recovery'
+                                }"
+                                          id="kategoriEdit" name="kelasRuangan.kategori"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
+                                />
+                            </table>
+                        </td>
+                    </tr>
+
                 </table>
 
 

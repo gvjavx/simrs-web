@@ -86,7 +86,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 kelasRuangan = new KelasRuangan();
                 kelasRuangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 kelasRuangan.setNamaKelasRuangan(listEntity.getNamaKelasRuangan());
-                kelasRuangan.setKodering(listEntity.getKodering());
+                kelasRuangan.setKategori(listEntity.getKategori());
                 kelasRuangan.setPositionId(listEntity.getDivisiId());
                 kelasRuangan.setFlag(listEntity.getFlag());
                 kelasRuangan.setAction(listEntity.getAction());
@@ -137,6 +137,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 imSimrsKelasRuanganEntity.setIdKelasRuangan("KR"+kelasRuanganId);
                 imSimrsKelasRuanganEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                 imSimrsKelasRuanganEntity.setDivisiId(kelasRuangan.getPositionId());
+                imSimrsKelasRuanganEntity.setKategori(kelasRuangan.getKategori());
                 imSimrsKelasRuanganEntity.setFlag(kelasRuangan.getFlag());
                 imSimrsKelasRuanganEntity.setAction(kelasRuangan.getAction());
                 imSimrsKelasRuanganEntity.setCreatedDate(kelasRuangan.getCreatedDate());
@@ -181,6 +182,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     String kode = imSimrsPelayananEntity.getKodering();
                     imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                     imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
+                    imSimrsPelayananEntity.setKategori(kelasRuangan.getKategori());
                     imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
                     imSimrsPelayananEntity.setAction("U");
                     imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
@@ -197,6 +199,8 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     if (!status.equalsIgnoreCase("exist")){
                         imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                         imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
+                        imSimrsPelayananEntity.setKategori(kelasRuangan.getKategori());
+
                         imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
                         imSimrsPelayananEntity.setAction("U");
                         imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
@@ -246,6 +250,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 if (entity != null) {
                     // Modify from bean to entity serializable
                     entity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
+                    entity.setKategori(kelasRuangan.getKategori());
                     entity.setFlag(kelasRuangan.getFlag());
                     entity.setAction("U");
                     entity.setLastUpdate(kelasRuangan.getLastUpdate());

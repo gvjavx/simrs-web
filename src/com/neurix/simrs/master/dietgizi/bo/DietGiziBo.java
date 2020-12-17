@@ -8,6 +8,10 @@ import java.util.List;
 
 public interface DietGiziBo {
 
-    public List<DietGizi> getByCriteria(DietGizi bean) throws GeneralBOException;
+
     public List<JenisDiet> getJenisDietByCiteria(JenisDiet bean) throws GeneralBOException;
+    public List<DietGizi> getByCriteria (DietGizi bean) throws GeneralBOException;
+    public void saveAdd(DietGizi bean) throws GeneralBOException;
+    public void saveEdit(DietGizi bean) throws GeneralBOException;
+    public void saveDelete(DietGizi bean) throws GeneralBOException;
 }
