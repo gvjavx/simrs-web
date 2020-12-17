@@ -1354,7 +1354,6 @@
             });
         } else {
             ObatAction.listAllBentukBarang(function (res) {
-
                 var str = "<option value=''>[Select One]</option>";
                 $.each(res, function (i, item) {
                     str += '<option value="' + item.idBentuk + '">' + item.bentuk + '</option>';
