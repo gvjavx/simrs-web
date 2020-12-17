@@ -2,17 +2,14 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunKategoriParameterBudgetingEntity">
-        <table name="im_akun_kategori_parameter_budgeting" schema="public"/>
+    <entity class="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity">
+        <table name="im_akun_jenis_budgeting" schema="public"/>
         <attributes>
             <id name="id">
                 <column name="id"/>
             </id>
-            <basic name="nama">
-                <column name="nama"/>
-            </basic>
-            <basic name="idJenisBudgeting">
-                <column name="id_jenis_budgeting"/>
+            <basic name="namaJenis">
+                <column name="nama_jenis"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>

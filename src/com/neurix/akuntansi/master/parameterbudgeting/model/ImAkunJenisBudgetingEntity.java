@@ -1,11 +1,13 @@
-package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
+package com.neurix.akuntansi.master.parameterbudgeting.model;
 
 import java.sql.Timestamp;
 
-public class ImAkunParameterBudgetingRekeningEntity {
+/**
+ * Created by reza on 14/08/20.
+ */
+public class ImAkunJenisBudgetingEntity {
     private String id;
-    private String nama;
-    private String rekeningId;
+    private String namaJenis;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -21,20 +23,12 @@ public class ImAkunParameterBudgetingRekeningEntity {
         this.id = id;
     }
 
-    public String getNama() {
-        return nama;
+    public String getNamaJenis() {
+        return namaJenis;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getRekeningId() {
-        return rekeningId;
-    }
-
-    public void setRekeningId(String rekeningId) {
-        this.rekeningId = rekeningId;
+    public void setNamaJenis(String namaJenis) {
+        this.namaJenis = namaJenis;
     }
 
     public String getFlag() {
@@ -90,11 +84,10 @@ public class ImAkunParameterBudgetingRekeningEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ImAkunParameterBudgetingRekeningEntity that = (ImAkunParameterBudgetingRekeningEntity) o;
+        ImAkunJenisBudgetingEntity that = (ImAkunJenisBudgetingEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (nama != null ? !nama.equals(that.nama) : that.nama != null) return false;
-        if (rekeningId != null ? !rekeningId.equals(that.rekeningId) : that.rekeningId != null) return false;
+        if (namaJenis != null ? !namaJenis.equals(that.namaJenis) : that.namaJenis != null) return false;
         if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
         if (action != null ? !action.equals(that.action) : that.action != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
@@ -109,8 +102,7 @@ public class ImAkunParameterBudgetingRekeningEntity {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (nama != null ? nama.hashCode() : 0);
-        result = 31 * result + (rekeningId != null ? rekeningId.hashCode() : 0);
+        result = 31 * result + (namaJenis != null ? namaJenis.hashCode() : 0);
         result = 31 * result + (flag != null ? flag.hashCode() : 0);
         result = 31 * result + (action != null ? action.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);

@@ -1492,6 +1492,16 @@ DROP COLUMN kuota;
 ALTER TABLE im_simrs_pelayanan
 DROP COLUMN kodering;
 
+ALTER TABLE mt_simrs_transaksi_obat_detail
+ADD COLUMN id_racik VARCHAR(50),
+ADD COLUMN nama_racik VARCHAR(100),
+ADD COLUMN jenis_resep VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(6534, 'print label', '/reseppoli/printLabelResepPasien_reseppoli.action', 1543, 1, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6534, 36, 'Y', now(), now(), 'admin', 'admin');
 
 
 

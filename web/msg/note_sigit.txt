@@ -1449,3 +1449,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     )
 
 --
+
+2020-12-17 --
+
+    CREATE SEQUENCE seq_parameter_budgeting;
+
+--

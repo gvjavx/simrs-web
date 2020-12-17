@@ -1,4 +1,4 @@
-package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
+package com.neurix.akuntansi.master.parameterbudgeting.model;
 
 import java.sql.Timestamp;
 

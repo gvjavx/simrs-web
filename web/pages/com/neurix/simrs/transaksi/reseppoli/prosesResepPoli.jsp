@@ -28,6 +28,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
     <script type='text/javascript'>
 
         function formatRupiah(angka) {
@@ -112,7 +113,8 @@
 
             $('#resep_poli').addClass('active');
 
-            cekListObat();
+            // cekListObat();
+            countBiaya();
 
             const paintCanvas1 = document.querySelector("#ttd_pasien");
             const paintCanvas2 = document.querySelector("#ttd_apoteker");
@@ -246,6 +248,7 @@
                                     <s:hidden id="id_pasien" name="permintaanResep.idPasien"/>
                                     <s:hidden id="id_approve" name="transaksiObatDetail.idApprovalObat"/>
                                     <s:hidden id="id_resep" name="permintaanResep.idPermintaanResep"></s:hidden>
+                                    <s:hidden id="jenis_pasien" name="permintaanResep.idJenisPeriksa"></s:hidden>
                                     <tr>
                                         <td width="45%"><b>No RM</b></td>
                                         <td>
@@ -307,7 +310,7 @@
                                         <td>
                                             <table>
                                                 <script>
-                                                    document.write(changeJenisPasien('<s:property value="permintaanResep.idJenisPeriksa"/>', '<s:label name="permintaanResep.jenisPeriksaPasien"></s:label>'));
+                                                    document.write(changeJenisPasien('<s:property value="permintaanResep.idJenisPeriksa"/>', '<s:property value="permintaanResep.jenisPeriksaPasien"/>'));
                                                 </script>
                                             </table>
                                         </td>
@@ -374,7 +377,7 @@
                         </div>
                     </div>
                     <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
+                    <div class="box-header with-border" id="top_top">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Obat Resep</h3>
                     </div>
                     <div class="box-body">
@@ -382,36 +385,58 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             Silahkan lakukan konfirmasi qty untuk masing masing obat...!
                         </div>
-                        <table class="table table-bordered table-striped" id="tabel_list_obat">
+                        <table class="table table-bordered table-striped" id="tabel_list_obat" style="font-size: 14px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Nama Obat</td>
-                                <td align="center">Qty Request</td>
-                                <%--<td align="center">Qty Approve</td>--%>
-                                <td align="center">Harga Satuan (Rp.)</td>
-                                <td align="center">Harga Total (Rp.)</td>
+                                <td align="center">Qty</td>
+                                <td align="center">Qty App</td>
+                                <td align="center">Satuan (Rp.)</td>
+                                <td align="center">Total (Rp.)</td>
                                 <td width="21%">Scan ID Obat</td>
-                                <td>Jenis Satuan</td>
+                                <td>Keterangan</td>
                             </tr>
                             </thead>
                             <tbody>
-                            <s:iterator value="#session.listOfResultResep" id="listOfResultResep">
+                            <s:iterator value="#session.listOfResultResep" var="row" status="count">
                                 <tr>
-                                    <td><s:property value="namaObat"/></td>
-                                    <td align="center"><s:property value="qty"/></td>
-                                    <%--<td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/></span></td>--%>
+                                    <td>
+                                        <s:property value="namaObat"/>
+                                        <script>
+                                            var nama = '<s:property value="namaRacik"/>';
+                                            var hariKronis = '<s:property value="HariKronis"/>';
+                                            var racik = '<span style="border-radius: 5px; padding:4px; background-color: black; color: white; font-size: 10px">\n' + nama +'</span>';
+                                            var kronis = '<span style="border-radius: 5px; padding:4px; background-color: #fbec88; color: black; font-size: 10px">\n' + 'kronis' +'</span>';
+                                            if(nama != '' && nama != null){
+                                                document.write(racik);
+                                            }else{
+                                                if(hariKronis != '' && hariKronis != null){
+                                                    document.write(kronis);
+                                                }
+                                            }
+                                        </script>
+                                        <input type="hidden" value="<s:property value="idObat"/>" id='id_obat_<s:property value="%{#count.index}"/>'>
+                                        <input type="hidden" value="<s:property value="idRacik"/>" id='id_racik_<s:property value="%{#count.index}"/>'>
+                                    </td>
+                                    <td align="center"><s:property value="qty"/> <s:property value="jenisSatuan"/></td>
+                                    <td align="center"><span id='qtyAppove<s:property value="idObat"/>'><s:property value="qtyApprove"/> <s:property value="jenisSatuan"/></span></td>
                                     <td align="right"><script>var val = <s:property value="harga"/>;
                                     if (val != null && val != '') {
                                         document.write(formatRupiah(val))
                                     }</script></td>
-                                    <td align="right"> <script>var val = <s:property value="totalHarga"/>;
-                                    if (val != null && val != '') {
-                                        document.write(formatRupiah(val))
-                                    }</script></td>
+                                    <td align="right">
+                                        <script>
+                                            var val = <s:property value="totalHarga"/>;
+                                            if (val != null && val != '') {
+                                                document.write(formatRupiah(val))
+                                            }
+                                        </script>
+                                        <input type="hidden" value="<s:property value="totalHarga"/>" id='tot_resep_<s:property value="%{#count.index}"/>'>
+                                    </td>
                                     <td>
                                         <div class="input-group">
                                             <s:if test='#row.flagVerifikasi == "Y"'>
-                                                <input type="text" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
+                                                <input type="text" id='input<s:property value="idObat"/>' value="<s:property value="idObat"/>" disabled class="form-control" onchange="confirmObat(this.value,'<s:property value="idObat"/>','<s:property value="namaObat"/>','<s:property value="qty"/>','<s:property value="jenisSatuan"/>','<s:property value="idTransaksiObatDetail"/>')">
                                                 <div class="input-group-addon">
                                                     <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
                                                 </div>
@@ -424,17 +449,79 @@
                                             </s:else>
                                         </div>
                                     </td>
-                                    <td><s:property value="jenisSatuan"/></td>
+                                    <td>
+                                        <script>
+                                            var ket = '<s:property value="keterangan"/>';
+                                            var idObat = '<s:property value="idObat"/>';
+                                            var idRacik = '<s:property value="idRacik"/>';
+                                            if(ket != '' && ket != null){
+                                                document.write('<textarea class="form-control" id=\'ket_<s:property value="%{#count.index}"/>\'>'+ket+'</textarea>');
+                                            }
+                                        </script>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
                         </table>
                     </div>
-
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Tambahan Biaya Resep</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <input class="form-control jenis_biaya" placeholder="Jenis Biaya">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="biaya_0" oninput="convertRpResep('biaya_0', this.value, 'h_biaya_0'); setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')" placeholder="Biaya">
+                                    <input type="hidden" class="biaya" id="h_biaya_0">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <input oninput="setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')"
+                                       onchange="setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')"
+                                       class="form-control jumlah" value="1" type="number" placeholder="jumlah" id="jml_0">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control total_biaya" id="total_biaya_0" disabled="disabled" placeholder="Total Biaya">
+                                    <input class="h_total_biaya" type="hidden" id="h_total_biaya_0">
+                                </div>
+                            </div>
+                            <div class="col-md-1">
+                                <a onclick="addBiaya()" class="btn btn-success" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                        <div id="temp_biaya"></div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="col-md-offset-8 col-md-3">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        Rp.
+                                    </div>
+                                    <input class="form-control" id="total_akhir_biaya" disabled="disabled" placeholder="Total Biaya Resep">
+                                    <input type="hidden" id="h_total_akhir_biaya">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="box-header with-border"></div>
                     <div class="box-body">
-                        <a href="initForm_reseppoli.action" class="btn btn-warning"><i class="fa fa-arrow-left"></i> Back</a>
-                        <a onclick="confirm()" class="btn btn-success"><i class="fa fa-arrow-right"></i> Save</a>
+                        <div class="row">
+                            <div class="col-md-offset-4 col-md-4 text-center">
+                                <a href="initForm_reseppoli.action" class="btn btn-warning"><i class="fa fa-times"></i> Back</a>
+                                <a onclick="printLabelResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print Label</a>
+                                <a onclick="confirm()" class="btn btn-success"><i class="fa fa-check"></i> Save</a>
+                            </div>
+                        </div>
                         <%--<a onclick="printStrukResep()" class="btn btn-primary"><i class="fa fa-print"></i> Print</a>--%>
                         <div class="form-group">
                             <s:form id="pembayaranForm" method="post" namespace="/transaksi"
@@ -459,7 +546,7 @@
                                                         onclick="$('#confirm_dialog').dialog('close')"><i
                                                         class="fa fa-times"></i> No
                                                 </button>
-                                                <button class="btn btn-success" onclick="saveApproveResep()"><i class="fa fa-arrow-right"></i> Yes</button>
+                                                <button class="btn btn-success" onclick="saveApproveResep()"><i class="fa fa-check"></i> Yes</button>
                                             </div>
                                         </sj:dialog>
 
@@ -603,7 +690,7 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_ttd"></p>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <div class="col-md-12">
                         <div class="col-md-7">
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px">
@@ -624,14 +711,14 @@
                     <div class="col-md-12">
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Pasien</b>
-                            <canvas class="js-paint  paint-canvas" id="ttd_pasien" width="380" height="300"></canvas>
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('ttd_pasien')"><i class="fa fa-trash"></i> Clear
+                            <canvas class="paint-canvas" id="ttd_pasien" width="380" height="300" onmouseover="paintTtd('ttd_pasien')"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_pasien')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                         <div class="col-md-6">
                             <b style="margin-left: 8px">Tanda Tangan Apoteker</b>
-                            <canvas class="js-paint  paint-canvas" id="ttd_apoteker" width="380" height="300"></canvas>
-                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="clearConvas('ttd_apoteker')"><i class="fa fa-trash"></i> Clear
+                            <canvas class="paint-canvas" id="ttd_apoteker" width="380" height="300" onmouseover="paintTtd('ttd_apoteker')"></canvas>
+                            <button style="margin-left: 8px" type="button" class="btn btn-danger" onclick="removePaint('ttd_apoteker')"><i class="fa fa-trash"></i> Clear
                             </button>
                         </div>
                     </div>
@@ -695,12 +782,14 @@
     var idResep = $('#id_resep').val();
     var idCheckup = $('#no_checkup').val();
     var idDetailCheckup = $('#no_detail_checkup').val();
+    var idJenisPasien = $('#jenis_pasien').val();
 
     function drawTtd() {
         $('#modal-ttd').modal({show:true, backdrop:'static'});
     }
-    function printStrukResep(){
-        window.open('printStrukResepPasien_reseppoli.action?id='+idDetailCheckup+'&idResep='+idResep+'&idApprove='+id_approve, "_blank");
+
+    function printLabelResep(){
+        window.open('printLabelResepPasien_reseppoli.action?idResep='+idResep, "_blank");
     }
 
     function show(){
@@ -708,13 +797,13 @@
     }
 
     function cekListObat() {
-
         setInterval(function () {
             TransaksiObatAction.getListResepPasien(idResep, function (response) {
                 if(response.length > 0) {
                     $.each(response, function (i, item) {
                         if(item.flagVerifikasi == "Y"){
                             $('#input'+item.idObat).attr('disabled','true');
+                            $('#input'+item.idObat).val(item.idObat);
                             $('#status'+item.idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                         }else {
                             $('#input'+item.idObat).removeAttr('disabled');
@@ -787,7 +876,6 @@
         if (idObatVal != "") {
             TransaksiObatAction.listObatPoliEntity(idObatVal, {
                 callback: function (response) {
-                    console.log(" response length = " + response.length + ", id obat = " + idObat + ", id obat val = " + idObatVal);
                     if (response.length > 0 && idObat == idObatVal) {
 
                         $('#loading_data').show();
@@ -871,7 +959,7 @@
                     } else {
                         $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_failure.ico"/>" style="height: 20px; width: 20px;">');
                         $('#error_dialog').dialog('open');
-                        $('body').scrollTop(0);
+                        $('#top_top').scrollTop(0);
                         $('#errorMessage').html("ID obat tidak cocok dengan list resep...!")
                         $('#loading_data').hide();
                     }
@@ -969,8 +1057,12 @@
             var qty = $('#newQty'+i).val();
             var idBarang = $('#id_barang'+i).val();
             var jenisSatuan = data[i]["Jenis Satuan"];
-
-            result.push({'Expired Date': expDate, 'Qty Approve': qty, 'ID Barang':idBarang, 'Jenis Satuan':jenisSatuan});
+            result.push({
+                'expired_date': expDate,
+                'qty_approve': qty,
+                'id_barang':idBarang,
+                'jenis_satuan':jenisSatuan
+            });
         });
 
         $.each(data, function (i, item) {
@@ -1015,10 +1107,9 @@
         var stringData = JSON.stringify(result);
 
         if (qtyApp > 0) {
-
             if (parseInt(qtyApp) <= parseInt(stok) && parseInt(qtyApp) <= parseInt(qtyReq)) {
                 $('#modal-confirm-dialog').modal('show');
-                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\')');
+                $('#save_con').attr('onclick','saveApprove(\'' + idObat + '\',\'' + idTransaksi + '\',\'' + stringData + '\',\'' + qtyApp + '\',\''+jenisSatuan+'\')');
             } else {
                 $('#warning_app').show().fadeOut(5000);
                 $('#msg_app').text("Qty Approve tidak boleh melebihi stok dan qty request..!");
@@ -1029,7 +1120,7 @@
         }
     }
 
-    function saveApprove(idObat, idTransaksi, stringData, qtyApp){
+    function saveApprove(idObat, idTransaksi, stringData, qtyApp, jenisSatuan){
         $('#modal-confirm-dialog').modal('hide');
         dwr.engine.setAsync(true);
         $('#load_app').show();
@@ -1040,9 +1131,10 @@
                 $('#save_app').show();
                 $('#modal-approve').modal('hide');
                 $('#info_dialog').dialog('open');
-                $('#qtyAppove'+idObat).text(qtyApp);
+                $('#qtyAppove'+idObat).text(qtyApp+' '+jenisSatuan);
                 $('#status'+idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
-                $('body').scrollTop(0);
+                $('#input'+idObat).attr('disabled', true);
+                $('#top_top').scrollTop(0);
             } else {
                 $('#load_app').hide();
                 $('#save_app').show();
@@ -1053,34 +1145,87 @@
     }
 
     function confirm(){
-
-        // var data = $('#tabel_list_obat').tableToJSON();
-        // var cek = false;
-        // $.each(data, function (i, item) {
-        //     var qtyApp = data[i]["Scan ID Obat"];
-        //     if (qtyApp == ""){
-        //         cek = true;
-        //     }
-        //     cek = parseInt(cek) + parseInt(qtyApp);
-        // });
-
-        $('#confirm_dialog').dialog('open');
-        $('body').scrollTop(0);
-        // if(cek > 0){
-        //     $('#confirm_dialog').dialog('open');
-        // }else{
-        //     $('#warning_list_obat').show().fadeOut(5000);
-        // }
-        // console.log(cek);
-
+        var data = $('#tabel_list_obat').tableToJSON();
+        var cek = false;
+        $.each(data, function (i, item) {
+            var idObat = $('#id_obat_'+i).val();
+            var qtyApp = $('#input'+idObat).val();
+            if (qtyApp == ""){
+                cek = true;
+            }
+        });
+        if(!cek){
+            $('#confirm_dialog').dialog('open');
+        }else{
+            $('#warning_list_obat').show().fadeOut(5000);
+            $('#top_top').scrollTop(0);
+        }
     }
 
     function saveApproveResep(){
+        var data = $('#tabel_list_obat').tableToJSON();
+        var dataKet = [];
+        $.each(data, function (i, item) {
+            var idObat = $('#id_obat_'+i).val();
+            var idRacik = $('#id_racik_'+i).val();
+            var ket = $('#ket_'+i).val();
+            var idObatR = "";
+            var idRacikR = "";
+            var ketR = "";
+            if(idObat != undefined && idObat != ''){
+                idObatR = idObat;
+            }
+            if(idRacik != undefined && idRacik != ''){
+                idRacikR = idRacik;
+            }
+            if(ket != undefined && ket != ''){
+                ketR = ket;
+            }
+            dataKet.push({
+                'id_obat': idObatR,
+                'id_racik': idRacikR,
+                'ket': ketR
+            })
+        });
 
+        var jenisBiaya = $('.jenis_biaya');
+        var dataTambahan = [];
+        if(jenisBiaya.length > 0){
+            $.each(jenisBiaya, function (i, item) {
+                if(item.value != ''){
+                    var total = $('#h_total_biaya_'+i).val();
+                    if(total != ''){
+                        dataTambahan.push({
+                            'jenis_biaya': item.value,
+                            'total': total
+                        });
+                    }
+                }
+            });
+        }
+
+        var editKeterangan = "";
+        var editBiaya = "";
+        if(dataKet.length > 0){
+            editKeterangan = JSON.stringify(dataKet);
+        }
+        if(dataTambahan.length > 0){
+            editBiaya = JSON.stringify(dataTambahan);
+        }
+
+        var obj = {
+            'id_approve': id_approve,
+            'id_detail_checkup': idDetailCheckup,
+            'id_resep': idResep,
+            'jenis_pasien': idJenisPasien,
+            'keterangan': editKeterangan,
+            'biaya_tambahan': editBiaya
+        }
+        var dataString = JSON.stringify(obj);
         $('#confirm_dialog').dialog('close');
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        TransaksiObatAction.saveApproveResepObatPoli(id_approve, {
+        TransaksiObatAction.saveApproveResepObatPoli(dataString, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#ref').val(2);
@@ -1096,6 +1241,123 @@
                 }
             }
         });
+    }
+
+    function addBiaya(){
+        var id = $('.jenis_biaya').length;
+        var label = 'biy_'+id;
+        var inputId = 'biaya_'+id;
+        var hInput = 'h_biaya_'+id;
+        var total = 'total_biaya_'+id;
+        var totalH = 'h_total_biaya_'+id;
+        var idJumlah = 'jml_'+id;
+
+        var row = '<div class="row" id="'+label+'" style="margin-top: 7px">\n' +
+            '<div class="col-md-3">\n' +
+            '    <input class="form-control jenis_biaya" placeholder="Jenis Biaya">\n' +
+            '</div>\n' +
+            '<div class="col-md-3">\n' +
+            '    <div class="input-group">\n' +
+            '        <div class="input-group-addon">\n' +
+            '            Rp.\n' +
+            '        </div>\n' +
+            '        <input class="form-control" id="'+inputId+'" oninput="convertRpResep(\''+inputId+'\', this.value, \''+hInput+'\'); setTotalBiaya(\''+inputId+'\', \''+totalH+'\', \''+total+'\', \''+idJumlah+'\')" placeholder="Biaya">\n' +
+            '        <input type="hidden" class="biaya" id="'+hInput+'">\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '<div class="col-md-2">\n' +
+            '    <input class="form-control jumlah" value="1" type="number" placeholder="jumlah" id="'+idJumlah+'" ' +
+            '       oninput="setTotalBiaya(\''+inputId+'\', \''+totalH+'\', \''+total+'\', \''+idJumlah+'\')"'+
+            '       onchange="setTotalBiaya(\''+inputId+'\', \''+totalH+'\', \''+total+'\', \''+idJumlah+'\')">\n' +
+            '</div>\n' +
+            '<div class="col-md-3">\n' +
+            '    <div class="input-group">\n' +
+            '        <div class="input-group-addon">\n' +
+            '            Rp.\n' +
+            '        </div>\n' +
+            '        <input class="form-control total_biaya" id="'+total+'" disabled="disabled" placeholder="Total Biaya">\n' +
+            '        <input type="hidden" class="h_total_biaya" id="'+totalH+'">\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '<div class="col-md-1">\n' +
+            '    <a onclick="delBiaya(\''+label+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-trash"></i></a>\n' +
+            '</div>\n' +
+            '</div>';
+        $('#temp_biaya').append(row);
+    }
+
+    function delBiaya(id){
+        $('#'+id).remove();
+    }
+
+    function convertRpResep(id, val, idHidden) {
+        $('#'+id).val(formatRupiahAtas2(val));
+        if(idHidden != '' && idHidden != null){
+            val = val.replace(/[.]/g, '');
+            var numbers = /^[0-9]+$/;
+            if(val != ''){
+                if(val.match(numbers)) {
+                    $('#' + idHidden).val(val);
+                }
+            }else{
+                $('#' + idHidden).val('');
+            }
+        }
+    }
+
+    function setTotalBiaya(id, idTujuan, textTujuan, jumlah){
+        var jml = $('#'+jumlah).val();
+        $('#'+id).val(formatRupiahAtas2($('#'+id).val()));
+        var val = $('#'+id).val();
+        if(val != '' && val != null && jml != '' && jml != null && parseInt(jml)>0){
+            val = val.replace(/[.]/g, '');
+            var numbers = /^[0-9]+$/;
+            if(val != ''){
+                if(val.match(numbers)) {
+                    var hasil = val * jml;
+                    $('#' + idTujuan).val(hasil);
+                    $('#'+textTujuan).val(formatRupiahAtas(hasil));
+                }
+            }else{
+                $('#' + idTujuan).val('');
+                $('#'+textTujuan).val('');
+            }
+        }else{
+            $('#' + idTujuan).val('');
+            $('#'+textTujuan).val('');
+        }
+        countBiaya();
+    }
+
+    function countBiaya(){
+        var data = $('#tabel_list_obat').tableToJSON();
+        var jumlah = 0;
+        $.each(data, function (i, item) {
+            var jml = $('#tot_resep_'+i).val();
+            if(jml != ''){
+                if(jumlah != 0){
+                    jumlah = parseInt(jumlah) + parseInt(jml);
+                }else{
+                    jumlah = jml;
+                }
+            }
+        });
+
+        var tambahanBiaya = $('.h_total_biaya');
+        if(tambahanBiaya.length > 0){
+            $.each(tambahanBiaya, function (i, item) {
+                if(item.value != ''){
+                    if(jumlah != 0){
+                        jumlah = parseInt(jumlah) + parseInt(item.value);
+                    }else{
+                        jumlah = item.value;
+                    }
+                }
+            });
+        }
+
+        $('#total_akhir_biaya').val(formatRupiahAtas(jumlah));
+        $('#h_total_akhir_biaya').val(jumlah);
     }
 
 

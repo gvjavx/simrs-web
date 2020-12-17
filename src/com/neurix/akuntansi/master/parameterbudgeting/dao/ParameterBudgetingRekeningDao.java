@@ -1,6 +1,6 @@
-package com.neurix.akuntansi.transaksi.budgetingperhitungan.dao;
+package com.neurix.akuntansi.master.parameterbudgeting.dao;
 
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingRekeningEntity;
+import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingRekeningEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.Query;

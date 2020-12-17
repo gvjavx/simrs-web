@@ -586,9 +586,9 @@
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity"/>
         <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunJenisBudgetingEntity"/>
+                 match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity"/>
         <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity"/>
+                 match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity"/>
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity"/>
         <convert converter="bean"
@@ -596,7 +596,7 @@
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.BudgetingNilaiDasar"/>
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting"/>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting"/>
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.KategoriParameter"/>
 
         <!--Master Hcm-->
@@ -931,6 +931,15 @@
             <param name="class" value="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.master.parameterbudgeting.action.ParameterBudgetingAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingRekeningEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunKategoriParameterBudgetingEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.master.model.ImMasterEntity"/>
         <!--END-->
 
     </allow>

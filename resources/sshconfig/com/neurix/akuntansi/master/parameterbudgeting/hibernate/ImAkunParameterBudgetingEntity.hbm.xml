@@ -2,7 +2,7 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity">
+    <entity class="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity">
         <table name="im_akun_parameter_budgeting" schema="public"/>
         <attributes>
             <id name="id">

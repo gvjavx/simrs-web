@@ -71,6 +71,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         String flag                 = "%";
         String branchId             = "%";
         String tipePermintaan       = "001";
+        String isOrder              = "";
 
         if (bean.getIdTransaksiObatDetail() != null && !"".equalsIgnoreCase(bean.getIdTransaksiObatDetail())){
             idTransaksi = bean.getIdTransaksiObatDetail();
@@ -96,8 +97,11 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
             tipePermintaan = bean.getTipePermintaan();
         }
 
-        String SQL = "\n" +
-                "SELECT \n" +
+        if (bean.getIsOrder() != null && !"".equalsIgnoreCase(bean.getIsOrder())){
+            isOrder = "ORDER BY tod.id_transaksi_obat_detail, tod.id_racik ASC";
+        }
+
+        String SQL = "SELECT \n" +
                 "tod.id_transaksi_obat_detail,\n" +
                 "tod.id_approval_obat,\n" +
                 "tod.id_obat,\n" +
@@ -108,7 +112,15 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "tod.created_who,\n" +
                 "tod.last_update,\n" +
                 "tod.last_update_who,\n" +
-                "tod.jenis_satuan, tod.flag_verifikasi\n" +
+                "tod.jenis_satuan,\n" +
+                "tod.flag_verifikasi,\n" +
+                "tod.qty_approve,"+
+                "tod.flag_racik,\n" +
+                "tod.id_racik,\n" +
+                "tod.nama_racik,\n" +
+                "tod.keterangan,\n" +
+                "tod.jenis_resep,\n" +
+                "tod.hari_kronis\n" +
                 "FROM mt_simrs_transaksi_obat_detail tod\n" +
                 "INNER JOIN \n" +
                 "(\n" +
@@ -116,16 +128,14 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 "\tid_approval_obat,\n" +
                 "\tbranch_id \n" +
                 "\tFROM mt_simrs_approval_transaksi_obat \n" +
-//                "\tWHERE tipe_permintaan = '001' \n" +
                 "\tWHERE tipe_permintaan = :tipe \n" +
-//                "\tAND flag = 'Y'\n" +
                 ") ato ON ato.id_approval_obat = tod.id_approval_obat\n" +
                 "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = ato.id_approval_obat\n" +
                 "WHERE tod.flag LIKE :flag \n" +
                 "AND ato.branch_id LIKE :branchId \n" +
                 "AND tod.id_approval_obat LIKE :idApprovalObat \n" +
                 "AND tod.id_transaksi_obat_detail LIKE :idTransaksi \n" +
-                "AND pr.id_permintaan_resep LIKE :idPermintaanResep ";
+                "AND pr.id_permintaan_resep LIKE :idPermintaanResep \n" + isOrder;
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idTransaksi", idTransaksi)
@@ -138,11 +148,9 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
 
         List<ImtSimrsTransaksiObatDetailEntity> obatDetailEntities = new ArrayList<>();
 
-        if (results.size() > 0)
-        {
+        if (results.size() > 0) {
             ImtSimrsTransaksiObatDetailEntity obatDetailEntity;
-            for (Object[] obj : results)
-            {
+            for (Object[] obj : results) {
                 obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
                 obatDetailEntity.setIdTransaksiObatDetail(obj[0].toString());
                 obatDetailEntity.setIdApprovalObat(obj[1].toString());
@@ -156,6 +164,13 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                 obatDetailEntity.setLastUpdateWho(obj[9].toString());
                 obatDetailEntity.setJenisSatuan(obj[10].toString());
                 obatDetailEntity.setFlagVerifikasi(obj[11] == null ? "" : obj[11].toString());
+                obatDetailEntity.setQtyApprove(obj[12] == null ? null : (BigInteger) obj[12]);
+                obatDetailEntity.setFlagRacik(obj[13] == null ? "" : obj[13].toString());
+                obatDetailEntity.setIdRacik(obj[14] == null ? "" : obj[14].toString());
+                obatDetailEntity.setNamaRacik(obj[15] == null ? "" : obj[15].toString());
+                obatDetailEntity.setKeterangan(obj[16] == null ? "" : obj[16].toString());
+                obatDetailEntity.setJenisResep(obj[17] == null ? "" : obj[17].toString());
+                obatDetailEntity.setHariKronis(obj[18] == null ? null : (Integer) obj[18]);
                 obatDetailEntities.add(obatDetailEntity);
             }
         }

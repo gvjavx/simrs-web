@@ -84,4 +84,14 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
         logger.info("[KeteranganObatBoImpl.getListSearchByCriteria] END <<< ");
         return keteranganObats;
     }
+
+    @Override
+    public void saveAdd(List<KeteranganObat> listBean) throws GeneralBOException {
+
+    }
+
+    @Override
+    public void saveEdit(List<KeteranganObat> listBean) throws GeneralBOException {
+
+    }
 }

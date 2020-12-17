@@ -1,4 +1,4 @@
-package com.neurix.akuntansi.transaksi.budgetingperhitungan.model;
+package com.neurix.akuntansi.master.parameterbudgeting.model;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -39,6 +39,33 @@ public class ParameterBudgeting {
     private BigDecimal totalRealisasi;
     private String bulan;
     private String idTransNilaiDasar;
+    private String namaJenisBudgeting;
+    private String namaKategoriBudgeting;
+    private String namaParamRekening;
+
+    public String getNamaParamRekening() {
+        return namaParamRekening;
+    }
+
+    public void setNamaParamRekening(String namaParamRekening) {
+        this.namaParamRekening = namaParamRekening;
+    }
+
+    public String getNamaKategoriBudgeting() {
+        return namaKategoriBudgeting;
+    }
+
+    public void setNamaKategoriBudgeting(String namaKategoriBudgeting) {
+        this.namaKategoriBudgeting = namaKategoriBudgeting;
+    }
+
+    public String getNamaJenisBudgeting() {
+        return namaJenisBudgeting;
+    }
+
+    public void setNamaJenisBudgeting(String namaJenisBudgeting) {
+        this.namaJenisBudgeting = namaJenisBudgeting;
+    }
 
     public String getIdTransNilaiDasar() {
         return idTransNilaiDasar;
