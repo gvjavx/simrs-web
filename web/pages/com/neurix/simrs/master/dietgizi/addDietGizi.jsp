@@ -110,7 +110,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="tarifAdd" name="dietGizi.tarif" required="true" cssStyle="margin-top: 7px"
+                                <s:textfield id="tarifAdd" name="dietGizi.tarif" type="number" required="true" cssStyle="margin-top: 7px"
                                              disabled="false" cssClass="form-control"/>
                             </table>
                         </td>

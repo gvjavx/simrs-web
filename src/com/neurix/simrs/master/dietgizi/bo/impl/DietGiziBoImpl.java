@@ -78,6 +78,15 @@ public class DietGiziBoImpl implements DietGiziBo {
     @Override
     public void saveAdd(DietGizi bean) throws GeneralBOException {
         if (bean!=null) {
+            List<ImSimrsDietGizi> cekList = new ArrayList<>();
+            try {
+                cekList = dietGiziDao.getDietGizi(bean.getNamaDietGizi());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }if (cekList.size()> 0){
+                throw new GeneralBOException("nama diet gizi tidak boleh sama");
+            }else {
+
             String dietgiziId;
             try {
                 // Generating ID, get from postgre sequence
@@ -109,6 +118,7 @@ public class DietGiziBoImpl implements DietGiziBo {
                 throw new GeneralBOException("Found problem when saving new data Jenis Obat, please info to your admin..." + e.getMessage());
             }
         }
+    }
     }
 
     @Override
