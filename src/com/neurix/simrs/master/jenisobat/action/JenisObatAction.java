@@ -5,9 +5,6 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
-import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
-import com.neurix.simrs.master.pelayanan.model.Pelayanan;
-import com.neurix.simrs.master.rekananops.model.RekananOps;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 

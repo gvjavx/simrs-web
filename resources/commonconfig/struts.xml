@@ -291,4 +291,7 @@
 
     <include file="sshconfig/com/neurix/simrs/master/bentukBarang/struts/BentukBarangAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/dietgizi/struts/JenisDietAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/dietgizi/struts/DietGiziAction.xml"/>
+
 </struts>

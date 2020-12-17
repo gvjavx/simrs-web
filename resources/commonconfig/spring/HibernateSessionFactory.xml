@@ -974,6 +974,7 @@
                     sshconfig/com/neurix/hris/master/payrollParamBpjs/hibernate/ImHrisPayrollParamBpjsEntity.hbm.xml
                 </value>
             </list>
+
         </property>
     </bean>
     <bean id="transactionManager"

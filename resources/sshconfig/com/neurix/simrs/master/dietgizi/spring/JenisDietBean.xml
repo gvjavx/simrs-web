@@ -4,13 +4,12 @@
        xmlns:p="http://www.springframework.org/schema/p"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="dietGiziBo" class="com.neurix.simrs.master.dietgizi.bo.impl.DietGiziBoImpl"
-          p:dietGiziDao-ref="dietGiziDao"
-
+    <bean id="jenisDietBo" class="com.neurix.simrs.master.dietgizi.bo.impl.JenisDietBoImpl"
+          p:jenisDietDao-ref="jenisDietDao"
     />
 
-    <bean id="dietGiziBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="dietGiziBo">
+    <bean id="jenisDietBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="jenisDietBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionDokterInterceptor</value>
@@ -30,9 +29,8 @@
         </property>
     </bean>
 
-    <bean id="dietGiziDao" class="com.neurix.simrs.master.dietgizi.dao.DietGiziDao"
+    <bean id="jenisDietDao" class="com.neurix.simrs.master.dietgizi.dao.JenisDietDao"
           p:sessionFactory-ref="sessionFactory" />
-    <!--<bean id="jenisDietDao" class="com.neurix.simrs.master.dietgizi.dao.JenisDietDao"-->
-          <!--p:sessionFactory-ref="sessionFactory" />-->
+
 
 </beans>

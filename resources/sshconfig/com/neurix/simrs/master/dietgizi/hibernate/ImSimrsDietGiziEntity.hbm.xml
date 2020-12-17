@@ -7,7 +7,6 @@
     <class name="com.neurix.simrs.master.dietgizi.model.ImSimrsDietGizi" dynamic-update="true"
            table="im_simrs_diet_gizi" select-before-update="true" schema="public">
 
-
         <id name="idDietGizi">
             <column name="id_diet_gizi" sql-type="varchar" length="30" not-null="true" />
         </id>
