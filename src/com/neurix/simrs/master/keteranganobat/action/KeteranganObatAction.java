@@ -52,6 +52,7 @@ public class KeteranganObatAction {
 
     public String initForm(){
         logger.info("[KeteranganObatAction.initForm] START >>> ");
+        resetAllSession();
         logger.info("[KeteranganObatAction.initForm] END <<< ");
         return "success";
     }
