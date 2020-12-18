@@ -591,6 +591,57 @@
         listRekening("sel_add_item_rekening");
     }
 
+    function saveEdit() {
+
+        var id              = $("#id_edit").val();
+        var idJenis         = $("#sel_edit_jenis").val();
+        var idKategori      = $("#sel_edit_kategori").val();
+        var masterId        = $("#sel_edit_master").val();
+        var divisiId        = $("#sel_edit_divisi").val();
+        var idParam         = $("#sel_edit_item_rekening").val();
+        var flag            = $("#flag_edit").val();
+        var arData          = [];
+
+        arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam, "flag":flag});
+        var stData          = JSON.stringify(arData);
+        ParameterBudgetingAction.saveEdit(stData, function (res) {
+            if (res.status == "success"){
+                alert("Berhasil Save");
+            } else {
+                alert(res.status);
+            }
+
+            if (flag == "Y"){
+                $("#modal-edit").modal('hide');
+            } else {
+                $("#modal-delete").modal('hide');
+            }
+            link();
+        });
+    }
+
+    function saveAdd() {
+
+        var idJenis         = $("#sel_add_jenis").val();
+        var idKategori      = $("#sel_add_kategori").val();
+        var masterId        = $("#sel_add_master").val();
+        var divisiId        = $("#sel_add_divisi").val();
+        var idParam         = $("#sel_add_item_rekening").val();
+        var arData          = [];
+
+        arData.push({"id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam});
+        var stData          = JSON.stringify(arData);
+        ParameterBudgetingAction.saveAdd(stData, function (res) {
+            if (res.status == "success"){
+                alert("Berhasil Save");
+            } else {
+                alert(res.status);
+            }
+            $("#modal-add").modal('hide');
+            link();
+        });
+    }
+
 </script>
 <!-- /.content-wrapper -->
 <%@ include file="/pages/common/footer.jsp" %>

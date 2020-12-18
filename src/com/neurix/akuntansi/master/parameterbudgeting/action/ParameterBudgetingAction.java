@@ -112,6 +112,7 @@ public class ParameterBudgetingAction {
                 for (int i = 0 ; i<jsonArray.length() ; i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
+                    parameterBudgeting.setIdJenisBudgeting(jsonObject.get("id_jenis_budgeting").toString());
                     parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
                     parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
                     parameterBudgeting.setIdParamRekening(jsonObject.get("id_param_rekening").toString());
@@ -122,6 +123,10 @@ public class ParameterBudgetingAction {
             response.setStatus("error");
             response.setMsg(e.getMessage());
         }
+
+        // selain pendapatan tidak ada master;
+        if (!"PDT".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting()))
+            parameterBudgeting.setMasterId(parameterBudgeting.getIdJenisBudgeting());
 
         parameterBudgeting.setCreatedDate(times);
         parameterBudgeting.setCreatedWho(userLogin);
@@ -158,6 +163,7 @@ public class ParameterBudgetingAction {
                 for (int i = 0 ; i<jsonArray.length() ; i++){
                     JSONObject jsonObject = jsonArray.getJSONObject(i);
                     parameterBudgeting.setId(jsonObject.getString("id"));
+                    parameterBudgeting.setIdJenisBudgeting(jsonObject.getString("id_jenis_budgeting").toString());
                     parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
                     parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
                     parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
@@ -170,6 +176,10 @@ public class ParameterBudgetingAction {
             response.setStatus("error");
             response.setMsg(e.getMessage());
         }
+
+        // selain pendapatan tidak ada master;
+        if (!"PDT".equalsIgnoreCase(parameterBudgeting.getIdJenisBudgeting()))
+            parameterBudgeting.setMasterId(parameterBudgeting.getIdJenisBudgeting());
 
         parameterBudgeting.setLastUpdate(times);
         parameterBudgeting.setLastUpdateWho(userLogin);
