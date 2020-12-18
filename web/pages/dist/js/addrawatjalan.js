@@ -1966,8 +1966,7 @@ function addObatToList() {
     var lembarPerBox = 0;
     var bijiPerLembar = 0;
 
-    var listObat = $("[name=cek_waktu]:checked");
-    var pemberian = $("#resep_waktu").val();
+    var listKeterangan = $('#text_area_keterangan').val();
     var jenisResep = $("#select-jenis-resep").val();
     var flagKronis = $("#val-kronis").val();
     var hariKronis = "";
@@ -1987,17 +1986,17 @@ function addObatToList() {
         hariKronis = $("#hari-kronis").val();
     }
 
-    var i = 0;
-    var waktu = [];
-    $.each(listObat, function (idx, item) {
-        if (item.checked) {
-            waktu.push($(this).val());
-            i = i + 1;
+    var ket = "";
+    $.each(listKeterangan, function (idx, itemx) {
+        var label = itemx.split('|')[1];
+        if(ket != ''){
+            ket = ket + label;
+        }else{
+            ket = label;
         }
     });
 
-    var ket = pemberian + " Makan. " + i + "x1. " + waktu.join(", ");
-    if (obat && ket && qty && apotek && jenisSatuan && jenisObat != '' && waktu.length > 0 && isRacik) {
+    if (obat && ket && qty && apotek && jenisSatuan && jenisObat && ket != '' && isRacik) {
 
         var idPelayanan = apotek.split('|')[0];
         var namaPelayanan = apotek.split('|')[1];
@@ -2114,6 +2113,7 @@ function addObatToList() {
                 }
                 var jumlah = parseInt(totalHarga) + parseInt(tot);
                 $('#total_harga_obat').val(formatRupiah(jumlah));
+                $('#text_area_keterangan').val('').trigger('change');
             }
         } else {
             $('#warning_resep_head').show().fadeOut(5000);
@@ -2137,7 +2137,7 @@ function addObatToList() {
         if (qty == '' || qty <= 0) {
             $('#war_rep_qty').show();
         }
-        if (waktu.length == 0) {
+        if (ket == '') {
             $('#war_rep_cek_waktu').show();
         }
         if (!isRacik) {
@@ -2488,7 +2488,6 @@ function setStokObatApotek(select, tipe) {
             }
 
             $("#h-qty-default").val(bijiPerLembar);
-
             $('#resep_keterangan').val('');
             $('#resep_qty').val(bijiPerLembar);
             $('#resep_jenis_satuan').val('biji').trigger('change');
@@ -2505,6 +2504,12 @@ function setStokObatApotek(select, tipe) {
                     $("#flag-obat-serupa").val("N")
                 }
             }
+
+            ObatAction.getHeaderObatById(id, function (res) {
+                if(res != null){
+                    getComboParameterObat(res.idSubJenis);
+                }
+            });
         }
     }
 }
@@ -2539,7 +2544,7 @@ function savePenunjangPasien() {
 
 function resetAll() {
     $('#resep_apotek').val('').trigger('change').attr('disabled', false);
-    $('#resep_nama_obat, #resep_jenis_satuan').val('').trigger('change');
+    $('#resep_nama_obat, #resep_jenis_satuan, #param_ket, #ket_param, #text_area_keterangan').val('').trigger('change');
     $('#resep_keterangan, #total_harga_obat, #nama_racik').val('');
     $('#resep_qty').val('');
     $('#resep_stok_box, #resep_stok_lembar, #resep_stok_biji').val('');
@@ -3428,8 +3433,93 @@ function cekRacik(id){
     }
 }
 
-function showListKeteranganObat() {
-    // ambil id obat
-    // cari parameter keterangan berdasarkan id obat untuk memunculkan list parameter keterangan
-    $('#modal-keterangan-obat').modal("show");
+function addKeterangan() {
+    var param = $('#param_ket').val();
+    var namaParam = $('#param_ket option:selected').text();
+    var ket = $('#ket_param').val();
+    var data = $('#text_area_keterangan option');
+    var cek = false;
+    if(param != '' && ket != null){
+        var disKet = "";
+        $.each(ket, function (i, item) {
+            var id = item.split('|')[0];
+            var nam = item.split('|')[1];
+            if(disKet != ''){
+                disKet = disKet+', '+nam;
+            }else{
+                disKet = nam;
+            }
+        });
+        if(data.length > 0){
+            $.each(data, function (i, item) {
+                if(item.selected){
+                    var idP = item.value.split('|')[0];
+                    if(idP == param){
+                        cek = true;
+                    }
+                }
+            });
+        }
+        var set = namaParam +' : '+disKet+'. ';
+        if(cek){
+            $('#w_keterangan').show().fadeOut(5000);
+            $('#p_keterangan').text("Keterangan "+namaParam+" sudah ada dalam list...!");
+        }else{
+            refreshKeterangan(param, set);
+            inputWarning('war_rep_cek_waktu','cor_rep_cek_waktu');
+        }
+    }else{
+        $('#w_keterangan').show().fadeOut(5000);
+        $('#p_keterangan').text("Silahkan cek inputan parameter dan keterangan...!");
+    }
+}
+
+function getComboParameterObat(idJenis){
+    ObatAction.getComboParameterObat(idJenis, function (res) {
+        var option = '<option value="">[Select One]</option>';
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.id+'">'+item.nama+'</option>';
+            });
+        }
+        $('#param_ket').html(option);
+    });
+}
+
+function getComboKeteranganObat(idParam){
+    ObatAction.getComboKeteranganObat(idParam, function (res) {
+        var option = '';
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.id+'|'+item.keterangan+'">'+item.keterangan+'</option>';
+            });
+        }
+        $('#ket_param').html(option);
+    });
+}
+
+function refreshKeterangan(param, set){
+    var temp = "";
+    var cek = $('#text_area_keterangan option');
+    if(cek.length > 0){
+        $.each(cek, function (i, item) {
+            if(item.selected){
+                var id = item.value.split('|')[0];
+                var nama = item.value.split('|')[1];
+                temp += '<option value="'+id+'|'+nama+'">'+nama+'</option>';
+            }
+        });
+        if(param && set != ''){
+            temp = temp + '<option value="'+param+'|'+set+'">'+set+'</option>';
+        }
+    }else{
+        if(param && set != ''){
+            temp = '<option value="'+param+'|'+set+'">'+set+'</option>';
+        }
+    }
+    $('#text_area_keterangan').html(temp);
+    if(temp != ''){
+        $('#text_area_keterangan option').prop('selected', true);
+    }
+    $('#param_ket').val('').trigger('change');
 }

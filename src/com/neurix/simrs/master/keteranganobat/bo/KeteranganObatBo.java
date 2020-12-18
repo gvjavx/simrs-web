@@ -11,4 +11,5 @@ public interface KeteranganObatBo {
     public List<KeteranganObat> getListSearchByCriteria(KeteranganObat bean) throws GeneralBOException;
     public void saveAdd(List<KeteranganObat> listBean) throws GeneralBOException;
     public void saveEdit(List<KeteranganObat> listBean) throws GeneralBOException;
+    public List<KeteranganObat> getKeteranganObat(String idParam) throws GeneralBOException;
 }

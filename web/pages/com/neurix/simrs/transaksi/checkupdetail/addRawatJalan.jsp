@@ -1852,41 +1852,6 @@
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Pemberian</label>
-                    <div class="col-md-4">
-                        <s:select list="#{'Saat':'Saat','Sebelum':'Sebelum'}"
-                                  cssStyle="margin-top: 7px; width: 100%"
-                                  onchange="var warn = $('#war_rep_waktu').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_waktu').hide()}"
-                                  id="resep_waktu"
-                                  headerKey="Sesudah" headerValue="Sesudah"
-                                  cssClass="form-control select2"/>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_waktu"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_waktu"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Waktu Minum</label>
-                    <div class="col-md-4">
-                        <div class="form-check" style="margin-top: 7px;">
-                            <input type="checkbox" name="cek_waktu" id="pagi" value="Pagi" onclick="var warn = $('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
-                            <label for="pagi"></label> Pagi
-                        </div>
-                        <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                            <input type="checkbox" name="cek_waktu" id="siang" value="Siang" onclick="var warn = $('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
-                            <label for="siang"></label> Siang
-                        </div>
-                        <div class="form-check" style="margin-top: 7px; margin-left: 10px">
-                            <input type="checkbox" name="cek_waktu" id="malam" value="Malam" onclick="var warn = $('#war_rep_cek_waktu').is(':visible'); if (warn){$('#cor_rep_cek_waktu').show().fadeOut(3000);$('#war_rep_cek_waktu').hide()}">
-                            <label for="malam"></label> Malam
-                        </div>
-                        <br>
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>
-                    </div>
                     <label class="col-md-2" style="margin-top: 7px">Jumlah</label>
                     <div class="col-md-4">
                         <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
@@ -1916,17 +1881,6 @@
                         </select>
                     </div>
                 </div>
-                <hr/>
-                <%--Keterangan Obat Berdasarkan Jenis Obat--%>
-                <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Keterangan Pemakaian</label>
-                    <div class="col-md-4">
-                        <textarea id="text_area_keterangan" class="form-control" disabled>Malam, Setelah Makan, 2.5 ML
-                        </textarea>
-                    </div>
-                    <div class="col-md-2"><button class="btn btn-warning btn-sm" onclick="showListKeteranganObat()"><i class="fa fa-plus"></i></button></div>
-                </div>
-                <hr/>
                 <div class="row" id="form-nama-racik" style="display: none">
                     <label class="col-md-2" style="margin-top: 7px;">Nama Racik</label>
                     <div class="col-md-4">
@@ -1956,13 +1910,46 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px"></label>
-                    <div class="col-md-7">
-                        <button class="btn btn-success" style="margin-top: 7px; margin-right: 4px"
-                                onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
+                <hr/>
+                <%--Keterangan Obat Berdasarkan Jenis Obat--%>
+                <div class="row" style="margin-top: -7px">
+                    <div class="col-md-offset-2 col-md-8">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="w_keterangan">
+                            <p id="p_keterangan"></p>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-2 col-md-4">
+                        <label style="margin-bottom: -7px">Parameter Keterangan</label>
+                        <select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label style="margin-bottom: -7px">Keterangan</label>
+                        <select class="select2 form-control" multiple style="width: 100%" id="ket_param">
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 7px">
+                    <div class="col-md-offset-2 col-md-8">
+                        <select style="width: 100%" class="select2 form-control" multiple id="text_area_keterangan" onchange="refreshKeterangan('','')">
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <span style="color: red; margin-top: 12px; display: none;"
+                              id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; margin-top: 12px; display: none;"
+                              id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
+                <hr/>
+                <div class="row" style="margin-top: -10px">
+                    <div class="col-md-offset-2 col-md-7">
+                        <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                         </button>
-                        <button class="btn btn-danger" style="margin-top: 7px" onclick="resetAll()"><i
+                        <button class="btn btn-danger" onclick="resetAll()"><i
                                 class="fa fa-refresh"></i> Reset
                         </button>
                     </div>

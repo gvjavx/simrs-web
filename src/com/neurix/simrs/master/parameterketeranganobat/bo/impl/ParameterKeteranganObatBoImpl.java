@@ -77,4 +77,15 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
         logger.info("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] END <<<");
         return parameterKeteranganObats;
     }
+
+    @Override
+    public List<ParameterKeteranganObat> getParameterKeterangan(String idJenis) throws GeneralBOException {
+        List<ParameterKeteranganObat> parameterKeteranganObats = new ArrayList<>();
+        try {
+            parameterKeteranganObats = parameterKeteranganObatDao.getParameterKeterangan(idJenis);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return parameterKeteranganObats;
+    }
 }

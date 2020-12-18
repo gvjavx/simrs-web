@@ -101,6 +101,28 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         return keteranganObats;
     }
 
+    public List<KeteranganObat> getKeteranganObat(String idParam){
+        List<KeteranganObat> keteranganObatList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "b.id,\n" +
+                "b.keterangan\n" +
+                "FROM im_simrs_paremeter_keterangan_obat a\n" +
+                "INNER JOIN im_simrs_keterangan_obat b ON a.id = b.id_parameter_keterangan\n" +
+                "WHERE b.id_parameter_keterangan = '"+idParam+"'";
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                KeteranganObat param = new KeteranganObat();
+                param.setId(obj[0] != null ? obj[0].toString() : null);
+                param.setKeterangan(obj[1] != null ? obj[1].toString() : null);
+                keteranganObatList.add(param);
+            }
+        }
+        return keteranganObatList;
+    }
+
     private String objToString(Object obj){
         if (obj != null)
             return obj.toString();

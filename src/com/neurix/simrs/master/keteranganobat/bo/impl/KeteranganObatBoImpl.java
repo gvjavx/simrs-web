@@ -94,4 +94,15 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
     public void saveEdit(List<KeteranganObat> listBean) throws GeneralBOException {
 
     }
+
+    @Override
+    public List<KeteranganObat> getKeteranganObat(String idParam) throws GeneralBOException {
+        List<KeteranganObat> keteranganObatList = new ArrayList<>();
+        try {
+            keteranganObatList = keteranganObatDao.getKeteranganObat(idParam);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return keteranganObatList;
+    }
 }

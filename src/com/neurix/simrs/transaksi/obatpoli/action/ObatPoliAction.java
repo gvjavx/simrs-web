@@ -566,21 +566,14 @@ public class ObatPoliAction extends BaseMasterAction {
 
         logger.info("[ObatPoliAction.getSelectOptionObatByPoli] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
-
         String branchId = CommonUtil.userBranchLogin();
-//        ObatPoli obatpoli = new ObatPoli();
-//        obatpoli.setIdPelayanan(idPelayanan);
-//        obatpoli.setBranchId(branchId);
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
         try {
-//            obatPoliList = obatPoliBo.getListObatPoliGroup(idPelayanan, branchId);
             obatPoliList = obatPoliBo.getListObatGroupPoli(idPelayanan, branchId, flagBpjs, jenis);
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getSelectOptionObatByPoli] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
-            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
         logger.info("[ObatPoliAction.getSelectOptionObatByPoli] end process >>>");

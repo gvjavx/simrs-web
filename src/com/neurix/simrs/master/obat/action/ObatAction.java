@@ -14,8 +14,12 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity;
 import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
+import com.neurix.simrs.master.keteranganobat.bo.KeteranganObatBo;
+import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.*;
+import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
+import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
@@ -1440,6 +1444,38 @@ public class ObatAction extends BaseMasterAction {
         }
         logger.info("[ObatAction.createSessionKandunganObat] END <<<");
         return response;
+    }
+
+    public List<KeteranganObat> getComboKeteranganObat(String idParam){
+        logger.info("[ObatAction.getComboKeteranganObat] START >>> ");
+        List<KeteranganObat> results = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeteranganObatBo keteranganObatBo = (KeteranganObatBo) ctx.getBean("keteranganObatBoProxy");
+        if(idParam != null && !"".equalsIgnoreCase(idParam)){
+            try {
+                results = keteranganObatBo.getKeteranganObat(idParam);
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.getComboKeteranganObat] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[ObatAction.getComboKeteranganObat] END <<< ");
+        return results;
+    }
+
+    public List<ParameterKeteranganObat> getComboParameterObat(String idJenis){
+        logger.info("[ObatAction.getComboParameterObat] START >>> ");
+        List<ParameterKeteranganObat> results = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterKeteranganObatBo parameterKeteranganObatBo = (ParameterKeteranganObatBo) ctx.getBean("parameterKeteranganObatBoProxy");
+        if(idJenis != null && !"".equalsIgnoreCase(idJenis)){
+            try {
+                results = parameterKeteranganObatBo.getParameterKeterangan(idJenis);
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.getComboParameterObat] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[ObatAction.getComboParameterObat] END <<< ");
+        return results;
     }
 
 }
