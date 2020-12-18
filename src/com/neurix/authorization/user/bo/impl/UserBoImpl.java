@@ -1603,36 +1603,38 @@ public class UserBoImpl implements UserBo {
             String branchId = imAreasBranchesUsers.getImBranch().getPrimaryKey().getId();
             String branchName = imAreasBranchesUsers.getImBranch().getBranchName();
 
+            userDetailsLogin = new UserDetailsLogin();
+            userDetailsLogin.setUserId(userId);
+            userDetailsLogin.setUsername(userId);
+            userDetailsLogin.setUserNameDetail(userName);
+            userDetailsLogin.setPassword(password);
+            userDetailsLogin.setRoles(listRoles);
+            userDetailsLogin.setEnabled(true);
+            userDetailsLogin.setNonBlocked(true);
+            userDetailsLogin.setNonExpired(true);
+            userDetailsLogin.setUserCredentialsNonExpired(true);
+            userDetailsLogin.setPositionId(positionId);
+            userDetailsLogin.setPositionName(positionName);
+            userDetailsLogin.setBranchId(branchId);
+            userDetailsLogin.setBranchName(branchName);
+            userDetailsLogin.setCompanyId(companyId);
+            userDetailsLogin.setCompanyName(companyName);
+            userDetailsLogin.setAreaId(areaId);
+            userDetailsLogin.setAreaName(areaName);
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+            userDetailsLogin.setIdDevice(loginUser.getIdDevice());
+
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
             if  (biodata != null) {
-                userDetailsLogin = new UserDetailsLogin();
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
-                userDetailsLogin.setUserId(userId);
-                userDetailsLogin.setUsername(userId);
-                userDetailsLogin.setUserNameDetail(userName);
-                userDetailsLogin.setPassword(password);
-                userDetailsLogin.setRoles(listRoles);
-                userDetailsLogin.setEnabled(true);
-                userDetailsLogin.setNonBlocked(true);
-                userDetailsLogin.setNonExpired(true);
-                userDetailsLogin.setUserCredentialsNonExpired(true);
-                userDetailsLogin.setPositionId(positionId);
-                userDetailsLogin.setPositionName(positionName);
-                userDetailsLogin.setBranchId(branchId);
-                userDetailsLogin.setBranchName(branchName);
-                userDetailsLogin.setCompanyId(companyId);
-                userDetailsLogin.setCompanyName(companyName);
-                userDetailsLogin.setAreaId(areaId);
-                userDetailsLogin.setAreaName(areaName);
-                userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+
                 try {
                     userDetailsLogin.setPin(biodata.getPin());
                 } catch (NullPointerException e){
                     e.printStackTrace();
                 }
-                userDetailsLogin.setIdDevice(loginUser.getIdDevice());
             }
 
 
