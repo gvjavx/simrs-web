@@ -2834,10 +2834,6 @@ function resetAll() {
     $('#body_detail').html('');
     $('#desti_apotek').html('');
     $('#resep_jenis_obat').val('').trigger('change');
-    var cekWaktu = $('[name=cek_waktu]');
-    $.each(cekWaktu, function (i, item) {
-        item.checked = false;
-    });
     $('#racik_racik').removeAttr('checked');
     $('#label-kronis').hide();
     removePaint('ttd_canvas');
