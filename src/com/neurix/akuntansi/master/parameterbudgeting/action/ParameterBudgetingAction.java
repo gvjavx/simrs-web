@@ -6,7 +6,8 @@ import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgeting
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunKategoriParameterBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingRekeningEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
-import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.position.bo.PositionBo;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -52,11 +53,12 @@ public class ParameterBudgetingAction {
         ParameterBudgeting parameterBudgeting = new ParameterBudgeting();
         JSONArray json = new JSONArray(jsonString);
         for (int i = 0; i < json.length(); i++){
-            JSONObject jsonObject = new JSONObject(i);
-            parameterBudgeting.setIdKategoriBudgeting(jsonObject.getString("id_kategori_budgeting"));
-            parameterBudgeting.setMasterId(jsonObject.getString("master_id"));
-            parameterBudgeting.setDivisiId(jsonObject.getString(jsonObject.getString("divisi_id")));
-            parameterBudgeting.setIdJenisBudgeting(jsonObject.getString(jsonObject.getString("id_jenis_budgeting")));
+            JSONObject jsonObject = json.getJSONObject(i);
+            parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
+            parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
+            parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
+            parameterBudgeting.setIdJenisBudgeting(jsonObject.get("id_jenis_budgeting").toString());
+            parameterBudgeting.setIdParamRekening(jsonObject.get("id_item").toString());
         }
 
         List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
@@ -108,11 +110,11 @@ public class ParameterBudgetingAction {
             JSONArray jsonArray = new JSONArray(jsonString);
             if (jsonArray.length() > 0){
                 for (int i = 0 ; i<jsonArray.length() ; i++){
-                    JSONObject jsonObject = new JSONObject(i);
-                    parameterBudgeting.setIdKategoriBudgeting(jsonObject.getString("id_kategori_budgeting"));
-                    parameterBudgeting.setMasterId(jsonObject.getString("master_id"));
-                    parameterBudgeting.setDivisiId(jsonObject.getString("divisi_id"));
-                    parameterBudgeting.setIdParamRekening(jsonObject.getString("id_param_rekening"));
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
+                    parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
+                    parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
+                    parameterBudgeting.setIdParamRekening(jsonObject.get("id_param_rekening").toString());
                 }
             }
         } catch (JSONException e){
@@ -154,13 +156,13 @@ public class ParameterBudgetingAction {
             JSONArray jsonArray = new JSONArray(jsonString);
             if (jsonArray.length() > 0){
                 for (int i = 0 ; i<jsonArray.length() ; i++){
-                    JSONObject jsonObject = new JSONObject(i);
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
                     parameterBudgeting.setId(jsonObject.getString("id"));
-                    parameterBudgeting.setIdKategoriBudgeting(jsonObject.getString("id_kategori_budgeting"));
-                    parameterBudgeting.setMasterId(jsonObject.getString("master_id"));
-                    parameterBudgeting.setDivisiId(jsonObject.getString("divisi_id"));
-                    parameterBudgeting.setIdParamRekening(jsonObject.getString("id_param_rekening"));
-                    parameterBudgeting.setFlag(jsonObject.getString("flag"));
+                    parameterBudgeting.setIdKategoriBudgeting(jsonObject.get("id_kategori_budgeting").toString());
+                    parameterBudgeting.setMasterId(jsonObject.get("master_id").toString());
+                    parameterBudgeting.setDivisiId(jsonObject.get("divisi_id").toString());
+                    parameterBudgeting.setIdParamRekening(jsonObject.get("id_param_rekening").toString());
+                    parameterBudgeting.setFlag(jsonObject.get("flag").toString());
                 }
             }
         } catch (JSONException e){
@@ -208,14 +210,24 @@ public class ParameterBudgetingAction {
         return parameterBudgetingBo.getAllKategoriParameterBudgeting();
     }
 
-    public List<ImPosition> getAllPosition(){
+    public List<Position> getAllPosition(){
         logger.info("[ParameterBudgetingAction.getAllPosition] START >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        Position position = new Position();
+        position.setFlag("Y");
+
+        List<Position> positions = new ArrayList<>();
+        try {
+            positions = positionBo.getByCriteria(position);
+        } catch (GeneralBOException e){
+            logger.info("[ParameterBudgetingAction.getAllPosition] ERROR. ", e);
+        }
 
         logger.info("[ParameterBudgetingAction.getAllPosition] END <<<");
-        return parameterBudgetingBo.getAllPosition();
+        return positions;
     }
 
     public List<ImMasterEntity> getAllMaster(){
@@ -236,5 +248,22 @@ public class ParameterBudgetingAction {
 
         logger.info("[ParameterBudgetingAction.getAllParamRekening] END <<<");
         return parameterBudgetingBo.getAllParameterRekening();
+    }
+
+    public List<ImAkunKategoriParameterBudgetingEntity> getAllKatagoriByIdJenis(String id){
+        logger.info("[ParameterBudgetingAction.getAllKatagoriByIdJenis] START >>>");
+
+        List<ImAkunKategoriParameterBudgetingEntity> listParameter = getAllKategoriBudgeting();
+
+        if (listParameter != null && listParameter.size() > 0){
+            List<ImAkunKategoriParameterBudgetingEntity> filteredList = listParameter.stream().filter(p->p.getIdJenisBudgeting().equalsIgnoreCase(id)).collect(Collectors.toList());
+            if (filteredList.size() > 0){
+                logger.info("[ParameterBudgetingAction.getAllKatagoriByIdJenis] END <<<");
+                return filteredList;
+            }
+        }
+
+        logger.info("[ParameterBudgetingAction.getAllKatagoriByIdJenis] END <<<");
+        return null;
     }
 }
