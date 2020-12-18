@@ -1603,36 +1603,38 @@ public class UserBoImpl implements UserBo {
             String branchId = imAreasBranchesUsers.getImBranch().getPrimaryKey().getId();
             String branchName = imAreasBranchesUsers.getImBranch().getBranchName();
 
+            userDetailsLogin = new UserDetailsLogin();
+            userDetailsLogin.setUserId(userId);
+            userDetailsLogin.setUsername(userId);
+            userDetailsLogin.setUserNameDetail(userName);
+            userDetailsLogin.setPassword(password);
+            userDetailsLogin.setRoles(listRoles);
+            userDetailsLogin.setEnabled(true);
+            userDetailsLogin.setNonBlocked(true);
+            userDetailsLogin.setNonExpired(true);
+            userDetailsLogin.setUserCredentialsNonExpired(true);
+            userDetailsLogin.setPositionId(positionId);
+            userDetailsLogin.setPositionName(positionName);
+            userDetailsLogin.setBranchId(branchId);
+            userDetailsLogin.setBranchName(branchName);
+            userDetailsLogin.setCompanyId(companyId);
+            userDetailsLogin.setCompanyName(companyName);
+            userDetailsLogin.setAreaId(areaId);
+            userDetailsLogin.setAreaName(areaName);
+            userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+            userDetailsLogin.setIdDevice(loginUser.getIdDevice());
+
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
             if  (biodata != null) {
-                userDetailsLogin = new UserDetailsLogin();
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
-                userDetailsLogin.setUserId(userId);
-                userDetailsLogin.setUsername(userId);
-                userDetailsLogin.setUserNameDetail(userName);
-                userDetailsLogin.setPassword(password);
-                userDetailsLogin.setRoles(listRoles);
-                userDetailsLogin.setEnabled(true);
-                userDetailsLogin.setNonBlocked(true);
-                userDetailsLogin.setNonExpired(true);
-                userDetailsLogin.setUserCredentialsNonExpired(true);
-                userDetailsLogin.setPositionId(positionId);
-                userDetailsLogin.setPositionName(positionName);
-                userDetailsLogin.setBranchId(branchId);
-                userDetailsLogin.setBranchName(branchName);
-                userDetailsLogin.setCompanyId(companyId);
-                userDetailsLogin.setCompanyName(companyName);
-                userDetailsLogin.setAreaId(areaId);
-                userDetailsLogin.setAreaName(areaName);
-                userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+
                 try {
                     userDetailsLogin.setPin(biodata.getPin());
                 } catch (NullPointerException e){
                     e.printStackTrace();
                 }
-                userDetailsLogin.setIdDevice(loginUser.getIdDevice());
             }
 
 
@@ -1821,6 +1823,9 @@ public class UserBoImpl implements UserBo {
 
                         resultUsers.setDivisiId(imUsers.getDivisiId());
                         resultUsers.setIdPelayanan(imUsers.getIdPelayanan());
+                        resultUsers.setIdRuangan(imUsers.getIdRuangan());
+                        resultUsers.setIdVendor(imUsers.getIdVendor());
+
                         resultUsers.setIdDevice(imUsers.getIdDevice());
 
                         StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
@@ -1899,6 +1904,8 @@ public class UserBoImpl implements UserBo {
 
                 //sodiq, 10/12/2019, penambahan id pelayanan
                 imUsersNew.setIdPelayanan(addUsers.getIdPelayanan());
+                imUsersNew.setIdRuangan(addUsers.getIdRuangan());
+                imUsersNew.setIdVendor(addUsers.getIdVendor());
 
                 String userid = addUsers.getUserId();
                 boolean isAda ;
@@ -2078,6 +2085,10 @@ public class UserBoImpl implements UserBo {
                 imUsersOld.setEmail(usersNew.getEmail());
                 if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan()))
                     imUsersOld.setIdPelayanan(usersNew.getIdPelayanan());
+                if (usersNew.getIdRuangan() != null && !"".equalsIgnoreCase(usersNew.getIdRuangan()))
+                    imUsersOld.setIdRuangan(usersNew.getIdRuangan());
+                if (usersNew.getIdVendor() != null && !"".equalsIgnoreCase(usersNew.getIdVendor()))
+                    imUsersOld.setIdVendor(usersNew.getIdVendor());
 //                if (usersNew.getContentFile()!=null) imUsersOld.setPhoto(usersNew.getContentFile());
                 if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
                 imUsersOld.setPositionId(String.valueOf(usersNew.getPositionId()));

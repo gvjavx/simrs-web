@@ -18,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ferdi on 26/01/2015.
@@ -387,7 +388,6 @@ public class RoleFuncBoImpl implements RoleFuncBo {
 
             Map hsCriteria = new HashMap();
             hsCriteria.put("role_id", roleId);
-//            hsCriteria.put("flag", "Y");
 
             List<ImFuncRoles> listOfResult = null;
 
@@ -410,25 +410,59 @@ public class RoleFuncBoImpl implements RoleFuncBo {
                     }
                 }
                 for (Functions functionsData : roleFunc.getListOfAllFunctions()){
+
                     boolean notFound = false;
-                    for (ImFuncRoles funcRolesUpdate : listOfResult){
-                        if (functionsData.getFuncId().longValue() == funcRolesUpdate.getPrimaryKey().getFuncId().longValue()){
-                            funcRolesUpdate.setFlag("Y");
-                            try {
-                                roleFuncDao.updateAndSave(funcRolesUpdate);
-                            } catch (HibernateException e) {
-                                logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when saving updated data role func, please inform to your admin...," + e.getMessage());
-                            }
-                        } else {
-                            hsCriteria.put("func_id",functionsData.getFuncId());
-                            List<ImFuncRoles> listOfRoleFunc = null;
-                            listOfRoleFunc = roleFuncDao.getRoleFuncByCriteria(hsCriteria);
-                            if (listOfRoleFunc.isEmpty()){
+
+                    // Sigit, 2020-12-15, Perubahan menggunakan filter sebelumnya pakai for, START
+                    List<ImFuncRoles> funcRolesFilterByFuncId = listOfResult.stream().filter(p->p.getPrimaryKey().getFuncId().longValue() == functionsData.getFuncId().longValue()).collect(Collectors.toList());
+                    if (funcRolesFilterByFuncId.size() > 0){
+                        ImFuncRoles funcRolesEntity = funcRolesFilterByFuncId.get(0);
+                        funcRolesEntity.setFlag("Y");
+                        try {
+                            roleFuncDao.updateAndSave(funcRolesEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving updated data role func, please inform to your admin...," + e.getMessage());
+                        }
+                    } else {
+
+                        // Sigit, 2020-12-15
+                        // jika tidak ditemukan maka notFound true, yang berarti insert baris baru untuk funcId tersebut
+
+                        try {
+                            boolean found = roleFuncDao.checkIfAvailableFuncIdInRoleFunc(functionsData.getFuncId(), roleId);
+                            if (!found){
                                 notFound = true;
                             }
+                        } catch (HibernateException e) {
+                            logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when search by func_id, please inform to your admin...," + e.getMessage());
                         }
+
                     }
+                    // END
+
+                    // code sebelumnya
+//                    for (ImFuncRoles funcRolesUpdate : listOfResult){
+//                        if (functionsData.getFuncId().longValue() == funcRolesUpdate.getPrimaryKey().getFuncId().longValue()){
+//                            funcRolesUpdate.setFlag("Y");
+//                            try {
+//                                roleFuncDao.updateAndSave(funcRolesUpdate);
+//                            } catch (HibernateException e) {
+//                                logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
+//                                throw new GeneralBOException("Found problem when saving updated data role func, please inform to your admin...," + e.getMessage());
+//                            }
+//                        } else {
+//                            hsCriteria.put("func_id",functionsData.getFuncId());
+//                            List<ImFuncRoles> listOfRoleFunc = null;
+//                            listOfRoleFunc = roleFuncDao.getRoleFuncByCriteria(hsCriteria);
+//                            if (listOfRoleFunc.isEmpty()){
+//                                notFound = true;
+//                            }
+//                        }
+//                    }
+
+
                     if (notFound){
                         ImFuncRoles imfuncRoles = new ImFuncRoles();
                         ImFuncRolesPK imFuncRolesPK = new ImFuncRolesPK();
@@ -448,96 +482,6 @@ public class RoleFuncBoImpl implements RoleFuncBo {
                         }
                     }
                 }
-
-//
-//
-////                //set flag N if exist data from tabel not in list updated role func
-////                for (ImFuncRoles imFuncRoles : listOfResult) {
-////                    boolean found = false;
-////                    for (Functions functions : roleFunc.getListOfAllFunctions()) {
-////                        if (functions.getFuncId().longValue() == imFuncRoles.getPrimaryKey().getFuncId().longValue()) {
-////                            if("Y".equalsIgnoreCase(imFuncRoles.getFlag())){
-////                                found = true;
-////                            }
-////                            break;
-////                        }
-////                    }
-////
-////                    if (!found) {
-////                        imFuncRoles.setFlag("N");
-////                        imFuncRoles.setLastUpdate(roleFunc.getLastUpdate());
-////                        imFuncRoles.setLastUpdateWho(roleFunc.getLastUpdateWho());
-////
-////                        try {
-////                            roleFuncDao.updateAndSave(imFuncRoles);
-////                        } catch (HibernateException e) {
-////                            logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
-////                            throw new GeneralBOException("Found problem when saving updated data role func, please inform to your admin...," + e.getMessage());
-////                        }
-////                    }
-////                }
-////
-////                //add new if not in exist data from tabel but in list updated role func
-////                for (Functions functions : roleFunc.getListOfAllFunctions()) {
-////                    boolean found = false;
-////                    boolean notActive = false;
-////                    for (ImFuncRoles imFuncRoles : listOfResult) {
-////                        if (functions.getFuncId().longValue() == imFuncRoles.getPrimaryKey().getFuncId().longValue()) {
-////                            if ("Y".equalsIgnoreCase(imFuncRoles.getFlag())){
-////                                found = true;
-////                            }
-////                            if ("N".equalsIgnoreCase(imFuncRoles.getFlag())){
-////                                notActive = true;
-////                            }
-////                            break;
-////                        }
-////                    }
-////
-////                    if (!found) {
-////                        ImFuncRoles imfuncRoles = new ImFuncRoles();
-////                        ImFuncRolesPK imFuncRolesPK = new ImFuncRolesPK();
-////                        imFuncRolesPK.setRoleId(roleFunc.getRoleId());
-////                        imFuncRolesPK.setFuncId(functions.getFuncId());
-////
-////                        imfuncRoles.setPrimaryKey(imFuncRolesPK);
-////                        imfuncRoles.setCreatedDate(roleFunc.getLastUpdate());
-////                        imfuncRoles.setCreatedWho(roleFunc.getLastUpdateWho());
-////                        imfuncRoles.setLastUpdate(roleFunc.getLastUpdate());
-////                        imfuncRoles.setLastUpdateWho(roleFunc.getLastUpdateWho());
-////                        imfuncRoles.setFlag("Y");
-////                        try {
-////                            if (notActive){
-////                                roleFuncDao.updateAndSave(imfuncRoles);
-////                            } else {
-////                                roleFuncDao.addAndSave(imfuncRoles);
-////                            }
-////                        } catch (HibernateException e) {
-////                            logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
-////                            throw new GeneralBOException("Found problem when saving new data role func, please info to your admin..." + e.getMessage());
-////                        }
-////                    }
-//
-////                    if (notActive){
-////                        ImFuncRoles imfuncRoles = new ImFuncRoles();
-////                        ImFuncRolesPK imFuncRolesPK = new ImFuncRolesPK();
-////                        imFuncRolesPK.setRoleId(roleFunc.getRoleId());
-////                        imFuncRolesPK.setFuncId(functions.getFuncId());
-////
-////                        imfuncRoles.setPrimaryKey(imFuncRolesPK);
-////                        imfuncRoles.setCreatedDate(roleFunc.getLastUpdate());
-////                        imfuncRoles.setCreatedWho(roleFunc.getLastUpdateWho());
-////                        imfuncRoles.setLastUpdate(roleFunc.getLastUpdate());
-////                        imfuncRoles.setLastUpdateWho(roleFunc.getLastUpdateWho());
-////                        imfuncRoles.setFlag("Y");
-////
-////                        try {
-////                            roleFuncDao.updateAndSave(imfuncRoles);
-////                        } catch (HibernateException e) {
-////                            logger.error("[RoleFuncBoImpl.saveEdit] Error, " + e.getMessage());
-////                            throw new GeneralBOException("Found problem when saving new data role func, please info to your admin..." + e.getMessage());
-////                        }
-////                    }
-//                }
             }
         else {
                 logger.error("[RoleFuncBoImpl.saveDelete] Unable to save edit cause no have reference data exist in user and function table.");

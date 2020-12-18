@@ -1,10 +1,13 @@
 package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class TransaksiObatDetail extends BaseModel {
 
@@ -94,6 +97,51 @@ public class TransaksiObatDetail extends BaseModel {
     private String branchAsal;
     private BigDecimal hargaJual;
     private String tipePermintaan;
+    private String idRacik;
+    private String namaRacik;
+    private String isOrder;
+    private List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
+    private List<ItSimrsRiwayatTindakanEntity> biayaTambahanList = new ArrayList<>();
+
+    public List<ItSimrsRiwayatTindakanEntity> getBiayaTambahanList() {
+        return biayaTambahanList;
+    }
+
+    public void setBiayaTambahanList(List<ItSimrsRiwayatTindakanEntity> biayaTambahanList) {
+        this.biayaTambahanList = biayaTambahanList;
+    }
+
+    public List<TransaksiObatDetail> getObatDetailList() {
+        return obatDetailList;
+    }
+
+    public void setObatDetailList(List<TransaksiObatDetail> obatDetailList) {
+        this.obatDetailList = obatDetailList;
+    }
+
+    public String getIsOrder() {
+        return isOrder;
+    }
+
+    public void setIsOrder(String isOrder) {
+        this.isOrder = isOrder;
+    }
+
+    public String getIdRacik() {
+        return idRacik;
+    }
+
+    public void setIdRacik(String idRacik) {
+        this.idRacik = idRacik;
+    }
+
+    public String getNamaRacik() {
+        return namaRacik;
+    }
+
+    public void setNamaRacik(String namaRacik) {
+        this.namaRacik = namaRacik;
+    }
 
     public String getTipePermintaan() {
         return tipePermintaan;

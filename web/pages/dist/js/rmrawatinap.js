@@ -711,19 +711,17 @@ function addPemberianObat(){
     var str="";
     dwr.engine.setAsync(true);
     if (kat == "parenteral") {
-        RawatInapAction.getListObatParenteral(idPoli, function(response){
-            console.log(response);
+        RawatInapAction.getListObatParenteral(idDetailCheckup, function(response){
             $.each(response, function(i, item) {
-                str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
+                str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
             });
             $("#select_obat_par").html(str);
         });
         $("#modal-add-pemberian-parenteral").modal("show");
     } else {
-        RawatInapAction.getListObatNonParenteral(idDetailCheckup, "%",  function(response){
-            console.log(response);
+        RawatInapAction.getListObatNonParenteral(idDetailCheckup, function(response){
             $.each(response, function(i, item) {
-                str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
+                str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
             });
             $("#select_obat_nonpar").html(str);
         });

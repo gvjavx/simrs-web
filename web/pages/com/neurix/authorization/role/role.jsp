@@ -89,6 +89,7 @@
         function resetField() {
             document.getElementById("roleId").value = '';
             document.getElementById("roleName").value = '';
+            document.getElementById("roleTipe").value = '';
         }
 
 
@@ -191,6 +192,36 @@
                                         </s:else>
                                     </div>
 
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-5" for="roles.tipePelayanan">Tipe Pelayanan :</label>
+                                        <s:if test="isAddOrEdit()">
+                                            <s:if test="isAdd()">
+                                                <div class="col-sm-3">
+                                                    <s:select list="#{'igd':'IGD', 'apotek':'Apotek', 'gudang_obat':'Gudang Obat', 'rawat_jalan':'Rawat Jalan', 'rawat_inap':'Rawat Inap', 'pbf':'PBF'}" id="roleTipe" name="roles.tipePelayanan"
+                                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </div>
+                                            </s:if>
+                                            <s:else>
+                                                <div class="col-sm-3">
+                                                    <s:select list="#{'igd':'IGD', 'apotek':'Apotek', 'gudang_obat':'Gudang Obat', 'rawat_jalan':'Rawat Jalan', 'rawat_inap':'Rawat Inap', 'pbf':'PBF'}" id="roleTipe" name="roles.tipePelayanan"
+                                                              headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                </div>
+                                            </s:else>
+                                        </s:if>
+                                        <s:elseif test="isDelete()">
+                                            <div class="col-sm-3">
+                                                <s:select list="#{'igd':'IGD', 'apotek':'Apotek', 'gudang_obat':'Gudang Obat', 'rawat_jalan':'Rawat Jalan', 'rawat_inap':'Rawat Inap', 'pbf':'PBF'}" id="roleTipe" name="roles.tipePelayanan"
+                                                          headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true"/>
+                                            </div>
+                                        </s:elseif>
+                                        <s:else>
+                                            <div class="col-sm-3">
+                                                <s:select list="#{'igd':'IGD', 'apotek':'Apotek', 'gudang_obat':'Gudang Obat', 'rawat_jalan':'Rawat Jalan', 'rawat_inap':'Rawat Inap', 'pbf':'PBF'}" id="roleTipe" name="roles.tipePelayanan"
+                                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                            </div>
+                                        </s:else>
+                                    </div>
+
                                     <s:if test="!(isAddOrEdit() || isDelete())">
                                         <div class="form-group">
                                             <label class="control-label col-sm-5" for="roles.flag">Flag :</label>
@@ -205,7 +236,7 @@
                                     <div class="form-group">
                                         <label class="control-label col-sm-4" style="visibility: hidden"></label>
 
-                                        <div style="padding-left: 140px" class="col-sm-4">
+                                        <div style="padding-left: 140px" class="col-md-4">
                                             <s:if test="isAddOrEdit()">
                                                 <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="roleForm" id="save" name="save"
                                                            onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"

@@ -14,8 +14,12 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity;
 import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
+import com.neurix.simrs.master.keteranganobat.bo.KeteranganObatBo;
+import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.*;
+import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
+import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
@@ -38,6 +42,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Array;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -289,7 +294,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public CheckObatResponse saveObat(String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger box, BigInteger lembarBox, BigInteger lembar, BigInteger bijiLembar, BigInteger biji, BigDecimal hargaBox, BigDecimal hargaLembar, BigDecimal hargaBiji, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, String margin, String idKategoriPersediaan) {
+    public CheckObatResponse saveObat(String data) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
@@ -299,116 +304,211 @@ public class ObatAction extends BaseMasterAction {
         String userArea = CommonUtil.userBranchLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
-
-        Integer intMargin = "".equalsIgnoreCase(margin) || margin == null ? 0 : Integer.valueOf(margin);
-
-        Obat obat = new Obat();
-        obat.setNamaObat(namaObat);
-        obat.setMerk(merek);
-        obat.setIdPabrik(pabrik);
-        obat.setQtyBox(box);
-        obat.setLembarPerBox(lembarBox);
-        obat.setQtyLembar(lembar);
-        obat.setBijiPerLembar(bijiLembar);
-        obat.setQtyBiji(biji);
-        obat.setAverageHargaBox(hargaBox);
-        obat.setAverageHargaLembar(hargaLembar);
-        obat.setAverageHargaBiji(hargaBiji);
-        obat.setCreatedDate(updateTime);
-        obat.setCreatedWho(userLogin);
-        obat.setLastUpdate(updateTime);
-        obat.setLastUpdateWho(userLogin);
-        obat.setBranchId(userArea);
-        obat.setFlag("Y");
-        obat.setAction("C");
-        obat.setMinStok(minStok);
-        obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
-        obat.setFlagKronis(flagKronis);
-        obat.setFlagGeneric(flagGeneric);
-        obat.setFlagBpjs(flagBpjs);
-        obat.setMargin(intMargin);
-        obat.setIdKategoriPersediaan(idKategoriPersediaan);
-
-        if (kandunganObats != null && kandunganObats.size() > 0){
-            obat.setKandunganObats(kandunganObats);
-        }
-
-        try {
-            checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
-        } catch (GeneralBOException e) {
-            checkObatResponse.setStatus("error");
-            checkObatResponse.setMessage("[ERROR] " + e.getMessage());
-            return checkObatResponse;
-        }
-
-        if ("success".equalsIgnoreCase(checkObatResponse.getStatus())) {
+        if(data != null && !"".equalsIgnoreCase(data)){
             try {
-                obatBo.saveAdd(obat, jenisObat);
-            } catch (GeneralBOException e) {
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    List<KandunganObat> kandunganObats = new ArrayList<>();
+                    List<String> jenisObat = new ArrayList<>();
+                    if(obj.getString("kandungan") != null){
+                        JSONArray json = new JSONArray(obj.getString("kandungan"));
+                        for (int i = 0; i<json.length(); i++){
+                            JSONObject object = json.getJSONObject(i);
+                            KandunganObat kandunganObat = new KandunganObat();
+                            kandunganObat.setIdKandungan(object.getString("id_kandungan"));
+                            kandunganObat.setSediaan(new BigDecimal(object.getString("sediaan")));
+                            kandunganObat.setSatuanSediaan(object.getString("satuan"));
+                            kandunganObats.add(kandunganObat);
+                        }
+                    }else{
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("[ERROR] " + " Data kandungan obat tidak ada...!");
+                        return checkObatResponse;
+                    }
+
+                    if(obj.getString("kategori") != null){
+                        JSONArray json = new JSONArray(obj.getString("kategori"));
+                        for (int i = 0; i<json.length(); i++){
+                            JSONObject object = json.getJSONObject(i);
+                            String jns = object.getString("id_jenis");
+                            jenisObat.add(jns);
+                        }
+                    }else{
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("[ERROR] " + " Data kategori tidak ada...!");
+                        return checkObatResponse;
+                    }
+
+                    Integer intMargin = "".equalsIgnoreCase(obj.getString("margin")) || obj.getString("margin") == null ? 0 : Integer.valueOf(obj.getString("margin"));
+                    Obat obat = new Obat();
+                    obat.setNamaObat(obj.getString("nama_obat"));
+                    obat.setMerk(obj.getString("merek"));
+                    obat.setIdPabrik(obj.getString("id_obat"));
+                    obat.setLembarPerBox(new BigInteger(obj.getString("lembar_box")));
+                    obat.setBijiPerLembar(new BigInteger(obj.getString("biji_lembar")));
+                    obat.setCreatedDate(updateTime);
+                    obat.setCreatedWho(userLogin);
+                    obat.setLastUpdate(updateTime);
+                    obat.setLastUpdateWho(userLogin);
+                    obat.setBranchId(userArea);
+                    obat.setFlag("Y");
+                    obat.setAction("C");
+                    obat.setMinStok(new BigInteger(obj.getString("min_stok")));
+                    obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
+                    obat.setFlagKronis(obj.getString("kronis"));
+                    obat.setFlagGeneric(obj.getString("generic"));
+                    obat.setFlagBpjs(obj.getString("bpjs"));
+                    obat.setFlagFormula(obj.getString("formula"));
+                    obat.setFlagParenteral(obj.getString("parenteral"));
+                    obat.setMargin(intMargin);
+                    obat.setIdKategoriPersediaan(obj.getString("kategori_persediaan"));
+                    obat.setIdBentuk(obj.getString("bentuk"));
+                    obat.setIdJenisBentuk(obj.getString("jenis"));
+                    obat.setIdJenisSub(obj.getString("sub_jenis"));
+
+                    if (kandunganObats != null && kandunganObats.size() > 0){
+                        obat.setKandunganObats(kandunganObats);
+                    }
+
+                    // check apakah sudah ada id_obat dengan id_pabrik
+                    // untuk validasi jika id tidak generate
+                    try {
+                        checkObatResponse = obatBo.checkFisikIdObatByIdPabrik(obat);
+                    } catch (GeneralBOException e) {
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+                        return checkObatResponse;
+                    }
+
+
+                    try {
+                        checkObatResponse = obatBo.checkFisikObatByIdPabrik(obat);
+                    } catch (GeneralBOException e) {
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+                        return checkObatResponse;
+                    }
+
+                    if ("success".equalsIgnoreCase(checkObatResponse.getStatus()) && jenisObat != null) {
+                        try {
+                            checkObatResponse = obatBo.saveAdd(obat, jenisObat);
+                        } catch (GeneralBOException e) {
+                            checkObatResponse.setStatus("error");
+                            logger.error("[ObatInapAction.saveObatInap] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
+                            checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+                        }
+                    }
+                }else{
+                    checkObatResponse.setStatus("error");
+                    checkObatResponse.setMessage("[ERROR] " + " Data JSON yang dikirim tidak ada...!");
+                }
+            }catch (Exception e){
                 checkObatResponse.setStatus("error");
-                logger.error("[ObatInapAction.saveObatInap] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
-                checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+                checkObatResponse.setMessage("[ERROR] Terdapat Masalah pada Parse JSON" + e.getMessage());
             }
+        }else{
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[ERROR] " + " Data JSON yang dikirim tidak ada...!");
         }
-
         logger.info("[ObatAction.saveObatInap] end process >>>");
-
         return checkObatResponse;
     }
 
-    public CheckObatResponse editObat(String idObat, String namaObat, List<String> jenisObat, String merek, String pabrik, BigInteger lembarBox, BigInteger bijiLembar, BigInteger minStok, String flagKronis, String flagGeneric, String flagBpjs, Integer margin, String idKategoriPersediaan) {
+    public CheckObatResponse editObat(String data) {
         logger.info("[ObatAction.saveObatInap] start process >>>");
-        CheckObatResponse response = new CheckObatResponse();
-        try {
-            String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        CheckObatResponse checkObatResponse = new CheckObatResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        String userArea = CommonUtil.userBranchLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-            HttpSession session = ServletActionContext.getRequest().getSession();
-            List<KandunganObat> kandunganObats = (List<KandunganObat>) session.getAttribute("listOfKandunganObat");
+        if(data != null && !"".equalsIgnoreCase(data)){
+            try {
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    List<KandunganObat> kandunganObats = new ArrayList<>();
+                    List<String> jenisObat = new ArrayList<>();
+                    if(obj.getString("kandungan") != null){
+                        JSONArray json = new JSONArray(obj.getString("kandungan"));
+                        for (int i = 0; i<json.length(); i++){
+                            JSONObject object = json.getJSONObject(i);
+                            KandunganObat kandunganObat = new KandunganObat();
+                            kandunganObat.setId(object.getString("id"));
+                            kandunganObat.setIdKandungan(object.getString("id_kandungan"));
+                            kandunganObat.setSediaan(new BigDecimal(object.getString("sediaan")));
+                            kandunganObat.setSatuanSediaan(object.getString("satuan"));
+                            kandunganObats.add(kandunganObat);
+                        }
+                    }else{
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("[ERROR] " + " Data kandungan obat tidak ada...!");
+                        return checkObatResponse;
+                    }
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+                    if(obj.getString("kategori") != null){
+                        JSONArray json = new JSONArray(obj.getString("kategori"));
+                        for (int i = 0; i<json.length(); i++){
+                            JSONObject object = json.getJSONObject(i);
+                            String jns = object.getString("id_jenis");
+                            jenisObat.add(jns);
+                        }
+                    }else{
+                        checkObatResponse.setStatus("error");
+                        checkObatResponse.setMessage("[ERROR] " + " Data kategori tidak ada...!");
+                        return checkObatResponse;
+                    }
 
-            Obat obat = new Obat();
-            obat.setIdObat(idObat);
-            obat.setNamaObat(namaObat);
-            obat.setMerk(merek);
-            obat.setIdPabrik(pabrik);
-            obat.setLembarPerBox(lembarBox);
-            obat.setBijiPerLembar(bijiLembar);
-            obat.setLastUpdate(updateTime);
-            obat.setLastUpdateWho(userLogin);
-            obat.setBranchId(userArea);
-            obat.setAction("U");
-            obat.setMinStok(minStok);
-            obat.setFlagKronis(flagKronis);
-            obat.setFlagGeneric(flagGeneric);
-            obat.setFlagBpjs(flagBpjs);
-            obat.setIdKategoriPersediaan(idKategoriPersediaan);
-            obat.setMargin(margin == null ? new Integer(0) : margin);
+                    Integer intMargin = "".equalsIgnoreCase(obj.getString("margin")) || obj.getString("margin") == null ? 0 : Integer.valueOf(obj.getString("margin"));
+                    Obat obat = new Obat();
+                    obat.setNamaObat(obj.getString("nama_obat"));
+                    obat.setMerk(obj.getString("merek"));
+                    obat.setIdObat(obj.getString("id_obat"));
+                    obat.setIdPabrik(obj.getString("id_obat"));
+                    obat.setLembarPerBox(new BigInteger(obj.getString("lembar_box")));
+                    obat.setBijiPerLembar(new BigInteger(obj.getString("biji_lembar")));
+                    obat.setLastUpdate(updateTime);
+                    obat.setLastUpdateWho(userLogin);
+                    obat.setBranchId(userArea);
+                    obat.setAction("U");
+                    obat.setMinStok(new BigInteger(obj.getString("min_stok")));
+                    obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
+                    obat.setFlagKronis(obj.getString("kronis"));
+                    obat.setFlagGeneric(obj.getString("generic"));
+                    obat.setFlagBpjs(obj.getString("bpjs"));
+                    obat.setFlagFormula(obj.getString("formula"));
+                    obat.setFlagParenteral(obj.getString("parenteral"));
+                    obat.setMargin(intMargin);
+                    obat.setIdKategoriPersediaan(obj.getString("kategori_persediaan"));
+                    obat.setIdBentuk(obj.getString("bentuk"));
+                    obat.setIdJenisBentuk(obj.getString("jenis"));
+                    obat.setIdJenisSub(obj.getString("sub_jenis"));
 
-            if (kandunganObats != null && kandunganObats.size() > 0){
-                List<KandunganObat> kandunganObatsFiltered = kandunganObats.stream().filter(p -> p.getIdObat().equalsIgnoreCase(idObat)).collect(Collectors.toList());
-                if (kandunganObatsFiltered.size() > 0){
-                    obat.setKandunganObats(kandunganObatsFiltered);
+                    if (kandunganObats != null && kandunganObats.size() > 0){
+                        obat.setKandunganObats(kandunganObats);
+                    }
+
+                    try {
+                        checkObatResponse = obatBo.saveEdit(obat, jenisObat);
+                    } catch (GeneralBOException e) {
+                        checkObatResponse.setStatus("error");
+                        logger.error("[ObatInapAction.saveObatInap] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
+                        checkObatResponse.setMessage("[ERROR] " + e.getMessage());
+                    }
+                }else{
+                    checkObatResponse.setStatus("error");
+                    checkObatResponse.setMessage("[ERROR] " + " Data JSON yang dikirim tidak ada...!");
                 }
+            }catch (Exception e){
+                checkObatResponse.setStatus("error");
+                checkObatResponse.setMessage("[ERROR] Terdapat Masalah pada Parse JSON" + e.getMessage());
             }
-
-            response = obatBo.saveEdit(obat, jenisObat);
-
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[ObatInapAction.saveObatInap] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            response.setStatus("error");
-            response.setMessage("Found Error when save edit obat " + e.getMessage());
+        }else{
+            checkObatResponse.setStatus("error");
+            checkObatResponse.setMessage("[ERROR] " + " Data JSON yang dikirim tidak ada...!");
         }
-
         logger.info("[ObatAction.saveObatInap] end process >>>");
-        return response;
+        return checkObatResponse;
     }
 
     public List<Obat> getJenisObatByIdObat(String idObat) {
@@ -603,10 +703,17 @@ public class ObatAction extends BaseMasterAction {
             hargaObat.setIdHargaObat(branchId+idObat);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
+            // harga obat khusus
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
             hargaObat.setMargin(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin")) ? null : Integer.valueOf(obj.getString("margin")));
+            // harga obat umum
+            hargaObat.setHargaNetUmum(new BigDecimal(obj.getString("harga_net_umum")));
+            hargaObat.setDiskonUmum(new BigDecimal(obj.getString("diskon_umum")));
+            hargaObat.setHargaJualUmum(new BigDecimal(obj.getString("harga_jual_umum")));
+            hargaObat.setMarginUmum(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin_umum")) ? null : Integer.valueOf(obj.getString("margin_umum")));
+
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
             hargaObat.setLastUpdate(time);
@@ -1292,7 +1399,83 @@ public class ObatAction extends BaseMasterAction {
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        logger.info("[LaporanAkuntansiAction.getAllKategoriPersediaan] START END <<<");
         return obatBo.getAllKategoriPersediaan();
+    }
+
+    public List<ImSimrsBentukBarangEntity> listAllBentukBarang(){
+        logger.info("[LaporanAkuntansiAction.listAllBentukBarang] START Process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        logger.info("[LaporanAkuntansiAction.listAllBentukBarang] START END <<<");
+        return obatBo.getAllBentukBarang();
+    }
+
+    public ImSimrsHeaderObatEntity getHeaderObatById(String idObat){
+        logger.info("[LaporanAkuntansiAction.getHeaderObatById] START Process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+
+        ImSimrsHeaderObatEntity headerObatEntity = new ImSimrsHeaderObatEntity();
+        try {
+            headerObatEntity = obatBo.getHeaderObatById(idObat);
+        } catch (GeneralBOException e){
+            logger.error("[LaporanAkuntansiAction.getHeaderObatById] Error when print report, Found problem when downloading data, please inform to your admin.", e);
+        }
+
+        logger.info("[LaporanAkuntansiAction.getHeaderObatById] START END <<<");
+        return headerObatEntity;
+    }
+
+    public List<KandunganObat> getListKandunganObat(String idObat){
+        logger.info("[ObatAction.listKandunganObat] START >>>");
+        List<KandunganObat> response = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
+        try {
+            response = obatBo.getListKandunganObatDetail(idObat);
+        } catch (GeneralBOException e){
+            String erMsg = "[ReportAction.createSessionKandunganObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.";
+            logger.error(erMsg, e);
+        }
+        logger.info("[ObatAction.createSessionKandunganObat] END <<<");
+        return response;
+    }
+
+    public List<KeteranganObat> getComboKeteranganObat(String idParam){
+        logger.info("[ObatAction.getComboKeteranganObat] START >>> ");
+        List<KeteranganObat> results = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeteranganObatBo keteranganObatBo = (KeteranganObatBo) ctx.getBean("keteranganObatBoProxy");
+        if(idParam != null && !"".equalsIgnoreCase(idParam)){
+            try {
+                results = keteranganObatBo.getKeteranganObat(idParam);
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.getComboKeteranganObat] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[ObatAction.getComboKeteranganObat] END <<< ");
+        return results;
+    }
+
+    public List<ParameterKeteranganObat> getComboParameterObat(String idJenis){
+        logger.info("[ObatAction.getComboParameterObat] START >>> ");
+        List<ParameterKeteranganObat> results = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterKeteranganObatBo parameterKeteranganObatBo = (ParameterKeteranganObatBo) ctx.getBean("parameterKeteranganObatBoProxy");
+        if(idJenis != null && !"".equalsIgnoreCase(idJenis)){
+            try {
+                results = parameterKeteranganObatBo.getParameterKeterangan(idJenis);
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.getComboParameterObat] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[ObatAction.getComboParameterObat] END <<< ");
+        return results;
     }
 
 }

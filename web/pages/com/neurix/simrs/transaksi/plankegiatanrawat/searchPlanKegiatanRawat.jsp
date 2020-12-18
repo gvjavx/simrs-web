@@ -1197,6 +1197,7 @@
     }
 
     function showModalAdd(param) {
+        var idDetail = $("#idDetailCheckup").val();
         if (param == "vitalsign")
             $("#modal-add-vital-sign").modal('show');
         if (param == "cairan"){
@@ -1211,10 +1212,10 @@
 
             var idPoli = $("#idPoli").val();
 
-            RawatInapAction.getListObatParenteral(idPoli, function(response){
+            RawatInapAction.getListObatParenteral(idDetail, function(response){
                 var str = "";
                 $.each(response, function(i, item) {
-                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
+                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
                 });
                 $("#select_obat_par").html(str);
             });
@@ -1223,12 +1224,10 @@
         }
         if (param == "nonparenteral"){
 
-            var idDetail = $("#idDetailCheckup").val();
-
-            RawatInapAction.getListObatNonParenteral(idDetail, "%",  function(response){
+            RawatInapAction.getListObatNonParenteral(idDetail,  function(response){
                 var str = "";
                 $.each(response, function(i, item) {
-                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+"</option>";
+                    str += "<option val=\'"+item.namaObat+"\'>"+item.namaObat+' ('+item.bentuk+')'+"</option>";
                 });
                 $("#select_obat_nonpar").html(str);
             });
@@ -1378,7 +1377,7 @@
                     "<td>"+ item.nama +"</td>" +
                     "<td>"+ item.cara +"</td>" +
                     "<td>"+ item.dosis +"</td>" +
-                    "<td>"+ item.skintest +"</td>" +
+                    "<td>"+ item.skintes +"</td>" +
                     "<td>"+ item.waktupemberian +"</td>" +
                     "<td>"+ item.ket +"</td>" +
                     "</tr>"
@@ -1408,9 +1407,6 @@
 
         var idDetail = $("#idDetailCheckup").val();
         var tglPlan = $("#tgl").val();
-
-//        console.log(listOfVitalSign);
-
         var strVitalSign = JSON.stringify(listOfVitalSign);
         var strCairan = JSON.stringify(listOfCairan);
         var strParenteral = JSON.stringify(listOfParenteral);

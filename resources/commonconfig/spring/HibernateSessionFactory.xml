@@ -40,16 +40,16 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ===== DEV ====== -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_prod</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">root</prop>
-                <prop key="hibernate.connection.password">123456</prop>
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_prod</prop>-->
+                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+                <!--<prop key="hibernate.connection.username">root</prop>-->
+                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== LOCALHOST ======= -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">postgres</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
+                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_dev</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">postgres</prop>
+                <prop key="hibernate.connection.password">123456</prop>
 
             </props>
         </property>
@@ -487,6 +487,11 @@
                     sshconfig/com/neurix/simrs/master/kategoripersediaan/hibernate/ImSimrsKategoriPersediaanEntity.hbm.xml
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebra.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/hargaterakhir/hibernate/MtSimrsHargaTerakhirEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/jenispersediaanobat/hibernate/ImSimrsJenisPersediaanObatEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/jenispersediaanobatsub/hibernate/ImSimrsJenisPersediaanObatSubEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/keteranganobat/hibernate/ImSimrsKeteranganObatEntity.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/parameterketeranganobat/hibernate/ImSimrsParameterKeteranganObatEntity.xml</value>
 
                 <value>
                     sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml
@@ -743,10 +748,10 @@
                     sshconfig/com/neurix/akuntansi/transaksi/budgetingnilaidasar/hibernate/ItAkunBudgetingNilaiDasarEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ImAkunJenisBudgetingEntity.hbm.xml
+                    sshconfig/com/neurix/akuntansi/master/parameterbudgeting/hibernate/ImAkunJenisBudgetingEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ImAkunParameterBudgetingEntity.hbm.xml
+                    sshconfig/com/neurix/akuntansi/master/parameterbudgeting/hibernate/ImAkunParameterBudgetingEntity.hbm.xml
                 </value>
                 <value>
                     sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunPerhitunganBudgetingEntity.hbm.xml
@@ -755,10 +760,10 @@
                     sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunNilaiParameterBudgetingEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ImAkunKategoriParameterBudgetingEntity.hbm.xml
+                    sshconfig/com/neurix/akuntansi/master/parameterbudgeting/hibernate/ImAkunKategoriParameterBudgetingEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ImAkunParameterBudgetingRekeningEntity.hbm.xml
+                    sshconfig/com/neurix/akuntansi/master/parameterbudgeting/hibernate/ImAkunParameterBudgetingRekeningEntity.hbm.xml
                 </value>
                 <value>
                     sshconfig/com/neurix/akuntansi/transaksi/budgetingperhitungan/hibernate/ItAkunNilaiParameterPengadaaanEntity.hbm.xml

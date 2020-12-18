@@ -115,18 +115,19 @@ public class KandunganObatAction extends BaseMasterAction {
             try {
                 logId = kandunganObatBoProxy.saveErrorMessage(e.getMessage(), "kandunganObatBo.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[KandunganObatBoImpl.saveAdd] Error when saving error,", e1);
+                logger.error("[KandunganObatAction.saveAdd] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[KandunganObatBoImpl.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error("[KandunganObatAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            throw new GeneralBOException(e.getMessage());
+            //addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            //return ERROR;
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        logger.info("[KandunganObatBoImpl.saveAdd] end process >>>");
+        logger.info("[KandunganObatAction.saveAdd] end process >>>");
         return "success_save_add";
     }
 

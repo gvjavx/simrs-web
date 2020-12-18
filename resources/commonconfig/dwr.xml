@@ -433,6 +433,7 @@
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.vendor.action.VendorAction"/>
         </create>
+        <convert converter="bean" match="com.neurix.simrs.master.vendor.model.Vendor"/>
 
         <!--Resep Online-->
         <create creator="new">
@@ -585,9 +586,9 @@
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.ImAkunBudgetingNilaiDasarEntity"/>
         <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunJenisBudgetingEntity"/>
+                 match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity"/>
         <convert converter="bean"
-                 match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ImAkunParameterBudgetingEntity"/>
+                 match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity"/>
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ItAkunPerhitunganBudgetingEntity"/>
         <convert converter="bean"
@@ -595,7 +596,7 @@
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingnilaidasar.model.BudgetingNilaiDasar"/>
         <convert converter="bean"
                  match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.PerhitunganBudgeting"/>
-        <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting"/>
         <convert converter="bean" match="com.neurix.akuntansi.transaksi.budgetingperhitungan.model.KategoriParameter"/>
 
         <!--Master Hcm-->
@@ -899,15 +900,54 @@
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.KandunganObat"/>
         <convert converter="bean" match="com.neurix.simrs.master.kandunganObat.model.ImSimrsKandunganObatEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.obat.model.ImSimrsHeaderObatEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.dietgizi.action.DietGiziAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.DietGizi"/>
-        <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.DietGiziEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.ImSimrsDietGizi"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.department.action.DepartmentAction"/>
         </create>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.ruangan.action.RuanganAction"/>
+        </create>
+
+        <!--Sigit 2020-12-16, jenis persediaan, START -->
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.jenispersediaanobat.action.JenisPersediaanObatAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobat.model.JenisPersediaanObat"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.jenispersediaanobatsub.action.JenisPersediaanObatSubAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobatsub.model.JenisPersediaanObatSub"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.keteranganobat.action.KeteranganObatAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.keteranganobat.model.KeteranganObat"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.akuntansi.master.parameterbudgeting.action.ParameterBudgetingAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingRekeningEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunKategoriParameterBudgetingEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.master.model.ImMasterEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.master.model.MasterPK"/>
+        <!--END-->
+
     </allow>
 </dwr>
