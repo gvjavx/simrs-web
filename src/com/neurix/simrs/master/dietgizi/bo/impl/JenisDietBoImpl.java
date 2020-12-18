@@ -122,7 +122,6 @@ public class JenisDietBoImpl implements JenisDietBo {
                 }
             }
         }
-
     }
 
     @Override

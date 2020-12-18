@@ -97,7 +97,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="dietgiziAdd" name="dietGizi.namaDietGizi" required="true" cssStyle="margin-top: 7px"
+                                <s:textfield id="dietgiziAdd" name="dietGizi.namaDietGizi" required="true"
+                                             cssStyle="margin-top: 7px"
                                              disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
@@ -110,7 +111,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="tarifAdd" name="dietGizi.tarif" type="number" required="true" cssStyle="margin-top: 7px"
+                                <s:textfield id="tarifAdd" name="dietGizi.tarif" type="number"
+                                             required="true" cssStyle="margin-top: 7px"
                                              disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
@@ -121,7 +123,8 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addJenisObatForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addJenisObatForm"
+                                   id="save" name="save"
                                    onBeforeTopics="beforeProcessSaveAdd" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialogAdd" >
                             <i class="fa fa-check"></i>
@@ -166,11 +169,13 @@
                                                                    }
                                                             }"
                                         >
-                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogAdd" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogAdd" modal="true"
+                                                   resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close');}
@@ -178,11 +183,13 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageAdd"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessageAdd"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
-                                        <sj:dialog id="error_validation_dialog_add" openTopics="showErrorValidationDialogAdd" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog_add" openTopics="showErrorValidationDialogAdd"
+                                                   modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
                                                                         'OK':function() { $('#error_validation_dialog_add').dialog('close');}
@@ -190,7 +197,8 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> Please check this field :
                                                     <br/>
                                                     <center><div id="errorValidationMessageAdd"></div></center>
                                                 </label>

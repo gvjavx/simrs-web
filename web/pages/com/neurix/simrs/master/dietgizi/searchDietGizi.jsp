@@ -9,16 +9,14 @@
 <head>
     <%@ include file="/pages/common/header.jsp" %>
     <script type='text/javascript'>
-
         function link(){
             window.location.href="<s:url action='initForm_dietgizi'/>";
         }
-
     </script>
+
     <script type='text/javascript' src='<s:url value="/dwr/interface/DietGiziAction.js"/>'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
-
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -96,7 +94,8 @@
                                                     <td>
                                                         <s:url var="urlAdd"  namespace="/dietgizi" action="add_dietgizi" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px"
+                                                              onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
                                                             Add DietGizi
                                                         </sj:a>
@@ -138,7 +137,8 @@
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="310" width="600" autoOpen="false"
                                                                    title="DietGizi ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>"
+                                                                         alt="Loading..."/></center>
                                                         </sj:dialog>
 
                                                         <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
@@ -169,25 +169,25 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/dietgizi" action="delete_dietgizi" escapeAmp="false">
+                                                                    <s:url var="urlViewDelete" namespace="/dietgizi" action="delete_dietgizi"
+                                                                           escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idDietGizi" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>"
+                                                                             name="icon_trash">
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column property="idDietGizi" sortable="true" title="ID Diet Gizi" />
                                                             <display:column property="namaDietGizi" sortable="true" title="Nama Diet Gizi" />
-                                                            <%--<display:column property="tarif" sortable="true" title="Tarif" />--%>
                                                             <display:column title="Tarif">
                                                                 <script>
                                                                     var tarif = '<s:property value="#attr.row.tarif" />';
                                                                     document.write(formatRupiahAtas(tarif));
                                                                 </script>
                                                             </display:column>
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
