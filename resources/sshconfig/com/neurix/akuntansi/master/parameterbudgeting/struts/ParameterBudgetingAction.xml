@@ -73,7 +73,7 @@
                 class="com.neurix.akuntansi.master.parameterbudgeting.action.ParameterBudgetingAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/akuntansi/master/parameterbudgeting/searchParamterBudgeting.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/parameterbudgeting/searchParamterBudgeting.jsp</result>
 
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
