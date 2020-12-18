@@ -1118,7 +1118,7 @@ public class RawatInapController implements ModelDriven<Object> {
             List<Obat> result = new ArrayList<>();
 
             try{
-                result = rawatInapBoProxy.getListObatParenteral(idPelayanan);
+                result = rawatInapBoProxy.getListObatParenteral(idDetailCheckup);
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
