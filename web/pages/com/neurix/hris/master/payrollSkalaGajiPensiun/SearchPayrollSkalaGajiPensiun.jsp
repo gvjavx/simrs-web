@@ -32,7 +32,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_payrollSkalaGajiPensiun'/>";
+            window.location.href="<s:url action='initForm_payrollSkalaGajiIuranDplk'/>";
         }
 
     </script>
@@ -60,7 +60,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollSkalaGajiPensiunForm" method="post"  theme="simple" namespace="/payrollSkalaGajiPensiun" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiPensiun.action" cssClass="well form-horizontal">
+                    <s:form id="payrollSkalaGajiPensiunForm" method="post"  theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiIuranDplk.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -138,7 +138,7 @@
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiPensiun" action="add_payrollSkalaGajiPensiun" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiIuranDplk" action="add_payrollSkalaGajiIuranDplk" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
@@ -146,7 +146,7 @@
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiPensiun"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiIuranDplk"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -168,10 +168,10 @@
 
                                         <s:set name="listComboPayrollSkalaGajiPensiun" value="#session.listOfResult" scope="request" />
                                         <display:table name="listComboPayrollSkalaGajiPensiun" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_payrollSkalaGajiPensiun.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_payrollSkalaGajiIuranDplk.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiPensiun" action="edit_payrollSkalaGajiPensiun" escapeAmp="false">
+                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiIuranDplk" action="edit_payrollSkalaGajiIuranDplk" escapeAmp="false">
                                                         <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
@@ -183,7 +183,7 @@
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGajiPensiun" action="delete_payrollSkalaGajiPensiun" escapeAmp="false">
+                                                    <s:url var="urlViewDelete" namespace="/payrollSkalaGajiIuranDplk" action="delete_payrollSkalaGajiIuranDplk" escapeAmp="false">
                                                         <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                     </s:url>
@@ -193,7 +193,7 @@
                                                 </s:if>
                                             </display:column>
                                             <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
-                                            <display:column property="tipeDapenName" sortable="true" title="Tipe Dapen"  />
+                                            <%--<display:column property="tipeDapenName" sortable="true" title="Tipe Dapen"  />--%>
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
                                             <display:column property="poin" sortable="true" title="Masa Golongan"  />
                                             <display:column property="stNilai" sortable="true" title="Nilai"  />

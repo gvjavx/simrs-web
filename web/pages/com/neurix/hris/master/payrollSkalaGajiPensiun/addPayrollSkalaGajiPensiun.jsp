@@ -99,7 +99,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveAdd_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
+            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="saveAdd_payrollSkalaGajiIuranDplk" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
                 <legend align="left">Add Payroll Skala Gaji Pensiun</legend>

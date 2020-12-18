@@ -48,3 +48,4 @@
 
     ALTER TABLE im_hris_payroll_skala_gaji_pensiun_history
                 ADD masa_kerja_gol int NOT NULL
+

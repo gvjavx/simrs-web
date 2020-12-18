@@ -17,7 +17,15 @@ public class payrollSkalaGajiPensiun extends BaseModel {
     private String golonganName;
     private int poin;
     private BigDecimal nilai;
+    private String stNilai;
 
+    public String getStNilai() {
+        return stNilai;
+    }
+
+    public void setStNilai(String stNilai) {
+        this.stNilai = stNilai;
+    }
 
     public String getGolonganName() {
         return golonganName;

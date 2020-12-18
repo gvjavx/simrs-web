@@ -1,6 +1,7 @@
 package com.neurix.hris.master.payrollSkalaGajiPensiun.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.golonganDapen.dao.GolonganDapenDao;
 import com.neurix.hris.master.golonganDapen.model.ImGolonganDapenEntity;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
@@ -250,6 +251,7 @@ public class PayrollSkalaGajiPensiunBoImpl implements PayrollSkalaGajiPensiunBo 
                     }
 
                     returnPayrollSkalaGaji.setNilai(payrollSkalaGajiEntity.getNilai());
+                    returnPayrollSkalaGaji.setStNilai(CommonUtil.numbericFormat(payrollSkalaGajiEntity.getNilai(), "###,###"));
                     returnPayrollSkalaGaji.setPoin(payrollSkalaGajiEntity.getPoin());
 
                     returnPayrollSkalaGaji.setCreatedWho(payrollSkalaGajiEntity.getCreatedWho());

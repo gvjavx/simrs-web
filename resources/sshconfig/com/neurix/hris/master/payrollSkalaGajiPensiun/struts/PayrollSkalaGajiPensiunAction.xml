@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="payrollSkalaGajiPensiun" namespace="/payrollSkalaGajiPensiunOld" extends="struts-default, jasperreports-default, json-default">
+    <package name="payrollSkalaGajiPensiun" namespace="/payrollSkalaGajiIuranDplk" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,7 +69,7 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_payrollSkalaGajiPensiunOld"
+        <action name="*_payrollSkalaGajiIuranDplk"
                 class="com.neurix.hris.master.payrollSkalaGajiPensiun.action.PayrollSkalaGajiPensiunAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/hris/master/payrollSkalaGajiPensiun/SearchPayrollSkalaGajiPensiun.jsp</result>
@@ -96,7 +96,7 @@
         </action>
 
 
-        <action name="paging_displaytag_payrollSkalaGajiPensiunOld"
+        <action name="paging_displaytag_payrollSkalaGajiIuranDplk"
                 class="com.neurix.hris.master.payrollSkalaGajiPensiun.action.PayrollSkalaGajiPensiunAction" method="paging">
             <interceptor-ref name="defaultStack"/>
             <result name="success">/pages/com/neurix/hris/master/payrollSkalaGajiPensiun/SearchPayrollSkalaGajiPensiun.jsp</result>
