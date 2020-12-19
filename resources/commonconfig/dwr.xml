@@ -932,6 +932,9 @@
             <param name="class" value="com.neurix.simrs.master.keteranganobat.action.KeteranganObatAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.keteranganobat.model.KeteranganObat"/>
+        <convert converter="bean" match="com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobatsub.model.ImSimrsJenisPersediaanObatSubEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobat.model.ImSimrsJenisPersediaanObatEntity"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction"/>

@@ -5,10 +5,13 @@ import com.neurix.simrs.master.keteranganobat.model.ImSimrsKeteranganObatEntity;
 import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -123,6 +126,25 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         return keteranganObatList;
     }
 
+    public boolean checkIfAvailableByCriteria(String idSubJenis, String idParam, String keterangan){
+
+        String SQL = "SELECT id_sub_jenis, id_parameter_keterangan, keterangan \n" +
+                "FROM im_simrs_keterangan_obat \n" +
+                "WHERE id_sub_jenis = :idsubjenis\n" +
+                "AND id_parameter_keterangan = :idparam\n" +
+                "AND keterangan = :keterangan";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idsubjenis", idSubJenis)
+                .setParameter("idparam", idParam)
+                .setParameter("keterangan", keterangan)
+                .list();
+
+        if (results != null && results.size() > 0)
+            return true;
+        return false;
+    }
+
     private String objToString(Object obj){
         if (obj != null)
             return obj.toString();
@@ -134,4 +156,13 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
             return (Timestamp) obj;
         return null;
     }
+
+    public String getNextSeq() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_keterangan_obat')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%07d", iter.next());
+        return "KTO" + sId;
+    }
+
+
 }

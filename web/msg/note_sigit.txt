@@ -1455,3 +1455,13 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     CREATE SEQUENCE seq_parameter_budgeting;
 
 --
+
+2020-12-19 --
+
+    ALTER TABLE im_simrs_keterangan_obat
+    ADD COLUMN warna_label VARCHAR(100),
+    ADD COLUMN warna_background VARCHAR(100);
+
+    CREATE SEQUENCE seq_keterangan_obat;
+
+--
