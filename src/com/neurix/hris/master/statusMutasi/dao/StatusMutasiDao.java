@@ -42,7 +42,7 @@ public class StatusMutasiDao extends GenericDao<ImHrisStatusMutasiEntity, String
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        criteria.add(Restrictions.ilike("flag", mapCriteria.get("flag")));
 
         // Order by
         criteria.addOrder(Order.asc("createdDate"));

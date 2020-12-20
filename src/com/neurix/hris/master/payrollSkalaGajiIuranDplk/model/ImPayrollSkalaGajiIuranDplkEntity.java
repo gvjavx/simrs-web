@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiun.model;
+package com.neurix.hris.master.payrollSkalaGajiIuranDplk.model;
 
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 
@@ -13,11 +13,9 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
-public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
-    private String skalaGajiPensiunId;
+public class ImPayrollSkalaGajiIuranDplkEntity implements Serializable {
+    private String skalaGajiIuranDplkId;
     private String golonganId;
-    private String tipeDapenId;
-    private int poin;
     private BigDecimal nilai;
 
     private String flag;
@@ -101,27 +99,11 @@ public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
         this.nilai = nilai;
     }
 
-    public int getPoin() {
-        return poin;
+    public String getSkalaGajiIuranDplkId() {
+        return skalaGajiIuranDplkId;
     }
 
-    public void setPoin(int poin) {
-        this.poin = poin;
-    }
-
-    public String getSkalaGajiPensiunId() {
-        return skalaGajiPensiunId;
-    }
-
-    public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
-        this.skalaGajiPensiunId = skalaGajiPensiunId;
-    }
-
-    public String getTipeDapenId() {
-        return tipeDapenId;
-    }
-
-    public void setTipeDapenId(String tipeDapenId) {
-        this.tipeDapenId = tipeDapenId;
+    public void setSkalaGajiIuranDplkId(String skalaGajiIuranDplkId) {
+        this.skalaGajiIuranDplkId = skalaGajiIuranDplkId;
     }
 }

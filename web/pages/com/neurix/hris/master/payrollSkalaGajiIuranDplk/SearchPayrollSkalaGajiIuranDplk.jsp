@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Payroll Skala Gaji Pensiun
+            Payroll Skala Gaji Iuran Dplk
         </h1>
     </section>
 
@@ -60,7 +60,7 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="payrollSkalaGajiPensiunForm" method="post"  theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="searchPayrollSkalaGajiPensiun_payrollSkalaGajiIuranDplk.action" cssClass="well form-horizontal">
+                    <s:form id="payrollSkalaGajiIuranDplkForm" method="post"  theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="searchPayrollSkalaGajiIuranDplk_payrollSkalaGajiIuranDplk.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -80,7 +80,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:textfield  id="skalaGajiId" name="payrollSkalaGajiPensiun.skalaGajiPensiunId" required="false" readonly="false" cssClass="form-control"/>
+                                        <s:textfield  id="skalaGajiId" name="payrollSkalaGajiIuranDplk.skalaGajiIuranDplkId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -91,30 +91,19 @@
                                 <td>
                                     <table>
                                         <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                        <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganDapenId" name="payrollSkalaGajiPensiun.golonganId" required="true"
+                                        <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganDapenId" name="payrollSkalaGajiIuranDplk.golonganId" required="true"
                                                   listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
                                     </table>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Tipe Dapen :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:action id="comboGolongan" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
-                                        <s:select cssClass="form-control" list="#comboGolongan.listComboPayrollDanaPensiun" id="tipeDapenId" name="payrollSkalaGajiPensiun.tipeDapenId"
-                                                  listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="" />
-                                    </table>
-                                </td>
-                            </tr>
+
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Flag :</small></label>
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollSkalaGajiPensiun.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="payrollSkalaGajiIuranDplk.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control" />
                                     </table>
 
@@ -123,15 +112,13 @@
 
                         </table>
 
-
-
                         <br>
 
                         <div id="actions" class="form-actions">
                             <table align="center">
                                 <tr>
                                     <td>
-                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollSkalaGajiPensiunForm" id="search" name="search"
+                                        <sj:submit type="button" cssClass="btn btn-primary" formIds="payrollSkalaGajiIuranDplkForm" id="search" name="search"
                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
@@ -142,7 +129,7 @@
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
-                                            Add Dana Pensiun
+                                            Add Dana Iuran Dplk
                                         </sj:a>
                                     </td>
                                     <td>
@@ -162,17 +149,17 @@
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                    height="400" width="550" autoOpen="false"
-                                                   title="Payroll Skala Gaji Pensiun">
+                                                   title="Payroll Skala Gaji Iuran Dplk">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
-                                        <s:set name="listComboPayrollSkalaGajiPensiun" value="#session.listOfResult" scope="request" />
-                                        <display:table name="listComboPayrollSkalaGajiPensiun" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_payrollSkalaGajiIuranDplk.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                        <s:set name="listComboPayrollSkalaGajiIuranDplk" value="#session.listOfResult" scope="request" />
+                                        <display:table name="listComboPayrollSkalaGajiIuranDplk" class="table table-condensed table-striped table-hover"
+                                                       requestURI="paging_displaytag_payrollSkalaGajiIuranDplk.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlEdit" namespace="/payrollSkalaGajiIuranDplk" action="edit_payrollSkalaGajiIuranDplk" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId"/></s:param>
+                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiIuranDplkId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -184,7 +171,7 @@
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                 <s:if test="#attr.row.flagYes">
                                                     <s:url var="urlViewDelete" namespace="/payrollSkalaGajiIuranDplk" action="delete_payrollSkalaGajiIuranDplk" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
+                                                        <s:param name="id"><s:property value="#attr.row.skalaGajiIuranDplkId" /></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                     </s:url>
                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -192,10 +179,8 @@
                                                     </sj:a>
                                                 </s:if>
                                             </display:column>
-                                            <display:column property="skalaGajiPensiunId" sortable="true" title="Skala Gaji ID" />
-                                            <%--<display:column property="tipeDapenName" sortable="true" title="Tipe Dapen"  />--%>
+                                            <display:column property="skalaGajiIuranDplkId" sortable="true" title="Skala Gaji ID" />
                                             <display:column property="golonganName" sortable="true" title="Golongan"  />
-                                            <display:column property="poin" sortable="true" title="Masa Golongan"  />
                                             <display:column property="stNilai" sortable="true" title="Nilai"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />

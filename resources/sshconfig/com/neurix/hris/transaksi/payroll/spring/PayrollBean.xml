@@ -54,7 +54,8 @@
           p:smkHistoryEvaluasiPegawaiDao-ref="smkHistoryEvaluasiPegawaiDao"
           p:payrollMinimumPromosiDao-ref="payrollMinimumPromosiDao"
           p:masaTanamDao-ref="masaTanamDao"
-          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao"
+
+          p:payrollSkalaGajiIuranDplkDao-ref="payrollSkalaGajiIuranDplkDao"
           p:personilPositionDao-ref="personilPositionDao"
           p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao"
           p:positionDao-ref="positionDao4"
@@ -159,7 +160,9 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="masaTanamDao" class="com.neurix.hris.master.masaTanam.dao.MasaTanamDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao"
+    <!--<bean id="payrollSkalaGajiPensiunDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao"-->
+          <!--p:sessionFactory-ref="sessionFactory" />-->
+    <bean id="payrollSkalaGajiIuranDplkDao" class="com.neurix.hris.master.payrollSkalaGajiIuranDplk.dao.PayrollSkalaGajiIuranDplkDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="positionDao4" class="com.neurix.authorization.position.dao.PositionDao"
           p:sessionFactory-ref="sessionFactory" />

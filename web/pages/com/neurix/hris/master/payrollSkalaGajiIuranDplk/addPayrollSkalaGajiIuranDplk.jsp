@@ -16,13 +16,12 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var tipeDapen = document.getElementById("tipeDapenId1").value;
+            // var tipeDapen = document.getElementById("tipeDapenId1").value;
             var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' &&tipeDapen!='' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+            if (golonganId != '' && nilai != '' ) {
+                if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -35,9 +34,6 @@
                     var msg = "";
                     if (golonganId == '') {
                         msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
-                    }
-                    if (isNaN(point)) {
-                        msg += 'Field <strong>Masa Kerja</strong> Harus angka tanpa koma.' + '<br/>';
                     }
 
                     if (isNaN(nilai)) {
@@ -55,12 +51,6 @@
                     msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
 
-                if (point == '') {
-                    msg += 'Field <strong>Point</strong> is required.' + '<br/>';
-                }
-                if (tipeDapen == '') {
-                    msg += 'Field <strong>Tipe Dapen </strong> is required.' + '<br/>';
-                }
                 if (nilai == '') {
                     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
@@ -102,7 +92,7 @@
             <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="saveAdd_payrollSkalaGajiIuranDplk" cssClass="well form-horizontal">
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Payroll Skala Gaji Pensiun</legend>
+                <legend align="left">Add Payroll Skala Gaji Iuran Dplk</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -110,19 +100,8 @@
                         </td>
                     </tr>
                 </table>
+
                 <table>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tipe Dapen :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="comboGolongan" namespace="/payrollDanaPensiun" name="searchPayrollDanaPensiun_payrollDanaPensiun"/>
-                                <s:select cssClass="form-control" list="#comboGolongan.listComboPayrollDanaPensiun" id="tipeDapenId1" name="payrollSkalaGajiPensiun.tipeDapenId"
-                                          listKey="danaPensiunId" listValue="danaPensiun" headerKey="" headerValue="" />
-                            </table>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Golongan :</small></label>
@@ -130,19 +109,8 @@
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId" required="true"
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiIuranDplk.golonganId" required="true"
                                           listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Masa Kerja :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield type="number" min="0" id="point1" name="payrollSkalaGajiPensiun.poin" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -153,7 +121,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiPensiun.nilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiIuranDplk.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>

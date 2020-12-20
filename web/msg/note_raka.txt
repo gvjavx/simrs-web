@@ -1,7 +1,7 @@
 -- 2020-11-30 ===> Payroll PTKP
-+ Membuat Table [im_im_hris_payroll_ptkp_history]
-+ Membuat Sequence [seq_payroll_ptkp]
-+ Membuat Sequence [seq_payroll_ptkp_history]
+-- Membuat Table [im_im_hris_payroll_ptkp_history]
+-- Membuat Sequence [seq_payroll_ptkp]
+-- Membuat Sequence [seq_payroll_ptkp_history]
 
     CREATE TABLE im_hris_payroll_ptkp_history
     (
@@ -29,23 +29,28 @@
     CREATE SEQUENCE public.seq_payroll_ptkp_history;
 
 -- 2020-12-10 ===> User
-+ Menambahakan (pada table [im_users]) [tipe_pelayanan] "rawat_inap" dan "pbf"
-+ Menambahakan column [id_vendor] pada table [im_users]
+-- Menambahakan (pada table [im_users]) [tipe_pelayanan] "rawat_inap" dan "pbf"
+-- Menambahakan column [id_vendor] pada table [im_users]
 
     ALTER TABLE im_users
         ADD id_vendor character varying(30)
         ADD id_ruangan character varying(50);
 
 -- 2020-12-15 ===> SkalaGajiPensiun
-+ Mengalihkan table ke [im_hris_pyroll_skala_gaji_pensiun]
-+ Menambahkan sequence [seq_payroll_skala_gaji_pensiun_history]
-+ Menambahkan column [masa_kerja_gol] pada [im_hris_pyroll_skala_gaji_pensiun]
+-- Mengalihkan table ke [im_hris_pyroll_skala_gaji_pensiun]
+-- Menambahkan sequence [seq_payroll_skala_gaji_pensiun_history]
+-- Menambahkan column [masa_kerja_gol] pada [im_hris_pyroll_skala_gaji_pensiun]
 
     CREATE SEQUENCE public.seq_payroll_skala_gaji_pensiun_history;
 
     ALTER TABLE im_hris_payroll_skala_gaji_pensiun
-            ADD masa_kerja_gol int NOT NULL
+            ADD masa_kerja_gol int NOT NULL;
 
     ALTER TABLE im_hris_payroll_skala_gaji_pensiun_history
-                ADD masa_kerja_gol int NOT NULL
+                ADD masa_kerja_gol int NOT NULL;
 
+-- 2020-12-19 ===> NEW SkalaGajiIuranDplk & SkalaGajiPensiun
+-- Menambahkan Sequence [seq_payroll_skala_gaji_iuran_dplk] & [seq_payroll_skala_gaji_iuran_dplk_history]
+
+    CREATE SEQUENCE public.seq_payroll_skala_gaji_iuran_dplk;
+    CREATE SEQUENCE public.seq_payroll_skala_gaji_iuran_dplk_history;

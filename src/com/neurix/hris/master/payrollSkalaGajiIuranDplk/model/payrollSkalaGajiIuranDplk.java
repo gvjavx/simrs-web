@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiun.model;
+package com.neurix.hris.master.payrollSkalaGajiIuranDplk.model;
 
 import com.neurix.common.model.BaseModel;
 
@@ -11,11 +11,11 @@ import java.math.BigDecimal;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class payrollSkalaGajiPensiun extends BaseModel {
-    private String skalaGajiPensiunId;
+public class payrollSkalaGajiIuranDplk extends BaseModel {
+    private String skalaGajiIuranDplkId;
     private String golonganId;
     private String golonganName;
-    private int poin;
+    private int masaKerjaGol;
     private BigDecimal nilai;
     private String stNilai;
 
@@ -51,19 +51,19 @@ public class payrollSkalaGajiPensiun extends BaseModel {
         this.nilai = nilai;
     }
 
-    public int getPoin() {
-        return poin;
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
     }
 
-    public void setPoin(int poin) {
-        this.poin = poin;
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
     }
 
-    public String getSkalaGajiPensiunId() {
-        return skalaGajiPensiunId;
+    public String getSkalaGajiIuranDplkId() {
+        return skalaGajiIuranDplkId;
     }
 
-    public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
-        this.skalaGajiPensiunId = skalaGajiPensiunId;
+    public void setSkalaGajiIuranDplkId(String skalaGajiIuranDplkId) {
+        this.skalaGajiIuranDplkId = skalaGajiIuranDplkId;
     }
 }

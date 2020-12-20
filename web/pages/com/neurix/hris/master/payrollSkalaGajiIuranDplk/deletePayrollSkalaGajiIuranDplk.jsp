@@ -17,11 +17,10 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var golonganId = document.getElementById("golonganId1").value;
-            var point = document.getElementById("point1").value;
             var nilai = document.getElementById("nilai1").value;
 
-            if (golonganId != '' && point != '' && nilai != '' ) {
-                if(isNaN(point) ==  false && isNaN(nilai) == false){
+            if (golonganId != '' &&  nilai != '' ) {
+                if(isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -32,10 +31,6 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
-                    if (isNaN(point)) {
-                        msg += 'Field <strong>point</strong> Harus angka tanpa koma.' + '<br/>';
-                    }
-
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
                     }
@@ -51,10 +46,6 @@
                     msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
 
-                if (point == '') {
-                    msg += 'Field <strong>Masa Golongan</strong> is required.' + '<br/>';
-                }
-
                 if (nilai == '') {
                     msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
@@ -64,6 +55,18 @@
                 $.publish('showErrorValidationDialog');
             }
         });
+
+        $.subscribe('beforeProcessDelete', function (event, data) {
+            if (confirm('Do you want to delete this record ?')) {
+                event.originalEvent.options.submit = true;
+                $.publish('showDialog');
+
+            } else {
+                // Cancel Submit comes with 1.8.0
+                event.originalEvent.options.submit = false;
+            }
+        });
+
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -93,10 +96,16 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="saveEdit_payrollSkalaGajiIuranDplk" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiIuranDplk" action="saveDelete_payrollSkalaGajiIuranDplk" cssClass="well form-horizontal">
+
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Edit Payroll Skala Gaji Pensiun</legend>
+
+
+
+                <legend align="left">Delete Payroll Skala Gaji Iuran Dplk</legend>
+
+
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -112,7 +121,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiun.skalaGajiPensiunId" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiIuranDplk.skalaGajiIuranDplkId" required="true"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -123,39 +132,18 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="golonganId1" name="payrollSkalaGajiPensiun.golonganName" readonly="true" required="true"  cssClass="form-control"/>
+                                <s:textfield  id="golonganId1" name="payrollSkalaGajiIuranDplk.golonganName" readonly="true" required="true"  cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tipe Dapen :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="tipeDapenId1" name="payrollSkalaGajiPensiun.tipeDapenName" readonly="true" required="true"  cssClass="form-control"/>
-
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Masa Kerja :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield type="number" id="point1" name="payrollSkalaGajiPensiun.poin" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
                     <tr>
                         <td>
                             <label class="control-label"><small>Nilai :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" id="nilai1" name="payrollSkalaGajiPensiun.nilai" required="true" cssClass="form-control"/>
+                                <s:textfield readonly="true"  id="nilai1" name="payrollSkalaGajiIuranDplk.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -171,8 +159,8 @@
                         <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-check"></i>
-                            Save
+                            <i class="fa fa-trash"></i>
+                            Delete
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
