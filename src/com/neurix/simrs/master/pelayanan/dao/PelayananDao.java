@@ -243,8 +243,6 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 .add(Restrictions.eq("branchId", branchId))
                 .add(Restrictions.ne("tipePelayanan", "radiologi"))
                 .add(Restrictions.ne("tipePelayanan", "lab"))
-                .add(Restrictions.ne("tipePelayanan", "apotek_ri"))
-                .add(Restrictions.ne("tipePelayanan", "apotek"))
                 .add(Restrictions.ne("tipePelayanan", "gudang_obat"))
                 .add(Restrictions.ne("tipePelayanan", "gizi"))
                 .add(Restrictions.eq("flag", "Y"))
