@@ -71,7 +71,7 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 "FROM im_simrs_keterangan_obat a\n" +
                 "LEFT JOIN im_simrs_jenis_persediaan_obat_sub b ON b.id = a.id_sub_jenis\n" +
                 "LEFT JOIN im_simrs_paremeter_keterangan_obat c ON c.id = a.id_parameter_keterangan\n" +
-                "INNER JOIN im_simrs_jenis_persediaan_obat d ON d.id = c.id_jenis_obat\n" +
+                "INNER JOIN im_simrs_jenis_persediaan_obat d ON d.id = b.id_jenis_obat\n" +
                 "WHERE a.flag = :flag \n" +
                 "AND a.id_sub_jenis LIKE :idSubJenis \n" +
                 "AND a.id_parameter_keterangan LIKE :idParameterKeterangan \n" +
