@@ -1478,4 +1478,20 @@ public class ObatAction extends BaseMasterAction {
         return results;
     }
 
+    public List<KeteranganObat> getComboParameterWaktuObat(String idJenis){
+        logger.info("[ObatAction.getComboParameterObat] START >>> ");
+        List<KeteranganObat> results = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterKeteranganObatBo parameterKeteranganObatBo = (ParameterKeteranganObatBo) ctx.getBean("parameterKeteranganObatBoProxy");
+        if(idJenis != null && !"".equalsIgnoreCase(idJenis)){
+            try {
+                results = parameterKeteranganObatBo.getParameterKeteranganWaktu(idJenis);
+            } catch (GeneralBOException e){
+                logger.error("[ObatAction.getComboParameterObat] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+            }
+        }
+        logger.info("[ObatAction.getComboParameterObat] END <<< ");
+        return results;
+    }
+
 }

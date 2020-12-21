@@ -1918,9 +1918,16 @@
                             <p id="p_keterangan"></p>
                         </div>
                     </div>
-                    <div class="col-md-offset-2 col-md-4">
+                    <div class="col-md-3">
+                        <label style="margin-bottom: -7px">Waktu</label>
+                        <select class="form-control select2" style="width: 100%" id="waktu_param">
+                            <option value="">[Select One]</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
                         <label style="margin-bottom: -7px">Parameter Keterangan</label>
                         <select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">
+                            <option value="">[Select One]</option>
                         </select>
                     </div>
                     <div class="col-md-4">
@@ -1928,20 +1935,23 @@
                         <select class="select2 form-control" multiple style="width: 100%" id="ket_param">
                         </select>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <button style="margin-top: 20px; margin-left: -25px" class="btn btn-warning" onclick="addKeterangan()"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
-                <div class="row" style="margin-top: 7px">
+                <div class="row" style="margin-top: 10px">
                     <div class="col-md-offset-2 col-md-8">
-                        <select style="width: 100%" class="select2 form-control" multiple id="text_area_keterangan" onchange="refreshKeterangan('','')">
-                        </select>
-                    </div>
-                    <div class="col-md-2">
-                        <span style="color: red; margin-top: 12px; display: none;"
-                              id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; margin-top: 12px; display: none;"
-                              id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>
+                        <table class="table table-bordered" style="font-size: 14px" id="table_keterangan">
+                            <thead>
+                            <tr>
+                                <td>Waktu</td>
+                                <td>Keterangan</td>
+                                <td align="center" width="5%">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_keterangan">
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 <hr/>

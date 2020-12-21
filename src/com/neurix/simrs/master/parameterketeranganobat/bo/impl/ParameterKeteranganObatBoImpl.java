@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.parameterketeranganobat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.dao.ParameterKeteranganObatDao;
 import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity;
@@ -84,6 +85,17 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
         List<ParameterKeteranganObat> parameterKeteranganObats = new ArrayList<>();
         try {
             parameterKeteranganObats = parameterKeteranganObatDao.getParameterKeterangan(idJenis);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return parameterKeteranganObats;
+    }
+
+    @Override
+    public List<KeteranganObat> getParameterKeteranganWaktu(String idJenis) throws GeneralBOException {
+        List<KeteranganObat> parameterKeteranganObats = new ArrayList<>();
+        try {
+            parameterKeteranganObats = parameterKeteranganObatDao.getKeteranganObatWaktu(idJenis);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }
