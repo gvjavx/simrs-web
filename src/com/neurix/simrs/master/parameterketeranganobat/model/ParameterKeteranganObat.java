@@ -11,6 +11,15 @@ public class ParameterKeteranganObat {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String flagLabelWaktu;
+
+    public String getFlagLabelWaktu() {
+        return flagLabelWaktu;
+    }
+
+    public void setFlagLabelWaktu(String flagLabelWaktu) {
+        this.flagLabelWaktu = flagLabelWaktu;
+    }
 
     public String getId() {
         return id;
