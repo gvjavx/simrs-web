@@ -249,7 +249,7 @@
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunEntity.hbm.xml
                 </value>
                 <value>
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkEntity.hbm.xml
@@ -322,7 +322,7 @@
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/hibernate/ImPayrollSkalaGajiPkwtHistoryEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/hibernate/ImPayrollSkalaGajiPensiunRniHistoryEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunHistoryEntity.hbm.xml
                 </value>
                 <value>
                     sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/hibernate/ImPayrollSkalaGajiPensiunDplkHistoryEntity.hbm.xml
@@ -350,7 +350,10 @@
                     <!--sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunEntity.hbm.xml-->
                 <!--</value>-->
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiIuranDplk/hibernate/ImPayrollSkalaGajiIuranDplkEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/hibernate/ImPayrollSkalaGajiDplkPegawaiEntity.hbm.xml
+                </value>
+                <value>
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/hibernate/ImPayrollSkalaGajiDplkPegawaiHistoryEntity.hbm.xml
                 </value>
 
                 <!-- For Rekruitmen -->
