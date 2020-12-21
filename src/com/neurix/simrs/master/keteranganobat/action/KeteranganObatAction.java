@@ -3,11 +3,14 @@ package com.neurix.simrs.master.keteranganobat.action;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.jenispersediaanobat.model.ImSimrsJenisPersediaanObatEntity;
+import com.neurix.simrs.master.jenispersediaanobatsub.bo.JenisPersediaanObatSubBo;
 import com.neurix.simrs.master.jenispersediaanobatsub.model.ImSimrsJenisPersediaanObatSubEntity;
+import com.neurix.simrs.master.jenispersediaanobatsub.model.JenisPersediaanObatSub;
 import com.neurix.simrs.master.keteranganobat.bo.KeteranganObatBo;
 import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
+import com.thoughtworks.xstream.io.StreamException;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.json.JSONArray;
@@ -17,6 +20,9 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.lang.invoke.LambdaConversionException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -138,22 +144,19 @@ public class KeteranganObatAction {
         List<ImSimrsJenisPersediaanObatSubEntity> results = new ArrayList<>();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        KeteranganObatBo keteranganObatBo = (KeteranganObatBo) ctx.getBean("keteranganObatBoProxy");
+        JenisPersediaanObatSubBo jenisPersediaanObatSubBo = (JenisPersediaanObatSubBo) ctx.getBean("jenisPersediaanObatSubBoProxy");
+
+        JenisPersediaanObatSub persediaanObatSub = new JenisPersediaanObatSub();
+        persediaanObatSub.setIdJenisObat(idJenis);
 
         try {
-            results = keteranganObatBo.getAllJenisPersediaanSub();
+            results = jenisPersediaanObatSubBo.getListEntity(persediaanObatSub);
         } catch (GeneralBOException e){
             logger.error("[KeteranganObatAction.getAllJenisPersediaanObat] ERROR. ", e);
         }
 
-        List<ImSimrsJenisPersediaanObatSubEntity> filteredResults = results.stream().filter(p->p.getIdJenisObat().equalsIgnoreCase(idJenis)).collect(Collectors.toList());
-        if (filteredResults != null && results.size() > 0){
-            logger.info("[KeteranganObatAction.getAllJenisPersediaanObat] END <<< ");
-            return filteredResults;
-        }
-
         logger.info("[KeteranganObatAction.getAllJenisPersediaanObat] END <<< ");
-        return null;
+        return results;
     }
 
     public CrudResponse saveAdd(String jsonString){
@@ -182,6 +185,11 @@ public class KeteranganObatAction {
             response.setMsg("ERROR. " + e);
         }
 
+        boolean isFlagLabelWaktu = "Y".equalsIgnoreCase(getParameterKeteranganObatById(keteranganObat.getIdParameterKeterangan()).getFlagLabelWaktu());
+        if (!isFlagLabelWaktu){
+            keteranganObat.setWarnaLabel(null);
+            keteranganObat.setWarnaBackground(null);
+        }
         keteranganObat.setCreatedDate(times);
         keteranganObat.setCreatedWho(userLogin);
         keteranganObat.setLastUpdate(times);
@@ -231,6 +239,12 @@ public class KeteranganObatAction {
             response.setMsg("ERROR. " + e);
         }
 
+        boolean isFlagLabelWaktu = "Y".equalsIgnoreCase(getParameterKeteranganObatById(keteranganObat.getIdParameterKeterangan()).getFlagLabelWaktu());
+        if (!isFlagLabelWaktu){
+            keteranganObat.setWarnaLabel(null);
+            keteranganObat.setWarnaBackground(null);
+        }
+
         keteranganObat.setLastUpdate(times);
         keteranganObat.setLastUpdateWho(userLogin);
 
@@ -266,5 +280,23 @@ public class KeteranganObatAction {
 
         logger.info("[KeteranganObatAction.getFromSession] END <<<");
         return keteranganObat;
+    }
+
+    public ImSimrsParameterKeteranganObatEntity getParameterKeteranganObatById(String id){
+        logger.info("[KeteranganObatAction.getParameterKeteranganObatById] START >>>");
+        ImSimrsParameterKeteranganObatEntity parameterKeteranganObatEntity = new ImSimrsParameterKeteranganObatEntity();
+
+        List<ImSimrsParameterKeteranganObatEntity> listOfParamKeterangan = getAllParameterKeterangan();
+
+        if (listOfParamKeterangan != null && listOfParamKeterangan.size() > 0 && id != null && !"".equalsIgnoreCase(id)){
+            List<ImSimrsParameterKeteranganObatEntity> filteredList = listOfParamKeterangan.stream().filter(p->p.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
+            if (filteredList != null && filteredList.size() > 0){
+                parameterKeteranganObatEntity = filteredList.get(0);
+            }
+        }
+
+        logger.info("[KeteranganObatAction.getParameterKeteranganObatById] END <<<");
+        return parameterKeteranganObatEntity;
+
     }
 }

@@ -1492,4 +1492,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN id_obat VARCHAR(50),
     ADD COLUMN id_permintaan_resep VARCHAR(50);
 
+    ALTER TABLE im_simrs_paremeter_keterangan_obat
+    ADD COLUMN flag_label_waktu VARCHAR(1);
+
 --

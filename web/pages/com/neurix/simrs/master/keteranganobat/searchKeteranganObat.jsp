@@ -101,7 +101,7 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <select id="sel_search_parameter" class="form-control select2" style="width: 100%">
+                                                    <select id="sel_search_parameter" class="form-control" style="width: 100%">
 
                                                     </select>
                                                 </table>
@@ -214,7 +214,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_edit_parameter" class="form-control select2" style="width: 100%">
+                                <select id="sel_edit_parameter" class="form-control" style="width: 100%" onchange="showWarnaIfLabelWaktu('edit', this.value)">
 
                                 </select>
                             </table>
@@ -234,34 +234,36 @@
                     <tr>
                         <hr/>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Warna Background :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <select id="sel_edit_warna_label" class="form-control select2" style="width: 100%">
-                                    <option value="putih"><span class="badge">Putih</span></option>
-                                    <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
-                                </select>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Warna Label :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <select id="sel_edit_warna_background" class="form-control select2" style="width: 100%">
-                                    <option value="putih"><span class="badge">Putih</span></option>
-                                    <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
-                                    <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
-                                    <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>
-                                </select>
-                            </table>
-                        </td>
-                    </tr>
+                    <div class="group-warna-edit" style="display: none;">
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Warna Background :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <select id="sel_edit_warna_label" class="form-control" style="width: 100%">
+                                        <option value="putih"><span class="badge">Putih</span></option>
+                                        <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
+                                    </select>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Warna Label :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <select id="sel_edit_warna_background" class="form-control" style="width: 100%">
+                                        <option value="putih"><span class="badge">Putih</span></option>
+                                        <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
+                                        <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
+                                        <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>
+                                    </select>
+                                </table>
+                            </td>
+                        </tr>
+                    </div>
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -316,7 +318,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_delete_parameter" class="form-control select2" style="width: 100%">
+                                <select id="sel_delete_parameter" class="form-control" style="width: 100%">
 
                                 </select>
                             </table>
@@ -335,34 +337,36 @@
                     <tr>
                         <hr/>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Warna Background :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <select id="sel_delete_warna_label" class="form-control select2" style="width: 100%" disabled>
-                                    <option value="putih"><span class="badge">Putih</span></option>
-                                    <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
-                                </select>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Warna Label :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <select id="sel_delete_warna_background" class="form-control select2" style="width: 100%" disabled>
-                                    <option value="putih"><span class="badge">Putih</span></option>
-                                    <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
-                                    <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
-                                    <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>
-                                </select>
-                            </table>
-                        </td>
-                    </tr>
+                    <div class="group-warna-delete" style="display: none;">
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Warna Background :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <select id="sel_delete_warna_label" class="form-control" style="width: 100%" disabled>
+                                        <option value="putih"><span class="badge">Putih</span></option>
+                                        <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
+                                    </select>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Warna Label :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <select id="sel_delete_warna_background" class="form-control" style="width: 100%" disabled>
+                                        <option value="putih"><span class="badge">Putih</span></option>
+                                        <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
+                                        <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
+                                        <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>
+                                    </select>
+                                </table>
+                            </td>
+                        </tr>
+                    </div>
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -415,7 +419,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_add_parameter" class="form-control select2" style="width: 100%">
+                                <select id="sel_add_parameter" class="form-control" style="width: 100%" onchange="showWarnaIfLabelWaktu('add', this.value)">
 
                                 </select>
                             </table>
@@ -434,39 +438,40 @@
                     <tr>
                         <hr/>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Warna Background :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <select id="sel_add_warna_label" class="form-control" style="width: 100%">
-                                    <option value="white"><span class="badge">Putih</span></option>
-                                    <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
-                                </select>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Warna Label :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <select id="sel_add_warna_background" class="form-control" style="width: 100%">
-                                    <option value="white"><span class="badge">Putih</span></option>
-                                    <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
-                                    <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
-                                    <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>
-                                </select>
-                            </table>
-                        </td>
-                    </tr>
-
+                    <div class="group-warna-add" style="display: none;">
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Warna Background :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <select id="sel_add_warna_label" class="form-control" style="width: 100%">
+                                        <option value="white"><span class="badge">Putih</span></option>
+                                        <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
+                                    </select>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <label class="control-label"><small>Warna Label :</small></label>
+                            </td>
+                            <td>
+                                <table>
+                                    <select id="sel_add_warna_background" class="form-control" style="width: 100%">
+                                        <option value="white"><span class="badge">Putih</span></option>
+                                        <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
+                                        <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
+                                        <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>
+                                    </select>
+                                </table>
+                            </td>
+                        </tr>
+                    </div>
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveAdd()"><i class="fa fa-check"></i> Save <span class="badge" style="background-color: springgreen">Hijau</span>
+                <button type="button" class="btn btn-success" onclick="saveAdd()"><i class="fa fa-check"></i> Save
                 </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -549,8 +554,9 @@
             listJenisObat("sel_edit_jenis");
             listJenisObatSubByJenis("sel_edit_jenis_sub", res.idJenisObat);
             listOfParameter("sel_edit_parameter");
+            showWarnaIfLabelWaktu("edit",res.idParameterKeterangan);
 
-            $("#sel_edit_jenis").val(res.idJenisBudgeting);
+            $("#sel_edit_jenis").val(res.idJenis);
             $("#sel_edit_jenis_sub").val(res.idSubJenis);
             $("#sel_edit_parameter").val(res.idParameterKeterangan);
             $("#in_edit_keterangan").val(res.keterangan);
@@ -567,8 +573,9 @@
             listJenisObat("sel_delete_jenis");
             listJenisObatSubByJenis("sel_delete_jenis_sub", res.idJenisObat);
             listOfParameter("sel_delete_parameter");
+            showWarnaIfLabelWaktu("delete",res.idParameterKeterangan);
 
-            $("#sel_delete_jenis").val(res.idJenisBudgeting);
+            $("#sel_delete_jenis").val(res.idJenis);
             $("#sel_delete_jenis_sub").val(res.idSubJenis);
             $("#sel_delete_parameter").val(res.idParameterKeterangan);
             $("#in_delete_keterangan").val(res.keterangan);
@@ -650,6 +657,16 @@
             }
             $("#modal-add").modal('hide');
             link();
+        });
+    }
+
+    function showWarnaIfLabelWaktu(elid, id) {
+        KeteranganObatAction.getParameterKeteranganObatById(id, function (res) {
+            if (res.id != "" && res.flagLabelWaktu == "Y"){
+                $("#group-modal-"+elid).show();
+            } else {
+                $("#group-modal-"+elid).hide();
+            }
         });
     }
 

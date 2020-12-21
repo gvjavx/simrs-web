@@ -67,7 +67,7 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 "a.last_update,\n" +
                 "a.last_update_who,\n" +
                 "d.id as id_jenis_obat,\n" +
-                "a.nama as nama_jenis_obat\n" +
+                "d.nama as nama_jenis_obat\n" +
                 "FROM im_simrs_keterangan_obat a\n" +
                 "LEFT JOIN im_simrs_jenis_persediaan_obat_sub b ON b.id = a.id_sub_jenis\n" +
                 "LEFT JOIN im_simrs_paremeter_keterangan_obat c ON c.id = a.id_parameter_keterangan\n" +

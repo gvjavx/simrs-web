@@ -29,6 +29,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="flagLabelWaktu">
+                <column name="flag_label_waktu"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
