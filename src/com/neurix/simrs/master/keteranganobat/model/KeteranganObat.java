@@ -18,6 +18,24 @@ public class KeteranganObat {
     private String namaParameterKeterangan;
     private String warnaLabel;
     private String warnaBackground;
+    private String idJenis;
+    private String namaJenis;
+
+    public String getIdJenis() {
+        return idJenis;
+    }
+
+    public void setIdJenis(String idJenis) {
+        this.idJenis = idJenis;
+    }
+
+    public String getNamaJenis() {
+        return namaJenis;
+    }
+
+    public void setNamaJenis(String namaJenis) {
+        this.namaJenis = namaJenis;
+    }
 
     public String getWarnaLabel() {
         return warnaLabel;

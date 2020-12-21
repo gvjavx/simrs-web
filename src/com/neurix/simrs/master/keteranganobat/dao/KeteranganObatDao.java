@@ -48,6 +48,8 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
             bean.setIdParameterKeterangan("%");
         if (bean.getKeterangan() == null || "".equalsIgnoreCase(bean.getKeterangan()))
             bean.setKeterangan("%");
+        if (bean.getIdJenis() == null || "".equalsIgnoreCase(bean.getIdJenis()))
+            bean.setIdJenis("%");
         if (bean.getFlag() == null || "".equalsIgnoreCase(bean.getFlag()))
             bean.setFlag("Y");
 
@@ -63,15 +65,19 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 "a.created_date,\n" +
                 "a.created_who,\n" +
                 "a.last_update,\n" +
-                "a.last_update_who\n" +
+                "a.last_update_who,\n" +
+                "d.id as id_jenis_obat,\n" +
+                "a.nama as nama_jenis_obat\n" +
                 "FROM im_simrs_keterangan_obat a\n" +
                 "LEFT JOIN im_simrs_jenis_persediaan_obat_sub b ON b.id = a.id_sub_jenis\n" +
                 "LEFT JOIN im_simrs_paremeter_keterangan_obat c ON c.id = a.id_parameter_keterangan\n" +
+                "INNER JOIN im_simrs_jenis_persediaan_obat d ON d.id = c.id_jenis_obat\n" +
                 "WHERE a.flag = :flag \n" +
-                "AND a.id_sub_jenis LIKE idSubJenis \n" +
+                "AND a.id_sub_jenis LIKE :idSubJenis \n" +
                 "AND a.id_parameter_keterangan LIKE :idParameterKeterangan \n" +
                 "AND a.id LIKE :id \n" +
-                "AND a.keterangan ILIKE :keterangan \n";
+                "AND a.keterangan ILIKE :keterangan \n"+
+                "AND d.id LIKE :idjenis \n";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("flag", bean.getFlag())
@@ -79,6 +85,7 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 .setParameter("idParameterKeterangan", bean.getIdParameterKeterangan())
                 .setParameter("id", bean.getId())
                 .setParameter("keterangan", bean.getKeterangan())
+                .setParameter("idjenis", bean.getIdJenis())
                 .list();
 
         List<KeteranganObat> keteranganObats = new ArrayList<>();
@@ -97,6 +104,8 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 keteranganObat.setCreatedWho(objToString(obj[9]));
                 keteranganObat.setLastUpdate(objToTimestamp(obj[10]));
                 keteranganObat.setLastUpdateWho(objToString(obj[11]));
+                keteranganObat.setIdJenis(objToString(obj[12]));
+                keteranganObat.setNamaJenis(objToString(obj[13]));
                 keteranganObats.add(keteranganObat);
             }
         }

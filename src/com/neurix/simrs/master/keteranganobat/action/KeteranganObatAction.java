@@ -73,7 +73,8 @@ public class KeteranganObatAction {
             JSONObject jsonObject = json.getJSONObject(i);
             keteranganObat.setKeterangan(jsonObject.getString("keterangan"));
             keteranganObat.setIdParameterKeterangan(jsonObject.getString("id_parameter"));
-            keteranganObat.setIdSubJenis(jsonObject.getString(jsonObject.getString("id_sub_jenis")));
+            keteranganObat.setIdSubJenis(jsonObject.getString("id_sub_jenis"));
+            keteranganObat.setIdJenis(jsonObject.getString("id_jenis"));
         }
 
         List<KeteranganObat> results = new ArrayList<>();
@@ -247,5 +248,23 @@ public class KeteranganObatAction {
 
         logger.info("[KeteranganObatAction.saveEdit] END <<< ");
         return response;
+    }
+
+    public KeteranganObat getFromSession(String id){
+        logger.info("[KeteranganObatAction.getFromSession] START >>>");
+        KeteranganObat keteranganObat = new KeteranganObat();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<KeteranganObat> listOfKeteranganObat = (List<KeteranganObat>) session.getAttribute("listOfKeteranganObat");
+
+        if (listOfKeteranganObat != null && listOfKeteranganObat.size() > 0 && id != null && !"".equalsIgnoreCase(id)){
+            List<KeteranganObat> filteredList = listOfKeteranganObat.stream().filter(p->p.getId().equalsIgnoreCase(id)).collect(Collectors.toList());
+            if (filteredList != null && filteredList.size() > 0){
+                keteranganObat = filteredList.get(0);
+            }
+        }
+
+        logger.info("[KeteranganObatAction.getFromSession] END <<<");
+        return keteranganObat;
     }
 }
