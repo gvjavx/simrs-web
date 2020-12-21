@@ -441,7 +441,7 @@
                         <td>
                             <table>
                                 <select id="sel_add_warna_label" class="form-control" style="width: 100%">
-                                    <option value="putih"><span class="badge">Putih</span></option>
+                                    <option value="white"><span class="badge">Putih</span></option>
                                     <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
                                 </select>
                             </table>
@@ -454,7 +454,7 @@
                         <td>
                             <table>
                                 <select id="sel_add_warna_background" class="form-control" style="width: 100%">
-                                    <option value="putih"><span class="badge">Putih</span></option>
+                                    <option value="white"><span class="badge">Putih</span></option>
                                     <option value="darkred"><span class="badge" style="background-color: darkred">Merah</span></option>
                                     <option value="springgreen"><span class="badge" style="background-color: springgreen">Hijau</span></option>
                                     <option value="orange"><span class="badge" style="background-color: orange">Orange</span></option>

@@ -1470,3 +1470,26 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     -- role : Admin Gudang
 --
+
+2020-12-21 --
+
+    CREATE table it_simrs_keterangan_resep (
+    	id varchar(30) NOT NULL PRIMARY KEY,
+    	id_jenis_obat VARCHAR(30),
+    	id_keterangan_obat VARCHAR(30),
+    	keterangan_lain TEXT,
+    	flag VARCHAR(1),
+    	action VARCHAR(1),
+    	created_date TIMESTAMP WITHOUT TIME ZONE,
+    	created_who VARCHAR(100),
+    	last_update TIMESTAMP WITHOUT TIME ZONE,
+    	last_update_who VARCHAR(100)
+    )
+
+    CREATE SEQUENCE seq_trans_keterangan_obat;
+
+    ALTER TABLE it_simrs_keterangan_resep
+    ADD COLUMN id_obat VARCHAR(50),
+    ADD COLUMN id_permintaan_resep VARCHAR(50);
+
+--
