@@ -36,8 +36,6 @@
                                     class="fa fa-plus"></i> Asesmen Resiko Jatuh</a></li>
                             <li><a onclick="showModalRJ('nyeri')" style="cursor: pointer"><i
                                     class="fa fa-plus"></i> Asesmen Nyeri</a></li>
-                            <li><a onclick="showModalRJ('france')" style="cursor: pointer"><i
-                                    class="fa fa-plus"></i> france wilson capur</a></li>
                         </ul>
                     </div>
                 </div>

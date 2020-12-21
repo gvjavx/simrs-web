@@ -469,18 +469,18 @@ public class ObatBoImpl implements ObatBo {
         obatEntity.setCreatedWho(userLogin);
         obatEntity.setLastUpdate(time);
         obatEntity.setLastUpdateWho(userLogin);
-        obatEntity.setQtyBox(bean.getQtyBox());
         obatEntity.setLembarPerBox(bean.getLembarPerBox());
-        obatEntity.setQtyLembar(bean.getQtyLembar());
         obatEntity.setBijiPerLembar(bean.getBijiPerLembar());
-        obatEntity.setQtyBiji(bean.getQtyBiji());
-        obatEntity.setAverageHargaBox(bean.getAverageHargaBox());
-        obatEntity.setAverageHargaLembar(bean.getAverageHargaLembar());
-        obatEntity.setAverageHargaBiji(bean.getAverageHargaBiji());
+        obatEntity.setQtyBox(new BigInteger("0"));
+        obatEntity.setQtyLembar(new BigInteger("0"));
+        obatEntity.setQtyBiji(new BigInteger("0"));
+        obatEntity.setAverageHargaBox(new BigDecimal("0"));
+        obatEntity.setAverageHargaLembar(new BigDecimal("0"));
+        obatEntity.setAverageHargaBiji(new BigDecimal("0"));
         obatEntity.setIdPabrik(headerObatEntity.getIdObat());
         obatEntity.setMerk(bean.getMerk());
         obatEntity.setMinStok(bean.getMinStok());
-        obatEntity.setHargaTerakhir(bean.getHargaTerakhir());
+        obatEntity.setHargaTerakhir(new BigDecimal("0"));
 
         try {
             obatDao.addAndSave(obatEntity);
