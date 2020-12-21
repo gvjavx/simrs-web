@@ -1381,7 +1381,6 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     if(bean.getBiayaTambahanList().size() > 0){
                         for (ItSimrsRiwayatTindakanEntity entity: bean.getBiayaTambahanList()){
                             entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
-                            entity.setIdTindakan("TDR"+riwayatTindakanDao.getNextSeq());
                             try {
                                 riwayatTindakanDao.addAndSave(entity);
                             }catch (HibernateException e){

@@ -25,15 +25,12 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
 
     <script type='text/javascript'>
 
         $(document).ready(function () {
-
             $('#resep_poli').addClass('active');
             $('#add_resep').focus();
-            getTindakanApotek();
 
         });
 
@@ -447,13 +444,6 @@
             // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
         }
     }
-
-    function getTindakanApotek() {
-        TindakanAction.getComboTindakanApotek(function (res) {
-            console.log(res);
-        });
-    }
-
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

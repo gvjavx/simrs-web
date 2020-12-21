@@ -207,11 +207,11 @@ public class TindakanBoImpl implements TindakanBo {
     }
 
     @Override
-    public List<Tindakan> getTindakanApotek(String branchId, String idPelayanan) throws GeneralBOException {
+    public List<Tindakan> getTindakanApotek(String branchId, String idPelayanan, String idTindakan) throws GeneralBOException {
         List<Tindakan> tindakanList = new ArrayList<>();
         if (branchId != null && idPelayanan != null) {
             try {
-                tindakanList = tindakanDao.getListTindakanApotek(branchId, idPelayanan);
+                tindakanList = tindakanDao.getListTindakanApotek(branchId, idPelayanan, idTindakan);
             } catch (HibernateException e) {
                 logger.error(e.getMessage());
             }

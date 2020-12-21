@@ -472,12 +472,12 @@ public class TindakanAction extends BaseTransactionAction {
         return tindakanBo.getEntityTindakanById(id);
     }
 
-    public List<Tindakan> getComboTindakanApotek() {
+    public List<Tindakan> getComboTindakanApotek(String idTindakan) {
         List<Tindakan> branchList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
         try {
-            branchList = tindakanBo.getTindakanApotek(CommonUtil.userBranchLogin(), CommonUtil.userPelayananIdLogin());
+            branchList = tindakanBo.getTindakanApotek(CommonUtil.userBranchLogin(), CommonUtil.userPelayananIdLogin(), idTindakan);
         } catch (GeneralBOException e) {
             logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
