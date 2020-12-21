@@ -2,12 +2,15 @@ package com.neurix.simrs.master.keteranganobat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenispersediaanobat.dao.JenisPersediaanObatDao;
+import com.neurix.simrs.master.jenispersediaanobat.model.ImSimrsJenisPersediaanObatEntity;
 import com.neurix.simrs.master.jenispersediaanobatsub.dao.JenisPersdiaanObatSubDao;
+import com.neurix.simrs.master.jenispersediaanobatsub.model.ImSimrsJenisPersediaanObatSubEntity;
 import com.neurix.simrs.master.keteranganobat.bo.KeteranganObatBo;
 import com.neurix.simrs.master.keteranganobat.dao.KeteranganObatDao;
 import com.neurix.simrs.master.keteranganobat.model.ImSimrsKeteranganObatEntity;
 import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.parameterketeranganobat.dao.ParameterKeteranganObatDao;
+import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -86,23 +89,139 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
     }
 
     @Override
-    public void saveAdd(List<KeteranganObat> listBean) throws GeneralBOException {
+    public void saveAdd(KeteranganObat bean) throws GeneralBOException {
+        logger.info("[KeteranganObatBoImpl.saveAdd] START >>> ");
 
+        boolean found = false;
+        try {
+            found = keteranganObatDao.checkIfAvailableByCriteria(bean.getIdSubJenis(), bean.getIdParameterKeterangan(), bean.getKeterangan());
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.saveAdd] ERROR, error when. ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveAdd] ERROR, error when. "+e);
+        }
+
+        if (found){
+            throw new GeneralBOException("Tidak dapat insert karna data yang sama sudah ada. ");
+        }
+
+        ImSimrsKeteranganObatEntity keteranganObatEntity = new ImSimrsKeteranganObatEntity();
+        keteranganObatEntity.setId(getNextId());
+        keteranganObatEntity.setIdSubJenis(bean.getIdSubJenis());
+        keteranganObatEntity.setIdParameterKeterangan(bean.getIdParameterKeterangan());
+        keteranganObatEntity.setKeterangan(bean.getKeterangan());
+        keteranganObatEntity.setCreatedDate(bean.getCreatedDate());
+        keteranganObatEntity.setCreatedWho(bean.getCreatedWho());
+        keteranganObatEntity.setLastUpdate(bean.getLastUpdate());
+        keteranganObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        keteranganObatEntity.setFlag("Y");
+        keteranganObatEntity.setAction("C");
+        keteranganObatEntity.setWarnaLabel(bean.getWarnaLabel());
+        keteranganObatEntity.setWarnaBackground(bean.getWarnaBackground());
+
+        try {
+            keteranganObatDao.addAndSave(keteranganObatEntity);
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.saveAdd] ERROR, error when. ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveAdd] ERROR, error when. "+e);
+        }
+
+        logger.info("[KeteranganObatBoImpl.saveAdd] END <<< ");
     }
 
     @Override
-    public void saveEdit(List<KeteranganObat> listBean) throws GeneralBOException {
+    public void saveEdit(KeteranganObat bean) throws GeneralBOException {
+        logger.info("[KeteranganObatBoImpl.saveEdit] START >>> ");
 
+        boolean found = false;
+        if ("Y".equalsIgnoreCase(bean.getFlag())){
+            try {
+                found = keteranganObatDao.checkIfAvailableByCriteria(bean.getIdSubJenis(), bean.getIdParameterKeterangan(), bean.getKeterangan());
+            } catch (HibernateException e){
+                logger.error("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, ",e);
+                throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, "+e);
+            }
+        }
+
+        if (found){
+            throw new GeneralBOException("Tidak dapat insert karna data yang sama sudah ada. ");
+        }
+
+        ImSimrsKeteranganObatEntity keteranganObatEntity = new ImSimrsKeteranganObatEntity();
+        try {
+            keteranganObatEntity = keteranganObatDao.getById("id", bean.getId());
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, "+e);
+        }
+
+        if (keteranganObatEntity != null && keteranganObatEntity.getId() != null){
+            keteranganObatEntity.setIdSubJenis(bean.getIdSubJenis());
+            keteranganObatEntity.setIdParameterKeterangan(bean.getIdParameterKeterangan());
+            keteranganObatEntity.setKeterangan(bean.getKeterangan());
+            keteranganObatEntity.setWarnaLabel(bean.getWarnaLabel());
+            keteranganObatEntity.setWarnaBackground(bean.getWarnaBackground());
+            keteranganObatEntity.setFlag(bean.getFlag());
+            keteranganObatEntity.setAction("U");
+            keteranganObatEntity.setLastUpdate(bean.getLastUpdate());
+            keteranganObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+            try {
+                keteranganObatDao.updateAndSave(keteranganObatEntity);
+            } catch (HibernateException e){
+                logger.error("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, ",e);
+                throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, "+e);
+            }
+        }
+
+        logger.info("[KeteranganObatBoImpl.saveEdit] END <<< ");
     }
 
     @Override
     public List<KeteranganObat> getKeteranganObat(String idParam) throws GeneralBOException {
+        logger.info("[KeteranganObatBoImpl.getKeteranganObat] START >>> ");
         List<KeteranganObat> keteranganObatList = new ArrayList<>();
         try {
             keteranganObatList = keteranganObatDao.getKeteranganObat(idParam);
         }catch (HibernateException e){
-            logger.error(e.getMessage());
+            logger.error(e);
         }
+        logger.info("[KeteranganObatBoImpl.getKeteranganObat] END <<< ");
         return keteranganObatList;
+    }
+
+    @Override
+    public List<ImSimrsParameterKeteranganObatEntity> getAllParameterKeterangan() throws GeneralBOException {
+        logger.info("[KeteranganObatBoImpl.getAllParameterKeterangan] START >>> ");
+        logger.info("[KeteranganObatBoImpl.getAllParameterKeterangan] END <<< ");
+        return parameterKeteranganObatDao.getAll();
+    }
+
+    @Override
+    public List<ImSimrsJenisPersediaanObatEntity> getAllJenisPersedian() throws GeneralBOException {
+        logger.info("[KeteranganObatBoImpl.getAllJenisPersedian] START >>> ");
+        logger.info("[KeteranganObatBoImpl.getAllJenisPersedian] END <<< ");
+        return jenisPersediaanObatDao.getAll();
+    }
+
+    @Override
+    public List<ImSimrsJenisPersediaanObatSubEntity> getAllJenisPersediaanSub() throws GeneralBOException {
+        logger.info("[KeteranganObatBoImpl.getAllJenisPersediaanSub] START >>> ");
+        logger.info("[KeteranganObatBoImpl.getAllJenisPersediaanSub] END <<< ");
+        return jenisPersdiaanObatSubDao.getAll();
+    }
+
+    private String getNextId() throws GeneralBOException{
+        logger.info("[KeteranganObatBoImpl.getNextId] START >>> ");
+
+        String id = "";
+        try {
+            id = keteranganObatDao.getNextSeq();
+        } catch (HibernateException e){
+            logger.error("[ParameterKeteranganObatBoImpl.getNextId] ERROR, error when. ",e);
+            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getNextId] ERROR, error when. "+e);
+        }
+
+        logger.info("[KeteranganObatBoImpl.getNextId] END <<< ");
+        return id;
     }
 }

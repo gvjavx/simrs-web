@@ -1455,3 +1455,18 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     CREATE SEQUENCE seq_parameter_budgeting;
 
 --
+
+2020-12-19 --
+
+    ALTER TABLE im_simrs_keterangan_obat
+    ADD COLUMN warna_label VARCHAR(100),
+    ADD COLUMN warna_background VARCHAR(100);
+
+    CREATE SEQUENCE seq_keterangan_obat;
+
+    -- add function :
+        Keterangan Obat             ; keterangan obat           ; /keteranganobat/initForm_keteranganobat.action; is menu   ; parent : Master (6000);
+        Init Form Keterangan obat   ; init form keterangan obat ; /keteranganobat/initForm_keteranganobat.action;           ; parent : Keterangan Obat;
+
+    -- role : Admin Gudang
+--

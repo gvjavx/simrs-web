@@ -35,6 +35,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="warnaBackground">
+                <column name="warna_background"/>
+            </basic>
+            <basic name="warnaLabel">
+                <column name="warna_label"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>
