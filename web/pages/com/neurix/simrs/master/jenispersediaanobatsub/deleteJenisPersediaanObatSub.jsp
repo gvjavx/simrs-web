@@ -6,29 +6,24 @@
 
 <html>
 <head>
-    <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-        $(document).ready(function(){
-            var cek = document.getElementById("eksekutif").value;
 
-            if (cek == 'Y'){
-                console.log(cek);
-                document.getElementById("isEksekutif").checked = true;
-            }
-        });
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
-            $('#view_dialog_menu').dialog('close');
+            //  $('#view_dialog_menu').dialog('close');
+            //  $('#info_dialog').dialog('close');
+            // window.location.reload(true);
+
             $('#info_dialog').dialog('close');
-//            window.location.reload(true);
-            document.pelayananForm.action = "search_pelayanan.action";
-            document.pelayananForm.submit();
+            document.SearchjenisPersediaanObatSubForm.action = "search_jenispersediaanobatsub.action";
+            document.SearchjenisPersediaanObatSubForm.submit();
         };
 
-        $.subscribe('beforeProcessSave', function (event, data) {
-            var idPelayanan = document.getElementById("idPelayanan1").value;
+        $.subscribe('beforeProcessSaveDelete', function (event, data) {
+            var idJenisPersediaanObatSubdelete = document.getElementById("idJenisPersediaanObatSubdelete").value;
+            var jenispersediaanobatsubDelete = document.getElementById("jenispersediaanobatsubDelete").value;
 
-            if (idPelayanan != '') {
+            if (idJenisPersediaanObatSubdelete != '' && jenispersediaanobatsubDelete != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -39,8 +34,11 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idPelayanan == '') {
-                    msg += 'Field <strong>Id Pelayanan </strong> is required.' + '<br/>';
+                if (idJenisPersediaanObatSubdelete == '') {
+                    msg += 'Field <strong> id Bentuk barang</strong> is required.' + '<br/>';
+                }
+                if (jenispersediaanobatsubDelete == '') {
+                    msg += 'Field <strong> id bentukba rang</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -60,7 +58,7 @@
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            $.publish('showErrorDialogDelete');
         });
 
         function cancelBtn() {
@@ -77,14 +75,13 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deletePelayananForm" method="post" theme="simple" namespace="/pelayanan" action="saveDelete_pelayanan" cssClass="well form-horizontal">
+            <s:form id="deleteJenisPersediaanObatSubForm" method="post" theme="simple" namespace="/jenispersediaanobatsub"
+                    action="saveDelete_jenispersediaanobatsub" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-
-
-                <legend align="left">Delete Pelayanan</legend>
+                <legend align="left">Delete Jenis Persediaan Obat Sub</legend>
 
 
                 <table>
@@ -97,93 +94,56 @@
 
                 <table >
                     <tr>
-                        <td>
-                            <label class="control-label"><small>ID Pelayanan :</small></label>
+                        <td width="35%">
+                            <label class="control-label"><small>ID Jenis Persediaan Obat Sub :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idPelayanan1" name="pelayanan.idPelayanan" required="true" disabled="true"
-                                             cssClass="form-control"/>
-                                <s:hidden id="idPelayanan1" name="pelayanan.idPelayanan" />
+                                <s:textfield id="idJenisPersediaanObatSubdelete"  name="jenisPersediaanObatsub.id"
+                                             required="true" readonly="true" cssClass="form-control" />
+
                             </table>
                         </td>
                     </tr>
+
                     <tr>
-                        <td width="25%">
-                            <label class="control-label"><small>Nama Pelayanan :</small></label>
+                        <td >
+                            <label class="control-label"><small>Jenis Persediaan Obat Sub:</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="namaPelayanan1" name="pelayanan.namaPelayanan"
-                                             required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Unit :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId"
-                                          disabled="false"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control"/>
+                                <s:textfield id="jenispersediaanobatsubDelete" name="jenisPersediaanObatsub.nama" required="true"
+                                             cssStyle="margin-top: 7px" readonly="true"
+                                             disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Divisi :</small></label>
+                            <label class="control-label"><small>nama jenis obat :</small></label>
                         </td>
-                        <td>
+                        <td width="50%">
                             <table>
-                                <s:action id="initComboPosition" namespace="/pelayanan" name="initComboPosition_pelayanan"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1"
-                                          name="pelayanan.divisiId" disabled="true"
-                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Tipe :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
-                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
-                                          id="tipePelayanan1" name="pelayanan.tipePelayanan" disabled="true"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Eksekutif :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <input type="checkbox" id="isEksekutif" class="checkEksekutif" onchange="cekEksekutif()" disabled />
-                                <s:hidden id="eksekutif" name="pelayanan.isEksekutif"  />
+                                <s:action id="JenisPerseidaanObat" namespace="/jenispersediaanobat"
+                                          name="initComboJenisPerseidaanObat_jenispersediaanobat" />
+                                <s:select cssStyle="margin-top: 7px; width: 100%" list="#JenisPerseidaanObat.listOfComboJenisPersediaanObat"
+                                          id="jenispersediaanobatsub1" name="jenisPersediaanObatsub.idJenisObat" disabled="true"
+                                          listKey="id" listValue="nama" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control select2" />
                             </table>
                         </td>
                     </tr>
 
                 </table>
 
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deletePelayananForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisPersediaanObatSubForm" id="save"
+                                   name="save"
+                                   onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
                             Delete
@@ -193,8 +153,6 @@
                         </button>
                     </div>
                 </div>
-
-
                 <div id="actions" class="form-actions">
                     <table>
                         <tr>
@@ -232,7 +190,7 @@
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogDelete" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
@@ -271,13 +229,4 @@
 </table>
 </body>
 </html>
-<script>
-    window.cekEksekutif = function () {
-        if (document.getElementById("isEksekutif").checked == true) {
-            $("#eksekutif").val("Y");
-        } else {
-            $("#eksekutif").val("N");
-        }
-    }
-</script>
 

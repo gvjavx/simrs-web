@@ -6,3 +6,7 @@ ADD COLUMN kuota_bpjs bigint;
 
 ALTER TABLE im_simrs_header_tindakan
 ADD COLUMN flag_konsul_tele VARCHAR(1);
+
+CREATE SEQUENCE seq_jenis_obat;
+CREATE SEQUENCE seq_jenis_persediaan_obat;
+CREATE SEQUENCE seq_jenis_persediaan_obat_sub;
