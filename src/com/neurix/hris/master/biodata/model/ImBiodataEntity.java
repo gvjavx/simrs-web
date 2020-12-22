@@ -74,8 +74,6 @@ public class ImBiodataEntity implements Serializable {
     private String flagTunjanganProfesional;
 
     private String positionPltId;
-    private String flagPlt;
-    private String flagPjs;
     private String flagFingerMobile;
     private String flagTunjRumah;
     private String flagTunjAir;
@@ -88,7 +86,6 @@ public class ImBiodataEntity implements Serializable {
     private String flagDokterKso;
 
     private String divisiName;
-    private String jenisPegawai;
 
     //BARU
     private BigDecimal peralihanGapok;
@@ -117,14 +114,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
         this.peralihanTunjangan = peralihanTunjangan;
-    }
-
-    public String getJenisPegawai() {
-        return jenisPegawai;
-    }
-
-    public void setJenisPegawai(String jenisPegawai) {
-        this.jenisPegawai = jenisPegawai;
     }
 
     public String getFlagDokterKso() {
@@ -679,22 +668,6 @@ public class ImBiodataEntity implements Serializable {
     public void setGolonganName(String golonganName) {
         this.golonganName = golonganName;
     }
-//
-//    public String getStatusPegawai() {
-//        return statusPegawai;
-//    }
-//
-//    public void setStatusPegawai(String statusPegawai) {
-//        this.statusPegawai = statusPegawai;
-//    }
-
-//    public String getGolonganId() {
-//        return golonganId;
-//    }
-//
-//    public void setGolonganId(String golonganId) {
-//        this.golonganId = golonganId;
-//    }
 
     private ImHrisTipePegawai imHrisTipePegawai ;
 
@@ -1060,22 +1033,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setFlagPercobaan(String flagPercobaan) {
         this.flagPercobaan = flagPercobaan;
-    }
-
-    public String getFlagPjs() {
-        return flagPjs;
-    }
-
-    public void setFlagPjs(String flagPjs) {
-        this.flagPjs = flagPjs;
-    }
-
-    public String getFlagPlt() {
-        return flagPlt;
-    }
-
-    public void setFlagPlt(String flagPlt) {
-        this.flagPlt = flagPlt;
     }
 
     public String getFlagTunjAir() {

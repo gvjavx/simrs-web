@@ -45,6 +45,9 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+        <property name="jenisPegawai">
+            <column name="jenis_pegawai" sql-type="date" not-null="false" />
+        </property>
 
         <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"
                      insert="false" update="false" fetch="select" cascade="all">

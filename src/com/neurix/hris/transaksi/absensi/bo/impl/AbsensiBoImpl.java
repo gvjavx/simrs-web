@@ -5172,7 +5172,8 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                         // Sigit 2020-11-26, Pencarian prosentase gaji dari unutk perhitungan upah lembur perjam, START
                                         BigDecimal prosentase = new BigDecimal(0);
-                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
+//                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
+                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(personilPositionDao.getJenisPegawaiByNip(biodata.getNip()));
                                         if (mappingPersenGajiList.size() > 0){
                                             for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
 

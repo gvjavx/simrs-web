@@ -263,4 +263,17 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
                 .list();
         return results;
     }
+
+    // RAKA, 21 des 2020 : Manipulasi mendapatkan JenisPegawai Pegawai
+    public String getJenisPegawaiByNip(String nip) throws HibernateException {
+        String result = "";
+        List<ItPersonilPositionEntity> personils = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .addOrder(Order.asc("personilPositionId"))
+                .list();
+        for(ItPersonilPositionEntity personil:personils){
+            result = personil.getJenisPegawai();
+        }
+        return result;
+    }
 }

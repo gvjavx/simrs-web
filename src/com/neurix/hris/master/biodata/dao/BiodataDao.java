@@ -691,8 +691,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             }
 
             result.setFlagMess((String) row[67]);
-            result.setFlagPlt((String) row[79]);
-            result.setFlagPjs((String) row[80]);
+//            result.setFlagPlt((String) row[79]);
+//            result.setFlagPjs((String) row[80]);
             result.setFlagFingerMobile((String) row[81]);
             result.setFlagTunjRumah((String) row[82]);
             result.setFlagTunjAir((String) row[83]);
@@ -704,7 +704,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setPositionPltId((String) row[89]);
             result.setNipLama((String) row[90]);
             result.setFlagDokterKso((String) row[91]);
-            result.setJenisPegawai((String) row[92]);
+//            result.setJenisPegawai((String) row[92]);
 
             if(row[93] != null){
                 result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));

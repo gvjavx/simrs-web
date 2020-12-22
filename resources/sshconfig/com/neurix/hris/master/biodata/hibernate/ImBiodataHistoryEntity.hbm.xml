@@ -190,12 +190,6 @@
         <property name="flagMess">
             <column name="flag_mess" sql-type="varchar" length="1" />
         </property>
-        <property name="flagPlt">
-            <column name="flag_plt" sql-type="varchar" length="1" />
-        </property>
-        <property name="flagPjs">
-            <column name="flag_pjs" sql-type="varchar" length="1" />
-        </property>
         <property name="flagFingerMobile">
             <column name="flag_finger_mobile" sql-type="varchar" length="1" />
         </property>

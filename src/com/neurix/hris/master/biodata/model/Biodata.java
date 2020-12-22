@@ -120,8 +120,8 @@ public class Biodata extends BaseModel {
     private String flagTunjProfesional;
 
     private String positionPltId;
-    private String flagPLT;
-    private String flagPJS;
+//    private String flagPLT;
+//    private String flagPJS;
     private String flagFingerMobile;
     private String flagTunjRumah;
     private String flagTunjAir;
@@ -131,7 +131,7 @@ public class Biodata extends BaseModel {
     private String flagBpjsTk;
     private String flagPercobaan;
     private String flagDokterKso;
-    private String jenisPegawai;
+//    private String jenisPegawai;
 
     private Date tanggalPraPensiun;
     private String stTanggalPraPensiun;
@@ -171,9 +171,9 @@ public class Biodata extends BaseModel {
         this.stPeralihanTunjangan = stPeralihanTunjangan;
     }
 
-    public String getJenisPegawai() {
-        return jenisPegawai;
-    }
+//    public String getJenisPegawai() {
+//        return jenisPegawai;
+//    }
 
     public BigDecimal getPeralihanGapok() {
         return peralihanGapok;
@@ -199,9 +199,9 @@ public class Biodata extends BaseModel {
         this.peralihanTunjangan = peralihanTunjangan;
     }
 
-    public void setJenisPegawai(String jenisPegawai) {
-        this.jenisPegawai = jenisPegawai;
-    }
+//    public void setJenisPegawai(String jenisPegawai) {
+//        this.jenisPegawai = jenisPegawai;
+//    }
 
     public String getFlagDokterKso() {
         return flagDokterKso;
@@ -1063,21 +1063,21 @@ public class Biodata extends BaseModel {
         this.flagPercobaan = flagPercobaan;
     }
 
-    public String getFlagPJS() {
-        return flagPJS;
-    }
-
-    public void setFlagPJS(String flagPJS) {
-        this.flagPJS = flagPJS;
-    }
-
-    public String getFlagPLT() {
-        return flagPLT;
-    }
-
-    public void setFlagPLT(String flagPLT) {
-        this.flagPLT = flagPLT;
-    }
+//    public String getFlagPJS() {
+//        return flagPJS;
+//    }
+//
+//    public void setFlagPJS(String flagPJS) {
+//        this.flagPJS = flagPJS;
+//    }
+//
+//    public String getFlagPLT() {
+//        return flagPLT;
+//    }
+//
+//    public void setFlagPLT(String flagPLT) {
+//        this.flagPLT = flagPLT;
+//    }
 
     public String getFlagTunjAir() {
         return flagTunjAir;

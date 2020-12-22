@@ -108,8 +108,6 @@ public class ImBiodataHistoryEntity implements Serializable {
     private Date TanggalMasuk;
     private String branchIdTerakhir;
     private String flagMess;
-    private String flagPlt;
-    private String flagPjs;
     private String flagFingerMobile;
     private String flagTunjRumah;
     private String flagTunjAir;
@@ -673,22 +671,6 @@ public class ImBiodataHistoryEntity implements Serializable {
 
     public void setFlagPercobaan(String flagPercobaan) {
         this.flagPercobaan = flagPercobaan;
-    }
-
-    public String getFlagPjs() {
-        return flagPjs;
-    }
-
-    public void setFlagPjs(String flagPjs) {
-        this.flagPjs = flagPjs;
-    }
-
-    public String getFlagPlt() {
-        return flagPlt;
-    }
-
-    public void setFlagPlt(String flagPlt) {
-        this.flagPlt = flagPlt;
     }
 
     public String getFlagTunjAir() {

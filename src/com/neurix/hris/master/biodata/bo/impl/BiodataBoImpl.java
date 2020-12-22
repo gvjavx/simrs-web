@@ -527,19 +527,6 @@ public class BiodataBoImpl implements BiodataBo {
                                     historyJabatanPegawai.setJabatanFlag("Y");
                                     historyJabatanPegawai.setMutasiFlag("Y");
 
-                                    //isi pjs flag
-                                    if(bean.getFlagPJS()!=null){
-                                        if (!("").equalsIgnoreCase(bean.getFlagPJS())){
-                                            historyJabatanPegawai.setPjsFlag(bean.getFlagPJS());
-                                        }
-                                        else {
-                                            historyJabatanPegawai.setPjsFlag("N");
-                                        }
-                                    }
-                                    else {
-                                        historyJabatanPegawai.setPjsFlag("N");
-                                    }
-
                                     historyJabatanPegawai.setGolonganId(bean.getGolonganId());
                                     historyJabatanPegawai.setFlag(bean.getFlag());
                                     historyJabatanPegawai.setAction(bean.getAction());
@@ -644,8 +631,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setLastUpdateWho(imBiodataEntity.getLastUpdateWho());
                                 imBiodataHistoryEntity.setLastUpdate(imBiodataEntity.getLastUpdate());
                                 imBiodataHistoryEntity.setFlagMess(imBiodataEntity.getFlagMess());
-                                imBiodataHistoryEntity.setFlagPlt(imBiodataEntity.getFlagPlt());
-                                imBiodataHistoryEntity.setFlagPjs(imBiodataEntity.getFlagPjs());
                                 imBiodataHistoryEntity.setFlagFingerMobile(imBiodataEntity.getFlagFingerMobile());
                                 imBiodataHistoryEntity.setFlagTunjRumah(imBiodataEntity.getFlagTunjRumah());
                                 imBiodataHistoryEntity.setFlagTunjAir(imBiodataEntity.getFlagTunjAir());
@@ -704,7 +689,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setNamaBank(bean.getNamaBank());
                                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                                 imBiodataEntity.setCabangBank(bean.getCabangBank());
-                                imBiodataEntity.setJenisPegawai(bean.getJenisPegawai());
 
                                 imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
                                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
@@ -722,15 +706,7 @@ public class BiodataBoImpl implements BiodataBo {
 
                                 imBiodataEntity.setFlagMess(bean.getFlagMess());
 //                                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
-                                if ("".equalsIgnoreCase(bean.getPositionPltId())){
-                                    imBiodataEntity.setFlagPlt("N");
-                                    imBiodataEntity.setPositionPltId("");
-                                }else {
-                                    imBiodataEntity.setFlagPlt("Y");
-                                    imBiodataEntity.setPositionPltId(bean.getPositionPltId());
-                                }
                                 imBiodataEntity.setFlagDokterKso(bean.getFlagDokterKso());
-                                imBiodataEntity.setFlagPjs(bean.getFlagPJS());
                                 imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                                 imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
                                 imBiodataEntity.setFlagTunjAir(bean.getFlagTunjAir());
@@ -882,19 +858,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 historyJabatanPegawai.setJabatanFlag("Y");
                                 historyJabatanPegawai.setMutasiFlag("Y");
 
-                                //isi pjs flag
-                                if(bean.getFlagPJS()!=null){
-                                    if (!("").equalsIgnoreCase(bean.getFlagPJS())){
-                                        historyJabatanPegawai.setPjsFlag(bean.getFlagPJS());
-                                    }
-                                    else {
-                                        historyJabatanPegawai.setPjsFlag("N");
-                                    }
-                                }
-                                else {
-                                    historyJabatanPegawai.setPjsFlag("N");
-                                }
-
                                 historyJabatanPegawai.setGolonganId(bean.getGolonganId());
                                 historyJabatanPegawai.setFlag(bean.getFlag());
                                 historyJabatanPegawai.setAction(bean.getAction());
@@ -1002,8 +965,6 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setLastUpdateWho(imBiodataEntity.getLastUpdateWho());
                             imBiodataHistoryEntity.setLastUpdate(imBiodataEntity.getLastUpdate());
                             imBiodataHistoryEntity.setFlagMess(imBiodataEntity.getFlagMess());
-                            imBiodataHistoryEntity.setFlagPlt(imBiodataEntity.getFlagPlt());
-                            imBiodataHistoryEntity.setFlagPjs(imBiodataEntity.getFlagPjs());
                             imBiodataHistoryEntity.setFlagFingerMobile(imBiodataEntity.getFlagFingerMobile());
                             imBiodataHistoryEntity.setFlagTunjRumah(imBiodataEntity.getFlagTunjRumah());
                             imBiodataHistoryEntity.setFlagTunjAir(imBiodataEntity.getFlagTunjAir());
@@ -1048,7 +1009,6 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setTipePegawai(bean.getTipePegawai());
                             imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
                             imBiodataEntity.setFlagDokterKso(bean.getFlagDokterKso());
-                            imBiodataEntity.setJenisPegawai(bean.getJenisPegawai());
 //                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
                             imBiodataEntity.setStatusGiling(bean.getStatusGiling());
                             imBiodataEntity.setMt(bean.getMt());
@@ -1078,8 +1038,6 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setLastUpdate(bean.getLastUpdate());
 
                             imBiodataEntity.setFlagMess(bean.getFlagMess());
-                            imBiodataEntity.setFlagPlt(bean.getFlagPLT());
-                            imBiodataEntity.setFlagPjs(bean.getFlagPJS());
                             imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                             imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
                             imBiodataEntity.setFlagTunjAir(bean.getFlagTunjAir());
@@ -1304,7 +1262,6 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
                 imBiodataEntity.setFlagDokterKso(bean.getFlag());
-                imBiodataEntity.setJenisPegawai(bean.getJenisPegawai());
 
                 //Tanggal Pensiun Lama
                 /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
@@ -1346,13 +1303,6 @@ public class BiodataBoImpl implements BiodataBo {
 
                 imBiodataEntity.setFlagMess(bean.getFlagMess());
 //                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
-                if ("".equalsIgnoreCase(bean.getPositionPltId())||bean.getPositionPltId()==null){
-                    imBiodataEntity.setFlagPlt("N");
-                }else {
-                    imBiodataEntity.setFlagPlt("Y");
-                    imBiodataEntity.setPositionPltId(bean.getPositionPltId());
-                }
-                imBiodataEntity.setFlagPjs(bean.getFlagPJS());
                 imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                 imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
                 imBiodataEntity.setFlagTunjAir(bean.getFlagTunjAir());
@@ -2194,7 +2144,6 @@ public class BiodataBoImpl implements BiodataBo {
 
                     returnBiodata.setProvinsiId(personalEntity.getProvinsiId());
                     returnBiodata.setProvinsiName(personalEntity.getProvinsiName());
-                    returnBiodata.setJenisPegawai(personalEntity.getJenisPegawai());
                     returnBiodata.setFlagDokterKso(personalEntity.getFlagDokterKso());
                     returnBiodata.setKabupatenId(personalEntity.getKotaId());
                     returnBiodata.setKotaName(personalEntity.getKotaName());
@@ -2252,8 +2201,6 @@ public class BiodataBoImpl implements BiodataBo {
 
                     returnBiodata.setPositionPltId(personalEntity.getPositionPltId());
                     returnBiodata.setFlagMess(personalEntity.getFlagMess());
-                    returnBiodata.setFlagPLT(personalEntity.getFlagPlt());
-                    returnBiodata.setFlagPJS(personalEntity.getFlagPjs());
                     returnBiodata.setFlagFingerMobile(personalEntity.getFlagFingerMobile());
                     returnBiodata.setFlagTunjRumah(personalEntity.getFlagTunjRumah());
                     returnBiodata.setFlagTunjAir(personalEntity.getFlagTunjAir());
@@ -3324,7 +3271,6 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setProfesiId(bean.getProfesiId());
                 imBiodataEntity.setTipePegawai(bean.getTipePegawaiId());
                 imBiodataEntity.setGolongan(bean.getGolonganId());
-                imBiodataEntity.setFlagPjs(bean.getPjsFlag());
 
                 try {
                     // Update into database

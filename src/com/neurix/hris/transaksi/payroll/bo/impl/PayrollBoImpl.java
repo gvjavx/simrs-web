@@ -1996,7 +1996,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                     //update 31-05-2020
                     //persentase dari gaji
-                    String tipeGaji =biodataEntity.getJenisPegawai();
+//                    String tipeGaji =biodataEntity.getJenisPegawai();
+                    String tipeGaji = personilPositionDao.getJenisPegawaiByNip(biodataEntity.getNip());
 
                     if (!"".equalsIgnoreCase(tipeGaji)){
                         List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(tipeGaji);
