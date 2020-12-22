@@ -27,6 +27,15 @@ public class ItSimrsPembayaranOnlineEntity {
     private String jenisPengambilan;
     private String alamat;
     private String idRekening;
+    private Timestamp waktuBayar;
+
+    public Timestamp getWaktuBayar() {
+        return waktuBayar;
+    }
+
+    public void setWaktuBayar(Timestamp waktuBayar) {
+        this.waktuBayar = waktuBayar;
+    }
 
     public String getIdRekening() {
         return idRekening;

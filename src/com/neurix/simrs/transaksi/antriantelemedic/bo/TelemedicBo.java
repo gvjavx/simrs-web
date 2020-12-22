@@ -57,4 +57,5 @@ public interface TelemedicBo {
     public String cobaGabung(String path1, String path2);
 
 
+
 }

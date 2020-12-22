@@ -1,6 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
 import com.google.gson.Gson;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.PlanKegiatanRawatMobile;
@@ -37,11 +38,16 @@ import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.opensymphony.xwork2.ModelDriven;
+import io.agora.recording.common.Common;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -133,6 +139,16 @@ public class RawatInapController implements ModelDriven<Object> {
 
     private String idJenisPeriksaPasien;
     private String tglMasuk;
+
+    private File image;
+
+    public File getImage() {
+        return image;
+    }
+
+    public void setImage(File image) {
+        this.image = image;
+    }
 
     public String getTglMasuk() {
         return tglMasuk;
@@ -1502,6 +1518,20 @@ public class RawatInapController implements ModelDriven<Object> {
             } catch (GeneralBOException e){
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());
             }
+        }
+
+        if (action.equalsIgnoreCase("cobaCompress")) {
+            try {
+                BufferedImage bufferedImage = ImageIO.read(image);
+                String imageType = CommonUtil.getImageFormat(image);
+                CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.external.dir")+"image.jpg");
+                model.setMessage(crudResponse.getMsg());
+            } catch (GeneralBOException e) {
+                logger.error("[RawatInapController.create] Error, " + e.getMessage());
+            } catch (IOException i) {
+                logger.error("[RawatInapController.create] Error, " + i.getMessage());
+            }
+
         }
 
         logger.info("[RawatInapContoller.create] end process POST / <<<");

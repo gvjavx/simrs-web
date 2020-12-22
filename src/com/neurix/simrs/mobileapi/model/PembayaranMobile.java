@@ -25,6 +25,15 @@ public class PembayaranMobile {
     private String idRekening;
     private String noRekening;
     private String namaRekening;
+    private String waktuBayar;
+
+    public String getWaktuBayar() {
+        return waktuBayar;
+    }
+
+    public void setWaktuBayar(String waktuBayar) {
+        this.waktuBayar = waktuBayar;
+    }
 
     public String getNamaRekening() {
         return namaRekening;

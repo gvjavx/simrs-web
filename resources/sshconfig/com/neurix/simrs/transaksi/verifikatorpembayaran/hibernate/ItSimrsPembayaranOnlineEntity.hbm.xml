@@ -62,6 +62,9 @@
             <basic name="idRekening">
                 <column name="id_rekening"/>
             </basic>
+            <basic name="waktuBayar">
+                <column name="waktu_bayar"/>
+            </basic>
 
         </attributes>
     </entity>

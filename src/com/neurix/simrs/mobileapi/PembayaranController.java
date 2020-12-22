@@ -64,6 +64,16 @@ public class PembayaranController implements ModelDriven<Object> {
     private String username;
     private String roleId;
 
+    private String idPembayaranOnline;
+
+    public String getIdPembayaranOnline() {
+        return idPembayaranOnline;
+    }
+
+    public void setIdPembayaranOnline(String idPembayaranOnline) {
+        this.idPembayaranOnline = idPembayaranOnline;
+    }
+
     public String getUsername() {
         return username;
     }
@@ -286,6 +296,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
                 pembayaranMobile.setIdItem(item.getIdItem());
                 pembayaranMobile.setIdRekening(item.getIdRekening());
+                pembayaranMobile.setUrlFotoBukti(item.getUrlFotoBukti());
 
                 RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
                 rekeningTelemedic.setIdRekening(item.getIdRekening());
@@ -303,7 +314,7 @@ public class PembayaranController implements ModelDriven<Object> {
                     pembayaranMobile.setNamaRekening(rekeningTelemedicList.get(0).getNamaRekening());
                 }
 
-                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getCreatedDate()));
+                pembayaranMobile.setWaktuBayar(CommonUtil.addJamBayar(item.getCreatedDate()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }
@@ -397,6 +408,34 @@ public class PembayaranController implements ModelDriven<Object> {
 
             }
 
+        }
+
+        if (action.equalsIgnoreCase("updateWaktuBayar")) {
+            listOfPembayaran = new ArrayList<>();
+
+            PembayaranOnline bean = new PembayaranOnline();
+            bean.setIdAntrianTelemedic(idTele);
+            bean.setKeterangan(keterangan);
+
+            List<ItSimrsPembayaranOnlineEntity> result = new ArrayList<>();
+
+            try {
+                result = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            }
+
+            if(result.get(0).getWaktuBayar() == null) {
+                result.get(0).setWaktuBayar(now);
+                try {
+                    verifikatorPembayaranBoProxy.saveEdit(result.get(0));
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+                model.setMessage("Success");
+            } else {
+                model.setMessage("Failed");
+            }
         }
 
         logger.info("[PembayaranController.create] end process POST / <<<");
