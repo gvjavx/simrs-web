@@ -9,6 +9,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.List;
 import java.util.Map;
 
@@ -65,6 +66,17 @@ public class RoleFuncDao extends GenericDao<ImFuncRoles,ImFuncRolesPK> {
         List<ImFuncRoles> results = criteria.list();
 
         return results;
+    }
+
+    public boolean checkIfAvailableFuncIdInRoleFunc(Long funcId, Long roleId) throws HibernateException{
+
+        String SQL = "SELECT func_id, role_id, flag FROM im_func_roles WHERE func_id = :id AND role_id = :role LIMIT 1\n";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", BigInteger.valueOf(funcId))
+                .setParameter("role", BigInteger.valueOf(roleId))
+                .list();
+        // return true jika size > 0 / ditemukan data;
+        return results.size() > 0;
     }
 
 

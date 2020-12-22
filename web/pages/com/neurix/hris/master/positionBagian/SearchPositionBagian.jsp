@@ -94,9 +94,6 @@
                                 </td>
                                 <td>
                                     <table>
-<<<<<<< HEAD
-                                        <s:textfield  id="positionBagianId" name="positionBagian.bagianId"
-=======
                                         <s:textfield  id="positionBagianId" name="positionBagian.bagianId" required="false" readonly="false" cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -108,7 +105,6 @@
                                 <td>
                                     <table>
                                         <s:textfield  id="positionBagianName" name="positionBagian.bagianName"
->>>>>>> sigit/dev
                                                       required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>
                                     </table>
                                 </td>
@@ -152,9 +148,9 @@
                                         <%--Search--%>
                                         <%--</sj:submit>--%>
                                         <%--</td>--%>
-                                            <td >
-                                                <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData() "><i class="fa fa-search"></i> Search</a>
-                                            </td>
+                                        <td>
+                                            <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData()"><i class="fa fa-search"></i> Search</a>
+                                        </td>
                                     <td>
                                         <s:url var="urlAdd" namespace="/positionBagian" action="add_positionBagian" escapeAmp="false">
                                     </s:url>

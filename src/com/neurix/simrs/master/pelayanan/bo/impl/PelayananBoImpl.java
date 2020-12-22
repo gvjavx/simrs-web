@@ -133,7 +133,7 @@ public class PelayananBoImpl implements PelayananBo{
                     // Get data from database by ID
                     entity = pelayananDao.getById("idPelayanan", idPelayanan);
                 } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, " + e.getMessage());
+                    logger.error("[pelayananBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                 }
 
@@ -150,35 +150,35 @@ public class PelayananBoImpl implements PelayananBo{
                         // Delete (Edit) into database
                         pelayananDao.updateAndSave(entity);
                     } catch (HibernateException e) {
-                        logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                        logger.error("[pelayananBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data pelayanan, please info to your admin..." + e.getMessage());
                     }
 
 
                 } else {
-                    logger.error("[PayrollSkalaGajiBoImpl.saveDelete] Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
-                    throw new GeneralBOException("Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
+                    logger.error("[pelayananBoImpl.saveDelete] Error, not found data pelayanan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data pelayanan with request id, please check again your data ...");
 
                 }
             }else {
                 throw new GeneralBOException("Maaf Data tidak dapat dihapus, karna masih digunakan pada data Transaksi");
             }
         }
-        logger.info("[PayrollSkalaGajiBoImpl.saveDelete] end process <<<");
+        logger.info("[pelayananBoImpl.saveDelete] end process <<<");
 
     }
 
     @Override
     public void saveEdit(Pelayanan bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiBoImpl.saveEdit] start process >>>");
+        logger.info("[pelayananBoImpl.saveEdit] start process >>>");
         if (bean!=null) {
             String idPelayanan = bean.getIdPelayanan();
             ImSimrsPelayananEntity imSimrsPelayananEntity = null;
             try {
                 imSimrsPelayananEntity = pelayananDao.getById("idPelayanan", idPelayanan);
             } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
+                logger.error("[pelayananBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data pelayanan by Kode pelayanan, please inform to your admin...," + e.getMessage());
             }
             if (imSimrsPelayananEntity.getNamaPelayanan().equalsIgnoreCase(bean.getNamaPelayanan())){
                 if (imSimrsPelayananEntity != null) {
@@ -196,13 +196,14 @@ public class PelayananBoImpl implements PelayananBo{
                     String flag;
                     try {
                         pelayananDao.updateAndSave(imSimrsPelayananEntity);
+
                     } catch (HibernateException e) {
-                        logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                        logger.error("[pelayananBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update data pelayanan, please info to your admin..." + e.getMessage());
                     }
                 } else {
-                    logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
-                    throw new GeneralBOException("Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
+                    logger.error("[pelayananBoImpl.saveEdit] Error, not found data pelayanan with request id, please check again your data ...");
+                    throw new GeneralBOException("Error, not found data pelayanan with request id, please check again your data ...");
                 }
             }else {
                 String status = cekStatus(bean.getNamaPelayanan());
@@ -220,25 +221,26 @@ public class PelayananBoImpl implements PelayananBo{
                         imSimrsPelayananEntity.setLastUpdate(bean.getLastUpdate());
                         try {
                             pelayananDao.updateAndSave(imSimrsPelayananEntity);
+
                         } catch (HibernateException e) {
-                            logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving update data PayrollSkalaGaji, please info to your admin..." + e.getMessage());
+                            logger.error("[pelayananBoImpl.saveEdit] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data pelayanan, please info to your admin..." + e.getMessage());
                         }
                     } else {
-                        logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
-                        throw new GeneralBOException("Error, not found data PayrollSkalaGaji with request id, please check again your data ...");
+                        logger.error("[pelayananBoImpl.saveEdit] Error, not found data pelayanan with request id, please check again your data ...");
+                        throw new GeneralBOException("Error, not found data pelayanan with request id, please check again your data ...");
                     }
                 }else {
                     throw new GeneralBOException("Maaf Data "+bean.getNamaPelayanan()+" Sudah Ada");
                 }
             }
         }
-        logger.info("[PayrollSkalaGajiBoImpl.saveEdit] end process <<<");
+        logger.info("[pelayananBoImpl.saveEdit] end process <<<");
     }
 
     @Override
     public Pelayanan saveAdd(Pelayanan bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiBoImpl.saveAdd] start process >>>");
+        logger.info("[pelayananBoImpl.saveAdd] start process >>>");
         if (bean!=null) {
 
             List<ImSimrsPelayananEntity> cekList = new ArrayList<>();

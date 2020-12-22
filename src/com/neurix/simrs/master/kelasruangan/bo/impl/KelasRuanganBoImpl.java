@@ -86,7 +86,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 kelasRuangan = new KelasRuangan();
                 kelasRuangan.setIdKelasRuangan(listEntity.getIdKelasRuangan());
                 kelasRuangan.setNamaKelasRuangan(listEntity.getNamaKelasRuangan());
-                kelasRuangan.setKodering(listEntity.getKodering());
+                kelasRuangan.setKategori(listEntity.getKategori());
                 kelasRuangan.setPositionId(listEntity.getDivisiId());
                 kelasRuangan.setFlag(listEntity.getFlag());
                 kelasRuangan.setAction(listEntity.getAction());
@@ -128,14 +128,16 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     // Generating ID, get from postgre sequence
                     kelasRuanganId = kelasRuanganDao.getNextIdKelasRuangan();
                 } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[KelasRuangan.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiId id, please info to your admin..."
                             + e.getMessage());
                 }
+
                 ImSimrsKelasRuanganEntity imSimrsKelasRuanganEntity = new ImSimrsKelasRuanganEntity();
                 imSimrsKelasRuanganEntity.setIdKelasRuangan("KR"+kelasRuanganId);
                 imSimrsKelasRuanganEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                 imSimrsKelasRuanganEntity.setDivisiId(kelasRuangan.getPositionId());
+                imSimrsKelasRuanganEntity.setKategori(kelasRuangan.getKategori());
                 imSimrsKelasRuanganEntity.setFlag(kelasRuangan.getFlag());
                 imSimrsKelasRuanganEntity.setAction(kelasRuangan.getAction());
                 imSimrsKelasRuanganEntity.setCreatedDate(kelasRuangan.getCreatedDate());
@@ -171,7 +173,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 imSimrsPelayananEntity = kelasRuanganDao.getById("idKelasRuangan", kelasRuangan.getIdKelasRuangan());
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
+                logger.error("[KelasRuangan.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
 
@@ -180,6 +182,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     String kode = imSimrsPelayananEntity.getKodering();
                     imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                     imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
+                    imSimrsPelayananEntity.setKategori(kelasRuangan.getKategori());
                     imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
                     imSimrsPelayananEntity.setAction("U");
                     imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
@@ -196,6 +199,8 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                     if (!status.equalsIgnoreCase("exist")){
                         imSimrsPelayananEntity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
                         imSimrsPelayananEntity.setDivisiId(kelasRuangan.getPositionId());
+                        imSimrsPelayananEntity.setKategori(kelasRuangan.getKategori());
+
                         imSimrsPelayananEntity.setFlag(kelasRuangan.getFlag());
                         imSimrsPelayananEntity.setAction("U");
                         imSimrsPelayananEntity.setLastUpdate(kelasRuangan.getLastUpdate());
@@ -245,6 +250,7 @@ public class KelasRuanganBoImpl implements KelasRuanganBo {
                 if (entity != null) {
                     // Modify from bean to entity serializable
                     entity.setNamaKelasRuangan(kelasRuangan.getNamaKelasRuangan());
+                    entity.setKategori(kelasRuangan.getKategori());
                     entity.setFlag(kelasRuangan.getFlag());
                     entity.setAction("U");
                     entity.setLastUpdate(kelasRuangan.getLastUpdate());

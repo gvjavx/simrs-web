@@ -82,6 +82,7 @@
                                 <img id="del_nyeri" class="hvr-grow btn-hide" onclick="conKepRJ('nyeri', 'keperawatan_rawat_jalan')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
+
                         </tbody>
                     </table>
                 </div>

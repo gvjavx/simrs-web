@@ -154,6 +154,22 @@
                             </table>
                         </td>
                     </tr>
+
+                    <tr >
+                        <td>
+                            <label class="control-label"><small>Kategori :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'rawat_inap':'rawat inap','rawat_intensif':'rawat intensif',
+                                'kamar_operasi':'kamar operasi','rawat_isolasi':'rawat isolasi','ruang_bersalin':'ruang bersalin','ruang_recovery':'ruang recovery'
+                                }"
+                                          id="kategoriDelete" name="kelasRuangan.kategori" disabled="true"
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"
+                                />
+                            </table>
+                        </td>
+                    </tr>
                 </table>
 
 

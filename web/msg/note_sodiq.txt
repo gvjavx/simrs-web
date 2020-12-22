@@ -1477,7 +1477,34 @@ WHERE b.bagian_id IS NULL;
 ALTER TABLE im_simrs_tindakan
 DROP COLUMN kategori_ina_bpjs;
 
+ALTER TABLE im_simrs_tindakan
+ADD COLUMN id_kelas_ruangan VARCHAR(100),
+ADD COLUMN flag_kelas_ruangan VARCHAR(1);
 
+ALTER TABLE im_simrs_kelas_ruangan
+DROP COLUMN kodering;
+
+ALTER TABLE mt_simrs_ruangan
+DROP COLUMN sisa_kuota,
+DROP COLUMN status_ruangan,
+DROP COLUMN kuota;
+
+ALTER TABLE im_simrs_pelayanan
+DROP COLUMN kodering;
+
+ALTER TABLE mt_simrs_transaksi_obat_detail
+ADD COLUMN id_racik VARCHAR(50),
+ADD COLUMN nama_racik VARCHAR(100),
+ADD COLUMN jenis_resep VARCHAR(100);
+
+INSERT INTO im_functions VALUES
+(6534, 'print label', '/reseppoli/printLabelResepPasien_reseppoli.action', 1543, 1, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6534, 36, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_obat
+DROP COLUMN id_jenis_obat;
 
 
 

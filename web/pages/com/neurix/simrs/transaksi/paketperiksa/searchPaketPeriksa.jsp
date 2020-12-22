@@ -267,7 +267,7 @@
                             table2 += '<tr id="row'+item.idLab+'">' +
                                 '<td>'+item.namaLab+'</td>' +
                                 '<td>'+convertSentenceCase(item.jenisItem)+'</td>' +
-                                '<td align="center">'+'<img id="btn'+item.idLab+'" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
+                                '<td align="center">'+'<img id="btn'+item.idLab+'" style="cursor:pointer" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
                                 '</tr>';
                         }
 
@@ -278,7 +278,7 @@
                             table2 += '<tr id="row'+item.idLab+'">' +
                                 '<td>'+item.namaLab+'</td>' +
                                 '<td>'+convertSentenceCase(item.jenisItem)+'<input type="hidden" id="det_radiologi'+item.idLab+'"></td>' +
-                                '<td align="center">'+'<img id="btn'+item.idLab+'" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
+                                '<td align="center">'+'<img id="btn'+item.idLab+'" style="cursor:pointer" class="hvr-grow" onclick="detailLab(\''+item.idLab+'\',\''+item.idPaket+'\')" src="<s:url value="/pages/images/icons8-plus-25.png"/>">'+'</td>' +
                                 '</tr>';
                         }
                     }
@@ -298,7 +298,7 @@
                         '<td>'+item.keterangan+'</td>';
                     '</tr>';
                 });
-            };
+            }
         });
         var rowIndex = document.getElementById("row"+idLab).rowIndex;
         var table2 = '<table class="table table-bordered"><tr bgcolor="#ffebcd">' +

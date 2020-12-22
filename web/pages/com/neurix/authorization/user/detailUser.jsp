@@ -628,7 +628,10 @@
             alert("Pilih Unit Dahulu");
         RoleAction.getRoleById(role, function (res) {
             console.log(res);
-            if(res.tipePelayanan == "rawat_inap") {
+            if(res.tipePelayanan != "" && res.tipePelayanan != null) {
+                $('#form-pelayanan-edit').show();
+                getListPelayananByBranchAndTipeEdit(branch, res.tipePelayanan, pelayanan);
+            } if(res.tipePelayanan == "rawat_inap") {
                 $('#form-ruangan-edit').show();
                 $('#form-pelayanan-edit').hide();
                 $('#form-vendor-edit').hide();

@@ -64,6 +64,23 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         List<Tindakan> tindakanList = new ArrayList<>();
         if(bean != null){
             if(bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
+                String union = "";
+                if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
+                    union = "UNION ALL\n" +
+                            "SELECT\n" +
+                            "a.id_tindakan,\n" +
+                            "b.nama_tindakan,\n" +
+                            "a.tarif,\n" +
+                            "a.tarif_bpjs,\n" +
+                            "a.diskon,\n" +
+                            "a.is_elektif\n" +
+                            "FROM im_simrs_tindakan a\n" +
+                            "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                            "WHERE a.id_kategori_tindakan = :idKat\n" +
+                            "AND a.flag_kelas_ruangan = 'Y' \n" +
+                            "AND a.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"'\n" +
+                            "AND a.flag = 'Y'";
+                }
                 String SQL = "SELECT\n" +
                         "a.id_tindakan,\n" +
                         "b.nama_tindakan,\n" +
@@ -73,8 +90,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                         "a.is_elektif\n" +
                         "FROM im_simrs_tindakan a\n" +
                         "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
-                        "WHERE a.id_kategori_tindakan = :idKat \n" +
-                        "AND a.flag = 'Y'\n";
+                        "WHERE a.id_kategori_tindakan = :idKat\n" +
+                        "AND a.flag_kelas_ruangan = 'N'\n" +
+                        "AND a.flag = 'Y'" +union;
 
                 List<Object[]> results =  new ArrayList<>();
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -219,14 +237,82 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         return tindakanList;
     }
 
-    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan) throws HibernateException {
-        List<ImSimrsTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
-                .add(Restrictions.eq("idHeaderTindakan", idHeader))
-                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
-                .add(Restrictions.eq("idPelayanan", idPelayanan))
-                .add(Restrictions.eq("flag", "Y"))
-                .list();
+    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan, String idKelas) throws HibernateException {
+        List<ImSimrsTindakanEntity> results = new ArrayList<>();
+        if("empty".equalsIgnoreCase(idKelas)){
+            results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                    .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                    .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                    .add(Restrictions.eq("idPelayanan", idPelayanan))
+                    .add(Restrictions.eq("flag", "Y"))
+                    .list();
+        }else{
+            results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                    .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                    .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                    .add(Restrictions.eq("idPelayanan", idPelayanan))
+                    .add(Restrictions.eq("idKelasRuangan", idKelas))
+                    .add(Restrictions.eq("flag", "Y"))
+                    .list();
+        }
         return results;
+    }
+
+    public List<Tindakan> getListTindakanApotek(String branchId, String idPelayanan, String idTindakan){
+        List<Tindakan> tindakanList = new ArrayList<>();
+        String notLike1 = "";
+        String notLike2 = "";
+        if(idTindakan != null && !"".equalsIgnoreCase(idTindakan)){
+            notLike1 = "AND a.id_obat NOT IN ("+idTindakan+")";
+            notLike2 = "AND b.id_tindakan NOT IN ("+idTindakan+")";
+        }
+        String SQL = "SELECT\n" +
+                "a.id_obat as id_tindakan,\n" +
+                "a.nama_obat as keterangan,\n" +
+                "c.harga_jual as tarif,\n" +
+                "c.harga_jual as tarif_bpjs,\n" +
+                "CAST('0' AS NUMERIC) as diskon,\n" +
+                "CAST('obat' AS VARCHAR) as tipe\n" +
+                "FROM im_simrs_header_obat a\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT \n" +
+                "\tid_obat,\n" +
+                "\tSUM(qty_box) as qty_box,\n" +
+                "\tSUM(qty_lembar) as qty_lembar,\n" +
+                "\tSUM(qty_biji) as qty_biji\n" +
+                "\tFROM im_simrs_obat\n" +
+                "\tWHERE branch_id = '"+branchId+"'\n" +
+                "\tGROUP BY id_obat\n" +
+                "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n" +
+                ") b ON a.id_obat = b.id_obat\n" +
+                "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
+                "WHERE a.id_kategori_persediaan = 'KTP000003'\n" +
+                "AND a.id_bentuk ILIKE 'capsule'\n" + notLike1 + "\n"+
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "b.id_tindakan,\n" +
+                "a.nama_tindakan,\n" +
+                "b.tarif,\n" +
+                "b.tarif_bpjs,\n" +
+                "b.diskon,\n" +
+                "CAST('tindakan' AS VARCHAR) as tipe\n" +
+                "FROM im_simrs_header_tindakan a\n" +
+                "INNER JOIN im_simrs_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                "WHERE b.branch_id = '"+branchId+"' AND b.id_pelayanan = '"+idPelayanan+"'\n" + notLike2 + "\n";
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                Tindakan tindakan = new Tindakan();
+                tindakan.setIdTindakan(obj[0] != null ? obj[0].toString() : null);
+                tindakan.setTindakan(obj[1] != null ? obj[1].toString() : null);
+                tindakan.setbDTarif(obj[2] != null ? (BigDecimal)obj[2] : null);
+                tindakan.setbDTarifBpjs(obj[3] != null ? (BigDecimal) obj[3] : null);
+                tindakan.setDiskon(obj[4] != null ? (BigDecimal) obj[4] : null);
+                tindakan.setTipe(obj[5] != null ? obj[5].toString() : null);
+                tindakanList.add(tindakan);
+            }
+        }
+        return tindakanList;
     }
 
 }

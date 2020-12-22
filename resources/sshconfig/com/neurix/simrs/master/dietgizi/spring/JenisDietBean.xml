@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="jenisDietBo" class="com.neurix.simrs.master.dietgizi.bo.impl.JenisDietBoImpl"
+          p:jenisDietDao-ref="jenisDietDao"
+    />
+
+    <bean id="jenisDietBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="jenisDietBo">
+        <property name="interceptorNames">
+            <list>
+                <value>transactionDokterInterceptor</value>
+                <value>hibernateInterceptor</value>
+            </list>
+        </property>
+    </bean>
+
+    <bean id="transactionDiagnosaInterceptor"
+          class="org.springframework.transaction.interceptor.TransactionInterceptor"
+          p:transactionManager-ref="transactionManager">
+        <property name="transactionAttributes">
+            <props>
+                <prop key="getByCriteria">readOnly</prop>
+                <prop key="getJenisDietByCiteria">readOnly</prop>
+            </props>
+        </property>
+    </bean>
+
+    <bean id="jenisDietDao" class="com.neurix.simrs.master.dietgizi.dao.JenisDietDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+
+</beans>

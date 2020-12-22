@@ -908,13 +908,13 @@ public class RawatInapBoImpl implements RawatInapBo {
     }
 
     @Override
-    public List<Obat> getListObatParenteral(String idPelayanan) {
-        return monPemberianObatDao.getListObatParenteral(idPelayanan);
+    public List<Obat> getListObatParenteral(String idDetailCheckup) {
+        return monPemberianObatDao.getListObatParenteral(idDetailCheckup);
     }
 
     @Override
-    public List<Obat> getListObatNonParenteral(String idDetail, String kategori) {
-        return monPemberianObatDao.getListObatNonParenteral(idDetail, kategori);
+    public List<Obat> getListObatNonParenteral(String idDetailCheckup) {
+        return monPemberianObatDao.getListObatNonParenteral(idDetailCheckup);
     }
 
     @Override

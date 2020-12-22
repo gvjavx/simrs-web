@@ -33,9 +33,6 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <property name="kodering">
-            <column name="kodering" sql-type="varchar" length="100" not-null="false" />
-        </property>
         <property name="divisiId">
             <column name="divisi_id" sql-type="varchar" length="30" not-null="false" />
         </property>

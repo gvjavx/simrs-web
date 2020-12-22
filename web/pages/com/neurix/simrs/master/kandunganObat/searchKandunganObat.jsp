@@ -35,7 +35,6 @@
     <section class="content-header">
         <h1>
             Kandungan Obat
-            <small>e-HEALTH</small>
         </h1>
     </section>
 
@@ -129,6 +128,23 @@
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
 
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <s:hidden id="close_pos"></s:hidden>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+
                                     </div>
                                 </div>
                             </s:form>
@@ -191,9 +207,9 @@
     <div class="modal-dialog modal-md">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-success">
+            <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Edit Data</h4>
+                <h4 class="modal-title" style="color: white">Edit Data</h4>
             </div>
             <div class="modal-body">
                 <s:form id="kandunganObatEditForm" method="post" theme="simple" namespace="/kandunganObat" action="saveEdit_kandunganObat" cssClass="well form-horizontal">
@@ -211,7 +227,7 @@
                     </div>
                 </s:form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer"  style="background-color: #cacaca">
                 <button id="btnEdit" type="button" class="btn btn-default btn-primary"><i class="fa fa-pencil"></i> Edit</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-refresh"></i> Close</button>
             </div>
@@ -224,9 +240,9 @@
     <div class="modal-dialog modal-md">
         <!-- Modal content-->
         <div class="modal-content">
-            <div class="modal-header bg-success">
+            <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Delete Data</h4>
+                <h4 class="modal-title" style="color: white">Delete Data</h4>
             </div>
             <div class="modal-body">
                 <s:form id="kandunganObatDeleteForm" method="post" theme="simple" namespace="/kandunganObat" action="saveEdit_kandunganObat" cssClass="well form-horizontal">
@@ -244,7 +260,7 @@
                     </div>
                 </s:form>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer"  style="background-color: #cacaca">
                 <button id="btnDelete" type="button" class="btn btn-default btn-primary"><i class="fa fa-trash"></i> Delete</button>
                 <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-refresh"></i> Close</button>
             </div>
@@ -266,8 +282,8 @@
                 if (confirm('Are you sure you want to save this Record?')) {
                     KandunganObatAction.saveEdit(idKandungan, kandunganObat, "edit", function(result) {
                         if (result==""){
-                            alert('Record has been saved successfully.');
-                            location.reload();
+                            $('#modal-edit').modal('hide');
+                            $("#info_dialog").dialog('open');
                         } else{
                             alert(result);
                         }
@@ -291,8 +307,8 @@
                 if (confirm('Are you sure you want to delete this Record?')) {
                     KandunganObatAction.saveEdit(idKandungan, "","delete",function(listdata) {
                         if (listdata==""){
-                            alert('Record has been delete successfully.');
-                            location.reload();
+                            $('#modal-delete').modal('hide');
+                            $("#info_dialog").dialog('open');
                         } else{
                             alert(listdata);
                         }
