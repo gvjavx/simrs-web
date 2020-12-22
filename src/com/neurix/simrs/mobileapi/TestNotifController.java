@@ -68,7 +68,7 @@ public class TestNotifController implements ModelDriven<Object> {
         bean.setTipeNotifId("TN10");
         bean.setTipeNotifName("Telemedic");
         bean.setOs("Android");
-        bean.setNip("RS0104200033");
+        bean.setNip("RS0104200035");
         bean.setNamaPegawai("admin");
         bean.setChannelId("android-notif");
         bean.setNote("Test Notif");
