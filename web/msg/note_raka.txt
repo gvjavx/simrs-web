@@ -54,3 +54,11 @@
 
     CREATE SEQUENCE public.seq_payroll_skala_gaji_iuran_dplk;
     CREATE SEQUENCE public.seq_payroll_skala_gaji_iuran_dplk_history;
+
+
+
+    ------------------------------------
+    ----  BUTUH PENYESUAIAN AKIBAT  ----
+    ----  PERUBAHAN im_hris_pegawai ----
+    ----         X [UNDONE] X       ----
+    ------------------------------------

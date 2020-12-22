@@ -233,6 +233,7 @@
         <property name="positionPltId">
             <column name="position_plt_id" sql-type="varchar" length="5" />
         </property>
+
         <property name="flagFingerMobile">
             <column name="flag_finger_mobile" sql-type="varchar" length="1" />
         </property>
