@@ -96,7 +96,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Hari Ini</label>
                                     <div class="col-sm-4">
-                                        <s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;"/>
+                                        <s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>
                                     </div>
                                 </div>
                                 <br>
@@ -760,6 +760,7 @@
     $( document ).ready(function() {
         var canvas = document.getElementById('img_ktp_canvas');
         var ctx = canvas.getContext('2d');
+        $("#check_hari_ini").prop( "checked", true );
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
