@@ -491,8 +491,10 @@
                 <value>sshconfig/com/neurix/simrs/master/jenispersediaanobat/hibernate/ImSimrsJenisPersediaanObatEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/jenispersediaanobatsub/hibernate/ImSimrsJenisPersediaanObatSubEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/keteranganobat/hibernate/ImSimrsKeteranganObatEntity.xml</value>
-                <value>sshconfig/com/neurix/simrs/master/parameterketeranganobat/hibernate/ImSimrsParameterKeteranganObatEntity.xml</value>
-
+                <!--<value>sshconfig/com/neurix/simrs/master/parameterketeranganobat/hibernate/ImSimrsParameterKeteranganObatEntity.hbm.xml</value>-->
+                <value>
+                    sshconfig/com/neurix/simrs/master/parameterketeranganobat/hibernate/ImSimrsParameterKeteranganObatEntity.hbm.xml
+                </value>
                 <value>
                     sshconfig/com/neurix/simrs/transaksi/resikojatuh/hibernate/ImSimrsKategoriResikoJatuhEntity.hbm.xml
                 </value>

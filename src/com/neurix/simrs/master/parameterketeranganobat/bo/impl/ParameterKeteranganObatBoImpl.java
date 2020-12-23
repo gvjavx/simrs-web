@@ -46,6 +46,11 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
     }
 
     @Override
+    public List<ParameterKeteranganObat> getSearchByCriteria(ParameterKeteranganObat bean) throws GeneralBOException {
+        return null;
+    }
+
+    @Override
     public List<ParameterKeteranganObat> getListSearchByCriteria(ParameterKeteranganObat bean) throws GeneralBOException {
         logger.info("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] START >>>");
 
@@ -57,6 +62,7 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
             logger.error("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] ERROR, error when. ",e);
             throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] ERROR, error when. "+e);
         }
+
 
         List<ParameterKeteranganObat> parameterKeteranganObats = new ArrayList<>();
         if (parameterKeteranganObatEntities.size() > 0){

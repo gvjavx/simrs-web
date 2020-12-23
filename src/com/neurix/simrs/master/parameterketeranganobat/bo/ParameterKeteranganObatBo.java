@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface ParameterKeteranganObatBo {
     public List<ImSimrsParameterKeteranganObatEntity> getListEntitiyByCriteria(ParameterKeteranganObat bean) throws GeneralBOException;
+    public List<ParameterKeteranganObat> getSearchByCriteria(ParameterKeteranganObat bean) throws GeneralBOException;
     public List<ParameterKeteranganObat> getListSearchByCriteria(ParameterKeteranganObat bean) throws GeneralBOException;
     public List<ParameterKeteranganObat> getParameterKeterangan(String idJenis) throws GeneralBOException;
 }

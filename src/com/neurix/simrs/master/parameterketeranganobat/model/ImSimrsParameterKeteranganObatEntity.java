@@ -1,8 +1,9 @@
 package com.neurix.simrs.master.parameterketeranganobat.model;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ImSimrsParameterKeteranganObatEntity {
+public class ImSimrsParameterKeteranganObatEntity implements Serializable {
     private String id;
     private String nama;
     private String flag;

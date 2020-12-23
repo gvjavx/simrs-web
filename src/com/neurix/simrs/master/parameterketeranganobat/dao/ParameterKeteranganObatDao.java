@@ -4,9 +4,13 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity;
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +28,9 @@ public class ParameterKeteranganObatDao extends GenericDao<ImSimrsParameterKeter
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("nama") != null)
             criteria.add(Restrictions.ilike("nama", "%" + mapCriteria.get("nama").toString() + "%"));
+        if (mapCriteria.get("flag") != null)
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+
         return criteria.list();
     }
 
@@ -48,5 +55,22 @@ public class ParameterKeteranganObatDao extends GenericDao<ImSimrsParameterKeter
             }
         }
         return keteranganObatList;
+    }
+
+    public List<ImSimrsParameterKeteranganObatEntity> getParameterKeteranganObat(String nama ) throws HibernateException {
+        List<ImSimrsParameterKeteranganObatEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsParameterKeteranganObatEntity.class)
+                .add(Restrictions.ilike("nama", nama))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+//        ne (not equal / tidak samadengan)
+        return results;
+    }
+
+    public String getNextId() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_parameter_keterangan_obat')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+
+        return "PMO"+sId;
     }
 }
