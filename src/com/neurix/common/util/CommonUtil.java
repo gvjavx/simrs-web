@@ -658,6 +658,16 @@ public class  CommonUtil {
         return tanggal;
     }
 
+    public static String convertTimestampToString2(Timestamp date){
+        String tanggal = "";
+        String DATE_FORMAT = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        java.util.Date tanggalApp = date;
+        tanggal = sdf.format(tanggalApp);
+
+        return tanggal;
+    }
+
     public static String convertTimestampToStringLengkap(Timestamp date){
         String tanggal = "";
         String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
@@ -1460,7 +1470,7 @@ public class  CommonUtil {
             ImageWriteParam param = writer.getDefaultWriteParam();
             if(imageType.equalsIgnoreCase("jpg") || imageType.equalsIgnoreCase("jpeg")){
                 param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                param.setCompressionQuality(0.5f);
+                param.setCompressionQuality(0.25f);
                 writer.setOutput(out);
                 writer.write(null, new IIOImage(image, null, null), param);
                 File f = new File(url);

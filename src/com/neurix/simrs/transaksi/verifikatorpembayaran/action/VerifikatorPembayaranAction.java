@@ -297,6 +297,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             }
         }
 
+        // jika pencarian hari ini true, START
+        String stCurDate = "";
+        if ("true".equals(antrianTelemedic.getFlagDateNow())){
+            stCurDate = getStCurrentDate();
+        }
+        searchAntrian.setFlagDateNow(stCurDate);
+        // END
+
         List<AntrianTelemedic> listResults = new ArrayList<>();
         try {
             listResults = telemedicBoProxy.getSearchByCriteria(searchAntrian);
@@ -311,6 +319,11 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         logger.info("[VerifikatorPembayaranAction.search] END <<<");
         return "search";
+    }
+
+    private String getStCurrentDate(){
+        Date date = new Date(System.currentTimeMillis());
+        return CommonUtil.convertDateToString2(date);
     }
 
     public List<PembayaranOnline> listDetailPembayaran(String idAntrianTelemedic){
@@ -3343,9 +3356,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             transId = "93";
         }
 
-
-
-
         String catatan = "Closing Jurnal Refund Dana Telemedic " + jenisItem + " " + jenisPasien +" No Transaksi " + pembayaranOnlineEntity.getId() + keterangan;
 
         try {
@@ -3429,6 +3439,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
             pembayaranOnlineEntity.setUrlFotoBukti("");
             pembayaranOnlineEntity.setWaktuBayar(null);
+            pembayaranOnlineEntity.setFlagUploadUlang("Y");
 
             try {
                 verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
