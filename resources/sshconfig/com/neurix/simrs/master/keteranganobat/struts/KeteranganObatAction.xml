@@ -74,19 +74,6 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/master/keteranganobat/searchKeteranganObat.jsp</result>
-
-            <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="failure">/pages/com/neurix/hris/master/keluarga/editKeluarga.jsp</result>-->
-
-
-
-
-
-            <!--<result name="error" type="httpheader">-->
-            <!--<param name="status">504</param>-->
-            <!--<param name="headers.message">${actionErrors}</param>-->
-            <!--</result>-->
         </action>
 
 
