@@ -49,12 +49,106 @@
     ALTER TABLE im_hris_payroll_skala_gaji_pensiun_history
                 ADD masa_kerja_gol int NOT NULL;
 
--- 2020-12-19 ===> NEW SkalaGajiIuranDplk & SkalaGajiPensiun
--- Menambahkan Sequence [seq_payroll_skala_gaji_iuran_dplk] & [seq_payroll_skala_gaji_iuran_dplk_history]
+-- 2020-12-21 ===> MANY QUERY
+--------------------------------------------------
+--      [Payroll Skala Gaji DPLK Pegawai]       --
+--------------------------------------------------
 
-    CREATE SEQUENCE public.seq_payroll_skala_gaji_iuran_dplk;
-    CREATE SEQUENCE public.seq_payroll_skala_gaji_iuran_dplk_history;
+    -- CREATE TABLE
 
+    CREATE TABLE im_hris_payroll_skala_gaji_dplk_pegawai
+    (
+      skala_gaji_pensiun_dplk_pegawai_id varchar(20) not null
+        constraint im_hris_payroll_skala_gaji_dplk_pegawai_pkey
+        primary key,
+      golongan_id                varchar(20),
+      nilai                      numeric(15, 2),
+      action                     varchar(1),
+      flag                       varchar(1),
+      created_date               timestamp,
+      created_who                varchar(100),
+      last_update                timestamp,
+      last_update_who            varchar(100)
+    );
+
+    CREATE TABLE im_hris_payroll_skala_gaji_dplk_pegawai_history
+    (
+      skala_gaji_pensiun_dplk_pegawai_history_id varchar(20) not null
+        constraint im_hris_payroll_skala_gaji_dplk_pegawai_history_pkey
+        primary key,
+      skala_gaji_pensiun_dplk_pegawai_id varchar(20) not null
+      golongan_id                varchar(20),
+      nilai                      numeric(15, 2),
+      action                     varchar(1),
+      flag                       varchar(1),
+      created_date               timestamp,
+      created_who                varchar(100),
+      last_update                timestamp,
+      last_update_who            varchar(100)
+    );
+
+    -- CREATE SEQUENCE
+
+    CREATE SEQUENCE seq_payroll_skala_gaji_dplk_pegawai START 17;
+    CREATE SEQUENCE seq_payroll_skala_gaji_dplk_pegawai_history;
+
+    -- INSERT DATA
+
+    INSERT INTO im_hris_payroll_skala_gaji_dplk_pegawai(
+    	skala_gaji_pensiun_dplk_pegawai_id, golongan_id, nilai, action, flag, created_date, created_who, last_update, last_update_who)
+    VALUES
+    ('SGID0001', 'G01', 375000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0002', 'G02', 350000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0003', 'G03', 325000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0004', 'G04', 300000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0005', 'G05', 275000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0006', 'G06', 250000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0007', 'G07', 225000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0008', 'G08', 200000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0009', 'G09', 175000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0010', 'G10', 150000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0011', 'G11', 125000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0012', 'G12', 100000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0013', 'G13',  75000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0014', 'G14',  50000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0015', 'G15', 300000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0016', 'G16', 425000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin');
+
+--------------------------------------------------
+--       [PERUBAHAN FIELD TABEL BIODATA]        --
+--------------------------------------------------
+
+TRUNCATE im_hris_payroll_skala_gaji_pensiun;
+
+INSERT INTO im_hris_payroll_skala_gaji_pensiun(skala_gaji_pensiun_id, golongan_id, masa_kerja_gol, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id)
+SELECT skala_gaji_pensiun_rni_id, golongan_id, masa_kerja_gol, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id FROM im_hris_payroll_skala_gaji_dapenbun;
+
+UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(skala_gaji_pensiun_id,'DRNI', 'SGP0');
+
+--------------------------------------------------
+--        [Payroll Skala Gaji Pensiun]          --
+--------------------------------------------------
+
+-- 2020-12-22 ===> Sequence Jenis Pegawai
+-- Menambahkan Sequence [seq_jenis_pegawai] & [seq_jenis_pegawai_history]
+-- Menambahkan Functions Jenis Pegawai
+
+    CREATE SEQUENCE seq_jenis_pegawai;
+    CREATE SEQUENCE seq_jenis_pegawai_history;
+
+    INSERT INTO im_functions
+    VALUES
+    	(6600, 'Jenis Pegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6000, 2, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', 6600),
+    	(6601, 'initForm jenisPegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6602, 'Search jenisPegawai', '/jenisPegawai/search_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6603, 'Add jenisPegawai', '/jenisPegawai/add_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6604, 'SaveAdd jenisPegawai', '/jenisPegawai/saveAdd_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6605, 'Edit jenisPegawai', '/jenisPegawai/edit_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6606, 'SaveEdit jenisPegawai', '/jenisPegawai/saveEdit_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6607, 'Delete jenisPegawai', '/jenisPegawai/delete_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6608, 'SaveDelete jenisPegawai', '/jenisPegawai/saveDelete_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6609, 'Paging Display jenisPegawai', '/jenisPegawai/paging_displaytag_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
+    	(6610, 'View jenisPegawai', '/jenisPegawai/view_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', );
 
 
     ------------------------------------

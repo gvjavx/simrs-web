@@ -345,7 +345,7 @@ public class PayrollSkalaGajiDplkPegawaiAction extends BaseMasterAction{
 
         payrollSkalaGajiDplkPegawai searchPayrollSkalaGajiDplkPegawai = getPayrollSkalaGajiDplkPegawai();
 
-        searchPayrollSkalaGajiDplkPegawai.setFlag("Y");
+//        searchPayrollSkalaGajiDplkPegawai.setFlag("Y");
         List<payrollSkalaGajiDplkPegawai> listOfsearchPayrollSkalaGajiDplkPegawai = new ArrayList();
 
         try {

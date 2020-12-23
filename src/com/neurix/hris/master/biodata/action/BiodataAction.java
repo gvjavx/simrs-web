@@ -265,8 +265,7 @@ public class BiodataAction extends BaseMasterAction{
         return historyJabatan;
     }
 
-    public List<Payroll>
-    searchPayroll(String nip){
+    public List<Payroll> searchPayroll(String nip){
         List <Payroll> imPayroll = null;
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

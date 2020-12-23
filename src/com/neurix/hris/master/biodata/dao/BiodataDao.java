@@ -693,32 +693,63 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setFlagMess((String) row[67]);
 //            result.setFlagPlt((String) row[79]);
 //            result.setFlagPjs((String) row[80]);
-            result.setFlagFingerMobile((String) row[81]);
-            result.setFlagTunjRumah((String) row[82]);
-            result.setFlagTunjAir((String) row[83]);
-            result.setFlagTunjListrik((String) row[84]);
-            result.setFlagTunjBbm((String) row[85]);
-            result.setFlagBpjsKs((String) row[86]);
-            result.setFlagBpjsTk((String) row[87]);
-            result.setFlagPercobaan((String) row[88]);
-            result.setPositionPltId((String) row[89]);
-            result.setNipLama((String) row[90]);
-            result.setFlagDokterKso((String) row[91]);
+
+//            === DISESUAIKAN ===
+//            result.setFlagFingerMobile((String) row[81]);
+//            result.setFlagTunjRumah((String) row[82]);
+//            result.setFlagTunjAir((String) row[83]);
+//            result.setFlagTunjListrik((String) row[84]);
+//            result.setFlagTunjBbm((String) row[85]);
+//            result.setFlagBpjsKs((String) row[86]);
+//            result.setFlagBpjsTk((String) row[87]);
+//            result.setFlagPercobaan((String) row[88]);
+//            result.setPositionPltId((String) row[89]);
+//            result.setNipLama((String) row[90]);
+//            result.setFlagDokterKso((String) row[91]);
 //            result.setJenisPegawai((String) row[92]);
 
-            if(row[93] != null){
-                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+//            === MENYESUAIKAN ===
+            result.setFlagFingerMobile((String) row[79]);
+            result.setFlagTunjRumah((String) row[80]);
+            result.setFlagTunjAir((String) row[81]);
+            result.setFlagTunjListrik((String) row[82]);
+            result.setFlagTunjBbm((String) row[83]);
+            result.setFlagBpjsKs((String) row[84]);
+            result.setFlagBpjsTk((String) row[85]);
+            result.setFlagPercobaan((String) row[86]);
+            result.setPositionPltId((String) row[87]);
+            result.setNipLama((String) row[88]);
+            result.setFlagDokterKso((String) row[89]);
+
+            if(row[90] != null){
+                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[90].toString())));
             }
-            if(row[94] != null){
-                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+            if(row[91] != null){
+                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[91].toString())));
             }
-            if(row[95] != null){
-                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+            if(row[92] != null){
+                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[92].toString())));
             }
 
-            result.setBagianId((String) row[96]);
-            result.setBagianName((String) row[97]);
-            result.setProfesiId((String)row[98]);
+            result.setBagianId((String) row[93]);
+            result.setBagianName((String) row[94]);
+            result.setProfesiId((String)row[95]);
+
+//            === DISESUAIKAN ===
+//            if(row[93] != null){
+//                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+//            }
+//            if(row[94] != null){
+//                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+//            }
+//            if(row[95] != null){
+//                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+//            }
+//
+//            result.setBagianId((String) row[96]);
+//            result.setBagianName((String) row[97]);
+//            result.setProfesiId((String)row[98]);
+//            ======
 
             result.setDivisiName((String)row[9]);
             listOfResult.add(result);

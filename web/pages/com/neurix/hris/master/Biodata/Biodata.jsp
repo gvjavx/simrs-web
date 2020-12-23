@@ -979,7 +979,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Status Pegawai * :</small></label>
+                                        <label class="control-label"><small>Tipe Pegawai * :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1004,7 +1004,7 @@
 
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Tipe Pegawai * :</small></label>
+                                        <label class="control-label"><small>Status Pegawai * :</small></label>
                                     </td>
                                     <td>
                                         <table>
@@ -1319,20 +1319,20 @@
                                 </tr>
                                 <tr>
                                     <td>
-                                        <label class="control-label"><small>Kelompok Pegawai :</small></label>
+                                        <label class="control-label"><small>Jenis Pegawai :</small></label>
                                     </td>
                                     <td>
                                         <table>
-                                            <s:if test="isDelete()">
+                                            <%--<s:if test="isDelete()">--%>
                                                 <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
                                                 <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" disabled="true"
                                                           listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
-                                                <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai"
-                                                          listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
-                                            </s:else>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
+                                                <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" --%>
+                                                          <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                            <%--</s:else>--%>
                                         </table>
                                     </td>
                                 </tr>
@@ -1342,16 +1342,16 @@
                                     </td>
                                     <td>
                                         <table>
-                                            <s:if test="isDelete()">
+                                            <%--<s:if test="isDelete()">--%>
                                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                                                 <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId" disabled="true"
                                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"
-                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
-                                            </s:else>
+                                            <%--</s:if>--%>
+                                            <%--<s:else>--%>
+                                                <%--<s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>--%>
+                                                <%--<s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"--%>
+                                                          <%--listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                            <%--</s:else>--%>
                                         </table>
                                     </td>
                                 </tr>
