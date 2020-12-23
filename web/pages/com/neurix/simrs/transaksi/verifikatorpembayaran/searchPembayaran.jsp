@@ -93,6 +93,12 @@
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Hari Ini</label>
+                                    <div class="col-sm-4">
+                                        <s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;"/>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
