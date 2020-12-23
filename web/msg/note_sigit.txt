@@ -1336,3 +1336,163 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     WHERE role_id = '37';
 
 --
+
+-- 2020-12-07
+
+    -- Table: public.mt_simrs_harga_terakhir
+
+    -- DROP TABLE public.mt_simrs_harga_terakhir;
+
+    CREATE TABLE public.mt_simrs_harga_terakhir
+    (
+        id character varying(100) COLLATE pg_catalog."default" NOT NULL,
+        id_obat character varying(100) COLLATE pg_catalog."default",
+        id_barang character varying(100) COLLATE pg_catalog."default",
+        branch_id character varying(5) COLLATE pg_catalog."default",
+        harga_terakhir numeric,
+        flag character varying(1) COLLATE pg_catalog."default",
+        action character varying(1) COLLATE pg_catalog."default",
+        created_date timestamp without time zone,
+        created_who character varying(100) COLLATE pg_catalog."default",
+        last_update timestamp without time zone,
+        last_update_who character varying(100) COLLATE pg_catalog."default",
+        CONSTRAINT mt_simrs_harga_terakhir_pkey PRIMARY KEY (id)
+    )
+    WITH (
+        OIDS = FALSE
+    )
+    TABLESPACE pg_default;
+
+    ALTER TABLE public.mt_simrs_harga_terakhir
+        OWNER to postgres;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN diskon_umum numeric,
+    ADD COLUMN harga_jual_umum numeric;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN margin_umum integer;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN harga_net_umum numeric;
+
+--
+
+2020-12-10 --
+    CREATE SEQUENCE seq_harga_terakhir;
+--
+
+2020-12-11 --
+
+  ALTER TABLE im_simrs_header_obat
+  ADD COLUMN id_bentuk VARCHAR(30);
+
+--
+
+2020-12-14 --
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN flag_parenteral VARCHAR(1),
+    ADD COLUMN id_jenis_obat VARCHAR(30);
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN id_sub_jenis VARCHAR(30);
+
+    ALTER TABLE im_simrs_header_obat
+    ADD COLUMN flag_is_formularium VARCHAR(1);
+
+    CREATE TABLE im_simrs_jenis_persediaan_obat(
+    	id varchar(30) NOT NULL primary key,
+    	nama varchar(100),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+    CREATE TABLE im_simrs_jenis_persediaan_obat_sub(
+    	id varchar(30) NOT NULL primary key,
+    	nama varchar(100),
+    	id_jenis_obat varchar(30),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+    CREATE TABLE im_simrs_paremeter_keterangan_obat(
+    	id varchar(30) NOT NULL primary key,
+    	nama varchar(100),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+    CREATE TABLE im_simrs_keterangan_obat(
+    	id varchar(30) NOT NULL primary key,
+    	id_sub_jenis varchar(30),
+    	id_parameter_keterangan varchar(30),
+    	keterangan varchar(100),
+    	flag varchar(1),
+    	action varchar(1),
+    	created_date timestamp without time zone,
+    	created_who varchar(100),
+    	last_update timestamp without time zone,
+    	last_update_who varchar(100)
+    )
+
+--
+
+2020-12-17 --
+
+    CREATE SEQUENCE seq_parameter_budgeting;
+
+--
+
+2020-12-19 --
+
+    ALTER TABLE im_simrs_keterangan_obat
+    ADD COLUMN warna_label VARCHAR(100),
+    ADD COLUMN warna_background VARCHAR(100);
+
+    CREATE SEQUENCE seq_keterangan_obat;
+
+    -- add function :
+        Keterangan Obat             ; keterangan obat           ; /keteranganobat/initForm_keteranganobat.action; is menu   ; parent : Master (6000);
+        Init Form Keterangan obat   ; init form keterangan obat ; /keteranganobat/initForm_keteranganobat.action;           ; parent : Keterangan Obat;
+
+    -- role : Admin Gudang
+--
+
+2020-12-21 --
+
+    CREATE table it_simrs_keterangan_resep (
+    	id varchar(30) NOT NULL PRIMARY KEY,
+    	id_jenis_obat VARCHAR(30),
+    	id_keterangan_obat VARCHAR(30),
+    	keterangan_lain TEXT,
+    	flag VARCHAR(1),
+    	action VARCHAR(1),
+    	created_date TIMESTAMP WITHOUT TIME ZONE,
+    	created_who VARCHAR(100),
+    	last_update TIMESTAMP WITHOUT TIME ZONE,
+    	last_update_who VARCHAR(100)
+    )
+
+    CREATE SEQUENCE seq_trans_keterangan_obat;
+
+    ALTER TABLE it_simrs_keterangan_resep
+    ADD COLUMN id_obat VARCHAR(50),
+    ADD COLUMN id_permintaan_resep VARCHAR(50);
+
+    ALTER TABLE im_simrs_paremeter_keterangan_obat
+    ADD COLUMN flag_label_waktu VARCHAR(1);
+
+--

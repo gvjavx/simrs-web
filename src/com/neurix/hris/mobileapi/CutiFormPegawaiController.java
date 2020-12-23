@@ -264,7 +264,8 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                 }
 
             } catch (GeneralBOException e){
-                model.setActionError(e.getMessage());
+                String msg = e.getLocalizedMessage();
+                model.setActionError(msg);
                 logger.error("[DispensasiController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
                 throw new GeneralBOException(e);
             }

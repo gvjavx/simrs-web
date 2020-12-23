@@ -64,6 +64,23 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         List<Tindakan> tindakanList = new ArrayList<>();
         if(bean != null){
             if(bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())){
+                String union = "";
+                if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdKelasRuangan())){
+                    union = "UNION ALL\n" +
+                            "SELECT\n" +
+                            "a.id_tindakan,\n" +
+                            "b.nama_tindakan,\n" +
+                            "a.tarif,\n" +
+                            "a.tarif_bpjs,\n" +
+                            "a.diskon,\n" +
+                            "a.is_elektif\n" +
+                            "FROM im_simrs_tindakan a\n" +
+                            "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                            "WHERE a.id_kategori_tindakan = :idKat\n" +
+                            "AND a.flag_kelas_ruangan = 'Y' \n" +
+                            "AND a.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"'\n" +
+                            "AND a.flag = 'Y'";
+                }
                 String SQL = "SELECT\n" +
                         "a.id_tindakan,\n" +
                         "b.nama_tindakan,\n" +
@@ -73,8 +90,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                         "a.is_elektif\n" +
                         "FROM im_simrs_tindakan a\n" +
                         "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
-                        "WHERE a.id_kategori_tindakan = :idKat \n" +
-                        "AND a.flag = 'Y'\n";
+                        "WHERE a.id_kategori_tindakan = :idKat\n" +
+                        "AND a.flag_kelas_ruangan = 'N'\n" +
+                        "AND a.flag = 'Y'" +union;
 
                 List<Object[]> results =  new ArrayList<>();
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -219,13 +237,24 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         return tindakanList;
     }
 
-    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan) throws HibernateException {
-        List<ImSimrsTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
-                .add(Restrictions.eq("idHeaderTindakan", idHeader))
-                .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
-                .add(Restrictions.eq("idPelayanan", idPelayanan))
-                .add(Restrictions.eq("flag", "Y"))
-                .list();
+    public List<ImSimrsTindakanEntity> cekDataTindakan(String idHeader, String idPelayanan, String idKelas) throws HibernateException {
+        List<ImSimrsTindakanEntity> results = new ArrayList<>();
+        if("empty".equalsIgnoreCase(idKelas)){
+            results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                    .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                    .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                    .add(Restrictions.eq("idPelayanan", idPelayanan))
+                    .add(Restrictions.eq("flag", "Y"))
+                    .list();
+        }else{
+            results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsTindakanEntity.class)
+                    .add(Restrictions.eq("idHeaderTindakan", idHeader))
+                    .add(Restrictions.eq("branchId", CommonUtil.userBranchLogin()))
+                    .add(Restrictions.eq("idPelayanan", idPelayanan))
+                    .add(Restrictions.eq("idKelasRuangan", idKelas))
+                    .add(Restrictions.eq("flag", "Y"))
+                    .list();
+        }
         return results;
     }
 

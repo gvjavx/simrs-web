@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.reportDetail.model.ReportDetail;
 import com.neurix.akuntansi.transaksi.laporanAkuntansi.model.Aging;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.bentukbarang.model.ImSimrsBentukBarangEntity;
 import com.neurix.simrs.master.kategoripersediaan.model.ImSimrsKategoriPersediaanEntity;
 import com.neurix.simrs.master.obat.model.*;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
@@ -17,7 +18,7 @@ public interface ObatBo{
     public List<Obat> getByCriteria(Obat searchBean) throws GeneralBOException;
     public List<Obat> getListObatByJenisObat(String idObat, String branchId) throws GeneralBOException;
     public List<Obat> getJenisObat(Obat bean) throws GeneralBOException;
-    public void saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
+    public CheckObatResponse saveAdd(Obat bean, List<String> idJenisObats) throws GeneralBOException;
     public CheckObatResponse saveEdit(Obat bean, List<String> idJenisObats) throws GeneralBOException;
 
     public List<Obat> getListNamaObat(Obat bean) throws GeneralBOException;
@@ -25,6 +26,7 @@ public interface ObatBo{
     public CheckObatResponse checkObatStockLama(String idObat, String branchId) throws GeneralBOException;
     public CheckObatResponse checkFisikObat(Obat bean) throws GeneralBOException;
     public CheckObatResponse checkFisikObatByIdPabrik(Obat bean) throws GeneralBOException;
+    public CheckObatResponse checkFisikIdObatByIdPabrik(Obat bean) throws GeneralBOException;
     public List<Obat> sortedListObat(List<Obat> obatList) throws GeneralBOException;
 
     public List<Obat> getEntityObatByCriteria(Obat bean) throws GeneralBOException;
@@ -56,4 +58,6 @@ public interface ObatBo{
     public ImSimrsBentukBarangEntity getBentukBarangById(String idBentuk) throws GeneralBOException;
     public List<Aging> getListAging(String branchId, String idPelayanan, String periode) throws GeneralBOException;
     public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException;
+    public List<ImSimrsBentukBarangEntity> getAllBentukBarang() throws  GeneralBOException;
+    public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException;
 }

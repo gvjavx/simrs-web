@@ -8,32 +8,6 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-
-    <style>
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-        #reset{
-            -webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
-            box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
-        }
-        #addd{
-            -webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
-            box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
-        }
-        #search{
-            -webkit-box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
-            box-shadow: 10px 10px 19px 2px rgba(0,0,0,0.67);
-        }
-    </style>
     <script type='text/javascript'>
 
         function link(){
@@ -205,7 +179,7 @@
                                                             </display:column>
                                                             <%--<display:column property="idJenisObat" sortable="true" title="ID JenisObat" />--%>
                                                             <display:column property="namaJenisObat" sortable="true" title="Nama Jenis Obat" />
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />

@@ -52,66 +52,55 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
         return sId;
     }
 
-    public List<Obat> getListObatNonParenteral(String id, String kategori){
-
-        String SQL = "SELECT \n" +
-                "ob.id_obat,\n" +
-                "ob.nama_obat,\n" +
-                "res.id_detail_checkup\n" +
-                "FROM\n" +
-                "mt_simrs_permintaan_resep res\n" +
-                "INNER JOIN mt_simrs_transaksi_obat_detail det ON det.id_approval_obat = res.id_approval_obat\n" +
-                "INNER JOIN im_simrs_obat ob ON ob.id_obat = det.id_obat\n" +
-                "INNER JOIN mt_simrs_transaksi_obat_detail_batch batch ON batch.id_transaksi_obat_detail = det.id_transaksi_obat_detail\n" +
-                "INNER JOIN im_simrs_obat_gejala gj ON gj.id_obat = ob.id_obat\n" +
-                "INNER JOIN im_simrs_jenis_obat jno ON jno.id_jenis_obat = gj.id_jenis_obat\n" +
-                "WHERE res.id_detail_checkup LIKE :id\n" +
-                "AND res.is_umum = 'N'\n" +
-                "AND batch.approve_flag = 'Y'\n" +
-                "AND jno.nama_jenis_obat ILIKE :kategori\n" +
-                "GROUP BY \n" +
-                "ob.id_obat,\n" +
-                "ob.nama_obat,\n" +
-                "res.id_detail_checkup\n";
+    public List<Obat> getListObatNonParenteral(String idDetailCheckup){
+        String SQL = "SELECT\n" +
+                "b.id_obat,\n" +
+                "c.nama_obat,\n" +
+                "d.bentuk\n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                "INNER JOIN im_simrs_header_obat c ON b.id_obat = c.id_obat\n" +
+                "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
+                "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
+                "AND a.status = '3'\n" +
+                "AND c.flag_parenteral IS NULL OR c.flag_parenteral = 'N'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", id)
-                .setParameter("kategori", kategori)
                 .list();
 
         List<Obat> obats = new ArrayList<>();
-        Obat obat;
         for (Object[] obj : results){
-            obat = new Obat();
+            Obat obat = new Obat();
             obat.setIdObat(obj[0].toString());
             obat.setNamaObat(obj[1].toString());
+            obat.setBentuk(obj[2].toString());
             obats.add(obat);
         }
         return obats;
     }
 
-    public List<Obat> getListObatParenteral(String idPelayanan){
-
-        String SQL = "SELECT \n" +
-                "ob.id_obat,\n" +
-                "ob.nama_obat\n" +
-                "FROM mt_simrs_obat_poli op\n" +
-                "INNER JOIN im_simrs_obat ob ON ob.id_obat = op.id_obat\n" +
-                "WHERE op.id_pelayanan = :id \n" +
-                "GROUP BY\n" +
-                "ob.id_obat,\n" +
-                "ob.nama_obat";
+    public List<Obat> getListObatParenteral(String idDetailCheckup){
+        String SQL = "SELECT\n" +
+                "b.id_obat,\n" +
+                "c.nama_obat,\n" +
+                "d.bentuk\n" +
+                "FROM mt_simrs_permintaan_resep a\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
+                "INNER JOIN im_simrs_header_obat c ON b.id_obat = c.id_obat\n" +
+                "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
+                "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
+                "AND a.status = '3'\n" +
+                "AND c.flag_parenteral = 'Y'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("id", idPelayanan)
                 .list();
 
         List<Obat> obats = new ArrayList<>();
-        Obat obat;
         for (Object[] obj : results){
-            obat = new Obat();
+            Obat obat = new Obat();
             obat.setIdObat(obj[0].toString());
             obat.setNamaObat(obj[1].toString());
+            obat.setBentuk(obj[2].toString());
             obats.add(obat);
         }
         return obats;

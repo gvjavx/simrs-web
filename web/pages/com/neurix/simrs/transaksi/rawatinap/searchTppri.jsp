@@ -87,39 +87,6 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="control-label col-sm-4">Status</label>--%>
-                                <%--<div class="col-sm-4">--%>
-                                <%--<s:select list="#{'0':'Antrian','1':'Periksa','2':'Rujuk','3':'Selesai'}" cssStyle="margin-top: 7px"--%>
-                                <%--id="status" name="rawatInap.statusPeriksa"--%>
-                                <%--headerKey="" headerValue="[Select one]"--%>
-                                <%--cssClass="form-control select2"/>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="control-label col-sm-4">Kelas Ruangan</label>--%>
-                                <%--<div class="col-sm-4">--%>
-                                <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
-                                <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
-                                <%--<s:select cssStyle="margin-top: 7px" onchange="$(this).css('border',''); listSelectRuangan(this)"--%>
-                                <%--list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"--%>
-                                <%--name="rawatInap.idKelas"--%>
-                                <%--listKey="idKelasRuangan"--%>
-                                <%--listValue="namaKelasRuangan"--%>
-                                <%--headerKey="" headerValue="[Select one]"--%>
-                                <%--cssClass="form-control select2"/>--%>
-                                <%--</div>--%>
-                                <%--<div class="col-sm-3" style="display: none;" id="load_ruang">--%>
-                                <%--<img border="0" src="<s:url value="/pages/images/spinner.gif"/>" style="cursor: pointer; width: 45px; height: 45px"><b style="color: #00a157;">Sedang diproses...</b></div>--%>
-                                <%--</div>--%>
-                                <%--<div class="form-group">--%>
-                                <%--<label class="control-label col-sm-4">Ruangan</label>--%>
-                                <%--<div class="col-sm-4">--%>
-                                <%--<select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">--%>
-                                <%--<option value=''>[Select One]</option>--%>
-                                <%--</select>--%>
-                                <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Tanggal Masuk</label>
                                     <div class="col-sm-2">
@@ -977,14 +944,16 @@
                             $('#form-kelas_kamar').show();
                             $('#h_kategori').val('rawat_isolasi');
                         } else if (tindakLanjut == "kamar_operasi") {
-                            getKamar(null, 'kamar_operasi');
+                            // getKamar(null, 'kamar_operasi');
+                            $('#kelas_kamar').attr('onchange', 'getKamar(this.value, \'kamar_operasi\')');
                             getKelasKamar('kamar_operasi');
                             $('#label_kamar').text('Kamar Operasi');
                             $('#form-kamar').show();
                             $('#form-kelas_kamar').show();
                             $('#h_kategori').val('kamar_operasi');
                         } else if (tindakLanjut == "ruang_bersalin") {
-                            getKamar(null, 'ruang_bersalin');
+                            // getKamar(null, 'ruang_bersalin');
+                            $('#kelas_kamar').attr('onchange', 'getKamar(this.value, \'ruang_bersalin\')');
                             getKelasKamar('ruang_bersalin');
                             $('#label_kamar').text('Kamar Bersalin');
                             $('#form-kamar').show();
@@ -1166,8 +1135,10 @@
 
     function getKelasKamar(kategori) {
         var option = '';
-        if (kategori == "rawat_inap") {
+        var cekDis = false;
+        if (kategori == "rawat_inap" || kategori == 'ruang_bersalin' || kategori == 'kamar_operasi') {
             option = '<option value="">[Select One]</option>';
+            cekDis = true;
         }
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar(kategori, function (res) {
@@ -1175,7 +1146,7 @@
                 $.each(res, function (i, item) {
                     option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
                 });
-                if (kategori == 'rawat_inap') {
+                if (cekDis) {
                     $('#kelas_kamar').html(option);
                     $('#add_kelas_kamar').html(option);
                 } else {

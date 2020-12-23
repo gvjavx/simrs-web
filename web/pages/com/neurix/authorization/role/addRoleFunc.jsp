@@ -404,8 +404,7 @@
                                                                    height="200" width="400" autoOpen="false" title="Infomation Dialog"
                                                                    buttons="{
                                                                           'OK':function() {
-                                                                                  $('#info_dialog').dialog('close');
-                                                                                  resetField();
+                                                                                  $( '#rolefuncForm').submit();
                                                                                }
                                                                         }"
                                                         >

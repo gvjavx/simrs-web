@@ -218,84 +218,67 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
     }
 
     public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat){
-
         List<ObatPoli> obatPoliList = new ArrayList<>();
-
         String queryJenisObat = "";
 
         if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
+            queryJenisObat = "WHERE id_jenis_obat = '" + idJenisObat + "' \n";
         }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
-            String flag = "N";
-
+            String flag = "";
             if("bpjs".equalsIgnoreCase(flagBpjs)){
-                flag = "%";
+                flag = "WHERE flag_bpjs = 'Y'";
+            }else{
+                flag = "WHERE flag_bpjs IS NULL OR flag_bpjs = 'N'";
             }
 
-//            String SQL = "SELECT\n" +
-//                    "a.id_pelayanan,\n" +
-//                    "b.id_obat,\n" +
-//                    "b.nama_obat,\n" +
-//                    "SUM(a.qty_box) as box,\n" +
-//                    "SUM(a.qty_lembar) as lembar,\n" +
-//                    "SUM(a.qty_biji) as biji,\n" +
-//                    "b.lembar_per_box,\n" +
-//                    "b.biji_per_lembar,\n" +
-//                    "b.flag_kronis,\n" +
-//                    "c.harga_jual,\n" +
-//                    "a.id_jenis_obat\n"+
-//                    "FROM mt_simrs_obat_poli a\n" +
-//                    "INNER JOIN (\n" +
-//                    "SELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
-//                    "FROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
-//                    ") b ON a.id_obat = b.id_obat\n" +
-//                    "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
-//                    "WHERE a.id_pelayanan = :idPelayanan \n" +
-//                    "AND a.branch_id = :branchId \n" + queryJenisObat +
-//                    "GROUP BY a.id_pelayanan,\n" +
-//                    "b.id_obat,\n" +
-//                    "b.nama_obat,\n" +
-//                    "b.lembar_per_box,\n" +
-//                    "b.biji_per_lembar,\n" +
-//                    "b.flag_kronis,\n" +
-//                    "c.harga_jual,\n" +
-//                    "a.id_jenis_obat";
-
-            String SQL = "SELECT\n" +
-                    "a.id_pelayanan,\n" +
-                    "b.id_obat,\n" +
-                    "b.nama_obat,\n" +
-                    "SUM(a.qty_box) as box,\n" +
-                    "SUM(a.qty_lembar) as lembar,\n" +
-                    "SUM(a.qty_biji) as biji,\n" +
-                    "b.lembar_per_box,\n" +
-                    "b.biji_per_lembar,\n" +
-                    "b.flag_kronis,\n" +
+            String SQL = "SELECT \n" +
+                    "b.id_pelayanan,\n" +
+                    "a.id_obat,\n" +
+                    "a.nama_obat,\n" +
+                    "b.box,\n" +
+                    "b.lembar,\n" +
+                    "b.biji,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar,\n" +
+                    "a.flag_kronis,\n" +
                     "c.harga_jual\n" +
-                    "FROM mt_simrs_obat_poli a\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\tid_obat,\n" +
+                    "\tnama_obat,\n" +
+                    "\tflag_kronis,\n" +
+                    "\tlembar_per_box,\n" +
+                    "\tbiji_per_lembar,\n" +
+                    "\tflag_bpjs\n" +
+                    "\tFROM im_simrs_header_obat\n" + flag +
+                    ") a\n" +
                     "INNER JOIN (\n" +
-                    "\tSELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
-                    "\tFROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "\tSELECT\n" +
+                    "\tid_obat,\n" +
+                    "\tid_pelayanan,\n" +
+                    "\tbranch_id,\n" +
+                    "\tSUM(qty_box) as box,\n" +
+                    "\tSUM(qty_lembar) as lembar,\n" +
+                    "\tSUM(qty_biji) as biji\n" +
+                    "\tFROM mt_simrs_obat_poli\n" +
+                    "\tWHERE id_pelayanan = :idPelayanan \n" +
+                    "\tAND branch_id = :branchId \n" +
+                    "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
                     ") b ON a.id_obat = b.id_obat\n" +
                     "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
-                    "LEFT JOIN im_simrs_obat_gejala d ON d.id_obat = b.id_obat\n" +
-                    "WHERE a.id_pelayanan LIKE :idPelayanan \n" +
-                    "AND a.branch_id LIKE :branchId \n" + queryJenisObat +
-                    "GROUP BY a.id_pelayanan,\n" +
-                    "b.id_obat,\n" +
-                    "b.nama_obat,\n" +
-                    "b.lembar_per_box,\n" +
-                    "b.biji_per_lembar,\n" +
-                    "b.flag_kronis,\n" +
-                    "c.harga_jual";
+                    "INNER JOIN (\n" +
+                    "\tSELECT\n" +
+                    "\tid_obat,\n" +
+                    "\tid_jenis_obat\n" +
+                    "\tFROM im_simrs_obat_gejala \n" + queryJenisObat +
+                    ")d ON d.id_obat = b.id_obat";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("branchId", branchId)
-                    .setParameter("flag", flag)
                     .list();
 
             if (results.size() > 0){
@@ -311,7 +294,6 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
                     obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
-//                    obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
                     obatPoliList.add(obatPoli);
                 }
             }

@@ -2,12 +2,17 @@ package com.neurix.simrs.master.kategoritindakan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.kategoritindakan.model.ImSimrsKategoriTindakanEntity;
 import com.neurix.simrs.master.kategoritindakan.model.KategoriTindakan;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -46,42 +51,36 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
 
         List<KategoriTindakan> tindakanList = new ArrayList<>();
         String pelayanan = "%";
-        String union = "";
+        String SQL = "";
 
         if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             pelayanan = idPelayanan;
         }
-
         if (kategori != null && !"".equalsIgnoreCase(kategori)) {
-            union = "UNION ALL\n" +
-                    "SELECT * FROM (SELECT \n" +
+            SQL = "SELECT \n" +
                     "a.id_kategori_tindakan,\n" +
                     "a.kategori_tindakan\n" +
                     "FROM im_simrs_kategori_tindakan a\n" +
                     "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
-                    "WHERE c.tipe_pelayanan = '" + kategori + "'\n" +
-                    "AND b.branch_id = '" + branchId + "'\n" +
+                    "WHERE c.tipe_pelayanan = '"+kategori+"'\n" +
+                    "AND b.branch_id = '"+branchId+"'\n" +
                     "GROUP BY a.id_kategori_tindakan,\n" +
+                    "a.kategori_tindakan";
+        }else{
+            SQL = "SELECT \n" +
+                    "a.id_kategori_tindakan,\n" +
                     "a.kategori_tindakan\n" +
-                    ")b";
+                    "FROM im_simrs_kategori_tindakan a\n" +
+                    "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
+                    "WHERE b.id_pelayanan = '"+pelayanan+"' \n" +
+                    "GROUP BY a.id_kategori_tindakan,\n" +
+                    "a.kategori_tindakan";
         }
-
-        String SQL = "SELECT * FROM (SELECT \n" +
-                "a.id_kategori_tindakan,\n" +
-                "a.kategori_tindakan\n" +
-                "FROM im_simrs_kategori_tindakan a\n" +
-                "INNER JOIN im_simrs_tindakan b ON a.id_kategori_tindakan = b.id_kategori_tindakan\n" +
-                "WHERE b.id_pelayanan = :idPel \n" +
-                "GROUP BY a.id_kategori_tindakan,\n" +
-                "a.kategori_tindakan\n" +
-                ") a \n" + union;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idPel", pelayanan)
                 .list();
-
         if (results.size() > 0) {
             for (Object[] obj : results) {
                 KategoriTindakan tindakan = new KategoriTindakan();
@@ -93,4 +92,22 @@ public class KategoriTindakanDao extends GenericDao<ImSimrsKategoriTindakanEntit
 
         return tindakanList;
     }
+
+    public List<ImSimrsKategoriTindakanEntity> getKategoriTindakan(String kategoriTindakan ) throws HibernateException {
+        List<ImSimrsKategoriTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKategoriTindakanEntity.class)
+                .add(Restrictions.ilike("kategoriTindakan", kategoriTindakan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+//        ne (not equal / tidak samadengan)
+        return results;
+    }
+
+    public String getNextId() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kategori_tindakan')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%05d", iter.next());
+
+        return "KT"+sId;
+    }
+
 }

@@ -1051,16 +1051,16 @@ public class RawatInapAction extends BaseMasterAction {
         return response;
     }
 
-    public List<Obat> getListObatParenteral(String id) {
+    public List<Obat> getListObatParenteral(String idDetailCheckup) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
-        return rawatInapBo.getListObatParenteral(id);
+        return rawatInapBo.getListObatParenteral(idDetailCheckup);
     }
 
-    public List<Obat> getListObatNonParenteral(String id, String kategori) {
+    public List<Obat> getListObatNonParenteral(String idDetailCheckup) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
-        return rawatInapBo.getListObatNonParenteral(id, kategori);
+        return rawatInapBo.getListObatNonParenteral(idDetailCheckup);
     }
 
     public List<MonVitalSign> getListGraf(String idDetail, String noCheckup) {

@@ -1,4 +1,4 @@
-Tind<div class="modal fade" id="modal-hd-monitoring_hd">
+<div class="modal fade" id="modal-hd-monitoring_hd">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a; color: white">
@@ -1281,7 +1281,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             <div class="col-md-1">
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="inter2" id="inter224">
-                                    <label for="inter223"></label>
+                                    <label for="inter224"></label>
                                 </div>
                             </div>
                             <div class="col-md-11">
@@ -1292,7 +1292,7 @@ Tind<div class="modal fade" id="modal-hd-monitoring_hd">
                             <div class="col-md-1">
                                 <div class="form-check" style="margin-top: 7px;">
                                     <input type="checkbox" name="inter2" id="inter225">
-                                    <label for="inter223"></label>
+                                    <label for="inter225"></label>
                                 </div>
                             </div>
                             <div class="col-md-11">

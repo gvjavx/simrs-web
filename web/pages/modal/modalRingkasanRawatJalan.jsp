@@ -131,3 +131,49 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-keterangan-obat">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Keterangan Obat
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-4" style="margin-top: 7px">Parameter Keterangan :</label>
+                            <div class="col-md-8">
+                                <select class="form-control">
+                                    <option value="JPO0000001">Waktu</option>
+                                    <option value="JPO0000002">Tetes</option>
+                                </select>
+                            </div>
+                            <label class="col-md-4" style="margin-top: 7px">Keterangan :</label>
+                            <div class="col-md-8">
+                                <select class="select2 form-control" multiple>
+                                    <option value="2,5 Ml">2,5 Ml</option>
+                                    <option value="3,5 Ml">3,5 Ml</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_keterangan_obat" class="btn btn-success pull-right">
+                    Save
+                </button>
+                <button id="load_keterangan_obat" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

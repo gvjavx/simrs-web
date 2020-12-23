@@ -24,6 +24,51 @@ public class ImSimrsHeaderObatEntity {
     private String idKategoriPersediaan;
     private BigInteger minStok;
     private String merk;
+    private String idBentuk;
+    private String flagParenteral;
+    private String idJenisObat;
+    private String idSubJenis;
+    private String flagIsFormularium;
+
+    public String getFlagParenteral() {
+        return flagParenteral;
+    }
+
+    public void setFlagParenteral(String flagParenteral) {
+        this.flagParenteral = flagParenteral;
+    }
+
+    public String getIdJenisObat() {
+        return idJenisObat;
+    }
+
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
+
+    public String getIdSubJenis() {
+        return idSubJenis;
+    }
+
+    public void setIdSubJenis(String idSubJenis) {
+        this.idSubJenis = idSubJenis;
+    }
+
+    public String getFlagIsFormularium() {
+        return flagIsFormularium;
+    }
+
+    public void setFlagIsFormularium(String flagIsFormularium) {
+        this.flagIsFormularium = flagIsFormularium;
+    }
+
+    public String getIdBentuk() {
+        return idBentuk;
+    }
+
+    public void setIdBentuk(String idBentuk) {
+        this.idBentuk = idBentuk;
+    }
 
     public String getMerk() {
         return merk;
