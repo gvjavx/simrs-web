@@ -44,17 +44,17 @@
     </bean>
 
 
-    <bean id="jenisBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.JenisBudgetingDao"
+    <bean id="jenisBudgetingDao" class="com.neurix.akuntansi.master.parameterbudgeting.dao.JenisBudgetingDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="parameterBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.ParameterBudgetingDao"
+    <bean id="parameterBudgetingDao" class="com.neurix.akuntansi.master.parameterbudgeting.dao.ParameterBudgetingDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="perhitunganBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.PerhitunganBudgetingDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="kategoriParameterBudgetingDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.KategoriParameterBudgetingDao"
+    <bean id="kategoriParameterBudgetingDao" class="com.neurix.akuntansi.master.parameterbudgeting.dao.KategoriParameterBudgetingDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="nilaiParameterDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.NilaiParameterDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="parameterBudgetingRekeningDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.ParameterBudgetingRekeningDao"
+    <bean id="parameterBudgetingRekeningDao" class="com.neurix.akuntansi.master.parameterbudgeting.dao.ParameterBudgetingRekeningDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="nilaiPengadaanDao" class="com.neurix.akuntansi.transaksi.budgetingperhitungan.dao.NilaiPengadaanDao"
           p:sessionFactory-ref="sessionFactory" />

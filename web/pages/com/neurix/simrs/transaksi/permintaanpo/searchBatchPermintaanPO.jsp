@@ -822,7 +822,7 @@
             callback: function (response) {
                 if (response != null) {
                     var dataDo = null;
-                    var ppn = 0.01;
+                    var ppn = 0.1;
                     var total = 0;
                     var subTotal = 0;
                     var totalPpn = 0;
@@ -970,7 +970,7 @@
                 if (response != null) {
                     $('#app_no_batch').val(noBatch);
                     var dataDo = null;
-                    var ppn = 0.01;
+                    var ppn = 0.1;
                     var total = 0;
                     var subTotal = 0;
                     var totalPpn = 0;

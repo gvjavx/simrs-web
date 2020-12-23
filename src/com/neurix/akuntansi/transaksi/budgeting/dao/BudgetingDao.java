@@ -2,9 +2,8 @@ package com.neurix.akuntansi.transaksi.budgeting.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
-import com.neurix.akuntansi.transaksi.budgeting.model.BudgetingDetail;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
+import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.akuntansi.transaksi.saldoakhir.model.SaldoAkhir;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;

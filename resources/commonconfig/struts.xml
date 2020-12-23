@@ -286,9 +286,13 @@
     <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/RekananOpsAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/rekananops/struts/DetailRekananOpsAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/kategoritindakan/struts/KategoriTindakanAction.xml"/>
-
-
-
     <include file="sshconfig/com/neurix/simrs/master/kandunganObat/struts/KandunganObatAction.xml"/>
+
+
+    <include file="sshconfig/com/neurix/simrs/master/bentukBarang/struts/BentukBarangAction.xml"/>
+
+    <include file="sshconfig/com/neurix/simrs/master/dietgizi/struts/JenisDietAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/dietgizi/struts/DietGiziAction.xml"/>
+    <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/ParameterBudgetingAction.xml"/>
 
 </struts>

@@ -1,9 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgeting.bo;
 
-import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
-import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.*;
-import com.neurix.akuntansi.transaksi.budgetingperhitungan.model.ParameterBudgeting;
+import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.common.exception.GeneralBOException;
 
 import java.util.List;

@@ -225,6 +225,7 @@
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/tutupperiod/spring/TutupPeriodBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/pembayaran/spring/PembayaranBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolBean.xml"/>
+    <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/ParameterBudgetingBean.xml"/>
 
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
@@ -303,4 +304,13 @@
     <import resource="sshconfig/com/neurix/hris/master/payrollParamBpjs/spring/PayrollParamBpjsBean.xml"/>
 
     <import resource="sshconfig/com/neurix/simrs/master/kandunganObat/spring/KandunganObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenispersediaanobat/spring/JenisPersediaanObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/jenispersediaanobatsub/spring/JenisPersediaanObatSubBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/parameterketeranganobat/spring/ParameterKeteranganObatBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/master/keteranganobat/spring/KeteranganObatBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/master/bentukBarang/spring/BentukBarangBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/master/dietgizi/spring/JenisDietBean.xml"/>
+
 </beans>

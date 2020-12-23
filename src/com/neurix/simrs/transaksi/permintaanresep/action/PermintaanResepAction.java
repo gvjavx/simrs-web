@@ -67,91 +67,91 @@ public class PermintaanResepAction extends BaseMasterAction{
         this.permintaanResepBoProxy = permintaanResepBoProxy;
     }
 
-    public String saveResepPasien(String idDetailCheckup, String idPelayanan, String idDokter, String idPasien, String resep, String tujuanApotek, String ttdDokter, String jenisResep) throws IOException {
+    public CrudResponse saveResepPasien(String data) {
+        CrudResponse response = new CrudResponse();
         logger.info("[PermintaanResepAction.saveResepPasien] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            PermintaanResep permintaanResep = new PermintaanResep();
-            permintaanResep.setIdDetailCheckup(idDetailCheckup);
-            permintaanResep.setIdDokter(idDokter);
-            permintaanResep.setIdPelayanan(idPelayanan);
-            permintaanResep.setIdPasien(idPasien);
-            permintaanResep.setCreatedWho(userLogin);
-            permintaanResep.setLastUpdate(updateTime);
-            permintaanResep.setCreatedDate(updateTime);
-            permintaanResep.setLastUpdateWho(userLogin);
-            permintaanResep.setAction("U");
-            permintaanResep.setFlag("Y");
-            permintaanResep.setBranchId(userArea);
-            permintaanResep.setTujuanPelayanan(tujuanApotek);
-            permintaanResep.setJenisResep(jenisResep);
-
-            if(ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)){
-                BASE64Decoder decoder = new BASE64Decoder();
-                byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
-                logger.info("Decoded upload data : " + decodedBytes.length);
-                String fileName = idDokter+"-"+idDetailCheckup+"-"+dateFormater("MM")+dateFormater("yy")+".png";
-                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+fileName;
-                logger.info("File save path : " + uploadFile);
-                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                if (image == null) {
-                    logger.error("Buffered Image is null");
-                }else{
-                    File f = new File(uploadFile);
-                    // write the image
-                    ImageIO.write(image, "png", f);
-                    permintaanResep.setTtdDokter(fileName);
-                }
-            }
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PermintaanResepBo permintaanResepBo = (PermintaanResepBo) ctx.getBean("permintaanResepBoProxy");
 
-            try {
-                List<TransaksiObatDetail> detailList = new ArrayList<>();
-
-                if(resep != null && !"".equalsIgnoreCase(resep)){
-                    TransaksiObatDetail detail;
-                    JSONArray json = new JSONArray(resep);
-                    for (int i=0; i < json.length(); i++){
-
-                        JSONObject obj = json.getJSONObject(i);
-                        detail = new TransaksiObatDetail();
-
-                        detail.setIdObat(obj.getString("ID"));
-                        detail.setQty(new BigInteger(obj.getString("Qty")));
-                        detail.setKeterangan(obj.getString("Keterangan"));
-                        detail.setJenisSatuan(obj.getString("Jenis Satuan"));
-                        if ("Y".equalsIgnoreCase(obj.getString("Racik"))){
-                            detail.setFlagRacik(obj.getString("Racik"));
-                        } else {
-                            detail.setFlagRacik("");
+            if(data != null && !"".equalsIgnoreCase(data)){
+                try {
+                    PermintaanResep permintaanResep = new PermintaanResep();
+                    JSONObject obj = new JSONObject(data);
+                    if(obj != null){
+                        permintaanResep.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        permintaanResep.setIdDokter(obj.getString("id_dokter"));
+                        permintaanResep.setIdPelayanan(obj.getString("id_pelayanan"));
+                        permintaanResep.setIdPasien(obj.getString("id_pasien"));
+                        permintaanResep.setCreatedWho(userLogin);
+                        permintaanResep.setLastUpdate(updateTime);
+                        permintaanResep.setCreatedDate(updateTime);
+                        permintaanResep.setLastUpdateWho(userLogin);
+                        permintaanResep.setAction("U");
+                        permintaanResep.setFlag("Y");
+                        permintaanResep.setBranchId(userArea);
+                        permintaanResep.setTujuanPelayanan(obj.getString("id_apotek"));
+                        if(obj.getString("ttd") != null && !"".equalsIgnoreCase(obj.getString("ttd"))){
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("ttd"));
+                            logger.info("Decoded upload data : " + decodedBytes.length);
+                            String fileName = obj.getString("id_dokter")+"-"+obj.getString("id_detail_checkup")+"-"+dateFormater("MM")+dateFormater("yy")+".png";
+                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_TTD_DOKTER+fileName;
+                            logger.info("File save path : " + uploadFile);
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                            }else{
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                permintaanResep.setTtdDokter(fileName);
+                            }
                         }
-                        if (!"".equalsIgnoreCase(obj.getString("Pengambilan Berikutnya"))){
-                            detail.setHariKronis(new Integer(obj.getString("Pengambilan Berikutnya")));
+
+                        List<TransaksiObatDetail> detailList = new ArrayList<>();
+                        if(obj.getString("data_obat") != null && !"".equalsIgnoreCase(obj.getString("data_obat"))){
+                            JSONArray json = new JSONArray(obj.getString("data_obat"));
+                            for (int i=0; i < json.length(); i++){
+                                JSONObject objt = json.getJSONObject(i);
+                                TransaksiObatDetail detail = new TransaksiObatDetail();
+                                detail.setIdObat(objt.getString("id_obat"));
+                                detail.setQty(new BigInteger(objt.getString("qty")));
+                                detail.setKeterangan(objt.getString("keterangan"));
+                                detail.setJenisSatuan(objt.getString("jenis_satuan"));
+                                detail.setJenisResep(objt.getString("jenis_resep"));
+                                if ("Y".equalsIgnoreCase(objt.getString("is_racik"))){
+                                    detail.setFlagRacik(objt.getString("is_racik"));
+                                    detail.setNamaRacik(objt.getString("nama_racik"));
+                                    detail.setIdRacik(objt.getString("id_racik"));
+                                } else {
+                                    detail.setFlagRacik("");
+                                }
+                                if (objt.getString("hari_kronis") != null  && !"".equalsIgnoreCase(objt.getString("hari_kronis"))){
+                                    detail.setHariKronis(new Integer(objt.getString("hari_kronis")));
+                                }
+                                detailList.add(detail);
+                            }
                         }
-                        detailList.add(detail);
+                        response = permintaanResepBo.saveAdd(permintaanResep, detailList);
+                        insertProfilRJ(obj.getString("id_detail_checkup"));
+                    }else{
+                        response.setStatus("error");
+                        response.setMsg("Object yang dikirm tidak ada...!");
                     }
+                }catch (Exception e){
+                    response.setStatus("error");
+                    response.setMsg("[PermintaanResepAction.saveResepPasien] Error when adding item, "+e.getMessage());
                 }
-
-                permintaanResepBo.saveAdd(permintaanResep, detailList);
-                insertProfilRJ(idDetailCheckup);
-
-            }catch (JSONException e){
-                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
             }
-
-        }catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PermintaanResepAction.saveResepPasien] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+        }catch (Exception e) {
+            logger.error("[PermintaanResepAction.saveResepPasien] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
         }
-        return SUCCESS;
+        return response;
     }
 
     private String dateFormater(String type) {

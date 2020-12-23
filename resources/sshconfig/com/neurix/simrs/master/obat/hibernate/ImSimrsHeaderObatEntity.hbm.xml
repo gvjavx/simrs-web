@@ -59,6 +59,18 @@
             <basic name="idBentuk">
                 <column name="id_bentuk"/>
             </basic>
+            <basic name="flagParenteral">
+                <column name="flag_parenteral"/>
+            </basic>
+            <basic name="idJenisObat">
+                <column name="id_jenis_obat"/>
+            </basic>
+            <basic name="idSubJenis">
+                <column name="id_sub_jenis"/>
+            </basic>
+            <basic name="flagIsFormularium">
+                <column name="flag_is_formularium"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

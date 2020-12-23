@@ -104,5 +104,14 @@
         <property name="flagObatBpjs">
             <column name="flag_obat_bpjs" sql-type="varchar" length="1" not-null="false"/>
         </property>
+        <property name="idRacik">
+            <column name="id_racik" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+        <property name="namaRacik">
+            <column name="nama_racik" sql-type="varchar" length="100" not-null="false"/>
+        </property>
+        <property name="jenisResep">
+            <column name="jenis_resep" sql-type="varchar" length="100" not-null="false"/>
+        </property>
     </class>
 </hibernate-mapping>

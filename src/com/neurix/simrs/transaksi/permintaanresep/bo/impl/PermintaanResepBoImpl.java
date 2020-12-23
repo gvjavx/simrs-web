@@ -3,6 +3,7 @@ package com.neurix.simrs.transaksi.permintaanresep.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.dao.PermintaanResepDao;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
@@ -167,11 +168,10 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
 
     @Override
-    public void saveAdd(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException {
+    public CrudResponse saveAdd(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException {
         logger.info("[PermintaanResepBoImpl.saveAdd] START >>>>>>>");
-
+        CrudResponse response = new CrudResponse();
         String id = getNextApprovalObatId();
-
         ImtSimrsApprovalTransaksiObatEntity approvalEntity = new ImtSimrsApprovalTransaksiObatEntity();
         approvalEntity.setIdApprovalObat("INV" + id);
         approvalEntity.setIdPelayanan(bean.getIdPelayanan());
@@ -186,9 +186,12 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         try {
             approvalTransaksiObatDao.addAndSave(approvalEntity);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ", e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ", e);
+            response.setStatus("error");
+            response.setMsg("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep "+e.getMessage());
         }
 
         id = getNextPermintaanResepId();
@@ -215,18 +218,21 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
         try {
             permintaanResepDao.addAndSave(permintaanEntity);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ", e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ", e);
+            response.setStatus("error");
+            response.setMsg("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep "+e.getMessage());
         }
 
         if (detailList.size() > 0) {
-
             for (TransaksiObatDetail detailObat : detailList) {
                 TransaksiObatDetail detail = new TransaksiObatDetail();
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                 detail.setIdObat(detailObat.getIdObat());
                 detail.setQty(detailObat.getQty());
+                detail.setJenisResep(detailObat.getJenisResep());
                 detail.setQtyApprove(detailObat.getQty());
                 detail.setJenisSatuan(detailObat.getJenisSatuan());
                 detail.setKeterangan(detailObat.getKeterangan());
@@ -234,22 +240,26 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 detail.setCreatedWho(bean.getCreatedWho());
                 detail.setLastUpdate(bean.getCreatedDate());
                 detail.setLastUpdateWho(bean.getCreatedWho());
-                detail.setFlagRacik(detailObat.getFlagRacik());
-                if (detailObat.getHariKronis() != null){
+                if(detailObat.getFlagRacik() != null && !"".equalsIgnoreCase(detailObat.getFlagRacik())){
+                    detail.setFlagRacik(detailObat.getFlagRacik());
+                    detail.setNamaRacik(detailObat.getNamaRacik());
+                    detail.setIdRacik(detailObat.getIdRacik());
+                }
+                if (detailObat.getHariKronis() != null && !"".equalsIgnoreCase(detailObat.getHariKronis().toString())){
                     detail.setHariKronis(detailObat.getHariKronis());
                 }
                 saveObatResep(detail);
             }
         }
         logger.info("[PermintaanResepBoImpl.saveAdd] END <<<<<<<");
+        return response;
     }
 
     @Override
-    public void saveObatResep(TransaksiObatDetail bean) throws GeneralBOException {
+    public CrudResponse saveObatResep(TransaksiObatDetail bean) throws GeneralBOException {
         logger.info("[PermintaanResepBoImpl.saveObatResep] START >>>>>>>");
-
+        CrudResponse response = new CrudResponse();
         ImtSimrsTransaksiObatDetailEntity obatDetailEntity = new ImtSimrsTransaksiObatDetailEntity();
-
         String id = getNextTransaksiObatDetail();
         obatDetailEntity.setIdTransaksiObatDetail("ODT" + id);
         obatDetailEntity.setIdApprovalObat(bean.getIdApprovalObat());
@@ -257,6 +267,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setQty(bean.getQty());
         obatDetailEntity.setQtyApprove(bean.getQtyApprove());
         obatDetailEntity.setJenisSatuan(bean.getJenisSatuan());
+        obatDetailEntity.setJenisResep(bean.getJenisResep());
         obatDetailEntity.setFlag("Y");
         obatDetailEntity.setAction("C");
         obatDetailEntity.setCreatedDate(bean.getCreatedDate());
@@ -265,17 +276,22 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
         obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
         obatDetailEntity.setKeterangan(bean.getKeterangan());
         obatDetailEntity.setFlagRacik(bean.getFlagRacik());
+        obatDetailEntity.setNamaRacik(bean.getNamaRacik());
+        obatDetailEntity.setIdRacik(bean.getIdRacik());
         if (bean.getHariKronis() != null && bean.getHariKronis().compareTo(0) == 1){
             obatDetailEntity.setHariKronis(bean.getHariKronis());
         }
-
         try {
             transaksiObatDetailDao.addAndSave(obatDetailEntity);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ", e);
-            throw new GeneralBOException("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail. ", e);
+            response.setStatus("error");
+            response.setMsg("[PermintaanResepBoImpl.saveObatResep]  ERROR when insert into transaksi obat detail "+e.getMessage());
         }
         logger.info("[PermintaanResepBoImpl.saveObatResep] END <<<<<<<");
+        return response;
     }
 
     @Override
