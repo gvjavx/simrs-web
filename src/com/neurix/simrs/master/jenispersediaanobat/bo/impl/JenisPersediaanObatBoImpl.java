@@ -75,7 +75,15 @@ public class JenisPersediaanObatBoImpl implements JenisPersediaanObatBo{
     @Override
     public void saveAdd(JenisPersediaanObat bean) throws GeneralBOException {
         if (bean!=null) {
-
+            List<ImSimrsJenisPersediaanObatEntity> ceklist = new ArrayList<>();
+            try {
+                ceklist = jenisPersediaanObatDao.getJenisPersediaanObat(bean.getNama());
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (ceklist.size() > 0) {
+                throw new GeneralBOException("nama jenis persediaan obat tidak boleh sama");
+            } else {
                 String jenidPersediaanObatId;
                 try {
                     // Generating ID, get from postgre sequence
@@ -104,43 +112,54 @@ public class JenisPersediaanObatBoImpl implements JenisPersediaanObatBo{
                 }
             }
         }
+    }
 
 
     @Override
     public void saveEdit(JenisPersediaanObat bean) throws GeneralBOException {
         logger.info("[JenisPersediaanObatBoImpl.saveEdit] start process >>>");
-        if (bean!=null) {
-            String id = bean.getId();
-            ImSimrsJenisPersediaanObatEntity imSimrsJenisPersediaanObatEntity = null;
+        if (bean != null) {
+            List<ImSimrsJenisPersediaanObatEntity> ceklist = new ArrayList<>();
             try {
-                // Get data from database by ID
-                imSimrsJenisPersediaanObatEntity = jenisPersediaanObatDao.getById("id", id);
-
+                ceklist = jenisPersediaanObatDao.getJenisPersediaanObat(bean.getNama());
             } catch (HibernateException e) {
-                logger.error("[JenisPersediaanObatBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data JenisPersediaanObat by Kode JenisPersediaanObat, please inform to your admin...," + e.getMessage());
+                logger.error(e.getMessage());
             }
-            if (imSimrsJenisPersediaanObatEntity != null) {
-//                imSimrsJenisObatEntity.setIdJenisObat(idJenisObat);
-                imSimrsJenisPersediaanObatEntity.setNama(bean.getNama());
-
-                imSimrsJenisPersediaanObatEntity.setFlag(bean.getFlag());
-                imSimrsJenisPersediaanObatEntity.setAction(bean.getAction());
-                imSimrsJenisPersediaanObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                imSimrsJenisPersediaanObatEntity.setLastUpdate(bean.getLastUpdate());
-
+            if (ceklist.size() > 0) {
+                throw new GeneralBOException("nama jenis persediaan obat tidak boleh sama");
+            } else {
+                String id = bean.getId();
+                ImSimrsJenisPersediaanObatEntity imSimrsJenisPersediaanObatEntity = null;
                 try {
-                    // Update into database
-                    jenisPersediaanObatDao.updateAndSave(imSimrsJenisPersediaanObatEntity);
+                    // Get data from database by ID
+                    imSimrsJenisPersediaanObatEntity = jenisPersediaanObatDao.getById("id", id);
+
                 } catch (HibernateException e) {
                     logger.error("[JenisPersediaanObatBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update JenisPersediaanObat, please info to your admin..." + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data JenisPersediaanObat by Kode JenisPersediaanObat, please inform to your admin...," + e.getMessage());
+                }
+                if (imSimrsJenisPersediaanObatEntity != null) {
+//                imSimrsJenisObatEntity.setIdJenisObat(idJenisObat);
+                    imSimrsJenisPersediaanObatEntity.setNama(bean.getNama());
+
+                    imSimrsJenisPersediaanObatEntity.setFlag(bean.getFlag());
+                    imSimrsJenisPersediaanObatEntity.setAction(bean.getAction());
+                    imSimrsJenisPersediaanObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    imSimrsJenisPersediaanObatEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        // Update into database
+                        jenisPersediaanObatDao.updateAndSave(imSimrsJenisPersediaanObatEntity);
+                    } catch (HibernateException e) {
+                        logger.error("[JenisPersediaanObatBoImpl.saveEdit] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving update JenisPersediaanObat, please info to your admin..." + e.getMessage());
+                    }
                 }
             }
-        } else {
-            logger.error("[JenisPersediaanObatBoImpl.saveEdit] Error, not found data JenisObat with request id, please check again your data ...");
-            throw new GeneralBOException("Error, not found data JenisPersediaanObat with request id, please check again your data ...");
-        }
+            } else{
+                logger.error("[JenisPersediaanObatBoImpl.saveEdit] Error, not found data JenisObat with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data JenisPersediaanObat with request id, please check again your data ...");
+            }
     }
 
     @Override

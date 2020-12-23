@@ -242,6 +242,7 @@ public class JenisPersediaanObatAction extends BaseMasterAction {
 
         try {
             JenisPersediaanObat jenisPersediaanObat = getJenisPersediaanObat();
+
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -315,6 +316,7 @@ public class JenisPersediaanObatAction extends BaseMasterAction {
 
     public String initComboJenisPerseidaanObat(){
         JenisPersediaanObat searchJenisPersediaanObat = new JenisPersediaanObat();
+        searchJenisPersediaanObat.setFlag("Y");
         List<JenisPersediaanObat> listOfsearchJenisPersediaanObat = new ArrayList();
         try {
             listOfsearchJenisPersediaanObat = jenisPersediaanObatBoProxy.getSearchByCriteria(searchJenisPersediaanObat);
@@ -322,7 +324,6 @@ public class JenisPersediaanObatAction extends BaseMasterAction {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
         }
-
         listOfComboJenisPersediaanObat.addAll(listOfsearchJenisPersediaanObat);
         return "init_combo_jenis_persediaan_obat";
     }

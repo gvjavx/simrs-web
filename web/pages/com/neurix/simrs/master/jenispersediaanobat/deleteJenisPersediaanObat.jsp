@@ -94,7 +94,7 @@
 
                 <table >
                     <tr>
-                        <td width="40%">
+                        <td width="45%">
                             <label class="control-label"><small>ID Jenis Persediaan Obat :</small></label>
                         </td>
                         <td>

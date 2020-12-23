@@ -98,7 +98,7 @@
                             </s:url>
                             <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                               <i class="fa fa-plus"></i>
-                              Add JenisPersediaanObat
+                              Add Jenis Persediaan Obat
                             </sj:a>
                             </s:if>
                           </td>
@@ -138,7 +138,7 @@
 
                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                        height="310" width="600" autoOpen="false"
-                                       title="JenisPersediaanObat ">
+                                       title="Jenis Persediaan Obat ">
                               <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                             </sj:dialog>
 
