@@ -98,7 +98,7 @@
                             </s:url>
                             <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                               <i class="fa fa-plus"></i>
-                              Add jenisPersediaanObatSub
+                              Add jenis Persediaan Obat Sub
                             </sj:a>
                             </s:if>
                           </td>
