@@ -10,15 +10,13 @@ import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEn
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.transaksiobat.dao.ApprovalTransaksiObatDao;
 import com.neurix.simrs.transaksi.transaksiobat.dao.TransaksiObatDetailDao;
-import com.neurix.simrs.transaksi.transaksiobat.model.ApprovalTransaksiObat;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsApprovalTransaksiObatEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.ImtSimrsTransaksiObatDetailEntity;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.transketeranganobat.dao.TransKeteranganObatDao;
+import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -35,6 +33,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     private ApprovalTransaksiObatDao approvalTransaksiObatDao;
     private PasienDao pasienDao;
     private TransaksiObatDetailDao transaksiObatDetailDao;
+    private TransKeteranganObatDao transKeteranganObatDao;
 
     @Override
     public List<PermintaanResep> getByCriteria(PermintaanResep bean) throws GeneralBOException {
@@ -192,6 +191,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
             logger.error("[PermintaanResepBoImpl.saveAdd] ERROR when insert into approval transaksi. ", e);
             response.setStatus("error");
             response.setMsg("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep "+e.getMessage());
+            return response;
         }
 
         id = getNextPermintaanResepId();
@@ -224,6 +224,7 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
             logger.error("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep. ", e);
             response.setStatus("error");
             response.setMsg("[PermintaanResepBoImpl.saveAdd]  ERROR when insert into permintaan resep "+e.getMessage());
+            return response;
         }
 
         if (detailList.size() > 0) {
@@ -247,6 +248,21 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
                 }
                 if (detailObat.getHariKronis() != null && !"".equalsIgnoreCase(detailObat.getHariKronis().toString())){
                     detail.setHariKronis(detailObat.getHariKronis());
+                }
+                if(detailObat.getKeteranganResepEntityList().size() > 0){
+                    for (ItSimrsKeteranganResepEntity keteranganResepEntity: detailObat.getKeteranganResepEntityList()){
+                        keteranganResepEntity.setId(transKeteranganObatDao.getNextSeq());
+                        keteranganResepEntity.setIdObat(detailObat.getIdObat());
+                        keteranganResepEntity.setIdPermintaanResep(permintaanEntity.getIdPermintaanResep());
+                        try{
+                            transKeteranganObatDao.addAndSave(keteranganResepEntity);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
+                            response.setStatus("error");
+                            response.setMsg("Error insert keterangan resep, "+e.getMessage());
+                            return response;
+                        }
+                    }
                 }
                 saveObatResep(detail);
             }
@@ -351,5 +367,9 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
     public void setTransaksiObatDetailDao(TransaksiObatDetailDao transaksiObatDetailDao) {
         this.transaksiObatDetailDao = transaksiObatDetailDao;
+    }
+
+    public void setTransKeteranganObatDao(TransKeteranganObatDao transKeteranganObatDao) {
+        this.transKeteranganObatDao = transKeteranganObatDao;
     }
 }

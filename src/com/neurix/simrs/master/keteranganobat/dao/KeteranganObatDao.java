@@ -184,6 +184,4 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         String sId = String.format("%07d", iter.next());
         return "KTO" + sId;
     }
-
-
 }

@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 public class KeteranganObatAction {
     private static transient Logger logger = Logger.getLogger(KeteranganObatAction.class);
     private KeteranganObatBo keteranganObatBoProxy;
+    private KeteranganObat keteranganObat;
 
     public void setKeteranganObatBoProxy(KeteranganObatBo keteranganObatBoProxy) {
         this.keteranganObatBoProxy = keteranganObatBoProxy;
@@ -61,6 +62,7 @@ public class KeteranganObatAction {
     public String initForm(){
         logger.info("[KeteranganObatAction.initForm] START >>> ");
         resetAllSession();
+        setKeteranganObat(new KeteranganObat());
         logger.info("[KeteranganObatAction.initForm] END <<< ");
         return "search";
     }
@@ -100,6 +102,23 @@ public class KeteranganObatAction {
 
         logger.info("[KeteranganObatAction.search] END <<< ");
         return results;
+    }
+
+    public String searchKeteranganObat(){
+        logger.info("[KeteranganObatAction.search] START >>> ");
+        List<KeteranganObat> results = new ArrayList<>();
+        KeteranganObat keteranganObat = getKeteranganObat();
+        try {
+            results = keteranganObatBoProxy.getListSearchByCriteria(keteranganObat);
+        } catch (GeneralBOException e){
+            logger.error("[KeteranganObatAction.search] Error when get data jenis obat ," + "Found problem when searching data, please inform to your admin.", e);
+        }
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfKeteranganObat");
+        session.setAttribute("listOfKeteranganObat",results);
+        setKeteranganObat(keteranganObat);
+        logger.info("[KeteranganObatAction.search] END <<< ");
+        return "search";
     }
 
     public List<ImSimrsParameterKeteranganObatEntity> getAllParameterKeterangan(){
@@ -298,5 +317,13 @@ public class KeteranganObatAction {
         logger.info("[KeteranganObatAction.getParameterKeteranganObatById] END <<<");
         return parameterKeteranganObatEntity;
 
+    }
+
+    public KeteranganObat getKeteranganObat() {
+        return keteranganObat;
+    }
+
+    public void setKeteranganObat(KeteranganObat keteranganObat) {
+        this.keteranganObat = keteranganObat;
     }
 }
