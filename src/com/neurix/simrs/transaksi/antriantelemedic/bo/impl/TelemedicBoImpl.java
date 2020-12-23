@@ -354,6 +354,11 @@ public class TelemedicBoImpl implements TelemedicBo {
                     antrianTelemedic.setAlasanBatal(batalTelemedic.getAlasan());
                     antrianTelemedic.setStatusTransaksi("canceled");
                 }
+
+                // untuk batal;
+                if (telemedicDao.foundIfAllFlagNotActive(antrianTelemedic.getId()))
+                    antrianTelemedic.setStatusTransaksi("canceled");
+
                 results.add(antrianTelemedic);
             }
         }
