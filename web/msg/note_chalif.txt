@@ -274,6 +274,7 @@ ALTER TABLE public.im_license_zebra
 --2020-12-22
 ALTER TABLE it_simrs_pembayaran_online
 ADD COLUMN waktu_bayar timestamp without time zone
+ADD COLUMN flag_upload_ulang VARCHAR(1)
 
 
 

@@ -818,7 +818,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdPelayanan(idPelayanan);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
-            bean.setCreatedDate(now);
+//            bean.setCreatedDate(now);
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -952,6 +952,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setIdPasien(idPasien);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
+//            bean.setCreatedDate(now);
 
             try {
                 result = telemedicBoProxy.getSearchByCriteria(bean);

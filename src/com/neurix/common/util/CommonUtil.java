@@ -1460,7 +1460,7 @@ public class  CommonUtil {
             ImageWriteParam param = writer.getDefaultWriteParam();
             if(imageType.equalsIgnoreCase("jpg") || imageType.equalsIgnoreCase("jpeg")){
                 param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                param.setCompressionQuality(0.5f);
+                param.setCompressionQuality(0.25f);
                 writer.setOutput(out);
                 writer.write(null, new IIOImage(image, null, null), param);
                 File f = new File(url);

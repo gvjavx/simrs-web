@@ -26,6 +26,15 @@ public class PembayaranMobile {
     private String noRekening;
     private String namaRekening;
     private String waktuBayar;
+    private String flagUploadUlang;
+
+    public String getFlagUploadUlang() {
+        return flagUploadUlang;
+    }
+
+    public void setFlagUploadUlang(String flagUploadUlang) {
+        this.flagUploadUlang = flagUploadUlang;
+    }
 
     public String getWaktuBayar() {
         return waktuBayar;

@@ -7,6 +7,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.telemedic.bo.RekeningTelemedicBo;
 import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.mobileapi.model.PembayaranMobile;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
@@ -19,6 +20,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -297,6 +300,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setIdItem(item.getIdItem());
                 pembayaranMobile.setIdRekening(item.getIdRekening());
                 pembayaranMobile.setUrlFotoBukti(item.getUrlFotoBukti());
+                pembayaranMobile.setFlagUploadUlang(item.getFlagUploadUlang());
 
                 RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
                 rekeningTelemedic.setIdRekening(item.getIdRekening());
@@ -324,9 +328,11 @@ public class PembayaranController implements ModelDriven<Object> {
 
             if (fileUploadBukti != null) {
                 fileName = idTele+".jpeg";
-                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER, fileName);
+//                File fileCreate = new File(, fileName);
                 try {
-                    FileUtils.copyFile(fileUploadBukti, fileCreate);
+                    BufferedImage bufferedImage = ImageIO.read(fileUploadBukti);
+                    String imageType = CommonUtil.getImageFormat(fileUploadBukti);
+                    CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+fileName);
                 }catch (IOException e){
                     e.printStackTrace();
                 }
@@ -340,7 +346,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
 
-            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + "telah upload bukti transfer " + keterangan);
+            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + " telah upload bukti transfer " + keterangan);
         }
 
         if (action.equalsIgnoreCase("saveEditPembayaranResep")) {

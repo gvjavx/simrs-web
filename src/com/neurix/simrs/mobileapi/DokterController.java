@@ -364,6 +364,7 @@ public class DokterController implements ModelDriven<Object> {
                    AntrianTelemedic beanAntrian = new AntrianTelemedic();
                    beanAntrian.setIdDokter(item.getIdDokter());
                    beanAntrian.setIsMobile("Y");
+//                   beanAntrian.setCreatedDate(now);
 
 
                    try {

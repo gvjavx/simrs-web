@@ -65,6 +65,9 @@
             <basic name="waktuBayar">
                 <column name="waktu_bayar"/>
             </basic>
+            <basic name="flagUploadUlang">
+                <column name="flag_upload_ulang"/>
+            </basic>
 
         </attributes>
     </entity>

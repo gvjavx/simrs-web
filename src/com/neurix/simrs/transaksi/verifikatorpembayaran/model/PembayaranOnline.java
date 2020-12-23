@@ -37,6 +37,15 @@ public class PembayaranOnline {
     private String flagConfirmation;
     private String idRekening;
     private Timestamp waktuBayar;
+    private String flagUploadUlang;
+
+    public String getFlagUploadUlang() {
+        return flagUploadUlang;
+    }
+
+    public void setFlagUploadUlang(String flagUploadUlang) {
+        this.flagUploadUlang = flagUploadUlang;
+    }
 
     public Timestamp getWaktuBayar() {
         return waktuBayar;
