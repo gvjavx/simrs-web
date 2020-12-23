@@ -294,6 +294,7 @@
     <include file="sshconfig/com/neurix/simrs/master/dietgizi/struts/JenisDietAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/dietgizi/struts/DietGiziAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/ParameterBudgetingAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/keteranganobat/struts/KeteranganObatAction.xml"/>
 
 
     <include file="sshconfig/com/neurix/simrs/master/jenispersediaanobat/struts/JenisPersediaanObatAction.xml"/>

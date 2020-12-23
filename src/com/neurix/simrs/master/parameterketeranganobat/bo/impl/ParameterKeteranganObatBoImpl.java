@@ -70,6 +70,7 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
                 parameter.setCreatedWho(paramEntity.getCreatedWho());
                 parameter.setLastUpdate(paramEntity.getLastUpdate());
                 parameter.setLastUpdateWho(paramEntity.getLastUpdateWho());
+                parameter.setFlagLabelWaktu(paramEntity.getFlagLabelWaktu());
                 parameterKeteranganObats.add(parameter);
             }
         }

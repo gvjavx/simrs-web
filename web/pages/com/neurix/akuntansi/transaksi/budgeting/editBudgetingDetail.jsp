@@ -1404,7 +1404,6 @@
                         $("#error-msg").text(" Inputan Tidak Boleh Kosong / Tidak Boleh 0");
                     } else {
 
-
                         // jika ada inputan divisi maka save to session detail
                         if (rekeningid != ""){
                             var arrCoa = [];

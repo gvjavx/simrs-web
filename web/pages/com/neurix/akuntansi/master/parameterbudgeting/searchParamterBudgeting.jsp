@@ -155,29 +155,33 @@
 
                                     <br>
                                     <br>
-                                    <center>
-                                        <table id="showdata" width="90%">
-                                            <tr>
-                                                <td align="center">
-                                                    <table class="table table-bordered" style="font-size: 13px;">
-                                                        <thead style="background-color: springgreen;">
-                                                        <tr>
-                                                            <td>Jenis</td>
-                                                            <td>Ketegori</td>
-                                                            <td>Master</td>
-                                                            <td>Divisi</td>
-                                                            <td>Item</td>
-                                                            <td>Action</td>
-                                                        </tr>
-                                                        </thead>
-                                                        <tbody id="body_search">
-
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </center>
+                                    <table class="table table-bordered" style="font-size: 13px;" width="90%">
+                                        <thead style="background-color: springgreen;">
+                                        <tr>
+                                            <td>Jenis</td>
+                                            <td>Ketegori</td>
+                                            <td>Master</td>
+                                            <td>Divisi</td>
+                                            <td>Item</td>
+                                            <td>Action</td>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="body_search">
+                                            <%--<s:iterator value="#session.listOfParameterBudgeting" var="row">--%>
+                                                <%--<tr>--%>
+                                                    <%--<td><s:property value="namaJenisBudgeting"/></td>--%>
+                                                    <%--<td><s:property value="namaKategoriBudgeting"/></td>--%>
+                                                    <%--<td><s:property value="namaMaster"/></td>--%>
+                                                    <%--<td><s:property value="namaDivisi"/></td>--%>
+                                                    <%--<td><s:property value="namaParamRekening"/></td>--%>
+                                                    <%--<td align="center">--%>
+                                                    <%--<button class="btn btn-primary btn-sm" onclick="edit('<s:property value="id"/>')"><i class="fa fa-edit"></i> Edit</button>--%>
+                                                    <%--<button class="btn btn-danger btn-sm" onclick="showDelete('<s:property value="id"/>')"><i class="fa fa-time"></i> Delete</button>--%>
+                                                    <%--</td>--%>
+                                                <%--</tr>--%>
+                                            <%--</s:iterator>--%>
+                                        </tbody>
+                                    </table>
                                 </td>
                             </tr>
                         </table>
@@ -446,6 +450,87 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-loading-dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Saving ...
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="waiting-content" style="text-align: center">
+                    <h4>Please don't close this window, server is processing your request ...</h4>
+                    <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                         src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                         name="image_indicator_write">
+                    <br>
+                    <img class="spin" border="0"
+                         style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                         src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                         name="image_indicator_write">
+                </div>
+
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_fin_error_waiting"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-success" onclick="link()" style="display: none;" id="delete_con"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
+                <%--</button>--%>
+                <button type="button" class="btn btn-sm btn-success" onclick="link()"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4>Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
         listJenisBudgeting("sel_search_jenis");
@@ -515,6 +600,8 @@
     }
 
     function search() {
+        dwr.engine.setAsync(true);
+        showDialog("loading");
         var idjenis         = $("#sel_search_jenis").val() == null ? "" : $("#sel_search_jenis").val();
         var idkategori      = $("#sel_search_kategori").val() == null ? "" : $("#sel_search_kategori").val();
         var masterid        = $("#sel_search_master").val() == null ? "" : $("#sel_search_master").val();
@@ -526,6 +613,8 @@
         var stdata = JSON.stringify(ardata);
 
         ParameterBudgetingAction.search(stdata, function (res) {
+            $("#modal-loading-dialog").modal("hide");
+            dwr.engine.setAsync(false);
             var str = "";
             $.each(res, function (i, item) {
                 str += '<tr>'+
@@ -542,7 +631,12 @@
             });
 
             $("#body_search").html(str);
+            myTable();
         })
+    }
+
+    function myTable(){
+        $('#myTable').DataTable();
     }
 
     function edit(id) {
@@ -593,6 +687,9 @@
 
     function saveEdit() {
 
+        dwr.engine.setAsync(true);
+        showDialog("loading");
+
         var id              = $("#id_edit").val();
         var idJenis         = $("#sel_edit_jenis").val();
         var idKategori      = $("#sel_edit_kategori").val();
@@ -605,23 +702,24 @@
         arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam, "flag":flag});
         var stData          = JSON.stringify(arData);
         ParameterBudgetingAction.saveEdit(stData, function (res) {
+            dwr.engine.setAsync(false);
             if (res.status == "success"){
-                alert("Berhasil Save");
+                showDialog("success");
             } else {
-                alert(res.status);
+                showDialog("error", res.msg);
             }
-
             if (flag == "Y"){
                 $("#modal-edit").modal('hide');
             } else {
                 $("#modal-delete").modal('hide');
             }
-            link();
+//            link();
         });
     }
 
     function saveAdd() {
-
+        dwr.engine.setAsync(true);
+        showDialog("loading");
         var idJenis         = $("#sel_add_jenis").val();
         var idKategori      = $("#sel_add_kategori").val();
         var masterId        = $("#sel_add_master").val();
@@ -632,15 +730,35 @@
         arData.push({"id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam});
         var stData          = JSON.stringify(arData);
         ParameterBudgetingAction.saveAdd(stData, function (res) {
+            dwr.engine.setAsync(false);
             if (res.status == "success"){
-                alert("Berhasil Save");
+                showDialog("success");
             } else {
-                alert(res.status);
+                showDialog("error", res.msg);
             }
             $("#modal-add").modal('hide');
-            link();
+//            link();
         });
     }
+
+    function showDialog(tipe, msg) {
+        if (tipe == "loading"){
+            $("#modal-loading-dialog").modal('show');
+        }
+        if (tipe == "error"){
+            $("#modal-loading-dialog").modal('show');
+            $("#waiting-content").hide();
+            $("#warning_fin_waiting").show();
+            $("#msg_fin_error_waiting").text(msg);
+            $("#delete_con").show();
+        }
+        if (tipe == "success"){
+            $("#modal-loading-dialog").modal('hide');
+            $("#modal-success-dialog").modal('show');
+        }
+    }
+
+
 
 </script>
 <!-- /.content-wrapper -->

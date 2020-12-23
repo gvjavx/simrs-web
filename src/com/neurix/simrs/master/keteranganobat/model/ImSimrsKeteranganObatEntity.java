@@ -13,6 +13,24 @@ public class ImSimrsKeteranganObatEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String warnaLabel;
+    private String warnaBackground;
+
+    public String getWarnaLabel() {
+        return warnaLabel;
+    }
+
+    public void setWarnaLabel(String warnaLabel) {
+        this.warnaLabel = warnaLabel;
+    }
+
+    public String getWarnaBackground() {
+        return warnaBackground;
+    }
+
+    public void setWarnaBackground(String warnaBackground) {
+        this.warnaBackground = warnaBackground;
+    }
 
     public String getId() {
         return id;

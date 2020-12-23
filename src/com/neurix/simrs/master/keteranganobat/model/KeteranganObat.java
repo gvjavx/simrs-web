@@ -16,6 +16,42 @@ public class KeteranganObat {
     private String lastUpdateWho;
     private String namaSubJenis;
     private String namaParameterKeterangan;
+    private String warnaLabel;
+    private String warnaBackground;
+    private String idJenis;
+    private String namaJenis;
+
+    public String getIdJenis() {
+        return idJenis;
+    }
+
+    public void setIdJenis(String idJenis) {
+        this.idJenis = idJenis;
+    }
+
+    public String getNamaJenis() {
+        return namaJenis;
+    }
+
+    public void setNamaJenis(String namaJenis) {
+        this.namaJenis = namaJenis;
+    }
+
+    public String getWarnaLabel() {
+        return warnaLabel;
+    }
+
+    public void setWarnaLabel(String warnaLabel) {
+        this.warnaLabel = warnaLabel;
+    }
+
+    public String getWarnaBackground() {
+        return warnaBackground;
+    }
+
+    public void setWarnaBackground(String warnaBackground) {
+        this.warnaBackground = warnaBackground;
+    }
 
     public String getNamaSubJenis() {
         return namaSubJenis;

@@ -186,6 +186,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 pembayaranOnline.setAction(pembayaranOnlineEntity.getAction());
                 pembayaranOnline.setUrlFotoBukti(pembayaranOnlineEntity.getUrlFotoBukti());
                 pembayaranOnline.setIdRekening(pembayaranOnlineEntity.getIdRekening());
+                pembayaranOnline.setFlagUploadUlang(pembayaranOnlineEntity.getFlagUploadUlang());
 
                 // mencari data pada antrian telemedic untuk mengetahui status pembayaran
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
