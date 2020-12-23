@@ -658,6 +658,16 @@ public class  CommonUtil {
         return tanggal;
     }
 
+    public static String convertTimestampToString2(Timestamp date){
+        String tanggal = "";
+        String DATE_FORMAT = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        java.util.Date tanggalApp = date;
+        tanggal = sdf.format(tanggalApp);
+
+        return tanggal;
+    }
+
     public static String convertTimestampToStringLengkap(Timestamp date){
         String tanggal = "";
         String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";

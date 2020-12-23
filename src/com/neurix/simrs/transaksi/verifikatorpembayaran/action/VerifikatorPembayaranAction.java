@@ -3438,6 +3438,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         if (pembayaranOnlineEntity != null){
 
             pembayaranOnlineEntity.setUrlFotoBukti("");
+            pembayaranOnlineEntity.setFlagUploadUlang("Y");
 
             try {
                 verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
