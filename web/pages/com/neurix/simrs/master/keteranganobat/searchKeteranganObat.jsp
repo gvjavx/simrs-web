@@ -402,8 +402,8 @@
                         </div>
                         <div class="col-md-5">
                             <select id="sel_add_warna_background" class="form-control" style="width: 100%">
-                                <option value="white" style="color: red"><span class="badge">Putih</span></option>
-                                <option value="aquamarine"><span class="badge" style="background-color: aquamarine">Biru Mudah</span></option>
+                                <option value="white"><span class="badge">Putih</span></option>
+                                <option value="aquamarine"><span class="badge">Biru Mudah</span></option>
                             </select>
                         </div>
                     </div>
