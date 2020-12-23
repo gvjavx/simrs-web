@@ -87,10 +87,11 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
             andWhere += "AND pb.divisi_id = '"+bean.getDivisiId()+"'\n";
         if (bean.getIdParamRekening() != null && !"".equalsIgnoreCase(bean.getIdParamRekening()))
             andWhere +=  "AND pb.id_param_rekening = '"+bean.getIdParamRekening()+"'\n";
+        if (bean.getFlag() != null)
+            andWhere += "AND pb.flag = '"+bean.getFlag()+"'\n";
 
         if (bean.getIdJenisBudgeting() == null)
             bean.setIdJenisBudgeting("%");
-
 
         String SQL = "SELECT\n" +
                 "pb.id,\n" +

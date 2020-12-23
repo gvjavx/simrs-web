@@ -94,7 +94,7 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
 
         boolean found = false;
         try {
-            found = keteranganObatDao.checkIfAvailableByCriteria(bean.getIdSubJenis(), bean.getIdParameterKeterangan(), bean.getKeterangan());
+            found = keteranganObatDao.checkIfAvailableByCriteria(bean.getIdSubJenis(), bean.getIdParameterKeterangan(), bean.getKeterangan(), bean.getWarnaLabel(), bean.getWarnaBackground());
         } catch (HibernateException e){
             logger.error("[ParameterKeteranganObatBoImpl.saveAdd] ERROR, error when. ",e);
             throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveAdd] ERROR, error when. "+e);
@@ -133,9 +133,9 @@ public class KeteranganObatBoImpl implements KeteranganObatBo{
         logger.info("[KeteranganObatBoImpl.saveEdit] START >>> ");
 
         boolean found = false;
-        if (!"Y".equalsIgnoreCase(bean.getFlag())){
+        if ("Y".equalsIgnoreCase(bean.getFlag())){
             try {
-                found = keteranganObatDao.checkIfAvailableByCriteria(bean.getIdSubJenis(), bean.getIdParameterKeterangan(), bean.getKeterangan());
+                found = keteranganObatDao.checkIfAvailableByCriteria(bean.getIdSubJenis(), bean.getIdParameterKeterangan(), bean.getKeterangan(), bean.getWarnaLabel(), bean.getWarnaBackground());
             } catch (HibernateException e){
                 logger.error("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, ",e);
                 throw new GeneralBOException("[ParameterKeteranganObatBoImpl.saveEdit] ERROR, "+e);

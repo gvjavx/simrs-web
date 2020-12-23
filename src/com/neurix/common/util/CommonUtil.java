@@ -39,10 +39,6 @@ import static java.util.Calendar.DATE;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
-import com.googlecode.pngtastic.core.PngImage;
-import com.googlecode.pngtastic.core.PngOptimizer;
-
-
 /**
  * Created by IntelliJ IDEA.
  * User: Thunderbird
