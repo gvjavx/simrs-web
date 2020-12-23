@@ -11,6 +11,15 @@ public class JenisPersediaanObat {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isKp;
+
+    public String getIsKp() {
+        return isKp;
+    }
+
+    public void setIsKp(String isKp) {
+        this.isKp = isKp;
+    }
 
     public String getId() {
         return id;

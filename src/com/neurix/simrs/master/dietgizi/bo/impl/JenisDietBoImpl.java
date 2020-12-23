@@ -83,6 +83,16 @@ public class JenisDietBoImpl implements JenisDietBo {
     @Override
     public void saveAdd(JenisDiet bean) throws GeneralBOException {
         if (bean!=null) {
+            List<ImSimrsJenisDietEntity> cekList = new ArrayList<>();
+            try {
+                cekList = jenisDietDao.getJenisDiet(bean.getNamaJenisDiet());
+
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+            }
+            if (cekList.size() > 0) {
+                throw new GeneralBOException("nama jenis diet tidak boleh sama");
+            } else {
                 String jenisdietId;
                 try {
                     // Generating ID, get from postgre sequence
@@ -111,7 +121,7 @@ public class JenisDietBoImpl implements JenisDietBo {
                     throw new GeneralBOException("Found problem when saving new data Jenis Obat, please info to your admin..." + e.getMessage());
                 }
             }
-
+        }
     }
 
     @Override
