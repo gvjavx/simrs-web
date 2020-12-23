@@ -168,8 +168,8 @@
                         <table id="sortTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                                 <tr bgcolor="#90ee90">
-                                    <td>Id</td>
-                                    <td>Id Pasien</td>
+                                    <td>Id Telemedic</td>
+                                    <td>No. RM</td>
                                     <td>Nama</td>
                                     <td>Jenis</td>
                                     <td>Status</td>

@@ -357,7 +357,7 @@
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveEdit()"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" onclick="saveDelete()"><i class="fa fa-check"></i> Save
                 </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -713,7 +713,37 @@
             } else {
                 $("#modal-delete").modal('hide');
             }
-//            link();
+        });
+    }
+
+    function saveDelete() {
+
+        dwr.engine.setAsync(true);
+        showDialog("loading");
+
+        var id              = $("#id_delete").val();
+        var idJenis         = $("#sel_delete_jenis").val();
+        var idKategori      = $("#sel_delete_kategori").val();
+        var masterId        = $("#sel_delete_master").val();
+        var divisiId        = $("#sel_delete_divisi").val();
+        var idParam         = $("#sel_delete_item_rekening").val();
+        var flag            = $("#flag_delete").val();
+        var arData          = [];
+
+        arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam, "flag":flag});
+        var stData          = JSON.stringify(arData);
+        ParameterBudgetingAction.saveEdit(stData, function (res) {
+            dwr.engine.setAsync(false);
+            if (res.status == "success"){
+                showDialog("success");
+            } else {
+                showDialog("error", res.msg);
+            }
+            if (flag == "Y"){
+                $("#modal-edit").modal('hide');
+            } else {
+                $("#modal-delete").modal('hide');
+            }
         });
     }
 

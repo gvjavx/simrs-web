@@ -140,13 +140,20 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         return keteranganObatList;
     }
 
-    public boolean checkIfAvailableByCriteria(String idSubJenis, String idParam, String keterangan){
+
+    public boolean checkIfAvailableByCriteria(String idSubJenis, String idParam, String keterangan, String warnaLabel, String warnaBackground){
+
+        String stWhere = "";
+        if (warnaBackground != null && !"".equalsIgnoreCase(warnaBackground))
+            stWhere += "AND warna_background = '"+warnaBackground+"' \n";
+        if (warnaLabel != null && !"".equalsIgnoreCase(warnaLabel))
+            stWhere += "AND warna_label = '"+warnaLabel+"' \n";
 
         String SQL = "SELECT id_sub_jenis, id_parameter_keterangan, keterangan \n" +
                 "FROM im_simrs_keterangan_obat \n" +
                 "WHERE id_sub_jenis = :idsubjenis\n" +
                 "AND id_parameter_keterangan = :idparam\n" +
-                "AND keterangan = :keterangan";
+                "AND keterangan = :keterangan \n" + stWhere;
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idsubjenis", idSubJenis)
