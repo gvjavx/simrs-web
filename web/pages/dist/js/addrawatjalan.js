@@ -2072,17 +2072,12 @@ function addObatToList() {
             var sp = keteranganTempe.split('|');
             $.each(sp, function (i, item) {
                 var data = item.split('#');
-                console.log(item);
-                console.log(data[0]);
-                console.log(data[1]);
                 tempBodyKet.push({
                     'id_waktu':data[0],
                     'keterangan':data[1]
                 });
             });
-            console.log(tempBodyKet);
             stringTempBodyKet = JSON.stringify(tempBodyKet);
-            console.log(stringTempBodyKet);
         }
 
         var ket = "";
@@ -2168,7 +2163,9 @@ function addObatToList() {
                 }
                 var jumlah = parseInt(totalHarga) + parseInt(tot);
                 $('#total_harga_obat').val(formatRupiah(jumlah));
-                $('#body_keterangan').html('');
+                if(!$('#racik_racik').is(':checked')){
+                    $('#body_keterangan').html('');
+                }
                 $('#waktu_param, #param_ket, #ket_param').val('').trigger('change');
             }
         } else {
@@ -2612,6 +2609,7 @@ function resetAll() {
     $('#resep_jenis_obat').val('').trigger('change');
     $('#racik_racik').removeAttr('checked');
     $('#label-kronis').hide();
+    $('#body_keterangan').html('');
     removePaint('ttd_canvas');
     $('#body_keterangan').html('');
     resetComboObat();
