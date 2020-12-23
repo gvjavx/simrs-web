@@ -1524,7 +1524,7 @@ public class RawatInapController implements ModelDriven<Object> {
             try {
                 BufferedImage bufferedImage = ImageIO.read(image);
                 String imageType = CommonUtil.getImageFormat(image);
-                CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.external.dir")+"image.jpg");
+                CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, CommonUtil.getPropertyParams("upload.external.dir")+"image.jpg");
                 model.setMessage(crudResponse.getMsg());
             } catch (GeneralBOException e) {
                 logger.error("[RawatInapController.create] Error, " + e.getMessage());

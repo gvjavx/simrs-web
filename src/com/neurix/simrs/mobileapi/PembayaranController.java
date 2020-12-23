@@ -331,8 +331,7 @@ public class PembayaranController implements ModelDriven<Object> {
 //                File fileCreate = new File(, fileName);
                 try {
                     BufferedImage bufferedImage = ImageIO.read(fileUploadBukti);
-                    String imageType = CommonUtil.getImageFormat(fileUploadBukti);
-                    CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+fileName);
+                    CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+fileName);
                 }catch (IOException e){
                     e.printStackTrace();
                 }

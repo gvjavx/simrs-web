@@ -1459,10 +1459,9 @@ public class  CommonUtil {
         return result;
     }
 
-    public static CrudResponse compressImage(BufferedImage image, String imageType, String url) {
+    public static CrudResponse compressImage(BufferedImage image, String url) {
 
         /* image => file image yang telah diconvert menjadi BufferedImage
-         * imageType => isi sesuai tipe image. bisa png atau jpg
          * url => isi sesuai lokasi file image ingi disimpan
          *  */
 
@@ -1472,7 +1471,7 @@ public class  CommonUtil {
             ImageTypeSpecifier type = ImageTypeSpecifier.createFromRenderedImage(image);
             ImageWriter writer = ImageIO.getImageWriters(type, "jpg").next();
             ImageWriteParam param = writer.getDefaultWriteParam();
-            if(imageType.equalsIgnoreCase("jpg") || imageType.equalsIgnoreCase("jpeg")){
+            if(param.canWriteCompressed()){
                 param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
                 param.setCompressionQuality(0.25f);
                 writer.setOutput(out);
@@ -1482,7 +1481,7 @@ public class  CommonUtil {
                 response.setStatus("success");
                 response.setMsg("Berhasil");
             } else {
-               response = compressImage(convertPngToJpg(image), "jpg", url);
+               response = compressImage(convertPngToJpg(image),url);
             }
 
         } catch (IOException e) {
