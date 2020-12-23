@@ -907,7 +907,7 @@
             <param name="class" value="com.neurix.simrs.master.dietgizi.action.DietGiziAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.DietGizi"/>
-        <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.DietGiziEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.dietgizi.model.ImSimrsDietGizi"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.department.action.DepartmentAction"/>
@@ -932,6 +932,9 @@
             <param name="class" value="com.neurix.simrs.master.keteranganobat.action.KeteranganObatAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.keteranganobat.model.KeteranganObat"/>
+        <convert converter="bean" match="com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobatsub.model.ImSimrsJenisPersediaanObatSubEntity"/>
+        <convert converter="bean" match="com.neurix.simrs.master.jenispersediaanobat.model.ImSimrsJenisPersediaanObatEntity"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction"/>
@@ -946,6 +949,7 @@
         <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunKategoriParameterBudgetingEntity"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.ImMasterEntity"/>
+        <convert converter="bean" match="com.neurix.akuntansi.master.master.model.MasterPK"/>
         <!--END-->
 
     </allow>

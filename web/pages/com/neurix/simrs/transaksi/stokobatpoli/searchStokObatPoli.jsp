@@ -187,7 +187,12 @@
                                 <tr>
                                     <td><s:property value="idBarang"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="expiredDate"/></td>
+                                    <td>
+                                        <script>
+                                            var tgl = '<s:property value="expiredDate"/>';
+                                            document.write(converterDate(new Date(tgl)));
+                                        </script>
+                                    </td>
                                     <td align="center"><s:property value="qtyBox"/></td>
                                     <td align="center"><s:property value="qtyLembar"/></td>
                                     <td align="center"><s:property value="qtyBiji"/></td>

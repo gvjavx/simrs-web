@@ -79,13 +79,13 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
     public List<ParameterBudgeting> getSearchParameterBudgeting(ParameterBudgeting bean){
 
         String andWhere = "";
-        if (bean.getIdKategoriBudgeting() != null)
+        if (bean.getIdKategoriBudgeting() != null && !"".equalsIgnoreCase(bean.getIdKategoriBudgeting()))
             andWhere += "AND pb.id_kategori_budgeting = '"+bean.getIdKategoriBudgeting()+"' \n";
-        if (bean.getMasterId() != null)
+        if (bean.getMasterId() != null && !"".equalsIgnoreCase(bean.getMasterId()))
             andWhere += "AND pb.master_id = '"+bean.getMasterId()+"'\n";
-        if (bean.getDivisiId() != null)
+        if (bean.getDivisiId() != null && !"".equalsIgnoreCase(bean.getDivisiId()))
             andWhere += "AND pb.divisi_id = '"+bean.getDivisiId()+"'\n";
-        if (bean.getIdParamRekening() != null)
+        if (bean.getIdParamRekening() != null && !"".equalsIgnoreCase(bean.getIdParamRekening()))
             andWhere +=  "AND pb.id_param_rekening = '"+bean.getIdParamRekening()+"'\n";
 
         if (bean.getIdJenisBudgeting() == null)

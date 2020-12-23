@@ -354,6 +354,11 @@ public class TelemedicBoImpl implements TelemedicBo {
                     antrianTelemedic.setAlasanBatal(batalTelemedic.getAlasan());
                     antrianTelemedic.setStatusTransaksi("canceled");
                 }
+
+                // untuk batal;
+                if (telemedicDao.foundIfAllFlagNotActive(antrianTelemedic.getId()))
+                    antrianTelemedic.setStatusTransaksi("canceled");
+
                 results.add(antrianTelemedic);
             }
         }
@@ -604,8 +609,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getFlagEresep() != null && !"".equalsIgnoreCase(bean.getFlagEresep())) {
             hsCriteria.put("flag_eresep", bean.getFlagEresep());
         }
-        if (bean.getCreatedDate() != null) {
-            hsCriteria.put("created_date", bean.getCreatedDate());
+        if (bean.getFlagDateNow() != null && !"".equalsIgnoreCase(bean.getFlagDateNow())) {
+            hsCriteria.put("created_date_to_date", bean.getFlagDateNow());
         }
 
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
