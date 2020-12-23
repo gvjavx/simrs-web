@@ -76,7 +76,7 @@
       skala_gaji_pensiun_dplk_pegawai_history_id varchar(20) not null
         constraint im_hris_payroll_skala_gaji_dplk_pegawai_history_pkey
         primary key,
-      skala_gaji_pensiun_dplk_pegawai_id varchar(20) not null
+      skala_gaji_pensiun_dplk_pegawai_id varchar(20) not null,
       golongan_id                varchar(20),
       nilai                      numeric(15, 2),
       action                     varchar(1),
@@ -86,6 +86,13 @@
       last_update                timestamp,
       last_update_who            varchar(100)
     );
+
+    UPDATE im_functions
+        SET url = REPLACE(url, 'IuranDplk', 'DplkPegawai');
+   UPDATE im_functions
+        SET url = REPLACE (url, 'searchPayrollSkalaGajiPensiun', 'searchPayrollSkalaGajiDplkPegawai');
+    UPDATE im_functions
+        SET func_name = 'S.G.P Dplk Pegawai' WHERE func_id = 1182;
 
     -- CREATE SEQUENCE
 
@@ -114,6 +121,7 @@
     ('SGID0015', 'G15', 300000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
     ('SGID0016', 'G16', 425000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin');
 
+
 --------------------------------------------------
 --       [PERUBAHAN FIELD TABEL BIODATA]        --
 --------------------------------------------------
@@ -126,8 +134,32 @@ SELECT skala_gaji_pensiun_rni_id, golongan_id, masa_kerja_gol, nilai, action, fl
 UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(skala_gaji_pensiun_id,'DRNI', 'SGP0');
 
 --------------------------------------------------
---        [Payroll Skala Gaji Pensiun]          --
+--              [FROM PAK FERDI]                --
 --------------------------------------------------
+
+-- table im_hris_pegawai dihapus flag_pjs, flag_plt, dan jenis_pegawai
+    ALTER TABLE im_hris_pegawai
+	    DROP COLUMN flag_pjs,
+    	DROP COLUMN flag_plt,
+	    DROP COLUMN jenis_pegawai;
+-- table historynya
+    ALTER TABLE im_hris_pegawai_history
+	    DROP COLUMN flag_pjs,
+	    DROP COLUMN flag_plt;
+
+-- untuk field jenis_pegawai(plt,pjs) varchar(5) di tarok di it_hris_pegawai_position
+    ALTER TABLE it_hris_pegawai_position
+	    ADD COLUMN jenis_pegawai VARCHAR(5);
+
+-- di it_hris_pegawai_position di tambahkan flag_digaji (y/n)
+    ALTER TABLE it_hris_pegawai_position
+	    ADD COLUMN flag_digaji VARCHAR(1);
+
+-- [DONE B4] di table im_hris_payroll_skala_gaji_pensiun ( ditambahkan field tipe_dapen_id(varchar 5), masa_kerja_gol (varchar5)) -> untuk di ambil untuk perhitungan pensiun
+    ALTER TABLE im_hris_payroll_skala_gaji_pensiun
+	--    ADD COLUMN tipe_dapen_id VARCHAR(5),
+	    ADD COLUMN masa_kerja_gol VARCHAR(5);
+
 
 -- 2020-12-22 ===> Sequence Jenis Pegawai
 -- Menambahkan Sequence [seq_jenis_pegawai] & [seq_jenis_pegawai_history]
@@ -139,16 +171,17 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
     INSERT INTO im_functions
     VALUES
     	(6600, 'Jenis Pegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6000, 2, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', 6600),
-    	(6601, 'initForm jenisPegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6602, 'Search jenisPegawai', '/jenisPegawai/search_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6603, 'Add jenisPegawai', '/jenisPegawai/add_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6604, 'SaveAdd jenisPegawai', '/jenisPegawai/saveAdd_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6605, 'Edit jenisPegawai', '/jenisPegawai/edit_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6606, 'SaveEdit jenisPegawai', '/jenisPegawai/saveEdit_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6607, 'Delete jenisPegawai', '/jenisPegawai/delete_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6608, 'SaveDelete jenisPegawai', '/jenisPegawai/saveDelete_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6609, 'Paging Display jenisPegawai', '/jenisPegawai/paging_displaytag_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', ),
-    	(6610, 'View jenisPegawai', '/jenisPegawai/view_jenisPegawai.action', 6600, , '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', );
+    	(6601, 'initForm jenisPegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6602, 'Search jenisPegawai', '/jenisPegawai/search_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6603, 'Add jenisPegawai', '/jenisPegawai/add_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6604, 'SaveAdd jenisPegawai', '/jenisPegawai/saveAdd_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6605, 'Edit jenisPegawai', '/jenisPegawai/edit_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6606, 'SaveEdit jenisPegawai', '/jenisPegawai/saveEdit_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6607, 'Delete jenisPegawai', '/jenisPegawai/delete_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6608, 'SaveDelete jenisPegawai', '/jenisPegawai/saveDelete_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6609, 'Paging Display jenisPegawai', '/jenisPegawai/paging_displaytag_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6610, 'View jenisPegawai', '/jenisPegawai/view_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null);
+
 
 
     ------------------------------------
