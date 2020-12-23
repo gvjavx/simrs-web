@@ -15,32 +15,15 @@
 <html>
 <head>
     <script type="text/javascript">
-        $(document).ready(function(){
-            // var cek = document.getElementById("eksekutif").value;
-            //
-            // if (cek == 'Y'){
-            //     console.log(cek);
-            //     document.getElementById("isEksekutif").checked = true;
-            // }
-        });
-        function callSearch2() {
-            //$('#waiting_dialog').dialog('close');
-            // $('#view_dialog_menu').dialog('close');
-            $('#info_dialog').dialog('close');
-           // window.location.reload(true);
-            document.SearchKategoriTindakanForm.submit();
 
+        $.subscribe('beforeProcessSave', function (event, data) {
+            var kandunganObat = document.getElementById("kandunganObatAdd").value;
 
-        };
-
-        $.subscribe('beforeProcessSaveDelete', function (event, data) {
-            var idKategoriTindakan = document.getElementById("idKategoriTindakan").value;
-
-            if (idKategoriTindakan != '') {
-
+            if (kandunganObat != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
+
                 } else {
                     // Cancel Submit comes with 1.8.0
                     event.originalEvent.options.submit = false;
@@ -48,11 +31,9 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idKategoriTindakan == '') {
-                    msg += 'Field <strong> idKategoriTindakan</strong> is required.' + '<br/>';
-
+                if (kandunganObat == '') {
+                    msg += 'Field <strong>Kandungan Obat</strong> is required.' + '<br/>';
                 }
-
                 document.getElementById('errorValidationMessage').innerHTML = msg;
                 $.publish('showErrorValidationDialog');
             }
@@ -81,18 +62,8 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="deleteJenisObatForm" method="post" theme="simple" namespace="/kategoritindakan"
-                    action="saveDelete_kategoritindakan" cssClass="well form-horizontal">
-
-                <s:hidden name="addOrEdit"/>
-                <s:hidden name="delete"/>
-
-
-
-                <legend align="left">Delete Jenis Obat</legend>
-
-
-
+            <s:form id="formAdd" method="post" theme="simple" namespace="/kandunganObat" action="saveAdd_kandunganObat" cssClass="well form-horizontal">
+                <legend align="left">Add Kandungan Obat</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -101,51 +72,28 @@
                     </tr>
                 </table>
 
-                <table >
+                <table>
                     <tr>
-                        <td width="30%">
-                            <label class="control-label"><small>ID Jenis Obat :</small></label>
+                        <td>
+                            <label class="control-label"><small>Kandungan Obat :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield id="idKategoriTindakan" name="kategoriTindakan.idKategoriTindakan" disabled="true"
-                                             required="true" readonly="true" cssClass="form-control"/>
-
-                                    <s:hidden id="idKategoriTindakan" name="kategoriTindakan.idKategoriTindakan" />
+                                <s:textfield id="kandunganObatAdd" name="kandunganObat.kandungan"  cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
-
-
-
-                    <tr>
-                        <td >
-                            <label class="control-label"><small>Kategori Tindakan:</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="kategoriTindakandel" name="kategoriTindakan.kategoriTindakan" required="true"
-                                             cssStyle="margin-top: 7px" readonly="true"
-                                             disabled="false" cssClass="form-control"/>
-
-                            </table>
-                        </td>
-                    </tr>
-
-
                 </table>
                 <br>
                 <br>
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="deleteJenisObatForm" id="save"
-                                   name="save"
-                                   onBeforeTopics="beforeProcessSaveDelete" onCompleteTopics="closeDialog,successDialog"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formAdd" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
-                            Delete
+                            Save
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -170,8 +118,8 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch2();
-
+                                                                      //callSearch();
+                                                                      link();
                                                                    }
                                                             }"
                                         >
@@ -182,7 +130,7 @@
                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
-                                                                        'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
+                                                                        'OK':function() { $('#error_dialog').dialog('close'); }
                                                                     }"
                                         >
                                             <div class="alert alert-error fade in">
@@ -218,13 +166,3 @@
 </table>
 </body>
 </html>
-<script>
-    window.cekEksekutif = function () {
-        if (document.getElementById("isEksekutif").checked == true) {
-            $("#eksekutif").val("Y");
-        } else {
-            $("#eksekutif").val("N");
-        }
-    }
-</script>
-
