@@ -535,7 +535,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
+                        <label class="control-label col-sm-4" for="positionLamaId1">Level Baru:</label>
                         <div id="golonganBaru1Group" class="col-sm-8">
                             <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                             <s:select list="#initComboTipe.listComboGolongan" id="golonganBaruId1" name="mutasi.levelBaru" disabled="true"
