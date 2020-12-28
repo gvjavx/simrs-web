@@ -29,7 +29,6 @@
     <script type='text/javascript'>
 
         $(document).ready(function () {
-
             $('#resep_poli').addClass('active');
             $('#add_resep').focus();
 
@@ -445,7 +444,6 @@
             // $('#msg_ttd').text("Silahkan lakukan ttd pada canvas berikut...!");
         }
     }
-
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

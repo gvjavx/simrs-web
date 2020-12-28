@@ -18,6 +18,7 @@
           p:pasienDao-ref="pasienDao"
           p:approvalTransaksiObatDao-ref="approvalTransaksiObatDao"
           p:transaksiObatDetailDao-ref="transaksiObatDetailDao"
+          p:transKeteranganObatDao-ref="transKeteranganObatDao"
     />
 
     <bean id="permintaanResepBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

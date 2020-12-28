@@ -1009,6 +1009,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                         for (int i = 0; i < json.length(); i++) {
                             JSONObject obj = json.getJSONObject(i);
                             ItSimrsRiwayatTindakanEntity tindakanEntity = new ItSimrsRiwayatTindakanEntity();
+                            tindakanEntity.setIdTindakan(obj.getString("id_jenis_biaya"));
                             tindakanEntity.setNamaTindakan(obj.getString("jenis_biaya"));
                             tindakanEntity.setTotalTarif(new BigDecimal(obj.getString("total")));
                             tindakanEntity.setIdDetailCheckup(idDetailCheckup);
