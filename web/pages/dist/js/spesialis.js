@@ -2066,9 +2066,11 @@ function saveSPS(jenis, ket) {
             gigi = "N";
         }
         var cekTtd = isBlank(ttd);
+        var nama = $('#nama_terang_petugas').val();
+        var nip = $('#sip_petugas').val();
 
         if (va1 && va2 && va3 != undefined &&
-            va4 && va5 && va6 && va7 && va8 && !cekTtd) {
+            va4 && va5 && va6 && va7 && va8 && nama && nip != '' && !cekTtd) {
 
             var ttd1 = ttd.toDataURL("image/png"),
                 ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -2148,6 +2150,8 @@ function saveSPS(jenis, ket) {
                 'tipe': 'ttd',
                 'keterangan': jenis,
                 'jenis': ket,
+                'nama_terang': nama,
+                'sip': nip,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;

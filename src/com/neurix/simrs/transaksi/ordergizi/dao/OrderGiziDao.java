@@ -10,6 +10,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -410,27 +411,31 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
         return cek;
     }
 
-    public List<OrderGizi> cekOrderGiziToday(String idRawatInap, String keterangan) {
-
+    public List<OrderGizi> cekOrderGiziToday(String id, String waktu) {
         List<OrderGizi> orderGizis = new ArrayList<>();
-
-        String SQL = "SELECT id_order_gizi, id_rawat_inap, keterangan FROM it_simrs_order_gizi\n" +
-                "WHERE keterangan LIKE :ket\n" +
-                "AND id_rawat_inap LIKE :idRawat";
+        String SQL = "SELECT \n" +
+                "id_order_gizi,\n" +
+                "id_rawat_inap,\n" +
+                "waktu,\n" +
+                "created_date\n" +
+                "FROM it_simrs_order_gizi\n" +
+                "WHERE waktu LIKE :ket \n" +
+                "AND id_rawat_inap LIKE :idRawat \n" +
+                "AND CAST(created_date AS DATE) = CURRENT_DATE";
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idRawat", idRawatInap)
-                .setParameter("ket", keterangan)
+                .setParameter("idRawat", id)
+                .setParameter("ket", waktu)
                 .list();
 
-        if (results != null) {
-
+        if (results.size() > 0) {
             for (Object[] obj : results) {
                 OrderGizi orderGizi = new OrderGizi();
                 orderGizi.setIdOrderGizi(obj[0] == null ? "" : obj[0].toString());
                 orderGizi.setIdRawatInap(obj[1] == null ? "" : obj[1].toString());
-                orderGizi.setKeterangan(obj[2] == null ? "" : obj[2].toString());
+                orderGizi.setWaktu(obj[2] == null ? "" : obj[2].toString());
+                orderGizi.setCreatedDate(obj[3] == null ? null : (Timestamp) obj[3]);
                 orderGizis.add(orderGizi);
             }
         }

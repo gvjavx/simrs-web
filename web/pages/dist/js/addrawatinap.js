@@ -2517,7 +2517,6 @@ function saveResepObat() {
                 var isRacik = $('#is_racik_'+i).val();
                 var namaRacik = $('#nama_racik_'+i).val();
                 var idRacik = $('#id_racik_'+i).val();
-                console.log(keterangan);
                 dataObat.push({
                     'id_obat':idObat,
                     'qty': qty,
@@ -3644,7 +3643,17 @@ function setDiet(id) {
     var bentuk = $('#bentuk_diet').val();
     var jenis = $('#jenis_diet').val();
     var bentukText = $('#bentuk_diet option:selected').text();
-    var jenisText = $('#jenis_diet option:selected').text();
+    var jenisText = $('#jenis_diet option:selected');
+    var tempText = "";
+    if(jenisText.length > 0){
+        $.each(jenisText, function (i, item) {
+            if(tempText != ''){
+                tempText = tempText+', '+item.innerText;
+            }else{
+                tempText = item.innerText;
+            }
+        });
+    }
     var ket = $('#' + id).val();
     var keterangan = "";
     if ("pagi" == ket) {
@@ -3666,7 +3675,7 @@ function setDiet(id) {
                 '<input type="hidden" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
                 '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
                 '</td>' +
-                '<td>' + jenisText + '<input type="hidden" value="' + jenis + '" id="jenis_' + idCount + '"></td>' +
+                '<td>' + tempText + '<input type="hidden" value="' + jenis + '" id="jenis_' + idCount + '"></td>' +
                 '</tr>';
             $('#body_add_diet').append(table);
         } else {

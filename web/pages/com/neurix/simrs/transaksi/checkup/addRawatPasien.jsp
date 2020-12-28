@@ -1778,7 +1778,7 @@
 </div>
 
 <div class="modal fade" id="modal-jadwal-dokter">
-    <div class="modal-dialog" style="width: 57%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1786,16 +1786,29 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Jadwal Dokter <span
                         id="dokter_pelayanan"></span> Hari Ini</h4>
             </div>
-            <div class="modal-body" style="height: 70%; overflow-y: scroll">
+            <div class="modal-body" id="temp_jd">
                 <div class="box-body">
-                    <div class="col-md-12" style="display:inline; padding-left: 6%">
+                    <div class="col-md-12 text-center" style="display:inline; padding-left: 6%">
                         <div class="btn-wrapper">
                             <div id="jadwal_dokter"></div>
                         </div>
                     </div>
+                    <div class="col-md-offset-10 col-md-2">
+                        <ul style="list-style-type: none">
+                            <li>
+                                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota Non BPJS</span>
+                            </li>
+                            <li>
+                                <span style="margin-left: 5px;color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota BPJS</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_temp_jd', 'temp_jd')" class="pull-left hvr-grow" style="color: black; margin-top: 11px; cursor: pointer">
+                    <i id="fa_temp_jd" class="fa fa-unlock"></i>
+                </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -2707,16 +2720,20 @@
 
     function showJadwalDokter(id) {
         var pel = $('#poli option:selected').text();
+        var jenisPasien = $('#jenis_pasien').val();
         var table = "";
-        if (id != null && id != '') {
+        if (id != null && id != '' && jenisPasien != null && jenisPasien != '') {
             CheckupAction.listOfDokter(id, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var kuota = 0;
                         var sisa = 0;
+                        var kuotaBpjs = 0;
+                        var sisKuotaBpjs = 0;
                         var namaDokter = "";
-                        var sip = "231321312";
+                        var sip = "";
                         var label = "";
+                        var label2 = "";
                         var jamkerja = "";
                         if (item.jamAwal != null && item.jamAkhir != null) {
                             jamkerja = item.jamAwal + " s/d " + item.jamAkhir;
@@ -2724,11 +2741,19 @@
                         if (item.kuotaOnSite != null && item.kuotaOnSite != '') {
                             kuota = item.kuotaOnSite;
                         }
-                        if (item.kuotaTerpakai != null && item.kuotaTerpakai != '') {
-                            sisa = item.kuotaTerpakai;
+                        if (item.kuotaBpjs != null && item.kuotaBpjs != '') {
+                            kuotaBpjs = item.kuotaBpjs;
+                        }
+                        if (item.kuotaTerpakaiNonBpjs != null && item.kuotaTerpakaiNonBpjs != '') {
+                            sisa = item.kuotaTerpakaiNonBpjs;
+                        }
+                        if (item.kuotaTerpakaiBpjs != null && item.kuotaTerpakaiBpjs != '') {
+                            sisKuotaBpjs = item.kuotaTerpakaiBpjs;
                         }
 
                         label = sisa + "/" + kuota;
+                        label2 = sisKuotaBpjs + "/" +kuotaBpjs;
+
                         if (item.namaDokter != '') {
                             namaDokter = item.namaDokter;
                         }
@@ -2736,25 +2761,50 @@
                             sip = item.idDokter;
                         }
 
+                        var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
+                        if(item.urlImg != null && item.urlImg != ''){
+                            foto = contextPathHeader+item.urlImg;
+                        }
+
                         var clasBox = 'btn-trans';
                         var btnSet = 'onclick="setDokter(\'' + item.idDokter + '\', \'' + item.namaDokter + '\')"';
+                        var noDrop = 'cursor: pointer';
+
                         if (item.flagLibur == "Y") {
                             clasBox = 'btn-trans-02';
                             btnSet = 'style="cursor: no-drop"';
+                            noDrop = 'cursor: no-drop';
+                        }else{
+                            var cekSisa = 0;
+                            var cekKuota = 0;
+                            if(jenisPasien == 'bpjs'){
+                                cekSisa = sisKuotaBpjs;
+                                cekKuota = kuotaBpjs;
+                            }else{
+                                cekSisa = sisa;
+                                cekKuota = kuota;
+                            }
+
+                            if(cekSisa == cekKuota){
+                                clasBox = 'btn-trans-02';
+                                btnSet = 'style="cursor: no-drop"';
+                                noDrop = 'cursor: no-drop';
+                            }
                         }
                         table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +
-                            '<div style="text-align:left; cursor:pointer; font-size:11px;">\n' +
-                            '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px;">\n' +
+                            '<div style="text-align:left; font-size:11px;">\n' +
+                            '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px; '+noDrop+'">\n' +
                             '        <tr>\n' +
                             '            <td align="left" colspan="2">\n' +
-                            '                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
-                            '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
+                            '                <span style="color: white; background-color: #337ab7; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
+                            '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label2 + '</span>\n' +
+                            '                <span class="pull-right" style="margin-top: -6px; margin-left: 5px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
                             '                <%--<img style="margin-top: -6px" class="pull-right" src="<s:url value="/pages/images/icon_failure.ico"/>">--%>\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="<s:url value="/pages/images/guy-5.jpg"/>">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +

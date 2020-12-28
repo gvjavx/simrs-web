@@ -11,6 +11,7 @@ import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import groovy.lang.ObjectRange;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.Or;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -80,9 +81,18 @@ public class OrderGiziAction extends BaseTransactionAction {
                                 }
                             }
                         }
-                        orderGiziList.add(orderGizi);
+                        List<OrderGizi> cekList = orderGiziBo.cekOrderGizi(orderGizi.getIdRawatInap(), orderGizi.getWaktu());
+                        if(cekList.size() > 0){
+                            response.setStatus("error");
+                            response.setMessage("Gizi pada waktu "+orderGizi.getWaktu().toUpperCase()+" hari ini sudah ada...!");
+                            return response;
+                        }else{
+                            orderGiziList.add(orderGizi);
+                        }
                     }
-                    response = orderGiziBo.saveAdd(orderGiziList, isTomorrow);
+                    if(orderGiziList.size() > 0){
+                        response = orderGiziBo.saveAdd(orderGiziList, isTomorrow);
+                    }
                 } catch (GeneralBOException e) {
                     response.setStatus("error");
                     response.setMessage("Found Error :" + e.getMessage());

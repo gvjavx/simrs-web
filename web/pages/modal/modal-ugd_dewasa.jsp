@@ -130,11 +130,10 @@
                                 <img id="delete_asuhan_medis" class="hvr-grow btn-hide" onclick="conUGD('asuhan_medis', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
-                        <tr id="row_aud_kondisi_pasien">
+                        <tr id="row_aud_terintegrasi">
                             <td>Perkembangan Kondisi Pasien</td>
                             <td width="20%" align="center">
-                                <img id="btn_aud_kondisi_pasien" class="hvr-grow" onclick="detailAud('kondisi_pasien')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
-                                <img id="delete_kondisi_pasien" class="hvr-grow btn-hide" onclick="conUGD('kondisi_pasien', 'asesmen-ugd')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
+                                <img id="btn_aud_terintegrasi" class="hvr-grow" onclick="detailCPPT('terintegrasi','asesmen-ugd', 'aud')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         <tr id="row_aud_keluar_igd">
@@ -290,7 +289,7 @@
                             <div class="col-md-3">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control tensi-pasien" id="pre_tkn">
+                                    <input class="form-control tensi-pasien" id="pre_tkn" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -299,7 +298,7 @@
                             <div class="col-md-3">
                                 <label>Nadi</label>
                                 <div class="input-group">
-                                    <input class="form-control nadi-pasien" id="pre_nadi">
+                                    <input class="form-control nadi-pasien" id="pre_nadi" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -308,7 +307,7 @@
                             <div class="col-md-3">
                                 <label>RR</label>
                                 <div class="input-group">
-                                    <input class="form-control rr-pasien" id="pre_rr">
+                                    <input class="form-control rr-pasien" id="pre_rr" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -317,7 +316,7 @@
                             <div class="col-md-3">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control suhu-pasien" id="pre_suhu">
+                                    <input class="form-control suhu-pasien" id="pre_suhu" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         &#8451
                                     </div>
@@ -2098,94 +2097,6 @@
     </div>
 </div>
 
-<%--<div class="modal fade" id="modal-aud-kondisi_pasien">--%>
-    <%--<div class="modal-dialog modal-md">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header" style="background-color: #00a65a; color: white">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-user-plus"></i> Perkembangan Kondisi Pasien--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<div class="box-body">--%>
-                    <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_aud_kondisi_pasien">--%>
-                        <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                        <%--<p id="msg_aud_kondisi_pasien"></p>--%>
-                    <%--</div>--%>
-                    <%--<div class="row">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3">Tanggal</label>--%>
-                            <%--<div class="col-md-4">--%>
-                                <%--<div class="input-group">--%>
-                                    <%--<div class="input-group-addon">--%>
-                                        <%--<i class="fa fa-calendar"></i>--%>
-                                    <%--</div>--%>
-                                    <%--<input class="form-control tgl" id="pk1">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<label class="col-md-1">Jam</label>--%>
-                            <%--<div class="col-md-3">--%>
-                                <%--<div class="input-group">--%>
-                                    <%--<div class="input-group-addon">--%>
-                                        <%--<i class="fa fa-clock-o"></i>--%>
-                                    <%--</div>--%>
-                                    <%--<input class="form-control jam" id="pk2">--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row jarak">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3">PPA</label>--%>
-                            <%--<div class="col-md-9">--%>
-                                <%--<select class="form-control" id="pk3">--%>
-                                    <%--<option value="Dokter">Dokter</option>--%>
-                                    <%--<option value="Perawat">Perawat</option>--%>
-                                    <%--<option value="Gizi">Gizi</option>--%>
-                                    <%--<option value="Apoteker">Apoteker</option>--%>
-                                <%--</select>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row jarak">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3">IAR</label>--%>
-                            <%--<div class="col-md-9">--%>
-                                <%--<textarea style="width: 100%;" class="form-control" id="pk4"></textarea>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row jarak">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3">Instruksi</label>--%>
-                            <%--<div class="col-md-9">--%>
-                                <%--<textarea class="form-control" id="pk5"></textarea>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                    <%--<div class="row jarak">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3">Notasi</label>--%>
-                            <%--<div class="col-md-9">--%>
-                                <%--<textarea class="form-control" id="pk6"></textarea>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer" style="background-color: #cacaca">--%>
-                <%--<button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close--%>
-                <%--</button>--%>
-                <%--<button id="save_aud_kondisi_pasien" class="btn btn-success pull-right" onclick="saveAsesmenUgd('kondisi_pasien','asesmen-ugd')"><i class="fa fa-check"></i> Save--%>
-                <%--</button>--%>
-                <%--<button id="load_aud_kondisi_pasien" style="display: none; cursor: no-drop" type="button" class="btn btn-success"><i--%>
-                        <%--class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
 <div class="modal fade" id="modal-aud-terintegrasi">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
@@ -2265,7 +2176,7 @@
                             <label class="col-md-3" ><b>O</b>bjective</label>
                             <div class="col-md-4">
                                 <span>Tensi </span> <small>(mmHg)</small>
-                                <input class="form-control" id="cppt5_tensi">
+                                <input class="form-control" id="cppt5_tensi" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-4">
                                 <span>Suhu </span> <small>(&#8451)</small>
@@ -2398,7 +2309,7 @@
                             <div class="col-md-6">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control tensi-pasien" id="ki3">
+                                    <input class="form-control tensi-pasien" id="ki3" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -2420,7 +2331,7 @@
                             <div class="col-md-6">
                                 <label>RR</label>
                                 <div class="input-group">
-                                    <input class="form-control rr-pasien" id="ki5">
+                                    <input class="form-control rr-pasien" id="ki5" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/menit
                                     </div>
@@ -2429,7 +2340,7 @@
                             <div class="col-md-6">
                                 <label>Suhu</label>
                                 <div class="input-group">
-                                    <input class="form-control suhu-pasien" id="ki6">
+                                    <input class="form-control suhu-pasien" id="ki6" type="number">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         &#8451
                                     </div>
@@ -2504,16 +2415,16 @@
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Perawat</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki10')" class="paint-canvas-ttd" id="ki10"></canvas>
-                                <input class="form-control" id="nama_terang_ki10" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ki10" placeholder="SIP">
+                                <input class="form-control nama_petugas" id="nama_terang_ki10" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_ki10" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki10')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>
                             <div class="col-md-6">
                                 <label style="margin-top: 7px">Dokter</label>
                                 <canvas width="250" style="margin-left: -1px;" onmouseover="paintTtd('ki11')" class="paint-canvas-ttd" id="ki11"></canvas>
-                                <input class="form-control" id="nama_terang_ki11" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_ki11" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_ki11" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_ki11" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('ki11')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

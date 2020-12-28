@@ -2268,7 +2268,6 @@ function saveResepObat() {
                 var isRacik = $('#is_racik_'+i).val();
                 var namaRacik = $('#nama_racik_'+i).val();
                 var idRacik = $('#id_racik_'+i).val();
-                console.log(keterangan);
                 dataObat.push({
                     'id_obat':idObat,
                     'qty': qty,
