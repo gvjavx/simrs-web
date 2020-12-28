@@ -29,6 +29,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TransaksiObatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
+
     <script type='text/javascript'>
 
         function formatRupiah(angka) {
@@ -113,8 +115,9 @@
 
             $('#resep_poli').addClass('active');
 
-            // cekListObat();
+            cekListObat();
             countBiaya();
+            getTindakanApotek('', 'jenis_0');
 
             const paintCanvas1 = document.querySelector("#ttd_pasien");
             const paintCanvas2 = document.querySelector("#ttd_apoteker");
@@ -471,23 +474,26 @@
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-3">
-                                <input class="form-control jenis_biaya" placeholder="Jenis Biaya">
+                                <select style="width: 100%" class="form-control select2 jenis_biaya" id="jenis_0" onchange="setTarif(this.value)">
+                                    <option value="">[Select One]</option>
+                                </select>
+                                <%--<input class="form-control " placeholder="Jenis Biaya">--%>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-top: 7px">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         Rp.
                                     </div>
-                                    <input class="form-control" id="biaya_0" oninput="convertRpResep('biaya_0', this.value, 'h_biaya_0'); setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')" placeholder="Biaya">
+                                    <input disabled="disabled" class="form-control" id="biaya_0" oninput="convertRpResep('biaya_0', this.value, 'h_biaya_0'); setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')" placeholder="Biaya">
                                     <input type="hidden" class="biaya" id="h_biaya_0">
                                 </div>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-md-2" style="margin-top: 7px">
                                 <input oninput="setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')"
                                        onchange="setTotalBiaya('biaya_0', 'h_total_biaya_0', 'total_biaya_0', 'jml_0')"
                                        class="form-control jumlah" value="1" type="number" placeholder="jumlah" id="jml_0">
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="margin-top: 7px">
                                 <div class="input-group">
                                     <div class="input-group-addon">
                                         Rp.
@@ -496,7 +502,7 @@
                                     <input class="h_total_biaya" type="hidden" id="h_total_biaya_0">
                                 </div>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-1" style="margin-top: 7px">
                                 <a onclick="addBiaya()" class="btn btn-success" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-plus"></i></a>
                             </div>
                         </div>
@@ -1196,7 +1202,8 @@
                     var total = $('#h_total_biaya_'+i).val();
                     if(total != ''){
                         dataTambahan.push({
-                            'jenis_biaya': item.value,
+                            'id_jenis_biaya': item.value.split('|')[0],
+                            'jenis_biaya': item.value.split('|')[5],
                             'total': total
                         });
                     }
@@ -1251,17 +1258,20 @@
         var total = 'total_biaya_'+id;
         var totalH = 'h_total_biaya_'+id;
         var idJumlah = 'jml_'+id;
+        var minus = id - 1;
 
         var row = '<div class="row" id="'+label+'" style="margin-top: 7px">\n' +
             '<div class="col-md-3">\n' +
-            '    <input class="form-control jenis_biaya" placeholder="Jenis Biaya">\n' +
+            '<select style="width: 100%" class="form-control select2 jenis_biaya" id="jenis_'+id+'" onchange="setTarif(this.value)">\n' +
+            ' <option value="">[Select One]</option>\n' +
+            '</select>'+
             '</div>\n' +
             '<div class="col-md-3">\n' +
             '    <div class="input-group">\n' +
             '        <div class="input-group-addon">\n' +
             '            Rp.\n' +
             '        </div>\n' +
-            '        <input class="form-control" id="'+inputId+'" oninput="convertRpResep(\''+inputId+'\', this.value, \''+hInput+'\'); setTotalBiaya(\''+inputId+'\', \''+totalH+'\', \''+total+'\', \''+idJumlah+'\')" placeholder="Biaya">\n' +
+            '        <input disabled class="form-control" id="'+inputId+'" oninput="convertRpResep(\''+inputId+'\', this.value, \''+hInput+'\'); setTotalBiaya(\''+inputId+'\', \''+totalH+'\', \''+total+'\', \''+idJumlah+'\')" placeholder="Biaya">\n' +
             '        <input type="hidden" class="biaya" id="'+hInput+'">\n' +
             '    </div>\n' +
             '</div>\n' +
@@ -1283,7 +1293,23 @@
             '    <a onclick="delBiaya(\''+label+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 1px"><i class="fa fa-trash"></i></a>\n' +
             '</div>\n' +
             '</div>';
+        var data = $('.jenis_biaya');
+        var temP = "";
+        if(data.length > 0){
+            $.each(data, function (i, item) {
+                if(item.value != ''){
+                    if(temP != ''){
+                        temP = temP +", '"+item.value.split('|')[0]+"'";
+                    }else{
+                        temP = "'"+item.value.split('|')[0]+"'";
+                    }
+                }
+            });
+        }
         $('#temp_biaya').append(row);
+        $('.select2').select2();
+        $('#jenis_'+minus).attr('disabled', true);
+        getTindakanApotek(temP,'jenis_'+id);
     }
 
     function delBiaya(id){
@@ -1360,6 +1386,47 @@
         $('#h_total_akhir_biaya').val(jumlah);
     }
 
+    function getTindakanApotek(idTindakan, id) {
+        var option = '<option value="">[Select One]</option>';
+        TindakanAction.getComboTindakanApotek(idTindakan, function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idTindakan+'|'+item.bDTarif+'|'+item.bDTarifBpjs+'|'+item.diskon+'|'+item.tipe+'|'+item.tindakan+'">'+item.tindakan+'</option>';
+                });
+            }
+            $('#'+id).html(option);
+        });
+    }
+
+    function setTarif(val){
+        var jenisPasien = '<s:property value="permintaanResep.idJenisPeriksa"/>';
+        var id = $('.jenis_biaya').length;
+        if(val != ''){
+            var data = val.split('|');
+            var idTindakan = data[0];
+            var tarif = data[1];
+            var tarifBpjs = data[2];
+            var diskon = data[3];
+            var tipe = data[4];
+            var tarifFix = 0;
+            var total = 0;
+            if(jenisPasien == 'bpjs'){
+                tarifFix = tarifBpjs;
+            }else{
+                tarifFix = tarif;
+            }
+
+            if(parseInt(diskon) > 0){
+                var dis = 100 - diskon;
+                var hasil = dis/100;
+                total = (tarifFix * hasil).toFixed(2);
+            }else{
+                total = tarifFix;
+            }
+            var iid = id - 1;
+            $('#biaya_'+iid).val(total).trigger('input');
+        }
+    }
 
 </script>
 

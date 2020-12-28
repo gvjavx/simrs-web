@@ -31,7 +31,7 @@ function saveRJ(jenis, ket) {
     }
 
     if ("anamnesa_pemeriksaan_fisik" == jenis) {
-        var va1 = $('#e1e1e1').val();
+        var va1 = $('#af1').val();
         var va2 = $('#af2').val();
         var va3 = $('#af3').val();
         var va4 = "";
@@ -59,14 +59,13 @@ function saveRJ(jenis, ket) {
             if(va12d == "Lain-Lain"){
                 var ket = $('#ket_af12').val();
                 if(ket != ''){
-                    va12 = va12d;
+                    va12 = ket;
                 }
             }else{
                 va12 = va12d;
             }
         }
-
-        if (va1 && va2 && va3 && va4 && va5 && va6 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 != '') {
             data.push({
                 'parameter': 'Tanggal & Jam',
                 'jawaban': va1+' '+va2,
@@ -120,7 +119,7 @@ function saveRJ(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tanda Vital',
-                'jawaban': 'Tensi '+va8+' mmHg, Suhu '+va9+' ˚C, RR '+va10+' x/menit, Nadi '+va11+' x/menit',
+                'jawaban': 'Tensi '+replaceUnderLine(va8)+' mmHg, Suhu '+va9+' ˚C, RR '+va10+' x/menit, Nadi '+va11+' x/menit',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup

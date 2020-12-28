@@ -25,7 +25,6 @@ public class KategoriTindakanBoImpl implements KategoriTindakanBo {
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean != null) {
             String idKategoriTindakan = bean.getIdKategoriTindakan();
-
             ImSimrsKategoriTindakanEntity imSimrsKategoriTindakanEntity = null;
 
             try {

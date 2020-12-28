@@ -12,17 +12,13 @@ import org.apache.struts2.ServletActionContext;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import javax.imageio.IIOImage;
-import javax.imageio.ImageIO;
-import javax.imageio.ImageWriteParam;
-import javax.imageio.ImageWriter;
+import javax.imageio.*;
+import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.nio.file.Files;
@@ -42,7 +38,6 @@ import java.util.Properties;
 import static java.util.Calendar.DATE;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
-
 
 /**
  * Created by IntelliJ IDEA.
@@ -652,6 +647,16 @@ public class  CommonUtil {
     public static String convertTimestampToString(Timestamp date){
         String tanggal = "";
         String DATE_FORMAT = "dd-MM-yyyy";
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+        java.util.Date tanggalApp = date;
+        tanggal = sdf.format(tanggalApp);
+
+        return tanggal;
+    }
+
+    public static String convertTimestampToString2(Timestamp date){
+        String tanggal = "";
+        String DATE_FORMAT = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         java.util.Date tanggalApp = date;
         tanggal = sdf.format(tanggalApp);
@@ -1435,22 +1440,43 @@ public class  CommonUtil {
         return BigDecimal.valueOf(Double.valueOf(number));
     }
 
-    public static CrudResponse compresing(BufferedImage image, String url) {
+    public static String getImageFormat(File image) {
+        String result = null;
+        try {
+            ImageInputStream input = ImageIO.createImageInputStream(image);
+
+            Iterator<ImageReader> imageReaders = ImageIO.getImageReaders(input);
+
+            while (imageReaders.hasNext()) {
+                ImageReader reader = (ImageReader) imageReaders.next();
+                result = reader.getFormatName();
+            }
+        } catch (IOException e){
+            throw new GeneralBOException("Found problem when upload images, " + e.getMessage());
+        }
+        return result;
+    }
+
+    public static CrudResponse compressImage(BufferedImage image, String imageType, String url) {
         CrudResponse response = new CrudResponse();
         try {
             ImageOutputStream out = ImageIO.createImageOutputStream(Files.newOutputStream(Paths.get(url)));
-            ImageWriter writer = ImageIO.getImageWritersByFormatName("jpg").next();
+            ImageTypeSpecifier type = ImageTypeSpecifier.createFromRenderedImage(image);
+            ImageWriter writer = ImageIO.getImageWriters(type, "jpg").next();
             ImageWriteParam param = writer.getDefaultWriteParam();
-            if(param.canWriteCompressed()){
+            if(imageType.equalsIgnoreCase("jpg") || imageType.equalsIgnoreCase("jpeg")){
                 param.setCompressionMode(ImageWriteParam.MODE_EXPLICIT);
-                param.setCompressionQuality(0.1f);
+                param.setCompressionQuality(0.25f);
                 writer.setOutput(out);
                 writer.write(null, new IIOImage(image, null, null), param);
+                File f = new File(url);
+                ImageIO.write(image, "jpg", f);
+                response.setStatus("success");
+                response.setMsg("Berhasil");
+            } else {
+               response = compressImage(convertPngToJpg(image), "jpg", url);
             }
-            File f = new File(url);
-            ImageIO.write(image, "png", f);
-            response.setStatus("success");
-            response.setMsg("Berhasil");
+
         } catch (IOException e) {
             e.printStackTrace();
             response.setStatus("error");
@@ -1460,4 +1486,38 @@ public class  CommonUtil {
         }
         return response;
     }
+
+    public static CrudResponse resizeImage(BufferedImage image, String url, double multiplier) {
+        CrudResponse response = new CrudResponse();
+        double width = image.getWidth()*multiplier;
+        double height = image.getHeight()*multiplier;
+        try {
+            BufferedImage resizedImage = new BufferedImage((int) width, (int) height, BufferedImage.TYPE_INT_RGB);
+            Graphics2D graphics2D = resizedImage.createGraphics();
+            graphics2D.drawImage(image, 0, 0, (int) width, (int) height, null);
+            graphics2D.dispose();
+
+            File f = new File(url);
+            ImageIO.write(resizedImage, "png", f);
+            response.setStatus("success");
+            response.setMsg("Berhasil");
+        } catch (FileNotFoundException e) {
+            response.setStatus("error");
+            response.setMsg("Found problem when upload images, "+e.getMessage());
+            throw new GeneralBOException("Found problem when upload images, " + e.getMessage());
+        } catch (IOException t) {
+            response.setStatus("error");
+            response.setMsg("Found problem when upload images, "+t.getMessage());
+            throw new GeneralBOException("Found problem when upload images, " + t.getMessage());
+        }
+        return response;
+    }
+
+    public static BufferedImage convertPngToJpg (BufferedImage image) {
+        BufferedImage result = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_RGB);
+        result.createGraphics().drawImage(image, 0, 0, Color.WHITE, null);
+        return result;
+    }
+
+
 }

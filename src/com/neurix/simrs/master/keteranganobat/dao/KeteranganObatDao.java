@@ -5,10 +5,13 @@ import com.neurix.simrs.master.keteranganobat.model.ImSimrsKeteranganObatEntity;
 import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
+import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +48,8 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
             bean.setIdParameterKeterangan("%");
         if (bean.getKeterangan() == null || "".equalsIgnoreCase(bean.getKeterangan()))
             bean.setKeterangan("%");
+        if (bean.getIdJenis() == null || "".equalsIgnoreCase(bean.getIdJenis()))
+            bean.setIdJenis("%");
         if (bean.getFlag() == null || "".equalsIgnoreCase(bean.getFlag()))
             bean.setFlag("Y");
 
@@ -60,15 +65,22 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 "a.created_date,\n" +
                 "a.created_who,\n" +
                 "a.last_update,\n" +
-                "a.last_update_who\n" +
+                "a.last_update_who,\n" +
+                "d.id as id_jenis_obat,\n" +
+                "d.nama as nama_jenis_obat,\n" +
+                "a.warna_label,\n" +
+                "a.warna_background\n" +
                 "FROM im_simrs_keterangan_obat a\n" +
                 "LEFT JOIN im_simrs_jenis_persediaan_obat_sub b ON b.id = a.id_sub_jenis\n" +
                 "LEFT JOIN im_simrs_paremeter_keterangan_obat c ON c.id = a.id_parameter_keterangan\n" +
+                "INNER JOIN im_simrs_jenis_persediaan_obat d ON d.id = b.id_jenis_obat\n" +
                 "WHERE a.flag = :flag \n" +
-                "AND a.id_sub_jenis LIKE idSubJenis \n" +
+                "AND a.id_sub_jenis LIKE :idSubJenis \n" +
                 "AND a.id_parameter_keterangan LIKE :idParameterKeterangan \n" +
                 "AND a.id LIKE :id \n" +
-                "AND a.keterangan ILIKE :keterangan \n";
+                "AND a.keterangan ILIKE :keterangan \n"+
+                "AND d.id LIKE :idjenis \n" +
+                "ORDER BY d.id, a.id_sub_jenis, c.id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("flag", bean.getFlag())
@@ -76,6 +88,7 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 .setParameter("idParameterKeterangan", bean.getIdParameterKeterangan())
                 .setParameter("id", bean.getId())
                 .setParameter("keterangan", bean.getKeterangan())
+                .setParameter("idjenis", bean.getIdJenis())
                 .list();
 
         List<KeteranganObat> keteranganObats = new ArrayList<>();
@@ -94,6 +107,10 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 keteranganObat.setCreatedWho(objToString(obj[9]));
                 keteranganObat.setLastUpdate(objToTimestamp(obj[10]));
                 keteranganObat.setLastUpdateWho(objToString(obj[11]));
+                keteranganObat.setIdJenis(objToString(obj[12]));
+                keteranganObat.setNamaJenis(objToString(obj[13]));
+                keteranganObat.setWarnaLabel(objToString(obj[14]));
+                keteranganObat.setWarnaBackground(objToString(obj[15]));
                 keteranganObats.add(keteranganObat);
             }
         }
@@ -123,6 +140,32 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         return keteranganObatList;
     }
 
+
+    public boolean checkIfAvailableByCriteria(String idSubJenis, String idParam, String keterangan, String warnaLabel, String warnaBackground){
+
+        String stWhere = "";
+        if (warnaBackground != null && !"".equalsIgnoreCase(warnaBackground))
+            stWhere += "AND warna_background = '"+warnaBackground+"' \n";
+        if (warnaLabel != null && !"".equalsIgnoreCase(warnaLabel))
+            stWhere += "AND warna_label = '"+warnaLabel+"' \n";
+
+        String SQL = "SELECT id_sub_jenis, id_parameter_keterangan, keterangan \n" +
+                "FROM im_simrs_keterangan_obat \n" +
+                "WHERE id_sub_jenis = :idsubjenis\n" +
+                "AND id_parameter_keterangan = :idparam\n" +
+                "AND keterangan = :keterangan \n" + stWhere;
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idsubjenis", idSubJenis)
+                .setParameter("idparam", idParam)
+                .setParameter("keterangan", keterangan)
+                .list();
+
+        if (results != null && results.size() > 0)
+            return true;
+        return false;
+    }
+
     private String objToString(Object obj){
         if (obj != null)
             return obj.toString();
@@ -133,5 +176,12 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         if (obj != null)
             return (Timestamp) obj;
         return null;
+    }
+
+    public String getNextSeq() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_keterangan_obat')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%07d", iter.next());
+        return "KTO" + sId;
     }
 }

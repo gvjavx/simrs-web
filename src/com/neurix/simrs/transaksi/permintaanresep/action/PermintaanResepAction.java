@@ -13,6 +13,7 @@ import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
 import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.apache.log4j.Logger;
 import org.directwebremoting.json.types.JsonObject;
@@ -132,6 +133,27 @@ public class PermintaanResepAction extends BaseMasterAction{
                                 if (objt.getString("hari_kronis") != null  && !"".equalsIgnoreCase(objt.getString("hari_kronis"))){
                                     detail.setHariKronis(new Integer(objt.getString("hari_kronis")));
                                 }
+
+                                List<ItSimrsKeteranganResepEntity> resepEntityList = new ArrayList<>();
+                                if(objt.has("keterangan_detail")){
+                                    if(objt.getString("keterangan_detail") != null && !"".equalsIgnoreCase(objt.getString("keterangan_detail"))){
+                                        JSONArray jsoon = new JSONArray(objt.getString("keterangan_detail"));
+                                        for (int k=0; k < jsoon.length(); k++) {
+                                            JSONObject ob = jsoon.getJSONObject(k);
+                                            ItSimrsKeteranganResepEntity resepEntity = new ItSimrsKeteranganResepEntity();
+                                            resepEntity.setIdKeteranganObat(ob.getString("id_waktu"));
+                                            resepEntity.setKeteranganLain(ob.getString("keterangan"));
+                                            resepEntity.setCreatedDate(updateTime);
+                                            resepEntity.setCreatedWho(userArea);
+                                            resepEntity.setLastUpdate(updateTime);
+                                            resepEntity.setLastUpdateWho(userArea);
+                                            resepEntity.setAction("C");
+                                            resepEntity.setFlag("Y");
+                                            resepEntityList.add(resepEntity);
+                                        }
+                                    }
+                                }
+                                detail.setKeteranganResepEntityList(resepEntityList);
                                 detailList.add(detail);
                             }
                         }

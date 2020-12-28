@@ -1506,6 +1506,14 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE im_simrs_obat
 DROP COLUMN id_jenis_obat;
 
+--Anyar IKI
+
+INSERT INTO im_functions VALUES
+(3316, 'search obat keterangan', '/keteranganobat/search_keteranganobat.action', 3318, 1, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(3316, 85, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 

@@ -1,10 +1,13 @@
 package com.neurix.simrs.master.parameterketeranganobat.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.dao.ParameterKeteranganObatDao;
 import com.neurix.simrs.master.parameterketeranganobat.model.ImSimrsParameterKeteranganObatEntity;
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
+
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -22,66 +25,55 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
     }
 
     @Override
-    public List<ImSimrsParameterKeteranganObatEntity> getListEntitiyByCriteria(ParameterKeteranganObat bean) throws GeneralBOException {
-        logger.info("[ParameterKeteranganObatBoImpl.getListEntitiyByCriteria] START >>>");
+    public List<ParameterKeteranganObat> getByCriteria(ParameterKeteranganObat bean) throws GeneralBOException {
+        logger.info("[ParameterKeteranganObatBoImpl.getByCriteria] Start >>>>>>>>");
+        List<ParameterKeteranganObat> listOfResultParameterKeteranganObat = new ArrayList<>();
+        if (bean != null) {
+            Map hsCriteria = new HashMap();
+            if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId())) {
+                hsCriteria.put("id", bean.getId());
+            }
+            if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
+                hsCriteria.put("nama", bean.getNama());
+            }
+            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                if ("N".equalsIgnoreCase(bean.getFlag())) {
+                    hsCriteria.put("flag", "N");
+                } else {
+                    hsCriteria.put("flag", bean.getFlag());
+                }
+            } else {
+                hsCriteria.put("flag", "Y");
+            }
 
-        Map hsCriteria = new HashMap();
-        if (bean.getId() != null && !"".equalsIgnoreCase(bean.getId()))
-            hsCriteria.put("id", bean.getId());
-        if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama()))
-            hsCriteria.put("nama", bean.getNama());
-        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
-            hsCriteria.put("flag", bean.getFlag());
+            List<ImSimrsParameterKeteranganObatEntity> imSimrsParameterKeteranganObat = null;
+            try {
+                imSimrsParameterKeteranganObat = parameterKeteranganObatDao.getByCriteria(hsCriteria);
+            } catch (HibernateException e){
+                logger.error("[JenisDietBoImpl.getByCriteria] error when get data Jenis Diet by get by criteria "+ e.getMessage());
+            }
 
-        List<ImSimrsParameterKeteranganObatEntity> parameterKeteranganObatEntities = new ArrayList<>();
-        try {
-            parameterKeteranganObatEntities = parameterKeteranganObatDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[ParameterKeteranganObatBoImpl.getListEntitiyByCriteria] ERROR, error when. ",e);
-            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getListEntitiyByCriteria] ERROR, error when. "+e);
-        }
+            if (imSimrsParameterKeteranganObat.size() > 0) {
+                for (ImSimrsParameterKeteranganObatEntity ParameterKeteranganObat : imSimrsParameterKeteranganObat){
+                    ParameterKeteranganObat parameterKeteranganObat = new ParameterKeteranganObat();
 
-        logger.info("[ParameterKeteranganObatBoImpl.getListEntitiyByCriteria] END <<<");
-        return parameterKeteranganObatEntities;
-    }
-
-    @Override
-    public List<ParameterKeteranganObat> getSearchByCriteria(ParameterKeteranganObat bean) throws GeneralBOException {
-        return null;
-    }
-
-    @Override
-    public List<ParameterKeteranganObat> getListSearchByCriteria(ParameterKeteranganObat bean) throws GeneralBOException {
-        logger.info("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] START >>>");
-
-        List<ImSimrsParameterKeteranganObatEntity> parameterKeteranganObatEntities = new ArrayList<>();
-
-        try {
-            parameterKeteranganObatEntities = getListEntitiyByCriteria(bean);
-        } catch (HibernateException e){
-            logger.error("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] ERROR, error when. ",e);
-            throw new GeneralBOException("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] ERROR, error when. "+e);
-        }
+                    parameterKeteranganObat.setId(ParameterKeteranganObat.getId());
+                    parameterKeteranganObat.setNama(ParameterKeteranganObat.getNama());
 
 
-        List<ParameterKeteranganObat> parameterKeteranganObats = new ArrayList<>();
-        if (parameterKeteranganObatEntities.size() > 0){
-            for (ImSimrsParameterKeteranganObatEntity paramEntity : parameterKeteranganObatEntities){
-                ParameterKeteranganObat parameter = new ParameterKeteranganObat();
-                parameter.setId(paramEntity.getId());
-                parameter.setNama(paramEntity.getNama());
-                parameter.setFlag(paramEntity.getFlag());
-                parameter.setAction(paramEntity.getAction());
-                parameter.setCreatedDate(paramEntity.getCreatedDate());
-                parameter.setCreatedWho(paramEntity.getCreatedWho());
-                parameter.setLastUpdate(paramEntity.getLastUpdate());
-                parameter.setLastUpdateWho(paramEntity.getLastUpdateWho());
-                parameterKeteranganObats.add(parameter);
+                    parameterKeteranganObat.setAction(ParameterKeteranganObat.getAction());
+                    parameterKeteranganObat.setFlag(ParameterKeteranganObat.getFlag());
+                    parameterKeteranganObat.setCreatedDate(ParameterKeteranganObat.getCreatedDate());
+                    parameterKeteranganObat.setCreatedWho(ParameterKeteranganObat.getCreatedWho());
+                    parameterKeteranganObat.setLastUpdate(ParameterKeteranganObat.getLastUpdate());
+                    parameterKeteranganObat.setLastUpdateWho(ParameterKeteranganObat.getLastUpdateWho());
+                    listOfResultParameterKeteranganObat.add(parameterKeteranganObat);
+                }
             }
         }
 
-        logger.info("[ParameterKeteranganObatBoImpl.getListSearchByCriteria] END <<<");
-        return parameterKeteranganObats;
+        logger.info("[ParameterKeteranganObatBoImpl.getByCriteria] End <<<<<<<<");
+        return listOfResultParameterKeteranganObat;
     }
 
     @Override
@@ -89,6 +81,17 @@ public class ParameterKeteranganObatBoImpl implements ParameterKeteranganObatBo{
         List<ParameterKeteranganObat> parameterKeteranganObats = new ArrayList<>();
         try {
             parameterKeteranganObats = parameterKeteranganObatDao.getParameterKeterangan(idJenis);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return parameterKeteranganObats;
+    }
+
+    @Override
+    public List<KeteranganObat> getParameterKeteranganWaktu(String idJenis) throws GeneralBOException {
+        List<KeteranganObat> parameterKeteranganObats = new ArrayList<>();
+        try {
+            parameterKeteranganObats = parameterKeteranganObatDao.getKeteranganObatWaktu(idJenis);
         }catch (HibernateException e){
             logger.error(e.getMessage());
         }

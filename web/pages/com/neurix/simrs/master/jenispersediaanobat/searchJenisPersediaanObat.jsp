@@ -158,7 +158,6 @@
 
                               <display:column media="html" title="Edit">
                                 <s:if test='jenisPersediaanObat.isKp == "Y"'>
-
                                 <s:if test='#attr.row.flag == "Y"'>
                                   <s:url var="urlEdit" namespace="/jenispersediaanobat" action="edit_jenispersediaanobat" escapeAmp="false">
                                     <s:param name="id"><s:property value="#attr.row.id"/></s:param>

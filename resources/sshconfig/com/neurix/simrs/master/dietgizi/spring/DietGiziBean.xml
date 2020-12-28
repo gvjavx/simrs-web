@@ -6,6 +6,7 @@
 
     <bean id="dietGiziBo" class="com.neurix.simrs.master.dietgizi.bo.impl.DietGiziBoImpl"
           p:dietGiziDao-ref="dietGiziDao"
+          p:jenisDietDao-ref="jenisDietDao"
 
     />
 

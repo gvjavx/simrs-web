@@ -156,7 +156,7 @@ public class ParameterKeteranganObatAction extends BaseMasterAction {
         ParameterKeteranganObat searchParameterKeteranganObat = getParameterKeteranganObat();
         List<ParameterKeteranganObat> listOfsearchParameterKeteranganObat = new ArrayList();
         try {
-            listOfsearchParameterKeteranganObat = parameterKeteranganObatBo.getListSearchByCriteria(searchParameterKeteranganObat);
+            listOfsearchParameterKeteranganObat = parameterKeteranganObatBo.getByCriteria(searchParameterKeteranganObat);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());

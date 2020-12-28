@@ -27,6 +27,24 @@ public class ItSimrsPembayaranOnlineEntity {
     private String jenisPengambilan;
     private String alamat;
     private String idRekening;
+    private Timestamp waktuBayar;
+    private String flagUploadUlang;
+
+    public String getFlagUploadUlang() {
+        return flagUploadUlang;
+    }
+
+    public void setFlagUploadUlang(String flagUploadUlang) {
+        this.flagUploadUlang = flagUploadUlang;
+    }
+
+    public Timestamp getWaktuBayar() {
+        return waktuBayar;
+    }
+
+    public void setWaktuBayar(Timestamp waktuBayar) {
+        this.waktuBayar = waktuBayar;
+    }
 
     public String getIdRekening() {
         return idRekening;

@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.transaksiobat.model;
 
 import com.neurix.common.model.BaseModel;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -102,6 +103,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String isOrder;
     private List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
     private List<ItSimrsRiwayatTindakanEntity> biayaTambahanList = new ArrayList<>();
+    private List<ItSimrsKeteranganResepEntity> keteranganResepEntityList = new ArrayList<>();
+
+    public List<ItSimrsKeteranganResepEntity> getKeteranganResepEntityList() {
+        return keteranganResepEntityList;
+    }
+
+    public void setKeteranganResepEntityList(List<ItSimrsKeteranganResepEntity> keteranganResepEntityList) {
+        this.keteranganResepEntityList = keteranganResepEntityList;
+    }
 
     public List<ItSimrsRiwayatTindakanEntity> getBiayaTambahanList() {
         return biayaTambahanList;

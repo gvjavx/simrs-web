@@ -84,7 +84,6 @@
                 </table>
 
                 <table >
-
                     <tr>
                         <td >
                             <label class="control-label"><small>Jenis Persediaan Obat Sub:</small></label>

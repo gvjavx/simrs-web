@@ -40,6 +40,25 @@ public class Tindakan {
     private String idKelasRuangan;
     private String flagIdKelasRuangan;
 
+    private BigDecimal bDTarif;
+    private BigDecimal bDTarifBpjs;
+
+    public BigDecimal getbDTarif() {
+        return bDTarif;
+    }
+
+    public void setbDTarif(BigDecimal bDTarif) {
+        this.bDTarif = bDTarif;
+    }
+
+    public BigDecimal getbDTarifBpjs() {
+        return bDTarifBpjs;
+    }
+
+    public void setbDTarifBpjs(BigDecimal bDTarifBpjs) {
+        this.bDTarifBpjs = bDTarifBpjs;
+    }
+
     public String getIdKelasRuangan() {
         return idKelasRuangan;
     }

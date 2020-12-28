@@ -1,24 +1,35 @@
-package com.neurix.simrs.master.parameterketeranganobat.model;
+package com.neurix.simrs.transaksi.transketeranganobat.model;
 
 import java.sql.Timestamp;
 
-public class ParameterKeteranganObat {
+public class ItSimrsKeteranganResepEntity {
     private String id;
-    private String nama;
+    private String idJenisObat;
+    private String idKeteranganObat;
+    private String keteranganLain;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String flagLabelWaktu;
+    private String idPermintaanResep;
+    private String idObat;
 
-    public String getFlagLabelWaktu() {
-        return flagLabelWaktu;
+    public String getIdPermintaanResep() {
+        return idPermintaanResep;
     }
 
-    public void setFlagLabelWaktu(String flagLabelWaktu) {
-        this.flagLabelWaktu = flagLabelWaktu;
+    public void setIdPermintaanResep(String idPermintaanResep) {
+        this.idPermintaanResep = idPermintaanResep;
+    }
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
     }
 
     public String getId() {
@@ -29,12 +40,28 @@ public class ParameterKeteranganObat {
         this.id = id;
     }
 
-    public String getNama() {
-        return nama;
+    public String getIdJenisObat() {
+        return idJenisObat;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setIdJenisObat(String idJenisObat) {
+        this.idJenisObat = idJenisObat;
+    }
+
+    public String getIdKeteranganObat() {
+        return idKeteranganObat;
+    }
+
+    public void setIdKeteranganObat(String idKeteranganObat) {
+        this.idKeteranganObat = idKeteranganObat;
+    }
+
+    public String getKeteranganLain() {
+        return keteranganLain;
+    }
+
+    public void setKeteranganLain(String keteranganLain) {
+        this.keteranganLain = keteranganLain;
     }
 
     public String getFlag() {
@@ -90,10 +117,14 @@ public class ParameterKeteranganObat {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        ParameterKeteranganObat that = (ParameterKeteranganObat) o;
+        ItSimrsKeteranganResepEntity that = (ItSimrsKeteranganResepEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        if (nama != null ? !nama.equals(that.nama) : that.nama != null) return false;
+        if (idJenisObat != null ? !idJenisObat.equals(that.idJenisObat) : that.idJenisObat != null) return false;
+        if (idKeteranganObat != null ? !idKeteranganObat.equals(that.idKeteranganObat) : that.idKeteranganObat != null)
+            return false;
+        if (keteranganLain != null ? !keteranganLain.equals(that.keteranganLain) : that.keteranganLain != null)
+            return false;
         if (flag != null ? !flag.equals(that.flag) : that.flag != null) return false;
         if (action != null ? !action.equals(that.action) : that.action != null) return false;
         if (createdDate != null ? !createdDate.equals(that.createdDate) : that.createdDate != null) return false;
@@ -108,7 +139,9 @@ public class ParameterKeteranganObat {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (nama != null ? nama.hashCode() : 0);
+        result = 31 * result + (idJenisObat != null ? idJenisObat.hashCode() : 0);
+        result = 31 * result + (idKeteranganObat != null ? idKeteranganObat.hashCode() : 0);
+        result = 31 * result + (keteranganLain != null ? keteranganLain.hashCode() : 0);
         result = 31 * result + (flag != null ? flag.hashCode() : 0);
         result = 31 * result + (action != null ? action.hashCode() : 0);
         result = 31 * result + (createdDate != null ? createdDate.hashCode() : 0);

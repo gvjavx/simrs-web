@@ -73,25 +73,7 @@
                 class="com.neurix.simrs.master.keteranganobat.action.KeteranganObatAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/kelasruangan/searchKelasRuangan.jsp</result>
-            <result name="add">/pages/com/neurix/simrs/master/kelasruangan/addKelasRuangan.jsp</result>
-            <result name="edit">/pages/com/neurix/simrs/master/kelasruangan/editKelasRuangan.jsp</result>
-            <result name="delete">/pages/com/neurix/simrs/master/kelasruangan/deleteKelasRuangan.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/simrs/kelasruangan/addKelasRuangan.jsp</result>
-            <result name="failure">/pages/com/neurix/simrs/master/kelasruangan/edithKelasRuangan.jsp</result>
-
-            <!--<result name="save_add">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="save_edit">/pages/com/neurix/hris/master/keluarga/addKeluarga.jsp</result>-->
-            <!--<result name="failure">/pages/com/neurix/hris/master/keluarga/editKeluarga.jsp</result>-->
-
-
-
-
-
-            <!--<result name="error" type="httpheader">-->
-            <!--<param name="status">504</param>-->
-            <!--<param name="headers.message">${actionErrors}</param>-->
-            <!--</result>-->
+            <result name="search">/pages/com/neurix/simrs/master/keteranganobat/searchKeteranganObat.jsp</result>
         </action>
 
 

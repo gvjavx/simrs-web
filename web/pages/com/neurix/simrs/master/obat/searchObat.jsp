@@ -646,7 +646,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2">
-                        <label style="margin-top: 10px">Bentuk Obat</label>
+                        <label style="margin-top: 10px">Bentuk Barang</label>
                     </div>
                     <div class="col-md-4">
                         <select class="form-control select2" id="id_bentuk" style="margin-top:0px !important; width: 100%"
@@ -953,7 +953,7 @@
 
         if (nama && lembarBox && bijiLembar && margin && idKategori && idBentuk
             && merek && minStok != '' && flagKronis && flagGeneric && flagBpjs && idJenisBantuk && idJenisSub
-            && formula && parenteral != undefined && jenis != null && tableKandungan.length > 0 && cekGenerate) {
+            && formula && parenteral != undefined && jenis != null && cekGenerate) {
             var tempKandungan = [];
             $.each(tableKandungan, function (i, item) {
                 var id = $('#id_kandungan_'+i).val();
@@ -1108,9 +1108,9 @@
             if (idJenisSub == '') {
                 $('#war_id_sub_jenis_obat').show();
             }
-            if (tableKandungan.length == 0) {
-                $('#war_kandungan_obat').show();
-            }
+            // if (tableKandungan.length == 0) {
+            //     $('#war_kandungan_obat').show();
+            // }
         }
     }
 
@@ -1396,7 +1396,6 @@
             $.each(res, function (i, item) {
                 str += '<option value="' + item.id + '">' + item.nama + '</option>';
             });
-            console.log(str);
             $("#id_sub_jenis_obat").html(str);
         })
     }
