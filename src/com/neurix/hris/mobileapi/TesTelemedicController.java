@@ -615,7 +615,7 @@ public class TesTelemedicController implements ModelDriven<Object> {
         List listParam = new ArrayList();
 
         try {
-            listParam = parameterKeteranganObatBoProxy.getListSearchByCriteria(param);
+            listParam = parameterKeteranganObatBoProxy.getByCriteria(param);
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.searchParameterKeterangan] ERROR. ",e);
         }
