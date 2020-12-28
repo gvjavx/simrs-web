@@ -1498,10 +1498,10 @@ ADD COLUMN nama_racik VARCHAR(100),
 ADD COLUMN jenis_resep VARCHAR(100);
 
 INSERT INTO im_functions VALUES
-(6534, 'print label', '/reseppoli/printLabelResepPasien_reseppoli.action', 1543, 1, now(), 'admin', now(), 'admin', 'Y','C', null);
+(3315, 'print label', '/reseppoli/printLabelResepPasien_reseppoli.action', 1543, 1, now(), 'admin', now(), 'admin', 'Y','C', null);
 
 INSERT INTO im_func_roles VALUES
-(6534, 36, 'Y', now(), now(), 'admin', 'admin');
+(3315, 36, 'Y', now(), now(), 'admin', 'admin');
 
 ALTER TABLE im_simrs_obat
 DROP COLUMN id_jenis_obat;
