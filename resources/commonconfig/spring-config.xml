@@ -314,4 +314,5 @@
     <import resource="sshconfig/com/neurix/simrs/master/dietgizi/spring/JenisDietBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/transketeranganobat/spring/TransKeteranganObatBean.xml"/>
 
+
 </beans>

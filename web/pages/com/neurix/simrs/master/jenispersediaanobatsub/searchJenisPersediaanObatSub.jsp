@@ -11,7 +11,7 @@
   <script type='text/javascript'>
 
       function link(){
-          window.location.href="<s:url action='initForm_bentukbarang'/>";
+          window.location.href="<s:url action='initForm_jenispersediaanobatsub'/>";
       }
 
   </script>
@@ -27,7 +27,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Bentuk Barang
+      Jenis Persediaan Obat Sub
     </h1>
   </section>
   <!-- Main content -->
@@ -36,14 +36,14 @@
       <div class="col-md-12">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-filter"></i>Bentuk Barang</h3>
+            <h3 class="box-title"><i class="fa fa-filter"></i>Jenis Persediaan Obat Sub</h3>
           </div>
           <div class="box-body">
             <table width="100%" align="center">
               <tr>
                 <td align="center">
-                  <s:form id="SearchBentukBarangForm" method="post"  theme="simple"
-                          namespace="/bentukbarang" action="search_bentukbarang.action" cssClass="form-horizontal">
+                  <s:form id="SearchjenisPersediaanObatSubForm" method="post"  theme="simple"
+                          namespace="/jenispersediaanobatsub" action="search_jenispersediaanobatsub.action" cssClass="form-horizontal">
                     <table>
                       <tr>
                         <td width="10%" align="center">
@@ -52,27 +52,14 @@
                       </tr>
                     </table>
                     <table>
+
                       <tr>
-                        <td width="18%" >
-                          <label class="control-label"><small>Id barang:</small></label>
+                        <td width="25%" >
+                          <label class="control-label"><small>Nama persediaan obat sub:</small></label>
                         </td>
                         <td>
                           <table>
-                            <s:textfield id="idbentukbarang" name="bentukBarang.idBentuk"
-                                         required="true" cssStyle="margin-top: 7px"
-                                         disabled="false" cssClass="form-control"/>
-                          </table>
-                        </td>
-                      </tr>
-
-
-                      <tr>
-                        <td width="18%" >
-                          <label class="control-label"><small>Nama barang:</small></label>
-                        </td>
-                        <td>
-                          <table>
-                            <s:textfield id="bentukbarang" name="bentukBarang.bentuk"
+                            <s:textfield id="jenispersediaanobatsub" name="jenisPersediaanObatsub.nama"
                                          required="true" cssStyle="margin-top: 7px"
                                          disabled="false" cssClass="form-control"/>
                           </table>
@@ -85,7 +72,7 @@
                         </td>
                         <td>
                           <table>
-                            <s:select list="#{'N':'Non-Active'}" id="flag" name="bentukBarang.flag"
+                            <s:select list="#{'N':'Non-Active'}" id="flag" name="jenisPersediaanObatsub.flag"
                                       headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                           </table>
 
@@ -99,24 +86,26 @@
                         <tr>
                           <td >
                             <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
-                                       formIds="SearchBentukBarangForm" id="search" name="search"
+                                       formIds="SearchjenisPersediaanObatSubForm" id="search" name="search"
                                        onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                               <i class="fa fa-search"></i>
                               Search
                             </sj:submit>
                           </td>
                           <td>
-                            <s:url var="urlAdd"  namespace="/bentukbarang" action="add_bentukbarang" escapeAmp="false">
+                            <s:if test='jenisPersediaanObatsub.isKp == "Y"'>
+                            <s:url var="urlAdd"  namespace="/jenispersediaanobatsub" action="add_jenispersediaanobatsub" escapeAmp="false">
                             </s:url>
                             <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                               <i class="fa fa-plus"></i>
-                              Add Bentuk Barang
+                              Add jenis Persediaan Obat Sub
                             </sj:a>
+                            </s:if>
                           </td>
                           <td>
                             <button type="button" class="btn btn-danger" id="reset" cssStyle="margin-right: 5px"
                                     onclick="window.location.href='<s:url
-                                            action="initForm_bentukbarang"/>'">
+                                            action="initForm_jenispersediaanobatsub"/>'">
                               <i class="fa fa-refresh"></i> Reset
                             </button>
                           </td>
@@ -149,7 +138,7 @@
 
                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                        height="310" width="600" autoOpen="false"
-                                       title="Bentuk Barang ">
+                                       title="Jenis Persediaan Obat Sub ">
                               <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                             </sj:dialog>
 
@@ -162,36 +151,43 @@
                                        title="Pendapatan Dokter">
                             </sj:dialog>
 
-                            <s:set name="listOfsearchBentukBarang" value="#session.listOfResultBentukBarang" scope="request" />
-                            <display:table name="listOfsearchBentukBarang" class="table table-condensed table-striped table-hover"
-                                           requestURI="paging_displaytag_bentukbarang.action" export="true" id="row"
+                            <s:set name="listOfsearchJenisPersediaanObatSub" value="#session.listOfResultJenisPersediaanObatSub" scope="request" />
+                            <display:table name="listOfsearchJenisPersediaanObatSub" class="table table-condensed table-striped table-hover"
+                                           requestURI="paging_displaytag_jenispersediaanobatsub.action" export="true" id="row"
                                            pagesize="14" style="font-size:12">
 
+
+
                               <display:column media="html" title="Edit">
+                                <s:if test='jenisPersediaanObatsub.isKp == "Y"'>
                                 <s:if test='#attr.row.flag == "Y"'>
-                                  <s:url var="urlEdit" namespace="/bentukbarang" action="edit_bentukbarang" escapeAmp="false">
-                                    <s:param name="id"><s:property value="#attr.row.idBentuk"/></s:param>
+                                  <s:url var="urlEdit" namespace="/jenispersediaanobatsub" action="edit_jenispersediaanobatsub" escapeAmp="false">
+                                    <s:param name="id"><s:property value="#attr.row.id"/></s:param>
                                     <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                   </s:url>
                                   <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                   </sj:a>
                                 </s:if>
+                                </s:if>
                               </display:column>
 
                               <display:column media="html" title="Delete" style="text-align:center;font-size:9">
+                                <s:if test='jenisPersediaanObatsub.isKp == "Y"'>
                                 <s:if test='#attr.row.flag == "Y"'>
-                                  <s:url var="urlViewDelete" namespace="/bentukbarang" action="delete_bentukbarang" escapeAmp="false">
-                                    <s:param name="id"><s:property value="#attr.row.idBentuk" /></s:param>
+                                  <s:url var="urlViewDelete" namespace="/jenispersediaanobatsub" action="delete_jenispersediaanobatsub" escapeAmp="false">
+                                    <s:param name="id"><s:property value="#attr.row.id" /></s:param>
                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                   </s:url>
                                   <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
                                     <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
                                   </sj:a>
                                 </s:if>
+                                </s:if>
                               </display:column>
-                              <display:column property="idBentuk" sortable="true" title="ID BentukBarang" />
-                              <display:column property="bentuk" sortable="true" title="Nama Barang" />
+                              <display:column property="id" sortable="true" title="ID Jenis Persediaan Obat" />
+                              <display:column property="nama" sortable="true" title="Nama Jenis Persediaan Obat Sub" />
+                              <display:column property="namaJenis" sortable="true" title="Persediaan Jenis Obat" />
                               <%--<display:column property="action" sortable="true" title="action"  />--%>
                               <display:column property="createdDate" sortable="true" title="Created date"  />
                               <display:column property="createdWho" sortable="true" title="Created who"  />

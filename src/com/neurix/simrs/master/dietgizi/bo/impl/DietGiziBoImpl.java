@@ -78,6 +78,15 @@ public class DietGiziBoImpl implements DietGiziBo {
     @Override
     public void saveAdd(DietGizi bean) throws GeneralBOException {
         if (bean!=null) {
+            List<ImSimrsDietGizi> cekList = new ArrayList<>();
+            try {
+                cekList = dietGiziDao.getDietGizi(bean.getNamaDietGizi());
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }if (cekList.size()> 0){
+                throw new GeneralBOException("nama diet gizi tidak boleh sama");
+            }else {
+
             String dietgiziId;
             try {
                 // Generating ID, get from postgre sequence
@@ -104,9 +113,10 @@ public class DietGiziBoImpl implements DietGiziBo {
             try {
                 // insert into database
                 dietGiziDao.addAndSave(imSimrsDietGizi);
-            } catch (HibernateException e) {
+              } catch (HibernateException e) {
                 logger.error("[jenisDietBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving new data Jenis Obat, please info to your admin..." + e.getMessage());
+                }
             }
         }
     }
@@ -215,6 +225,7 @@ public class DietGiziBoImpl implements DietGiziBo {
             if (results.size() > 0){
                 for (ImSimrsJenisDietEntity entity: results){
                     JenisDiet jenisDiet = new JenisDiet();
+
                     jenisDiet.setIdJenisDiet(entity.getIdJenisDiet());
                     jenisDiet.setNamaJenisDiet(entity.getNamaJenisDiet());
 
@@ -255,7 +266,6 @@ public class DietGiziBoImpl implements DietGiziBo {
             }
 
         }
-
         logger.info("[DietGiziBoImpl.getListEntityDietGizi] End <<<<<<<<");
         return results;
     }

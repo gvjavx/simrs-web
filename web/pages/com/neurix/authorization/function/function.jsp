@@ -215,11 +215,11 @@
                             <%--<div id="actions" class="form-actions">--%>
                             <table  width="100%" align="center">
                                 <tr>
-                                    <td align="center">
+                                    <td align="center" width="30%">
                                         <table>
 
                                     <tr>
-                                        <td>
+                                        <td >
                                             <label class="control-label" for="functions.stFuncId">Function Id :</label>
                                         </td>
 
@@ -270,10 +270,10 @@
                                         <td>
                                             <table>
                                                 <s:if test="isDelete()">
-                                                    <s:textfield id="url"  cssClass="form-control" readonly="true" name="functions.url" required="false"/>
+                                                    <s:textarea id="url"  cssClass="form-control" readonly="true" name="functions.url" required="false"/>
                                                 </s:if>
                                                 <s:else>
-                                                    <s:textfield id="url" cssClass="form-control" name="functions.url"/>
+                                                    <s:textarea id="url" cssClass="form-control" name="functions.url"/>
                                                 </s:else>
                                             </table>
                                         </td>
