@@ -617,7 +617,7 @@
                                 var tindakanina = "";
                                 VerifikatorAction.getListKategoriTindakanBpjs(function (restindakanina) {
                                     $.each(restindakanina, function (i, itemTindakan) {
-                                        if (item.kategoriTindakanBpjs == itemTindakan.kategoriInaBpjs) {
+                                        if (item.kategoriInaBpjs == itemTindakan.id) {
                                             tindakanina += "<option value=\"" + itemTindakan.id + "\" selected>" + itemTindakan.nama + "</option>";
                                         } else {
                                             tindakanina += "<option value=\"" + itemTindakan.id + "\">" + itemTindakan.nama + "</option>";
