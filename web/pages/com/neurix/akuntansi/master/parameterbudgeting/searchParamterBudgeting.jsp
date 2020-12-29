@@ -357,7 +357,7 @@
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveDelete()"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-danger" onclick="saveDelete()"><i class="fa fa-check"></i> Delete
                 </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>

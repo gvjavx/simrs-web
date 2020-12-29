@@ -60,6 +60,8 @@ public class ParameterBudgetingAction {
             parameterBudgeting.setIdJenisBudgeting(jsonObject.get("id_jenis_budgeting").toString());
             parameterBudgeting.setIdParamRekening(jsonObject.get("id_item").toString());
         }
+        //active data only
+        parameterBudgeting.setFlag("Y");
 
         List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
