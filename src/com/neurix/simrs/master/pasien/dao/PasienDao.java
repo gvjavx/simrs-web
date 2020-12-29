@@ -279,4 +279,30 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         String sId = String.format("%04d", iter.next());
         return sId;
     }
+
+    public List<Pasien> getComboRmLama(String key) {
+        List<Pasien> listOfResult = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "id_pasien,\n" +
+                "nama,\n" +
+                "no_rm_lama\n" +
+                "FROM im_simrs_pasien\n" +
+                "WHERE id_pasien ILIKE '%"+key+"%'\n" +
+                "OR nama ILIKE '%"+key+"%'\n" +
+                "OR no_rm_lama ILIKE '%"+key+"%'";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+        if(result.size() > 0){
+            for (Object[] obj: result){
+                Pasien pasien = new Pasien();
+                pasien.setIdPasien(obj[0] != null ? obj[0].toString() : "");
+                pasien.setNama(obj[1] != null ? obj[1].toString() : "");
+                pasien.setNoRmLama(obj[2] != null ? obj[2].toString() : "");
+                listOfResult.add(pasien);
+            }
+        }
+        return listOfResult;
+    }
 }
