@@ -366,9 +366,10 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Add Keterangan Budgeting</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> <span id="label-modal-add"></span></h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" id="al-error" style="display: none;" ><span id="al-error-msg"></span></div>
                 <div class="row">
                     <div class="col-md-3">
                         <label class="control-label">Jenis Obat</label>
@@ -560,6 +561,7 @@
             if(jenis == 'edit'){
                 title = "Edit Keterangan Obat";
                 $('#save_ket_obat').attr('onclick','saveObat(\''+id+'\', \'Y\')');
+                $('#save_ket_obat').html('<i class="fa fa-check"></i> Save');
             }
             if(jenis == 'delete'){
                 title = "Delete Keterangan Obat";
@@ -568,8 +570,11 @@
                 $("#sel_add_parameter").attr('disabled', true);
                 $("#in_add_keterangan").attr('disabled', true);
                 $('#save_ket_obat').attr('onclick','saveObat(\''+id+'\', \'N\')');
+                $('#save_ket_obat').html('<i class="fa fa-trash"></i> delete');
             }
         }
+
+        $("#label-modal-add").text(title);
         $("#modal-add").modal({show:true, backdrop:'static'});
 
     }
@@ -631,6 +636,8 @@
         var warnaBackground = $("#sel_add_warna_background").val();
         var arData          = [];
 
+        dwr.engine.setAsync(true);
+        showDialogModal("loading",'show');
         if(idJenisSub && parameter && keterangan != ''){
             if(id != ''){
                 arData.push({
@@ -645,13 +652,15 @@
 
                 var stData = JSON.stringify(arData);
                 KeteranganObatAction.saveEdit(stData, function (res) {
+                    dwr.engine.setAsync(false);
+                    showDialogModal("loading",'hide');
                     if (res.status == "success"){
-                        alert("Berhasil Save");
+                        showDialogModal("success", 'show');
                     } else {
-                        alert(res.msg);
+                        $("#al-error").show().fadeOut(5000);
+                        $("#al-error-msg").text(res.msg);
                     }
-                    $('#modal-add').hide();
-                    link();
+                    //$('#modal-add').hide();
                 });
             }else{
                 arData.push({
@@ -663,13 +672,15 @@
                 });
                 var stData = JSON.stringify(arData);
                 KeteranganObatAction.saveAdd(stData, function (res) {
+                    dwr.engine.setAsync(false);
+                    showDialogModal("loading",'hide');
                     if (res.status == "success"){
-                        alert("Berhasil Save");
+                        showDialogModal("success", 'show');
                     } else {
-                        alert(res.msg);
+                        $("#al-error").show().fadeOut(5000);
+                        $("#al-error-msg").text(res.msg);
                     }
-                    $("#modal-add").modal('hide');
-                    link();
+                    //$("#modal-add").modal('hide');
                 });
             }
         }else{
@@ -680,13 +691,14 @@
     function showWarnaIfLabelWaktu(elid, id) {
         KeteranganObatAction.getParameterKeteranganObatById(id, function (res) {
             if (res.id != "" && res.flagLabelWaktu == "Y"){
-                console.log("flag label waktu == Y");
+//                console.log("flag label waktu == Y");
                 $("#group-warna-"+elid).show();
             } else {
                 $("#group-warna-"+elid).hide();
             }
         });
-    }
+    };
+
 
 </script>
 <!-- /.content-wrapper -->
