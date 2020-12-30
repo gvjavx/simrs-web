@@ -58,7 +58,64 @@ public class PermintaanObatMobile implements Serializable {
     private String idTransaksiObatDetail;
     private String idBatch;
 
+    private String idWaktu;
+    private String namaWaktu;
+
+    private String idParam;
+    private String namaParam;
+
+    private String idKeterangan;
+    private String namaKeterangan;
+
     private String message;
+
+    public String getIdKeterangan() {
+        return idKeterangan;
+    }
+
+    public void setIdKeterangan(String idKeterangan) {
+        this.idKeterangan = idKeterangan;
+    }
+
+    public String getNamaKeterangan() {
+        return namaKeterangan;
+    }
+
+    public void setNamaKeterangan(String namaKeterangan) {
+        this.namaKeterangan = namaKeterangan;
+    }
+
+    public String getIdWaktu() {
+        return idWaktu;
+    }
+
+    public void setIdWaktu(String idWaktu) {
+        this.idWaktu = idWaktu;
+    }
+
+    public String getNamaWaktu() {
+        return namaWaktu;
+    }
+
+    public void setNamaWaktu(String namaWaktu) {
+        this.namaWaktu = namaWaktu;
+    }
+
+    public String getIdParam() {
+        return idParam;
+    }
+
+    public void setIdParam(String idParam) {
+        this.idParam = idParam;
+    }
+
+    public String getNamaParam() {
+        return namaParam;
+    }
+
+    public void setNamaParam(String namaParam) {
+        this.namaParam = namaParam;
+    }
 
     public String getMessage() {
         return message;

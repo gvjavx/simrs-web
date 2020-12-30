@@ -54,11 +54,9 @@ import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.model.TindakanRawat;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 import com.opensymphony.xwork2.ModelDriven;
-import net.sf.json.JSON;
-import net.sf.json.JSONArray;
-import net.sf.json.JSONException;
-import net.sf.json.JSONSerializer;
+import net.sf.json.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -845,11 +843,34 @@ public class CheckupController implements ModelDriven<Object> {
                       transaksiObatDetail.setQty(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
                       transaksiObatDetail.setQtyApprove(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
                       transaksiObatDetail.setJenisSatuan(jsonArray.getJSONObject(i).getString("jenisSatuan"));
-                      transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
-                      transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+//                      transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
+//                      transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
                       transaksiObatDetail.setHariKronis(!jsonArray.getJSONObject(i).getString("hariKronis").equalsIgnoreCase("") ? Integer.valueOf(jsonArray.getJSONObject(i).getString("hariKronis")) : null);
+                      if ("Y".equalsIgnoreCase(jsonArray.getJSONObject(i).getString("flagRacik"))) {
+                          transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+                          transaksiObatDetail.setNamaRacik(jsonArray.getJSONObject(i).getString("namaRacik"));
+                          transaksiObatDetail.setIdRacik(jsonArray.getJSONObject(i).getString("idRacik"));
+                      } else {
+                          transaksiObatDetail.setFlagRacik("");
+                      }
 
+                      List<ItSimrsKeteranganResepEntity> resepEntityList = new ArrayList<>();
+                      JSONArray jsonKet = jsonArray.getJSONObject(i).getJSONArray("keteranganDetail");
+                      for (int j = 0; j < jsonKet.size(); j++) {
+                          JSONObject obj = jsonKet.getJSONObject(j);
+                          ItSimrsKeteranganResepEntity resepEntity = new ItSimrsKeteranganResepEntity();
+                          resepEntity.setIdKeteranganObat(obj.getString("idWaktu"));
+                          resepEntity.setKeteranganLain(obj.getString("keterangan"));
+                          resepEntity.setCreatedDate(now);
+                          resepEntity.setLastUpdate(now);
+                          resepEntity.setCreatedWho(username);
+                          resepEntity.setLastUpdateWho(username);
+                          resepEntity.setAction("C");
+                          resepEntity.setFlag("Y");
+                          resepEntityList.add(resepEntity);
+                      }
 
+                      transaksiObatDetail.setKeteranganResepEntityList(resepEntityList);
                       list.add(transaksiObatDetail);
                   }
 
