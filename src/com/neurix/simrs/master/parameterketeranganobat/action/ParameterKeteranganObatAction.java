@@ -1,10 +1,11 @@
 package com.neurix.simrs.master.parameterketeranganobat.action;
 
 import com.neurix.common.action.BaseMasterAction;
-import com.neurix.common.constant.CommonConstant;
+
 import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.common.util.CommonUtil;
+
 import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import org.apache.log4j.Logger;
@@ -13,12 +14,14 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ParameterKeteranganObatAction extends BaseMasterAction {
     public static transient Logger logger = Logger.getLogger(ParameterKeteranganObatAction.class);
-    private ParameterKeteranganObatBo parameterKeteranganObatBo;
+    private ParameterKeteranganObatBo parameterKeteranganObatBoProxy;
     private ParameterKeteranganObat parameterKeteranganObat;
 
     public ParameterKeteranganObat getParameterKeteranganObat() {
@@ -29,8 +32,12 @@ public class ParameterKeteranganObatAction extends BaseMasterAction {
         this.parameterKeteranganObat = parameterKeteranganObat;
     }
 
-    public void setParameterKeteranganObatBo(ParameterKeteranganObatBo parameterKeteranganObatBo) {
-        this.parameterKeteranganObatBo = parameterKeteranganObatBo;
+    public ParameterKeteranganObatBo getParameterKeteranganObatBoProxy() {
+        return parameterKeteranganObatBoProxy;
+    }
+
+    public void setParameterKeteranganObatBoProxy(ParameterKeteranganObatBo parameterKeteranganObatBoProxy) {
+        this.parameterKeteranganObatBoProxy = parameterKeteranganObatBoProxy;
     }
 
     public ParameterKeteranganObat init(String kode, String flag){
@@ -58,13 +65,13 @@ public class ParameterKeteranganObatAction extends BaseMasterAction {
 
     @Override
     public String add() {
-        logger.info("[JenisObatParameterKeteranganObatAction.add] start process >>>");
+        logger.info("[KategoriPersediaanParameterKeteranganObatAction.add] start process >>>");
 
         ParameterKeteranganObat addParameterKeteranganObat = new ParameterKeteranganObat();
         setParameterKeteranganObat(addParameterKeteranganObat);
         setAddOrEdit(true);
         setAdd(true);
-        logger.info("[JenisObatParameterKeteranganObat Action.add] stop process >>>");
+        logger.info("[ParameterKeteranganObat Action.add] stop process >>>");
         return "init_add";
     }
 
@@ -73,30 +80,29 @@ public class ParameterKeteranganObatAction extends BaseMasterAction {
         logger.info("[ParameterKeteranganObat Action.edit] start process >>>");
         String itemFlag = getFlag();
         String itemId = getId();
-        ParameterKeteranganObat editJenisObatParameterKeteranganObat = new ParameterKeteranganObat();
+        ParameterKeteranganObat editparam = new ParameterKeteranganObat();
         if(itemFlag != null){
             try {
-                editJenisObatParameterKeteranganObat = init (itemId,itemFlag);
+                editparam = init (itemId,itemFlag);
             } catch (GeneralBOException e) {
                 logger.error("edit action"+e.getMessage());
                 throw new GeneralBOException("edit action, "+e.getMessage());
             }
 
-            if(editJenisObatParameterKeteranganObat != null) {
-                setParameterKeteranganObat(editJenisObatParameterKeteranganObat);
+            if(editparam != null) {
+                setParameterKeteranganObat(editparam);
             } else {
-                editJenisObatParameterKeteranganObat.setFlag(itemFlag);
-                setParameterKeteranganObat(editJenisObatParameterKeteranganObat);
+                editparam.setFlag(itemFlag);
+                setParameterKeteranganObat(editparam);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            editJenisObatParameterKeteranganObat.setFlag(getFlag());
-            setParameterKeteranganObat(editJenisObatParameterKeteranganObat);
+            editparam.setFlag(getFlag());
+            setParameterKeteranganObat(editparam);
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
-
         setAddOrEdit(true);
         logger.info("[ParameterKeteranganObatAction.edit] end process >>>");
         return "init_edit";
@@ -156,7 +162,7 @@ public class ParameterKeteranganObatAction extends BaseMasterAction {
         ParameterKeteranganObat searchParameterKeteranganObat = getParameterKeteranganObat();
         List<ParameterKeteranganObat> listOfsearchParameterKeteranganObat = new ArrayList();
         try {
-            listOfsearchParameterKeteranganObat = parameterKeteranganObatBo.getByCriteria(searchParameterKeteranganObat);
+            listOfsearchParameterKeteranganObat = parameterKeteranganObatBoProxy.getByCriteria(searchParameterKeteranganObat);
         } catch (GeneralBOException e) {
             logger.error("ini error, "+e.getMessage());
             throw new GeneralBOException("ini error, "+e.getMessage());
@@ -192,5 +198,79 @@ public class ParameterKeteranganObatAction extends BaseMasterAction {
         return null;
     }
 
+    public String saveAdd(){
+        logger.info("[ParameterKeteranganObatAction.saveAdd] start process >>>");
 
+        try {
+            ParameterKeteranganObat parameterKeteranganObat = getParameterKeteranganObat();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            parameterKeteranganObat.setCreatedWho(userLogin);
+            parameterKeteranganObat.setLastUpdate(updateTime);
+            parameterKeteranganObat.setCreatedDate(updateTime);
+            parameterKeteranganObat.setLastUpdateWho(userLogin);
+            parameterKeteranganObat.setAction("C");
+            parameterKeteranganObat.setFlag("Y");
+
+            parameterKeteranganObatBoProxy.saveAdd(parameterKeteranganObat);
+        }catch (GeneralBOException e) {
+            logger.error("ini error, "+e.getMessage());
+            throw new GeneralBOException("ini error, "+e.getMessage());
+        }
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultParameterKeteranganObat");
+
+        logger.info("[ParameterKeteranganObatAction.saveAdd] end process >>>");
+        return "success_save_add";
+    }
+
+    public String saveEdit(){
+        logger.info("[ParameterKeteranganObatAction.saveEdit] start process >>>");
+        try {
+            ParameterKeteranganObat editParam = getParameterKeteranganObat();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            editParam.setLastUpdateWho(userLogin);
+            editParam.setLastUpdate(updateTime);
+            editParam.setAction("U");
+            editParam.setFlag("Y");
+
+            parameterKeteranganObatBoProxy.saveEdit(editParam);
+        } catch (GeneralBOException e) {
+            logger.error("ini error, "+e.getMessage());
+            throw new GeneralBOException("ini error, "+e.getMessage());
+        }
+
+        logger.info("[ParameterKeteranganObatAction.saveEdit] end process <<<");
+
+        return "success_save_edit";
+    }
+
+    public String saveDelete(){
+        logger.info("[ParameterKeteranganObatAction.saveDelete] start process >>>");
+        try {
+
+            ParameterKeteranganObat deleteParam = getParameterKeteranganObat();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deleteParam.setLastUpdate(updateTime);
+            deleteParam.setLastUpdateWho(userLogin);
+            deleteParam.setAction("D");
+            deleteParam.setFlag("N");
+
+            parameterKeteranganObatBoProxy.saveDelete(deleteParam);
+        } catch (GeneralBOException e) {
+            logger.error("ini error, "+e.getMessage());
+            throw new GeneralBOException("ini error, "+e.getMessage());
+        }
+
+        logger.info("[deleteParameterKeteranganObatAction.saveDelete] end process <<<");
+
+        return "success_save_delete";
+    }
 }

@@ -9,15 +9,14 @@
 <head>
   <%@ include file="/pages/common/header.jsp" %>
   <script type='text/javascript'>
-
       function link(){
           window.location.href="<s:url action='initForm_parameterketeranganobat'/>";
       }
-
   </script>
+
+  <script type='text/javascript' src='<s:url value="/dwr/interface/ParameterKeteranganObatAction.js"/>'></script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
-
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -27,7 +26,7 @@
   <!-- Content Header (Page header) -->
   <section class="content-header">
     <h1>
-      Parameter Keterangan Obat
+     Parameter Keterangan Obat
     </h1>
   </section>
   <!-- Main content -->
@@ -36,7 +35,8 @@
       <div class="col-md-12">
         <div class="box box-primary">
           <div class="box-header with-border">
-            <h3 class="box-title"><i class="fa fa-filter"></i>Parameter Keterangan Obat</h3>
+            <h3 class="box-title"><i class="fa fa-filter"></i> Parameter Keterangan Obat
+            </h3>
           </div>
           <div class="box-body">
             <table width="100%" align="center">
@@ -54,8 +54,8 @@
                     <table>
 
                       <tr>
-                        <td width="25%" >
-                          <label class="control-label"><small>Nama persediaan obat:</small></label>
+                        <td width="30%" >
+                          <label class="control-label"><small>Nama Parameter Keterangan Obat:</small></label>
                         </td>
                         <td>
                           <table>
@@ -93,14 +93,13 @@
                             </sj:submit>
                           </td>
                           <td>
-
                             <s:url var="urlAdd"  namespace="/parameterketeranganobat" action="add_parameterketeranganobat" escapeAmp="false">
                             </s:url>
-                            <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                            <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px"
+                                  onClickTopics="showDialogMenu" href="%{urlAdd}">
                               <i class="fa fa-plus"></i>
-                              Add Jenis Persediaan Obat
+                              Add Parameter Keterangan Obat
                             </sj:a>
-
                           </td>
                           <td>
                             <button type="button" class="btn btn-danger" id="reset" cssStyle="margin-right: 5px"
@@ -138,8 +137,9 @@
 
                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                        height="310" width="600" autoOpen="false"
-                                       title="Jenis Persediaan Obat ">
-                              <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                       title="Parameter Keterangan Obat ">
+                              <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>"
+                                           alt="Loading..."/></center>
                             </sj:dialog>
 
                             <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
@@ -153,11 +153,10 @@
 
                             <s:set name="listOfsearchParameterKeteranganObat" value="#session.listOfResultParameterKeteranganObat" scope="request" />
                             <display:table name="listOfsearchParameterKeteranganObat" class="table table-condensed table-striped table-hover"
-                                           requestURI="paging_displaytag_parameterketeranganobat.action" export="true" id="row"
+                                           requestURI="paging_displaytag_dietGizi.action" export="true" id="row"
                                            pagesize="14" style="font-size:12">
 
                               <display:column media="html" title="Edit">
-
                                 <s:if test='#attr.row.flag == "Y"'>
                                   <s:url var="urlEdit" namespace="/parameterketeranganobat" action="edit_parameterketeranganobat" escapeAmp="false">
                                     <s:param name="id"><s:property value="#attr.row.id"/></s:param>
@@ -167,25 +166,24 @@
                                     <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
                                   </sj:a>
                                 </s:if>
-
                               </display:column>
 
                               <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-
                                 <s:if test='#attr.row.flag == "Y"'>
-                                  <s:url var="urlViewDelete" namespace="/parameterketeranganobat" action="delete_parameterketeranganobat" escapeAmp="false">
+                                  <s:url var="urlViewDelete" namespace="/parameterketeranganobat" action="delete_parameterketeranganobat"
+                                         escapeAmp="false">
                                     <s:param name="id"><s:property value="#attr.row.id" /></s:param>
                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                   </s:url>
                                   <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>"
+                                         name="icon_trash">
                                   </sj:a>
                                 </s:if>
-
                               </display:column>
-                              <display:column property="id" sortable="true" title="ID Jenis Persediaan Obat" />
-                              <display:column property="nama" sortable="true" title="Nama Jenis Persediaan Obat" />
-                              <%--<display:column property="action" sortable="true" title="action"  />--%>
+                              <display:column property="id" sortable="true" title="ID Parameter Keterangan Obat" />
+                              <display:column property="nama" sortable="true" title="Nama Parameter Keterangan Obat" />
+
                               <display:column property="createdDate" sortable="true" title="Created date"  />
                               <display:column property="createdWho" sortable="true" title="Created who"  />
                               <display:column property="lastUpdate" sortable="true" title="Last update"  />

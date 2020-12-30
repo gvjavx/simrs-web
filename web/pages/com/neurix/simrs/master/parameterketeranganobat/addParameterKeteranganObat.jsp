@@ -6,55 +6,57 @@
 
 <html>
 <head>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DietGiziAction.js"/>'></script>
     <%--<script type='text/javascript' src='<s:url value="/dwr/interface/PayrollSkalaGajiAction.js"/>'></script>--%>
     <script type="text/javascript">
-    function callSearch2() {
-        //$('#waiting_dialog').dialog('close');
-        $('#view_dialog_menu').dialog('close');
-        $('#info_dialog').dialog('close');
-        window.location.reload(true);
-    };
 
-    $.subscribe('beforeProcessSaveAdd', function (event, data) {
-        var jenispersediaanobatsubAdd = document.getElementById("jenispersediaanobatsubAdd").value;
+        function callSearch2() {
+            //$('#waiting_dialog').dialog('close');
+            $('#view_dialog_menu').dialog('close');
+            $('#info_dialog').dialog('close');
+            window.location.reload(true);
+        };
 
-        if (jenispersediaanobatsubAdd != '' ) {
-            if (confirm('Do you want to save this record?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialogAdd');
+        $.subscribe('beforeProcessSaveAdd', function (event, data) {
+            var parameterketeranganobatAdd = document.getElementById("parameterketeranganobatAdd").value;
+
+            if (parameterketeranganobatAdd != '' ) {
+                if (confirm('Do you want to save this record?')) {
+                    event.originalEvent.options.submit = true;
+                    $.publish('showDialogAdd');
+                } else {
+                    // Cancel Submit comes with 1.8.0
+                    event.originalEvent.options.submit = false;
+                }
             } else {
-                // Cancel Submit comes with 1.8.0
                 event.originalEvent.options.submit = false;
+                var msg = "";
+                if (parameterketeranganobatAdd == '') {
+                    msg += 'Field <strong>nama parameter keterangan obat </strong> is required.' + '<br/>';
+                }
+
+
+                document.getElementById('errorValidationMessageAdd').innerHTML = msg;
+
+                $.publish('showErrorValidationDialogAdd');
             }
-        } else {
-            event.originalEvent.options.submit = false;
-            var msg = "";
-            if (jenispersediaanobatsubAdd == '') {
-                msg += 'Field <strong>jenis persediaan obat  </strong> is required.' + '<br/>';
-            }
-
-
-            document.getElementById('errorValidationMessageAdd').innerHTML = msg;
-
-            $.publish('showErrorValidationDialogAdd');
-        }
-    });
+        });
 
         $.subscribe('successDialog', function (event, data) {
-            if (event.originalEvent.request.status == 200) {
-                jQuery(".ui-dialog-titlebar-close").hide();
-                $.publish('showInfoDialog');
-            }
+                if (event.originalEvent.request.status == 200) {
+                    jQuery(".ui-dialog-titlebar-close").hide();
+                    $.publish('showInfoDialog');
+                }
             }
         );
 
         $.subscribe('errorDialogAdd', function (event, data) {
 
 //            alert(event.originalEvent.request.getResponseHeader('message'));
-            document.getElementById('errorMessageAdd').innerHTML = "Status = "
-                + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialogAdd');
-        }
+                document.getElementById('errorMessageAdd').innerHTML = "Status = "
+                    + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+                $.publish('showErrorDialogAdd');
+            }
 
         );
 
@@ -69,12 +71,13 @@
 <table width="100%" align="center">
     <tr>
         <td align="center" >
-            <s:form id="addJenisPersediaanObatSubForm" method="post" theme="simple"
-                    namespace="/jenispersediaanobatsub" action="saveAdd_jenispersediaanobatsub" cssClass="well form-horizontal">
+            <s:form id="addParameterKeteranganForm" method="post" theme="simple"
+                    namespace="/parameterketeranganobat" action="saveAdd_parameterketeranganobat" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
+                <s:hidden id="addBranch" name="parameterKeteranganObat.branchId"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Jenis Persediaan Obat Sub</legend>
+                <legend align="left">Add Parameter Keterangan Obat</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -84,31 +87,16 @@
                 </table>
 
                 <table >
-                    <tr>
-                        <td >
-                            <label class="control-label"><small>Jenis Persediaan Obat Sub:</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="jenispersediaanobatsubAdd" name="jenisPersediaanObatsub.nama"
-                                             required="true" cssStyle="margin-top: 7px"
-                                             disabled="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
 
                     <tr>
-                        <td>
-                            <label class="control-label"><small>nama jenis obat :</small></label>
+                        <td >
+                            <label class="control-label"><small>Nama Parameter Keterangan Obat:</small></label>
                         </td>
-                        <td width="60%">
+                        <td>
                             <table>
-                                <s:action id="q" namespace="/jenispersediaanobat"
-                                          name="initComboJenisPerseidaanObat_jenispersediaanobat" />
-                                <s:select cssStyle="margin-top: 7px; width: 100%" list="#q.listOfComboJenisPersediaanObat"
-                                          id="jenispersediaanobatsub1" name="jenisPersediaanObatsub.idJenisObat"
-                                          listKey="id" listValue="nama" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2" />
+                                <s:textfield id="parameterketeranganobatAdd" name="parameterKeteranganObat.nama" required="true"
+                                             cssStyle="margin-top: 7px"
+                                             disabled="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -119,7 +107,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addJenisPersediaanObatSubForm"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addParameterKeteranganForm"
                                    id="save" name="save"
                                    onBeforeTopics="beforeProcessSaveAdd" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialogAdd" >
@@ -165,11 +153,13 @@
                                                                    }
                                                             }"
                                         >
-                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
 
-                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogAdd" modal="true" resizable="false"
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialogAdd" modal="true"
+                                                   resizable="false"
                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                    buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close');}
@@ -177,11 +167,13 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessageAdd"></p>
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessageAdd"></p>
                                                 </label>
                                             </div>
                                         </sj:dialog>
-                                        <sj:dialog id="error_validation_dialog_add" openTopics="showErrorValidationDialogAdd" modal="true" resizable="false"
+                                        <sj:dialog id="error_validation_dialog_add" openTopics="showErrorValidationDialogAdd"
+                                                   modal="true" resizable="false"
                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                    buttons="{
                                                                         'OK':function() { $('#error_validation_dialog_add').dialog('close');}
@@ -189,7 +181,8 @@
                                         >
                                             <div class="alert alert-error fade in">
                                                 <label class="control-label" align="left">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> Please check this field :
                                                     <br/>
                                                     <center><div id="errorValidationMessageAdd"></div></center>
                                                 </label>
@@ -208,23 +201,8 @@
 </body>
 </html>
 <script>
-    window.cekEksekutif1 = function () {
-        if (document.getElementById("isEksekutifAdd").checked == true) {
-            $("#eksekutif").val("Yes");
-        } else {
-            $("#eksekutif").val("No");
-        }
-    }
-    function showKategoriJenisPersediaanObatSub(valueTipe){
-        // console.log(valueTipe);
-        if(valueTipe=='rawat_jalan'){
-            $('#form_kategori').show();
-        }else {
-            $('#form_kategori').hide();
-            $('#kategoriJenisPersediaanObatSubAdd').val('');
 
-        }
-    }
+
 
 </script>
 

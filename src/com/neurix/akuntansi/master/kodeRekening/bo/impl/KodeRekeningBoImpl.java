@@ -141,6 +141,9 @@ public class KodeRekeningBoImpl implements KodeRekeningBo {
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
 
+            if (searchBean.getLevel() != null){
+                hsCriteria.put("level", searchBean.getLevel());
+            }
             if (searchBean.getRekeningId() != null && !"".equalsIgnoreCase(searchBean.getRekeningId())) {
                 hsCriteria.put("rekening_id", searchBean.getRekeningId());
             }
