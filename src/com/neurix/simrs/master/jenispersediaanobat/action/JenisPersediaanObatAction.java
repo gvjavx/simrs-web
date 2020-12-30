@@ -313,7 +313,7 @@ public class JenisPersediaanObatAction extends BaseMasterAction {
 
         return "success_save_delete";
     }
-
+    // combo jenis persediaan obat
     public String initComboJenisPerseidaanObat(){
         JenisPersediaanObat searchJenisPersediaanObat = new JenisPersediaanObat();
         searchJenisPersediaanObat.setFlag("Y");
