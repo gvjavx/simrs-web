@@ -272,8 +272,8 @@ ALTER TABLE public.im_license_zebra
     OWNER TO postgres;
 
 --2020-12-22
-ALTER TABLE it_simrs_pembayaran_online ADD COLUMN waktu_bayar timestamp without time zone
-ALTER TABLE it_simrs_pembayaran_online ADD COLUMN flag_upload_ulang VARCHAR(1)
+ALTER TABLE it_simrs_pembayaran_online ADD COLUMN waktu_bayar timestamp without time zone;
+ALTER TABLE it_simrs_pembayaran_online ADD COLUMN flag_upload_ulang VARCHAR(1);
 
 
 

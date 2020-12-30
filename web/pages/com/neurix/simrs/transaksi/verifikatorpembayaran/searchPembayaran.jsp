@@ -99,6 +99,22 @@
                                         <s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tanggal </label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<div class="row">--%>
+                                            <%--<div class="col-md-5">--%>
+                                                <%--<input type="date" id="date-from" class="form-control"/>--%>
+                                            <%--</div>--%>
+                                            <%--<div class="col-md-2">--%>
+                                                <%--To--%>
+                                            <%--</div>--%>
+                                            <%--<div class="col-md-5">--%>
+                                                <%--<input type="date" id="date-to" class="form-control"/>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
