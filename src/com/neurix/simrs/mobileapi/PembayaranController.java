@@ -7,6 +7,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.telemedic.bo.RekeningTelemedicBo;
 import com.neurix.simrs.master.telemedic.model.RekeningTelemedic;
 import com.neurix.simrs.mobileapi.model.PembayaranMobile;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.simrs.transaksi.verifikatorpembayaran.bo.VerifikatorPembayaranBo;
@@ -19,6 +20,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -63,6 +66,16 @@ public class PembayaranController implements ModelDriven<Object> {
     private String idRekening;
     private String username;
     private String roleId;
+
+    private String idPembayaranOnline;
+
+    public String getIdPembayaranOnline() {
+        return idPembayaranOnline;
+    }
+
+    public void setIdPembayaranOnline(String idPembayaranOnline) {
+        this.idPembayaranOnline = idPembayaranOnline;
+    }
 
     public String getUsername() {
         return username;
@@ -286,6 +299,8 @@ public class PembayaranController implements ModelDriven<Object> {
                 pembayaranMobile.setJenisPengambilan(item.getJenisPengambilan());
                 pembayaranMobile.setIdItem(item.getIdItem());
                 pembayaranMobile.setIdRekening(item.getIdRekening());
+                pembayaranMobile.setUrlFotoBukti(item.getUrlFotoBukti());
+                pembayaranMobile.setFlagUploadUlang(item.getFlagUploadUlang());
 
                 RekeningTelemedic rekeningTelemedic = new RekeningTelemedic();
                 rekeningTelemedic.setIdRekening(item.getIdRekening());
@@ -303,7 +318,7 @@ public class PembayaranController implements ModelDriven<Object> {
                     pembayaranMobile.setNamaRekening(rekeningTelemedicList.get(0).getNamaRekening());
                 }
 
-                pembayaranMobile.setCreatedDate(CommonUtil.addJamBayar(item.getCreatedDate()));
+                pembayaranMobile.setWaktuBayar(CommonUtil.addJamBayar(item.getCreatedDate()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }
@@ -313,9 +328,11 @@ public class PembayaranController implements ModelDriven<Object> {
 
             if (fileUploadBukti != null) {
                 fileName = idTele+".jpeg";
-                File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER, fileName);
+//                File fileCreate = new File(, fileName);
                 try {
-                    FileUtils.copyFile(fileUploadBukti, fileCreate);
+                    BufferedImage bufferedImage = ImageIO.read(fileUploadBukti);
+                    String imageType = CommonUtil.getImageFormat(fileUploadBukti);
+                    CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+fileName);
                 }catch (IOException e){
                     e.printStackTrace();
                 }
@@ -329,7 +346,7 @@ public class PembayaranController implements ModelDriven<Object> {
                 logger.error("[PembayaranController.create] Error, " + e.getMessage());
             }
 
-            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + "telah upload bukti transfer " + keterangan);
+            telemedicBoProxy.createNotifikasiAdmin(idTele, "tele", branchId, username, now, username + " telah upload bukti transfer " + keterangan);
         }
 
         if (action.equalsIgnoreCase("saveEditPembayaranResep")) {
@@ -397,6 +414,34 @@ public class PembayaranController implements ModelDriven<Object> {
 
             }
 
+        }
+
+        if (action.equalsIgnoreCase("updateWaktuBayar")) {
+            listOfPembayaran = new ArrayList<>();
+
+            PembayaranOnline bean = new PembayaranOnline();
+            bean.setIdAntrianTelemedic(idTele);
+            bean.setKeterangan(keterangan);
+
+            List<ItSimrsPembayaranOnlineEntity> result = new ArrayList<>();
+
+            try {
+                result = verifikatorPembayaranBoProxy.getSearchEntityByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[PembayaranController.create] Error, " + e.getMessage());
+            }
+
+            if(result.get(0).getWaktuBayar() == null) {
+                result.get(0).setWaktuBayar(now);
+                try {
+                    verifikatorPembayaranBoProxy.saveEdit(result.get(0));
+                } catch (GeneralBOException e) {
+                    logger.error("[PembayaranController.create] Error, " + e.getMessage());
+                }
+                model.setMessage("Success");
+            } else {
+                model.setMessage("Failed");
+            }
         }
 
         logger.info("[PembayaranController.create] end process POST / <<<");

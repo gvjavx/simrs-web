@@ -5401,9 +5401,33 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             }while (finalLamaLembur>0);
                                         }
                                         Double peralihan = 0d;
-                                        peralihan = getTunjPeralihan(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
-                                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
+//                                        peralihan = getTunjPeralihan(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
+//                                        upahLembur = (gapok+sankhus+peralihan)*faktor*jamLembur;
 
+                                        // Sigit 2020-12-23, Pencarian prosentase gaji dari unutk perhitungan upah lembur perjam, START
+                                        BigDecimal prosentase = new BigDecimal(0);
+                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
+                                        if (mappingPersenGajiList.size() > 0){
+                                            for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
+
+                                                if (persenGaji.getPresentase() != null){
+                                                    BigDecimal bdPersenGaji = new BigDecimal(persenGaji.getPresentase());
+                                                    prosentase = bdPersenGaji.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+                                                }
+
+                                            }
+                                        }
+                                        // END
+                                        // Sigit, 2020-12-23 perubahan Perhitungan upah biaya lembur per jam, START
+                                        peralihan = getPeralihanGapok(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
+                                        Double totalGapokPeralihan = gapok+peralihan;
+                                        BigDecimal bGapokPeralihan = new BigDecimal(totalGapokPeralihan);
+                                        BigDecimal bFaktor = new BigDecimal(faktor);
+                                        BigDecimal bJamLembur = new BigDecimal(jamLembur);
+
+                                        BigDecimal bUpahLembur = bGapokPeralihan.multiply(prosentase).multiply(bFaktor).multiply(bJamLembur);
+                                        upahLembur = bUpahLembur.doubleValue();
+                                        // END
 
                                         String upahNew = "";
                                         DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
