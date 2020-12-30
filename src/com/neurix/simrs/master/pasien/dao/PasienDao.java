@@ -276,7 +276,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
     public String getNextIdPasien() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pasien')");
         Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%04d", iter.next());
+        String sId = String.format("%06d", iter.next());
         return sId;
     }
 

@@ -222,7 +222,7 @@ public class PasienBoImpl implements PasienBo {
                 e.printStackTrace();
             }
 
-            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp().replace("-","").replace("_",""));
@@ -862,7 +862,7 @@ public class PasienBoImpl implements PasienBo {
             ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
             String id = getIdPasien();
 
-            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp());
