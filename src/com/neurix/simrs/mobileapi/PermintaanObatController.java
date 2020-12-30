@@ -4,8 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.keteranganobat.bo.KeteranganObatBo;
+import com.neurix.simrs.master.keteranganobat.model.KeteranganObat;
 import com.neurix.simrs.master.obat.bo.ObatBo;
+import com.neurix.simrs.master.obat.model.ImSimrsHeaderObatEntity;
+import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
+import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import com.neurix.simrs.mobileapi.model.ObatMobile;
 import com.neurix.simrs.mobileapi.model.PermintaanObatMobile;
 import com.neurix.simrs.mobileapi.model.PurchaseOrderMobile;
@@ -22,6 +28,7 @@ import org.apache.struts2.rest.HttpHeaders;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.lang.reflect.Parameter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
@@ -45,6 +52,8 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
     private ObatPoliBo obatPoliBoProxy;
     private ObatBo obatBoProxy;
+    private ParameterKeteranganObatBo parameterKeteranganObatBoProxy;
+    private KeteranganObatBo keteranganObatBoProxy;
 
     private String tipePermintaan;
     private String idPelayanan;
@@ -62,10 +71,45 @@ public class PermintaanObatController implements ModelDriven<Object> {
     private String action;
 
     private String idBatch;
+    private String idJenis;
+
+    private String idParam;
 
     private String jsonObatVerifikasi;
     private String jsonTransaksiObatDetail;
     private String jsonPermintaanObat;
+
+    public String getIdParam() {
+        return idParam;
+    }
+
+    public void setIdParam(String idParam) {
+        this.idParam = idParam;
+    }
+
+    public String getIdJenis() {
+        return idJenis;
+    }
+
+    public void setIdJenis(String idJenis) {
+        this.idJenis = idJenis;
+    }
+
+    public ParameterKeteranganObatBo getParameterKeteranganObatBoProxy() {
+        return parameterKeteranganObatBoProxy;
+    }
+
+    public void setParameterKeteranganObatBoProxy(ParameterKeteranganObatBo parameterKeteranganObatBoProxy) {
+        this.parameterKeteranganObatBoProxy = parameterKeteranganObatBoProxy;
+    }
+
+    public KeteranganObatBo getKeteranganObatBoProxy() {
+        return keteranganObatBoProxy;
+    }
+
+    public void setKeteranganObatBoProxy(KeteranganObatBo keteranganObatBoProxy) {
+        this.keteranganObatBoProxy = keteranganObatBoProxy;
+    }
 
     public String getIdBatch() {
         return idBatch;
@@ -248,6 +292,12 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 return listOfTransaksiObatDetail;
             case "getEntityObat":
                 return listOfObat;
+            case "getComboParameterWaktu":
+                return listOfPermintaanObat;
+            case "getComboParameterObat":
+                return listOfPermintaanObat;
+            case "getComboKeteranganObat":
+                return listOfPermintaanObat;
             default: return model;
         }
     }
@@ -353,8 +403,10 @@ public class PermintaanObatController implements ModelDriven<Object> {
         bean.setIsMobile("Y");
 
         boolean isPoli = false;
-        if (flagPoli.equalsIgnoreCase("Y")){
-            isPoli = true;
+        if (flagPoli != null) {
+            if (flagPoli.equalsIgnoreCase("Y")){
+                isPoli = true;
+            }
         }
 
         try{
@@ -591,7 +643,6 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 logger.error("[PermintaanObatController.create] Error, get search poli " + e.getMessage());
             }
 
-
             try{
                 obatPoliBoProxy.saveApproveRequest(result.get(0), jsonObatDetail, isPoli);
                 model.setMessage("Success");
@@ -657,6 +708,78 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 logger.error("[PermintaanObatController.create] Error, save approve reture " + e.getMessage());
             }
 
+        }
+
+        if (action.equalsIgnoreCase("getHeaderObatById")) {
+            ImSimrsHeaderObatEntity imSimrsHeaderObatEntity = null;
+            try {
+              imSimrsHeaderObatEntity = obatBoProxy.getHeaderObatById(idObat);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanObatController.create] Error, save approve reture " + e.getMessage());
+            }
+
+            if (imSimrsHeaderObatEntity != null) {
+                model.setIdObat(imSimrsHeaderObatEntity.getIdObat());
+                model.setIdJenisObat(imSimrsHeaderObatEntity.getIdSubJenis());
+            }
+
+        }
+
+        if (action.equalsIgnoreCase("getComboParameterWaktu")) {
+            List<KeteranganObat> keteranganObatList = new ArrayList<>();
+            try {
+               keteranganObatList = parameterKeteranganObatBoProxy.getParameterKeteranganWaktu(idJenis);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanObatController.create] Error, save approve reture " + e.getMessage());
+            }
+
+            if (keteranganObatList.size() > 0) {
+                for (KeteranganObat item : keteranganObatList) {
+                    PermintaanObatMobile permintaanObatMobile = new PermintaanObatMobile();
+                    permintaanObatMobile.setIdWaktu(item.getId());
+                    permintaanObatMobile.setNamaWaktu(item.getKeterangan());
+
+                    listOfPermintaanObat.add(permintaanObatMobile);
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getComboParameterObat")) {
+            List<ParameterKeteranganObat> parameterKeteranganObatList = new ArrayList<>();
+            try {
+               parameterKeteranganObatList = parameterKeteranganObatBoProxy.getParameterKeterangan(idJenis);
+            } catch (GeneralBOException e) {
+                logger.error("[PermintaanObatController.create] Error, save approve reture " + e.getMessage());
+            }
+
+            if (parameterKeteranganObatList.size() > 0) {
+                for (ParameterKeteranganObat item : parameterKeteranganObatList) {
+                    PermintaanObatMobile permintaanObatMobile = new PermintaanObatMobile();
+                    permintaanObatMobile.setIdParam(item.getId());
+                    permintaanObatMobile.setNamaParam(item.getNama());
+
+                    listOfPermintaanObat.add(permintaanObatMobile);
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getComboKeteranganObat")) {
+            List<KeteranganObat> keteranganObatList = new ArrayList<>();
+            try {
+               keteranganObatList = keteranganObatBoProxy.getKeteranganObat(idParam);
+            } catch (GeneralBOException e){
+                logger.error("[PermintaanObatController.create] Error, save approve reture " + e.getMessage());
+            }
+
+            if (keteranganObatList.size() > 0) {
+                for (KeteranganObat item : keteranganObatList) {
+                    PermintaanObatMobile permintaanObatMobile = new PermintaanObatMobile();
+                    permintaanObatMobile.setIdKeterangan(item.getId());
+                    permintaanObatMobile.setNamaKeterangan(item.getKeterangan());
+
+                    listOfPermintaanObat.add(permintaanObatMobile);
+                }
+            }
         }
 
         logger.info("[PermintaanObatContoller.create] end process POST / <<<");

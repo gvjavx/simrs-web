@@ -262,12 +262,24 @@
                             <div class="input-group">
                                 <s:textfield id="upload_pasien"
                                              onkeypress="$(this).css('border','');"
-                                             cssClass="form-control"/>
+                                             cssClass="form-control" placeholder="ketik nama atau rm baru atau rm lama"/>
                                 <div class="input-group-btn">
                                     <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i
                                             class="fa fa-plus"></i> Add Upload</a>
                                 </div>
                             </div>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-warning" onclick="removeAll()"><i class="fa fa-refresh"></i></button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">No RM Lama</label>
+                        <div class="col-md-7">
+                            <s:textfield id="upload_no_rm_lama"
+                                         cssStyle="margin-top: 7px"
+                                         onkeypress="$(this).css('border','');"
+                                         cssClass="form-control" readonly="true"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -290,21 +302,16 @@
                                 var data = [];
                                 dwr.engine.setAsync(false);
 
-                                PasienAction.getListComboPasien(query, function (listdata) {
+                                PasienAction.getListComboPasienByRmLama(query, function (listdata) {
                                     data = listdata;
                                 });
 
                                 $.each(data, function (i, item) {
-                                    var labelItem = "";
-
-                                    if (item.noBpjs != '' && item.noBpjs != null) {
-                                        labelItem = item.noKtp + "-" + item.noBpjs + "-" + item.nama;
-                                    } else {
-                                        labelItem = item.noKtp + "-" + item.nama;
-                                    }
+                                    var labelItem = item.idPasien + "-" + item.noRmLama + "-" + item.nama;
                                     mapped[labelItem] = {
                                         id: item.idPasien,
-                                        nama: item.nama
+                                        nama: item.nama,
+                                        noRmLama: item.noRmLama
                                     };
                                     functions.push(labelItem);
                                 });
@@ -314,6 +321,8 @@
                             updater: function (item) {
                                 var selectedObj = mapped[item];
                                 $('#upload_nama_pasien').val(selectedObj.nama);
+                                $('#upload_no_rm_lama').val(selectedObj.noRmLama);
+                                $('#upload_pasien').attr('disabled', true);
                                 return selectedObj.id;
                             }
                         });
@@ -863,10 +872,12 @@
     }
 
     function showModalUpload() {
+        $('#upload_pasien').attr('disabled', false);
         $('#save_upload').show();
         $('#load_upload').hide();
         $('#save_upload').attr('onclick', 'cekUpload()');
-        $('#upload_pasien, #upload_nama_pasien, #body_rm').val('');
+        $('#upload_pasien, #upload_nama_pasien, #upload_no_rm_lama').val('');
+        $('#body-rm').html('');
         $("#modal-upload").modal({show: true, backdrop: 'static'});
     }
 
@@ -891,6 +902,7 @@
     function saveUpload() {
         $('#modal-confirm-dialog').modal('hide');
         var idPasien = $('#upload_pasien').val();
+        var noRmLama = $('#upload_no_rm_lama').val();
         var img = $('.form-img-rm');
         var data = [];
         $.each(img, function (i, item) {
@@ -906,7 +918,7 @@
         $('#save_upload').hide();
         $('#load_upload').show();
         dwr.engine.setAsync(true);
-        PasienAction.saveUploadRmLama(result, idPasien, {
+        PasienAction.saveUploadRmLama(result, idPasien, noRmLama, {
             callback: function (res) {
                 if(res.status == "success"){
                     $('#save_upload').show();
@@ -1108,6 +1120,12 @@
             }
         }
 
+    }
+
+    function removeAll(){
+        $('#upload_pasien').attr('disabled', false);
+        $('#upload_pasien, #upload_nama_pasien, #upload_no_rm_lama').val('');
+        $('#body-rm').html('');
     }
 </script>
 

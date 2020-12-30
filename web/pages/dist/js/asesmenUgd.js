@@ -1063,13 +1063,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });
-                // data.push({
-                //     'parameter': 'Kategori Tindakan',
-                //     'jawaban': va3,
-                //     'tipe': 'gambar',
-                //     'keterangan': jenis,
-                //     'id_detail_checkup': idDetailCheckup
-                // });
                 data.push({
                     'parameter': 'Tindakan',
                     'jawaban': va4,
@@ -1079,49 +1072,6 @@ function saveAsesmenUgd(jenis, keterangan) {
                 data.push({
                     'parameter': 'Diet',
                     'jawaban': va5,
-                    'keterangan': jenis,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                cek = true;
-            }
-        }
-
-        if ("kondisi_pasien" == jenis) {
-            var va1 = $('#pk1').val();
-            var va2 = $('#pk2').val();
-            var va3 = $('#pk3').val();
-            var va4 = $('#pk4').val();
-            var va5 = $('#pk5').val();
-            var va6 = $('#pk6').val();
-
-            if (va1 && va2 && va3 && va4 && va5 && va6 != '') {
-                data.push({
-                    'parameter': 'Tanggal dan Jam',
-                    'jawaban': va1+', '+va2,
-                    'keterangan': jenis,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'PPA',
-                    'jawaban': va3,
-                    'keterangan': jenis,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'IAR',
-                    'jawaban': va4,
-                    'keterangan': jenis,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Instruksi',
-                    'jawaban': va5,
-                    'keterangan': jenis,
-                    'id_detail_checkup': idDetailCheckup
-                });
-                data.push({
-                    'parameter': 'Notasi',
-                    'jawaban': va6,
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });

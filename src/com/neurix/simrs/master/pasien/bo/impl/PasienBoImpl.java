@@ -222,7 +222,7 @@ public class PasienBoImpl implements PasienBo {
                 e.printStackTrace();
             }
 
-            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp().replace("-","").replace("_",""));
@@ -790,19 +790,9 @@ public class PasienBoImpl implements PasienBo {
         CrudResponse response = new CrudResponse();
         if (rekamMedicLama.getIdPasien() != null && !"".equalsIgnoreCase(rekamMedicLama.getIdPasien())) {
 
-            ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
-            rekamMedicLamaEntity.setId("RM" + rekamMedicLamaDao.getNextSeq());
-            rekamMedicLamaEntity.setIdPasien(rekamMedicLama.getIdPasien());
-            rekamMedicLamaEntity.setBranchId(rekamMedicLama.getBranchId());
-            rekamMedicLamaEntity.setFlag(rekamMedicLama.getFlag());
-            rekamMedicLamaEntity.setAction(rekamMedicLama.getAction());
-            rekamMedicLamaEntity.setLastUpdate(rekamMedicLama.getLastUpdate());
-            rekamMedicLamaEntity.setLastUpdateWho(rekamMedicLama.getLastUpdateWho());
-            rekamMedicLamaEntity.setCreatedDate(rekamMedicLama.getCreatedDate());
-            rekamMedicLamaEntity.setCreatedWho(rekamMedicLama.getCreatedWho());
-
+            rekamMedicLama.setId("RM" + rekamMedicLamaDao.getNextSeq());
             try {
-                rekamMedicLamaDao.addAndSave(rekamMedicLamaEntity);
+                rekamMedicLamaDao.addAndSave(rekamMedicLama);
                 response.setStatus("success");
                 response.setMsg("Oke");
             } catch (HibernateException e) {
@@ -816,7 +806,7 @@ public class PasienBoImpl implements PasienBo {
             if (uploads.size() > 0) {
                 for (ImSimrsUploadRekamMedicLamaEntity uploadEntity : uploads) {
                     uploadEntity.setId("URM"+uploadRekamMedicLamaDao.getNextSeq());
-                    uploadEntity.setHeadId(rekamMedicLamaEntity.getId());
+                    uploadEntity.setHeadId(rekamMedicLama.getId());
                     uploadEntity.setFlag(rekamMedicLama.getFlag());
                     uploadEntity.setAction(rekamMedicLama.getAction());
                     uploadEntity.setCreatedDate(rekamMedicLama.getCreatedDate());
@@ -872,7 +862,7 @@ public class PasienBoImpl implements PasienBo {
             ImSimrsPasienEntity pasienEntity = new ImSimrsPasienEntity();
             String id = getIdPasien();
 
-            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + id);
+            pasienEntity.setIdPasien(CommonUtil.userBranchLogin() + dateFormater("yy") + id);
             pasienEntity.setNama(pasien.getNama());
             pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
             pasienEntity.setNoKtp(pasien.getNoKtp());
@@ -971,6 +961,11 @@ public class PasienBoImpl implements PasienBo {
         logger.info("[PasienBoImpl.getPasienById] Start >>>>>>>");
         logger.info("[PasienBoImpl.getPasienById] End <<<<<<<");
         return pasienDao.getById("idPasien", id);
+    }
+
+    @Override
+    public List<Pasien> getComboRmLama(String rm) throws GeneralBOException {
+        return pasienDao.getComboRmLama(rm);
     }
 
     public void setPasienDao(PasienDao pasienDao) {

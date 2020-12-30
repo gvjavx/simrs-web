@@ -39,6 +39,7 @@ import static java.util.Calendar.DATE;
 import static java.util.Calendar.MONTH;
 import static java.util.Calendar.YEAR;
 
+
 /**
  * Created by IntelliJ IDEA.
  * User: Thunderbird
@@ -1458,6 +1459,12 @@ public class  CommonUtil {
     }
 
     public static CrudResponse compressImage(BufferedImage image, String imageType, String url) {
+
+        /* image => file image yang telah diconvert menjadi BufferedImage
+         * imageType => isi sesuai tipe image. bisa png atau jpg
+         * url => isi sesuai lokasi file image ingi disimpan
+         *  */
+
         CrudResponse response = new CrudResponse();
         try {
             ImageOutputStream out = ImageIO.createImageOutputStream(Files.newOutputStream(Paths.get(url)));

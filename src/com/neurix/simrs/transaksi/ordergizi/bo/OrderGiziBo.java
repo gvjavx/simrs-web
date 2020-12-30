@@ -17,4 +17,5 @@ public interface OrderGiziBo {
     public CheckResponse updateDiterimaFLag(OrderGizi bean) throws GeneralBOException;
     public CheckResponse cancelOrderGizi(OrderGizi bean) throws GeneralBOException;
     public List<DetailJenisDiet> getByCriteriaJenisDiet(DetailJenisDiet bean) throws GeneralBOException;
+    public List<OrderGizi> cekOrderGizi(String id, String waktu) throws GeneralBOException;
 }

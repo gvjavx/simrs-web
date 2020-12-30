@@ -130,14 +130,16 @@ function saveICU(jenis, ket) {
         var va3 = $('#ai3').val();
         var va4 = "";
         var v4 = $('#ai4').val();
-        if (v4.length > 0) {
-            $.each(v4, function (i, item) {
-                if (va4 != '') {
-                    va4 = va4 + '|' + item;
-                } else {
-                    va4 = item;
-                }
-            });
+        if(v4 != null){
+            if (v4.length > 0) {
+                $.each(v4, function (i, item) {
+                    if (va4 != '') {
+                        va4 = va4 + '|' + item;
+                    } else {
+                        va4 = item;
+                    }
+                });
+            }
         }
         if (va1 && va2 && va3 && va4 != '') {
 

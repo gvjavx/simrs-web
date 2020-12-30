@@ -246,5 +246,14 @@ function setDataPasien() {
         $(function () {
             $('[data-mask]').inputmask();
         });
+
+        var delCanvas = $('.del-canvas');
+        if(delCanvas.length > 0){
+            $.each(delCanvas, function (i, item) {
+                var canvas = document.getElementById(item.id);
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+        }
     }
 }

@@ -692,7 +692,7 @@ public class PasienAction extends BaseMasterAction {
         return "search";
     }
 
-    public CrudResponse saveUploadRmLama(String data, String idPasien){
+    public CrudResponse saveUploadRmLama(String data, String idPasien, String noRmLama){
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
         CrudResponse response = new CrudResponse();
@@ -708,6 +708,7 @@ public class PasienAction extends BaseMasterAction {
         rekamMedicLamaEntity.setLastUpdate(time);
         rekamMedicLamaEntity.setCreatedWho(userLogin);
         rekamMedicLamaEntity.setLastUpdateWho(userLogin);
+        rekamMedicLamaEntity.setNoRmLama(noRmLama);
 
         try {
             JSONArray json = new JSONArray(data);
@@ -731,10 +732,6 @@ public class PasienAction extends BaseMasterAction {
                                     response.setStatus("error");
                                     response.setMsg("Buffered Image is null");
                                 } else {
-//                                    CrudResponse crudResponse = CommonUtil.compresing(image, uploadFile);
-//                                    if("success".equalsIgnoreCase(crudResponse.getStatus())){
-//                                        uploadRekamMedicLamaEntity.setUrlImg(fileName);
-//                                    }
                                     File f = new File(uploadFile);
                                     // write the image
                                     ImageIO.write(image, "png", f);
@@ -901,6 +898,20 @@ public class PasienAction extends BaseMasterAction {
             logger.error("Found Error " + e.getMessage());
         }
         return response;
+    }
+
+    public List getListComboPasienByRmLama(String rm) {
+        logger.info("[PasienAction.getListComboPasienByRmLama] start process >>>");
+        List<Pasien> listOfPasien = new ArrayList();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        try {
+            listOfPasien = pasienBo.getComboRmLama(rm);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienAction.getListComboPasienByRmLama] Error when get combo pasien, please inform to your admin.", e);
+        }
+        logger.info("[PasienAction.getListComboPasienByRmLama] end process <<<");
+        return listOfPasien;
     }
 
     public String getTipe() {
