@@ -93,28 +93,30 @@
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Hari Ini</label>
-                                    <div class="col-sm-4">
-                                        <s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>
-                                    </div>
-                                </div>
                                 <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Tanggal </label>--%>
+                                    <%--<label class="control-label col-sm-4">Hari Ini</label>--%>
                                     <%--<div class="col-sm-4">--%>
-                                        <%--<div class="row">--%>
-                                            <%--<div class="col-md-5">--%>
-                                                <%--<input type="date" id="date-from" class="form-control"/>--%>
-                                            <%--</div>--%>
-                                            <%--<div class="col-md-2">--%>
-                                                <%--To--%>
-                                            <%--</div>--%>
-                                            <%--<div class="col-md-5">--%>
-                                                <%--<input type="date" id="date-to" class="form-control"/>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
+                                        <%--<s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>--%>
                                     <%--</div>--%>
                                 <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Tanggal </label>
+                                    <div class="col-sm-4">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <s:textfield name="antrianTelemedic.stDateFrom" cssClass="form-control datepicker"
+                                                             required="false"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                To
+                                            </div>
+                                            <div class="col-md-5">
+                                                <s:textfield id="tgl_to" name="antrianTelemedic.stDateTo" cssClass="form-control datepicker"
+                                                             required="false"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>

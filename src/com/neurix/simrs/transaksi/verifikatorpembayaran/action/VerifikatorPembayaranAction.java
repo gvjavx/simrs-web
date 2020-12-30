@@ -220,8 +220,12 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     public String initForm(){
         logger.info("[VerifikatorPembayaranAction.initForm] START >>>");
 
+        String dateNow = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
         setPembayaranOnline(new PembayaranOnline());
-        setAntrianTelemedic(new AntrianTelemedic());
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        antrianTelemedic.setStDateFrom(dateNow);
+        antrianTelemedic.setStDateTo(dateNow);
+        setAntrianTelemedic(antrianTelemedic);
         logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
         return "search";
     }
@@ -294,6 +298,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
                 searchAntrian.setId(antrianTelemedic.getId());
                 searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
+                searchAntrian.setStDateFrom(antrianTelemedic.getStDateFrom());
+                searchAntrian.setStDateTo(antrianTelemedic.getStDateTo());
             }
         }
 

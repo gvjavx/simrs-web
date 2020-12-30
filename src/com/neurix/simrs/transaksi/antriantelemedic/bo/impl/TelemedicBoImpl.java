@@ -612,6 +612,12 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (bean.getFlagDateNow() != null && !"".equalsIgnoreCase(bean.getFlagDateNow())) {
             hsCriteria.put("created_date_to_date", bean.getFlagDateNow());
         }
+        if (bean.getStDateFrom() != null && !"".equalsIgnoreCase(bean.getStDateFrom())) {
+            hsCriteria.put("date_from", bean.getStDateFrom());
+        }
+        if (bean.getStDateTo() != null && !"".equalsIgnoreCase(bean.getStDateTo())) {
+            hsCriteria.put("date_to", bean.getStDateTo());
+        }
 
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = new ArrayList<>();
 
