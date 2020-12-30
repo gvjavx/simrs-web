@@ -79,7 +79,7 @@
             <result name="add">/pages/com/neurix/simrs/master/parameterketeranganobat/addParameterKeteranganObat.jsp</result>
             <result name="edit">/pages/com/neurix/simrs/master/parameterketeranganobat/editParameterKeteranganObat.jsp</result>
             <result name="delete">/pages/com/neurix/simrs/master/parameterketeranganobat/deleteParameterKeteranganObat.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/simrs/parameterketeranganobat/addParameterKeteranganObat.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/simrs/master/parameterketeranganobat/addParameterKeteranganObat.jsp</result>
             <result name="failure">/pages/com/neurix/simrs/master/parameterketeranganobat/edithParameterKeteranganObat.jsp</result>
 
             <result name="input">/pages/com/neurix/simrs/master/parameterketeranganobat/searchParameterKeteranganObat.jsp</result>
