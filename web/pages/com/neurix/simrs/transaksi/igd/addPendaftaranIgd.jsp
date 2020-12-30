@@ -3383,8 +3383,8 @@
                         $('#save_add').show();
                         $('#load_add').hide();
                         $('#info_dialog_new').dialog('open');
-                        $('#id_pasien').val(response.idPasien).attr('disabled', true);
-                        $('#no_bpjs').val(response.noBpjs).attr('disabled', true);
+                        $('#id_pasien').val(response.idPasien).attr('readonly', true);
+                        $('#no_bpjs').val(response.noBpjs).attr('readonly', true);
                         $('#no_ktp').val(response.noKtp);
                         $('#nama_pasien').val(response.nama);
                         $('#jenis_kelamin').val(response.jenisKelamin);
