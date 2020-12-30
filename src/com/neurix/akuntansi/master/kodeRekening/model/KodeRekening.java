@@ -32,6 +32,9 @@ public class KodeRekening extends BaseModel {
     private String flagDivisi;
     private String tipeBudgeting;
 
+
+
+
     public String getTipeBudgeting() {
         return tipeBudgeting;
     }

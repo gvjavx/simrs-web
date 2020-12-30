@@ -979,6 +979,7 @@
                 </value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/transketeranganobat/hibernate/ItSimrsKeteranganResepEntity.hbm.xml</value>
+
             </list>
 
         </property>

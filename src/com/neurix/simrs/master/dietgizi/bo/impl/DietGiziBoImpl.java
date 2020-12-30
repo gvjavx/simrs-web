@@ -99,7 +99,6 @@ public class DietGiziBoImpl implements DietGiziBo {
             ImSimrsDietGizi imSimrsDietGizi = new ImSimrsDietGizi();
 
             imSimrsDietGizi.setIdDietGizi(dietgiziId);
-
             imSimrsDietGizi.setNamaDietGizi(bean.getNamaDietGizi());
             imSimrsDietGizi.setTarif(bean.getTarif());
             imSimrsDietGizi.setBranchId(bean.getBranchId());

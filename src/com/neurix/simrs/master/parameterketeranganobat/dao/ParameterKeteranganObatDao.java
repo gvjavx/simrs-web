@@ -31,7 +31,7 @@ public class ParameterKeteranganObatDao extends GenericDao<ImSimrsParameterKeter
                 criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
             }
             if (mapCriteria.get("nama") != null){
-                criteria.add(Restrictions.eq("nama", mapCriteria.get("nama").toString()));
+                criteria.add(Restrictions.ilike("nama", "%"+mapCriteria.get("nama").toString()+"%"));
             }
             if (mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));

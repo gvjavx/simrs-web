@@ -3,7 +3,7 @@ package com.neurix.simrs.master.jenispersediaanobatsub.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenispersediaanobat.dao.JenisPersediaanObatDao;
 import com.neurix.simrs.master.jenispersediaanobat.model.ImSimrsJenisPersediaanObatEntity;
-import com.neurix.simrs.master.jenispersediaanobat.model.JenisPersediaanObat;
+
 import com.neurix.simrs.master.jenispersediaanobatsub.bo.JenisPersediaanObatSubBo;
 import com.neurix.simrs.master.jenispersediaanobatsub.dao.JenisPersdiaanObatSubDao;
 import com.neurix.simrs.master.jenispersediaanobatsub.model.ImSimrsJenisPersediaanObatSubEntity;
