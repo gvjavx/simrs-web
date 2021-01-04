@@ -126,7 +126,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_kasirjalan.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
