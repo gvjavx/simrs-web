@@ -226,6 +226,28 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return budgeting;
     }
 
+    public Boolean checkIfAvailDraft(String branchId, String tahun, String jenis){
+
+        String SQL = "SELECT a.* FROM it_akun_nilai_parameter_budgeting a\n" +
+                "INNER JOIN im_akun_parameter_budgeting b ON b.id = a.id_parameter\n" +
+                "WHERE \n" +
+                "b.id_jenis_budgeting = :jenis\n" +
+                "AND a.branch_id = :unit\n" +
+                "AND a.tahun = :tahun\n" +
+                "LIMIT 1";
+
+        List<Object> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenis", jenis)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .list();
+
+        if (results.size() > 0)
+            return true;
+        return false;
+
+    }
+
     public String checkNilaiDasarByTahun(String tahun){
 
         String SQL = "SELECT id FROM it_akun_budgeting_nilai_dasar\n" +

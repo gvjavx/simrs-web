@@ -588,11 +588,13 @@ public class BgInvestasiAction {
             if (!"".equalsIgnoreCase(obj.get("nama").toString())){
                 perhitungan.setNama(obj.get("nama").toString());
             }
-            perhitungan.setNilaiTotal(perhitungan.getNilai().multiply(new BigDecimal(perhitungan.getQty())));
-            perhitungan.setIdNilaiParam(idNilaiParam);
+            if (perhitungan.getNilai() != null && perhitungan.getQty() != null) {
+                perhitungan.setNilaiTotal(perhitungan.getNilai().multiply(new BigDecimal(perhitungan.getQty())));
+                perhitungan.setIdNilaiParam(idNilaiParam);
 
-            // tambahkan ke session perhitungan
-            sessionPengadaan.add(perhitungan);
+                // tambahkan ke session perhitungan
+                sessionPengadaan.add(perhitungan);
+            }
         }
 
         // hitung dari list filter berdasarkan id Params;
