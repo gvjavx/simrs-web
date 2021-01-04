@@ -191,7 +191,7 @@
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
                                                 <table>
-                                                    <span style="background-color: #00a65a; color: white; border-radius: 5px; border: 1px solid black; padding: 5px">
+                                                    <span class="span-success">
                                                     <s:property value="headerDetailCheckup.noSep"></s:property>
                                                     </span>
                                                 </table>

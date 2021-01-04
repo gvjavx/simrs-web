@@ -324,6 +324,9 @@ public class PelayananBoImpl implements PelayananBo{
             if (bean.getNotOwnBranch() != null){
                 hsCriteria.put("not_own_branch", bean.getNotOwnBranch());
             }
+            if (bean.getKodePoliVclaim() != null){
+                hsCriteria.put("kode_poli_vclaim", bean.getKodePoliVclaim());
+            }
 
             List<ImSimrsPelayananEntity> entityList = new ArrayList<>();
 

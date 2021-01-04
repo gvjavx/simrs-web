@@ -32,6 +32,7 @@ import com.neurix.simrs.transaksi.riwayatbarang.model.ItSimrsTransaksiStokEntity
 import com.neurix.simrs.transaksi.riwayatbarang.model.TransaksiStok;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
 import com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity;
+import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.dao.*;
 import com.neurix.simrs.transaksi.transaksiobat.model.*;
@@ -1380,12 +1381,22 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
                     if(bean.getBiayaTambahanList().size() > 0){
                         for (ItSimrsRiwayatTindakanEntity entity: bean.getBiayaTambahanList()){
-                            entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
+                            List<ItSimrsRiwayatTindakanEntity> riwayatTindakanList = new ArrayList<>();
+                            HashMap hsCriteria = new HashMap();
+                            hsCriteria.put("id_tindakan", entity.getIdTindakan());
                             try {
-                                riwayatTindakanDao.addAndSave(entity);
-                            }catch (HibernateException e){
-                                response.setStatus("error");
-                                response.setMessage("[TransaksiObatBoImpl.saveApproveResepPoli], ERROR when update permintaan resep by criteria, "+e.getMessage());
+                                riwayatTindakanList = riwayatTindakanDao.getByCriteria(hsCriteria);
+                            } catch (HibernateException e) {
+                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+                            }
+                            if(riwayatTindakanList.isEmpty()){
+                                entity.setIdRiwayatTindakan("RWT"+riwayatTindakanDao.getNextSeq());
+                                try {
+                                    riwayatTindakanDao.addAndSave(entity);
+                                }catch (HibernateException e){
+                                    response.setStatus("error");
+                                    response.setMessage("[TransaksiObatBoImpl.saveApproveResepPoli], ERROR when update permintaan resep by criteria, "+e.getMessage());
+                                }
                             }
                         }
                     }

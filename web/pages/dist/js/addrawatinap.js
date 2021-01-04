@@ -1429,18 +1429,13 @@ function listSelectObat(select) {
 
     if (idJenis != '') {
         ObatAction.listObat(idJenis, function (response) {
-            if (response != null) {
+            if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
                 });
-            } else {
-                option = option;
             }
         });
-    } else {
-        option = option;
     }
-
     $('#ob_id_obat').html(option);
     $('#resep_nama_obat').html(option);
 }
