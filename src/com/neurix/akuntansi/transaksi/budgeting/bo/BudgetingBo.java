@@ -29,6 +29,7 @@ public interface BudgetingBo {
     public Budgeting checkBudgeting(String branchId, String tahun) throws GeneralBOException;
     public Budgeting checkBudgetingByTipe(String branchId, String tahun, String tipeBudgeting) throws GeneralBOException;
     public String checkNilaiDasarByTahun(String tahun) throws GeneralBOException;
+    public Boolean checkIfAvailDraft(String branchId, String tahun, String jenis);
     public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException;
 
     public Budgeting getBudgetBiayaDivisiSaatIni(Budgeting bean);
