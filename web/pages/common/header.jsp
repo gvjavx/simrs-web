@@ -440,8 +440,8 @@ apply the skin class to the body tag so the changes take effect.
             "order": [[ 0, "desc" ]]
         });
 
-        $('#myTable').attr('style','width: 100%');
-        $('#sortTable').attr('style','width: 100%');
+        $('#myTable').css('width', '100%');
+        $('#sortTable').css('width', '100%');
 
         $("#tanggal_lahir").datepicker({
             autoclose: true,

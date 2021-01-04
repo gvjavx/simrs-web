@@ -86,7 +86,7 @@ function hitungCoverBiaya() {
     var jenis = $('#jenis_pasien').val();
     if ("asuransi" == jenis) {
         CheckupDetailAction.getBiayaAsuransi(idDetailCheckup, function (response) {
-            if (response.coverBiaya != null && response.coverBiaya != '') {
+            if (response.coverBiaya != null) {
                 $('#status_asuransi').show();
                 if (response.coverBiaya != null) {
 
@@ -94,7 +94,7 @@ function hitungCoverBiaya() {
                     var biayaTindakan = response.tarifTindakan;
 
                     var persen = "";
-                    if (coverBiaya != '' && biayaTindakan) {
+                    if (coverBiaya != null) {
                         persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                     } else {
                         persen = 0;
@@ -115,12 +115,12 @@ function hitungCoverBiaya() {
 
                     var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
 
-                    if (coverBiaya != '') {
+                    if (coverBiaya != null) {
                         $('#sts_cover_biaya_asuransi').html(barBpjs);
                         $('#b_asuransi').html(formatRupiah(coverBiaya) + " (100%)");
                     }
 
-                    if (biayaTindakan != '') {
+                    if (biayaTindakan != null) {
                         $('#sts_biaya_tindakan_asuransi').html(barTindakan);
                         $('#b_tindakan_asuransi').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                     }
@@ -137,14 +137,13 @@ function hitungStatusBiaya() {
     if (NOSEP != '' && NOSEP != null) {
         CheckupDetailAction.getStatusBiayaTindakan(idDetailCheckup, "RWJ", function (response) {
             $('#status_bpjs').show();
-            if (response.tarifBpjs != null && response.tarifTindakan != null) {
-
+            if (response.tarifBpjs != null) {
                 var coverBiaya = response.tarifBpjs;
                 var biayaTindakan = response.tarifTindakan;
                 $('#kode_cbg').text(response.kodeCbg);
 
                 var persen = "";
-                if (coverBiaya != '' && biayaTindakan) {
+                if (coverBiaya != null && biayaTindakan != null) {
                     persen = ((parseInt(biayaTindakan) / parseInt(coverBiaya)) * 100).toFixed(2);
                 } else {
                     persen = 0;
@@ -165,12 +164,12 @@ function hitungStatusBiaya() {
 
                 var barTindakan = '<div class="progress-bar ' + barClass + '" style="width: ' + persen + '%" role="progressbar" aria-valuenow="' + persen + '" aria-valuemin="0" aria-valuemax="100">' + persen + "%" + '</div>';
 
-                if (coverBiaya != '') {
+                if (coverBiaya != null) {
                     $('#sts_cover_biaya').html(barBpjs);
                     $('#b_bpjs').html(formatRupiah(coverBiaya) + " (100%)");
                 }
 
-                if (biayaTindakan != '') {
+                if (biayaTindakan != null) {
                     $('#sts_biaya_tindakan').html(barTindakan);
                     $('#b_tindakan').html(formatRupiah(biayaTindakan) + " (" + persen + "%)");
                 }
@@ -1918,19 +1917,15 @@ function listSelectObat(select) {
     var option = "<option value=''>[Select One]</option>";
     if (idJenis != '') {
         ObatAction.listObat(idJenis, function (response) {
-            if (response != null) {
+            if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idObat + "'>" + item.namaObat + "</option>";
                 });
-                $('#ob_id_obat').html(option);
-                $('#resep_nama_obat').html(option);
-            } else {
-                option = option;
             }
         });
-    } else {
-        option = option;
     }
+    $('#ob_id_obat').html(option);
+    $('#resep_nama_obat').html(option);
 }
 
 function showFormCekup(idKet) {

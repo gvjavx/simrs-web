@@ -2205,7 +2205,21 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
 
                         // DIRUBAH SIGIT, 2020-05-07 dari checkup.getIdJenisPeriksaPasien -> detailCheckup.getIdJenisPeriksaPasien());
-                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                        String flagBpjs = "";
+                        if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                            RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+                            RekananOps ops = new RekananOps();
+                            try {
+                                ops = rekananOpsBo.getDetailRekananOps(detailCheckup.getIdAsuransi(), CommonUtil.userBranchLogin());
+                            } catch (HibernateException e) {
+                                logger.error("Error, " + e.getMessage());
+                            }
+                            if (ops != null) {
+                                flagBpjs = ops.getIsBpjs();
+                            }
+                        }
+
+                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(flagBpjs)) {
 
                             Branch branch = new Branch();
                             branch.setBranchId(branchId);
@@ -4405,6 +4419,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+                        String ktb = "";
+                        if("lab".equalsIgnoreCase(entity.getKategori())){
+                            ktb = "laboratorium";
+                        }else{
+                            ktb = "radiologi";
+                        }
+                        riwayatTindakan.setKategoriTindakanBpjs(ktb);
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);
