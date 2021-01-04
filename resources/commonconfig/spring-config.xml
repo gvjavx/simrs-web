@@ -227,6 +227,9 @@
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/ParameterBudgetingBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/ParameterBudgetingRekeningBean.xml"/>
+
+
     <import resource="sshconfig/com/neurix/akuntansi/master/reportKeuanganKonsol/spring/ReportKeuanganKonsolDetailBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/budgeting/spring/BudgetingBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/spring/PengajuanBiayaBean.xml"/>

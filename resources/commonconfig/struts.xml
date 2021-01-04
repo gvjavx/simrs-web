@@ -303,4 +303,6 @@
 
     <include file="sshconfig/com/neurix/simrs/master/kategoripersediaan/struts/KategoriPersediaanAction.xml"/>
 
+    <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/ParameterBudgetingRekeningAction.xml"/>
+
 </struts>
