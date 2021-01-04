@@ -183,7 +183,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 13px">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 11px">
                             <thead >
                                 <tr bgcolor="#90ee90">
                                     <td>Id Telemedic</td>
@@ -195,6 +195,7 @@
                                     <td>Approve konsultasi</td>
                                     <td>Status Resep</td>
                                     <td>Approve Resep</td>
+                                    <td>Created Date</td>
                                     <td align="center">Action</td>
                                 </tr>
                             </thead>
@@ -284,6 +285,7 @@
                                             <img src="<s:url value="/pages/images/icon_success.ico" />">
                                         </s:if>
                                     </td>
+                                    <td><s:property value="stCreatedDate"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagBatalDokter == "Y"'>
                                             <s:if test='#row.idJenisPeriksaPasien == "umum"'>

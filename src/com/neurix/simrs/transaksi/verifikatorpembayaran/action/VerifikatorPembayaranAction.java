@@ -304,11 +304,11 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         }
 
         // jika pencarian hari ini true, START
-        String stCurDate = "";
-        if ("true".equals(antrianTelemedic.getFlagDateNow())){
-            stCurDate = getStCurrentDate();
-        }
-        searchAntrian.setFlagDateNow(stCurDate);
+//        String stCurDate = "";
+//        if ("true".equals(antrianTelemedic.getFlagDateNow())){
+//            stCurDate = getStCurrentDate();
+//        }
+//        searchAntrian.setFlagDateNow(stCurDate);
         // END
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
@@ -318,6 +318,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             logger.error("[VerifikatorPembayaranAction.search] ERROR. ",e);
             throw new GeneralBOException("[VerifikatorPembayaranAction.search] ERROR. ",e);
         }
+
+//        if (searchAntrian.getStDateFrom() != null && !"".equalsIgnoreCase(searchAntrian.getStDateFrom()))
+//            searchAntrian.setStDateFrom(getStCurrentDate());
+//        if (searchAntrian.getStDateTo() != null && !"".equalsIgnoreCase(searchAntrian.getStDateTo()))
+//            searchAntrian.setStDateTo(getStCurrentDate());
+
+        setAntrianTelemedic(searchAntrian);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResults");

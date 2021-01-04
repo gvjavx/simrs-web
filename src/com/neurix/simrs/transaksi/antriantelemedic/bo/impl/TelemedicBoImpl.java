@@ -255,7 +255,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 antrianTelemedic.setJenisRujukan(telemedicEntity.getJenisRujukan());
                 antrianTelemedic.setIdDiagnosa(telemedicEntity.getIdDiagnosa());
                 antrianTelemedic.setKetDiagnosa(telemedicEntity.getKetDiagnosa());
-
+                antrianTelemedic.setStCreatedDate(telemedicEntity.getCreatedDate() != null ? telemedicEntity.getCreatedDate().toString() : "");
 
                 if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
                     antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
