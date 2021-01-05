@@ -368,7 +368,11 @@
                                     $('#jenisCuti1').change(function() {
                                         var jenisCuti= $('#jenisCuti1').val();
 
+                                        //("TES ONCHANGE");
+
                                         if (jenisCuti == "diluar_tanggungan") {
+
+                                            //("MASUK diluar tanggungan");
                                             $('#cuti2').show();
                                             $('#cuti1').hide();
 
@@ -393,14 +397,14 @@
                                                 var jenisCuti1 = $('#jenisCuti1').val();
                                                 var nip=$('#nipId').val();
                                                 var data2=[];
-                                                console.log("Test "+jenisCuti1);
+                                                //("Test diluar tangungan"+jenisCuti1);
                                                 dwr.engine.setAsync(false);
                                                 CutiPegawaiAction.initComboSetCuti(nip, jenisCuti1,function (listdata) {
                                                     data2 = listdata;
                                                 });
                                                 $.each(data2, function (i, item) {
-                                                    console.log(item.cutiId);
-                                                    console.log(item.sisaCutiHari)
+                                                    //(item.cutiId);
+                                                    //(item.sisaCutiHari)
                                                     $('#cutiIdTanggungan').val(item.cutiId).change();
                                                     $('#cutiId15Tanggungan').val(item.cutiId);
                                                     $('#sisaCuti').val('1095');
@@ -449,7 +453,7 @@
                                                 var jenisCuti1 = $('#jenisCuti1').val();
                                                 var nip=$('#nipId').val();
                                                 var data2=[];
-                                                console.log("Test "+jenisCuti1);
+                                                //("Test "+jenisCuti1);
                                                 dwr.engine.setAsync(false);
                                                 CutiPegawaiAction.initComboSetCuti(nip, jenisCuti1,function (listdata) {
                                                     data2 = listdata;
@@ -724,9 +728,14 @@
             CutiAction.initComboCutiTipe(namacuti, function (listdata) {
                 data = listdata;
             });
+
+            //("function jeniscuti line 722");
+            //(data);
             $.each(data, function (i, item) {
                 $('#jenisCuti').val(item.tipeHari).change();
                 $('#cutiMax').val(item.jumlahCuti);
+
+                //("check -> tipeHari : " + item.tipeHari );
             });
         }
 
@@ -789,7 +798,7 @@
             var jenisCuti1 = $('#jenisCuti1').val();
             var nip=$('#nipId').val();
             var data2=[];
-            console.log("Test "+jenisCuti1);
+            //("Test "+jenisCuti1);
             dwr.engine.setAsync(false);
             CutiPegawaiAction.initComboSetCuti(nip, jenisCuti1,function (listdata) {
                 data2 = listdata;
@@ -902,6 +911,7 @@
 <script type='text/javascript'>
     $(document).ready(function() {
         var functions, mapped;
+        //("typeahead NIP line 915");
         $('#nipId').typeahead({
             minLength: 1,
             source: function (query, process) {
@@ -954,8 +964,13 @@
                 return selectedObj.id;
             }
         });
+
+
         var namacuti,branchid,golonganid,nip;
         $('#cutiId').change(function() {
+
+            //("#cuti onchange line 972");
+
             namacuti= $('#cutiId').val();
             branchid =$('#unitId12').val();
             nip=$('#nipId').val();
@@ -968,8 +983,11 @@
             $.each(data, function (i, item) {
                 $('#jenisCuti').val(item.tipeHari).change();
                 $('#cutiMax').val(item.jumlahCuti);
+
+                //("tipe hari : " + item.tipeHari);
             });
         });
+
         $('#pegawaiPenggantiSementara').typeahead({
             minLength: 1,
             source: function (query, process) {
