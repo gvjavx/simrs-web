@@ -355,7 +355,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama  * :</small></label>
+                                                    <label class="control-label"><small>Nama  <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -372,7 +372,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Gender * :</small></label>
+                                                    <label class="control-label"><small>Gender <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -409,7 +409,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Status Keluarga * :</small></label>
+                                                    <label class="control-label"><small>Status Keluarga <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -451,7 +451,7 @@
                                             </s:if>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tempat Lahir * :</small></label>
+                                                    <label class="control-label"><small>Tempat Lahir <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -467,7 +467,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tanggal Lahir * :</small></label>
+                                                    <label class="control-label"><small>Tanggal Lahir <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -485,7 +485,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Unit * :</small></label>
+                                                        <label class="control-label"><small>Unit <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -713,7 +713,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No KTP * :</small></label>
+                                                    <label class="control-label"><small>No KTP <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -982,7 +982,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Status Pegawai * :</small></label>
+                                                    <label class="control-label"><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1007,7 +1007,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Pegawai * :</small></label>
+                                                    <label class="control-label"><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1194,7 +1194,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Ms. Kerja Gol. Pensiun*:</small></label>
+                                                    <label class="control-label"><small>Ms. Kerja Gol. Pensiun<span style="color:red;">*</span>:</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1360,7 +1360,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Shift * :</small></label>
+                                                    <label class="control-label"><small>Shift <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1378,7 +1378,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Dokter Tamu * :</small></label>
+                                                    <label class="control-label"><small>Dokter Tamu <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
