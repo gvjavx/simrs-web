@@ -305,11 +305,11 @@
 
                 </ul>
 
-                <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                           height="500" width="900" autoOpen="false"
-                           title="keluarga ">
-                    <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                </sj:dialog>
+                <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"--%>
+                           <%--height="500" width="900" autoOpen="false"--%>
+                           <%--title="keluarga ">--%>
+                    <%--<center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>--%>
+                <%--</sj:dialog>--%>
 
                 <s:form id="homeForm" theme="simple" namespace="/biodata" enctype="multipart/form-data" action="save_biodata.action" cssClass="well form-horizontal">
                     <s:hidden name="addOrEdit"/>
@@ -336,7 +336,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>NIP <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>NIP <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -355,7 +355,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama  <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Nama  <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -372,7 +372,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Gender <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Gender <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -389,7 +389,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Agama :</small></label>
+                                                    <label><small>Agama :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -409,7 +409,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Status Keluarga <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Status Keluarga <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -428,7 +428,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Jumlah Anak :</small></label>
+                                                        <label><small>Jumlah Anak :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -440,7 +440,7 @@
                                             <s:if test="isEdit()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Jumlah Anak :</small></label>
+                                                        <label><small>Jumlah Anak :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -451,7 +451,7 @@
                                             </s:if>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tempat Lahir <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Tempat Lahir <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -467,7 +467,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tanggal Lahir <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Tanggal Lahir <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -485,7 +485,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Unit <span style="color:red;">*</span> :</small></label>
+                                                        <label><small>Unit <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -516,7 +516,7 @@
                                             </s:if>
                                             <s:else>
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label col-sm-3" >Unit : </label>
+                                                    <label class="col-sm-3" >Unit : </label>
                                                     <div class="col-sm-8">
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:if test='biodata.branch == "KP"'>
@@ -536,7 +536,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Bidang :</small></label>
+                                                        <label><small>Bidang :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -555,7 +555,7 @@
                                             </s:if>
                                             <s:else>
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label"><small>Bidang :</small></label>
+                                                    <label><small>Bidang :</small></label>
                                                     <div class="col-sm-8">
                                                         <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
                                                         <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
@@ -567,7 +567,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Jabatan :</small></label>
+                                                        <label><small>Jabatan :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -585,7 +585,7 @@
                                             </s:if>
                                             <s:else>
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label"><small>Jabatan :</small></label>
+                                                    <label><small>Jabatan :</small></label>
                                                     <div class="col-sm-8">
                                                         <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                                                         <select id="positionId1" name="biodata.positionId" class="form-control"></select>
@@ -596,7 +596,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label class="control-label"><small>Profesi :</small></label>
+                                                        <label><small>Profesi :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -615,7 +615,7 @@
                                             </s:if>
                                             <s:else>
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label"><small>Profesi :</small></label>
+                                                    <label><small>Profesi :</small></label>
                                                     <div class="col-sm-8">
                                                         <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                                                         <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
@@ -627,7 +627,7 @@
                                             <s:if test="isDelete()">
                                                 <%--<tr>--%>
                                                 <%--<td>--%>
-                                                <%--<label class="control-label"><small>PJS :</small></label>--%>
+                                                <%--<label><small>PJS :</small></label>--%>
                                                 <%--</td>--%>
                                                 <%--<td>--%>
                                                 <%--<table>--%>
@@ -637,7 +637,7 @@
                                                 <%--</td>--%>
                                                 <%--</tr>--%>
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label"><small>PJS :</small></label>
+                                                    <label><small>PJS :</small></label>
                                                     <div class="col-sm-8">
                                                         <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
                                                         <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
@@ -646,7 +646,7 @@
                                             </s:if>
                                             <s:elseif test="isAdd()">
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label"><small>PJS :</small></label>
+                                                    <label><small>PJS :</small></label>
                                                     <div class="col-sm-8">
                                                         <input type="checkbox" id="pjs" class="checkZakat" onchange="cekPjs()" />
                                                         <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
@@ -655,7 +655,7 @@
                                             </s:elseif>
                                             <s:else>
                                                 <div style="display: none" class="form-group">
-                                                    <label class="control-label"><small>PJS :</small></label>
+                                                    <label><small>PJS :</small></label>
                                                     <div class="col-sm-8">
                                                         <input type="checkbox" id="pjs" class="checkZakat" disabled onchange="cekPjs()" />
                                                         <s:textfield cssStyle="display: none" id="flagPjs" name="biodata.pjs"  />
@@ -665,7 +665,7 @@
                                             </s:else>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>NPWP :</small></label>
+                                                    <label><small>NPWP :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -681,7 +681,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Gelar Depan :</small></label>
+                                                    <label><small>Gelar Depan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -697,7 +697,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Gelar Belakang :</small></label>
+                                                    <label><small>Gelar Belakang :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -713,7 +713,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No KTP <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>No KTP <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -729,7 +729,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No Telp :</small></label>
+                                                    <label><small>No Telp :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -745,7 +745,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Alamat :</small></label>
+                                                    <label><small>Alamat :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -761,7 +761,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Provinsi :</small></label>
+                                                    <label><small>Provinsi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -811,7 +811,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Kabupaten :</small></label>
+                                                    <label><small>Kabupaten :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -864,7 +864,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Kecamatan :</small></label>
+                                                    <label><small>Kecamatan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -913,7 +913,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Desa :</small></label>
+                                                    <label><small>Desa :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -962,7 +962,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>RT / RW :</small></label>
+                                                    <label><small>RT / RW :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -982,7 +982,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1007,7 +1007,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1036,7 +1036,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Level :</small></label>
+                                                    <label><small>Level :</small></label>
                                                 </td>
                                                 <td id="golongan1Group">
                                                     <table>
@@ -1075,7 +1075,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1093,7 +1093,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1117,7 +1117,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label label-prapensiun"><small>Tanggal MBT :</small></label>
+                                                    <label class="label-prapensiun"><small>Tanggal MBT :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1134,7 +1134,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label label-pensiun"><small>Tanggal Pensiun :</small></label>
+                                                    <label class="label-pensiun"><small>Tanggal Pensiun :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1151,7 +1151,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Dana Pensiun :</small></label>
+                                                    <label><small>Dana Pensiun :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1172,7 +1172,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Golongan Pensiun :</small></label>
+                                                    <label><small>Golongan Pensiun :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1194,7 +1194,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Ms. Kerja Gol. Pensiun<span style="color:red;">*</span>:</small></label>
+                                                    <label><small>Ms. Kerja Gol. Pensiun <span style="color:red;">*</span> : </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1209,7 +1209,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No. Anggota Dapen :</small></label>
+                                                    <label><small>No. Anggota Dapen :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1225,7 +1225,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No.BPJS Tenagakerjaan</small></label>
+                                                    <label><small>No.BPJS Tenagakerjaan : </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1241,7 +1241,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No. BPJS (Pensiun):</small></label>
+                                                    <label><small>No. BPJS (Pensiun):</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1257,7 +1257,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No. BPJS Kesehatan :</small></label>
+                                                    <label><small>No. BPJS Kesehatan :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1273,7 +1273,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Foto :</small></label>
+                                                    <label><small>Foto :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1290,7 +1290,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>NIP Lama :</small></label>
+                                                    <label><small>NIP Lama :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1307,7 +1307,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Pin :</small></label>
+                                                    <label><small>Pin :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1322,7 +1322,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Kelompok Pegawai :</small></label>
+                                                    <label><small>Kelompok Pegawai :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1341,7 +1341,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Jabatan PLT :</small></label>
+                                                    <label><small>Jabatan PLT :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1360,7 +1360,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Shift <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Shift <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1378,7 +1378,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Dokter Tamu <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Dokter Tamu <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1397,7 +1397,7 @@
                                             </tr>
                                                 <%--<tr>--%>
                                                 <%--<td>--%>
-                                                <%--<label class="control-label"><small>Zakat Profesi :</small></label>--%>
+                                                <%--<label><small>Zakat Profesi :</small></label>--%>
                                                 <%--</td>--%>
                                                 <%--<td>--%>
                                                 <%--<table>--%>
@@ -1415,7 +1415,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label" style="color: red;"><small>Aktif :</small></label>
+                                                    <label style="color: red;"><small>Aktif :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1439,7 +1439,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Bank :</small></label>
+                                                    <label><small>Bank :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1459,7 +1459,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Cabang Bank :</small></label>
+                                                    <label><small>Cabang Bank :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1475,7 +1475,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>No. Rek Bank :</small></label>
+                                                    <label><small>No. Rek Bank :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1491,7 +1491,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Finger Mobile :</small></label>
+                                                    <label><small>Finger Mobile :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1509,7 +1509,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunjangan Supervisi :</small></label>
+                                                    <label><small>Tunjangan Supervisi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1527,7 +1527,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunjangan Lokasi :</small></label>
+                                                    <label><small>Tunjangan Lokasi :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1544,7 +1544,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunjangan Siaga :</small></label>
+                                                    <label><small>Tunjangan Siaga :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1561,7 +1561,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunjangan Profesional :</small></label>
+                                                    <label><small>Tunjangan Profesional :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1579,7 +1579,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunj.Rumah :</small></label>
+                                                    <label><small>Tunj.Rumah :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1600,7 +1600,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunj.Air :</small></label>
+                                                    <label><small>Tunj.Air :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1618,7 +1618,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunj.Listrik :</small></label>
+                                                    <label><small>Tunj.Listrik :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1635,7 +1635,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Tunj.Bbm :</small></label>
+                                                    <label><small>Tunj.Bbm :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1652,7 +1652,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>BPJS KS :</small></label>
+                                                    <label><small>BPJS KS :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1669,7 +1669,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>BPJS TK :</small></label>
+                                                    <label><small>BPJS TK :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1687,7 +1687,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Mess :</small></label>
+                                                    <label><small>Mess :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1846,7 +1846,7 @@
                                                                     }"
                                             >
                                                 <div class="alert alert-error fade in">
-                                                    <label class="control-label" align="left">
+                                                    <label align="left">
                                                         <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> System Found : <p id="errorMessage"></p>
                                                     </label>
                                                 </div>
@@ -1859,7 +1859,7 @@
                                                                     }"
                                             >
                                                 <div class="alert alert-error fade in">
-                                                    <label class="control-label" align="left">
+                                                    <label align="left">
                                                         <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
                                                         <br/>
                                                         <center>
@@ -3132,15 +3132,15 @@
     function loadStatusPegawai(){
         var statusPegawai = $('#tipePegawai1').val();
         if (statusPegawai=="TP03"){
-            $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir</small>");
-            $('.label-pensiun').html("<small>Tgl Kontrak Berakhir</small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
-            $('.label-tanggal-aktif').html("<small>Tanggal Aktif</small>");
+            $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir : </small>");
+            $('.label-pensiun').html("<small>Tgl Kontrak Berakhir : </small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Kontrak : </small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Aktif : </small>");
         } else{
-            $('.label-prapensiun').html("<small>Tanggal MBT</small>");
-            $('.label-pensiun').html("<small>Tanggal Pensiun</small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Masuk</small>");
-            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan</small>");
+            $('.label-prapensiun').html("<small>Tanggal MBT : </small>");
+            $('.label-pensiun').html("<small>Tanggal Pensiun : </small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk : </small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan : </small>");
         }
     }
 
