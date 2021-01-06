@@ -276,6 +276,19 @@
             <column name="peralihan_tunjangan"/>
         </property>
 
+        <property name="tanggalKeluar">
+            <column name="tanggal_keluar" sql-type="date"/>
+        </property>
+        <property name="flagPegawaiCutiDiluarTanggungan">
+            <column name="flag_pegawai_cuti_diluar_tanggungan" sql-type="varchar"/>
+        </property>
+        <property name="tanggalCutiDiluarAwal">
+            <column name="tanggal_cuti_diluar_awal" sql-type="date"/>
+        </property>
+        <property name="tanggalCutiDiluarAkhir">
+            <column name="tanggal_cuti_diluar_akhir" sql-type="date"/>
+        </property>
+
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="provinsi"/>
