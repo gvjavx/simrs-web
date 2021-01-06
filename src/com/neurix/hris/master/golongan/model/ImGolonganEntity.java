@@ -22,6 +22,10 @@ public class ImGolonganEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String golonganPensiun;
+    private String masaKerjaGolAwal;
+    private String masaKerjaGolAkhir;
+
     public Integer getLevel() {
         return level;
     }
@@ -92,5 +96,29 @@ public class ImGolonganEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getGolonganPensiun() {
+        return golonganPensiun;
+    }
+
+    public void setGolonganPensiun(String golonganPensiun) {
+        this.golonganPensiun = golonganPensiun;
+    }
+
+    public String getMasaKerjaGolAwal() {
+        return masaKerjaGolAwal;
+    }
+
+    public void setMasaKerjaGolAwal(String masaKerjaGolAwal) {
+        this.masaKerjaGolAwal = masaKerjaGolAwal;
+    }
+
+    public String getMasaKerjaGolAkhir() {
+        return masaKerjaGolAkhir;
+    }
+
+    public void setMasaKerjaGolAkhir(String masaKerjaGolAkhir) {
+        this.masaKerjaGolAkhir = masaKerjaGolAkhir;
     }
 }

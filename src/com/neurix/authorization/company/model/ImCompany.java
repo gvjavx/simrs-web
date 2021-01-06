@@ -149,6 +149,25 @@ public class ImCompany implements Serializable {
     private Integer tanggalAwalLembur;
     private Integer tanggalAkhirLembur;
 
+    private String payrollTanggalLemburAwal;
+    private String PayrollTanggalLemburAkhir;
+
+    public String getPayrollTanggalLemburAwal() {
+        return payrollTanggalLemburAwal;
+    }
+
+    public void setPayrollTanggalLemburAwal(String payrollTanggalLemburAwal) {
+        this.payrollTanggalLemburAwal = payrollTanggalLemburAwal;
+    }
+
+    public String getPayrollTanggalLemburAkhir() {
+        return PayrollTanggalLemburAkhir;
+    }
+
+    public void setPayrollTanggalLemburAkhir(String payrollTanggalLemburAkhir) {
+        PayrollTanggalLemburAkhir = payrollTanggalLemburAkhir;
+    }
+
     public Integer getTanggalAwalLembur() {
         return tanggalAwalLembur;
     }

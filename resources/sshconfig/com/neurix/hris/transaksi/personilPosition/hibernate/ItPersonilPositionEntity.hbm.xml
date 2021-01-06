@@ -46,7 +46,10 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
         <property name="jenisPegawai">
-            <column name="jenis_pegawai" sql-type="date" not-null="false" />
+            <column name="jenis_pegawai" sql-type="varchar" not-null="false" />
+        </property>
+        <property name="flagDigaji">
+            <column name="flag_digaji" sql-type="varchar"/>
         </property>
 
         <many-to-one name="imBranches" class="com.neurix.authorization.company.model.ImBranches"

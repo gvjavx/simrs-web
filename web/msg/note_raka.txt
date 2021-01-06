@@ -233,8 +233,8 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
 -- ditambahkan di table im_company (field payroll_tanggal_lembur_awal varchar(5), dan payroll_tanggal_lembur_akhir varchar(5)) -> digunakan untuk mengambil perhitungan lembur berdasarkan range absensi
 -- di absensi akan di get data tgl (payroll_tanggal_lembur_awal ) bln sbelumnya payroll berjalan s.d tgl (payroll_tanggal_lembur_akhir ) bln payroll.
     ALTER TABLE im_company
-        ADD COLUMN payroll_tanggal_lembur_awal varchar(5),
-        ADD COLUMN payroll_tanggal_lembur_akhir varchar(5);
+        ADD COLUMN payroll_tanggal_lembur_awal varchar(20),
+        ADD COLUMN payroll_tanggal_lembur_akhir varchar(20);
 
     ------------------------------------
     ----  BUTUH PENYESUAIAN AKIBAT  ----

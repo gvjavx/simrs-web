@@ -36,5 +36,15 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
 
+        <property name="golonganPensiun">
+            <column name="golongan_pensiun" sql-type="varchar" length="5"/>
+        </property>
+        <property name="masaKerjaGolAwal">
+            <column name="masa_kerja_gol_awal" sql-type="varchar" length="2"/>
+        </property>
+        <property name="masaKerjaGolAkhir">
+            <column name="masa_kerja_gol_akhir" sql-type="varchar" length="2"/>
+        </property>
+
     </class>
 </hibernate-mapping>
