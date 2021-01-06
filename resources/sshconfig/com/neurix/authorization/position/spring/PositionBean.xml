@@ -40,6 +40,7 @@
           p:departmentDao-ref="departmentDao"
           p:positionBagianDao-ref="positionBagianDao"
           p:personilPositionDao-ref="personilPositionDao"
+          p:kelompokPositionDao-ref="kelompokPositionDao"
     />
 
     <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"

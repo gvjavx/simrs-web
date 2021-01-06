@@ -5,6 +5,8 @@ import com.neurix.authorization.position.model.ImPositionHistory;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.positionBagian.action.PositionBagianAction;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -139,7 +141,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public String getNextPosition() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position')");
         Iterator<BigInteger> iter=query.list().iterator();
-        return iter.next() + "";
+        return "PS" + iter.next() + "";
     }
 
     public void addAndSaveHistory(ImPositionHistory entity) throws HibernateException {
@@ -487,5 +489,50 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .list();
 
         return results;
+    }
+
+    public boolean checkIsMultiplePersonByPositionId(String positionId){
+
+        String SQL = "SELECT \n" +
+                "a.position_id, b.kelompok_id, a.position_name \n" +
+                "FROM im_position a\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT * FROM im_hris_kelompok_position WHERE flag = 'Y' AND flag_is_multiple_person = 'Y'\n" +
+                ") b ON b.kelompok_id = a.kelompok_id\n" +
+                "WHERE a.position_id = :positionid ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("positionid", positionId)
+                .list();
+
+        if (results.size() > 0)
+            return true;
+        return false;
+    }
+
+    public PersonilPosition getPersonilPositionAktif(String branchId, String positionId){
+
+        String SQL = "SELECT a.nip, b.nama_pegawai \n" +
+                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y') a\n" +
+                "INNER JOIN (SELECT nip, nama_pegawai FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
+                "WHERE a.position_id LIKE :positionid \n" +
+                "AND a.branch_id LIKE :unit;";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("positionid", positionId)
+                .setParameter("unit", branchId)
+                .list();
+
+        PersonilPosition personilPosition = new PersonilPosition();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                personilPosition.setNip(obj[0].toString());
+                personilPosition.setPersonName(obj[1].toString());
+            }
+
+            return personilPosition;
+        }
+
+        return null;
     }
 }
