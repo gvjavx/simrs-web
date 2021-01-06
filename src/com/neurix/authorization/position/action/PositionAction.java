@@ -6,6 +6,8 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
@@ -634,5 +636,30 @@ public class PositionAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
         return positionBo.getPositionByString(query);
+    }
+
+    public CrudResponse checkAndGetPositionAktif(String positionId, String branchId){
+        logger.info("[PositionAction.typeHeadPosition] START process >>>");
+
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        try {
+            PersonilPosition personilPosition = positionBo.getAndCheckJabatanTerpakai(positionId, branchId);
+            if (personilPosition != null){
+                response.setStatus("error");
+                response.setMsg("ditemukan pegai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
+            }
+        } catch (GeneralBOException e){
+            logger.info("[PositionAction.checkAndGetPositionAktif] ERROR. ", e);
+            response.setStatus("error");
+            response.setMsg("[PositionAction.checkAndGetPositionAktif] ERROR. " + e);
+        }
+
+        response.setStatus("success");
+        logger.info("[PositionAction.typeHeadPosition] END process <<<");
+        return response;
     }
 }

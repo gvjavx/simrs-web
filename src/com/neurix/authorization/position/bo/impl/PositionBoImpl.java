@@ -15,6 +15,7 @@ import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -912,5 +913,33 @@ public class PositionBoImpl implements PositionBo {
     public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
         String term = "%"+query+"%";
         return positionDao.getListPosition(term);
+    }
+
+    @Override
+    public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId) throws GeneralBOException {
+        logger.info("[PositionBoImpl.getAndCheckJabatanTerpakai]  START >>>");
+
+        PersonilPosition personilPosition = new PersonilPosition();
+
+        boolean isMultiple = false;
+
+        try {
+            isMultiple = positionDao.checkIsMultiplePersonByPositionId(positionId);
+        } catch (HibernateException e){
+            logger.error("[PositionBoImpl.getAndCheckJabatanTerpakai] ERROR checkIsMultiplePersonByPositionId, " + e.getMessage());
+            throw new GeneralBOException("[PositionBoImpl.getAndCheckJabatanTerpakai] Found problem when check is multiple ." + e.getMessage());
+        }
+
+        if (!isMultiple){
+            try {
+                personilPosition = positionDao.getPersonilPositionAktif(positionId, branchId);
+            } catch (HibernateException e){
+                logger.error("[PositionBoImpl.getAndCheckJabatanTerpakai] ERROR getPersonilPositionAktif, " + e.getMessage());
+                throw new GeneralBOException("[PositionBoImpl.getAndCheckJabatanTerpakai] Found problem when searc position aktif ." + e.getMessage());
+            }
+        }
+
+        logger.info("[PositionBoImpl.getAndCheckJabatanTerpakai]  END <<<");
+        return personilPosition;
     }
 }
