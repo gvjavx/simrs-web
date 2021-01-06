@@ -4344,11 +4344,6 @@
             var url = $('#myFormPengalaman').attr('action');
             var data = $('#myFormPengalaman').serialize();
 
-
-//            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
-//            var jabatan = document.getElementById("pengalamanJabatan").value;
-//            var tipePegawaiName = $("#pengalamanTipePegawai option:selected").text();
-
             var id = document.getElementById("pengalamanId").value;
             var nip = document.getElementById("nip1").value;
             var branchId = document.getElementById("branchIdRiwayatKerja").value;
@@ -4366,26 +4361,19 @@
             }
             var pjsFlag = document.getElementById("pjsFlag1").value;
             var aktifFlag = document.getElementById("flagAktif1").value;
-
-//            var namaPerusahaan = document.getElementById("pengalamanPerusahaan").value;
-//            var jabatan = document.getElementById("pengalamanJabatan").value;
-
-//            var perusahaanLain = document.getElementById("perusahaanLain").value;
-//             var perusahaanLain = document.getElementById("namaPerusahaanLain").value;
-//            var bidangLain = document.getElementById("bidangLain").value;
             var bidangLain = document.getElementById("namaBidangLain").value;
-//            var jabatanLain = document.getElementById("jabatanLain").value;
             var jabatanLain = document.getElementById("namaJabatanLain").value;
 
-            // if(branchId != 'lain'){
-            //     namaPerusahaan = $("#branchIdRiwayatKerja option:selected").text();
-            // }
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
                 if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tipePegawaiId =='' || profesiId =='') {
                     alert('Semua Field Harus Diisi !');
                 } else {
+
+                    // check jabatan aktif;
+                    checkJabatanAktif();
+
                     var msg ="Field:  \n";
                     var msg2 ="";
                     if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId =='') {
@@ -6157,5 +6145,21 @@
             }
         }
     };
+
+
+    function checkJabatanAktif(){
+
+        var positionId = $("#positionId3 option:selected").val();
+        var branchId = $("#branchIdRiwayatKerja option:selected").val();
+
+        PositionAction.checkAndGetPositionAktif(positionId, branchId, function(res){
+            if (res.status == "error"){
+                alert(res.msg);
+                return true;
+            }
+        });
+
+        return true;
+    }
 </script>
 

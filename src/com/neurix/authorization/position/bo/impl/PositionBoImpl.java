@@ -932,7 +932,7 @@ public class PositionBoImpl implements PositionBo {
 
         if (!isMultiple){
             try {
-                personilPosition = positionDao.getPersonilPositionAktif(positionId, branchId);
+                personilPosition = positionDao.getPersonilPositionAktif(branchId, positionId);
             } catch (HibernateException e){
                 logger.error("[PositionBoImpl.getAndCheckJabatanTerpakai] ERROR getPersonilPositionAktif, " + e.getMessage());
                 throw new GeneralBOException("[PositionBoImpl.getAndCheckJabatanTerpakai] Found problem when searc position aktif ." + e.getMessage());

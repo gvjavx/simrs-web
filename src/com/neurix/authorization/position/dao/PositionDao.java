@@ -516,7 +516,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y') a\n" +
                 "INNER JOIN (SELECT nip, nama_pegawai FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
                 "WHERE a.position_id LIKE :positionid \n" +
-                "AND a.branch_id LIKE :unit;";
+                "AND a.branch_id LIKE :unit ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("positionid", positionId)

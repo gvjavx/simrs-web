@@ -651,6 +651,8 @@ public class PositionAction extends BaseMasterAction {
             if (personilPosition != null){
                 response.setStatus("error");
                 response.setMsg("ditemukan pegai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
+            } else {
+                response.setStatus("success");
             }
         } catch (GeneralBOException e){
             logger.info("[PositionAction.checkAndGetPositionAktif] ERROR. ", e);
@@ -658,7 +660,6 @@ public class PositionAction extends BaseMasterAction {
             response.setMsg("[PositionAction.checkAndGetPositionAktif] ERROR. " + e);
         }
 
-        response.setStatus("success");
         logger.info("[PositionAction.typeHeadPosition] END process <<<");
         return response;
     }

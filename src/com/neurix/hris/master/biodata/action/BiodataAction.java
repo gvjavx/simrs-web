@@ -654,12 +654,21 @@ public class BiodataAction extends BaseMasterAction{
                 logger.info("[BiodataAction.saveEdit] start process >>>");
                 try {
                     Biodata editBiodata = getBiodata();
-                    String golonganId = editBiodata.getGolongan().replace(",","");
-                    editBiodata.setGolongan(golonganId);
-                    editBiodata.setGolonganId(golonganId);
-                    String golonganId2 = editBiodata.getGolongan().replace(" ","");
-                    editBiodata.setGolongan(golonganId2);
-                    editBiodata.setGolonganId(golonganId2);
+
+                    // Sigit, 2020-01-06 Penamhan filter golongan != null, Start
+                    if (editBiodata.getGolongan() != null && !"".equalsIgnoreCase(editBiodata.getGolongan())){
+                        String golonganId = editBiodata.getGolongan().replace(",","");
+                        editBiodata.setGolongan(golonganId);
+                        editBiodata.setGolonganId(golonganId);
+                    }
+
+                    if (editBiodata.getGolongan() != null && !"".equalsIgnoreCase(editBiodata.getGolongan())){
+                        String golonganId2 = editBiodata.getGolongan().replace(" ","");
+                        editBiodata.setGolongan(golonganId2);
+                        editBiodata.setGolonganId(golonganId2);
+                    }
+                    // END
+
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
