@@ -222,8 +222,8 @@ public class UpdateGolonganBoImpl implements UpdateGolonganBo {
                         imtHistorySmkGolonganEntity.setIdHistorySmkGolongan(idSmkHistory);
                         imtHistorySmkGolonganEntity.setNip(biodataLoop.getNip());
                         imtHistorySmkGolonganEntity.setGolonganId(biodataLoop.getGolongan());
-                        imtHistorySmkGolonganEntity.setPoin(biodataLoop.getPoint());
-                        imtHistorySmkGolonganEntity.setPoinLebih(biodataLoop.getPoinLebih());
+//                        imtHistorySmkGolonganEntity.setPoin(biodataLoop.getPoint()); //RAKA-not sure
+//                        imtHistorySmkGolonganEntity.setPoinLebih(biodataLoop.getPoinLebih()); //RAKA-not sure
 
                         imtHistorySmkGolonganEntity.setNilaiAngka(BigDecimal.valueOf(0));
                         imtHistorySmkGolonganEntity.setNilaiHuruf("");
@@ -637,8 +637,8 @@ public class UpdateGolonganBoImpl implements UpdateGolonganBo {
                 ImBiodataEntity biodata = biodataDao.getById("nip", golonganLoop.getNip());
 
                 biodata.setGolongan(golonganLoop.getGolonganId());
-                biodata.setPoint(golonganLoop.getPoin());
-                biodata.setPoinLebih(golonganLoop.getPoinLebih());
+//                biodata.setPoint(golonganLoop.getPoin()); //RAKA-not sure
+//                biodata.setPoinLebih(golonganLoop.getPoinLebih()); //RAKA-not sure
                 biodataDao.updateAndSave(biodata);
             }
         }

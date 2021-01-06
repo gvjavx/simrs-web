@@ -7664,7 +7664,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         if (!("TP03").equalsIgnoreCase(payroll.getTipePegawai())){
             List<ImGolonganDapenEntity> golonganDapenEntity = new ArrayList<>();
             try{
-                golonganDapenEntity = golonganDapenDao.getGolonganById(itPayrollEntity2.getImBiodataEntity().getGolonganDapenId());
+                golonganDapenEntity = golonganDapenDao.getGolonganById(itPayrollEntity2.getImBiodataEntity().getGolongan()); //RAKA-edit getGolonganDapenId -> getGolongan
                 for (ImGolonganDapenEntity golonganDapenLoop: golonganDapenEntity){
                     payroll.setGolonganDapenName(golonganDapenLoop.getGolonganDapenName());
                 }
@@ -8825,11 +8825,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                 payrollPerson.setDanaPensiunName(payrollDanaPensiunEntity.getDanaPensiun());
                             }
 
-                            gajiPensiun = getGajiPensiunSimRs(biodataEntity.getGolonganDapenId(), biodataEntity.getMasaKerjaGolongan(),biodataEntity.getDanaPensiun());
+                            gajiPensiun = getGajiPensiunSimRs(biodataEntity.getGolongan(), biodataEntity.getMasaKerjaGolongan(),biodataEntity.getDanaPensiun()); //RAKA-edit getGolonganDapenId -> getGolongan
                             iuranDpPers = CommonUtil.percentage(gajiPensiun, paramDapen);
 
                             if (biodataEntity.getDanaPensiun().equalsIgnoreCase("DP01")){
-                                iuranDpPeg = getIuranPensiunPegSimRs(biodataEntity.getGolonganDapenId());
+                                iuranDpPeg = getIuranPensiunPegSimRs(biodataEntity.getGolongan()); //RAKA-edit getGolonganDapenId -> getGolongan
                             }else {
                                 iuranDpPeg = CommonUtil.percentage(gajiPensiun, paramDapenPegawai);
                             }
@@ -8921,10 +8921,10 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     payrollPerson.setIuranBpjsTkKary(CommonUtil.numbericFormat(payrollPerson.getIuranBpjsTkKaryNilai(), "###,###"));
                     payrollPerson.setIuranBpjsTkPers(CommonUtil.numbericFormat(payrollPerson.getIuranBpjsTkPersNilai(), "###,###"));
                     payrollPerson.setGajiPensiun(CommonUtil.numbericFormat(payrollPerson.getGajiPensiunNilai(), "###,###"));
-                    payrollPerson.setGolonganDapenId(biodataEntity.getGolonganDapenId());
-                    if (biodataEntity.getGolonganDapenId()!=null){
-                        if (!"".equalsIgnoreCase(biodataEntity.getGolonganDapenId())){
-                            payrollPerson.setGolonganDapenName(golonganDapenDao.getById("golonganDapenId",biodataEntity.getGolonganDapenId()).getGolonganDapenName());
+                    payrollPerson.setGolonganDapenId(biodataEntity.getGolongan()); //RAKA-edit getGolonganDapenId -> getGolongan
+                    if (biodataEntity.getGolongan()!=null){ //RAKA-edit getGolonganDapenId -> getGolongan
+                        if (!"".equalsIgnoreCase(biodataEntity.getGolongan())){ //RAKA-edit getGolonganDapenId -> getGolongan
+                            payrollPerson.setGolonganDapenName(golonganDapenDao.getById("golonganDapenId",biodataEntity.getGolongan()).getGolonganDapenName()); //RAKA-edit getGolonganDapenId -> getGolongan
                         }
                     }
                     if (biodataEntity.getMasaKerjaGolongan()!=null){

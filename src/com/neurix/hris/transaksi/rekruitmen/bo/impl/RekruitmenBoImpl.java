@@ -675,7 +675,7 @@ public class RekruitmenBoImpl implements RekruitmenBo {
             imBiodataEntity.setDesa(bean.getDesaId());
             imBiodataEntity.setKecamatan(bean.getKecamatanId());
             imBiodataEntity.setNoTelp(bean.getNoTelp());
-            imBiodataEntity.setPoint(bean.getPoin().intValue());
+//            imBiodataEntity.setPoint(bean.getPoin().intValue()); //RAKA-not sure
             imBiodataEntity.setKotaId(bean.getKotaId());
             imBiodataEntity.setProvinsi(bean.getProvinsiId());
             imBiodataEntity.setProvinsiId(bean.getProvinsiId());

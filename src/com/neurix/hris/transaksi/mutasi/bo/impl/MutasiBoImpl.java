@@ -600,8 +600,9 @@ public class MutasiBoImpl implements MutasiBo {
                                 itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                 itPersonilPositionEntity.setAction("U");
                             }else{
-                                imBiodataEntity.setBranchIdTerakhir(mutasi.getBranchLamaId());
-                                imBiodataEntity.setPositionIdTerakhir(mutasi.getPositionLamaId());
+                                //RAKA-trouble HRIS
+//                                imBiodataEntity.setBranchIdTerakhir(mutasi.getBranchLamaId());
+//                                imBiodataEntity.setPositionIdTerakhir(mutasi.getPositionLamaId());
                                 itPersonilPositionEntity.setAction("D");
                                 itPersonilPositionEntity.setFlag("N");
                                 itPersonilPositionEntity.setBranchId(mutasi.getBranchLamaId());

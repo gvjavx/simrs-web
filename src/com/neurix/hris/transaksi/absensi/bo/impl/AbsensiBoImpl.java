@@ -1050,7 +1050,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
-                        hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
+//                        hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint())); //RAKA-not sure
                         hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -1245,7 +1245,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
-                        hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
+//                        hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint())); //RAKA-not sure
                         hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -1320,7 +1320,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                         hsCriteria4 = new HashMap();
                         hsCriteria4.put("golongan_id", biodataEntity.getGolongan());
-                        hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint()));
+//                        hsCriteria4.put("point", (int) Math.round(biodataEntity.getPoint())); //RAKA-not sure
                         hsCriteria4.put("tahun", tahunGaji);
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -1432,7 +1432,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             for (AbsensiPegawaiEntity mesinAbsensi : absensiPegawaiEntityList){
                 if (biodata.getNip().equalsIgnoreCase(mesinAbsensi.getNip())) {
                     mesinAbsensi.setGolongan(biodata.getGolongan());
-                    mesinAbsensi.setPoint(biodata.getPoint());
+//                    mesinAbsensi.setPoint(biodata.getPoint()); //RAKA-not sure
                     listOfAbsensiFinalSatpam.add(mesinAbsensi);
                 }
             }
@@ -3376,7 +3376,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     for (ImBiodataEntity biodata:biodataList){
                         tipePegawai=biodata.getTipePegawai();
                         golongan=biodata.getGolongan();
-                        point=biodata.getPoint();
+//                        point=biodata.getPoint(); //RAKA-not sure
                     }
 
                     List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
@@ -3574,7 +3574,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     for (ImBiodataEntity biodata:biodataList){
                         tipePegawai=biodata.getTipePegawai();
                         golongan=biodata.getGolongan();
-                        point=biodata.getPoint();
+//                        point=biodata.getPoint(); //RAKA-not sure
                     }
 
                     List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
@@ -3808,7 +3808,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             for (ImBiodataEntity biodata:biodataList){
                 tipePegawai=biodata.getTipePegawai();
                 golongan=biodata.getGolongan();
-                point=biodata.getPoint();
+//                point=biodata.getPoint(); //RAKA-not sure
             }
 
             List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
@@ -5106,7 +5106,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                         hsCriteria4 = new HashMap();
                                         hsCriteria4.put("golongan_id", biodata.getGolongan());
-                                        hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//                                        hsCriteria4.put("point", (int) Math.round(biodata.getPoint())); //RAKA-not sure
                                         hsCriteria4.put("tahun", tahunGaji);
                                         hsCriteria4.put("flag", "Y");
                                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -5340,7 +5340,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                         hsCriteria4 = new HashMap();
                                         hsCriteria4.put("golongan_id", biodata.getGolongan());
-                                        hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//                                        hsCriteria4.put("point", (int) Math.round(biodata.getPoint())); //RAKA-not sure
                                         hsCriteria4.put("tahun", tahunGaji);
                                         hsCriteria4.put("flag", "Y");
                                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -5710,7 +5710,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                     hsCriteria4 = new HashMap();
                                     hsCriteria4.put("golongan_id", biodata.getGolongan());
-                                    hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//                                    hsCriteria4.put("point", (int) Math.round(biodata.getPoint())); //RAKA-not sure
                                     hsCriteria4.put("tahun", tahunGaji);
                                     hsCriteria4.put("flag", "Y");
                                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -6031,7 +6031,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                                 hsCriteria4 = new HashMap();
                                                 hsCriteria4.put("golongan_id", biodata.getGolongan());
-                                                hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//                                                hsCriteria4.put("point", (int) Math.round(biodata.getPoint())); //RAKA-not sure
                                                 hsCriteria4.put("tahun", tahunGaji);
                                                 hsCriteria4.put("flag", "Y");
                                                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -6128,7 +6128,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                                 hsCriteria4 = new HashMap();
                                                 hsCriteria4.put("golongan_id", biodata.getGolongan());
-                                                hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//                                                hsCriteria4.put("point", (int) Math.round(biodata.getPoint())); //RAKA-not sure
                                                 hsCriteria4.put("tahun", tahunGaji);
                                                 hsCriteria4.put("flag", "Y");
                                                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -6224,7 +6224,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                         hsCriteria4 = new HashMap();
                                         hsCriteria4.put("golongan_id", biodata.getGolongan());
-                                        hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//                                        hsCriteria4.put("point", (int) Math.round(biodata.getPoint())); //RAKA-not sure
                                         hsCriteria4.put("tahun", tahunGaji);
                                         hsCriteria4.put("flag", "Y");
                                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();

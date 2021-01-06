@@ -780,8 +780,8 @@ public class SmkBoImpl implements SmkBo {
         }
 
         if(imBiodataEntity != null){
-            poin += imBiodataEntity.getPoint();
-            poinLebih += imBiodataEntity.getPoinLebih();
+//            poin += imBiodataEntity.getPoint(); //RAKA-not sure
+//            poinLebih += imBiodataEntity.getPoinLebih(); //RAKA-not sure
         }
 
         return poin + "-" + poinLebih;
@@ -843,12 +843,12 @@ public class SmkBoImpl implements SmkBo {
             imBiodataHistoryEntity.setStatusKeluarga(imBiodataEntity.getStatusKeluarga());
             imBiodataHistoryEntity.setJumlahAnak(imBiodataEntity.getJumlahAnak());
             imBiodataHistoryEntity.setJenisKelamin(imBiodataEntity.getGender());
-            imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling());
+//            imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling()); //RAKA-delete
             imBiodataHistoryEntity.setNoSkAktif(imBiodataEntity.getNoSkAktif());
             imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
-            imBiodataHistoryEntity.setPoint(imBiodataEntity.getPoint());
-            imBiodataHistoryEntity.setPoinLebih(imBiodataEntity.getPoinLebih());
-            imBiodataHistoryEntity.setZakatProfesi(imBiodataEntity.getZakatProfesi());
+//            imBiodataHistoryEntity.setPoint(imBiodataEntity.getPoint()); //RAKA-not sure
+//            imBiodataHistoryEntity.setPoinLebih(imBiodataEntity.getPoinLebih()); //RAKA-not sure
+//            imBiodataHistoryEntity.setZakatProfesi(imBiodataEntity.getZakatProfesi());  //RAKA-delete
             imBiodataHistoryEntity.setTanggalPensiun(imBiodataEntity.getTanggalPensiun());
             imBiodataHistoryEntity.setDanaPensiun(imBiodataEntity.getDanaPensiun());
             imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
@@ -863,8 +863,8 @@ public class SmkBoImpl implements SmkBo {
             imBiodataHistoryEntity.setLastUpdate(updateTime);
             imBiodataHistoryEntity.setLastUpdateWho(userLogin);
 
-            imBiodataEntity.setPoint(jumlahPoin);
-            imBiodataEntity.setPoinLebih(hasiljumlahPoin);
+//            imBiodataEntity.setPoint(jumlahPoin); //RAKA-not sure
+//            imBiodataEntity.setPoinLebih(hasiljumlahPoin); //RAKA-not sure
 
             try {
                 biodataDao.updateAndSave(imBiodataEntity);
@@ -2802,7 +2802,7 @@ public class SmkBoImpl implements SmkBo {
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
                 itemComboBiodata.setNamaPegawai(imBiodataEntity.getNamaPegawai());
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
-                itemComboBiodata.setPoint(imBiodataEntity.getPoint());
+//                itemComboBiodata.setPoint(imBiodataEntity.getPoint()); //RAKA-not sure
 
                 Map hsCriteria = new HashMap();
                 hsCriteria.put("nip",imBiodataEntity.getNip());

@@ -63,17 +63,17 @@ public class ImBiodataEntity implements Serializable {
     private BigDecimal persentasiHutangPph;
     private String umur;
     private String flagMess;
-    private String golonganDapenId;
+//    private String golonganDapenId; //hris-02
     private String stMasaKerjaGol;
     private Integer masaKerjaGolongan;
-    private String branchIdTerakhir;
-    private String positionIdTerakhir;
+//    private String branchIdTerakhir;  //hris-02
+//    private String positionIdTerakhir; //hris-02
     private String flagTunjanganSupervisi;
     private String flagTunjanganLokasi;
     private String flagTunjanganSiaga;
     private String flagTunjanganProfesional;
 
-    private String positionPltId;
+//    private String positionPltId; //hris-02
     private String flagFingerMobile;
     private String flagTunjRumah;
     private String flagTunjAir;
@@ -81,7 +81,7 @@ public class ImBiodataEntity implements Serializable {
     private String flagTunjBbm;
     private String flagBpjsKs;
     private String flagBpjsTk;
-    private String flagPercobaan;
+//    private String flagPercobaan; //hris-02
     private String nipLama;
     private String flagDokterKso;
 
@@ -174,22 +174,6 @@ public class ImBiodataEntity implements Serializable {
         this.profesiId = profesiId;
     }
 
-    public String getBranchIdTerakhir() {
-        return branchIdTerakhir;
-    }
-
-    public void setBranchIdTerakhir(String branchIdTerakhir) {
-        this.branchIdTerakhir = branchIdTerakhir;
-    }
-
-    public String getPositionIdTerakhir() {
-        return positionIdTerakhir;
-    }
-
-    public void setPositionIdTerakhir(String positionIdTerakhir) {
-        this.positionIdTerakhir = positionIdTerakhir;
-    }
-
     public Integer getMasaKerjaGolongan() {
         return masaKerjaGolongan;
     }
@@ -204,14 +188,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setStMasaKerjaGol(String stMasaKerjaGol) {
         this.stMasaKerjaGol = stMasaKerjaGol;
-    }
-
-    public String getGolonganDapenId() {
-        return golonganDapenId;
-    }
-
-    public void setGolonganDapenId(String golonganDapenId) {
-        this.golonganDapenId = golonganDapenId;
     }
 
     public String getBagianName() {
@@ -314,7 +290,7 @@ public class ImBiodataEntity implements Serializable {
     private BigInteger jumlahAnak;
 //    private String golonganId;
 
-    private int point;
+//    private int point; //hris-02
     private String gender;
 
     private String tipePegawai;
@@ -348,18 +324,18 @@ public class ImBiodataEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    private String statusGiling;
+//    private String statusGiling;  //hris-02
     private String noSkAktif;
-    private String zakatProfesi;
+//    private String zakatProfesi;  //hris-02
     private String agama;
     private String npwp;
-    private String mt;
+//    private String mt; //hris-02
     private String golonganDapen;
-    private String golonganDapenNusindo;
+//    private String golonganDapenNusindo; //hris-02
     private String pjs;
     private Date tanggalAkhirKontrak;
     private Date tanggalMenikah;
-    private int poinLebih;
+//    private int poinLebih; //hris-02
 
     private Date tanggalKeluar;
     private String flagPegawaiCutiDiluarTanggungan;
@@ -404,14 +380,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setPjs(String pjs) {
         this.pjs = pjs;
-    }
-
-    public String getGolonganDapenNusindo() {
-        return golonganDapenNusindo;
-    }
-
-    public void setGolonganDapenNusindo(String golonganDapenNusindo) {
-        this.golonganDapenNusindo = golonganDapenNusindo;
     }
 
     public String getGolonganDapen() {
@@ -505,14 +473,6 @@ public class ImBiodataEntity implements Serializable {
         this.agama = agama;
     }
 
-    public String getMt() {
-        return mt;
-    }
-
-    public void setMt(String mt) {
-        this.mt = mt;
-    }
-
     public String getNpwp() {
         return npwp;
     }
@@ -569,30 +529,6 @@ public class ImBiodataEntity implements Serializable {
         this.noSkAktif = noSkAktif;
     }
 
-    public String getStatusGiling() {
-        return statusGiling;
-    }
-
-    public void setStatusGiling(String statusGiling) {
-        this.statusGiling = statusGiling;
-    }
-
-    public String getZakatProfesi() {
-        return zakatProfesi;
-    }
-
-    public void setZakatProfesi(String zakatProfesi) {
-        this.zakatProfesi = zakatProfesi;
-    }
-
-    public int getPoinLebih() {
-        return poinLebih;
-    }
-
-    public void setPoinLebih(int poinLebih) {
-        this.poinLebih = poinLebih;
-    }
-
     public BigDecimal getGaji() {
         return gaji;
     }
@@ -639,14 +575,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setMasaGiling(String masaGiling) {
         this.masaGiling = masaGiling;
-    }
-
-    public int getPoint() {
-        return point;
-    }
-
-    public void setPoint(int point) {
-        this.point = point;
     }
 
     public ItPersonilPositionEntity getItPersonilPositionEntity() {
@@ -1063,14 +991,6 @@ public class ImBiodataEntity implements Serializable {
         this.flagFingerMobile = flagFingerMobile;
     }
 
-    public String getFlagPercobaan() {
-        return flagPercobaan;
-    }
-
-    public void setFlagPercobaan(String flagPercobaan) {
-        this.flagPercobaan = flagPercobaan;
-    }
-
     public String getFlagTunjAir() {
         return flagTunjAir;
     }
@@ -1101,14 +1021,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setFlagTunjRumah(String flagTunjRumah) {
         this.flagTunjRumah = flagTunjRumah;
-    }
-
-    public String getPositionPltId() {
-        return positionPltId;
-    }
-
-    public void setPositionPltId(String positionPltId) {
-        this.positionPltId = positionPltId;
     }
 
     public String getNipLama() {

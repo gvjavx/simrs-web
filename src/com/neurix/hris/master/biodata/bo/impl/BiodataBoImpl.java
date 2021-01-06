@@ -604,8 +604,8 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setTipePegawai(imBiodataEntity.getTipePegawai());
                                 imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
 //                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-                                imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling());
-                                imBiodataHistoryEntity.setMt(imBiodataEntity.getMt());
+//                                imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling()); //RAKA-delete
+//                                imBiodataHistoryEntity.setMt(imBiodataEntity.getMt()); //RAKA-delete
                                 imBiodataHistoryEntity.setGolongan(imBiodataEntity.getGolongan());
                                 imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
                                 imBiodataHistoryEntity.setStatusPegawai(imBiodataEntity.getStatusPegawai());
@@ -621,7 +621,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setTanggalPraPensiun(imBiodataEntity.getTanggalPraPensiun());
 
                                 imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
-                                imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId());
+//                                imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                                 if(bean.getFotoUpload() != null){
                                     imBiodataHistoryEntity.setFotoUpload(imBiodataEntity.getFotoUpload());
@@ -638,7 +638,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setFlagTunjBbm(imBiodataEntity.getFlagTunjBbm());
                                 imBiodataHistoryEntity.setFlagBpjsKs(imBiodataEntity.getFlagBpjsKs());
                                 imBiodataHistoryEntity.setFlagBpjsTk(imBiodataEntity.getFlagBpjsTk());
-                                imBiodataHistoryEntity.setFlagPercobaan(imBiodataEntity.getFlagPercobaan());
+//                                imBiodataHistoryEntity.setFlagPercobaan(imBiodataEntity.getFlagPercobaan()); //RAKA-delete
                                 imBiodataHistoryEntity.setCreatedDate(imBiodataEntity.getCreatedDate());
                                 imBiodataHistoryEntity.setCreatedWho(imBiodataHistoryEntity.getCreatedWho());
                                 imBiodataHistoryEntity.setLastUpdate(imBiodataEntity.getLastUpdate());
@@ -676,8 +676,8 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setTipePegawai(bean.getTipePegawai());
                                 imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
 //                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-                                imBiodataEntity.setStatusGiling(bean.getStatusGiling());
-                                imBiodataEntity.setMt(bean.getMt());
+//                                imBiodataEntity.setStatusGiling(bean.getStatusGiling()); //RAKA-delete
+//                                imBiodataEntity.setMt(bean.getMt()); //RAKA-delete
                                 imBiodataEntity.setGolongan(bean.getGolongan());
                                 imBiodataEntity.setPin(bean.getPin());
                                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
@@ -690,11 +690,11 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
                                 imBiodataEntity.setCabangBank(bean.getCabangBank());
 
-                                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
+//                                imBiodataEntity.setZakatProfesi(bean.getFlagZakat()); //RAKA-delete
                                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
                                 imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
-                                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
+//                                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
                                 if(bean.getFotoUpload() != null){
                                     imBiodataEntity.setFotoUpload(bean.getFotoUpload());
@@ -714,7 +714,7 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setFlagTunjBbm(bean.getFlagTunjBbm());
                                 imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
-                                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
+//                                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan()); //RAKA-delete
                                 imBiodataEntity.setNipLama(bean.getNipLama());
                                 imBiodataEntity.setShift(bean.getShift());
 
@@ -937,8 +937,8 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setTipePegawai(imBiodataEntity.getTipePegawai());
                             imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
 //                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-                            imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling());
-                            imBiodataHistoryEntity.setMt(imBiodataEntity.getMt());
+//                            imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling()); //RAKA-delete
+//                            imBiodataHistoryEntity.setMt(imBiodataEntity.getMt()); //RAKA-delete
                             imBiodataHistoryEntity.setGolongan(imBiodataEntity.getGolongan());
                             imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
                             imBiodataHistoryEntity.setStatusPegawai(imBiodataEntity.getStatusPegawai());
@@ -955,7 +955,7 @@ public class BiodataBoImpl implements BiodataBo {
 
 //                            imBiodataHistoryEntity.setMasaKerjaGolongan(Integer.parseInt(imBiodataEntity.getStMasaKerjaGol()));
                             imBiodataHistoryEntity.setMasaKerjaGolongan(imBiodataEntity.getMasaKerjaGolongan());
-                            imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId());
+//                            imBiodataHistoryEntity.setGolonganDapenId(imBiodataEntity.getGolonganDapenId()); //RAKA-delete
 
                             if(bean.getFotoUpload() != null){
                                 imBiodataHistoryEntity.setFotoUpload(imBiodataEntity.getFotoUpload());
@@ -972,7 +972,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setFlagTunjBbm(imBiodataEntity.getFlagTunjBbm());
                             imBiodataHistoryEntity.setFlagBpjsKs(imBiodataEntity.getFlagBpjsKs());
                             imBiodataHistoryEntity.setFlagBpjsTk(imBiodataEntity.getFlagBpjsTk());
-                            imBiodataHistoryEntity.setFlagPercobaan(imBiodataEntity.getFlagPercobaan());
+//                            imBiodataHistoryEntity.setFlagPercobaan(imBiodataEntity.getFlagPercobaan()); //RAKA-delete
                             imBiodataHistoryEntity.setCreatedDate(imBiodataEntity.getCreatedDate());
                             imBiodataHistoryEntity.setCreatedWho(imBiodataHistoryEntity.getCreatedWho());
                             imBiodataHistoryEntity.setLastUpdate(imBiodataEntity.getLastUpdate());
@@ -1010,8 +1010,8 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
                             imBiodataEntity.setFlagDokterKso(bean.getFlagDokterKso());
 //                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-                            imBiodataEntity.setStatusGiling(bean.getStatusGiling());
-                            imBiodataEntity.setMt(bean.getMt());
+//                            imBiodataEntity.setStatusGiling(bean.getStatusGiling()); //RAKA-delete
+//                            imBiodataEntity.setMt(bean.getMt()); //RAKA-delete
                             imBiodataEntity.setGolongan(bean.getGolongan());
                             imBiodataEntity.setPin(bean.getPin());
                             imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
@@ -1027,7 +1027,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
                             imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
-                            imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
+//                            imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
                             if(bean.getFotoUpload() != null){
                                 imBiodataEntity.setFotoUpload(bean.getFotoUpload());
@@ -1045,7 +1045,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setFlagTunjBbm(bean.getFlagTunjBbm());
                             imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                             imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
-                            imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
+//                            imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan()); //RAKA-delete
                             imBiodataEntity.setNipLama(bean.getNipLama());
                             imBiodataEntity.setShift(bean.getShift());
 
@@ -1258,7 +1258,7 @@ public class BiodataBoImpl implements BiodataBo {
                 if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 }
-                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId());
+//                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
                 imBiodataEntity.setFlagDokterKso(bean.getFlag());
@@ -1294,12 +1294,12 @@ public class BiodataBoImpl implements BiodataBo {
                     imBiodataEntity.setGaji(BigDecimal.valueOf(0));
                 }
                 imBiodataEntity.setAgama(bean.getAgama());
-                imBiodataEntity.setMt(bean.getMt());
+//                imBiodataEntity.setMt(bean.getMt()); //RAKA-delete
                 imBiodataEntity.setPin(bean.getPin());
                 imBiodataEntity.setNamaBank(bean.getNamaBank());
                 imBiodataEntity.setCabangBank(bean.getCabangBank());
                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
-                imBiodataEntity.setZakatProfesi(bean.getFlagZakat());
+//                imBiodataEntity.setZakatProfesi(bean.getFlagZakat()); //RAKA-delete
 
                 imBiodataEntity.setFlagMess(bean.getFlagMess());
 //                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
@@ -1310,7 +1310,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setFlagTunjBbm(bean.getFlagTunjBbm());
                 imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
-                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
+//                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                 imBiodataEntity.setNipLama(bean.getNipLama());
 
                 //BARU
@@ -2059,7 +2059,7 @@ public class BiodataBoImpl implements BiodataBo {
                         returnBiodata.setStMasaKerjaGol(String.valueOf(personalEntity.getMasaKerjaGolongan()));
                         returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
                     }
-                    returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId());
+//                    returnBiodata.setGolonganDapenId(personalEntity.getGolonganDapenId()); //RAKA-delete
                     returnBiodata.setProfesiId(personalEntity.getProfesiId());
                     returnBiodata.setShift(personalEntity.getShift());
 
@@ -2136,8 +2136,8 @@ public class BiodataBoImpl implements BiodataBo {
                         break;
                     }
 
-                    returnBiodata.setPoint(personalEntity.getPoint());
-                    returnBiodata.setPoinLebih(personalEntity.getPoinLebih());
+//                    returnBiodata.setPoint(personalEntity.getPoint());  //RAKA-not sure
+//                    returnBiodata.setPoinLebih(personalEntity.getPoinLebih()); //RAKA-not sure
                     returnBiodata.setMasaGiling(personalEntity.getMasaGiling());
                     returnBiodata.setStatusPegawai(personalEntity.getStatusPegawai());
                     returnBiodata.setStatusKeluarga(personalEntity.getStatusKeluarga());
@@ -2161,19 +2161,19 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setMasaGiling(personalEntity.getMasaGiling());
-                    returnBiodata.setMt(personalEntity.getMt());
+//                    returnBiodata.setMt(personalEntity.getMt()); //RAKA-delete
                     returnBiodata.setPin(personalEntity.getPin());
                     returnBiodata.setKotaName(personalEntity.getKotaName());
                     returnBiodata.setKecamatanName(personalEntity.getKecamatanName());
                     returnBiodata.setDesaName(personalEntity.getDesaName());
                     returnBiodata.setGolonganId(personalEntity.getGolongan());
-                    returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
+//                    returnBiodata.setFlagZakat(personalEntity.getZakatProfesi()); //RAKA-delete
                     returnBiodata.setGender(personalEntity.getGender());
                     returnBiodata.setNpwp(personalEntity.getNpwp());
 //                    returnBiodata.setGaji(personalEntity.getGaji().toPlainString());
                     returnBiodata.setStrukturGaji(personalEntity.getStrukturGaji());
                     returnBiodata.setStrukturGaji2(personalEntity.getStrukturGaji());
-                    returnBiodata.setStatusGiling(personalEntity.getStatusGiling());
+//                    returnBiodata.setStatusGiling(personalEntity.getStatusGiling()); //RAKA-delete
                     returnBiodata.setJumlahAnak(personalEntity.getJumlahAnak());
                     returnBiodata.setDanaPensiun(personalEntity.getDanaPensiun());
                     returnBiodata.setNoAnggotaDapen(personalEntity.getNoAnggotaDapen());
@@ -2184,7 +2184,7 @@ public class BiodataBoImpl implements BiodataBo {
 
                     returnBiodata.setNipLama(personalEntity.getNipLama());
 
-                    returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
+//                    returnBiodata.setFlagZakat(personalEntity.getZakatProfesi()); //RAKA-delete
                     returnBiodata.setNamaBank(personalEntity.getNamaBank());
                     returnBiodata.setNoRekBank(personalEntity.getNoRekBank());
                     returnBiodata.setCabangBank(personalEntity.getCabangBank());
@@ -2199,7 +2199,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }
                     }
 
-                    returnBiodata.setPositionPltId(personalEntity.getPositionPltId());
+//                    returnBiodata.setPositionPltId(personalEntity.getPositionPltId()); //RAKA-delete
                     returnBiodata.setFlagMess(personalEntity.getFlagMess());
                     returnBiodata.setFlagFingerMobile(personalEntity.getFlagFingerMobile());
                     returnBiodata.setFlagTunjRumah(personalEntity.getFlagTunjRumah());
@@ -2208,7 +2208,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlagTunjBbm(personalEntity.getFlagTunjBbm());
                     returnBiodata.setFlagBpjsKs(personalEntity.getFlagBpjsKs());
                     returnBiodata.setFlagBpjsTk(personalEntity.getFlagBpjsTk());
-                    returnBiodata.setFlagPercobaan(personalEntity.getFlagPercobaan());
+//                    returnBiodata.setFlagPercobaan(personalEntity.getFlagPercobaan()); //RAKA-delete
 
                     returnBiodata.setCreatedWho(personalEntity.getCreatedWho());
                     returnBiodata.setCreatedDate(personalEntity.getCreatedDate());
@@ -2399,7 +2399,7 @@ public class BiodataBoImpl implements BiodataBo {
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
                 itemComboBiodata.setNamaPegawai(imBiodataEntity.getNamaPegawai());
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
-                itemComboBiodata.setPoint(imBiodataEntity.getPoint());
+//                itemComboBiodata.setPoint(imBiodataEntity.getPoint()); //RAKA-not sure
 
                 itemComboBiodata.setPositionId2(imBiodataEntity.getPosisiId());
                 itemComboBiodata.setBranch(imBiodataEntity.getBranchId());
@@ -2510,7 +2510,7 @@ public class BiodataBoImpl implements BiodataBo {
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
                 itemComboBiodata.setNamaPegawai(imBiodataEntity.getNamaPegawai());
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
-                itemComboBiodata.setPoint(imBiodataEntity.getPoint());
+//                itemComboBiodata.setPoint(imBiodataEntity.getPoint()); //RAKA-not sure
 
                 listComboBiodata.add(itemComboBiodata);
             }
@@ -3114,7 +3114,7 @@ public class BiodataBoImpl implements BiodataBo {
                 biodata.setFotoUpload("unknown-person2.jpg");
             }
             biodata.setMasaGiling(imBiodata.getMasaGiling());
-            biodata.setMt(imBiodata.getMt());
+//            biodata.setMt(imBiodata.getMt()); //RAKA-delete
             biodata.setPin(imBiodata.getPin());
             biodata.setDanaPensiun(imBiodata.getDanaPensiun());
             biodata.setNoAnggotaDapen(imBiodata.getNoAnggotaDapen());
@@ -3125,19 +3125,19 @@ public class BiodataBoImpl implements BiodataBo {
             biodata.setKecamatanName(imBiodata.getKecamatanName());
             biodata.setDesaName(imBiodata.getDesaName());
             biodata.setGolonganId(imBiodata.getGolongan());
-            biodata.setPoint(imBiodata.getPoint());
-            biodata.setFlagZakat(imBiodata.getZakatProfesi());
+//            biodata.setPoint(imBiodata.getPoint()); //RAKA-not sure
+//            biodata.setFlagZakat(imBiodata.getZakatProfesi()); //RAKA-delete
 
             biodata.setNamaBank(imBiodata.getNamaBank());
             biodata.setCabangBank(imBiodata.getCabangBank());
             biodata.setNoRekBank(imBiodata.getNoRekBank());
-            if(imBiodata.getZakatProfesi() != null){
-                if(imBiodata.getZakatProfesi().equalsIgnoreCase("Y")){
-                    biodata.setZakatName("Iya");
-                }else{
-                    biodata.setZakatName("-");
-                }
-            }
+//            if(imBiodata.getZakatProfesi() != null){ //RAKA-delete
+//                if(imBiodata.getZakatProfesi().equalsIgnoreCase("Y")){
+//                    biodata.setZakatName("Iya");
+//                }else{
+//                    biodata.setZakatName("-");
+//                }
+//            } //RAKA-delete
             biodata.setGender(imBiodata.getGender());
             if(imBiodata.getGender() != null){
                 if(imBiodata.getGender().equals("P")){
@@ -3153,16 +3153,16 @@ public class BiodataBoImpl implements BiodataBo {
             biodata.setGaji(imBiodata.getGaji().toPlainString());
             biodata.setStrukturGaji(imBiodata.getStrukturGaji());
             biodata.setStrukturGaji2(imBiodata.getStrukturGaji());
-            biodata.setStatusGiling(imBiodata.getStatusGiling());
-            if(imBiodata.getStatusGiling() != null){
-                if(imBiodata.getStatusGiling().equalsIgnoreCase("DMG")){
-                    biodata.setStatusGilingName("Dalam Masa Giling");
-                }else if(imBiodata.getStatusGiling().equalsIgnoreCase("LMG")){
-                    biodata.setStatusGilingName("Luar Masa Giling");
-                }
-            }else{
-                biodata.setStatusGilingName("");
-            }
+//            biodata.setStatusGiling(imBiodata.getStatusGiling()); //RAKA-delete
+//            if(imBiodata.getStatusGiling() != null){ //RAKA-delete
+//                if(imBiodata.getStatusGiling().equalsIgnoreCase("DMG")){
+//                    biodata.setStatusGilingName("Dalam Masa Giling");
+//                }else if(imBiodata.getStatusGiling().equalsIgnoreCase("LMG")){
+//                    biodata.setStatusGilingName("Luar Masa Giling");
+//                }
+//            }else{
+//                biodata.setStatusGilingName("");
+//            } //RAKA-delete
             biodata.setJumlahAnak(imBiodata.getJumlahAnak());
 
             String danPens = "";
@@ -4497,7 +4497,7 @@ public class BiodataBoImpl implements BiodataBo {
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
                 itemComboBiodata.setNamaPegawai(imBiodataEntity.getNamaPegawai());
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
-                itemComboBiodata.setPoint(imBiodataEntity.getPoint());
+//                itemComboBiodata.setPoint(imBiodataEntity.getPoint()); //RAKA-not sure
 
                 Map hsCriteria = new HashMap();
                 hsCriteria.put("nip",imBiodataEntity.getNip());
@@ -5022,7 +5022,7 @@ public class BiodataBoImpl implements BiodataBo {
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
                 itemComboBiodata.setNamaPegawai(imBiodataEntity.getNamaPegawai());
                 itemComboBiodata.setStatusPegawai(imBiodataEntity.getStatusPegawai());
-                itemComboBiodata.setPoint(imBiodataEntity.getPoint());
+//                itemComboBiodata.setPoint(imBiodataEntity.getPoint()); //RAKA-not sure
 
                 itemComboBiodata.setPositionId2(imBiodataEntity.getPosisiId());
                 itemComboBiodata.setBranch(imBiodataEntity.getBranchId());
