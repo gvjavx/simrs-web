@@ -969,7 +969,7 @@
                                     <table>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Status Pegawai * :</small></label>
+                                                <label class="control-label"><small>Tipe Pegawai * :</small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -994,7 +994,7 @@
 
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Tipe Pegawai * :</small></label>
+                                                <label class="control-label"><small>Status Pegawai * :</small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -1546,23 +1546,23 @@
                                                 </table>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Tunjangan Profesional :</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:if test="isDelete()">
-                                                        <input type="checkbox" id="profesional" class="checkZakat" disabled onchange="cekProfesional()" />
-                                                        <s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
-                                                    </s:if>
-                                                    <s:else>
-                                                        <input type="checkbox" id="profesional" class="checkZakat" onchange="cekProfesional()" />
-                                                        <s:hidden id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />
-                                                    </s:else>
-                                                </table>
-                                            </td>
-                                        </tr>
+                                        <%--<tr>--%>
+                                            <%--<td>--%>
+                                                <%--<label class="control-label"><small>Tunjangan Profesional :</small></label>--%>
+                                            <%--</td>--%>
+                                            <%--<td>--%>
+                                                <%--<table>--%>
+                                                    <%--<s:if test="isDelete()">--%>
+                                                        <%--<input type="checkbox" id="profesional" class="checkZakat" disabled onchange="cekProfesional()" />--%>
+                                                        <%--<s:textfield cssStyle="display: none" id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />--%>
+                                                    <%--</s:if>--%>
+                                                    <%--<s:else>--%>
+                                                        <%--<input type="checkbox" id="profesional" class="checkZakat" onchange="cekProfesional()" />--%>
+                                                        <%--<s:hidden id="flagTunjProfesional" name="biodata.flagTunjProfesional"  />--%>
+                                                    <%--</s:else>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
 
                                         <tr>
                                             <td>
@@ -1672,23 +1672,23 @@
                                             </td>
                                         </tr>
 
-                                        <tr>
-                                            <td>
-                                                <label class="control-label"><small>Mess :</small></label>
-                                            </td>
-                                            <td>
-                                                <table>
-                                                    <s:if test="isDelete()">
-                                                        <input type="checkbox" id="mess" class="checkZakat" disabled onchange="cekMess()" />
-                                                        <s:textfield cssStyle="display: none" id="flagMess" name="biodata.flagMess"  />
-                                                    </s:if>
-                                                    <s:else>
-                                                        <input type="checkbox" id="mess" class="checkZakat" onchange="cekMess()" />
-                                                        <s:hidden id="flagMess" name="biodata.flagMess"  />
-                                                    </s:else>
-                                                </table>
-                                            </td>
-                                        </tr>
+                                        <%--<tr>--%>
+                                            <%--<td>--%>
+                                                <%--<label class="control-label"><small>Mess :</small></label>--%>
+                                            <%--</td>--%>
+                                            <%--<td>--%>
+                                                <%--<table>--%>
+                                                    <%--<s:if test="isDelete()">--%>
+                                                        <%--<input type="checkbox" id="mess" class="checkZakat" disabled onchange="cekMess()" />--%>
+                                                        <%--<s:textfield cssStyle="display: none" id="flagMess" name="biodata.flagMess"  />--%>
+                                                    <%--</s:if>--%>
+                                                    <%--<s:else>--%>
+                                                        <%--<input type="checkbox" id="mess" class="checkZakat" onchange="cekMess()" />--%>
+                                                        <%--<s:hidden id="flagMess" name="biodata.flagMess"  />--%>
+                                                    <%--</s:else>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
                                     </table>
                                 </div>
                                 <div class="col-md-6">

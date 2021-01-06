@@ -36,6 +36,12 @@
         ADD id_vendor character varying(30)
         ADD id_ruangan character varying(50);
 
+    ------------------------------------------------------
+    ------------------------------------------------------
+    ---------   MULAI DARI SINI 6 JANUARI 2021   ---------
+    ------------------------------------------------------
+    ------------------------------------------------------
+
 ------ 2020-12-15 ===> SkalaGajiPensiun
 -- Mengalihkan table ke [im_hris_pyroll_skala_gaji_pensiun]
 -- Menambahkan sequence [seq_payroll_skala_gaji_pensiun_history]
@@ -235,6 +241,81 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
     ALTER TABLE im_company
         ADD COLUMN payroll_tanggal_lembur_awal varchar(20),
         ADD COLUMN payroll_tanggal_lembur_akhir varchar(20);
+
+------ 2020-01-04 ===> perubahan IM_BRANCHES & IM_HRIS_PEGAWAI
+    --- IM_BRANCHES ---
+    ---- NOT SURE ----
+    --ALTER TABLE im_branches
+    --    DROP COLUMN min_bpjs_ks,
+    --    DROP COLUMN max_bpjs_ks,
+    --    DROP COLUMN min_bpjs_tk,
+    --    DROP COLUMN max_bpjs_tk;
+
+    --ALTER TABLE im_branches
+    --    ADD tunj_supervisi NUMERIC,
+    --    ADD tunj_lokasi NUMERIC,
+    --    ADD tunj_siaga NUMERIC;
+
+    --- IM_HRIS_PEGAWAI ---
+    ALTER TABLE im_hris_pegawai
+        ADD tanggal_keluar DATE,
+        ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
+        ADD tanggal_cuti_diluar_awal DATE,
+        ADD tanggal_cuti_diluar_akhir DATE;
+
+    ALTER TABLE im_hris_pegawai
+        DROP COLUMN mt,
+        DROP COLUMN status_giling,
+        DROP COLUMN poin_lebih,
+        DROP COLUMN point,
+        DROP COLUMN zakat_profesi,
+        DROP COLUMN tgl_akhir_kontrak,
+        DROP COLUMN golongan_dapen_nusindo,
+        DROP COLUMN golongan_dapen_id,
+        DROP COLUMN branch_id_terakhir,
+        DROP COLUMN position_id_terakhir,
+    --  DROP COLUMN flag_plt,
+    --  DROP COLUMN flag_pjs,
+        DROP COLUMN position_plt_id,
+    --  DROP COLUMN jenis_pegawai,
+        DROP COLUMN flag_percobaan;
+
+    --- IM_HRIS_PEGAWAI_HISTORY ---
+    ALTER TABLE im_hris_pegawai_history
+        ADD tanggal_keluar DATE,
+        ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
+        ADD tanggal_cuti_diluar_awal DATE,
+        ADD tanggal_cuti_diluar_akhir DATE;
+
+    ALTER TABLE im_hris_pegawai_history
+        DROP COLUMN mt,
+        DROP COLUMN status_giling,
+        DROP COLUMN poin_lebih,
+        DROP COLUMN point,
+        DROP COLUMN zakat_profesi,
+    --  DROP COLUMN tgl_akhir_kontrak,
+    --  DROP COLUMN golongan_dapen_nusindo,
+        DROP COLUMN golongan_dapen_id,
+        DROP COLUMN branch_id_terakhir,
+    --  DROP COLUMN position_id_terakhir,
+    --  DROP COLUMN flag_plt,
+    --  DROP COLUMN flag_pjs,
+    --  DROP COLUMN position_plt_id,
+    --  DROP COLUMN jenis_pegawai,
+        DROP COLUMN flag_percobaan;
+
+------ 2021-01-05 ===> update im_hris_jenis_pegawai
+    ALTER TABLE im_hris_jenis_pegawai
+        ADD COLUMN persen_gaji NUMERIC,
+        ADD COLUMN flag_default VARCHAR(1);
+
+    --- belum selesai butuh nilai persen gaji ---
+    --INSERT INTO im_hris_jenis_pegawai
+    --VALUES 	('JP01', 'plt', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , ),
+    --		('JP02', 'pjs', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , ),
+    --		('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , ),
+    --		('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , );
+
 
     ------------------------------------
     ----  BUTUH PENYESUAIAN AKIBAT  ----

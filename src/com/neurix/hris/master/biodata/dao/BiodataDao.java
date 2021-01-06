@@ -1079,6 +1079,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             tipeWhere = "AND pegawai.nip = '"+nip+"' ";
         }
 
+        //06JAN2021 - penambahan tipe_pegawai_name
         String query = "SELECT \n" +
                 "\tpegawai.nip, \n" +
                 "\tpegawai.nama_pegawai, \n" +
@@ -1086,6 +1087,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.tipe_pegawai, \n" +
                 "\tpegawai.tanggal_masuk, \n" +
                 "\tposisi.profesi_id\n" +
+                "\ttipe.tipe_pegawai_name\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
                 "\t\tLEFT JOIN it_hris_pegawai_position posisi \n" +
@@ -1094,6 +1096,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON branch.branch_id = posisi.branch_id \n" +
                 "\t\tLEFT JOIN im_position position \n" +
                 "\t\t\tON position.position_id = posisi.position_id \n" +
+                "\t\tLEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "\t\t\tON tipe.tipe_pegawai_id = pegawai.tipe_pegawai \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
@@ -1113,6 +1117,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setTipePegawai((String) row[3]);
             result.setTanggalMasuk((Date) row[4]);
             result.setProfesiId((String)row[5]);
+            result.setTipePegawaiName((String) row[6]);
 
             listOfResult.add(result);
         }
@@ -1207,12 +1212,14 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             tipeWhere = "AND pegawai.nip = '"+nip+"' ";
         }
 
+        //06JAN2021 - penambahan tipe_pegawai_name
         String query = "SELECT \n" +
                 "\tpegawai.nip, \n" +
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
                 "\tposition.kelompok_id, \n" +
                 "\tpegawai.tipe_pegawai\n" +
+                "\ttipe.tipe_pegawai_name\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
                 "\t\tLEFT JOIN it_hris_pegawai_position posisi \n" +
@@ -1221,6 +1228,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON branch.branch_id = posisi.branch_id \n" +
                 "\t\tLEFT JOIN im_position position \n" +
                 "\t\t\tON position.position_id = posisi.position_id \n" +
+                "\t\tLEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "\t\t\tON tipe.tipe_pegawai_name= pegawai.tipe_pegawai\n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
@@ -1239,6 +1248,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setPositionName((String) row[2]);
             result.setKelompokId((String) row[3]);
             result.setTipePegawai((String) row[4]);
+            result.setTipePegawaiName((String) row[5]);
 
             listOfResult.add(result);
         }
@@ -1274,6 +1284,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             }
         }
 
+        //06JAN2021 - penambahan tipe_pegawai_name
         String query = "SELECT   \n" +
                 "                   pegawai.nip,   \n" +
                 "                   pegawai.nama_pegawai,   \n" +
@@ -1288,6 +1299,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   divisi.department_name,\n" +
                 "                   position.bagian_id,\n" +
                 "                   bagian2.nama_bagian\n" +
+                "                   tipe.tipe_pegawai_name\n" +
                 "                                FROM im_hris_pegawai pegawai  \n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
                 "                                ON posisi.nip = pegawai.nip  \n" +
@@ -1301,6 +1313,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
                 "                                ON position.bagian_id = bagian2.bagian_id\n" +
+                "                                LEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "                                ON tipe.tipe_pegawai_name= pegawai.tipe_pegawai\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1320,6 +1334,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[8]);
             result.setDivisi((String) row[9]);
             result.setDivisiName((String) row[10]);
+            result.setTipePegawaiName((String) row[11]);
 
             if (row[11] !=null){
                 result.setBagianId((String) row[11]);
@@ -1393,6 +1408,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 //                "                                WHERE pegawai.flag = 'Y'  \n" +
 //                "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
 
+        //06JAN2021 - penambahan tipe_pegawai_name
         String query = "SELECT   \n" +
                 "                   pegawai.nip,   \n" +
                 "                   pegawai.nama_pegawai,   \n" +
@@ -1409,6 +1425,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   bagian2.nama_bagian,\n" +
                 "                   pegawai.shift,\n" +
                 "                   pegawai.tanggal_aktif \n" +
+                "                   tipe.tipe_pegawai_name\n" +
                 "                                FROM im_hris_pegawai pegawai\n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi ON posisi.nip = pegawai.nip  \n" +
                 "                                LEFT JOIN im_branches branch ON branch.branch_id = posisi.branch_id   \n" +
@@ -1417,6 +1434,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                LEFT JOIN im_hris_department divisi ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 ON position.bagian_id = bagian2.bagian_id\n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian3 ON position.bagian_id = bagian3.bagian_id\n" +
+                "                                LEFT JOIN im_hris_tipe_pegawai tipe ON tipe.tipe_pegawai_name = pegawai.tipe_pegawai\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1437,6 +1455,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[8]);
             result.setDivisi((String) row[9]);
             result.setDivisiName((String) row[10]);
+            result.setTipePegawaiName((String) row[15]);
 
             if (row[11] !=null){
                 result.setBagianId((String) row[11]);
@@ -1495,6 +1514,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             }
         }
 
+        //06JAN2021 - penambahan tipe_pegawai_name
         String query = "SELECT   \n" +
                 "                   pegawai.nip,   \n" +
                 "                   pegawai.nama_pegawai,   \n" +
@@ -1509,6 +1529,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   divisi.department_name,\n" +
                 "                   position.bagian_asli_id,\n" +
                 "                   bagian2.nama_bagian\n" +
+                "                   tipe.tipe_pegawai_name, \n" +
                 "                                FROM im_hris_pegawai pegawai  \n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
                 "                                ON posisi.nip = pegawai.nip  \n" +
@@ -1522,6 +1543,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
                 "                                ON position.bagian_asli_id = bagian2.bagian_id\n" +
+                "                                LEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "                                ON tipe.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1541,6 +1564,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[8]);
             result.setDivisi((String) row[9]);
             result.setDivisiName((String) row[10]);
+            result.setTipePegawaiName((String) row[13]);
 
             listOfResult.add(result);
         }

@@ -639,7 +639,7 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Status Pegawai :</small></label>
+                                    <label class="control-label"><small>Tipe Pegawai :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -799,17 +799,23 @@
 
 
                                             <display:column property="nip" sortable="true" title="NIP" />
+                                            <display:column property="nipLama" sortable="true" title="NIP Lama"/>
                                             <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
-                                            <display:column property="gender" sortable="true" title="Jenis Kelamin" />
-                                            <display:column property="positionName" sortable="true" title="Jabatan" />
-                                            <display:column property="profesiName" sortable="true" title="Profesi" />
+                                            <display:column property="branchName" sortable="true" title="Unit"/>
+                                            <display:column property="divisiName" sortable="true" title="Departmen"/>
+                                            <display:column property="bagianName" sortable="true" title="Bagian"/>
+                                            <display:column property="positionName" sortable="true" title="Jabatan"/>
+                                            <%--<display:column property="gender" sortable="true" title="Jenis Kelamin" />--%>
+                                            <%--<display:column property="profesiName" sortable="true" title="Profesi" />--%>
+                                            <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>
                                             <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
                                             <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
                                             <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                            <display:column property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
                                             <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
 
-                                            <display:column property="strLastUpdate" sortable="true" title="Last update"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"/>
+                                            <%--<display:column property="strLastUpdate" sortable="true" title="Last update"  />--%>
+                                            <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"/>--%>
 
                                         </display:table>
                                     </td>

@@ -48,6 +48,7 @@ import com.neurix.hris.master.study.bo.StudyBo;
 import com.neurix.hris.master.study.dao.StudyDao;
 import com.neurix.hris.master.study.model.ImStudyEntity;
 import com.neurix.hris.master.study.model.Study;
+import com.neurix.hris.master.tipepegawai.dao.TipePegawaiDao;
 import com.neurix.hris.transaksi.ijinKeluar.dao.IjinKeluarDao;
 import com.neurix.hris.transaksi.lembur.dao.LemburDao;
 import com.neurix.hris.transaksi.mutasi.dao.MutasiDao;
@@ -123,6 +124,15 @@ public class BiodataBoImpl implements BiodataBo {
     private ProfesiDao profesiDao;
     private MutasiDao mutasiDao;
     private DokterDao dokterDao;
+    private TipePegawaiDao tipePegawaiDao;
+
+    public TipePegawaiDao getTipePegawaiDao() {
+        return tipePegawaiDao;
+    }
+
+    public void setTipePegawaiDao(TipePegawaiDao tipePegawaiDao) {
+        this.tipePegawaiDao = tipePegawaiDao;
+    }
 
     public DokterDao getDokterDao() {
         return dokterDao;
@@ -2052,6 +2062,8 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setTanggalLahir(personalEntity.getTanggalLahir());
                     returnBiodata.setTempatLahir(personalEntity.getTempatLahir());
                     returnBiodata.setTipePegawai(personalEntity.getTipePegawai());
+                    if(tipePegawaiDao.getTipeById(personalEntity.getTipePegawai()) != "")
+                        returnBiodata.setTipePegawaiName(tipePegawaiDao.getTipeById(personalEntity.getTipePegawai()));
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
