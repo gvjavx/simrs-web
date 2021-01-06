@@ -669,6 +669,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
         Timestamp time = CommonUtil.getCurrentDateTimes();
 
         CheckObatResponse checkObatResponse = new CheckObatResponse();
+
         String pelayananId = CommonUtil.userPelayananIdLogin();
 
         PermintaanVendor permintaanVendor = new PermintaanVendor();

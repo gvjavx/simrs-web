@@ -226,6 +226,28 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
         return budgeting;
     }
 
+    public Boolean checkIfAvailDraft(String branchId, String tahun, String jenis){
+
+        String SQL = "SELECT a.* FROM it_akun_nilai_parameter_budgeting a\n" +
+                "INNER JOIN im_akun_parameter_budgeting b ON b.id = a.id_parameter\n" +
+                "WHERE \n" +
+                "b.id_jenis_budgeting = :jenis\n" +
+                "AND a.branch_id = :unit\n" +
+                "AND a.tahun = :tahun\n" +
+                "LIMIT 1";
+
+        List<Object> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenis", jenis)
+                .setParameter("tahun", tahun)
+                .setParameter("unit", branchId)
+                .list();
+
+        if (results.size() > 0)
+            return true;
+        return false;
+
+    }
+
     public String checkNilaiDasarByTahun(String tahun){
 
         String SQL = "SELECT id FROM it_akun_budgeting_nilai_dasar\n" +
@@ -687,8 +709,8 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 "\t\tFROM it_akun_jurnal_detail jd\n" +
                 "\t\tINNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
                 "\t\tWHERE j.branch_id LIKE :unit \n" +
-                "\t\tAND CAST(EXTRACT(YEAR FROM j.registered_date) AS VARCHAR) LIKE :tahun \n" +
-                "\t\tAND CAST(EXTRACT(MONTH FROM j.registered_date) AS VARCHAR) LIKE :bulan \n" + whereDivisi + whereMaster +
+                "\t\tAND CAST(EXTRACT(YEAR FROM j.tanggal_jurnal) AS VARCHAR) LIKE :tahun \n" +
+                "\t\tAND CAST(EXTRACT(MONTH FROM j.tanggal_jurnal) AS VARCHAR) LIKE :bulan \n" + whereDivisi + whereMaster +
 //                "\t\tAND jd.divisi_id LIKE :divisi \n" +
 //                "\t\tAND jd.master_id LIKE :master \n" +
                 "\t\tAND jd.rekening_id LIKE :rekening \n" +
@@ -767,8 +789,8 @@ public class BudgetingDao extends GenericDao<ItAkunBudgetingEntity, String> {
                 "\t\tINNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
                 "\t\tINNER JOIN im_akun_kode_rekening kd ON kd.rekening_id = jd.rekening_id\n" +
                 "\t\tWHERE j.branch_id LIKE :unit \n" +
-                "\t\tAND CAST(EXTRACT(YEAR FROM j.registered_date) AS VARCHAR) LIKE :tahun \n" +
-                "\t\tAND CAST(EXTRACT(MONTH FROM j.registered_date) AS VARCHAR) LIKE :bulan \n" + whereDivisi + whereMaster +
+                "\t\tAND CAST(EXTRACT(YEAR FROM j.tanggal_jurnal) AS VARCHAR) LIKE :tahun \n" +
+                "\t\tAND CAST(EXTRACT(MONTH FROM j.tanggal_jurnal) AS VARCHAR) LIKE :bulan \n" + whereDivisi + whereMaster +
 //                "\t\tAND jd.divisi_id LIKE :divisi \n" +
 //                "\t\tAND jd.master_id LIKE :master \n" +
                 "\t\tAND kd.kode_rekening LIKE :rekening \n" +

@@ -461,6 +461,11 @@
                 flagNilaiDasar = "";
             }
         });
+        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "BYA", function (res) {
+            if (res == true){
+                flagNilaiDasar = "";
+            }
+        });
     }
 
     function showListParameter() {

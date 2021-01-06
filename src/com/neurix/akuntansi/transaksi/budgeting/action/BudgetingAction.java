@@ -1382,6 +1382,13 @@ public class BudgetingAction {
             return budgetingBo.checkBudgeting(branch, tahun);
     }
 
+    public Boolean checkAvailDraftBudgeting(String branch, String tahun, String jenis){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BudgetingBo budgetingBo = (BudgetingBo) ctx.getBean("budgetingBoProxy");
+        return budgetingBo.checkIfAvailDraft(branch, tahun, jenis);
+    }
+
     public List<Budgeting> getListOfCoaBudgetingSession(String kodeRekening){
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<Budgeting> budgetingSessionList = (List<Budgeting>) session.getAttribute("listOfCoa");

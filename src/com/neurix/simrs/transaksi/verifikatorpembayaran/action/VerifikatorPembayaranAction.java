@@ -220,8 +220,12 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     public String initForm(){
         logger.info("[VerifikatorPembayaranAction.initForm] START >>>");
 
+        String dateNow = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
         setPembayaranOnline(new PembayaranOnline());
-        setAntrianTelemedic(new AntrianTelemedic());
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        antrianTelemedic.setStDateFrom(dateNow);
+        antrianTelemedic.setStDateTo(dateNow);
+        setAntrianTelemedic(antrianTelemedic);
         logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
         return "search";
     }
@@ -294,8 +298,18 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
                 searchAntrian.setId(antrianTelemedic.getId());
                 searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
+                searchAntrian.setStDateFrom(antrianTelemedic.getStDateFrom());
+                searchAntrian.setStDateTo(antrianTelemedic.getStDateTo());
             }
         }
+
+        // jika pencarian hari ini true, START
+//        String stCurDate = "";
+//        if ("true".equals(antrianTelemedic.getFlagDateNow())){
+//            stCurDate = getStCurrentDate();
+//        }
+//        searchAntrian.setFlagDateNow(stCurDate);
+        // END
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
         try {
@@ -305,12 +319,24 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             throw new GeneralBOException("[VerifikatorPembayaranAction.search] ERROR. ",e);
         }
 
+//        if (searchAntrian.getStDateFrom() != null && !"".equalsIgnoreCase(searchAntrian.getStDateFrom()))
+//            searchAntrian.setStDateFrom(getStCurrentDate());
+//        if (searchAntrian.getStDateTo() != null && !"".equalsIgnoreCase(searchAntrian.getStDateTo()))
+//            searchAntrian.setStDateTo(getStCurrentDate());
+
+        setAntrianTelemedic(searchAntrian);
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResults");
         session.setAttribute("listOfResults", listResults);
 
         logger.info("[VerifikatorPembayaranAction.search] END <<<");
         return "search";
+    }
+
+    private String getStCurrentDate(){
+        Date date = new Date(System.currentTimeMillis());
+        return CommonUtil.convertDateToString2(date);
     }
 
     public List<PembayaranOnline> listDetailPembayaran(String idAntrianTelemedic){
@@ -3343,9 +3369,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             transId = "93";
         }
 
-
-
-
         String catatan = "Closing Jurnal Refund Dana Telemedic " + jenisItem + " " + jenisPasien +" No Transaksi " + pembayaranOnlineEntity.getId() + keterangan;
 
         try {
@@ -3428,6 +3451,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         if (pembayaranOnlineEntity != null){
 
             pembayaranOnlineEntity.setUrlFotoBukti("");
+            pembayaranOnlineEntity.setWaktuBayar(null);
+            pembayaranOnlineEntity.setFlagUploadUlang("Y");
 
             try {
                 verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);

@@ -52,6 +52,12 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             criteria.add(Restrictions.eq("flagResep", mapCriteria.get("flag_resep").toString()));
         if (mapCriteria.get("flag_bayar_resep") != null)
             criteria.add(Restrictions.eq("flagBayarResep", mapCriteria.get("flag_bayar_resep").toString()));
+        if (mapCriteria.get("created_date_to_date") != null)
+            criteria.add(Restrictions.sqlRestriction("DATE(created_date) = '"+ mapCriteria.get("created_date_to_date")+"'"));
+        if (mapCriteria.get("date_from") != null)
+            criteria.add(Restrictions.sqlRestriction("DATE(created_date) >= '"+ mapCriteria.get("date_from")+"'"));
+        if (mapCriteria.get("date_to") != null)
+            criteria.add(Restrictions.sqlRestriction("DATE(created_date) <= '"+ mapCriteria.get("date_to")+"'"));
         if (mapCriteria.get("asc_limit_1") != null){
             criteria.addOrder(Order.asc("createdDate"));
             criteria.setMaxResults(1);
@@ -165,5 +171,31 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             }
         }
         return antrianTelemedicList;
+    }
+
+    public boolean foundIfAllFlagNotActive(String id){
+
+        String SQL = "SELECT a.*\n" +
+                "FROM (\n" +
+                "\tSELECT a.id, \n" +
+                "\ta.flag, \n" +
+                "\tb.flag, \n" +
+                "\tCASE WHEN b.url_foto_bukti = '' THEN null ELSE b.url_foto_bukti END as url_foto_bukti\n" +
+                "\tFROM it_simrs_antrian_telemedic a\n" +
+                "\tINNER JOIN it_simrs_pembayaran_online b On b.id_antrian_telemedic = a.id\n" +
+                "\tAND a.flag = 'N'\n" +
+                "\tAND b.flag = 'N'\n" +
+                ") a\n" +
+                "WHERE a.id = :id\n" +
+                "AND a.url_foto_bukti is null";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+
+        if (results.size() > 0){
+            return true;
+        }
+        return false;
     }
 }

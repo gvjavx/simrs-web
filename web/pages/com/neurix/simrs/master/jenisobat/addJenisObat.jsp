@@ -74,7 +74,7 @@
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Jenis Obat</legend>
+                <legend align="left">Add Kategori</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -87,7 +87,7 @@
 
                     <tr>
                         <td >
-                            <label class="control-label"><small>Jenis Obat:</small></label>
+                            <label class="control-label"><small>Kategori:</small></label>
                         </td>
                         <td>
                             <table>

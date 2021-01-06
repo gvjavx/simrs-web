@@ -109,7 +109,7 @@
                         <div class="form-group">
                             <label class="col-md-3">DPJP</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="03pm">
+                                <input class="form-control nama_dokter_ri" id="03pm">
                             </div>
                         </div>
                     </div>
@@ -459,8 +459,8 @@
                             <label >TTD Dokter</label>
                             <canvas class="paint-canvas-ttd" id="ttd_dokter"
                                     onmouseover="paintTtd('ttd_dokter')"></canvas>
-                            <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                            <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                            <input class="form-control nama_dokter_ri" id="nama_terang_dokter" placeholder="Nama Terang">
+                            <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dokter" placeholder="SIP">
                             <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                     onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i>
                                 Clear

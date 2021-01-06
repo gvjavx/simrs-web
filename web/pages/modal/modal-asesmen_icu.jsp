@@ -2000,8 +2000,8 @@
                                 <label>TTD DPJP</label>
                                 <canvas class="paint-canvas-ttd" id="asuhan_dpjp" width="220"
                                         onmouseover="paintTtd('asuhan_dpjp')"></canvas>
-                                <input class="form-control" id="nama_asuhan_dpjp" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_asuhan_dpjp" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_asuhan_dpjp" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_asuhan_dpjp" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('asuhan_dpjp')"><i
                                         class="fa fa-trash"></i> Clear

@@ -4,6 +4,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kurir.bo.KurirBo;
 import com.neurix.simrs.master.kurir.model.Kurir;
+import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganObatBo;
+import com.neurix.simrs.master.parameterketeranganobat.bo.impl.ParameterKeteranganObatBoImpl;
+import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
@@ -55,9 +58,10 @@ public class TesTelemedicController implements ModelDriven<Object> {
     private PasienBo pasienBoProxy;
     private PelayananBo pelayananBoProxy;
     private TeamDokterBo teamDokterBoProxy;
+    private ParameterKeteranganObatBo parameterKeteranganObatBoProxy;
 
-    public void setTeamDokterBoProxy(TeamDokterBo teamDokterBoProxy) {
-        this.teamDokterBoProxy = teamDokterBoProxy;
+    public void setParameterKeteranganObatBoProxy(ParameterKeteranganObatBo parameterKeteranganObatBoProxy) {
+        this.parameterKeteranganObatBoProxy = parameterKeteranganObatBoProxy;
     }
 
     public static Logger getLogger() {
@@ -225,6 +229,9 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 break;
             case "tes-team-dokter":
                 tesDokterTeam(this.id);
+                break;
+            case "tes-keterangan-obat":
+                searchParameterKeterangan();
                 break;
             default:
                 logger.info("==========NO ONE CARE============");
@@ -600,5 +607,20 @@ public class TesTelemedicController implements ModelDriven<Object> {
                 logger.error("[TesTelemedicController.tesDokterTeam] Test dokter team. dokter",e);
             }
         }
+    }
+
+    public void searchParameterKeterangan(){
+        logger.info("[TesTelemedicController.searchParameterKeterangan] START >>>");
+        ParameterKeteranganObat param = new ParameterKeteranganObat();
+        List listParam = new ArrayList();
+
+        try {
+            listParam = parameterKeteranganObatBoProxy.getByCriteria(param);
+        } catch (GeneralBOException e){
+            logger.error("[TesTelemedicController.searchParameterKeterangan] ERROR. ",e);
+        }
+
+        System.out.println("ISI -> "+listParam.size());
+        logger.info("[TesTelemedicController.searchParameterKeterangan] END <<<");
     }
 }

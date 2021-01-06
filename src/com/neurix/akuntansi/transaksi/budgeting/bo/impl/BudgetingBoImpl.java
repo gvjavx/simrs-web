@@ -1316,6 +1316,11 @@ public class BudgetingBoImpl implements BudgetingBo {
     }
 
     @Override
+    public Boolean checkIfAvailDraft(String branchId, String tahun, String jenis) {
+        return budgetingDao.checkIfAvailDraft(branchId, tahun, jenis);
+    }
+
+    @Override
     public ItAkunBudgetingEntity getBudgetingEntityById(String id) throws GeneralBOException {
         return budgetingDao.getById("idBudgeting", id);
     }

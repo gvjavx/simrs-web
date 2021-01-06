@@ -1168,7 +1168,13 @@ public class CheckupAction extends BaseMasterAction {
                     logger.error("[CheckupAction.saveAdd] Error Convert json to data admisi.", e);
                 }
 
-                checkup.setTglLahir(Date.valueOf(checkup.getStTglLahir()));
+                try {
+                    checkup.setTglLahir(Date.valueOf(checkup.getStTglLahir()));
+                }catch (Exception e){
+                    logger.error("[CheckupAction.parse tanggal lahir] error, " + e.getMessage());
+                    throw new GeneralBOException("Tanggal Lahir Tidak sesuai format, Cek Kembali Tanggal Lahir Pasien " + e.getMessage());
+                }
+
                 checkup.setNoCheckup(noCheckup);
                 checkup.setBranchId(userArea);
                 checkup.setCreatedWho(userLogin);

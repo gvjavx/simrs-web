@@ -4,22 +4,24 @@
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<property name="ireport.callouts" value="##Tue Mar 03 19:41:31 ICT 2020"/>
-	<style name="jenis">
+	<style name="label">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{jenis}.equals( "oral" )]]></conditionExpression>
-			<style forecolor="#000000" backcolor="#FF3300"/>
-		</conditionalStyle>
-	</style>
-	<style name="bentuk">
-		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{bentuk}.equals( "kapsul" )]]></conditionExpression>
+			<conditionExpression><![CDATA[$F{warna_label}.equals( "orange" )]]></conditionExpression>
 			<style forecolor="#000000" backcolor="#FFCC33"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{warna_label}.equals( "darkred" )]]></conditionExpression>
+			<style backcolor="#FF0000"/>
+		</conditionalStyle>
+		<conditionalStyle>
+			<conditionExpression><![CDATA[$F{warna_label}.equals( "springgreen" )]]></conditionExpression>
+			<style forecolor="#000000" backcolor="#99FF99"/>
 		</conditionalStyle>
 	</style>
 	<style name="body">
 		<conditionalStyle>
-			<conditionExpression><![CDATA[$F{body}.equals( "yellow" )]]></conditionExpression>
-			<style mode="Opaque" forecolor="#000000" backcolor="#FFFF99" fill="Solid"/>
+			<conditionExpression><![CDATA[$F{warna_background}.equals( "aquamarine" )]]></conditionExpression>
+			<style mode="Opaque" forecolor="#000000" backcolor="#66CCFF" fill="Solid"/>
 		</conditionalStyle>
 	</style>
 	<parameter name="reportParams.id" class="java.lang.String"/>
@@ -30,33 +32,80 @@
 		<![CDATA[SELECT
 a.id_approval_obat,
 a.id_detail_checkup,
-a.id_pasien,
-e.nama,
-TO_CHAR(e.tgl_lahir, 'dd-mm-yyyy') as tanggal_lahir,
+c.id_pasien,
+c.nama,
+TO_CHAR(c.tgl_lahir, 'dd-mm-yyyy') as tanggal_lahir,
 b.id_obat,
-c.nama_obat,
-TO_CHAR(c.expired_date, 'dd-mm-yyyy') as expired_date,
-b.keterangan,
-CAST('red' AS VARCHAR) as head,
-CAST('yellow' AS VARCHAR) as body,
-CAST('oral' AS VARCHAR) as jenis,
-CAST('kapsul' AS VARCHAR) as bentuk
+d.nama_obat,
+TO_CHAR(e.expired_date, 'dd-mm-yyyy') as expired_date,
+f.warna_label,
+f.warna_background,
+f.keterangan,
+g.bentuk,
+f.keterangan_lain
 FROM mt_simrs_permintaan_resep a
-INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
 INNER JOIN (
+	SELECT
+	id_transaksi_obat_detail,
+	id_approval_obat,
+	id_obat,
+	id_racik,
+	nama_racik
+	FROM mt_simrs_transaksi_obat_detail
+	WHERE id_racik IS NULL
+) b ON a.id_approval_obat = b.id_approval_obat
+INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
+INNER JOIN im_simrs_header_obat d ON b.id_obat = d.id_obat
+INNER JOIN (
+	SELECT
+	id_transaksi_obat_detail,
+	expired_date
+	FROM mt_simrs_transaksi_obat_detail_batch
+	GROUP BY id_transaksi_obat_detail, expired_date
+) e ON b.id_transaksi_obat_detail = e.id_transaksi_obat_detail
+INNER JOIN (
+	SELECT
+	a.keterangan,
+	a.warna_label,
+	a.warna_background,
+	b.id_obat,
+	b.keterangan_lain
+	FROM im_simrs_keterangan_obat a
+	INNER JOIN it_simrs_keterangan_resep b ON a.id = b.id_keterangan_obat
+	WHERE b.id_permintaan_resep = $P{reportParams.id}
+) f ON b.id_obat = f.id_obat
+INNER JOIN im_simrs_bentuk_barang g ON d.id_bentuk = g.id_bentuk
+WHERE a.id_permintaan_resep = $P{reportParams.id}
+UNION ALL
 SELECT
-id_obat,
-nama_obat,
-expired_date
-FROM im_simrs_obat
-GROUP BY id_obat, nama_obat, expired_date
-) c ON b.id_obat = c.id_obat
-LEFT JOIN (
-SELECT id_transaksi_obat_detail
-FROM mt_simrs_transaksi_obat_detail_batch
-GROUP BY id_transaksi_obat_detail
-) d ON b.id_transaksi_obat_detail = d.id_transaksi_obat_detail
-INNER JOIN im_simrs_pasien e ON a.id_pasien = e.id_pasien
+a.id_approval_obat,
+a.id_detail_checkup,
+c.id_pasien,
+c.nama,
+TO_CHAR(c.tgl_lahir, 'dd-mm-yyyy') as tanggal_lahir,
+b.id_racik,
+b.nama_racik,
+CAST('' AS VARCHAR) as expired_date,
+CAST('default' AS VARCHAR) as warna_label,
+CAST('default' AS VARCHAR) as warna_background,
+CAST('Racik' AS VARCHAR) as keterangan,
+CAST('Racik' AS VARCHAR) as bentuk,
+b.keterangan as keterangan_lain
+FROM mt_simrs_permintaan_resep a
+INNER JOIN (
+	SELECT
+	id_approval_obat,
+	id_racik,
+	nama_racik,
+	keterangan
+	FROM mt_simrs_transaksi_obat_detail
+	WHERE id_racik IS NOT NULL
+	GROUP BY id_approval_obat,
+	id_racik,
+	nama_racik,
+	keterangan
+) b ON a.id_approval_obat = b.id_approval_obat
+INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien
 WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 	</queryString>
 	<field name="id_approval_obat" class="java.lang.String"/>
@@ -67,11 +116,11 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 	<field name="id_obat" class="java.lang.String"/>
 	<field name="nama_obat" class="java.lang.String"/>
 	<field name="expired_date" class="java.lang.String"/>
+	<field name="warna_label" class="java.lang.String"/>
+	<field name="warna_background" class="java.lang.String"/>
 	<field name="keterangan" class="java.lang.String"/>
-	<field name="head" class="java.lang.String"/>
-	<field name="body" class="java.lang.String"/>
-	<field name="jenis" class="java.lang.String"/>
 	<field name="bentuk" class="java.lang.String"/>
+	<field name="keterangan_lain" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -104,7 +153,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<textFieldExpression><![CDATA[$P{reportParams.area}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="jenis" mode="Opaque" x="100" y="0" width="126" height="15" uuid="7b73b8b4-8f83-4455-89d8-88b62c12fab1"/>
+					<reportElement style="label" mode="Opaque" x="100" y="0" width="126" height="15" uuid="7b73b8b4-8f83-4455-89d8-88b62c12fab1"/>
 					<box>
 						<leftPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -112,10 +161,10 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<textElement textAlignment="Center" verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{jenis} == null ? "" : $F{jenis}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{keterangan} == null ? "" : $F{keterangan}]]></textFieldExpression>
 				</textField>
 				<textField isBlankWhenNull="true">
-					<reportElement style="bentuk" mode="Opaque" x="180" y="15" width="46" height="15" uuid="70b21ffa-725a-4c01-ae6a-17c77ae38c91"/>
+					<reportElement style="body" mode="Opaque" x="180" y="15" width="46" height="15" uuid="70b21ffa-725a-4c01-ae6a-17c77ae38c91"/>
 					<box>
 						<leftPen lineWidth="0.5"/>
 						<bottomPen lineWidth="0.5"/>
@@ -267,7 +316,7 @@ WHERE a.id_permintaan_resep = $P{reportParams.id}]]>
 					<textElement verticalAlignment="Middle">
 						<font size="8" isBold="false"/>
 					</textElement>
-					<textFieldExpression><![CDATA[$F{keterangan} == null ? "" : $F{keterangan}]]></textFieldExpression>
+					<textFieldExpression><![CDATA[$F{keterangan_lain} == null ? "" : $F{keterangan_lain}]]></textFieldExpression>
 				</textField>
 				<staticText>
 					<reportElement x="71" y="113" width="6" height="12" uuid="765e5085-7bf0-4ffb-a56d-d309d4858d17"/>

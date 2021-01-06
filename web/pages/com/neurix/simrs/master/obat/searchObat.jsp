@@ -646,7 +646,7 @@
                 </div>
                 <div class="row">
                     <div class="col-md-2">
-                        <label style="margin-top: 10px">Bentuk Obat</label>
+                        <label style="margin-top: 10px">Bentuk Barang</label>
                     </div>
                     <div class="col-md-4">
                         <select class="form-control select2" id="id_bentuk" style="margin-top:0px !important; width: 100%"

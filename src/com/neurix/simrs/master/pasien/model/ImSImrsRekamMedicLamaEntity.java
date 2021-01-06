@@ -16,6 +16,15 @@ public class ImSImrsRekamMedicLamaEntity implements Serializable{
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String noRmLama;
+
+    public String getNoRmLama() {
+        return noRmLama;
+    }
+
+    public void setNoRmLama(String noRmLama) {
+        this.noRmLama = noRmLama;
+    }
 
     public String getId() {
         return id;

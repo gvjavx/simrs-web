@@ -10,6 +10,7 @@
 
     <bean id="jenisPersediaanObatSubBo" class="com.neurix.simrs.master.jenispersediaanobatsub.bo.impl.JenisPersediaanObatSubBoImpl"
           p:jenisPersdiaanObatSubDao-ref="jenisPersdiaanObatSubDao"
+          p:jenisPersediaanObatDao-ref="jenisPersediaanObatDao"
     />
 
     <bean id="jenisPersediaanObatSubBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

@@ -88,7 +88,7 @@
 
 
 
-                <legend align="left">Edit Jenis Obat</legend>
+                <legend align="left">Edit Kategori</legend>
 
 
                 <table>
@@ -102,7 +102,7 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID Jenis Obat :</small></label>
+                            <label class="control-label"><small>ID Kategori :</small></label>
                         </td>
                         <td>
                             <table>
@@ -117,7 +117,7 @@
 
                     <tr>
                         <td >
-                            <label class="control-label"><small>Jenis Obat:</small></label>
+                            <label class="control-label"><small>Kategori:</small></label>
                         </td>
                         <td>
                             <table>

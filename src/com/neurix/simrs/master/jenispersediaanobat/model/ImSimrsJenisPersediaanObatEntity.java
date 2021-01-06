@@ -92,7 +92,6 @@ public class ImSimrsJenisPersediaanObatEntity {
         if (lastUpdate != null ? !lastUpdate.equals(that.lastUpdate) : that.lastUpdate != null) return false;
         if (lastUpdateWho != null ? !lastUpdateWho.equals(that.lastUpdateWho) : that.lastUpdateWho != null)
             return false;
-
         return true;
     }
 

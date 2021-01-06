@@ -4005,7 +4005,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             checkupBoProxy.saveAdd(checkup);
 
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
             throw new GeneralBOException("Found Error when adding item " + e.getMessage());
         }

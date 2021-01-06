@@ -126,8 +126,10 @@
                         <td>
                             <table>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId" disabled="false"
-                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:select list="#initComboBranch.listOfComboBranch" id="branchId1" name="pelayanan.branchId"
+                                          disabled="false"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                          cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -139,7 +141,8 @@
                         <td>
                             <table>
                                 <s:action id="initComboPosition" namespace="/pelayanan" name="initComboPosition_pelayanan"/>
-                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1" name="pelayanan.divisiId" disabled="true"
+                                <s:select list="#initComboPosition.listOfComboPositions" id="positionId1"
+                                          name="pelayanan.divisiId" disabled="true"
                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                             </table>
                         </td>

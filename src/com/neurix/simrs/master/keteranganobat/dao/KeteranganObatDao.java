@@ -67,7 +67,9 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 "a.last_update,\n" +
                 "a.last_update_who,\n" +
                 "d.id as id_jenis_obat,\n" +
-                "d.nama as nama_jenis_obat\n" +
+                "d.nama as nama_jenis_obat,\n" +
+                "a.warna_label,\n" +
+                "a.warna_background\n" +
                 "FROM im_simrs_keterangan_obat a\n" +
                 "LEFT JOIN im_simrs_jenis_persediaan_obat_sub b ON b.id = a.id_sub_jenis\n" +
                 "LEFT JOIN im_simrs_paremeter_keterangan_obat c ON c.id = a.id_parameter_keterangan\n" +
@@ -77,7 +79,8 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 "AND a.id_parameter_keterangan LIKE :idParameterKeterangan \n" +
                 "AND a.id LIKE :id \n" +
                 "AND a.keterangan ILIKE :keterangan \n"+
-                "AND d.id LIKE :idjenis \n";
+                "AND d.id LIKE :idjenis \n" +
+                "ORDER BY d.id, a.id_sub_jenis, c.id";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("flag", bean.getFlag())
@@ -106,6 +109,8 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
                 keteranganObat.setLastUpdateWho(objToString(obj[11]));
                 keteranganObat.setIdJenis(objToString(obj[12]));
                 keteranganObat.setNamaJenis(objToString(obj[13]));
+                keteranganObat.setWarnaLabel(objToString(obj[14]));
+                keteranganObat.setWarnaBackground(objToString(obj[15]));
                 keteranganObats.add(keteranganObat);
             }
         }
@@ -135,13 +140,20 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         return keteranganObatList;
     }
 
-    public boolean checkIfAvailableByCriteria(String idSubJenis, String idParam, String keterangan){
+
+    public boolean checkIfAvailableByCriteria(String idSubJenis, String idParam, String keterangan, String warnaLabel, String warnaBackground){
+
+        String stWhere = "";
+        if (warnaBackground != null && !"".equalsIgnoreCase(warnaBackground))
+            stWhere += "AND warna_background = '"+warnaBackground+"' \n";
+        if (warnaLabel != null && !"".equalsIgnoreCase(warnaLabel))
+            stWhere += "AND warna_label = '"+warnaLabel+"' \n";
 
         String SQL = "SELECT id_sub_jenis, id_parameter_keterangan, keterangan \n" +
                 "FROM im_simrs_keterangan_obat \n" +
                 "WHERE id_sub_jenis = :idsubjenis\n" +
                 "AND id_parameter_keterangan = :idparam\n" +
-                "AND keterangan = :keterangan";
+                "AND keterangan = :keterangan \n" + stWhere;
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idsubjenis", idSubJenis)
@@ -172,6 +184,4 @@ public class KeteranganObatDao extends GenericDao<ImSimrsKeteranganObatEntity, S
         String sId = String.format("%07d", iter.next());
         return "KTO" + sId;
     }
-
-
 }

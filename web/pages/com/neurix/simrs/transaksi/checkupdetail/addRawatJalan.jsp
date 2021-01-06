@@ -1953,6 +1953,12 @@
                             </tbody>
                         </table>
                     </div>
+                    <div class="col-md-2">
+                        <span style="color: red; margin-top: 12px; display: none;"
+                              id="war_rep_cek_waktu"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; margin-top: 12px; display: none;"
+                              id="cor_rep_cek_waktu"><i class="fa fa-check"></i> correct</span>
+                    </div>
                 </div>
                 <hr/>
                 <div class="row" style="margin-top: -10px">
@@ -2393,6 +2399,7 @@
     var tglRujukan = '<s:property value="headerDetailCheckup.tglRujukan"/>';
     var suratRujukan = '<s:property value="headerDetailCheckup.suratRujukan"/>';
     var idKelasRuangan = "";
+    var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';;
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

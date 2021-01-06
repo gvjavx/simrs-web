@@ -71,6 +71,33 @@ public class AntrianTelemedic {
     private String flagDanaDikembaLikan;
     private String isMobile;
     private String idRekening;
+    private String flagDateNow;
+    private String stDateFrom;
+    private String stDateTo;
+
+    public String getStDateFrom() {
+        return stDateFrom;
+    }
+
+    public void setStDateFrom(String stDateFrom) {
+        this.stDateFrom = stDateFrom;
+    }
+
+    public String getStDateTo() {
+        return stDateTo;
+    }
+
+    public void setStDateTo(String stDateTo) {
+        this.stDateTo = stDateTo;
+    }
+
+    public String getFlagDateNow() {
+        return flagDateNow;
+    }
+
+    public void setFlagDateNow(String flagDateNow) {
+        this.flagDateNow = flagDateNow;
+    }
 
     public String getIdRekening() {
         return idRekening;

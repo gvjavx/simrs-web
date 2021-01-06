@@ -35,6 +35,7 @@ function setDataPasien() {
         var sipRi = $('.sip_dokter_ri').length;
         var namaDokRi = $('.nama_dokter_ri').length;
         var namaPetugas = $('.nama_petugas').length;
+        var namaRuangan = $('.nama_ruangan').length;
 
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
             dwr.engine.setAsync(true);
@@ -238,9 +239,21 @@ function setDataPasien() {
         if (rr > 0) {
             $('.rr-pasien').val(tempRr);
         }
+        if (namaRuangan > 0) {
+            $('.nama_ruangan').val(namaRuanganPasien);
+        }
 
         $(function () {
             $('[data-mask]').inputmask();
         });
+
+        var delCanvas = $('.del-canvas');
+        if(delCanvas.length > 0){
+            $.each(delCanvas, function (i, item) {
+                var canvas = document.getElementById(item.id);
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+        }
     }
 }

@@ -33,22 +33,22 @@ public class JenisObatBoImpl implements JenisObatBo {
         logger.info("[JenisObatBoImpl.getByCriteria] Start >>>>>>>");
         List<JenisObat> listOfResultJenisObat = new ArrayList<>();
         if (bean != null) {
-            Map hsCriteria = new HashMap();
-            if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
-                hsCriteria.put("id_jenis_obat", bean.getIdJenisObat());
-            }
-            if (bean.getNamaJenisObat() != null && !"".equalsIgnoreCase(bean.getNamaJenisObat())) {
-                hsCriteria.put("nama_jenis_obat", bean.getNamaJenisObat());
-            }
-            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-                if ("N".equalsIgnoreCase(bean.getFlag())) {
-                    hsCriteria.put("flag", "N");
-                } else {
-                    hsCriteria.put("flag", bean.getFlag());
+                Map hsCriteria = new HashMap();
+                if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
+                    hsCriteria.put("id_jenis_obat", bean.getIdJenisObat());
                 }
-            } else {
-                hsCriteria.put("flag", "Y");
-            }
+                if (bean.getNamaJenisObat() != null && !"".equalsIgnoreCase(bean.getNamaJenisObat())) {
+                    hsCriteria.put("nama_jenis_obat", bean.getNamaJenisObat());
+                }
+                if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
+                    if ("N".equalsIgnoreCase(bean.getFlag())) {
+                        hsCriteria.put("flag", "N");
+                    } else {
+                        hsCriteria.put("flag", bean.getFlag());
+                    }
+                } else {
+                    hsCriteria.put("flag", "Y");
+                }
 
             List<ImSimrsJenisObatEntity> imSimrsJenisObatEntities = null;
             try {

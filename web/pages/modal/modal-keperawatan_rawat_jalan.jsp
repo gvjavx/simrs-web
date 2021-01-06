@@ -136,7 +136,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Asal Pasien</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="af3">
+                                <input class="form-control nama_ruangan" id="af3">
                             </div>
                         </div>
                     </div>
@@ -233,7 +233,7 @@
                     <div class="row jarak" style="display: none" id="form_af12">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
-                                <input class="form-control" id="ket_af12" onchange="$('#af123').val(this.value)" placeholder="Keterangan">
+                                <input class="form-control" id="ket_af12" placeholder="Keterangan">
                             </div>
                         </div>
                     </div>

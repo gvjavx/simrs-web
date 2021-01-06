@@ -467,6 +467,11 @@
                 flagNilaiDasar = "";
             }
         });
+        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "PDT", function (res) {
+            if (res == true){
+                flagNilaiDasar = "";
+            }
+        });
     }
 
     function showListParameter() {
