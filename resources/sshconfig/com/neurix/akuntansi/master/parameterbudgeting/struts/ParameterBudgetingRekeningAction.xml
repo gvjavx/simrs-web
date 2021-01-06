@@ -95,7 +95,7 @@
         <action name="paging_displaytag_parameterBudgetingRekening"
                 class="com.neurix.akuntansi.master.parameterbudgeting.action.ParameterBudgetingRekeningAction" method="paging">
             <interceptor-ref name="defaultStack" />
-            <result name="success">/pages/com/neurix/akuntansi/master/parameterbudgeting/searchParameterBudgetingRekening.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/searchParameterBudgetingRekening.jsp</result>
         </action>
     </package>
 </struts>

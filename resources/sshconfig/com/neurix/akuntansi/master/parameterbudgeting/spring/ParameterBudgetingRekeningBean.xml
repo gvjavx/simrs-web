@@ -8,8 +8,8 @@
     p:parameterBudgetingRekeningBoProxy-ref="parameterBudgetingRekeningBoProxy"/>
 
     <bean id="parameterBudgetingRekeningBo" class="com.neurix.akuntansi.master.parameterbudgeting.bo.impl.ParameterBudgetingRekeningBoImpl"
-
           p:parameterBudgetingRekeningDao-ref="parameterBudgetingRekeningDao"
+          p:kodeRekeningDao-ref="kodeRekeningDao"
 
     />
 

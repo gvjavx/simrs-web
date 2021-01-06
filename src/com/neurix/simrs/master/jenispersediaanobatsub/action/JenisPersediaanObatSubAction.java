@@ -173,7 +173,6 @@ public class JenisPersediaanObatSubAction extends BaseMasterAction {
     public String search() {
         logger.info("[JenisPersediaanObatSubSubAction.search] start process >>>");
 
-
         JenisPersediaanObatSub searchJenisPersediaanObatSub = getJenisPersediaanObatsub();
         List<JenisPersediaanObatSub> listOfsearchJenisPersediaanObatSub = new ArrayList();
         try {

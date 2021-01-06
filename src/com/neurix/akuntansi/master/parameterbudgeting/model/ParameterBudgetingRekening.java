@@ -12,6 +12,15 @@ public class ParameterBudgetingRekening {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaRekening;
+
+    public String getNamaRekening() {
+        return namaRekening;
+    }
+
+    public void setNamaRekening(String namaRekening) {
+        this.namaRekening = namaRekening;
+    }
 
     public String getId() {
         return id;

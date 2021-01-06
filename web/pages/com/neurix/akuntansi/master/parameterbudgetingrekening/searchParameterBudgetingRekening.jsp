@@ -13,7 +13,6 @@
         function link(){
             window.location.href="<s:url action='initForm_parameterbudgetingrekening'/>";
         }
-
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -27,7 +26,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Kategori
+            Rekening Budgeting
         </h1>
     </section>
     <!-- Main content -->
@@ -36,7 +35,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Parameter Budgeting Rekening</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Rekening Budgeting </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -54,8 +53,8 @@
                                         <table>
 
                                             <tr>
-                                                <td width="18%" >
-                                                    <label class="control-label"><small>Parameter Budgeting Rekening:</small></label>
+                                                <td width="40%" >
+                                                    <label class="control-label"><small>Nama Rekening Budgeting :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -97,7 +96,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Kategori
+                                                            Add Rekening Budgeting
                                                         </sj:a>
                                                     </td>
                                                     <td>
@@ -136,8 +135,9 @@
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="310" width="600" autoOpen="false"
-                                                                   title="ParameterBudgetingRekening ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                                                   title="Rekening Budgeting ">
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>"
+                                                                         alt="Loading..."/></center>
                                                         </sj:dialog>
 
                                                         <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
@@ -177,8 +177,9 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <%--<display:column property="idParameterBudgetingRekening" sortable="true" title="ID ParameterBudgetingRekening" />--%>
-                                                            <display:column property="nama" sortable="true" title="Nama" />
+                                                            <display:column property="nama" sortable="true" title="Nama Rekening Budgeting " />
+                                                            <display:column property="namaRekening" sortable="true" title="Rekening" />
+
                                                             <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
