@@ -325,6 +325,8 @@
 
 </div>
 </div>
-<a target="_blank" href="<%= request.getContextPath() %>/pages/antrian/choseeAntrian.jsp" style="color: blue; position: absolute; bottom: 10px ;float: right !important;padding: 10px">Antrian</a>
+<div style="background-color: #fbec88; color: black; position: absolute; bottom: 10px ;float: right !important;padding: 5px; border-radius: 5px">
+    <a style="color: black" target="_blank" href="<%= request.getContextPath() %>/pages/antrian/choseeAntrian.jsp">Antrian</a>
+</div>
 </body>
 </html>

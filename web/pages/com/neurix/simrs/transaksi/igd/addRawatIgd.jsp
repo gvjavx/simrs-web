@@ -2359,7 +2359,6 @@
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
-        hitungCoverBiaya();
         listICD9();
 
         $('#img_ktp').on('click', function (e) {
