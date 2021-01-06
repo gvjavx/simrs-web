@@ -20,7 +20,7 @@ public class ImKelompokPositionEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
-
+    private String flagIsMultiplePerson;
 
     public String getKelompokId() {
         return kelompokId;
@@ -84,5 +84,13 @@ public class ImKelompokPositionEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getFlagIsMultiplePerson() {
+        return flagIsMultiplePerson;
+    }
+
+    public void setFlagIsMultiplePerson(String flagIsMultiplePerson) {
+        this.flagIsMultiplePerson = flagIsMultiplePerson;
     }
 }

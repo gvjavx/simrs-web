@@ -10,6 +10,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.exception.GenerateBoLog;
 import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
+import com.neurix.hris.master.kelompokPosition.dao.KelompokPositionDao;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
@@ -32,6 +33,15 @@ public class PositionBoImpl implements PositionBo {
     private DepartmentDao departmentDao;
     private PositionBagianDao positionBagianDao;
     private PersonilPositionDao personilPositionDao;
+    private KelompokPositionDao kelompokPositionDao;
+
+    public KelompokPositionDao getKelompokPositionDao() {
+        return kelompokPositionDao;
+    }
+
+    public void setKelompokPositionDao(KelompokPositionDao kelompokPositionDao) {
+        this.kelompokPositionDao = kelompokPositionDao;
+    }
 
     public PersonilPositionDao getPersonilPositionDao() {
         return personilPositionDao;

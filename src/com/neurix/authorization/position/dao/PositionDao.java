@@ -488,4 +488,11 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         return results;
     }
+
+    public boolean checkIsMultiplePersonByPositionId(String positionId){
+
+        String SQL = "";
+
+        return true;
+    }
 }
