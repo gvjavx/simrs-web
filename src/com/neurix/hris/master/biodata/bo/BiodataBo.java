@@ -6,6 +6,7 @@ import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.PelatihanJabatanUser;
 import com.neurix.hris.master.biodata.model.PengalamanKerja;
+import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.keluarga.model.Keluarga;
 import com.neurix.hris.master.reward.model.Reward;
 import com.neurix.hris.master.sertifikat.model.Sertifikat;
@@ -109,4 +110,7 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     public List<Biodata> getAllListOfPersonil(String query, String branchId) throws GeneralBOException;
 
     Biodata getBiodataByNip(String nip);
+
+    public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai) throws GeneralBOException;
+    public List<JenisPegawai> getAllJenisPegawai();
 }

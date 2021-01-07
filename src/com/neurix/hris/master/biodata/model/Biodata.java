@@ -112,7 +112,7 @@ public class Biodata extends BaseModel {
     private String golonganDapenNusindo;
     private String golonganDapenId;
     private String stMasaKerjaGol;
-    private int masaKerjaGolongan;
+//    private int masaKerjaGolongan;
 
     private String flagTunjSupervisi;
     private String flagTunjLokasi;
@@ -303,14 +303,6 @@ public class Biodata extends BaseModel {
 
     public void setTanggalAkhirKontrak(Date tanggalAkhirKontrak) {
         this.tanggalAkhirKontrak = tanggalAkhirKontrak;
-    }
-
-    public int getMasaKerjaGolongan() {
-        return masaKerjaGolongan;
-    }
-
-    public void setMasaKerjaGolongan(int masaKerjaGolongan) {
-        this.masaKerjaGolongan = masaKerjaGolongan;
     }
 
     public String getStMasaKerjaGol() {

@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
+import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -1819,5 +1820,41 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .addOrder(Order.asc("nip"))
                 .list();
         return results;
+    }
+
+    public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai){
+
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai\n" +
+                "WHERE jenis_pegawai_id IN :listJenisPegawai \n" +
+                "AND flag_default = 'Y'\n" +
+                "ORDER BY flag_default";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameterList("listJenisPegawai", listOfJenisPegawai)
+                .list();
+
+        if (results.size() > 0)
+            return true;
+        return false;
+    }
+
+    public List<JenisPegawai> getAllListJenisPegawai(){
+
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
+                "ORDER BY flag_default";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                JenisPegawai jenisPegawai = new JenisPegawai();
+                jenisPegawai.setJenisPegawaiId(obj[0].toString());
+                jenisPegawai.setJenisPegawaiName(obj[1].toString());
+                jenisPegawais.add(jenisPegawai);
+            }
+        }
+
+        return jenisPegawais;
     }
 }
