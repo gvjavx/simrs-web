@@ -460,29 +460,32 @@
     }
 
     function showPelayanan(role){
-        var branch = $('#branchid').val();
-        if (branch == null || branch == "")
-            alert("Pilih Unit Dahulu");
-        RoleAction.getRoleById(role, function (res) {
-            $('#form-pelayanan').hide();
-            $('#form-ruangan').hide();
-            $('#form-vendor').hide();
-            if(res.tipePelayanan == "rawat_inap"){
-                $('#form-ruangan').show();
-                getListRuanganByBranch(branch);
-            } else if(res.tipePelayanan == "pbf") {
-                $('#form-vendor').show();
-                getListVendorByBranch();
-            } else if(res.tipePelayanan != "" && res.tipePelayanan != null){
-                $('#form-pelayanan').show();
-                getListPelayananByBranchAndTipe(branch, res.tipePelayanan);
-            }else{
+        var branch = $('#set_unit').val();
+        if (branch == null || branch == ""){
+            $('#warning_add').show().fadeOut(5000);
+            $('#msg_add').text("Silahkan pilih unit terlebih dahulu...!");
+            $('#set_role').val('').trigger('change');
+        }else{
+            RoleAction.getRoleById(role, function (res) {
                 $('#form-pelayanan').hide();
                 $('#form-ruangan').hide();
                 $('#form-vendor').hide();
-            }
-
-        });
+                if(res.tipePelayanan == "rawat_inap"){
+                    $('#form-ruangan').show();
+                    getListRuanganByBranch(branch);
+                } else if(res.tipePelayanan == "pbf") {
+                    $('#form-vendor').show();
+                    getListVendorByBranch();
+                } else if(res.tipePelayanan != "" && res.tipePelayanan != null){
+                    $('#form-pelayanan').show();
+                    getListPelayananByBranchAndTipe(branch, res.tipePelayanan);
+                }else{
+                    $('#form-pelayanan').hide();
+                    $('#form-ruangan').hide();
+                    $('#form-vendor').hide();
+                }
+            });
+        }
     }
 
     function getListPelayananByBranchAndTipe(branch, tipe) {
@@ -496,7 +499,7 @@
             } else {
                 option = option;
             }
-            $('#pelayananId').html(option);
+            $('#set_pelayanan').html(option);
         });
     }
 
@@ -511,7 +514,7 @@
             } else {
                 option = option;
             }
-            $('#ruanganId').html(option);
+            $('#set_ruangan').html(option);
         });
     }
 
@@ -526,7 +529,7 @@
             } else {
                 option = option;
             }
-            $('#vendorId').html(option);
+            $('#set_vendor').html(option);
         });
     }
 
@@ -541,7 +544,7 @@
             } else {
                 option = option;
             }
-            $('#pelayananId').html(option);
+            $('#set_pelayanan').html(option);
         });
     }
 
@@ -556,7 +559,7 @@
             } else {
                 option = option;
             }
-            $('#pelayananId').html(option);
+            $('#set_pelayanan').html(option);
         });
     }
 
@@ -570,7 +573,7 @@
             } else {
                 option = option;
             }
-            $('#pelayananId').html(option);
+            $('#set_pelayanan').html(option);
         });
     }
 
@@ -584,29 +587,21 @@
             } else {
                 option = option;
             }
-            $('#pelayananId').html(option);
+            $('#set_pelayanan').html(option);
         });
     }
 
-    function checkEmail() {
-
-        var email = $("#email").val();
-        if (email == null || email == ""){
-            $("#err-email").show();
-            $("#err-email").html("Email Must Be Insert");
-            errEmail = "Y";
-        } else {
-            UserAction.checkEmailAvailable(email, function (res) {
-                if (res.status == "error"){
-                    $("#err-email").show();
-                    $("#err-email").html(res.msg);
-                    errEmail = "Y";
-                } else {
-                    $("#err-email").hide();
-                    errEmail = "";
-                }
-            });
-        }
+    function checkEmail(emal) {
+        UserAction.checkEmailAvailable(email, function (res) {
+            if (res.status == "error"){
+                $("#err-email").show();
+                $("#err-email").html(res.msg);
+                errEmail = "Y";
+            } else {
+                $("#err-email").hide();
+                errEmail = "";
+            }
+        });
     }
 
     function eraseInput(id) {

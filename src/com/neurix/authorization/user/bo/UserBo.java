@@ -39,7 +39,7 @@ public interface UserBo extends GeneralBo {
 
     public List<User> getComboApprovalPersonWithCriteria(String query) throws GeneralBOException;
     public List<User> getComboTanamanPersonWithCriteria(String query) throws GeneralBOException;
-    public User saveAdd(User newUser) throws GeneralBOException;
+    public void saveAdd(User newUser) throws GeneralBOException;
     public void saveDelete(User deleteUser) throws GeneralBOException;
     public void saveEdit(User editUser) throws GeneralBOException;
     public void saveEditIdDevice(User user) throws GeneralBOException;
@@ -61,4 +61,7 @@ public interface UserBo extends GeneralBo {
     public List<User> getUserLLByCriteria(User searchUsers) throws GeneralBOException;
     List<User> getUserByRoleAndBranch(String roleId, String branchId) throws GeneralBOException;
     public ImUsers getUserByEmailId(String email) throws GeneralBOException;
+
+    public ImUsers getUserByUserId(String userId) throws GeneralBOException;
+    public List<User> getListUserByQuery(User user) throws GeneralBOException;
 }

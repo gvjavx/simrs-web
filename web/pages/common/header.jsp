@@ -418,6 +418,10 @@ apply the skin class to the body tag so the changes take effect.
         box-shadow: 1px 3px 8px grey
     }
 
+    .top_margin{
+        margin-top: 7px;
+    }
+
 </style>
 <script>
 
