@@ -731,164 +731,236 @@
                                         <display:table name="listOfbiodata" class="table table-condensed table-striped table-hover listOfbiodata"
                                                        requestURI="paging_displaytag_biodata.action" export="true" id="row" pagesize="40" style="font-size:10">
 
-                                            <%--RAKA-try start--%>
-                                            <display:column media="html" title="Menu">
-                                                <div class="btn-group">
-                                                    <button type="button" class="btn btn-success dropdown-toggle"
-                                                            data-toggle="dropdown" style="height: 34px">
-                                                        <i class="fa fa-id-badge"></i> Action
-                                                        <span class="caret"></span>
-                                                        <span class="sr-only">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" role="menu">
-                                                        <s:if test="#attr.row.flagYes">
+                                            <s:if test='%{#attr.row.flagCutiDiluarTanggungan == "Y"}'>
+                                                <display:column class="bg-danger" media="html" title="Menu">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-info dropdown-toggle"
+                                                                data-toggle="dropdown" style="height: 34px">
+                                                            <i class="fa fa-id-badge"></i> Action
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" role="menu">
+                                                            <s:if test="#attr.row.flagYes">
+                                                                <li>
+                                                                    <s:a action="edit_biodata.action">
+                                                                        <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                                    </s:a>
+                                                                </li>
+                                                            </s:if>
                                                             <li>
-                                                            <s:a action="edit_biodata.action">
-                                                                <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
-                                                                <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
-                                                            </s:a>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll
+                                                                </a>
                                                             </li>
-                                                        </s:if>
-                                                        <li>
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi
-                                                            </a>
-                                                        </li>
-                                                        <li>
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti
-                                                            </a>
-                                                        </li>
-                                                        <s:if test="#attr.row.flagYes">
                                                             <li>
-                                                                <s:a action="delete_biodata.action">
-                                                                    <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
-                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
-                                                                </s:a>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi
+                                                                </a>
                                                             </li>
-                                                        </s:if>
-                                                        <li>
-                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
-                                                                <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </display:column>
-                                            <%--RAKA-try end--%>
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti
+                                                                </a>
+                                                            </li>
+                                                            <s:if test="#attr.row.flagYes">
+                                                                <li>
+                                                                    <s:a action="delete_biodata.action">
+                                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                                    </s:a>
+                                                                </li>
+                                                            </s:if>
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </display:column>
 
-                                            <%--RAKA-bu--%>
-                                            <%--<display:column media="html" title="Edit">--%>
+                                                <display:column class="bg-danger" property="nip" sortable="true" title="NIP" />
+                                                <display:column class="bg-danger" property="nipLama" sortable="true" title="NIP Lama"/>
+                                                <display:column class="bg-danger" property="namaPegawai" sortable="true" title="Nama Pegawai" />
+                                                <display:column class="bg-danger" property="branchName" sortable="true" title="Unit"/>
+                                                <display:column class="bg-danger" property="divisiName" sortable="true" title="Departmen"/>
+                                                <display:column class="bg-danger" property="bagianName" sortable="true" title="Bagian"/>
+                                                <display:column class="bg-danger" property="positionName" sortable="true" title="Jabatan"/>
+                                                <display:column class="bg-danger" property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>
+                                                <display:column class="bg-danger" property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
+                                                <display:column class="bg-danger" property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
+                                                <display:column class="bg-danger" property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                                <display:column class="bg-danger" property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
+                                                <display:column class="bg-danger" property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
+                                            </s:if>
+                                            <s:else>
+                                                <%--RAKA-try start--%>
+                                                <display:column media="html" title="Menu">
+                                                    <div class="btn-group">
+                                                        <button type="button" class="btn btn-info dropdown-toggle"
+                                                                data-toggle="dropdown" style="height: 34px">
+                                                            <i class="fa fa-id-badge"></i> Action
+                                                            <span class="caret"></span>
+                                                            <span class="sr-only">Toggle Dropdown</span>
+                                                        </button>
+                                                        <ul class="dropdown-menu" role="menu">
+                                                            <s:if test="#attr.row.flagYes">
+                                                                <li>
+                                                                    <s:a action="edit_biodata.action">
+                                                                        <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                                    </s:a>
+                                                                </li>
+                                                            </s:if>
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi
+                                                                </a>
+                                                            </li>
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti
+                                                                </a>
+                                                            </li>
+                                                            <s:if test="#attr.row.flagYes">
+                                                                <li>
+                                                                    <s:a action="delete_biodata.action">
+                                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                                    </s:a>
+                                                                </li>
+                                                            </s:if>
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </display:column>
+                                                <%--RAKA-try end--%>
+
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column media="html" title="Edit">--%>
                                                 <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:a action="edit_biodata.action">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
-                                                    <%--</s:a>--%>
+                                                <%--<s:a action="edit_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                                <%--</s:a>--%>
                                                 <%--</s:if>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
                                                 <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:a action="delete_biodata.action">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                                                    <%--</s:a>--%>
+                                                <%--<s:a action="delete_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                <%--</s:a>--%>
                                                 <%--</s:if>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="Jabatan">--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Jabatan">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--RAKA-bu--%>
-                                            <%--<display:column style="text-align:center;" media="html" title="Payroll">--%>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Payroll">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--RAKA-bu--%>
-                                            <%--<display:column style="text-align:center;" media="html" title="Absensi">--%>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Absensi">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="SPPD">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-sppd">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="SPPD">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-sppd">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
+                                                    </a>
+                                                </display:column>--%>
 
-                                            <%--RAKA-bu--%>
-                                            <%--<display:column style="text-align:center;" media="html" title="Cuti">--%>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Cuti">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--RAKA-bu--%>
-                                            <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
                                                 <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:a action="delete_biodata.action">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
-                                                    <%--</s:a>--%>
+                                                <%--<s:a action="delete_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</s:a>--%>
                                                 <%--</s:if>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-detail">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--RAKA-bu--%>
-                                            <%--<display:column style="text-align:center;" media="html" title="Print">--%>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Print">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
 
-                                            <display:column property="nip" sortable="true" title="NIP" />
-                                            <display:column property="nipLama" sortable="true" title="NIP Lama"/>
-                                            <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
-                                            <display:column property="branchName" sortable="true" title="Unit"/>
-                                            <display:column property="divisiName" sortable="true" title="Departmen"/>
-                                            <display:column property="bagianName" sortable="true" title="Bagian"/>
-                                            <display:column property="positionName" sortable="true" title="Jabatan"/>
-                                            <%--<display:column property="gender" sortable="true" title="Jenis Kelamin" />--%>
-                                            <%--<display:column property="profesiName" sortable="true" title="Profesi" />--%>
-                                            <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>
-                                            <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
-                                            <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
-                                            <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
-                                            <display:column property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
-                                            <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
+                                                <display:column property="nip" sortable="true" title="NIP" />
+                                                <display:column property="nipLama" sortable="true" title="NIP Lama"/>
+                                                <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
+                                                <display:column property="branchName" sortable="true" title="Unit"/>
+                                                <display:column property="divisiName" sortable="true" title="Departmen"/>
+                                                <display:column property="bagianName" sortable="true" title="Bagian"/>
+                                                <display:column property="positionName" sortable="true" title="Jabatan"/>
+                                                <%--<display:column property="gender" sortable="true" title="Jenis Kelamin" />--%>
+                                                <%--<display:column property="profesiName" sortable="true" title="Profesi" />--%>
+                                                <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>
+                                                <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
+                                                <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
+                                                <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                                <display:column property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
+                                                <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
 
-                                            <%--<display:column property="strLastUpdate" sortable="true" title="Last update"  />--%>
-                                            <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"/>--%>
-
+                                                <%--<display:column property="strLastUpdate" sortable="true" title="Last update"  />--%>
+                                                <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"/>--%>
+                                            </s:else>
                                         </display:table>
+
+                                        <script>
+                                            $(".search-row").addClass("bg-success");
+                                            console.log("testing");
+                                        </script>
                                     </td>
                                 </tr>
                             </table>

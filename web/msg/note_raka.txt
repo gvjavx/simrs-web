@@ -309,12 +309,12 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
         ADD COLUMN persen_gaji NUMERIC,
         ADD COLUMN flag_default VARCHAR(1);
 
-    --- belum selesai butuh nilai persen gaji ---
-    --INSERT INTO im_hris_jenis_pegawai
-    --VALUES 	('JP01', 'plt', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , ),
-    --		('JP02', 'pjs', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , ),
-    --		('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , ),
-    --		('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', , );
+    --- belum selesai butuh nilai persen gaji & flag default (MASIH ISI DUMMY)---
+    INSERT INTO im_hris_jenis_pegawai
+    VALUES 	('JP01', 'plt', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 100, 'Y'),
+    		('JP02', 'pjs', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 80, 'Y'),
+    		('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 70,'Y' ),
+    		('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 60, 'Y');
 
 
     ------------------------------------
