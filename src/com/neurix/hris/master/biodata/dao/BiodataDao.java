@@ -486,12 +486,14 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         return listOfResult;
     }
 
-    public List<ImBiodataEntity> getDataBiodata(String nip, String nama, String branchId, String divisiId, String tipePegawai, String flag){
+    public List<ImBiodataEntity> getDataBiodata(String nip, String nama, String branchId, String divisiId, BigInteger jmlAnak, String tipePegawai, String flag){
         String searchNip = "" ;
         String searchNama = "" ;
         String searchBranchId = "" ;
         String searchDivisiId = "" ;
         String searchTipePegawai = "" ;
+        //RAKA-penambahan parameter jumlah anak
+        String searchJmlAnak = "";
 
         if (nip!=null){
             if(!nip.equalsIgnoreCase("")){
@@ -516,6 +518,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         if (tipePegawai!=null){
             if(!tipePegawai.equalsIgnoreCase("")){
                 searchTipePegawai = " and pegawai.tipe_pegawai= '" + tipePegawai + "' " ;
+            }
+        }
+        if(jmlAnak!=null){
+            String anak = jmlAnak.toString();
+            if(!anak.equalsIgnoreCase("")) {
+                searchJmlAnak = " AND pegawai.jumlah_anak = '" + anak + "' ";
             }
         }
 
@@ -550,7 +558,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
                 "where " +
                 "\t itPosisi.flag='"+flag+"' AND" +
-                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai +
+                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
                 "\torder by \n" +
                 "\titPosisi.position_id";
 

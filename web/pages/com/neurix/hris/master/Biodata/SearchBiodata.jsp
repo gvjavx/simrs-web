@@ -639,6 +639,17 @@
 
                             <tr>
                                 <td>
+                                    <label class="control-label"><small>Jumlah Anak :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:textfield  id="jmlAnak" name="biodata.jumlahAnak" type="number" required="false" readonly="false" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
                                     <label class="control-label"><small>Tipe Pegawai :</small></label>
                                 </td>
                                 <td>
@@ -681,9 +692,9 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add Biodata</button>
                                             <button type="button" class="btn btn-success dropdown-toggle"
                                                     data-toggle="dropdown" style="height: 34px">
+                                                <i class="fa fa-plus"></i> Add Biodata
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
@@ -719,15 +730,70 @@
                                         <s:set name="listOfbiodata" value="#session.listOfResultBiodata" scope="request" />
                                         <display:table name="listOfbiodata" class="table table-condensed table-striped table-hover listOfbiodata"
                                                        requestURI="paging_displaytag_biodata.action" export="true" id="row" pagesize="40" style="font-size:10">
-                                            <display:column media="html" title="Edit">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:a action="edit_biodata.action">
-                                                        <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                    </s:a>
-                                                </s:if>
+
+                                            <%--RAKA-try start--%>
+                                            <display:column media="html" title="Menu">
+                                                <div class="btn-group">
+                                                    <button type="button" class="btn btn-success dropdown-toggle"
+                                                            data-toggle="dropdown" style="height: 34px">
+                                                        <i class="fa fa-id-badge"></i> Action
+                                                        <span class="caret"></span>
+                                                        <span class="sr-only">Toggle Dropdown</span>
+                                                    </button>
+                                                    <ul class="dropdown-menu" role="menu">
+                                                        <s:if test="#attr.row.flagYes">
+                                                            <li>
+                                                            <s:a action="edit_biodata.action">
+                                                                <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                                <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                                <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                            </s:a>
+                                                            </li>
+                                                        </s:if>
+                                                        <li>
+                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti
+                                                            </a>
+                                                        </li>
+                                                        <s:if test="#attr.row.flagYes">
+                                                            <li>
+                                                                <s:a action="delete_biodata.action">
+                                                                    <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                                    <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                                </s:a>
+                                                            </li>
+                                                        </s:if>
+                                                        <li>
+                                                            <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                                <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
                                             </display:column>
+                                            <%--RAKA-try end--%>
+
+                                            <%--RAKA-bu--%>
+                                            <%--<display:column media="html" title="Edit">--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                    <%--<s:a action="edit_biodata.action">--%>
+                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                                    <%--</s:a>--%>
+                                                <%--</s:if>--%>
+                                            <%--</display:column>--%>
 
                                             <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
                                                 <%--<s:if test="#attr.row.flagYes">--%>
@@ -745,11 +811,12 @@
                                                 <%--</a>--%>
                                             <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Payroll">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--RAKA-bu--%>
+                                            <%--<display:column style="text-align:center;" media="html" title="Payroll">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">--%>
@@ -757,11 +824,12 @@
                                                 <%--</a>--%>
                                             <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Absensi">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--RAKA-bu--%>
+                                            <%--<display:column style="text-align:center;" media="html" title="Absensi">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
                                             <%--<display:column style="text-align:center;" media="html" title="SPPD">
                                                 <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-sppd">
@@ -769,21 +837,23 @@
                                                 </a>
                                             </display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Cuti">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--RAKA-bu--%>
+                                            <%--<display:column style="text-align:center;" media="html" title="Cuti">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Detail">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:a action="delete_biodata.action">
-                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
-                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                    </s:a>
-                                                </s:if>
-                                            </display:column>
+                                            <%--RAKA-bu--%>
+                                            <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                    <%--<s:a action="delete_biodata.action">--%>
+                                                        <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                    <%--</s:a>--%>
+                                                <%--</s:if>--%>
+                                            <%--</display:column>--%>
 
                                             <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-detail">--%>
@@ -791,11 +861,12 @@
                                                 <%--</a>--%>
                                             <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Print">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                            <%--RAKA-bu--%>
+                                            <%--<display:column style="text-align:center;" media="html" title="Print">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                            <%--</display:column>--%>
 
 
                                             <display:column property="nip" sortable="true" title="NIP" />

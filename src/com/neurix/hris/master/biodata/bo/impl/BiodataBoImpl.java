@@ -2006,7 +2006,7 @@ public class BiodataBoImpl implements BiodataBo {
             ItPersonilPositionEntity itPersonilPositionEntity = null;
             try {
                 imBiodataEntity = biodataDao.getDataBiodata(searchBean.getNip(), searchBean.getNamaPegawai(), searchBean.getBranch(), searchBean.getDivisi(),
-                        searchBean.getTipePegawai(), searchBean.getFlag());
+                        searchBean.getJumlahAnak(), searchBean.getTipePegawai(), searchBean.getFlag());
             } catch (HibernateException e) {
                 logger.error("[BiodataBoImpl.getSearchPersonalByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
@@ -2387,9 +2387,9 @@ public class BiodataBoImpl implements BiodataBo {
         List<ImBiodataEntity> listPersonal = null;
         try {
             if (!"".equalsIgnoreCase(branchId)){
-                listPersonal = biodataDao.getDataBiodata("",query,branchId,"","","Y");
+                listPersonal = biodataDao.getDataBiodata("",query,branchId,"",null,"","Y");
             } else {
-                listPersonal = biodataDao.getDataBiodata("",query,"","","","Y");
+                listPersonal = biodataDao.getDataBiodata("",query,"","",null,"","Y");
             }
         } catch (HibernateException e) {
             logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
@@ -4704,7 +4704,7 @@ public class BiodataBoImpl implements BiodataBo {
 
     @Override
     public List<ImBiodataEntity> searchKaryawanDanBatihSys(Biodata biodata) throws GeneralBOException {
-        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata(biodata.getNip(), biodata.getNip(), biodata.getBranch(), "", "", "Y");
+        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata(biodata.getNip(), biodata.getNip(), biodata.getBranch(), "", null, "", "Y");
         List<ImBiodataEntity> biodataList = new ArrayList<>();
 
         int noAnggota = 0;
