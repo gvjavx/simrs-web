@@ -27,6 +27,9 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        .jarak{
+            margin-top: 7px;
+        }
     </style>
     <script type='text/javascript'>
 
@@ -138,6 +141,7 @@
         });
 
         $.subscribe('successDialog', function (event, data) {
+            console.log(event.originalEvent.request);
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
@@ -146,8 +150,7 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
-//            alert(event.originalEvent.request.getResponseHeader('message'));
+            console.log(event.originalEvent.request);
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
@@ -174,6 +177,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/RuanganAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/VendorAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/BranchAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -210,81 +214,83 @@
                                     <s:hidden name="add"/>
                                     <%--<s:form id="userForm" method="post" action="%{urlProcess}" cssClass="form-horizontal">--%>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.userId">User Id :</label>
-                                        <div class="col-sm-3">
+                                        <label class="control-label col-sm-4" for="users.userId">User Id :</label>
+                                        <div class="col-sm-4">
                                             <s:textfield id="userid" name="users.userId" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.username">Username :</label>
-                                        <div class="col-sm-3">
+                                    <div class="form-group jarak">
+                                        <label class="control-label col-sm-4" for="users.username">Username :</label>
+                                        <div class="col-sm-4">
                                             <s:textfield id="name" name="users.username" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.password">Password :</label>
-                                        <div class="col-sm-3">
+                                    <div class="form-group jarak">
+                                        <label class="control-label col-sm-4" for="users.password">Password :</label>
+                                        <div class="col-sm-4">
                                             <s:password id="password" name="users.password" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.password">Confirm Password :</label>
-                                        <div class="col-sm-3">
+                                    <div class="form-group jarak">
+                                        <label class="control-label col-sm-4" for="users.password">Confirm Password :</label>
+                                        <div class="col-sm-4">
                                             <s:password id="confirmPassword" name="users.confirmPassword" required="true" cssClass="form-control"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.branchId">Unit :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
-                                            <s:select list="#comboBranch.listOfComboBranches" id="branchid" name="users.branchId" onchange="listPosisi()"
-                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control" />
+                                        <label class="control-label col-sm-4" for="users.areaId">Area :</label>
+                                        <div class="col-sm-4">
+                                            <s:action id="comboArea" namespace="/admin/user" name="initComboArea_user"/>
+                                            <s:select list="#comboArea.listOfComboAreas" id="areaid" name="users.areaId"
+                                                      onchange="listUnit(this.value)"
+                                                      listKey="areaId" listValue="areaName" headerKey="" headerValue="[Select one]"
+                                                      cssClass="form-control select2"/>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.divisiId">Bidang :</label>
-                                        <div class="col-sm-3">
+                                        <label class="control-label col-sm-4">Unit:</label>
+                                        <div class="col-sm-4">
+                                            <select id="branchid" style="width: 100%" class="form-control select2" name="users.branchId">
+                                                <option value="">[Select One]</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label col-sm-4" for="users.divisiId">Bidang :</label>
+                                        <div class="col-sm-4">
                                             <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
                                             <s:select list="#comboDivisi.listComboDepartment" id="users.divisiId" name="users.divisiId" onchange="listPosisi()"
-                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control" />
+                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select One]" cssClass="form-control select2" />
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" >Jabatan :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>
-                                            <select id="positionId" class="form-control" name="users.positionId"></select>
+                                        <label class="control-label col-sm-4" >Jabatan :</label>
+                                        <div class="col-sm-4">
+                                            <%--<s:action id="comboPosition" namespace="/admin/user" name="initComboPosition_user"/>--%>
+                                            <select id="positionId" class="form-control select2" name="users.positionId">
+                                                <option value="">[Select One]</option>
+                                            </select>
                                             <%--<s:select list="#comboPosition.listOfComboPositions" id="positionid" name="users.positionId"
                                                       listKey="stPositionId" listValue="positionName" headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control" />--%>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.areaId">Area :</label>
-                                        <div class="col-sm-3">
-                                            <s:action id="comboArea" namespace="/admin/user" name="initComboArea_user"/>
-                                            <s:select list="#comboArea.listOfComboAreas" id="areaid" name="users.areaId"
-                                                      listKey="areaId" listValue="areaName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control"/>
-                                        </div>
-                                    </div>
 
                                     <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.roleId">Role :</label>
-                                        <div class="col-sm-3">
+                                        <label class="control-label col-sm-4" for="users.roleId">Role :</label>
+                                        <div class="col-sm-4">
                                             <s:action id="comboRole" namespace="/admin/user" name="initComboRole_user"/>
                                             <s:select list="#comboRole.listOfComboRoles" id="roleid" name="users.roleId"
                                                       onchange="showPelayanan(this.value)"
                                                       listKey="stRoleId" listValue="roleName" headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control"/>
+                                                      cssClass="form-control select2"/>
                                         </div>
                                     </div>
 
                                     <div class="form-group" style="display: none" id="form-pelayanan">
-                                        <label class="control-label col-sm-5" for="users.roleId">Pelayanan :</label>
-                                        <div class="col-sm-3">
+                                        <label class="control-label col-sm-4" for="users.roleId">Pelayanan :</label>
+                                        <div class="col-sm-4">
                                             <select style="width: 100%" class="form-control select2" name="users.idPelayanan" id="pelayananId">
                                                 <option value="">[Select One]</option>
                                             </select>
@@ -292,8 +298,8 @@
                                     </div>
 
                                     <div class="form-group" style="display: none" id="form-ruangan">
-                                        <label class="control-label col-sm-5" for="users.roleId">Ruangan :</label>
-                                        <div class="col-sm-3">
+                                        <label class="control-label col-sm-4" for="users.roleId">Ruangan :</label>
+                                        <div class="col-sm-4">
                                             <select style="width: 100%" class="form-control select2" name="users.idRuangan" id="ruanganId">
                                                 <option value="">[Select One]</option>
                                             </select>
@@ -301,49 +307,47 @@
                                     </div>
 
                                     <div class="form-group" style="display: none" id="form-vendor">
-                                        <label class="control-label col-sm-5" for="users.roleId">Vendor :</label>
-                                        <div class="col-sm-3">
+                                        <label class="control-label col-sm-4" for="users.roleId">Vendor :</label>
+                                        <div class="col-sm-4">
                                             <select style="width: 100%" class="form-control select2" name="users.idVendor" id="vendorId">
                                                 <option value="">[Select One]</option>
                                             </select>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.email">Email :</label>
-                                        <div class="col-sm-3">
+                                    <div class="form-group jarak">
+                                        <label class="control-label col-sm-4" for="users.email">Email :</label>
+                                        <div class="col-sm-4">
                                             <s:textfield id="email" name="users.email" required="true" cssClass="form-control" onchange="checkEmail()" />
                                             <div class="alert alert-danger" id="err-email" style="display: none"></div>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="users.roleId">Flag :</label>
-                                        <div class="col-sm-3">
-                                            <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="users.flag"
-                                                      headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                    <div class="form-group jarak">
+                                        <label class="control-label col-sm-4" for="users.roleId">Flag :</label>
+                                        <div class="col-sm-4">
+                                            <s:select list="#{'N':'Non Active'}" id="flag" name="users.flag"
+                                                      headerKey="Y" headerValue="Active" cssClass="form-control"/>
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-5" for="fileUpload">Upload Photo:</label>
-                                        <div class="col-sm-3">
+                                    <div class="form-group jarak">
+                                        <label class="control-label col-sm-4" for="fileUpload">Upload Photo:</label>
+                                        <div class="col-sm-4">
                                             <s:file id="fileUpload" name="fileUpload" cssClass="form-control" />
                                         </div>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4" style="visibility: hidden"></label>
-
-                                        <div style="padding-left: 140px" class="col-sm-4">
-                                            <sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"
-                                                       resizable="false"
-                                                       height="250" width="600" autoOpen="false" title="Searching...">
-                                                Please don't close this window, server is processing your request ...
-                                                </br>
-                                                </br>
-                                                </br>
-                                                <center>
-                                                    <img border="0" src="<s:url value="/pages/images/loading11.gif"/>" name="image_indicator_read">
-                                                </center>
-                                            </sj:dialog>
+                                    <div class="form-group jarak">
+                                        <div style="padding-left: 140px" class="col-md-offset-3 col-sm-4">
+                                            <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
+                                                       <%--resizable="false"--%>
+                                                       <%--height="250" width="600" autoOpen="false" title="Searching...">--%>
+                                                <%--Please don't close this window, server is processing your request ...--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--</br>--%>
+                                                <%--<center>--%>
+                                                    <%--<img border="0" src="<s:url value="/pages/images/loading11.gif"/>" name="image_indicator_read">--%>
+                                                <%--</center>--%>
+                                            <%--</sj:dialog>--%>
                                             <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addUserForm" id="save" name="save"
                                                        onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                                        onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
@@ -362,20 +366,7 @@
                                     <tr>
                                         <div id="crud">
                                             <td>
-                                                <table>
-
-                                                    <%--<sj:dialog id="waiting_dialog" openTopics="showDialog" closeTopics="closeDialog" modal="true"--%>
-                                                               <%--resizable="false"--%>
-                                                               <%--height="250" width="600" autoOpen="false" title="Saving ...">--%>
-                                                        <%--Please don't close this window, server is processing your request ...--%>
-                                                        <%--</br>--%>
-                                                        <%--</br>--%>
-                                                        <%--</br>--%>
-                                                        <%--<center>--%>
-                                                            <%--<img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">--%>
-                                                        <%--</center>--%>
-                                                    <%--</sj:dialog>--%>
-
+                                                <table style="display: none">
                                                         <sj:dialog id="waiting_dialog" openTopics="showDialog"
                                                                    closeTopics="closeDialog" modal="true"
                                                                    resizable="false"
@@ -399,7 +390,7 @@
                                                                buttons="{
                                                                                 'OK':function() {
                                                                                          $('#info_dialog').dialog('close');
-                                                                                         resetField();
+                                                                                         window.location.reload(true);
                                                                                      }
                                                                             }"
                                                     >
@@ -620,9 +611,22 @@
 
     function eraseInput(id) {
         if (id == "email"){
-//            $("#email").val("");
             $("#err-email").hide();
         }
+    }
+
+    function listUnit(area){
+        var option = '<option value="">[Select One]</option>';
+        BranchAction.getComboBranchByArea(area, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.branchId + "'>" + item.branchName + "</option>";
+                });
+                $('#branchid').html(option);
+            } else {
+                $('#branchid').html(option);
+            }
+        });
     }
 
 </script>

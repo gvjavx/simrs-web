@@ -110,6 +110,7 @@
         });
 
         $.subscribe('successDialog', function (event, data) {
+            console.log(event.originalEvent.request);
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $.publish('showInfoDialog');
@@ -121,6 +122,7 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
+            console.log(event.originalEvent.request);
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });

@@ -131,10 +131,8 @@
                                     </div>
 
                                     <div id="crud"></div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4" style="visibility: hidden"></label>
-
-                                        <div style="padding-left: 140px" class="col-sm-4">
+                                    <div class="form-group" style="margin-top: 10px; margin-left: 50px">
+                                        <div style="padding-left: 140px" class="col-md-offset-3 col-sm-8">
                                             <sj:dialog id="waiting_dialog" openTopics="showDialog1" closeTopics="closeDialog" modal="true"
                                                        resizable="false"
                                                        height="250" width="600" autoOpen="false" title="Searching...">
@@ -153,18 +151,8 @@
                                                 <i class="fa fa-search"></i>
                                                 Search
                                             </sj:submit>
-
-                                            <div class="btn-group">
-                                                <s:url id="urlAdd" namespace="/admin/user" action="add_user" escapeAmp="false"/>
-                                                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-edit"></i>
-                                                    User
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><s:a href="%{urlAdd}"><i class="fa fa-plus"></i> Add</s:a></li>
-                                                </ul>
-                                            </div>
+                                            <s:url id="urlAdd" namespace="/admin/user" action="add_user" escapeAmp="false"/>
+                                            <s:a href="%{urlAdd}" cssClass="btn btn-success"><i class="fa fa-plus"></i> Add User</s:a>
 
                                             <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_user"/>'">
                                                 <i class="fa fa-refresh"></i> Reset
