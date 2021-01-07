@@ -2253,13 +2253,23 @@
                                       listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Pjs: </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:select list="#{'Y':'Ya'}" id="pjsFlag1"--%>
+                                      <%--headerKey="N" headerValue="Tidak" cssClass="form-control" />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Pjs: </label>
+                        <label class="control-label col-sm-4" > Jenis Jabatan : </label>
                         <div class="col-sm-8">
-                            <s:select list="#{'Y':'Ya'}" id="pjsFlag1"
-                                      headerKey="N" headerValue="Tidak" cssClass="form-control" />
+                            <s:action id="initComboJenisPegawai" namespace="/biodata" name="initComboJenisPegawai_biodata"/>
+                            <s:select list="#initComboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.golongan"
+                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                         </div>
                     </div>
+
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Jabatan Aktif?: </label>
                         <div class="col-sm-8">

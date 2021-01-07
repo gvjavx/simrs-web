@@ -19,6 +19,7 @@ import com.neurix.hris.master.department.dao.DepartmentDao;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
 import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
+import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.keluarga.dao.KeluargaDao;
 import com.neurix.hris.master.keluarga.model.ImKeluargaEntity;
 import com.neurix.hris.master.keluarga.model.ImKeluargaPK;
@@ -5320,5 +5321,38 @@ public class BiodataBoImpl implements BiodataBo {
             }
         }
         return pendidikanTerakhir;
+    }
+
+    @Override
+    public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai) throws GeneralBOException {
+        logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] START process >>>");
+
+        Boolean found = false;
+
+        try {
+            found =  biodataDao.checkAvailJenisPegawaiDefault(listOfJenisPegawai);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.checkAvailJenisPegawaiDefault] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] END process <<<");
+        return found;
+    }
+
+    @Override
+    public List<JenisPegawai> getAllJenisPegawai() {
+        logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] START process >>>");
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+        try {
+            jenisPegawais = biodataDao.getAllListJenisPegawai();
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.checkAvailJenisPegawaiDefault] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] END process <<<");
+        return jenisPegawais;
     }
 }

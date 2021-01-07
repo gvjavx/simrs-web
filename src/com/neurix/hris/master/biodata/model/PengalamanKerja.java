@@ -45,6 +45,15 @@ public class PengalamanKerja extends BaseModel {
     private String branchName;
     private String tahun;
     private String jabatanName;
+    private String jenisPegawaiId;
+
+    public String getJenisPegawaiId() {
+        return jenisPegawaiId;
+    }
+
+    public void setJenisPegawaiId(String jenisPegawaiId) {
+        this.jenisPegawaiId = jenisPegawaiId;
+    }
 
     public String getProfesiName() {
         return profesiName;
