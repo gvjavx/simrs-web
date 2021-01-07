@@ -106,7 +106,7 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
 
         if (bean != null){
 
-            boolean foundParameter = false;
+            boolean foundParameter = true;
             try {
                 foundParameter = parameterBudgetingDao.foundParameterBudgetingByCriteria(bean.getIdKategoriBudgeting(), bean.getDivisiId(), bean.getMasterId(), bean.getIdParamRekening());
             } catch (HibernateException e){

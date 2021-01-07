@@ -11,7 +11,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_parameterbudgetingrekening'/>";
+            window.location.href="<s:url action='initForm_kategoriparameterbudgeting'/>";
         }
     </script>
 </head>
@@ -26,7 +26,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Rekening Budgeting
+            Kategori Budgeting
         </h1>
     </section>
     <!-- Main content -->
@@ -35,14 +35,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Rekening Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Kategori Budgeting </h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="SearchParameterBudgetingRekeningForm" method="post"  theme="simple"
-                                            namespace="/parameterbudgetingrekening" action="search_parameterbudgetingrekening.action" cssClass="form-horizontal">
+                                    <s:form id="SearchKategoriParameterBudgetingForm" method="post"  theme="simple"
+                                            namespace="/kategoriparameterbudgeting" action="search_kategoriparameterbudgeting.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -54,11 +54,11 @@
 
                                             <tr>
                                                 <td width="40%" >
-                                                    <label class="control-label"><small>Nama Rekening Budgeting :</small></label>
+                                                    <label class="control-label"><small>Nama Kategori Budgeting :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="parameterbudgetingrekening" name="parameterBudgetingRekening.nama"
+                                                        <s:textfield id="kategoriparameterbudgeting" name="kategoriParameterBudgeting.nama"
                                                                      required="true" cssStyle="margin-top: 7px"
                                                                      disabled="false" cssClass="form-control"/>
                                                     </table>
@@ -71,7 +71,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="parameterBudgetingRekening.flag"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="kategoriParameterBudgeting.flag"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
@@ -85,24 +85,24 @@
                                                 <tr>
                                                     <td >
                                                         <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
-                                                                   formIds="SearchParameterBudgetingRekeningForm" id="search" name="search"
+                                                                   formIds="SearchKategoriParameterBudgetingForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd"  namespace="/parameterbudgetingrekening" action="add_parameterbudgetingrekening" escapeAmp="false">
+                                                        <s:url var="urlAdd"  namespace="/kategoriparameterbudgeting" action="add_kategoriparameterbudgeting" escapeAmp="false">
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Rekening Budgeting
+                                                            Add Kategori Budgeting
                                                         </sj:a>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" id="reset" cssStyle="margin-right: 5px"
                                                                 onclick="window.location.href='<s:url
-                                                                action="initForm_parameterbudgetingrekening"/>'">
+                                                                action="initForm_kategoriparameterbudgeting"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -135,7 +135,7 @@
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="310" width="600" autoOpen="false"
-                                                                   title="Rekening Budgeting ">
+                                                                   title="Kategori Budgeting ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>"
                                                                          alt="Loading..."/></center>
                                                         </sj:dialog>
@@ -149,14 +149,14 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchParameterBudgetingRekening" value="#session.listOfResultParameterBudgetingRekening" scope="request" />
-                                                        <display:table name="listOfsearchParameterBudgetingRekening" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_parameterBudgetingRekening.action" export="true" id="row"
+                                                        <s:set name="listOfsearchKategoriParameterBudgeting" value="#session.listOfResultKategoriParameterBudgeting" scope="request" />
+                                                        <display:table name="listOfsearchKategoriParameterBudgeting" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_kategoriParameterBudgeting.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/parameterbudgetingrekening" action="edit_parameterbudgetingrekening" escapeAmp="false">
+                                                                    <s:url var="urlEdit" namespace="/kategoriparameterbudgeting" action="edit_kategoriparameterbudgeting" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.id"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
@@ -168,7 +168,7 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/parameterbudgetingrekening" action="delete_parameterbudgetingrekening" escapeAmp="false">
+                                                                    <s:url var="urlViewDelete" namespace="/kategoriparameterbudgeting" action="delete_kategoriparameterbudgeting" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.id" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
@@ -177,8 +177,9 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="nama" sortable="true" title="Nama Rekening Budgeting " />
-                                                            <display:column property="namaRekening" sortable="true" title="Jenis Rekening" />
+                                                            <display:column property="id" sortable="true" title="id" />
+                                                            <display:column property="nama" sortable="true" title="Nama Kategori Budgeting " />
+                                                            <display:column property="jenisBudgeting" sortable="true" title="Jenis Budgeting" />
 
                                                             <%--<display:column property="action" sortable="true" title="action"  />--%>
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
