@@ -940,6 +940,6 @@ public class PositionBoImpl implements PositionBo {
         }
 
         logger.info("[PositionBoImpl.getAndCheckJabatanTerpakai]  END <<<");
-        return personilPosition;
+        return personilPosition.getPersonilPositionId() == null ? null : personilPosition;
     }
 }

@@ -1992,7 +1992,9 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public void saveAddPengalaman(String nip, String branchId, String jabatan, String devisiId, String profesiId,
-                                  String tanggalMasuk, String tanggalKeluar, String tipePegawai, String golongan, String pjs, String aktifFlag){
+                                  String tanggalMasuk, String tanggalKeluar, String tipePegawai, String golongan,
+                                  String pjs, String aktifFlag, String jenisPegawaiId, String flagDigaji
+                                  ){
         logger.info("[StudyAction.saveAdd] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
@@ -2052,6 +2054,8 @@ public class BiodataAction extends BaseMasterAction{
             pengalamanKerja.setLastUpdateWho(userLogin);
             pengalamanKerja.setAction("C");
             pengalamanKerja.setFlag("Y");
+            pengalamanKerja.setJenisPegawaiId(jenisPegawaiId);
+            pengalamanKerja.setFlagDigaji(flagDigaji);
 
             int id = 0;
             int jumlah = 0;
@@ -2076,20 +2080,6 @@ public class BiodataAction extends BaseMasterAction{
 
                     if (status){
 
-//                        String statusDate = cekStatus(listOfResult, CommonUtil.convertStringToDate(tanggalMasuk), CommonUtil.convertStringToDate(tanggalKeluar));
-//                        if ("true".equalsIgnoreCase(statusDate)){
-//                            for(PengalamanKerja pengalamanKerja1: listOfResult){
-//                                id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
-//                            }
-//                            id++;
-//                            pengalamanKerja.setPengalamanId(id + "");
-//
-//                            listOfResult.add(pengalamanKerja);
-//                        }else {
-//                            throw new GeneralBOException("Perhatian!!! Tanggal jabatan aktif tidak boleh kurang dari tanggal jabatan tidak aktif");
-//                        }
-
-
                         for(PengalamanKerja pengalamanKerja1: listOfResult){
                             id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
                         }
@@ -2105,14 +2095,6 @@ public class BiodataAction extends BaseMasterAction{
                     pengalamanKerja.setPengalamanId(id + "");
                     listOfResult.add(pengalamanKerja);
                 }
-
-//                for(PengalamanKerja pengalamanKerja1: listOfResult){
-//                    id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
-//                }
-//                id++;
-//                pengalamanKerja.setPengalamanId(id + "");
-//
-//                listOfResult.add(pengalamanKerja);
             }else{
                 listOfResult = new ArrayList<>();
                 pengalamanKerja.setPengalamanId(id + "");
@@ -3301,20 +3283,23 @@ public class BiodataAction extends BaseMasterAction{
             }
         }
 
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        if (stringListJenisPegawaiId.size() > 0){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-        // cari berdasarkan list string jenis pegawai pada session;
-        try {
-            Boolean foundData = biodataBo.checkAvailJenisPegawaiDefault(stringListJenisPegawaiId);
-            if (foundData){
-                response.setStatus("error");
-                response.setMsg("Telah Ada Jabatan Utama. piih jenis pegawai lain !");
-            } else
-                response.setStatus("success");
-        } catch (GeneralBOException e){
-            logger.error("[BiodataAction.checkAvailJenisPegawaiDefault] ERROR, ", e);
+            // cari berdasarkan list string jenis pegawai pada session;
+            try {
+                Boolean foundData = biodataBo.checkAvailJenisPegawaiDefault(stringListJenisPegawaiId);
+                if (foundData){
+                    response.setStatus("error");
+                    response.setMsg("Telah Ada Jabatan Utama. piih jenis pegawai lain !");
+                } else
+                    response.setStatus("success");
+            } catch (GeneralBOException e){
+                logger.error("[BiodataAction.checkAvailJenisPegawaiDefault] ERROR, ", e);
+            }
         }
+
 
         logger.info("[BiodataAction.checkAvailJenisPegawaiDefault] END <<<");
         return response;

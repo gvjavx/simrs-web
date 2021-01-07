@@ -650,7 +650,7 @@ public class PositionAction extends BaseMasterAction {
             PersonilPosition personilPosition = positionBo.getAndCheckJabatanTerpakai(positionId, branchId);
             if (personilPosition != null){
                 response.setStatus("error");
-                response.setMsg("ditemukan pegai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
+                response.setMsg("ditemukan pegawai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
             } else {
                 response.setStatus("success");
             }

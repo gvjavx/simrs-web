@@ -1320,25 +1320,25 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <tr>
-                                                <td>
-                                                    <label><small>Kelompok Pegawai :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:if test="isDelete()">
-                                                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
-                                                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" disabled="true"
-                                                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:else>
-                                                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
-                                                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai"
-                                                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
-                                                        </s:else>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label><small>Kelompok Pegawai :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:if test="isDelete()">--%>
+                                                            <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
+                                                            <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" disabled="true"--%>
+                                                                      <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                                        <%--</s:if>--%>
+                                                        <%--<s:else>--%>
+                                                            <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
+                                                            <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai"--%>
+                                                                      <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                                        <%--</s:else>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td>
                                                     <label><small>Jabatan PLT :</small></label>
@@ -2264,19 +2264,28 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" > Jenis Jabatan : </label>
                         <div class="col-sm-8">
-                            <s:action id="initComboJenisPegawai" namespace="/biodata" name="initComboJenisPegawai_biodata"/>
-                            <s:select list="#initComboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.golongan"
-                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.jenisPegawai"
+                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
                         </div>
                     </div>
-
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Jabatan Aktif?: </label>
+                        <label class="control-label col-sm-4" > Digaji : </label>
                         <div class="col-sm-8">
-                            <s:select list="#{'Y':'Ya'}" id="flagAktif1"
-                                      headerKey="N" headerValue="Tidak" cssClass="form-control" />
+                            <s:select list="#{'N':'Tidak'}" id="flagDigaji"
+                            headerKey="Y" headerValue="Ya" cssClass="form-control" />
                         </div>
                     </div>
+                    <s:hidden id="flagAktif1" value="Y"></s:hidden>
+
+
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Jabatan Aktif?: </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                            <%--<s:select list="#{'Y':'Ya'}" id="flagAktif1"--%>
+                                      <%--headerKey="N" headerValue="Tidak" cssClass="form-control" />--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
                 </form>
             </div>
@@ -4369,20 +4378,25 @@
             if(tipePegawaiId=="TP03"){
                 var golonganId = document.getElementById("golonganHistory3").value;
             }
-            var pjsFlag = document.getElementById("pjsFlag1").value;
+//            var pjsFlag = document.getElementById("pjsFlag1").value;
             var aktifFlag = document.getElementById("flagAktif1").value;
             var bidangLain = document.getElementById("namaBidangLain").value;
             var jabatanLain = document.getElementById("namaJabatanLain").value;
+            var jenisPegawaiId = document.getElementById("jenisPegawaiId").value;
+            var flagDigaji = document.getElementById("flagDigaji").value;
 
             var result = '';
             <s:if test="isAdd()">
             if (url == 'addPengalamanKerja') {
-                if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tipePegawaiId =='' || profesiId =='') {
+                if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''|| tipePegawaiId =='' || profesiId =='' || jenisPegawaiId == '' || flagDigaji == '') {
                     alert('Semua Field Harus Diisi !');
                 } else {
 
                     // check jabatan aktif;
                     checkJabatanAktif();
+
+                    // check jika di session ada jabatan utama
+                    checkJenisJabatanUtama();
 
                     var msg ="Field:  \n";
                     var msg2 ="";
@@ -4406,53 +4420,43 @@
                                 msg2+="- Format Tanggal Diangkat Salah\n";
                             }
                         }
-//                        if(tanggalKeluar == ''){
-//                            if(aktifFlag == 'N'){
-//                                msg+="- Tanggal Selesai\n";
-//                            }
-//                        }else{
-//                            if(tanggalKeluar.length <10){
-//                                if(aktifFlag == 'N'){
-//                                    msg2+="- Format Tanggal Selesai Salah\n";
-//                                }
-//                            }
-//                        }
                         if(tipePegawaiId ==''){
                             msg+="- Tipe Pegawai\n";
                         }
                         alert(msg+"Harus Diisi\n"+msg2);
                     }else if(tanggalKeluar == ''){
 
-                        if(tanggalKeluar == ''){
+                        if(tanggalKeluar.length <10){
+                            if(aktifFlag == 'N'){
+                                msg+="- Format Tanggal Selesai Salah\n";
+                                alert(msg);
+                            }
+                        } else {
                             if(aktifFlag == 'N'){
                                 msg+="- Jabatan aktif harus 'YA' apabila Tanggal Selesai kosong\n";
                                 alert(msg);
                             }else {
                                 if (confirm('Are you sure you want to save this Record?')) {
-                                    dwr.engine.setAsync(false);
-                                    dwr.engine.beginBatch();
-                                    BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag,function (listdata) {
-                                        alert('Data Berhasil Disimpan');
-                                        $('#modal-pengalamanKerja').modal('hide');
-                                        $('#myFormPengalaman')[0].reset();
-                                        loadSessionPengalamanKerja();
-                                    });
-                                    dwr.engine.endBatch({
-                                        errorHandler:function(errorString, exception){
-                                            alert('Jabatan aktif sudah ada');
-                                        }
-                                    });
-                                }
-                            }
-                        }else{
-                            if(tanggalKeluar.length <10){
-                                if(aktifFlag == 'N'){
-                                    msg+="- Format Tanggal Selesai Salah\n";
-                                    alert(msg);
+                                    savePengalaman(nip, branchId, posisiId, divisiId, profesiId,
+                                        tanggal, tanggalKeluar, tipePegawaiId, golonganId, "",
+                                        aktifFlag, jenisPegawaiId, flagDigaji);
+
+//                                    dwr.engine.setAsync(false);
+//                                    dwr.engine.beginBatch();
+//                                    BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+//                                        alert('Data Berhasil Disimpan');
+//                                        $('#modal-pengalamanKerja').modal('hide');
+//                                        $('#myFormPengalaman')[0].reset();
+//                                        loadSessionPengalamanKerja();
+//                                    });
+//                                    dwr.engine.endBatch({
+//                                        errorHandler:function(errorString, exception){
+//                                            alert('Jabatan aktif sudah ada');
+//                                        }
+//                                    });
                                 }
                             }
                         }
-
                     }else {
                         if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
@@ -5249,7 +5253,7 @@
                 $('#pengalamanGolonganId1').val(listdata.golonganId);
 
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId);
-                $('#pjsFlag1').val(listdata.pjsFlag);
+//                $('#pjsFlag1').val(listdata.pjsFlag);
                 $('#flagAktif1').val(listdata.flagJabatanAktif);
             });
             </s:if>
@@ -5283,7 +5287,7 @@
 //                }else{
 //                    $('#flagAktif1').val("Y").change();
 //                }
-                $('#pjsFlag1').val(listdata.pjsFlag);
+//                $('#pjsFlag1').val(listdata.pjsFlag);
                 $('#flagAktif1').val(listdata.flagJabatanAktif);
                 $('#pengalamanId').val(listdata.pengalamanId);
                 $('#pengalamanGolonganName').val(listdata.golonganName);
@@ -6170,6 +6174,35 @@
         });
 
         return true;
+    }
+
+
+    function checkJenisJabatanUtama(){
+        PositionAction.checkAvailJenisPegawaiDefault(function(res){
+            if (res.status == "error"){
+                alert(res.msg);
+                return true;
+            }
+        });
+
+        return true;
+    }
+
+
+    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
+        dwr.engine.setAsync(false);
+        dwr.engine.beginBatch();
+        BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+            alert('Data Berhasil Disimpan');
+            $('#modal-pengalamanKerja').modal('hide');
+            $('#myFormPengalaman')[0].reset();
+            loadSessionPengalamanKerja();
+        });
+        dwr.engine.endBatch({
+            errorHandler:function(errorString, exception){
+                alert('Jabatan aktif sudah ada');
+            }
+        });
     }
 </script>
 

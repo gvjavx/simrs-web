@@ -46,6 +46,15 @@ public class PengalamanKerja extends BaseModel {
     private String tahun;
     private String jabatanName;
     private String jenisPegawaiId;
+    private String flagDigaji;
+
+    public String getFlagDigaji() {
+        return flagDigaji;
+    }
+
+    public void setFlagDigaji(String flagDigaji) {
+        this.flagDigaji = flagDigaji;
+    }
 
     public String getJenisPegawaiId() {
         return jenisPegawaiId;
