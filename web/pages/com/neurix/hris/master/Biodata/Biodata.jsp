@@ -3118,7 +3118,7 @@
     function loadStatusPegawai(){
         var statusPegawai = $('#tipePegawai1').val();
         if (statusPegawai=="TP03"){
-            $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir</small>");
+            $('.label-prapensiun').html("<small>Tgl Pra Kontrak Berakhir</small>");
             $('.label-pensiun').html("<small>Tgl Kontrak Berakhir</small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
             $('.label-tanggal-aktif').html("<small>Tanggal Aktif</small>");
@@ -3253,19 +3253,19 @@
         } else {
             document.getElementById("siaga").checked = false;
         }
-        var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
-        if (flagTunjProfesional == "Y") {
-            document.getElementById("profesional").checked = true;
-        } else {
-            document.getElementById("profesional").checked = false;
-        }
+        // var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
+        // if (flagTunjProfesional == "Y") {
+        //     document.getElementById("profesional").checked = true;
+        // } else {
+        //     document.getElementById("profesional").checked = false;
+        // }
 
-        var flagMess = document.getElementById("flagMess").value;
-        if (flagMess == "Y") {
-            document.getElementById("mess").checked = true;
-        } else {
-            document.getElementById("mess").checked = false;
-        }
+        // var flagMess = document.getElementById("flagMess").value;
+        // if (flagMess == "Y") {
+        //     document.getElementById("mess").checked = true;
+        // } else {
+        //     document.getElementById("mess").checked = false;
+        // }
 //        var flagPLT = document.getElementById("flagPLT").value;
 //        if (flagPLT == "Y") {
 //            document.getElementById("plt").checked = true;
@@ -5883,21 +5883,21 @@
             $("#flagTunjSiaga").val("N");
         }
     }
-    window.cekProfesional = function () {
-        if (document.getElementById("profesional").checked == true) {
-            $("#flagTunjProfesional").val("Y");
-        } else {
-            $("#flagTunjProfesional").val("N");
-        }
-    }
+    // window.cekProfesional = function () {
+    //     if (document.getElementById("profesional").checked == true) {
+    //         $("#flagTunjProfesional").val("Y");
+    //     } else {
+    //         $("#flagTunjProfesional").val("N");
+    //     }
+    // }
 
-    window.cekMess = function () {
-        if (document.getElementById("mess").checked == true) {
-            $("#flagMess").val("Y");
-        } else {
-            $("#flagMess").val("N");
-        }
-    }
+    // window.cekMess = function () {
+    //     if (document.getElementById("mess").checked == true) {
+    //         $("#flagMess").val("Y");
+    //     } else {
+    //         $("#flagMess").val("N");
+    //     }
+    // }
 //    window.cekPLT = function () {
 //        if (document.getElementById("plt").checked == true) {
 //            $("#flagPLT").val("Y");

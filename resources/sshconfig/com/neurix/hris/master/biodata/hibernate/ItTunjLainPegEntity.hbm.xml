@@ -22,9 +22,9 @@
             <column name="flag_tunj_lokasi" sql-type="varchar" length="10" not-null="true" />
         </property>
 
-        <property name="flagTunjProfesional">
-            <column name="flag_tunj_profesional" sql-type="varchar" length="10" not-null="true" />
-        </property>
+        <!--<property name="flagTunjProfesional">-->
+            <!--<column name="flag_tunj_profesional" sql-type="varchar" length="10" not-null="true" />-->
+        <!--</property>-->
         <property name="flagTunjSiaga">
             <column name="flag_tunj_siaga" sql-type="varchar" length="10" not-null="true" />
         </property>

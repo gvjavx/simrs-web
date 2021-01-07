@@ -17,7 +17,7 @@ public class ItTunjLainPegawaiEntity implements Serializable {
     private String flagTunjSupervisi;
     private String flagTunjLokasi;
     private String flagTunjSiaga;
-    private String flagTunjProfesional;
+//    private String flagTunjProfesional;
 
     private String flag;
     private String action;
@@ -64,14 +64,6 @@ public class ItTunjLainPegawaiEntity implements Serializable {
 
     public void setFlagTunjLokasi(String flagTunjLokasi) {
         this.flagTunjLokasi = flagTunjLokasi;
-    }
-
-    public String getFlagTunjProfesional() {
-        return flagTunjProfesional;
-    }
-
-    public void setFlagTunjProfesional(String flagTunjProfesional) {
-        this.flagTunjProfesional = flagTunjProfesional;
     }
 
     public String getFlagTunjSiaga() {

@@ -956,11 +956,6 @@
                                                 <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"/>--%>
                                             </s:else>
                                         </display:table>
-
-                                        <script>
-                                            $(".search-row").addClass("bg-success");
-                                            console.log("testing");
-                                        </script>
                                     </td>
                                 </tr>
                             </table>

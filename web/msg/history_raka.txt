@@ -1,0 +1,3 @@
+=== 7 Januari 2021 ===
+- Menghilangkan Tunjangan Profesional (comment)
+    + NOT SURE [070121-01]

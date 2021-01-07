@@ -2246,18 +2246,19 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                                     payrollTunjanganLain.setNilaiNilai(tunjSiaga);
                                     listTunjanganLain.add(payrollTunjanganLain);
                                 }
-                                if (tunjLainPegawaiLoop.getFlagTunjProfesional().equalsIgnoreCase("Y")){
-                                    tunjProfesional = tunjStrategis;
-
-                                    PayrollTunjanganLain payrollTunjanganLain = new PayrollTunjanganLain();
-                                    payrollTunjanganLain.setNip(payrollEntity.getNip());
-                                    payrollTunjanganLain.setNamaTunjangan("Tunjangan Profesional");
-                                    payrollTunjanganLain.setBulan(bean.getBulan());
-                                    payrollTunjanganLain.setTahun(bean.getTahun());
-                                    payrollTunjanganLain.setNilai(CommonUtil.numbericFormat(tunjProfesional,"###,###"));
-                                    payrollTunjanganLain.setNilaiNilai(tunjProfesional);
-                                    listTunjanganLain.add(payrollTunjanganLain);
-                                }
+                                //RAKA-07JAN2021 [07012101]
+//                                if (tunjLainPegawaiLoop.getFlagTunjProfesional().equalsIgnoreCase("Y")){
+//                                    tunjProfesional = tunjStrategis;
+//
+//                                    PayrollTunjanganLain payrollTunjanganLain = new PayrollTunjanganLain();
+//                                    payrollTunjanganLain.setNip(payrollEntity.getNip());
+//                                    payrollTunjanganLain.setNamaTunjangan("Tunjangan Profesional");
+//                                    payrollTunjanganLain.setBulan(bean.getBulan());
+//                                    payrollTunjanganLain.setTahun(bean.getTahun());
+//                                    payrollTunjanganLain.setNilai(CommonUtil.numbericFormat(tunjProfesional,"###,###"));
+//                                    payrollTunjanganLain.setNilaiNilai(tunjProfesional);
+//                                    listTunjanganLain.add(payrollTunjanganLain);
+//                                }
                             }
                         }
 

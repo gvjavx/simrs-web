@@ -765,11 +765,11 @@ public class BiodataBoImpl implements BiodataBo {
                                         }else{
                                             itTunjLainPegawaiEntity.setFlagTunjSiaga("N");
                                         }
-                                        if (bean.getFlagTunjProfesional().equalsIgnoreCase("Y")){
-                                            itTunjLainPegawaiEntity.setFlagTunjProfesional("Y");
-                                        }else{
-                                            itTunjLainPegawaiEntity.setFlagTunjProfesional("N");
-                                        }
+//                                        if (bean.getFlagTunjProfesional().equalsIgnoreCase("Y")){
+//                                            itTunjLainPegawaiEntity.setFlagTunjProfesional("Y");
+//                                        }else{
+//                                            itTunjLainPegawaiEntity.setFlagTunjProfesional("N");
+//                                        }
 
                                         itTunjLainPegawaiEntity.setFlag(bean.getFlag());
                                         itTunjLainPegawaiEntity.setAction(bean.getAction());
@@ -1097,11 +1097,11 @@ public class BiodataBoImpl implements BiodataBo {
                                     }else{
                                         itTunjLainPegawaiEntity.setFlagTunjSiaga("N");
                                     }
-                                    if (bean.getFlagTunjProfesional().equalsIgnoreCase("Y")){
-                                        itTunjLainPegawaiEntity.setFlagTunjProfesional("Y");
-                                    }else{
-                                        itTunjLainPegawaiEntity.setFlagTunjProfesional("N");
-                                    }
+//                                    if (bean.getFlagTunjProfesional().equalsIgnoreCase("Y")){
+//                                        itTunjLainPegawaiEntity.setFlagTunjProfesional("Y");
+//                                    }else{
+//                                        itTunjLainPegawaiEntity.setFlagTunjProfesional("N");
+//                                    }
 
                                     itTunjLainPegawaiEntity.setFlag(bean.getFlag());
                                     itTunjLainPegawaiEntity.setAction(bean.getAction());
@@ -1411,11 +1411,12 @@ public class BiodataBoImpl implements BiodataBo {
                     }else{
                         tunjanganentity.setFlagTunjSiaga("N");
                     }
-                    if (!bean.getFlagTunjProfesional().equalsIgnoreCase("")){
-                        tunjanganentity.setFlagTunjProfesional("Y");
-                    }else{
-                        tunjanganentity.setFlagTunjProfesional("N");
-                    }
+                    //RAKA-07JAN2021==>may be bug
+//                    if (!bean.getFlagTunjProfesional().equalsIgnoreCase("")){
+//                        tunjanganentity.setFlagTunjProfesional("Y");
+//                    }else{
+//                        tunjanganentity.setFlagTunjProfesional("N");
+//                    }
 
                     tunjanganentity.setFlag(bean.getFlag());
                     tunjanganentity.setAction(bean.getAction());
@@ -2207,7 +2208,7 @@ public class BiodataBoImpl implements BiodataBo {
                             returnBiodata.setFlagTunjSupervisi(itTunjLainPegawaiEntity.getFlagTunjSupervisi());
                             returnBiodata.setFlagTunjLokasi(itTunjLainPegawaiEntity.getFlagTunjLokasi());
                             returnBiodata.setFlagTunjSiaga(itTunjLainPegawaiEntity.getFlagTunjSiaga());
-                            returnBiodata.setFlagTunjProfesional(itTunjLainPegawaiEntity.getFlagTunjProfesional());
+//                            returnBiodata.setFlagTunjProfesional(itTunjLainPegawaiEntity.getFlagTunjProfesional());
                         }
                     }
 
