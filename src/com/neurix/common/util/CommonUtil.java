@@ -590,11 +590,13 @@ public class  CommonUtil {
     }
 
     public static String addJamBayar(Timestamp date) {
-        String jam = "null";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        java.util.Date createdDate = date;
-        java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
-        jam = dateFormat.format(newJam);
+        String jam = "";
+        if(date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            java.util.Date createdDate = date;
+            java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
+            jam = dateFormat.format(newJam);
+        }
 
         return jam;
     }
