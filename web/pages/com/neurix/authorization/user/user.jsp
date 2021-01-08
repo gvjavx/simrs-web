@@ -637,7 +637,7 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="box-body box-profile">
+                            <div class="box-body box-profile" style="margin-top: -20px">
                                 <span id="v_img"></span>
                                 <h3 class="profile-username text-center" id="v_username"></h3>
                                 <p class="text-muted text-center" id="v_role"></p>
@@ -968,7 +968,13 @@
         if (!cekSession()) {
             UserAction.initUser(id, flag, function (res) {
                 if (res.username != null) {
-                    $('#v_img').html('<img class="profile-user-img img-responsive img-circle" src="'+contextPathHeader+res.photoUserUrl+'" alt="User profile picture">');
+                    var url = contextPathHeader+res.photoUserUrl;
+                    if(cekImages(url)){
+                        url = url;
+                    }else{
+                        url = contextPathHeader+'/pages/images/no-images.png';
+                    }
+                    $('#v_img').html('<img class="profile-user-img img-responsive img-circle" style="width: 100%; height: 140px" src="'+url+'" alt="User profile picture">');
                     $('#v_area').text(res.areaName);
                     $('#v_unit').text(res.branchName);
                     $('#v_userid').text(res.userId);
