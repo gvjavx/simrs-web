@@ -3754,12 +3754,16 @@ function cekRacik(id){
 }
 
 function addKeterangan() {
-    var param = $('#param_ket').val();
+    var table = $('#table_keterangan').tableToJSON();
+    var id = table.length;
+    var last = id - 1;
+    var namaWaktu = $('#waktu_param option:selected').text();
     var namaParam = $('#param_ket option:selected').text();
+    var waktu = $('#waktu_param').val();
+    var param = $('#param_ket').val();
     var ket = $('#ket_param').val();
-    var data = $('#text_area_keterangan option');
     var cek = false;
-    if(param != '' && ket != null){
+    if(namaWaktu && param != '' && ket != null){
         var disKet = "";
         $.each(ket, function (i, item) {
             var id = item.split('|')[0];
@@ -3770,22 +3774,39 @@ function addKeterangan() {
                 disKet = nam;
             }
         });
-        if(data.length > 0){
-            $.each(data, function (i, item) {
-                if(item.selected){
-                    var idP = item.value.split('|')[0];
-                    if(idP == param){
+        if(id > 0){
+            $.each(table, function (i, item) {
+                var idP = $('#id_param_'+i).val();
+                var wkt = $('#waktu_'+i).val();
+                if(idP != ''){
+                    if(idP == param && wkt == waktu){
                         cek = true;
                     }
                 }
             });
         }
-        var set = namaParam +' : '+disKet+'. ';
+        var set = namaParam +' : '+disKet;
         if(cek){
             $('#w_keterangan').show().fadeOut(5000);
             $('#p_keterangan').text("Keterangan "+namaParam+" sudah ada dalam list...!");
         }else{
-            refreshKeterangan(param, set);
+            var cekNama = namaWaktu;
+            if(id > 0){
+                if($('#waktu_'+last).val() == waktu){
+                    cekNama = "";
+                }
+            }
+            var body = '<tr id="'+param+'" style="height: 2px">' +
+                '<td>' + cekNama +
+                '<input type="hidden" id="waktu_'+id+'" value="'+waktu+'">'+
+                '<input type="hidden" id="nama_waktu_'+id+'" value="'+cekNama+'">'+
+                '<input type="hidden" id="id_param_'+id+'" value="'+param+'">'+
+                '<input type="hidden" id="nama_param_'+id+'" value="'+set+'">'+
+                '</td>'+
+                '<td>'+set+'</td>'+
+                '<td align="center"><img onclick="delKet(\'' + param + '\')" class="hvr-grow" src="' + contextPathHeader + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                '</tr>';
+            $('#body_keterangan').append(body);
             inputWarning('war_rep_cek_waktu','cor_rep_cek_waktu');
         }
     }else{
@@ -3803,6 +3824,19 @@ function getComboParameterObat(idJenis){
             });
         }
         $('#param_ket').html(option);
+    });
+    getComboWaktuObat(idJenis);
+}
+
+function getComboWaktuObat(idJenis){
+    ObatAction.getComboParameterWaktuObat(idJenis, function (res) {
+        var option = '<option value="">[Select One]</option>';
+        if(res.length > 0){
+            $.each(res, function (i, item) {
+                option += '<option value="'+item.id+'">'+item.keterangan+'</option>';
+            });
+            $('#waktu_param').html(option);
+        }
     });
 }
 

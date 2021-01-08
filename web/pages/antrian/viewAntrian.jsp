@@ -40,7 +40,6 @@
         #particles-js {
             position: absolute;
             width:  100%;
-            height: 1000px;
             background-color: #4f5962;
             background-repeat: no-repeat;
             background-size: 20%;
@@ -259,8 +258,9 @@
 
     $(document).ready(function () {
         cekListAntrian();
-        $('.wrap-box01').css('height', $(window).height()-75);
-        $('.wrap-box02').css('height', ($(window).height()/2)-85);
+        $('.wrap-box01').css('height', window.screen.height * window.devicePixelRatio-240);
+        $('.wrap-box02').css('height', ((window.screen.height * window.devicePixelRatio)/2)-170);
+        $('#particles-js').css('height', window.screen.height * window.devicePixelRatio);
     });
 
     $(function () {
@@ -430,8 +430,8 @@
         var tableApotek  = "";
 
         var poli = "";
-        var lim = 10;
-        var limit = 10;
+        var lim = 15;
+        var limit = 15;
         var count = 1;
 
         CheckupAction.getListAntriaPasien(branchId, poliId, function (response) {
@@ -487,10 +487,16 @@
                         divEnd = '</div>';
                     }
 
+                    var cutPol = pol;
+                    if(pol.length > 25){
+                        if(pol.split(' ')[0] != undefined){
+                            cutPol = pol.substr((pol.split(' ')[0].length + 1), (pol.length - 1));
+                        }
+                    }
                     tableAntrian += divB+divA+'<li class="'+color+'">\n' +
                         '<div class="row">\n' +
                         '    <div class="col-md-4">\n' +
-                        '<span>'+pol.toUpperCase()+'</span>' +
+                        '<span>'+cutPol.toUpperCase()+'</span>' +
                         '    </div>\n' +
                         '    <div class="col-md-4">\n' +
                         '<span>'+item.nama.toUpperCase()+'</span>' +
@@ -499,7 +505,7 @@
                         '<span>'+item.namaDesa.toUpperCase()+'</span>' +
                         '    </div>\n' +
                         '    <div class="col-md-1">\n' +
-                        '        <span class="box-antrian">'+item.stNoAntrian+'</span>\n' +
+                        '        <span class="box-antrian" style="font-size: 15px; font-weight: bold; float: right;">'+item.stNoAntrian+'</span>\n' +
                         '    </div>\n' +
                         '</div>\n' +
                         '</li>'+divEnd;
