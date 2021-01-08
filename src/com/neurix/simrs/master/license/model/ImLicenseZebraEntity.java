@@ -3,7 +3,7 @@ package com.neurix.simrs.master.license.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class ImLicenseZebraEntity implements Serializable {
+public class ImLicenseZebraEntity {
 
     private String licenseId;
     private String licenseKey;

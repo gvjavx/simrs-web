@@ -51,6 +51,6 @@ public class LicenseZebraDao extends GenericDao<ImLicenseZebraEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
 
-        return "LKZ" + sId;
+        return "LCZ" + sId;
     }
 }
