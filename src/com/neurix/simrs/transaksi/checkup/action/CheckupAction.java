@@ -809,7 +809,11 @@ public class CheckupAction extends BaseMasterAction {
 
                             sepRequest.setCatatan("");
                             sepRequest.setDiagAwal(checkup.getDiagnosa()); // checkup
-                            sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs()); // checkup
+                            if(checkup.getIdPelayananBpjs() != null && !"".equalsIgnoreCase(checkup.getIdPelayananBpjs())){
+                                sepRequest.setPoliTujuan(checkup.getIdPelayananBpjs()); // checkup
+                            }else{
+                                throw new GeneralBOException("Kode Poli untuk vclaim tidak ditemukan...!");
+                            }
                             sepRequest.setPoliEksekutif("0");
                             sepRequest.setCob("0");
                             sepRequest.setKatarak("0");
@@ -3884,5 +3888,25 @@ public class CheckupAction extends BaseMasterAction {
         }
 
         return "print_no_antrian";
+    }
+
+    public Pelayanan getPelayananWithIdVclaim(String id) {
+        logger.info("[CheckupAction.getPelayananWithIdVclaim] START process >>>");
+        List<Pelayanan> pelayananArrayList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        Pelayanan pelayanan = new Pelayanan();
+        pelayanan.setKodePoliVclaim(id);
+        pelayanan.setBranchId(CommonUtil.userBranchLogin());
+        try {
+            pelayananArrayList = pelayananBo.getByCriteria(pelayanan);
+        } catch (GeneralBOException e) {
+            logger.error("Found Error, " + e.getMessage());
+        }
+        if(pelayananArrayList.size() > 0){
+            pelayanan = pelayananArrayList.get(0);
+        }
+        logger.info("[CheckupAction.getPelayananWithIdVclaim] END process >>>");
+        return pelayanan;
     }
 }

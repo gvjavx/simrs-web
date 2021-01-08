@@ -732,10 +732,18 @@ public class PasienAction extends BaseMasterAction {
                                     response.setStatus("error");
                                     response.setMsg("Buffered Image is null");
                                 } else {
-                                    File f = new File(uploadFile);
-                                    // write the image
-                                    ImageIO.write(image, "png", f);
-                                    uploadRekamMedicLamaEntity.setUrlImg(fileName);
+                                    CrudResponse pon = CommonUtil.compressImage(image, "png", uploadFile);
+                                    if("success".equalsIgnoreCase(pon.getStatus())){
+                                        uploadRekamMedicLamaEntity.setUrlImg(fileName);
+                                    }else{
+                                        response.setStatus(pon.getStatus());
+                                        response.setMsg(pon.getMsg());
+                                        return pon;
+                                    }
+//                                    File f = new File(uploadFile);
+//                                    // write the image
+//                                    ImageIO.write(image, "png", f);
+//                                    uploadRekamMedicLamaEntity.setUrlImg(fileName);
                                 }
                             }
                         }catch (IOException e){
