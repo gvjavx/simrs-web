@@ -52,6 +52,7 @@
                                         </table>
                                         <table>
 
+
                                             <tr>
                                                 <td width="40%" >
                                                     <label class="control-label"><small>Nama Kategori Budgeting :</small></label>
@@ -61,6 +62,22 @@
                                                         <s:textfield id="kategoriparameterbudgeting" name="kategoriParameterBudgeting.nama"
                                                                      required="true" cssStyle="margin-top: 7px"
                                                                      disabled="false" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Jenis Budgeting :</small></label>
+                                                </td>
+                                                <td >
+                                                    <table>
+                                                        <s:action id="jenisBudgeting5" namespace="/kategoriparameterbudgeting"
+                                                                  name="initComboJenisBudgeting_kategoriparameterbudgeting" />
+                                                        <s:select cssStyle="margin-top: 7px; width: 100%" list="#jenisBudgeting5.listOfComboJenisBudgeting"
+                                                                  id="jenisbg" name="kategoriParameterBudgeting.idJenisBudgeting"
+                                                                  listKey="id" listValue="namaJenis" headerKey="" headerValue="[Select one]"
+                                                                  cssClass="form-control select2" />
                                                     </table>
                                                 </td>
                                             </tr>
@@ -177,7 +194,6 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="id" sortable="true" title="id" />
                                                             <display:column property="nama" sortable="true" title="Nama Kategori Budgeting " />
                                                             <display:column property="jenisBudgeting" sortable="true" title="Jenis Budgeting" />
 

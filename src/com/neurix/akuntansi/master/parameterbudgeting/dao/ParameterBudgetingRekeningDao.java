@@ -28,6 +28,9 @@ public class ParameterBudgetingRekeningDao extends GenericDao<ImAkunParameterBud
         if (mapCriteria.get("flag") != null) {
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }
+        if (mapCriteria.get("rekening_id") != null) {
+            criteria.add(Restrictions.eq("rekeningId", mapCriteria.get("rekening_id")));
+        }
         return criteria.list();
     }
 

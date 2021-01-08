@@ -57,6 +57,9 @@ public class ParameterBudgetingRekeningBoImpl implements ParameterBudgetingReken
             if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
                 hsCriteria.put("nama", bean.getNama());
             }
+            if (bean.getRekeningId() != null && !"".equalsIgnoreCase(bean.getRekeningId())) {
+                hsCriteria.put("rekening_id", bean.getRekeningId());
+            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
                     hsCriteria.put("flag", "N");
@@ -93,10 +96,8 @@ public class ParameterBudgetingRekeningBoImpl implements ParameterBudgetingReken
                     listOfResultParameterBudgetingRekening.add(parameterBudgetingRekening);
                 }
             }
-
         }
         return listOfResultParameterBudgetingRekening;
-
     }
 
     @Override
@@ -112,7 +113,6 @@ public class ParameterBudgetingRekeningBoImpl implements ParameterBudgetingReken
                 }
                 // creating object entity serializable
                 ImAkunParameterBudgetingRekeningEntity imAkunParameterBudgetingRekeningEntity = new ImAkunParameterBudgetingRekeningEntity();
-
                 imAkunParameterBudgetingRekeningEntity.setId(ParameterBudgetingRekeningId);
                 imAkunParameterBudgetingRekeningEntity.setNama(bean.getNama());
                 imAkunParameterBudgetingRekeningEntity.setRekeningId(bean.getRekeningId());

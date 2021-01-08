@@ -631,17 +631,29 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return positionBagianList;
     }
 
-    public List<Department> getHeadDepartent(String departementId, String departemenname) {
+    public List<Department> getHeadDepartent(positionBagian positionBagian) {
         List<Department> positionBagianList = new ArrayList<>();
 
-        String id = "%";
-        String dp = "%";
-        if (departementId != null && !"".equalsIgnoreCase(departementId)) {
-            id = departementId;
+        String bagianId = "%";
+        String bagianName = "%";
+        String divisiId = "%";
+        String flag = "%";
+
+        if (positionBagian.getBagianId() != null && !"".equalsIgnoreCase(positionBagian.getBagianId())) {
+            bagianId = positionBagian.getBagianId();
         }
-        if (departemenname!= null && !"".equalsIgnoreCase(departemenname)) {
-            dp = departemenname;
+        if (positionBagian.getBagianName() != null && !"".equalsIgnoreCase(positionBagian.getBagianName())) {
+            bagianName = "%" + positionBagian.getBagianName() + "%";
         }
+        if (positionBagian.getDivisiId() != null && !"".equalsIgnoreCase(positionBagian.getDivisiId())) {
+            divisiId = positionBagian.getDivisiId();
+        }
+        if (positionBagian.getFlag() != null && !"".equalsIgnoreCase(positionBagian.getFlag())) {
+            flag = positionBagian.getFlag();
+        }
+
+
+
         String sql = "SELECT \n" +
                 "b.department_id,  \n" +
                 "a.department_name,\n" +
@@ -650,14 +662,16 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "a.last_update,\n" +
                 "a.last_update_who\n" +
                 "FROM im_hris_department a\n" +
-                "LEFT JOIN (\n" +
+                "INNER JOIN (\n" +
                 "\tSELECT\n" +
                 "\ta.department_id,  \n" +
                 "\ta.department_name\n" +
                 "\tFROM im_hris_department a \n" +
-                "\tINNER JOIN im_hris_position_bagian b ON a.department_id = b.divisi_id \n" +
-                "\tWHERE a.department_id LIKE :id \n" +
-                "\tAND a.department_name LIKE :dp \n" +
+                "\tINNER JOIN im_hris_position_bagian b ON a.department_id = b.divisi_id\n" +
+                "\tWHERE a.department_id LIKE :divisiId \n" +
+                "\tAND b.bagian_id LIKE :bagianId \n" +
+                "\tAND b.nama_bagian ILIKE :bagianName \n" +
+                "\tAND a.flag LIKE :flag \n" +
                 "\tGROUP BY a.department_id\n" +
                 "\tORDER BY a.department_name ASC\t\n" +
                 ") b ON a.department_id = b.department_id\n" +
@@ -665,8 +679,10 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
 
         List<Object[]> datatree = new ArrayList<>();
         datatree = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
-                .setParameter("id", id)
-                .setParameter("dp", dp)
+                .setParameter("bagianId", bagianId)
+                .setParameter("bagianName", bagianName)
+                .setParameter("divisiId", divisiId)
+                .setParameter("flag", flag)
                 .list();
 
         if (datatree.size() > 0) {

@@ -53,7 +53,7 @@
                                         <table>
 
                                             <tr>
-                                                <td width="40%" >
+                                                <td width="30%" >
                                                     <label class="control-label"><small>Nama Rekening Budgeting :</small></label>
                                                 </td>
                                                 <td>
@@ -61,6 +61,22 @@
                                                         <s:textfield id="parameterbudgetingrekening" name="parameterBudgetingRekening.nama"
                                                                      required="true" cssStyle="margin-top: 7px"
                                                                      disabled="false" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Jenis Rekening :</small></label>
+                                                </td>
+                                                <td >
+                                                    <table>
+                                                        <s:action id="rekening6" namespace="/kodeRekening"
+                                                                  name="initComboKodeRekening_kodeRekening" />
+                                                        <s:select cssStyle="margin-top: 7px; width: 100%" list="#rekening6.listOfComboKodeRekening"
+                                                                  id="koderek" name="parameterBudgetingRekening.rekeningId"
+                                                                  listKey="rekeningId" listValue="namaKodeRekening" headerKey="" headerValue="[Select one]"
+                                                                  cssClass="form-control select2" />
                                                     </table>
                                                 </td>
                                             </tr>

@@ -21,13 +21,12 @@
         };
 
         $.subscribe('beforeProcessSaveEdit', function (event, data) {
-            var idparam = document.getElementById("idparam").value;
             var parameterbudgetingrekeningEdit = document.getElementById("parameterbudgetingrekeningEdit").value;
-            var koderekedit = document.getElementById("koderekedit").value;
+            var jenisrekneningedit = document.getElementById("jenisrekneningedit").value;
 
-            console.log(idparam);
+            console.log(parameterbudgetingrekeningEdit);
 
-            if (idparam != '' && parameterbudgetingrekeningEdit != '' && koderekedit != '') {
+            if ( parameterbudgetingrekeningEdit != '' && jenisrekneningedit != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -38,14 +37,12 @@
             } else {
                 event.originalEvent.options.submit = false;
                 var msg = "";
-                if (idparam == '') {
-                    msg += 'Field <strong>id Jenis Obat  </strong> is required.' + '<br/>';
-                }
+
                 if (parameterbudgetingrekeningEdit == '') {
                     msg += 'Field <strong>parameter budgeting rekening </strong> is required.' + '<br/>';
                 }
-                if (koderekedit == '') {
-                    msg += 'Field <strong>kode rekening </strong> is required.' + '<br/>';
+                if (jenisrekneningedit == '') {
+                    msg += 'Field <strong>jenis rekening </strong> is required.' + '<br/>';
                 }
 
 
@@ -139,7 +136,7 @@
                                 <s:action id="rekening" namespace="/kodeRekening"
                                           name="initComboKodeRekening_kodeRekening" />
                                 <s:select cssStyle="margin-top: 7px; width: 100%" list="#rekening.listOfComboKodeRekening"
-                                          id="koderekedit" name="parameterBudgetingRekening.rekeningId"
+                                          id="jenisrekneningedit" name="parameterBudgetingRekening.rekeningId"
                                           listKey="rekeningId" listValue="namaKodeRekening" headerKey="" headerValue="[Select one]"
                                           cssClass="form-control select2" onchange="KODE()" />
                             </table>

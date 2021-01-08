@@ -34,7 +34,7 @@
                 msg += 'Field <strong>nama parameter budgeting rekening </strong> is required.' + '<br/>';
             }
             if (koderek == '') {
-                msg += 'Field <strong>rekening </strong> is required.' + '<br/>';
+                msg += 'Field <strong>jenis rekening </strong> is required.' + '<br/>';
             }
            
 

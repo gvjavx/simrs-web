@@ -74,6 +74,9 @@ public class KategoriParameterBudgetingBoImpl implements KategoriParameterBudget
             if (bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())) {
                 hsCriteria.put("nama", bean.getNama());
             }
+            if (bean.getIdJenisBudgeting() != null && !"".equalsIgnoreCase(bean.getIdJenisBudgeting())) {
+                hsCriteria.put("id_jenis_budgeting", bean.getIdJenisBudgeting());
+            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
                     hsCriteria.put("flag", "N");
