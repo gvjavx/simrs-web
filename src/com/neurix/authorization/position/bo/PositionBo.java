@@ -4,6 +4,7 @@ import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 
 import java.util.List;
 
@@ -31,4 +32,5 @@ public interface PositionBo extends BaseMasterBo<Position> {
     List<Position> typeAheadPosition(String key) throws GeneralBOException;
 
     List<Position> getComboBodBoc() throws GeneralBOException;
+    public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId) throws GeneralBOException;
 }

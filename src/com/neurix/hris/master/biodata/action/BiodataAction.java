@@ -13,6 +13,7 @@ import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao;
 import com.neurix.hris.master.biodata.model.*;
 import com.neurix.hris.master.ijin.model.Ijin;
+import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.keluarga.model.Keluarga;
 import com.neurix.hris.master.profesi.bo.ProfesiBo;
 import com.neurix.hris.master.profesi.model.Profesi;
@@ -43,6 +44,7 @@ import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import com.neurix.hris.transaksi.training.model.Training;
 import com.neurix.hris.transaksi.training.model.TrainingPerson;
 import com.neurix.hris.transaksi.sppd.model.SppdReroute;
+import com.neurix.simrs.transaksi.CrudResponse;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -87,6 +89,15 @@ public class BiodataAction extends BaseMasterAction{
     private Sertifikat sertifikat;
     private PelatihanJabatanUser pelatihanJabatanUser;
     private String tipe;
+    private List<JenisPegawai> listOfComboJenisPegawai = new ArrayList<>();
+
+    public List<JenisPegawai> getListOfComboJenisPegawai() {
+        return listOfComboJenisPegawai;
+    }
+
+    public void setListOfComboJenisPegawai(List<JenisPegawai> listOfComboJenisPegawai) {
+        this.listOfComboJenisPegawai = listOfComboJenisPegawai;
+    }
 
     public String getTipe() {
         return tipe;
@@ -654,12 +665,21 @@ public class BiodataAction extends BaseMasterAction{
                 logger.info("[BiodataAction.saveEdit] start process >>>");
                 try {
                     Biodata editBiodata = getBiodata();
-                    String golonganId = editBiodata.getGolongan().replace(",","");
-                    editBiodata.setGolongan(golonganId);
-                    editBiodata.setGolonganId(golonganId);
-                    String golonganId2 = editBiodata.getGolongan().replace(" ","");
-                    editBiodata.setGolongan(golonganId2);
-                    editBiodata.setGolonganId(golonganId2);
+
+                    // Sigit, 2020-01-06 Penamhan filter golongan != null, Start
+                    if (editBiodata.getGolongan() != null && !"".equalsIgnoreCase(editBiodata.getGolongan())){
+                        String golonganId = editBiodata.getGolongan().replace(",","");
+                        editBiodata.setGolongan(golonganId);
+                        editBiodata.setGolonganId(golonganId);
+                    }
+
+                    if (editBiodata.getGolongan() != null && !"".equalsIgnoreCase(editBiodata.getGolongan())){
+                        String golonganId2 = editBiodata.getGolongan().replace(" ","");
+                        editBiodata.setGolongan(golonganId2);
+                        editBiodata.setGolonganId(golonganId2);
+                    }
+                    // END
+
                     String userLogin = CommonUtil.userLogin();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -1972,11 +1992,11 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public void saveAddPengalaman(String nip, String branchId, String jabatan, String devisiId, String profesiId,
-                                  String tanggalMasuk, String tanggalKeluar, String tipePegawai, String golongan, String pjs, String aktifFlag){
+                                  String tanggalMasuk, String tanggalKeluar, String tipePegawai, String golongan,
+                                  String pjs, String aktifFlag, String jenisPegawaiId, String flagDigaji
+                                  ){
         logger.info("[StudyAction.saveAdd] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-
-
 
         try {
             PengalamanKerja pengalamanKerja = new PengalamanKerja();
@@ -2033,66 +2053,51 @@ public class BiodataAction extends BaseMasterAction{
             pengalamanKerja.setAction("C");
             pengalamanKerja.setFlag("Y");
 
+            // Sigit 2020-01-07, Penambahan jenis pegawai dan flag gaji
+            pengalamanKerja.setJenisPegawaiId(jenisPegawaiId);
+            pengalamanKerja.setFlagDigaji(flagDigaji);
+            //END
+
             int id = 0;
             int jumlah = 0;
-            boolean status = false;
+            boolean status = true;
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<PengalamanKerja> listOfResult = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
 
             if(listOfResult != null){
                 if (listOfResult.size() > 0){
-                    for (PengalamanKerja pengalamanKerja2 : listOfResult){
-                        if (aktifFlag.equalsIgnoreCase(pengalamanKerja2.getFlagJabatanAktif())){
-                            if ("N".equalsIgnoreCase(aktifFlag)){
-                                status = true;
-                            }else {
-                                status = false;
-                                break;
-                            }
-                        }else {
-                            status = true;
-                        }
+
+                    // Sigit 2020-01-07, melososkan jabatan aktif > 1
+                    for(PengalamanKerja pengalamanKerja1: listOfResult){
+                        id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
                     }
+                    id++;
+                    pengalamanKerja.setPengalamanId(id + "");
+                    listOfResult.add(pengalamanKerja);
+                    // END
 
-                    if (status){
-
-//                        String statusDate = cekStatus(listOfResult, CommonUtil.convertStringToDate(tanggalMasuk), CommonUtil.convertStringToDate(tanggalKeluar));
-//                        if ("true".equalsIgnoreCase(statusDate)){
-//                            for(PengalamanKerja pengalamanKerja1: listOfResult){
-//                                id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
-//                            }
-//                            id++;
-//                            pengalamanKerja.setPengalamanId(id + "");
-//
-//                            listOfResult.add(pengalamanKerja);
-//                        }else {
-//                            throw new GeneralBOException("Perhatian!!! Tanggal jabatan aktif tidak boleh kurang dari tanggal jabatan tidak aktif");
+//                    for (PengalamanKerja pengalamanKerja2 : listOfResult){
+//                        if (aktifFlag.equalsIgnoreCase(pengalamanKerja2.getFlagJabatanAktif()) && !"Y".equalsIgnoreCase(aktifFlag)){
+//                            status = false;
+//                            break;
 //                        }
-
-
-                        for(PengalamanKerja pengalamanKerja1: listOfResult){
-                            id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
-                        }
-                        id++;
-                        pengalamanKerja.setPengalamanId(id + "");
-
-                        listOfResult.add(pengalamanKerja);
-                    }else {
-                        throw new GeneralBOException("Perhatian!!! Jabatan aktif sudah ada");
-                    }
+//                    }
+//
+//                    if (status){
+//                        for(PengalamanKerja pengalamanKerja1: listOfResult){
+//                            id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
+//                        }
+//                        id++;
+//                        pengalamanKerja.setPengalamanId(id + "");
+//                        listOfResult.add(pengalamanKerja);
+//                    }else {
+//                        throw new GeneralBOException("Perhatian!!! Jabatan aktif sudah ada");
+//                    }
                 }else {
                     listOfResult = new ArrayList<>();
                     pengalamanKerja.setPengalamanId(id + "");
                     listOfResult.add(pengalamanKerja);
                 }
-
-//                for(PengalamanKerja pengalamanKerja1: listOfResult){
-//                    id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
-//                }
-//                id++;
-//                pengalamanKerja.setPengalamanId(id + "");
-//
-//                listOfResult.add(pengalamanKerja);
             }else{
                 listOfResult = new ArrayList<>();
                 pengalamanKerja.setPengalamanId(id + "");
@@ -2135,11 +2140,6 @@ public class BiodataAction extends BaseMasterAction{
                 }else if (listDate.compareTo(tanggalKeluar) == 0){
                     status = "true";
                 }
-//                try {
-////                    String tglMasuk = pengalamanKerja.getTanggalMasuk();
-//
-//                } catch (ParseException e) {
-//                }
             }
         }
 
@@ -3228,7 +3228,7 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public List initComboAllPersonil(String query, String branchId) {
-        logger.info("[PermohonanLahanAction.initComboLokasiKebun] start process >>>");
+        logger.info("[BiodataAction.initComboAllPersonil] start process >>>");
 
         List<Biodata> listOfUser = new ArrayList();
 
@@ -3244,12 +3244,12 @@ public class BiodataAction extends BaseMasterAction{
             try {
                 logId = biodataBo.saveErrorMessage(e.getMessage(), "DesaBo.getComboDesaWithCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[PermohonanLahanAction.initComboLokasiKebun] Error when saving error,", e1);
+                logger.error("[BiodataAction.initComboAllPersonil] Error when saving error,", e1);
             }
-            logger.error("[PermohonanLahanAction.initComboLokasiKebun] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            logger.error("[BiodataAction.initComboAllPersonil] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
         }
 
-        logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
+        logger.info("[BiodataAction.initComboLokasiKebun] end process <<<");
 
         return listOfUser;
     }
@@ -3263,6 +3263,64 @@ public class BiodataAction extends BaseMasterAction{
         DateFormat df = new SimpleDateFormat(type);
         return df.format(date);
     }
+
+    // Sigit 2020-01-07, untuk check jika sudah ada jabatan utama pada session listPengalamanKerja / jabatan
+    // maka tidak bisa lanjut
+    public CrudResponse checkAvailJenisPegawaiDefault(){
+        logger.info("[BiodataAction.checkAvailJenisPegawaiDefault] START >>>");
+        CrudResponse response = new CrudResponse();
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PengalamanKerja> listOfResult = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
+
+        // collecting data jenis pegawai yg disimpan pada session, disimpan pada stringListJenisPegawaiId
+        List<String> stringListJenisPegawaiId = new ArrayList<>();
+        if (listOfResult != null && listOfResult.size() > 0){
+            for (PengalamanKerja pengalamanKerja : listOfResult){
+                stringListJenisPegawaiId.add(pengalamanKerja.getJenisPegawaiId());
+            }
+        }
+
+        if (stringListJenisPegawaiId.size() > 0){
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+            // cari berdasarkan list string jenis pegawai pada session;
+            try {
+                Boolean foundData = biodataBo.checkAvailJenisPegawaiDefault(stringListJenisPegawaiId);
+                if (foundData){
+                    response.setStatus("error");
+                    response.setMsg("Telah Ada Jabatan Utama. piih jenis pegawai lain !");
+                } else
+                    response.setStatus("success");
+            } catch (GeneralBOException e){
+                logger.error("[BiodataAction.checkAvailJenisPegawaiDefault] ERROR, ", e);
+            }
+        } else
+            response.setStatus("success");
+
+        logger.info("[BiodataAction.checkAvailJenisPegawaiDefault] END <<<");
+        return response;
+    }
+
+    // Sigit 2020-01-07
+    public String initComboJenisPegawai(){
+        logger.info("[BiodataAction.initComboJenisPegawai] START >>>");
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+
+        try {
+            jenisPegawais = biodataBoProxy.getAllJenisPegawai();
+        } catch (GeneralBOException e){
+            logger.error("[BiodataAction.initComboJenisPegawai] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        listOfComboJenisPegawai.addAll(jenisPegawais);
+        logger.info("[BiodataAction.initComboJenisPegawai] END <<<");
+        return SUCCESS;
+    }
+
+
 
     public String paging(){
         return SUCCESS;

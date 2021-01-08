@@ -66,6 +66,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -311,7 +312,7 @@ public class MutasiBoImpl implements MutasiBo {
     @Override
     public void saveMutasi(Mutasi bean, List<Mutasi> mutasiList) throws GeneralBOException {
 //        String status1 ="";
-        logger.info("[MutasiBoImpl.saveAdd] start process >>>");
+        logger.info("[MutasiBoImpl.saveMutasi] start process >>>");
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
         List<LemburEntity> lemburEntityList = new ArrayList<>();
         List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
@@ -330,27 +331,36 @@ public class MutasiBoImpl implements MutasiBo {
             }
             if(cutiPegawaiEntityList.size() > 0){
                 String status = "Maaf masih ada Cuti yang menggantung di tanggal ini.";
-                logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                logger.error("[MutasiBoImpl.saveMutasi] Error :, " + status);
                 throw new GeneralBOException(status);
             }else if(lemburEntityList.size() > 0){
                 String status = "Maaf masih ada Lembur yang menggantung di tanggal ini.";
-                logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                logger.error("[MutasiBoImpl.saveMutasi] Error :, " + status);
                 throw new GeneralBOException(status);
             }else if(ijinKeluarEntityList.size() > 0){
                 String status = "Maaf masih ada Dispensasi yang menggantung di tanggal ini.";
-                logger.error("[MutasiBoImpl.saveAdd] Error :, " + status);
+                logger.error("[MutasiBoImpl.saveMutasi] Error :, " + status);
                 throw new GeneralBOException(status);
             }
 
             if (("M").equalsIgnoreCase(dataMutasi.getStatus())||("R").equalsIgnoreCase(dataMutasi.getStatus())){
                 if (!("-").equalsIgnoreCase(dataMutasi.getPenggantiNip())){
                     boolean adaPengganti = false;
-                    for (Mutasi cekData : mutasiList){
-                        if (cekData.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())){
-                            adaPengganti=true;
-                            break;
-                        }
+
+                    // Sigit 2020-01-08, pergantian dari for ke stream untuk menghindari multiple loop
+                    List<Mutasi> filteredMutasi = mutasiList.stream().filter(p->p.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())).collect(Collectors.toList());
+                    if (filteredMutasi != null && filteredMutasi.size() > 0){
+                        adaPengganti = true; break;
                     }
+//                    for (Mutasi cekData : mutasiList){
+//                        if (cekData.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())){
+//                            adaPengganti=true;
+//                            break;
+//                        }
+//                    }
+
+                    //END
+
                     if (!adaPengganti){
                         String status ="ERROR : "+dataMutasi.getPenggantiNama()+" harus dimutasi";
                         logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);
@@ -504,7 +514,7 @@ public class MutasiBoImpl implements MutasiBo {
                             golonganId = mutasiDao.getGolonganId(mutasi.getNip());
                             historyJabatanPegawai.setGolonganId(golonganId);
                         }catch (HibernateException e) {
-                            logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
                             throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                         }
 
@@ -587,6 +597,13 @@ public class MutasiBoImpl implements MutasiBo {
                         for(ItPersonilPositionEntity itPersonilPositionEntity: itPersonil){
                             itPersonilPositionEntity.setNip(mutasi.getNip());
                             itPersonilPositionEntity.setPjs(mutasi.getPjs());
+
+                            // Sigit 2020-01-08, Penambahan flag digaji dan jenis pegawai
+                            itPersonilPositionEntity.setJenisPegawai(mutasi.getJenisPegawaiId());
+                            itPersonilPositionEntity.setFlagDigaji(mutasi.getFlagDigaji());
+                            // END
+
+
 //                            itPersonilPositionEntity.setProfesiId(profesiId);
                             itPersonilPositionEntity.setProfesiId(mutasi.getProfesiBaruId());
                             //tanggal aktif digunakan untuk mengisi kolom tanggal / tahun diangkat di biodata-riwayat kerja
@@ -600,8 +617,9 @@ public class MutasiBoImpl implements MutasiBo {
                                 itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                 itPersonilPositionEntity.setAction("U");
                             }else{
-                                imBiodataEntity.setBranchIdTerakhir(mutasi.getBranchLamaId());
-                                imBiodataEntity.setPositionIdTerakhir(mutasi.getPositionLamaId());
+//                                imBiodataEntity.setBranchIdTerakhir(mutasi.getBranchLamaId());
+//                                imBiodataEntity.setPositionIdTerakhir(mutasi.getPositionLamaId());
+
                                 itPersonilPositionEntity.setAction("D");
                                 itPersonilPositionEntity.setFlag("N");
                                 itPersonilPositionEntity.setBranchId(mutasi.getBranchLamaId());
@@ -619,12 +637,36 @@ public class MutasiBoImpl implements MutasiBo {
                                 personilPositionDao.updateAndSave(itPersonilPositionEntity);
                                 biodataDao.updateAndSave(imBiodataEntity);
                             } catch (HibernateException e) {
-                                logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                                logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
                                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                             }
                         }
+                    } else {
+
+                        // Sigit 2020-01-08
+                        // add jika ada jabatan baru. biasanya pjs / plt
+                        ItPersonilPositionEntity personilPositionEntity = new ItPersonilPositionEntity();
+                        personilPositionEntity.setPersonilPositionId(getNextSeqPersonilPositionId());
+                        personilPositionEntity.setNip(mutasi.getNip());
+                        personilPositionEntity.setBranchId(mutasi.getBranchBaruId());
+                        personilPositionEntity.setFlag("Y");
+                        personilPositionEntity.setCreatedDate(mutasi.getLastUpdate());
+                        personilPositionEntity.setCreatedWho(mutasi.getLastUpdateWho());
+                        personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                        personilPositionEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
+                        personilPositionEntity.setProfesiId(mutasi.getProfesiBaruId());
+                        personilPositionEntity.setJenisPegawai(mutasi.getJenisPegawaiId());
+                        personilPositionEntity.setFlagDigaji(mutasi.getFlagDigaji());
+
+                        try {
+                            personilPositionDao.addAndSave(personilPositionEntity);
+                        } catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when add personil position, please inform to your admin...," + e.getMessage());
+                        }
 
                     }
+
                     try {
                         mutasiDao.addAndSave(itMutasiEntity);
                         mutasiDocDao.addAndSave(itDoc);
@@ -637,6 +679,17 @@ public class MutasiBoImpl implements MutasiBo {
         }
 
         logger.info("[MutasiBoImpl.saveAdd] end process <<<");
+    }
+
+    private String getNextSeqPersonilPositionId(){
+        String id = "";
+        try {
+            id = personilPositionDao.getNextPersonilPositionId();
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.getNextSeqPersonilPositionId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data seq personil position, please inform to your admin...," + e.getMessage());
+        }
+        return id;
     }
 
     @Override
