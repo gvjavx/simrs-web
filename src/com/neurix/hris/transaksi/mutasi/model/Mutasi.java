@@ -68,6 +68,24 @@ public class Mutasi extends BaseModel {
     private String tipePegawai;
 
     private String branchIdUser;
+    private String jenisPegawaiId;
+    private String flagDigaji;
+
+    public String getJenisPegawaiId() {
+        return jenisPegawaiId;
+    }
+
+    public void setJenisPegawaiId(String jenisPegawaiId) {
+        this.jenisPegawaiId = jenisPegawaiId;
+    }
+
+    public String getFlagDigaji() {
+        return flagDigaji;
+    }
+
+    public void setFlagDigaji(String flagDigaji) {
+        this.flagDigaji = flagDigaji;
+    }
 
     public String getBranchIdUser() {
         return branchIdUser;
