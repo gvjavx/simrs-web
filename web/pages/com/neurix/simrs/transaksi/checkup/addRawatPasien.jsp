@@ -1041,7 +1041,138 @@
                                     </div>
                                 </div>
                             </div>
-
+                            <div id="form-rujukan" style="display: none">
+                                <div class="box-header with-border"></div>
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div id="warn_rujukan"></div>
+                                    <input type="hidden" id="status_rujukan">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
+                                                    <div class="col-md-8">
+                                                        <s:select list="#{'2':'PPK 2 - RS Lain'}"
+                                                                  cssStyle="margin-top: 7px"
+                                                                  name="headerCheckup.rujuk"
+                                                                  onchange="var warn =$('#war_perujuk').is(':visible'); if (warn){$('#con_perujuk').show().fadeOut(3000);$('#war_perujuk').hide()}"
+                                                                  id="perujuk"
+                                                                  headerKey="1" headerValue="PPK 1 - Puskesmas"
+                                                                  cssClass="form-control"/>
+                                                        <span style="color: red; display: none" id="war_perujuk"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_perujuk"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">No Rujukan</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group" style="margin-top: 7px">
+                                                            <s:textfield id="no_rujukan" cssClass="form-control"
+                                                                         oninput="$('#h_no_rujukan').val(this.value)"
+                                                                         onkeypress="var warn =$('#war_no_rujukan').is(':visible'); if (warn){$('#con_no_rujukan').show().fadeOut(3000);$('#war_no_rujukan').hide()}"></s:textfield>
+                                                            <div class="input-group-btn">
+                                                                <a class="btn btn-success" onclick="cekNoRujukan()">
+                                                                    <span id="btn-cek-rujukan"><i
+                                                                            class="fa fa-search"></i> Check</span></a>
+                                                            </div>
+                                                        </div>
+                                                        <span style="color: red; display: none" id="war_no_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_no_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Keterangan
+                                                        Perujuk</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield id="intansi_perujuk" readonly="true"
+                                                                     name="headerCheckup.ketPerujuk"
+                                                                     cssClass="form-control" cssStyle="margin-top: 7px"
+                                                                     onkeypress="var warn =$('#war_ket_perujuk').is(':visible'); if (warn){$('#con_ket_perujuk').show().fadeOut(3000);$('#war_ket_perujuk').hide()}"/>
+                                                        <span style="color: red; display: none" id="war_ket_perujuk"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none"
+                                                              id="con_ket_perujuk"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">No PPK
+                                                        Rujukan</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield name="headerCheckup.noPpkRujukan" id="ppk_rujukan" readonly="true"
+                                                                     onkeypress="var warn =$('#war_ppk_rujukan').is(':visible'); if (warn){$('#con_ppk_rujukan').show().fadeOut(3000);$('#war_ppk_rujukan').hide()}"
+                                                                     cssClass="form-control"
+                                                                     cssStyle="margin-top: 7px"/>
+                                                        <span style="color: red; display: none" id="war_ppk_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none"
+                                                              id="con_ppk_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Tanggal
+                                                        Rujukan</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group date" style="margin-top: 7px">
+                                                            <div class="input-group-addon">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                            <s:textfield id="tgl_rujukan" readonly="true" placeholder="yyyy-mm-dd"
+                                                                         cssClass="form-control" cssStyle="cursor: pointer"
+                                                                         onchange="var warn =$('#war_tgl_rujukan').is(':visible'); if (warn){$('#con_tgl_rujukan').show().fadeOut(3000);$('#war_tgl_rujukan').hide()}; $('#tanggal_rujukan').val(this.value)"
+                                                            />
+                                                        </div>
+                                                        <span style="color: red; display: none" id="war_tgl_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none"
+                                                              id="con_tgl_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 7px">Foto Surat
+                                                        Rujuk</label>
+                                                    <div class="col-md-8">
+                                                        <div class="input-group" style="margin-top: 7px" id="img_url">
+                                                    <span class="input-group-btn">
+                                                        <span class="btn btn-default btn-file">
+                                                            Browse… <s:file id="url_do" accept=".jpg"
+                                                                            name="fileUploadDoc"></s:file>
+                                                        </span>
+                                                    </span>
+                                                            <input type="text" class="form-control" id="surat_rujuk" readonly>
+                                                        </div>
+                                                        <span style="color: red; display: none" id="war_foto_rujukan"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_foto_rujukan"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="box-header with-border"></div>
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Kunjungan</h3>
@@ -1053,15 +1184,6 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Pelayanan</label>
                                                 <div class="col-md-8">
-                                                        <%--<s:action id="initComboPoli1" namespace="/checkup"--%>
-                                                        <%--name="getComboPelayanan_checkup"/>--%>
-                                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                        <%--list="#initComboPoli1.listOfPelayanan"--%>
-                                                        <%--listKey="idPelayanan" id="poli_paket"--%>
-                                                        <%--listValue="namaPelayanan"--%>
-                                                        <%--onchange="$(this).css('border',''); listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}"--%>
-                                                        <%--headerKey="" headerValue="[Select one]"--%>
-                                                        <%--cssClass="form-control select2"/>--%>
                                                     <select style="width: 100%" class="form-control select2" id="poli"
                                                             onchange="listDokter(this.value); var warn =$('#war_poli').is(':visible'); if (warn){$('#cor_poli').show().fadeOut(3000);$('#war_poli').hide()}; cekKunjunganPoli(this.value)">
                                                     </select>
@@ -1143,12 +1265,6 @@
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Kunjungan RS</label>
                                                 <div class="col-md-8">
-                                                        <%--<s:select cssStyle="margin-top: 7px"--%>
-                                                        <%--list="#{'Lama':'Lama','Baru':'Baru'}"--%>
-                                                        <%--onchange="$(this).css('border','')"--%>
-                                                        <%--id="kunjungan"--%>
-                                                        <%--headerKey="" headerValue="[Select one]"--%>
-                                                        <%--cssClass="form-control"/>--%>
                                                     <s:textfield name="headerCheckup.jenisKunjungan"
                                                                  id="kunjungan_val" cssClass="form-control"
                                                                  cssStyle="margin-top: 7px"
@@ -1243,16 +1359,6 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <%--<div class="form-group">--%>
-                                                        <%--<label class="col-md-4" style="margin-top: 10px">Tanggal--%>
-                                                            <%--Kejadian</label>--%>
-                                                        <%--<div class="col-md-8">--%>
-                                                            <%--<s:textfield cssStyle="margin-top: 7px"--%>
-                                                                         <%--id="tanggal_kejadian"--%>
-                                                                         <%--cssClass="form-control datepicker"--%>
-                                                                         <%--onchange="$('#tanggal_rujukan').val(this.value)"></s:textfield>--%>
-                                                        <%--</div>--%>
-                                                    <%--</div>--%>
                                                 </div>
                                                 <div class="row">
                                                     <div class="form-group">
@@ -1331,138 +1437,6 @@
                                                                 class="fa fa-times"></i> required</span>
                                                         <span style="color: green; display: none"
                                                               id="con_no_kartu_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="form-rujukan" style="display: none">
-                                <div class="box-header with-border"></div>
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rujukan</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div id="warn_rujukan"></div>
-                                    <input type="hidden" id="status_rujukan">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 7px">Perujuk/Asal</label>
-                                                    <div class="col-md-8">
-                                                        <s:select list="#{'2':'PPK 2 - RS Lain'}"
-                                                                  cssStyle="margin-top: 7px"
-                                                                  name="headerCheckup.rujuk"
-                                                                  onchange="changePlaceHolder(this); var warn =$('#war_perujuk').is(':visible'); if (warn){$('#con_perujuk').show().fadeOut(3000);$('#war_perujuk').hide()}"
-                                                                  id="perujuk"
-                                                                  headerKey="1" headerValue="PPK 1 - Puskesmas"
-                                                                  cssClass="form-control"/>
-                                                        <span style="color: red; display: none" id="war_perujuk"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_perujuk"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 7px">No Rujukan</label>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group" style="margin-top: 7px">
-                                                            <s:textfield id="no_rujukan" cssClass="form-control"
-                                                                         oninput="$('#h_no_rujukan').val(this.value)"
-                                                                         onkeypress="var warn =$('#war_no_rujukan').is(':visible'); if (warn){$('#con_no_rujukan').show().fadeOut(3000);$('#war_no_rujukan').hide()}"></s:textfield>
-                                                            <div class="input-group-btn">
-                                                                <a class="btn btn-success" onclick="cekNoRujukan()">
-                                                                    <span id="btn-cek-rujukan"><i
-                                                                            class="fa fa-search"></i> Check</span></a>
-                                                            </div>
-                                                        </div>
-                                                        <span style="color: red; display: none" id="war_no_rujukan"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_no_rujukan"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 7px">Keterangan
-                                                        Perujuk</label>
-                                                    <div class="col-md-8">
-                                                        <s:textfield id="intansi_perujuk"
-                                                                     name="headerCheckup.ketPerujuk"
-                                                                     cssClass="form-control" cssStyle="margin-top: 7px"
-                                                                     onkeypress="var warn =$('#war_ket_perujuk').is(':visible'); if (warn){$('#con_ket_perujuk').show().fadeOut(3000);$('#war_ket_perujuk').hide()}"/>
-                                                        <span style="color: red; display: none" id="war_ket_perujuk"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none"
-                                                              id="con_ket_perujuk"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 7px">No PPK
-                                                        Rujukan</label>
-                                                    <div class="col-md-8">
-                                                        <s:textfield name="headerCheckup.noPpkRujukan" id="ppk_rujukan"
-                                                                     onkeypress="var warn =$('#war_ppk_rujukan').is(':visible'); if (warn){$('#con_ppk_rujukan').show().fadeOut(3000);$('#war_ppk_rujukan').hide()}"
-                                                                     cssClass="form-control"
-                                                                     cssStyle="margin-top: 7px"/>
-                                                        <span style="color: red; display: none" id="war_ppk_rujukan"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none"
-                                                              id="con_ppk_rujukan"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 7px">Tanggal
-                                                        Rujukan</label>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group date" style="margin-top: 7px">
-                                                            <div class="input-group-addon">
-                                                                <i class="fa fa-calendar"></i>
-                                                            </div>
-                                                            <s:textfield id="tgl_rujukan" readonly="true" placeholder="yyyy-mm-dd"
-                                                                         cssClass="form-control datepicker datemask" cssStyle="cursor: pointer"
-                                                                         onchange="var warn =$('#war_tgl_rujukan').is(':visible'); if (warn){$('#con_tgl_rujukan').show().fadeOut(3000);$('#war_tgl_rujukan').hide()}; $('#tanggal_rujukan').val(this.value)"
-                                                            />
-                                                        </div>
-                                                        <span style="color: red; display: none" id="war_tgl_rujukan"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none"
-                                                              id="con_tgl_rujukan"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 7px">Foto Surat
-                                                        Rujuk</label>
-                                                    <div class="col-md-8">
-                                                        <div class="input-group" style="margin-top: 7px" id="img_url">
-                                                    <span class="input-group-btn">
-                                                        <span class="btn btn-default btn-file">
-                                                            Browse… <s:file id="url_do" accept=".jpg"
-                                                                            name="fileUploadDoc"></s:file>
-                                                        </span>
-                                                    </span>
-                                                            <input type="text" class="form-control" id="surat_rujuk" readonly>
-                                                        </div>
-                                                        <span style="color: red; display: none" id="war_foto_rujukan"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_foto_rujukan"><i
                                                                 class="fa fa-check"></i> correct</span>
                                                     </div>
                                                 </div>
@@ -1778,7 +1752,7 @@
 </div>
 
 <div class="modal fade" id="modal-jadwal-dokter">
-    <div class="modal-dialog" style="width: 57%">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1786,16 +1760,29 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Jadwal Dokter <span
                         id="dokter_pelayanan"></span> Hari Ini</h4>
             </div>
-            <div class="modal-body" style="height: 70%; overflow-y: scroll">
+            <div class="modal-body" id="temp_jd">
                 <div class="box-body">
-                    <div class="col-md-12" style="display:inline; padding-left: 6%">
+                    <div class="col-md-12 text-center" style="display:inline; padding-left: 6%">
                         <div class="btn-wrapper">
                             <div id="jadwal_dokter"></div>
                         </div>
                     </div>
+                    <div class="col-md-offset-10 col-md-2">
+                        <ul style="list-style-type: none">
+                            <li>
+                                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota Non BPJS</span>
+                            </li>
+                            <li>
+                                <span style="margin-left: 5px;color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota BPJS</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_temp_jd', 'temp_jd')" class="pull-left hvr-grow" style="color: black; margin-top: 11px; cursor: pointer">
+                    <i id="fa_temp_jd" class="fa fa-unlock"></i>
+                </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -2211,7 +2198,6 @@
             dwr.engine.setAsync(true);
             CheckupAction.checkSuratRujukan(noRujukan, jenisRujukan, {
                 callback: function (response) {
-                    console.log(response);
                     var warnClass = "";
                     var title = "";
                     var msg = "";
@@ -2228,16 +2214,22 @@
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
-                        $('#tgl_rujukan').val(response.tglCetakKartu);
+                        $('#tgl_rujukan').val(response.tglKunjungan);
                         $('#diagnosa_awal').val(response.kodeDiagnosa);
                         $('#diagnosa_ket').val(response.namaDiagnosa);
+                        setPelayananByKodeVclaim(response.kodePoliRujukan);
                     } else {
                         val = "tidak ditemukan";
                         icon = "fa-warning";
                         title = "Warning!";
                         warnClass = "alert-warning";
                         msg = response.message;
-                        $('#idPelayananBpjs').val("IGD");
+                        $('#idPelayananBpjs').val('');
+                        $('#ppk_rujukan').val('');
+                        $('#intansi_perujuk').val('');
+                        $('#tgl_rujukan').val('');
+                        $('#diagnosa_awal').val('');
+                        $('#diagnosa_ket').val('');
                     }
 
                     var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
@@ -2707,16 +2699,20 @@
 
     function showJadwalDokter(id) {
         var pel = $('#poli option:selected').text();
+        var jenisPasien = $('#jenis_pasien').val();
         var table = "";
-        if (id != null && id != '') {
+        if (id != null && id != '' && jenisPasien != null && jenisPasien != '') {
             CheckupAction.listOfDokter(id, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var kuota = 0;
                         var sisa = 0;
+                        var kuotaBpjs = 0;
+                        var sisKuotaBpjs = 0;
                         var namaDokter = "";
-                        var sip = "231321312";
+                        var sip = "";
                         var label = "";
+                        var label2 = "";
                         var jamkerja = "";
                         if (item.jamAwal != null && item.jamAkhir != null) {
                             jamkerja = item.jamAwal + " s/d " + item.jamAkhir;
@@ -2724,11 +2720,19 @@
                         if (item.kuotaOnSite != null && item.kuotaOnSite != '') {
                             kuota = item.kuotaOnSite;
                         }
-                        if (item.kuotaTerpakai != null && item.kuotaTerpakai != '') {
-                            sisa = item.kuotaTerpakai;
+                        if (item.kuotaBpjs != null && item.kuotaBpjs != '') {
+                            kuotaBpjs = item.kuotaBpjs;
+                        }
+                        if (item.kuotaTerpakaiNonBpjs != null && item.kuotaTerpakaiNonBpjs != '') {
+                            sisa = item.kuotaTerpakaiNonBpjs;
+                        }
+                        if (item.kuotaTerpakaiBpjs != null && item.kuotaTerpakaiBpjs != '') {
+                            sisKuotaBpjs = item.kuotaTerpakaiBpjs;
                         }
 
                         label = sisa + "/" + kuota;
+                        label2 = sisKuotaBpjs + "/" +kuotaBpjs;
+
                         if (item.namaDokter != '') {
                             namaDokter = item.namaDokter;
                         }
@@ -2736,25 +2740,50 @@
                             sip = item.idDokter;
                         }
 
+                        var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
+                        if(item.urlImg != null && item.urlImg != ''){
+                            foto = contextPathHeader+item.urlImg;
+                        }
+
                         var clasBox = 'btn-trans';
                         var btnSet = 'onclick="setDokter(\'' + item.idDokter + '\', \'' + item.namaDokter + '\')"';
+                        var noDrop = 'cursor: pointer';
+
                         if (item.flagLibur == "Y") {
                             clasBox = 'btn-trans-02';
                             btnSet = 'style="cursor: no-drop"';
+                            noDrop = 'cursor: no-drop';
+                        }else{
+                            var cekSisa = 0;
+                            var cekKuota = 0;
+                            if(jenisPasien == 'bpjs'){
+                                cekSisa = sisKuotaBpjs;
+                                cekKuota = kuotaBpjs;
+                            }else{
+                                cekSisa = sisa;
+                                cekKuota = kuota;
+                            }
+
+                            if(cekSisa == cekKuota){
+                                clasBox = 'btn-trans-02';
+                                btnSet = 'style="cursor: no-drop"';
+                                noDrop = 'cursor: no-drop';
+                            }
                         }
                         table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +
-                            '<div style="text-align:left; cursor:pointer; font-size:11px;">\n' +
-                            '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px;">\n' +
+                            '<div style="text-align:left; font-size:11px;">\n' +
+                            '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px; '+noDrop+'">\n' +
                             '        <tr>\n' +
                             '            <td align="left" colspan="2">\n' +
-                            '                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
-                            '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
+                            '                <span style="color: white; background-color: #337ab7; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
+                            '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label2 + '</span>\n' +
+                            '                <span class="pull-right" style="margin-top: -6px; margin-left: 5px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
                             '                <%--<img style="margin-top: -6px" class="pull-right" src="<s:url value="/pages/images/icon_failure.ico"/>">--%>\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="<s:url value="/pages/images/guy-5.jpg"/>">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
@@ -2809,7 +2838,7 @@
         CheckupAction.getRiwayatPemeriksaan(idPasien, function (res) {
             if (res.length > 0) {
                 $.each(res, function (i, item) {
-                    li += '<li><a style="cursor: pointer"><i class="fa fa-stethoscope"></i> ' + item.namaPelayanan + ' - ' + item.diagnosa + ' - ' + item.namaDiagnosa + '</a></li>';
+                    li += '<li><a style="cursor: pointer"><i class="fa fa-stethoscope"></i> ' + converterDate(item.createdDate) + ' | ' + item.namaPelayanan + ' - ' + item.diagnosa + ' - ' + item.namaDiagnosa + '</a></li>';
                 });
                 $('#riwayat').html(li);
             }
@@ -3369,8 +3398,8 @@
                         $('#save_add').show();
                         $('#load_add').hide();
                         $('#info_dialog_new').dialog('open');
-                        $('#id_pasien').val(response.idPasien).attr('disabled', true);
-                        $('#no_bpjs').val(response.noBpjs).attr('disabled', true);
+                        $('#id_pasien').val(response.idPasien).attr('readonly', true);
+                        $('#no_bpjs').val(response.noBpjs).attr('readonly', true);
                         $('#no_ktp').val(response.noKtp);
                         $('#nama_pasien').val(response.nama);
                         $('#jenis_kelamin').val(response.jenisKelamin);
@@ -3731,6 +3760,14 @@
                 }
             });
         }
+    }
+
+    function setPelayananByKodeVclaim(id){
+        CheckupAction.getPelayananWithIdVclaim(id, function (res) {
+            if(res.idPelayanan != null){
+                $('#poli').val(res.idPelayanan).trigger('change');
+            }
+        });
     }
 
 </script>

@@ -10,4 +10,8 @@ public interface JenisPersediaanObatSubBo {
     public List<ImSimrsJenisPersediaanObatSubEntity> getListEntity(JenisPersediaanObatSub bean) throws GeneralBOException;
     public List<JenisPersediaanObatSub> getSearchByCriteria(JenisPersediaanObatSub bean) throws GeneralBOException;
     public List<JenisPersediaanObatSub> getAll() throws GeneralBOException;
+
+    public void saveAdd(JenisPersediaanObatSub bean) throws GeneralBOException;
+    public void saveEdit(JenisPersediaanObatSub bean) throws GeneralBOException;
+    public void saveDelete(JenisPersediaanObatSub bean) throws GeneralBOException;
 }

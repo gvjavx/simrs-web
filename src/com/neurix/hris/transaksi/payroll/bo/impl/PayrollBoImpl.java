@@ -1658,7 +1658,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 String strWhere = "";
 
                 //jika reproses orang berdasarkan NIP
-                bean.setNip("150219790282");
+//                bean.setNip("150219790282");
                 if(bean.getNip()!=null&&!"".equalsIgnoreCase(bean.getNip())){
                     strWhere = "\n AND pegawai.nip='"+bean.getNip()+"' \n";
                 }

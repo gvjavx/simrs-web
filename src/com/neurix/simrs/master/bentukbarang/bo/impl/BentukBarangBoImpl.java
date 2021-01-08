@@ -88,14 +88,20 @@ public class BentukBarangBoImpl implements BentukBarangBo{
     public void saveAdd(BentukBarang bean) throws GeneralBOException {
         if (bean!=null) {
             List<ImSimrsBentukBarangEntity> cekList = new ArrayList<>();
+            List<ImSimrsBentukBarangEntity> cekListBentuk = new ArrayList<>();
+
             try {
                 cekList = bentukBarangDao.getBentukBarang(bean.getIdBentuk());
+                cekListBentuk = bentukBarangDao.getBentukBarang(bean.getBentuk());
             }catch (HibernateException e){
                 logger.error(e.getMessage());
             }
             if(cekList.size() > 0){
                 throw new GeneralBOException("Id Jenis Obat sudah ada...!");
-            }else{
+            }if(cekListBentuk.size()>0){
+                 throw  new GeneralBOException("nama bentuk barang sudah ada");
+            }
+            else{
                 ImSimrsBentukBarangEntity imSimrsBentukBarangEntity = new ImSimrsBentukBarangEntity();
 
                 imSimrsBentukBarangEntity.setIdBentuk(bean.getIdBentuk());

@@ -461,6 +461,17 @@ public class OrderGiziBoImpl implements OrderGiziBo {
         return detailJenisDiets;
     }
 
+    @Override
+    public List<OrderGizi> cekOrderGizi(String id, String waktu) throws GeneralBOException {
+        List<OrderGizi> orderGiziList = new ArrayList<>();
+        try {
+            orderGiziList = orderGiziDao.cekOrderGiziToday(id, waktu);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return orderGiziList;
+    }
+
     public String getNextId(){
         logger.info("[OrderGiziBoImpl.getNextId] Start >>>>>>>");
 

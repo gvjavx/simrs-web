@@ -12,6 +12,24 @@ public class JenisPersediaanObatSub {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String namaJenis;
+    private String isKp;
+
+    public String getIsKp() {
+        return isKp;
+    }
+
+    public void setIsKp(String isKp) {
+        this.isKp = isKp;
+    }
+
+    public String getNamaJenis() {
+        return namaJenis;
+    }
+
+    public void setNamaJenis(String namaJenis) {
+        this.namaJenis = namaJenis;
+    }
 
     public String getId() {
         return id;

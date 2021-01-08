@@ -1746,6 +1746,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             }
         }
 
+
         String namaObat = "";
         String idObat = "";
         BigInteger consBox = new BigInteger(String.valueOf(0));

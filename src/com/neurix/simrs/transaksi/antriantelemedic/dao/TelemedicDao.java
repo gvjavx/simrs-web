@@ -54,6 +54,10 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             criteria.add(Restrictions.eq("flagBayarResep", mapCriteria.get("flag_bayar_resep").toString()));
         if (mapCriteria.get("created_date_to_date") != null)
             criteria.add(Restrictions.sqlRestriction("DATE(created_date) = '"+ mapCriteria.get("created_date_to_date")+"'"));
+        if (mapCriteria.get("date_from") != null)
+            criteria.add(Restrictions.sqlRestriction("DATE(created_date) >= '"+ mapCriteria.get("date_from")+"'"));
+        if (mapCriteria.get("date_to") != null)
+            criteria.add(Restrictions.sqlRestriction("DATE(created_date) <= '"+ mapCriteria.get("date_to")+"'"));
         if (mapCriteria.get("asc_limit_1") != null){
             criteria.addOrder(Order.asc("createdDate"));
             criteria.setMaxResults(1);

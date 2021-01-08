@@ -195,6 +195,8 @@
                                 <label style="margin-left: 8px">TTD Pemeriksa</label>
                                 <canvas class="paint-canvas-ttd" id="ag9" width="220"
                                         onmouseover="paintTtd('ag9')"></canvas>
+                                <input class="form-control nama_petugas" id="nama_terang_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_petugas" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ag9')"><i
                                         class="fa fa-trash"></i> Clear

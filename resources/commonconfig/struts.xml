@@ -296,4 +296,11 @@
     <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/ParameterBudgetingAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/keteranganobat/struts/KeteranganObatAction.xml"/>
 
+
+    <include file="sshconfig/com/neurix/simrs/master/jenispersediaanobat/struts/JenisPersediaanObatAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/jenispersediaanobatsub/struts/JenisPersediaanObatSubAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/parameterketeranganobat/struts/ParameterKeteranganObatAction.xml"/>
+
+    <include file="sshconfig/com/neurix/simrs/master/kategoripersediaan/struts/KategoriPersediaanAction.xml"/>
+
 </struts>

@@ -520,4 +520,20 @@ public class KodeRekeningAction extends BaseMasterAction {
     public void setInitComboKodeRekening(List<KodeRekening> initComboKodeRekening) {
         this.initComboKodeRekening = initComboKodeRekening;
     }
+
+    public String initComboKodeRekening(){
+        KodeRekening searchKodeRekening = new KodeRekening();
+        searchKodeRekening.setFlag("Y");
+        searchKodeRekening.setLevel(Long.valueOf("5"));
+        List<KodeRekening> listOfsearchKodeRekening = new ArrayList();
+        try {
+            listOfsearchKodeRekening = kodeRekeningBoProxy.getByCriteria(searchKodeRekening);
+        } catch (GeneralBOException e) {
+            logger.error("ini error, "+e.getMessage());
+            throw new GeneralBOException("ini error, "+e.getMessage());
+        }
+        listOfComboKodeRekening.addAll(listOfsearchKodeRekening);
+        return "init_combo_kode_rekening";
+    }
+
 }

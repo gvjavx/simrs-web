@@ -52,6 +52,19 @@
                       </tr>
                     </table>
                     <table>
+                      <tr>
+                        <td width="18%" >
+                          <label class="control-label"><small>Id barang:</small></label>
+                        </td>
+                        <td>
+                          <table>
+                            <s:textfield id="idbentukbarang" name="bentukBarang.idBentuk"
+                                         required="true" cssStyle="margin-top: 7px"
+                                         disabled="false" cssClass="form-control"/>
+                          </table>
+                        </td>
+                      </tr>
+
 
                       <tr>
                         <td width="18%" >
@@ -97,7 +110,7 @@
                             </s:url>
                             <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                               <i class="fa fa-plus"></i>
-                              Add BentukBarang
+                              Add Bentuk Barang
                             </sj:a>
                           </td>
                           <td>
@@ -136,7 +149,7 @@
 
                             <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                        height="310" width="600" autoOpen="false"
-                                       title="BentukBarang ">
+                                       title="Bentuk Barang ">
                               <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                             </sj:dialog>
 

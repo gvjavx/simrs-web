@@ -9,7 +9,7 @@
     />
 
     <bean id="parameterKeteranganObatAction" class="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction"
-          p:parameterKeteranganObatBo-ref="parameterKeteranganObatBoProxy"
+          p:parameterKeteranganObatBoProxy-ref="parameterKeteranganObatBoProxy"
     />
 
     <bean id="parameterKeteranganObatBo" class="com.neurix.simrs.master.parameterketeranganobat.bo.impl.ParameterKeteranganObatBoImpl"

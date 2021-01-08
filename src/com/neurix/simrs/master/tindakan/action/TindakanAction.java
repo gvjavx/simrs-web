@@ -4,6 +4,7 @@ import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.action.BaseTransactionAction;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.kategoritindakan.bo.KategoriTindakanBo;
@@ -249,7 +250,7 @@ public class TindakanAction extends BaseTransactionAction {
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         Branch branch = new Branch();
         branch.setFlag("Y");
-        branch.setNotLike("KP");
+        branch.setNotLike(CommonConstant.BRANCH_KP);
         branch.setRoleName(CommonUtil.roleAsLogin());
         if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
             branch.setBranchId(CommonUtil.userBranchLogin());
