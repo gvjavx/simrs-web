@@ -9,6 +9,7 @@ import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.mobileapi.model.PengirimanObatMobile;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.antriantelemedic.bo.TelemedicBo;
 import com.neurix.simrs.transaksi.reseponline.model.ItSimrsPengirimanObatEntity;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
@@ -18,6 +19,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -347,6 +350,13 @@ public class PengirimanObatController implements ModelDriven<Object> {
             if (fotoKirim != null) {
                 fileName = idPengirimanObat+".jpeg";
                 File fileCreate = new File(CommonUtil.getPropertyParams("upload.folder")+ CommonConstant.RESOURCE_PATH_FOTO_KIRIM, fileName);
+//                try {
+//                    BufferedImage bufferedImage = ImageIO.read(fotoKirim);
+//                    String imageType = CommonUtil.getImageFormat(fotoKirim);
+//                    CrudResponse crudResponse = CommonUtil.compressImage(bufferedImage, imageType,CommonUtil.getPropertyParams("upload.folder")+CommonConstant.RESOURCE_PATH_FOTO_KIRIM+"/"+fileName);
+//                }catch (IOException e){
+//                    e.printStackTrace();
+//                }
                 try {
                     FileUtils.copyFile(fotoKirim, fileCreate);
                 }catch (IOException e){
