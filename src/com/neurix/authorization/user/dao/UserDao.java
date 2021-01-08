@@ -4,6 +4,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.user.model.ImUsers;
 import com.neurix.authorization.user.model.ImUsersHistory;
 import com.neurix.authorization.user.model.User;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -11,6 +12,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -453,6 +455,115 @@ public class UserDao extends GenericDao<ImUsers,String> {
         if (listObj.size() > 0){
             for (Object obj : listObj){
                 results.add(obj.toString());
+            }
+        }
+        return results;
+    }
+
+    public List<User> getListUserByQuery(User user){
+        List<User> results = new ArrayList<>();
+        String condition = "";
+        String flag = "%";
+
+        if (user.getFlag() != null && !"".equalsIgnoreCase(user.getFlag())){
+            flag = user.getFlag();
+        }
+        if (user.getUserId() != null && !"".equalsIgnoreCase(user.getUserId())){
+            condition += "AND a.user_id LIKE '%"+user.getUserId()+"%' \n";
+        }
+        if (user.getUsername() != null && !"".equalsIgnoreCase(user.getUsername())){
+            condition += "AND a.user_name LIKE '%"+user.getUsername()+"%' \n";
+        }
+        if (user.getAreaId() != null && !"".equalsIgnoreCase(user.getAreaId())){
+            condition += "AND b.area_id = '"+user.getAreaId()+"' \n";
+        }
+        if (user.getBranchId() != null && !"".equalsIgnoreCase(user.getBranchId())){
+            condition += "AND b.branch_id = '"+user.getBranchId()+"' \n";
+        }
+        if (user.getDepartmentId() != null && !"".equalsIgnoreCase(user.getDepartmentId())){
+            condition += "AND a.department_id = '"+user.getDepartmentId()+"' \n";
+        }
+        if (user.getPositionId() != null && !"".equalsIgnoreCase(user.getPositionId())){
+            condition += "AND a.position_id = '"+user.getPositionId()+"' \n";
+        }
+        if (user.getRoleId() != null && !"".equalsIgnoreCase(user.getRoleId())){
+            condition += "AND c.role_id = "+user.getRoleId()+" \n";
+        }
+        if (user.getEmail() != null && !"".equalsIgnoreCase(user.getEmail())){
+            condition += "AND a.email LIKE '%"+user.getEmail()+"%' \n";
+        }
+
+        String SQL = "SELECT\n" +
+                "a.user_id,\n" +
+                "a.user_name,\n" +
+                "a.email,\n" +
+                "a.photo_url,\n" +
+                "a.created_date,\n" +
+                "a.created_who,\n" +
+                "a.last_update,\n" +
+                "a.last_update_who,\n" +
+                "a.department_id,\n" +
+                "a.position_id,\n" +
+                "a.flag,\n" +
+                "a.password,\n" +
+                "b.branch_id,\n" +
+                "c.role_id,\n" +
+                "d.branch_name,\n" +
+                "e.role_name,\n" +
+                "f.area_name,\n" +
+                "g.department_name,\n" +
+                "h.position_name,\n" +
+                "b.area_id,\n" +
+                "a.id_pelayanan,\n" +
+                "a.id_ruangan,\n" +
+                "a.id_vendor\n"+
+                "FROM im_users a\n" +
+                "INNER JOIN im_areas_branches_users b ON a.user_id = b.user_id\n" +
+                "INNER JOIN im_users_roles c ON a.user_id = c.user_id\n" +
+                "INNER JOIN im_branches d ON b.branch_id = d.branch_id\n" +
+                "INNER JOIN im_roles e ON c.role_id = e.role_id\n" +
+                "INNER JOIN im_areas f ON b.area_id = f.area_id\n" +
+                "LEFT JOIN im_hris_department g ON a.department_id = g.department_id\n" +
+                "LEFT JOIN im_position h ON a.position_id = h.position_id\n" +
+                "WHERE a.flag LIKE :flag \n" +condition;
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("flag", flag)
+                .list();
+
+        if (result.size() > 0){
+            for (Object[] obj : result){
+                User use = new User();
+                use.setUserId(obj[0] != null ? obj[0].toString() : null);
+                use.setUsername(obj[1] != null ? obj[1].toString() : null);
+                use.setEmail(obj[2] != null ? obj[2].toString() : null);
+                if(obj[3] != null && !"".equalsIgnoreCase(obj[3].toString())){
+                    use.setPhotoUserUrl(CommonConstant.RESOURCE_PATH_USER_UPLOAD+obj[3].toString());
+                    use.setPreviewPhoto(obj[3].toString());
+                }else{
+                    use.setPhotoUserUrl(CommonConstant.RESOURCE_PATH_USER_UPLOAD+CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+                    use.setPreviewPhoto(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
+                }
+                use.setCreatedDate(obj[4] != null ? (Timestamp) obj[4] : null);
+                use.setCreatedWho(obj[5] != null ? obj[5].toString() : null);
+                use.setLastUpdate(obj[6] != null ? (Timestamp) obj[6] : null);
+                use.setLastUpdateWho(obj[7] != null ? obj[7].toString() : null);
+                use.setDepartmentId(obj[8] != null ? obj[8].toString() : null);
+                use.setPositionId(obj[9] != null ? obj[9].toString() : null);
+                use.setFlag(obj[10] != null ? obj[10].toString() : null);
+                use.setPassword(obj[11] != null ? obj[11].toString() : null);
+                use.setBranchId(obj[12] != null ? obj[12].toString() : null);
+                use.setRoleId(obj[13] != null ? obj[13].toString() : null);
+                use.setBranchName(obj[14] != null ? obj[14].toString() : null);
+                use.setRoleName(obj[15] != null ? obj[15].toString() : null);
+                use.setAreaName(obj[16] != null ? obj[16].toString() : null);
+                use.setDivisiName(obj[17] != null ? obj[17].toString() : null);
+                use.setPositionName(obj[18] != null ? obj[18].toString() : null);
+                use.setAreaId(obj[19] != null ? obj[19].toString() : null);
+                use.setIdPelayanan(obj[20] != null ? obj[20].toString() : null);
+                use.setIdRuangan(obj[21] != null ? obj[21].toString() : null);
+                use.setIdVendor(obj[22] != null ? obj[22].toString() : null);
+                results.add(use);
             }
         }
         return results;

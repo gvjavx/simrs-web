@@ -562,4 +562,20 @@ public class BranchAction extends BaseMasterAction {
         return branchBo.getByCriteria(branch);
     }
 
+    public List<Branch> getComboBranchByArea(String area){
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        List<Branch> branchList = new ArrayList<>();
+        Branch branch = new Branch();
+        branch.setAreaId(area);
+        if(area != null && !"".equalsIgnoreCase(area)){
+            try {
+                branchList = branchBo.getByCriteria(branch);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+        }
+        return branchList;
+    }
+
 }
