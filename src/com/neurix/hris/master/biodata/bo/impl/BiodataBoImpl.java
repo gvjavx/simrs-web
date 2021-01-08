@@ -5355,4 +5355,22 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] END process <<<");
         return jenisPegawais;
     }
+
+    @Override
+    public List<Biodata> getListOfPersonilForMutasi(String query, String branchId) throws GeneralBOException {
+        logger.info("[BiodataBoImpl.getListOfPersonilForMutasi] START process >>>");
+
+        String whereid = "%" + query + "%";
+
+        List<Biodata> biodataList = new ArrayList<>();
+        try {
+            biodataList = biodataDao.getDataPersonilForMutasi(whereid, branchId);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.getListOfPersonilForMutasi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[BiodataBoImpl.getListOfPersonilForMutasi] END process <<<");
+        return biodataList;
+    }
 }

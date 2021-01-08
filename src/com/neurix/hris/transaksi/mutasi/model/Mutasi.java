@@ -70,6 +70,15 @@ public class Mutasi extends BaseModel {
     private String branchIdUser;
     private String jenisPegawaiId;
     private String flagDigaji;
+    private String jenisPegawaiName;
+
+    public String getJenisPegawaiName() {
+        return jenisPegawaiName;
+    }
+
+    public void setJenisPegawaiName(String jenisPegawaiName) {
+        this.jenisPegawaiName = jenisPegawaiName;
+    }
 
     public String getJenisPegawaiId() {
         return jenisPegawaiId;

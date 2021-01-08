@@ -250,7 +250,7 @@
                                                                         <br>
                                                                         <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
                                                                              src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                                             name="image_indicator_write">
+                                                                         save    name="image_indicator_write">
                                                                     </center>
                                                                 </sj:dialog>
 
@@ -360,13 +360,13 @@
                                     mapped = {};
                                     var data = [];
                                     dwr.engine.setAsync(false);
-                                    MutasiAction.initComboPersonil(query,'', function (listdata) {
+                                    MutasiAction.getListPersonilByNameAndBranch(query,'', function (listdata) {
                                         data = listdata;
                                     });
                                     if (data.length!=0){
                                         $.each(data, function (i, item) {
-                                            var labelItem =item.namaPegawai;
-                                            mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, branchId : item.branch,
+                                            var labelItem = item.namaPegawai +" - "+ item.positionName;
+                                            mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, nama : item.namaPegawai, branchId : item.branch,
                                                 divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan, profesiId:item.profesiId, tipePegawai:item.tipePegawai };
                                             functions.push(labelItem);
                                         });
@@ -385,7 +385,8 @@
                                 },
                                 updater: function (item) {
                                     var selectedObj = mapped[item];
-                                    var namaAlat = selectedObj.label;
+                                    console.log(selectedObj);
+//                                    var namaAlat = selectedObj.label;
                                     document.getElementById("nip1").value = selectedObj.id;
                                     $('#branchLamaId1').val(selectedObj.branchId).change();
                                     $('#branchBaruId1').val(selectedObj.branchId).change();
@@ -412,87 +413,90 @@
                                         $('#golonganLamaId2').val(selectedObj.golongan).change();
                                         $('#golonganBaruId2').val(selectedObj.golongan).change();
                                     }
-                                    return namaAlat;
+                                    return selectedObj.nama;
                                 }
                             });
 
                         </script>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="branchLamaId1">Unit Lama:</label>
-                        <div class="col-sm-8">
-                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                            <s:select list="#initComboBranch.listOfComboBranch" id="branchLamaId1" name="mutasi.branchLamaId" disabled="true"
-                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control form-add"/>
+                    <div id="panel-awal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="branchLamaId1">Unit Lama:</label>
+                            <div class="col-sm-8">
+                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                <s:select list="#initComboBranch.listOfComboBranch" id="branchLamaId1" name="mutasi.branchLamaId" disabled="true"
+                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="" cssClass="form-control form-add"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="divisiLamaId1">Divisi/Bidang Lama:</label>
-                        <div class="col-sm-8">
-                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                            <s:select list="#comboDivisi.listComboDepartment" id="divisiLamaId1" name="mutasi.divisiLamaId" disabled="true"
-                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control form-add" />
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="divisiLamaId1">Divisi/Bidang Lama:</label>
+                            <div class="col-sm-8">
+                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                <s:select list="#comboDivisi.listComboDepartment" id="divisiLamaId1" name="mutasi.divisiLamaId" disabled="true"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="" cssClass="form-control form-add" />
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="positionLamaId1">Posisi Lama:</label>
-                        <div class="col-sm-8">
-                            <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                            <s:select list="#comboPosition.listOfComboPosition" id="positionLamaId1" name="mutasi.positionLamaId" disabled="true"
-                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control form-add"/>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="positionLamaId1">Posisi Lama:</label>
+                            <div class="col-sm-8">
+                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                <s:select list="#comboPosition.listOfComboPosition" id="positionLamaId1" name="mutasi.positionLamaId" disabled="true"
+                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control form-add"/>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Profesi Lama: </label>
-                        <div class="col-sm-8">
-                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
-                            <s:select list="#comboProfesi.listComboProfesi" id="profesiLamaId1" name="mutasi.profesiLamaId" disabled="true"
-                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" >Profesi Lama: </label>
+                            <div class="col-sm-8">
+                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                <s:select list="#comboProfesi.listComboProfesi" id="profesiLamaId1" name="mutasi.profesiLamaId" disabled="true"
+                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
+                            </div>
                         </div>
-                    </div>
 
-                    <%--<div class="form-group">--%>
+                        <%--<div class="form-group">--%>
                         <%--<label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>--%>
                         <%--<div class="col-sm-8">--%>
-                            <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
-                            <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"--%>
-                                      <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                        <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
+                        <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"--%>
+                        <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>--%>
                         <%--</div>--%>
-                    <%--</div>--%>
-                    <div style="display: none" class="form-group">
-                        <label class="control-label col-sm-4" >Status Pegawai: </label>
-                        <div class="col-sm-8">
-                            <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
-                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="mutasi.tipePegawai" onchange="changePegawai(this.value)"
-                                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
+                        <%--</div>--%>
+                        <div style="display: none" class="form-group">
+                            <label class="control-label col-sm-4" >Status Pegawai: </label>
+                            <div class="col-sm-8">
+                                <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
+                                <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="mutasi.tipePegawai" onchange="changePegawai(this.value)"
+                                          listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
+                            <div id="golongan1Group" class="col-sm-8">
+                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"
+                                          listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
+                            </div>
+                            <div style="display: none" id="golongan2Group" class="col-sm-8">
+                                <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganLamaId2" name="mutasi.levelLama" disabled="true"
+                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" >PJS Lama:</label>
+                            <div class="col-sm-8">
+                                <input type="checkbox" class="form-check-input big-checkbox form-add" id="pjsLama" disabled onchange="cekPjsLama()">
+                                <input style="display: none" type="text" class="form-check-input form-add" id="txtPjsLama" >
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
-                        <div id="golongan1Group" class="col-sm-8">
-                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
-                            <s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"
-                                      listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
-                        </div>
-                        <div style="display: none" id="golongan2Group" class="col-sm-8">
-                            <s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
-                            <s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganLamaId2" name="mutasi.levelLama" disabled="true"
-                                      listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >PJS Lama:</label>
-                        <div class="col-sm-8">
-                            <input type="checkbox" class="form-check-input big-checkbox form-add" id="pjsLama" disabled onchange="cekPjsLama()">
-                            <input style="display: none" type="text" class="form-check-input form-add" id="txtPjsLama" >
-                        </div>
-                    </div>
                     
                     <div id="panel-target" style="display: none;">
                         <div class="form-group">
@@ -566,6 +570,21 @@
                             </div>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" > Jenis Jabatan : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.jenisPegawai"
+                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" > Digaji : </label>
+                        <div class="col-sm-8">
+                            <s:select list="#{'N':'Tidak'}" id="flagDigaji"
+                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -629,6 +648,8 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Divisi/Bidang Baru</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Jabatan Baru</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Profesi Baru</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Jenis Jabatan</th>"+
+                    "<th style='text-align: center; background-color:  #90ee90'>Digaji</th>"+
                     "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
@@ -656,11 +677,20 @@
                         '<td align="center">' + item.divisiBaruName+ '</td>' +
                         '<td align="center">' + item.positionBaruName+ '</td>' +
                         '<td align="center">' + item.profesiBaruName+ '</td>' +
+                        '<td align="center">' + item.jenisPegawaiName+ '</td>' +
+                        '<td align="center">' + labeledWhiteFlag(item.flagDigaji)+ '</td>' +
                         "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
         });
     }
+
+    function labeledWhiteFlag(flag){
+        if (flag == "Y")
+            return "<div class='label label-success'><i class='fa fa-check'></i></div>";
+        return "";
+    }
+
     $(document).ready(function() {
         loadPerson();
 
@@ -930,6 +960,7 @@
         var profesiBaruId = document.getElementById("profesiBaruId1").value;
         var profesiBaruName = $('#profesiBaruId1 option:selected').text();
         var jenisPegawaiId = $("#jenisPegawaiId option:selected").val();
+        var jenisPegawaiName = $("#jenisPegawaiId option:selected").text();
         var flagDigaji = $("#flagDigaji option:selected").val();
 
 
@@ -966,6 +997,7 @@
                     profesibaruname : profesiBaruName,
                     tipepegawai : tipePegawai,
                     jenispegawai : jenisPegawaiId,
+                    jenispegawainame : jenisPegawaiName,
                     flagdigaji : flagDigaji
                    };
 
@@ -1124,7 +1156,14 @@
             $("#tipeMutasi").prop("disabled", false);
         }else{
 
-            $("#panel-target").hide();
+            if(status == "RA"){
+                $("#panel-target").show();
+                $("#panel-awal").hide();
+            } else {
+                $("#panel-awal").show();
+                $("#panel-target").hide();
+            }
+
 
             if (status==""){
                 $('#nip2').prop("readonly", true);
