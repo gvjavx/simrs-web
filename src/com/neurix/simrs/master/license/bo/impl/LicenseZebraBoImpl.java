@@ -45,9 +45,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
-            } else {
-                hsCriteria.put("flag", "Y");
             }
+//            else {
+//                hsCriteria.put("flag", "Y");
+//            }
 
             try {
                 imLicenseZebraEntities = licenseZebraDao.getByCriteria(hsCriteria);

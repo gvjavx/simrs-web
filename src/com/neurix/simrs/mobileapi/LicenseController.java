@@ -108,6 +108,7 @@ public class LicenseController implements ModelDriven<Object> {
             LicenseZebra bean = new LicenseZebra();
             bean.setLicenseKey(encodedLicenseKey);
             bean.setDeviceId(deviceId);
+            bean.setFlag(flag);
 
             try {
               result = licenseZebraBoProxy.getByCriteria(bean);
@@ -147,10 +148,14 @@ public class LicenseController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("updateFlag")) {
 
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            String encodedlicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+            bean.setLicenseKey(encodedlicenseKey);
             bean.setDeviceId(deviceId);
             bean.setFlag(flag);
+            bean.setAction("U");
             bean.setLastUpdate(now);
             bean.setLastUpdateWho("admin");
 
