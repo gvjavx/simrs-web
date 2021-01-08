@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="parameterketeranganobat" namespace="/parameterketeranganobat" extends="struts-default, jasperreports-default, json-default">
+    <package name="parameterbudgetingrekening" namespace="/parameterbudgetingrekening" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,42 +69,33 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_parameterketeranganobat"
-                class="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction" method="{1}">
+        <action name="*_parameterbudgetingrekening"
+                class="com.neurix.akuntansi.master.parameterbudgeting.action.ParameterBudgetingRekeningAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/master/parameterketeranganobat/searchParameterKeteranganObat.jsp</result>
-            <result name="success">/pages/com/neurix/simrs/master/parameterketeranganobat/searchParameterKeteranganObat.jsp</result>
+            <result name="search">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/searchParameterBudgetingRekening.jsp</result>
+            <result name="success">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/searchParameterBudgetingRekening.jsp</result>
+            <result name="input">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/searchParameterBudgetingRekening.jsp</result>
+            <result name="init_add">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/addParameterBudgetingRekening.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/addParameterBudgetingRekening.jsp</result>
+            <result name="error">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/addParameterBudgetingRekening.jsp</result>
 
-            <result name="add">/pages/com/neurix/simrs/master/parameterketeranganobat/addParameterKeteranganObat.jsp</result>
-            <result name="edit">/pages/com/neurix/simrs/master/parameterketeranganobat/editParameterKeteranganObat.jsp</result>
-            <result name="delete">/pages/com/neurix/simrs/master/parameterketeranganobat/deleteParameterKeteranganObat.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/simrs/master/parameterketeranganobat/addParameterKeteranganObat.jsp</result>
-            <result name="failure">/pages/com/neurix/simrs/master/parameterketeranganobat/edithParameterKeteranganObat.jsp</result>
+            <result name="init_edit">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/editParameterBudgetingRekening.jsp</result>
+            <result name="failure">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/editParameterBudgetingRekening.jsp</result>
+            <result name="success_save_edit">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/editParameterBudgetingRekening.jsp</result>
 
-            <result name="input">/pages/com/neurix/simrs/master/parameterketeranganobat/searchParameterKeteranganObat.jsp</result>
-            <result name="init_add">/pages/com/neurix/simrs/master/parameterketeranganobat/addParameterKeteranganObat.jsp</result>
-            <result name="success_save_edit">/pages/com/neurix/simrs/master/parameterketeranganobat/editParameterKeteranganObat.jsp</result>
-            <result name="success_save_delete">/pages/com/neurix/simrs/master/parameterketeranganobat/deleteParameterKeteranganObat.jsp</result>
-            <result name="init_delete">/pages/com/neurix/simrs/master/parameterketeranganobat/deleteParameterKeteranganObat.jsp</result>
-            <result name="init_edit">/pages/com/neurix/simrs/master/parameterketeranganobat/editParameterKeteranganObat.jsp</result>
-
-
-
-
+            <result name="success_save_delete">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/deleteParameterBudgetingRekening.jsp</result>
+            <result name="init_delete">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/deleteParameterBudgetingRekening.jsp</result>
 
             <!--<result name="error" type="httpheader">-->
             <!--<param name="status">504</param>-->
             <!--<param name="headers.message">${actionErrors}</param>-->
             <!--</result>-->
         </action>
-
-
-        <action name="paging_displaytag_parameterketeranganobat"
-                class="com.neurix.simrs.master.parameterketeranganobat.action.ParameterKeteranganObatAction" method="paging">
-            <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/simrs/master/parameterketeranganobat/searchParameterKeteranganObat.jsp</result>
+        <action name="paging_displaytag_parameterBudgetingRekening"
+                class="com.neurix.akuntansi.master.parameterbudgeting.action.ParameterBudgetingRekeningAction" method="paging">
+            <interceptor-ref name="defaultStack" />
+            <result name="success">/pages/com/neurix/akuntansi/master/parameterbudgetingrekening/searchParameterBudgetingRekening.jsp</result>
         </action>
-
     </package>
 </struts>

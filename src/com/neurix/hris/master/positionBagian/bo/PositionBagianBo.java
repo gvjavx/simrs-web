@@ -27,6 +27,6 @@ public interface PositionBagianBo extends BaseMasterBo<positionBagian> {
 
     public List<positionBagian> getDataDevisiId(positionBagian bean) throws GeneralBOException;
 
-    public List<Department> getHead(String id, String dp) throws GeneralBOException;
+    public List<Department> getHead(positionBagian positionBagian) throws GeneralBOException;
 }
 

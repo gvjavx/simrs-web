@@ -423,10 +423,10 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public List<Department> getHead(String id, String dp) throws GeneralBOException {
+    public List<Department> getHead(positionBagian positionBagian) throws GeneralBOException {
         List<Department> departmentList = new ArrayList<>();
         try {
-            departmentList = positionBagianDao.getHeadDepartent(id,dp);
+            departmentList = positionBagianDao.getHeadDepartent(positionBagian);
         }catch (HibernateException e) {
             logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());

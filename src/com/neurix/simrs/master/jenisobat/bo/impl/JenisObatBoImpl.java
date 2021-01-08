@@ -1,12 +1,11 @@
 package com.neurix.simrs.master.jenisobat.bo.impl;
 
-import com.neurix.akuntansi.master.master.model.ImMasterEntity;
+
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.jenisobat.bo.JenisObatBo;
 import com.neurix.simrs.master.jenisobat.dao.JenisObatDao;
 import com.neurix.simrs.master.jenisobat.model.ImSimrsJenisObatEntity;
 import com.neurix.simrs.master.jenisobat.model.JenisObat;
-import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -17,7 +16,7 @@ import java.util.Map;
 
 public class JenisObatBoImpl implements JenisObatBo {
 
-    protected static transient Logger logger = Logger.getLogger(JenisObatBoImpl.class);
+      protected static transient Logger logger = Logger.getLogger(JenisObatBoImpl.class);
     private JenisObatDao jenisObatDao;
 
     public static Logger getLogger() {

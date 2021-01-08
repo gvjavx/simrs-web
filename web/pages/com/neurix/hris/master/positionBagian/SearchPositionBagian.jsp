@@ -74,7 +74,8 @@
         <table width="100%" align="center">
             <tr>
                 <td align="center">
-                    <s:form id="positionBagianForm" method="post"  theme="simple" namespace="/positionBagian" action="search_positionBagian.action" cssClass="well form-horizontal">
+                    <s:form id="positionBagianForm" method="post"  theme="simple"
+                            namespace="/positionBagian" action="search_positionBagian.action" cssClass="well form-horizontal">
 
                         <s:hidden name="addOrEdit"/>
                         <s:hidden name="delete"/>
@@ -88,27 +89,30 @@
                         </table>
 
                         <table >
+                            <%--<tr>--%>
+                                <%--<td width="20%">--%>
+                                    <%--<label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                    <%--<table>--%>
+                                        <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
+                                                      <%--required="false" readonly="false" cssClass="form-control"/>--%>
+                                    <%--</table>--%>
+                                <%--</td>--%>
+                            <%--</tr>--%>
                             <tr>
                                 <td width="20%">
-                                    <label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:textfield  id="positionBagianId" name="positionBagian.bagianId" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="18%">
                                     <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
                                 </td>
                                 <td>
                                     <table>
                                         <s:textfield  id="positionBagianName" name="positionBagian.bagianName"
-                                                      required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                                      required="false" readonly="false" cssClass="form-control"
+                                                      cssStyle="margin-top: 5px"/>
                                     </table>
                                 </td>
                             </tr>
+                                <br>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Bidang/Devisi :</small></label>
@@ -116,8 +120,10 @@
                                 <td>
                                     <table>
                                         <s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>
-                                        <s:select list="#comboDept.listComboDepartment" id="departmentId" name="positionBagian.divisiId"
-                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                        <s:select list="#comboDept.listComboDepartment" id="departmentId"
+                                                  name="positionBagian.divisiId"
+                                                  listKey="departmentId" listValue="departmentName"
+                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                         <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
                                                       <%--required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
                                     </table>
@@ -371,32 +377,28 @@
 <script>
 
     function searchData(){
-        var id = $('#positionBagianId').val();
-        var dp = $ ('#positionBagianName').val();
-        PositionBagianAction.searchHead(id,dp, function (response) {
-//            console.log(response);
+        var bagianId = $('#positionBagianId').val();
+        var bagianName = $ ('#positionBagianName').val();
+        var divisiId = $('#departmentId').val();
+        var flag = $ ('#flag').val();
+        PositionBagianAction.searchHead(bagianId, bagianName, divisiId, flag, function (response) {
             if(response.length > 0){
                 var body = '';
                 $.each(response, function (i, item) {
                     var icon = '';
-//                    if(item.departmentId != null && item.departmentId != ''){
-//                        icon = '<i id="icon_'+item.departmentId+'" class="fa fa-plus" style="cursor: pointer" onclick="anakNya(\''+item.departmentId+'\')"></i>';
-//                    }
-
                     if(item.departmentId != null && item.departmentId != ''){
-                        icon = '<i id="icon_'+item.departmentId+'" class="fa fa-plus" style="cursor: pointer" onclick="anakNya(\''+item.departmentId+'\')"></i>';
+                        icon = '<i id="icon_'+item.departmentId+'" class="fa fa-plus" ' +
+                            'style="cursor: pointer" onclick="anakNya(\''+item.departmentId+'\')"></i>';
                     }
-
                     body += '<tr id="row_'+item.departmentId+'" style="background-color: gainsboro">' +
-//                            '<td>'+icon+" "+item.departmentId+'</td>'+
-                            '<td>'+icon+" "+item.departmentName+'</td>'+
+                        '<td>'+icon+" "+item.departmentName+'</td>'+
                         '<td>'+item.stCreatedDate+'</td>'+
                         '<td>'+item.createdWho+'</td>'+
                         '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
                         '<td></td>'+
                         '<td></td>'+
-                            '<tr>';
+                        '<tr>';
                 });
 
                 $('#body_masuk').html(body);

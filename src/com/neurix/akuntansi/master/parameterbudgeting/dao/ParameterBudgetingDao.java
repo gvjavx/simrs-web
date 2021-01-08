@@ -61,11 +61,25 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
                 .setParameter("master", master)
                 .setParameter("idparam", idParamRekening)
                 .list();
-
         if (results != null && results.size() > 0){
             return true;
         }
+        return false;
+    }
 
+    public boolean cekdataByCriteria(String id, String flag){
+
+        String SQL = "SELECT id, flag \n" +
+                "FROM im_akun_parameter_budgeting \n" +
+                "WHERE (id, flag ) = (:id,:flag)";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .setParameter("flag", flag)
+                .list();
+        if (results != null && results.size() > 0){
+            return true;
+        }
         return false;
     }
 
