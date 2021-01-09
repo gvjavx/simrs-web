@@ -82,4 +82,20 @@ public class JenisPegawaiDao extends GenericDao<ImHrisJenisPegawaiEntity, String
 
         return results;
     }
+
+    public Boolean checkJenisPegawaiIsDefault(String jenisPegawaiId){
+
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai \n" +
+                "WHERE jenis_pegawai_Id = :jenis \n" +
+                "AND flag = 'Y' \n" +
+                "AND flag_default = 'Y' ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenis", jenisPegawaiId).list();
+
+        if (results != null && results.size() > 0)
+            return true;
+
+        return false;
+    }
 }

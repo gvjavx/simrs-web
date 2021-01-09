@@ -11,6 +11,7 @@ import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImtPelatihanJabatanUserEntity;
 import com.neurix.hris.master.biodata.model.PelatihanJabatanUser;
+import com.neurix.hris.master.jenisPegawai.dao.JenisPegawaiDao;
 import com.neurix.hris.master.kualifikasiCalonPejabat.dao.KualifikasiCalonPejabatDao;
 import com.neurix.hris.master.kualifikasiCalonPejabat.model.ImHrisKualifikasiCalonPejabatEntity;
 import com.neurix.hris.master.kualifikasiCalonPejabat.model.KualifikasiCalonPejabat;
@@ -94,6 +95,11 @@ public class MutasiBoImpl implements MutasiBo {
     private CutiPegawaiDao cutiPegawaiDao;
     private LemburDao lemburDao;
     private StatusMutasiDao statusMutasiDao;
+    private JenisPegawaiDao jenisPegawaiDao;
+
+    public void setJenisPegawaiDao(JenisPegawaiDao jenisPegawaiDao) {
+        this.jenisPegawaiDao = jenisPegawaiDao;
+    }
 
     public StatusMutasiDao getStatusMutasiDao() {
         return statusMutasiDao;
@@ -344,29 +350,29 @@ public class MutasiBoImpl implements MutasiBo {
             }
 
             if (("M").equalsIgnoreCase(dataMutasi.getStatus())||("R").equalsIgnoreCase(dataMutasi.getStatus())){
-                if (!("-").equalsIgnoreCase(dataMutasi.getPenggantiNip())){
-                    boolean adaPengganti = false;
-
-                    // Sigit 2020-01-08, pergantian dari for ke stream untuk menghindari multiple loop
-                    List<Mutasi> filteredMutasi = mutasiList.stream().filter(p->p.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())).collect(Collectors.toList());
-                    if (filteredMutasi != null && filteredMutasi.size() > 0){
-                        adaPengganti = true; break;
-                    }
-//                    for (Mutasi cekData : mutasiList){
-//                        if (cekData.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())){
-//                            adaPengganti=true;
-//                            break;
-//                        }
+//                if (!("-").equalsIgnoreCase(dataMutasi.getPenggantiNip())){
+//                    boolean adaPengganti = false;
+//
+//                    // Sigit 2020-01-08, pergantian dari for ke stream untuk menghindari multiple loop
+//                    List<Mutasi> filteredMutasi = mutasiList.stream().filter(p->p.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())).collect(Collectors.toList());
+//                    if (filteredMutasi != null && filteredMutasi.size() > 0){
+//                        adaPengganti = true; break;
 //                    }
-
-                    //END
-
-                    if (!adaPengganti){
-                        String status ="ERROR : "+dataMutasi.getPenggantiNama()+" harus dimutasi";
-                        logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);
-                        throw new GeneralBOException(status);
-                    }
-                }
+////                    for (Mutasi cekData : mutasiList){
+////                        if (cekData.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())){
+////                            adaPengganti=true;
+////                            break;
+////                        }
+////                    }
+//
+//                    //END
+//
+//                    if (adaPengganti){
+//                        String status ="ERROR : "+dataMutasi.getPenggantiNama()+" harus dimutasi";
+//                        logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);
+//                        throw new GeneralBOException(status);
+//                    }
+//                }
 
                 if (("M").equalsIgnoreCase(dataMutasi.getTipeMutasi())){
                     if (dataMutasi.getBranchBaruId().equalsIgnoreCase(dataMutasi.getBranchLamaId())){
@@ -385,8 +391,6 @@ public class MutasiBoImpl implements MutasiBo {
         }
 
         //validasi jika mutasi dan rotasi
-
-
 
         if (bean!=null) {
             if(mutasiList != null){
@@ -483,9 +487,7 @@ public class MutasiBoImpl implements MutasiBo {
                         historyJabatanPegawai.setBidangId(mutasi.getDivisiBaruId());
                         historyJabatanPegawai.setBidangName(mutasi.getDivisiBaruName());
                         historyJabatanPegawai.setPositionId(mutasi.getPositionBaruId());
-//                        historyJabatanPegawai.setProfesiId(profesiId);
                         historyJabatanPegawai.setProfesiId(mutasi.getProfesiBaruId());
-//                    historyJabatanPegawai.setTanggalKeluar(CommonUtil.convertTimestampToString(bean.getTanggalEfektif()));
                         historyJabatanPegawai.setTanggalSkMutasi(CommonUtil.convertStringToDate(bean.getStTanggalEfektif()));
                         historyJabatanPegawai.setPoint("0");
                         historyJabatanPegawai.setPointLebih("0");
@@ -497,18 +499,18 @@ public class MutasiBoImpl implements MutasiBo {
                         historyJabatanPegawai.setJabatanFlag("Y");
                         historyJabatanPegawai.setMutasiFlag("Y");
 
-                        //isi pjs flag
-                        if(mutasi.getPjs()!=null){
-                            if (!("").equalsIgnoreCase(mutasi.getPjs())){
-                                historyJabatanPegawai.setPjsFlag(mutasi.getPjs());
-                            }
-                            else {
-                                historyJabatanPegawai.setPjsFlag("N");
-                            }
-                        }
-                        else {
-                            historyJabatanPegawai.setPjsFlag("N");
-                        }
+//                        //isi pjs flag
+//                        if(mutasi.getPjs()!=null){
+//                            if (!("").equalsIgnoreCase(mutasi.getPjs())){
+//                                historyJabatanPegawai.setPjsFlag(mutasi.getPjs());
+//                            }
+//                            else {
+//                                historyJabatanPegawai.setPjsFlag("N");
+//                            }
+//                        }
+//                        else {
+//                            historyJabatanPegawai.setPjsFlag("N");
+//                        }
 
                         try {
                             golonganId = mutasiDao.getGolonganId(mutasi.getNip());
@@ -545,11 +547,6 @@ public class MutasiBoImpl implements MutasiBo {
                             imBiodataEntitys = biodataDao.findBiodataLikeNip(mutasi.getNip());
                             if (imBiodataEntitys != null){
                                 for (ImBiodataEntity imBiodataEntity : imBiodataEntitys) {
-
-                                    historyJabatanPegawai.setGolonganId(mutasi.getLevelBaru());
-                                    golonganName = historyJabatanPegawaiDao.getGolonganById(mutasi.getLevelBaru());
-                                    historyJabatanPegawai.setGolonganName(golonganName);
-                                    historyJabatanPegawai.setTipePegawaiId(imBiodataEntity.getTipePegawai());
                                     tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(imBiodataEntity.getTipePegawai());
                                     historyJabatanPegawai.setTipePegawaiName(tipePegawaiName);
                                 }
@@ -609,11 +606,11 @@ public class MutasiBoImpl implements MutasiBo {
                             //tanggal aktif digunakan untuk mengisi kolom tanggal / tahun diangkat di biodata-riwayat kerja
                             itPersonilPositionEntity.setTanggalAktif(bean.getTanggalEfektif());
 
-                            if(mutasi.getStatus().equalsIgnoreCase("M")) {
+                            if("M".equalsIgnoreCase(mutasi.getStatus())) {
                                 itPersonilPositionEntity.setBranchId(mutasi.getBranchBaruId());
                                 itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                 itPersonilPositionEntity.setAction("U");
-                            }else if(mutasi.getStatus().equalsIgnoreCase("R")) {
+                            }else if("R".equalsIgnoreCase(mutasi.getStatus())) {
                                 itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                 itPersonilPositionEntity.setAction("U");
                             }else{
@@ -641,6 +638,26 @@ public class MutasiBoImpl implements MutasiBo {
                                 throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
                             }
                         }
+                    }
+
+
+                    // cek jenis pegawai default / tidak
+                    boolean isJabatanUtama = false;
+                    try {
+                        isJabatanUtama = jenisPegawaiDao.checkJenisPegawaiIsDefault(mutasi.getJenisPegawaiId());
+                    } catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+                    }
+
+
+                    if ("L".equalsIgnoreCase(mutasi.getStatus())){
+
+                        // jika update posisiId != null berarti ada posisi selain normal dan bisa
+                        if (mutasi.getUpdatePosisiId() != null && !"".equalsIgnoreCase(mutasi.getUpdatePosisiId())){
+
+                        }
+
                     } else {
 
                         // Sigit 2020-01-08

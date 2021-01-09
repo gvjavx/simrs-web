@@ -71,6 +71,15 @@ public class Mutasi extends BaseModel {
     private String jenisPegawaiId;
     private String flagDigaji;
     private String jenisPegawaiName;
+    private String updatePosisiId;
+
+    public String getUpdatePosisiId() {
+        return updatePosisiId;
+    }
+
+    public void setUpdatePosisiId(String updatePosisiId) {
+        this.updatePosisiId = updatePosisiId;
+    }
 
     public String getJenisPegawaiName() {
         return jenisPegawaiName;

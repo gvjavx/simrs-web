@@ -330,7 +330,7 @@ public class MutasiAction extends BaseMasterAction{
     }
 
     public String saveMutasi(){
-        logger.info("[MutasiAction.saveAdd] start process >>>");
+        logger.info("[MutasiAction.saveMutasi] start process >>>");
         try {
             Mutasi mutasi = getMutasi();
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -356,16 +356,16 @@ public class MutasiAction extends BaseMasterAction{
             try {
                 logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[mutasiAction.saveAdd] Error when saving error,", e1);
+                logger.error("[mutasiAction.saveMutasi] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[mutasiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[mutasiAction.saveMutasi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
 //            mutasi.setErrorMessage("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
             addActionMessage("Error, mohon periksa inputan anda kembali");
             throw new GeneralBOException(e.getMessage());
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfMutasi");
+        session.removeAttribute("saveMutasi");
         return INPUT;
     }
 
@@ -675,26 +675,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiLamaName(obj.getString("divisilamaname"));
                 mutasi.setPositionLamaId(obj.getString("positionlamaid"));
                 mutasi.setPositionLamaName(obj.getString("positionlamaname"));
-                mutasi.setLevelLama(obj.getString("levellamaid"));
-                mutasi.setLevelLamaName(obj.getString("levelbaruid"));
-                mutasi.setPjsLama(obj.getString("txtpjslama"));
                 mutasi.setProfesiLamaId(obj.getString("profesilamaid"));
                 mutasi.setProfesiLamaName(obj.getString("profesibaruid"));
-
-                String menggantikanId = obj.getString("menggantikanid");
-
-                if (menggantikanId!=null && !"".equalsIgnoreCase(menggantikanId)){
-                    if (!menggantikanId.equalsIgnoreCase("-")){
-                        mutasi.setPenggantiNip(menggantikanId);
-                    }
-                    else {
-                        mutasi.setPenggantiNip("-");
-                    }
-                }else{
-                    mutasi.setPenggantiNip("-");
-                }
-
-                mutasi.setPenggantiNama(obj.getString("menggantikannama"));
 
                 mutasi.setBranchBaruId(obj.getString("branchbaruid"));
                 mutasi.setBranchBaruName(obj.getString("branchbaruname"));
@@ -702,12 +684,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiBaruName(obj.getString("divisibaruname"));
                 mutasi.setPositionBaruId(obj.getString("positionbaruid"));
                 mutasi.setPositionBaruName(obj.getString("poisitionbaruname"));
-                mutasi.setLevelBaru(obj.getString("levelbaruid"));
-                mutasi.setLevelBaruName(obj.getString("levelbaruname"));
-                mutasi.setPjs(obj.getString("txtpjsbaru"));
                 mutasi.setProfesiBaruId(obj.getString("profesibaruid"));
                 mutasi.setProfesiBaruName(obj.getString("profesibaruname"));
-                mutasi.setTipePegawai(obj.getString("tipepegawai"));
 
                 mutasi.setStatus(obj.getString("status"));
                 mutasi.setJenisPegawaiId(obj.getString("jenispegawai"));
