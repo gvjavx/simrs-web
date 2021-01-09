@@ -5296,8 +5296,20 @@ public class BiodataBoImpl implements BiodataBo {
     }
 
     @Override
+    public String getSeqNip() {
+        logger.info("[BiodateBoImpl.getSeqNip] START >>>>>>");
+        String seq = "";
+        try{
+            seq = biodataDao.getNextPersonalId();
+        } catch (HibernateException e) {
+            logger.error("[BiodataBoImpl.getSeqNip] Failed to get Sequence ==> " +e.getMessage());
+        }
+        return seq;
+    }
+
+    @Override
     public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai) throws GeneralBOException {
-        logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] START process >>>");
+        logger.info("[BiodataBoImpl.checkAvailJenisPegawaiDefault] START process >>>");
 
         Boolean found = false;
 
@@ -5308,7 +5320,7 @@ public class BiodataBoImpl implements BiodataBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
-        logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] END process <<<");
+        logger.info("[BiodataBoImpl.checkAvailJenisPegawaiDefault] END process <<<");
         return found;
     }
 

@@ -18,10 +18,12 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -82,13 +84,15 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         return results;
     }
 
+    //RAKA-9JAN2021 ambil Seq untuk NIP berdasarkan tanggal lahir
     // Generate surrogate id from postgre
     public String getNextPersonalId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
+        String sId = String.format("%04d", iter.next());
 
-        return "D"+sId;
+//        return "D"+sId;
+        return sId;
     }
 
     public String getNextPengalamanKerja() throws HibernateException {

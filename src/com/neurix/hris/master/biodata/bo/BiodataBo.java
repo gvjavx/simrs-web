@@ -113,4 +113,6 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
 
     public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai) throws GeneralBOException;
     public List<JenisPegawai> getAllJenisPegawai();
+
+    public String getSeqNip();
 }

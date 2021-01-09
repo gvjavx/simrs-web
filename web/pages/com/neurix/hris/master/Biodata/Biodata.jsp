@@ -340,15 +340,16 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdd()">
-                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:elseif test="isDelete()">
-                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
-                                                        </s:elseif>
-                                                        <s:else>
-                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
-                                                        </s:else>
+                                                        <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir--%>
+                                                        <%--<s:if test="isAdd()">--%>
+                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control" readonly="true" />
+                                                        <%--</s:if>--%>
+                                                        <%--<s:elseif test="isDelete()">--%>
+                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
+                                                        <%--</s:elseif>--%>
+                                                        <%--<s:else>--%>
+                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
+                                                        <%--</s:else>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -476,7 +477,7 @@
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -6204,6 +6205,19 @@
                 alert('Jabatan aktif sudah ada');
             }
         });
+    }
+
+    function getNip(birthDate){
+        var nip = $("#nip1").val();
+        var headNip = birthDate.split("-");
+        if(nip==""){
+            BiodataAction.getSeqNip(function(seq){
+                $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+            })
+        } else {
+            var seq = nip.substr(8, 4);
+            $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+        }
     }
 </script>
 

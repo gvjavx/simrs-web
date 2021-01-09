@@ -3321,7 +3321,22 @@ public class BiodataAction extends BaseMasterAction{
         return SUCCESS;
     }
 
+    //RAKA-09JAN2021 ==> Mendapatkan Seq untuk NIP
+    public String getSeqNip(){
+        logger.info("[BiodataAction.getSeqNip] START >>>>>>");
+        String seq = "";
 
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        try{
+            seq = biodataBo.getSeqNip();
+        } catch (GeneralBOException e){
+            logger.error("[BiodataAction.getSeqNip] Failed to get Sequence.");
+        }
+
+        logger.info("[BiodataAction.getSeqNip] END >>>>>>");
+        return seq;
+    }
 
     public String paging(){
         return SUCCESS;

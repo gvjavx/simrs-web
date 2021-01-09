@@ -149,9 +149,9 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
     	DROP COLUMN flag_plt,
 	    DROP COLUMN jenis_pegawai;
 -- table historynya
-    ALTER TABLE im_hris_pegawai_history
-	    DROP COLUMN flag_pjs,
-	    DROP COLUMN flag_plt;
+    --ALTER TABLE im_hris_pegawai_history
+	--    DROP COLUMN flag_pjs,
+	--    DROP COLUMN flag_plt;
 
 -- untuk field jenis_pegawai(plt,pjs) varchar(5) di tarok di it_hris_pegawai_position
     ALTER TABLE it_hris_pegawai_position
@@ -234,7 +234,7 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
         SET golongan_pensiun ='IA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =15	WHERE grade_level = 14;
 
 -- DROP golongan_dapen
-    DROP TABLE im_hris_golongan_dapen;
+    --DROP TABLE im_hris_golongan_dapen;
 
 -- ditambahkan di table im_company (field payroll_tanggal_lembur_awal varchar(5), dan payroll_tanggal_lembur_akhir varchar(5)) -> digunakan untuk mengambil perhitungan lembur berdasarkan range absensi
 -- di absensi akan di get data tgl (payroll_tanggal_lembur_awal ) bln sbelumnya payroll berjalan s.d tgl (payroll_tanggal_lembur_akhir ) bln payroll.
@@ -263,46 +263,46 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
         ADD tanggal_cuti_diluar_awal DATE,
         ADD tanggal_cuti_diluar_akhir DATE;
 
-    ALTER TABLE im_hris_pegawai
-        DROP COLUMN mt,
-        DROP COLUMN status_giling,
-        DROP COLUMN poin_lebih,
-        DROP COLUMN point,
-        DROP COLUMN zakat_profesi,
-        DROP COLUMN tgl_akhir_kontrak,
-        DROP COLUMN golongan_dapen_nusindo,
-        DROP COLUMN golongan_dapen_id,
-        DROP COLUMN branch_id_terakhir,
-        DROP COLUMN position_id_terakhir,
+    --ALTER TABLE im_hris_pegawai
+    --    DROP COLUMN mt,
+    --    DROP COLUMN status_giling,
+    --    DROP COLUMN poin_lebih,
+    --    DROP COLUMN point,
+    --    DROP COLUMN zakat_profesi,
+    --    DROP COLUMN tgl_akhir_kontrak,
+    --    DROP COLUMN golongan_dapen_nusindo,
+    --    DROP COLUMN golongan_dapen_id,
+    --    DROP COLUMN branch_id_terakhir,
+    --    DROP COLUMN position_id_terakhir,
     --  DROP COLUMN flag_plt,
     --  DROP COLUMN flag_pjs,
-        DROP COLUMN position_plt_id,
+    --    DROP COLUMN position_plt_id,
     --  DROP COLUMN jenis_pegawai,
-        DROP COLUMN flag_percobaan;
+    --    DROP COLUMN flag_percobaan;
 
     --- IM_HRIS_PEGAWAI_HISTORY ---
-    ALTER TABLE im_hris_pegawai_history
-        ADD tanggal_keluar DATE,
-        ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
-        ADD tanggal_cuti_diluar_awal DATE,
-        ADD tanggal_cuti_diluar_akhir DATE;
+    --ALTER TABLE im_hris_pegawai_history
+    --    ADD tanggal_keluar DATE,
+    --    ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
+    --    ADD tanggal_cuti_diluar_awal DATE,
+    --    ADD tanggal_cuti_diluar_akhir DATE;
 
-    ALTER TABLE im_hris_pegawai_history
-        DROP COLUMN mt,
-        DROP COLUMN status_giling,
-        DROP COLUMN poin_lebih,
-        DROP COLUMN point,
-        DROP COLUMN zakat_profesi,
+    --ALTER TABLE im_hris_pegawai_history
+    --    DROP COLUMN mt,
+    --    DROP COLUMN status_giling,
+    --    DROP COLUMN poin_lebih,
+    --    DROP COLUMN point,
+    --    DROP COLUMN zakat_profesi,
     --  DROP COLUMN tgl_akhir_kontrak,
     --  DROP COLUMN golongan_dapen_nusindo,
-        DROP COLUMN golongan_dapen_id,
-        DROP COLUMN branch_id_terakhir,
+    --    DROP COLUMN golongan_dapen_id,
+    --    DROP COLUMN branch_id_terakhir,
     --  DROP COLUMN position_id_terakhir,
     --  DROP COLUMN flag_plt,
     --  DROP COLUMN flag_pjs,
     --  DROP COLUMN position_plt_id,
     --  DROP COLUMN jenis_pegawai,
-        DROP COLUMN flag_percobaan;
+    --    DROP COLUMN flag_percobaan;
 
 ------ 2021-01-05 ===> update im_hris_jenis_pegawai
     ALTER TABLE im_hris_jenis_pegawai
