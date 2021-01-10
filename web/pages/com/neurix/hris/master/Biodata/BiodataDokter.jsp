@@ -242,6 +242,14 @@
 
 
     </script>
+    <style>
+        .box-shadowed {
+            background-color: #FFF;
+            border-radius: 10px;
+            box-shadow: grey 3px 3px 5px;
+            padding: 30px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -281,716 +289,736 @@
                     <s:hidden id="add" name="add"/>
                     <s:hidden name="delete"/>
 
-                    <div class="tab-content well">
+                    <div class="tab-content well box-shadowed">
                         <div id="biodata" class="tab-pane fade in active">
                             <h3>Biodata</h3>
                             <br>
-                            <table width="40%">
-                                <tr>
-                                    <td>
-                                        <img  align="center" width="150px" height="170px" id="detailImg"
-                                              src="" class="img-rounded" alt="">
-                                        <s:textfield cssStyle="display: none" id="pathFoto" name="biodata.pathFoto" required="true" cssClass="form-control"/>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Nama  * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
+                            <div class="row">
+                                <div class="col-md-12" style="text-align: center">
+                                    <img  align="center" width="300px" id="detailImg" style="border-radius: 50%; box-shadow: grey 3px 3px 5px;"
+                                          src="" alt="">
+                                    <s:textfield cssStyle="display: none" id="pathFoto" name="biodata.pathFoto" required="true" cssClass="form-control"/>
+                                </div>
+                            </div>
+                            <br>
+                            <br>
+                            <br>
+                            <div id="panel-biodata">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table style="width:100%;">
+                                            <tr>
+                                                <td>
+                                                    <label><small>Nama <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                        <s:hidden name="biodata.nip"></s:hidden>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>Gender <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:select list="#{'L':'Laki laki', 'P' : 'Perempuan'}" id="gender" name="biodata.gender"
+                                                                      cssClass="form-control" disabled="true" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:select list="#{'L':'Laki laki', 'P' : 'Perempuan'}" id="gender" name="biodata.gender"
+                                                                      cssClass="form-control" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Agama :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                                        'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
+                                                                      cssClass="form-control" disabled="true" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
+                                                        'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
+                                                                      cssClass="form-control" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Tempat Lahir <span style="color:red;">*</span> : </small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="tempatLahir1" name="biodata.tempatLahir" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="tempatLahir1" name="biodata.tempatLahir" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>Tanggal Lahir <span style="color:red;">*</span> : </small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
                                             <s:if test="isDelete()">
-                                                <s:textfield id="namaPegawai1" name="biodata.namaPegawai" readonly="true" required="true" disabled="false" cssClass="form-control"/>
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Unit <span style="color:red;">*</span> :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:if test="isDelete()">
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <%--<s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"--%>
+                                                                <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+
+                                                                <s:if test='biodata.branch == "KP"'>
+                                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
+                                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                </s:if>
+                                                                <s:else>
+                                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
+                                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                    <s:hidden id="branchId" name="biodata.branch"/>
+                                                                </s:else>
+                                                            </s:else>
+                                                            <s:textfield type="text" cssStyle="display: none" id="posisi2" name="biodata.positionId2"/>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="namaPegawai1" name="biodata.namaPegawai" required="true" disabled="false" cssClass="form-control"/>
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Unit <span style="color:red;">*</span> :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:if test='biodata.branch == "KP"'>
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
+                                                                          listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                <s:hidden id="branchId" name="biodata.branch"/>
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:else>
-                                            <s:hidden name="biodata.nip"></s:hidden>
-                                        </table>
-                                    </td>
-                                </tr>
 
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Gender * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'L':'Laki laki', 'P' : 'Perempuan'}" id="gender" name="biodata.gender"
-                                                          cssClass="form-control" disabled="true" />
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Bidang :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                                            <s:if test="isDelete()">
+                                                                <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" disabled="true" readonly="true"
+                                                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
+                                                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#{'L':'Laki laki', 'P' : 'Perempuan'}" id="gender" name="biodata.gender"
-                                                          cssClass="form-control" />
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Bidang :</small></label>
+                                                    </td>
+                                                    <td class="col-md-9" style="padding: 0%">
+                                                        <table>
+                                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
+                                                            <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
+                                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Agama :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
+
                                             <s:if test="isDelete()">
-                                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
-                                            'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
-                                                          cssClass="form-control" disabled="true" />
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Jabatan :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                            <s:if test="isDelete()">
+                                                                <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId" disabled="true"
+                                                                          listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:if>
                                             <s:else>
-                                                <s:select list="#{'islam':'Islam', 'kristen' : 'Kristen', 'katolik' : 'Katolik', 'hindu' : 'Hindu',
-                                            'budha' : 'Buddha', 'kong hu cu' : 'Kong Hu Cu'}" id="agama" name="biodata.agama"
-                                                          cssClass="form-control" />
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Jabatan :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
+                                                            <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Tempat Lahir * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
+
                                             <s:if test="isDelete()">
-                                                <s:textfield id="tempatLahir1" name="biodata.tempatLahir" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Profesi :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:if test="isDelete()">
+                                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
+                                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:if>
                                             <s:else>
-                                                <s:textfield id="tempatLahir1" name="biodata.tempatLahir" required="true" disabled="false" cssClass="form-control"/>
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Profesi :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
+                                                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                                        </table>
+                                                    </td>
+                                                </tr>
                                             </s:else>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Gelar Depan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="gelarDepan1" name="biodata.gelarDepan" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="gelarDepan1" name="biodata.gelarDepan" required="true" disabled="false" readonly="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>Gelar Belakang :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>No KTP <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" readonly="true" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>No Telp :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </table>
-                                    </td>
-                                </tr>
+                                    </div>
 
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Tanggal Lahir * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
-                                                             cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
-                                            </s:else>
+                                    <div class="col-md-6">
+                                        <table width="100%">
+                                            <tr>
+                                                <td>
+                                                    <label><small>Alamat :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textarea id="alamat1" rows="3" name="biodata.alamat" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textarea id="alamat1" rows="3" name="biodata.alamat" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Provinsi :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="provinsi11" name="biodata.provinsiName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="provinsi1" name="biodata.provinsiName"  required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="provinsi11" name="biodata.provinsiId" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                        <script type='text/javascript'>
+                                                            var functions, mapped;
+                                                            $('#provinsi1').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    ProvinsiAction.initComboProvinsi(query, function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+
+                                                                    $.each(data, function (i, item) {
+                                                                        var labelItem = item.provinsiName;
+                                                                        mapped[labelItem] = { id: item.provinsiId, label: labelItem };
+                                                                        functions.push(labelItem);
+                                                                    });
+
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    var namaAlat = selectedObj.label;
+                                                                    document.getElementById("provinsi11").value = selectedObj.id;
+                                                                    prov = selectedObj.id ;
+                                                                    return namaAlat;
+                                                                }
+                                                            });
+                                                            //
+                                                            //
+                                                        </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Kabupaten :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="kabupaten1" name="biodata.kotaName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="kabupaten1" required="true" disabled="false" name="biodata.kotaName" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="kabupaten11" name="biodata.kabupatenId" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                        <script type='text/javascript'>
+                                                            var functions, mapped;
+                                                            // var prov = document.getElementById("provinsi1").value;
+                                                            $('#kabupaten1').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    ProvinsiAction.initComboKota(query, prov, function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        //alert(item.kotaName);
+                                                                        var labelItem = item.kotaName;
+                                                                        mapped[labelItem] = { id: item.kotaId, label: labelItem };
+                                                                        functions.push(labelItem);
+                                                                    });
+
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    var namaAlat = selectedObj.label;
+                                                                    document.getElementById("kabupaten11").value = selectedObj.id;
+
+                                                                    kab = selectedObj.id ;
+                                                                    return namaAlat;
+                                                                }
+                                                            });
+
+                                                            //
+                                                            //
+                                                        </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Kecamatan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="kecamatan1" name="biodata.kecamatanName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="kecamatan1" name="biodata.kecamatanName" required="true" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="kecamatan11" name="biodata.kecamatanId" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                        <script type='text/javascript'>
+                                                            var functions, mapped;
+                                                            var kab = document.getElementById("kabupaten1").value;
+                                                            $('#kecamatan1').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        //alert(item.kotaName);
+                                                                        var labelItem = item.kecamatanName;
+                                                                        mapped[labelItem] = { id: item.kecamatanId, label: labelItem };
+                                                                        functions.push(labelItem);
+                                                                    });
+
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    var namaAlat = selectedObj.label;
+                                                                    document.getElementById("kecamatan11").value = selectedObj.id;
+
+                                                                    kec = selectedObj.id;
+                                                                    return namaAlat;
+                                                                }
+                                                            });
+                                                        </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Desa :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="desa1" name="biodata.desaName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="desa1" required="true" disabled="false" name="biodata.desaName" cssClass="form-control"/>
+                                                            <s:textfield cssStyle="display: none" id="desa11" name="biodata.desaId" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                        <script type='text/javascript'>
+                                                            var functions, mapped;
+                                                            $('#desa1').typeahead({
+                                                                minLength: 1,
+                                                                source: function (query, process) {
+                                                                    functions = [];
+                                                                    mapped = {};
+
+                                                                    var data = [];
+                                                                    dwr.engine.setAsync(false);
+                                                                    ProvinsiAction.initComboDesa(query, kec, function (listdata) {
+                                                                        data = listdata;
+                                                                    });
+                                                                    $.each(data, function (i, item) {
+                                                                        //alert(item.kotaName);
+                                                                        var labelItem = item.desaName;
+                                                                        mapped[labelItem] = { id: item.desaId, label: labelItem };
+                                                                        functions.push(labelItem);
+                                                                    });
+
+                                                                    process(functions);
+                                                                },
+                                                                updater: function (item) {
+                                                                    var selectedObj = mapped[item];
+                                                                    var namaAlat = selectedObj.label;
+                                                                    document.getElementById("desa11").value = selectedObj.id;
+
+                                                                    desa = selectedObj.id;
+                                                                    return namaAlat;
+                                                                }
+                                                            });
+                                                        </script>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>RT / RW :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="rtRw1" name="biodata.rtRw" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="rtRw1" name="biodata.rtRw" required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Dokter Tamu <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield id="dokterKso" name="biodata.flagDokterKso" value="Y" readonly="true" cssClass="form-control" />
+                                                        </s:if>
+                                                        <s:elseif test="isDelete()">
+                                                            <s:textfield id="dokterKso" name="biodata.flagDokterKso" readonly="true" cssClass="form-control" />
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <s:textfield id="dokterKso" name="biodata.flagDokterKso" readonly="true" cssClass="form-control" />
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Foto :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:file id="fileUpload" name="fileUpload" cssClass="form-control" disabled="true" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:file id="fileUpload" name="fileUpload" cssClass="form-control" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield cssStyle="text-align: left;" readonly="true"
+                                                                         cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Shift <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;" readonly="true" value="Y" cssClass="form-control" id="shift" name="biodata.shift" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;" readonly="true" cssClass="form-control" id="shift" name="biodata.shift" />
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label style="color: red;"><small>Aktif :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()"/>
+                                                            <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag" value="Y" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()"/>
+                                                            <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag" value="Y" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <hr>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <hr>
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </table>
-                                    </td>
-                                </tr>
-                                <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Unit * :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:if test="isDelete()">
-                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
-                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                </s:if>
-                                                <s:else>
-                                                    <%--<s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"--%>
-                                                    <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table width="100%">
+                                            <tr>
+                                                <td>
+                                                    <label><small>Bank :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:select list="#{'-':'', 'mandiri':'Mandiri', 'bri' : 'BRI', 'bni' : 'BNI',
+                                                        'bca' : 'BCA', 'bca syariah' : 'BCA Syariah', 'btn' : 'BTN'}" id="namaBank" name="biodata.namaBank"
+                                                                      cssClass="form-control" disabled="true" />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:select list="#{'-':'', 'mandiri':'Mandiri', 'bri' : 'BRI', 'bni' : 'BNI',
+                                                        'bca' : 'BCA', 'bca syariah' : 'BCA Syariah', 'btn' : 'BTN'}" id="namaBank" name="biodata.namaBank"
+                                                                      cssClass="form-control" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
 
-                                                    <s:if test='biodata.branch == "KP"'>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                    </s:if>
-                                                    <s:else>
-                                                        <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
-                                                                  listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                        <s:hidden id="branchId" name="biodata.branch"/>
-                                                    </s:else>
-                                                </s:else>
-                                                <s:textfield type="text" cssStyle="display: none" id="posisi2" name="biodata.positionId2"/>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:if>
-                                <s:else>
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Unit * :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                <s:if test='biodata.branch == "KP"'>
-                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
-                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                </s:if>
-                                                <s:else>
-                                                    <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" disabled="true"
-                                                              listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                    <s:hidden id="branchId" name="biodata.branch"/>
-                                                </s:else>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:else>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Cabang Bank :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
 
-                                <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Bidang :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                                <s:if test="isDelete()">
-                                                    <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" disabled="true" readonly="true"
-                                                              listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                </s:if>
-                                                <s:else>
-                                                    <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
-                                                              listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                </s:else>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:if>
-                                <s:else>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Bidang :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
-                                            <s:select list="#comboDivisi.listComboDepartment" id="divisi1" name="biodata.divisi" onchange="listPosisi()"
-                                                      listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
+                                            <tr>
+                                                <td>
+                                                    <label><small>No. Rek Bank :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" cssClass="form-control"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>Finger Mobile :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <input type="checkbox" id="fingerMobile" class="checkZakat" disabled onchange="cekFingerMobile()" />
+                                                            <s:textfield cssStyle="display: none" id="flagFingerMobile" name="biodata.flagFingerMobile"  />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <input type="checkbox" id="fingerMobile" class="checkZakat" onchange="cekFingerMobile()" />
+                                                            <s:hidden id="flagFingerMobile" name="biodata.flagFingerMobile"  />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
                                         </table>
-                                    </td>
-                                </tr>
-                                </s:else>
-
-                                <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Jabatan :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                <s:if test="isDelete()">
-                                                    <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId" disabled="true"
-                                                              listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                </s:if>
-                                                <s:else>
-                                                    <select id="positionId1" name="biodata.positionId" class="form-control"></select>
-                                                </s:else>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:if>
-                                <s:else>
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Jabatan :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                <select id="positionId1" name="biodata.positionId" class="form-control"></select>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:else>
-
-                                <s:if test="isDelete()">
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Profesi :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
-                                                <s:if test="isDelete()">
-                                                    <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
-                                                              listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                </s:if>
-                                                <s:else>
-                                                    <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
-                                                              listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                                </s:else>
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:if>
-                                <s:else>
-                                    <tr>
-                                        <td>
-                                            <label class="control-label"><small>Profesi :</small></label>
-                                        </td>
-                                        <td>
-                                            <table>
-                                                <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
-                                                <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
-                                                          listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
-                                            </table>
-                                        </td>
-                                    </tr>
-                                </s:else>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Gelar Depan :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="gelarDepan1" name="biodata.gelarDepan" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="gelarDepan1" name="biodata.gelarDepan" required="true" disabled="false" readonly="false" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Gelar Belakang :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="gelarBelakang1" name="biodata.gelarBelakang" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>No KTP * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" readonly="true" cssClass="form-control"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="noKtp1" type="number" name="biodata.noKtp" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>No Telp :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="noTelp1" type="number" name="biodata.noTelp" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Alamat :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textarea id="alamat1" rows="3" name="biodata.alamat" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textarea id="alamat1" rows="3" name="biodata.alamat" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Provinsi :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="provinsi11" name="biodata.provinsiName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="provinsi1" name="biodata.provinsiName"  required="true" disabled="false" cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none" id="provinsi11" name="biodata.provinsiId" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                            <script type='text/javascript'>
-                                                var functions, mapped;
-                                                $('#provinsi1').typeahead({
-                                                    minLength: 1,
-                                                    source: function (query, process) {
-                                                        functions = [];
-                                                        mapped = {};
-
-                                                        var data = [];
-                                                        dwr.engine.setAsync(false);
-                                                        ProvinsiAction.initComboProvinsi(query, function (listdata) {
-                                                            data = listdata;
-                                                        });
-
-                                                        $.each(data, function (i, item) {
-                                                            var labelItem = item.provinsiName;
-                                                            mapped[labelItem] = { id: item.provinsiId, label: labelItem };
-                                                            functions.push(labelItem);
-                                                        });
-
-                                                        process(functions);
-                                                    },
-                                                    updater: function (item) {
-                                                        var selectedObj = mapped[item];
-                                                        var namaAlat = selectedObj.label;
-                                                        document.getElementById("provinsi11").value = selectedObj.id;
-                                                        prov = selectedObj.id ;
-                                                        return namaAlat;
-                                                    }
-                                                });
-                                                //
-                                                //
-                                            </script>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Kabupaten :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="kabupaten1" name="biodata.kotaName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="kabupaten1" required="true" disabled="false" name="biodata.kotaName" cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none" id="kabupaten11" name="biodata.kabupatenId" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                            <script type='text/javascript'>
-                                                var functions, mapped;
-                                                // var prov = document.getElementById("provinsi1").value;
-                                                $('#kabupaten1').typeahead({
-                                                    minLength: 1,
-                                                    source: function (query, process) {
-                                                        functions = [];
-                                                        mapped = {};
-
-                                                        var data = [];
-                                                        dwr.engine.setAsync(false);
-                                                        ProvinsiAction.initComboKota(query, prov, function (listdata) {
-                                                            data = listdata;
-                                                        });
-                                                        $.each(data, function (i, item) {
-                                                            //alert(item.kotaName);
-                                                            var labelItem = item.kotaName;
-                                                            mapped[labelItem] = { id: item.kotaId, label: labelItem };
-                                                            functions.push(labelItem);
-                                                        });
-
-                                                        process(functions);
-                                                    },
-                                                    updater: function (item) {
-                                                        var selectedObj = mapped[item];
-                                                        var namaAlat = selectedObj.label;
-                                                        document.getElementById("kabupaten11").value = selectedObj.id;
-
-                                                        kab = selectedObj.id ;
-                                                        return namaAlat;
-                                                    }
-                                                });
-
-                                                //
-                                                //
-                                            </script>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Kecamatan :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="kecamatan1" name="biodata.kecamatanName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="kecamatan1" name="biodata.kecamatanName" required="true" disabled="false" cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none" id="kecamatan11" name="biodata.kecamatanId" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                            <script type='text/javascript'>
-                                                var functions, mapped;
-                                                var kab = document.getElementById("kabupaten1").value;
-                                                $('#kecamatan1').typeahead({
-                                                    minLength: 1,
-                                                    source: function (query, process) {
-                                                        functions = [];
-                                                        mapped = {};
-
-                                                        var data = [];
-                                                        dwr.engine.setAsync(false);
-                                                        ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
-                                                            data = listdata;
-                                                        });
-                                                        $.each(data, function (i, item) {
-                                                            //alert(item.kotaName);
-                                                            var labelItem = item.kecamatanName;
-                                                            mapped[labelItem] = { id: item.kecamatanId, label: labelItem };
-                                                            functions.push(labelItem);
-                                                        });
-
-                                                        process(functions);
-                                                    },
-                                                    updater: function (item) {
-                                                        var selectedObj = mapped[item];
-                                                        var namaAlat = selectedObj.label;
-                                                        document.getElementById("kecamatan11").value = selectedObj.id;
-
-                                                        kec = selectedObj.id;
-                                                        return namaAlat;
-                                                    }
-                                                });
-                                            </script>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Desa :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="desa1" name="biodata.desaName" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="desa1" required="true" disabled="false" name="biodata.desaName" cssClass="form-control"/>
-                                                <s:textfield cssStyle="display: none" id="desa11" name="biodata.desaId" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                            <script type='text/javascript'>
-                                                var functions, mapped;
-                                                $('#desa1').typeahead({
-                                                    minLength: 1,
-                                                    source: function (query, process) {
-                                                        functions = [];
-                                                        mapped = {};
-
-                                                        var data = [];
-                                                        dwr.engine.setAsync(false);
-                                                        ProvinsiAction.initComboDesa(query, kec, function (listdata) {
-                                                            data = listdata;
-                                                        });
-                                                        $.each(data, function (i, item) {
-                                                            //alert(item.kotaName);
-                                                            var labelItem = item.desaName;
-                                                            mapped[labelItem] = { id: item.desaId, label: labelItem };
-                                                            functions.push(labelItem);
-                                                        });
-
-                                                        process(functions);
-                                                    },
-                                                    updater: function (item) {
-                                                        var selectedObj = mapped[item];
-                                                        var namaAlat = selectedObj.label;
-                                                        document.getElementById("desa11").value = selectedObj.id;
-
-                                                        desa = selectedObj.id;
-                                                        return namaAlat;
-                                                    }
-                                                });
-                                            </script>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>RT / RW :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="rtRw1" name="biodata.rtRw" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="rtRw1" name="biodata.rtRw" required="true" disabled="false" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Dokter Tamu * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isAdd()">
-                                                <s:textfield id="dokterKso" name="biodata.flagDokterKso" value="Y" readonly="true" cssClass="form-control" />
-                                            </s:if>
-                                            <s:elseif test="isDelete()">
-                                                <s:textfield id="dokterKso" name="biodata.flagDokterKso" readonly="true" cssClass="form-control" />
-                                            </s:elseif>
-                                            <s:else>
-                                                <s:textfield id="dokterKso" name="biodata.flagDokterKso" readonly="true" cssClass="form-control" />
-                                            </s:else>
-
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Foto :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:file id="fileUpload" name="fileUpload" cssClass="form-control" disabled="true" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:file id="fileUpload" name="fileUpload" cssClass="form-control" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true"
-                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;"
-                                                             cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
-                                            </s:else>
-
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Shift * :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isAdd()">
-                                                <s:textfield cssStyle="text-align: left;" readonly="true" value="Y" cssClass="form-control" id="shift" name="biodata.shift" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield cssStyle="text-align: left;" readonly="true" cssClass="form-control" id="shift" name="biodata.shift" />
-                                            </s:else>
-
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <label class="control-label" style="color: red;"><small>Aktif :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()"/>
-                                                <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag" value="Y" />
-                                            </s:if>
-                                            <s:else>
-                                                <input type="checkbox" id="aktif" class="checkZakat" disabled onchange="cekAktif()"/>
-                                                <s:textfield cssStyle="display: none" id="flagAktif" name="biodata.flag" value="Y" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <hr>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <hr>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Bank :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:select list="#{'-':'', 'mandiri':'Mandiri', 'bri' : 'BRI', 'bni' : 'BNI',
-                                            'bca' : 'BCA', 'bca syariah' : 'BCA Syariah', 'btn' : 'BTN'}" id="namaBank" name="biodata.namaBank"
-                                                          cssClass="form-control" disabled="true" />
-                                            </s:if>
-                                            <s:else>
-                                                <s:select list="#{'-':'', 'mandiri':'Mandiri', 'bri' : 'BRI', 'bni' : 'BNI',
-                                            'bca' : 'BCA', 'bca syariah' : 'BCA Syariah', 'btn' : 'BTN'}" id="namaBank" name="biodata.namaBank"
-                                                          cssClass="form-control" />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Cabang Bank :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="cabangBank" name="biodata.cabangBank" required="true" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>No. Rek Bank :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                            </s:if>
-                                            <s:else>
-                                                <s:textfield id="noRekBank" type="number" name="biodata.noRekBank" required="true" cssClass="form-control"/>
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-
-                                <tr>
-                                    <td>
-                                        <label class="control-label"><small>Finger Mobile :</small></label>
-                                    </td>
-                                    <td>
-                                        <table>
-                                            <s:if test="isDelete()">
-                                                <input type="checkbox" id="fingerMobile" class="checkZakat" disabled onchange="cekFingerMobile()" />
-                                                <s:textfield cssStyle="display: none" id="flagFingerMobile" name="biodata.flagFingerMobile"  />
-                                            </s:if>
-                                            <s:else>
-                                                <input type="checkbox" id="fingerMobile" class="checkZakat" onchange="cekFingerMobile()" />
-                                                <s:hidden id="flagFingerMobile" name="biodata.flagFingerMobile"  />
-                                            </s:else>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div id="keluarga" class="tab-pane fade">
                             <h3>Keluarga
