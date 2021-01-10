@@ -29,6 +29,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="persenGaji">
+                <column name="persen_gaji"/>
+            </basic>
+            <basic name="flagDefault">
+                <column name="flag_default"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

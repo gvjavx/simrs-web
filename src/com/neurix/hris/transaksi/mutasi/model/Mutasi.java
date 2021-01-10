@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.mutasi.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -72,6 +73,15 @@ public class Mutasi extends BaseModel {
     private String flagDigaji;
     private String jenisPegawaiName;
     private String updatePosisiId;
+    private String stTanggalKeluar;
+
+    public String getStTanggalKeluar() {
+        return stTanggalKeluar;
+    }
+
+    public void setStTanggalKeluar(String stTanggalKeluar) {
+        this.stTanggalKeluar = stTanggalKeluar;
+    }
 
     public String getUpdatePosisiId() {
         return updatePosisiId;

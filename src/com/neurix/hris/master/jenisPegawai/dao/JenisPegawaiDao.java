@@ -40,6 +40,18 @@ public class JenisPegawaiDao extends GenericDao<ImHrisJenisPegawaiEntity, String
             if (mapCriteria.get("tipe_payroll_name")!=null) {
                 criteria.add(Restrictions.ilike("jenisPegawaiName", "%" + (String)mapCriteria.get("tipe_payroll_name") + "%"));
             }
+
+            // Sigit 2020-01-10
+            if (mapCriteria.get("jenis_pegawai_id")!=null) {
+                criteria.add(Restrictions.eq("jenisPegawaiId", (String) mapCriteria.get("jenis_pegawai_id")));
+            }
+            if (mapCriteria.get("jenis_pegawai_name")!=null) {
+                criteria.add(Restrictions.ilike("jenisPegawaiName", "%" + (String)mapCriteria.get("jenis_pegawai_name") + "%"));
+            }
+            if (mapCriteria.get("flag_default") != null)
+                criteria.add(Restrictions.eq("flagDefault", (String) mapCriteria.get("flag_default")));
+            // END
+
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
