@@ -729,6 +729,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[80].toString())));
             }
 
+            result.setFlagPegawaiCutiDiluarTanggungan((String) row[82]);
+            result.setTanggalCutiDiluarAwal((Date) row[83]);
+            result.setTanggalCutiDiluarAkhir((Date) row[84]);
             result.setBagianId((String) row[85]);
             result.setBagianName((String) row[86]);
             result.setProfesiId((String)row[87]);
@@ -754,6 +757,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
         return listOfResult;
     }
+
     public List<ImBiodataEntity> getPegawaiJubilium6bulan(String tanggalSekarang,String tanggal6Bulan) throws HibernateException {
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();

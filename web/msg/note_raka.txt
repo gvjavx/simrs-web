@@ -47,13 +47,13 @@
 -- Menambahkan sequence [seq_payroll_skala_gaji_pensiun_history]
 -- Menambahkan column [masa_kerja_gol] pada [im_hris_pyroll_skala_gaji_pensiun]
 
-    CREATE SEQUENCE public.seq_payroll_skala_gaji_pensiun_history;
+    --CREATE SEQUENCE public.seq_payroll_skala_gaji_pensiun_history;
 
     ALTER TABLE im_hris_payroll_skala_gaji_pensiun
-            ADD masa_kerja_gol int NOT NULL;
+            ADD masa_kerja_gol int;
 
     ALTER TABLE im_hris_payroll_skala_gaji_pensiun_history
-                ADD masa_kerja_gol int NOT NULL;
+                ADD masa_kerja_gol int;
 
 ------ 2020-12-21 ===> MANY QUERY
 --------------------------------------------------
@@ -135,7 +135,7 @@
 TRUNCATE im_hris_payroll_skala_gaji_pensiun;
 
 INSERT INTO im_hris_payroll_skala_gaji_pensiun(skala_gaji_pensiun_id, golongan_id, masa_kerja_gol, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id)
-SELECT skala_gaji_pensiun_rni_id, golongan_id, masa_kerja_gol, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id FROM im_hris_payroll_skala_gaji_dapenbun;
+SELECT skala_gaji_pensiun_rni_id, golongan_id, poin, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id FROM im_hris_payroll_skala_gaji_dapenbun;
 
 UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(skala_gaji_pensiun_id,'DRNI', 'SGP0');
 
@@ -316,6 +316,12 @@ UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(sk
     		('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 70,'Y' ),
     		('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 60, 'Y');
 
+------ from Sigit ------
+    ALTER TABLE im_position
+        ADD COLUMN status_pegawai VARCHAR(5);
+
+    ALTER TABLE im_hris_kelompok_position
+        ADD COLUMN flag_is_multiple_person VARCHAR(1);
 
     ------------------------------------
     ----  BUTUH PENYESUAIAN AKIBAT  ----

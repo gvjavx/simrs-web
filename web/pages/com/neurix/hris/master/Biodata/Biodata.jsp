@@ -1396,6 +1396,30 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
+                                            <s:if test='biodata.flagCutiDiluarTanggungan == "Y"'>
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Cuti Luar Tanggungan:</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <s:textfield id="cutiLuarTanggungAwal" name="biodata.stTanggalCutiDiluarTanggunganAwal" disabled="false" cssClass="form-control col-md-4" readonly="true"/>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label style="padding-top: 20%;" ><small>hingga</small></label>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <s:textfield id="cutiLuarTanggungAkhir" name="biodata.stTanggalCutiDiluarTanggunganAkhir" disabled="false" cssClass="form-control col-md-4" readonly="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </s:if>
+
                                                 <%--<tr>--%>
                                                 <%--<td>--%>
                                                 <%--<label><small>Zakat Profesi :</small></label>--%>

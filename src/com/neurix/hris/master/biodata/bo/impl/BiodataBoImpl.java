@@ -81,6 +81,7 @@ import org.springframework.web.context.ContextLoader;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -2248,6 +2249,15 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlagBpjsKs(personalEntity.getFlagBpjsKs());
                     returnBiodata.setFlagBpjsTk(personalEntity.getFlagBpjsTk());
 //                    returnBiodata.setFlagPercobaan(personalEntity.getFlagPercobaan()); //RAKA-delete
+
+                    returnBiodata.setFlagCutiDiluarTanggungan(personalEntity.getFlagPegawaiCutiDiluarTanggungan());
+                    returnBiodata.setTanggalCutiDiluarTanggunganAwal(personalEntity.getTanggalCutiDiluarAwal());
+                    returnBiodata.setTanggalCutiDiluarTanggunganAkhir(personalEntity.getTanggalCutiDiluarAkhir());
+
+                    if("Y".equalsIgnoreCase(returnBiodata.getFlagCutiDiluarTanggungan())) {
+                        returnBiodata.setStTanggalCutiDiluarTanggunganAwal(CommonUtil.convertDateToString(personalEntity.getTanggalCutiDiluarAwal()));
+                        returnBiodata.setStTanggalCutiDiluarTanggunganAkhir(CommonUtil.convertDateToString(personalEntity.getTanggalCutiDiluarAkhir()));
+                    }
 
                     returnBiodata.setCreatedWho(personalEntity.getCreatedWho());
                     returnBiodata.setCreatedDate(personalEntity.getCreatedDate());
