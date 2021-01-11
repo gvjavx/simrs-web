@@ -697,18 +697,20 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             if ((String) row[11]!=null){
                 result.setNip((String) row[11]);
                 result.setNamaPegawai((String) row[12]);
-            } else{
-                String position = (String) row[8];
-                String queryPlt = "select * from im_hris_pegawai where position_plt_id='"+position+"'";
-                results2 = this.sessionFactory.getCurrentSession()
-                        .createSQLQuery(queryPlt)
-                        .list();
-
-                for (Object[] obj : results2){
-                    result.setNip((String) obj[0]);
-                    result.setNamaPegawai((String) obj[1]);
-                }
             }
+
+//            else{
+//                String position = (String) row[8];
+//                String queryPlt = "select * from im_hris_pegawai where position_plt_id='"+position+"'";
+//                results2 = this.sessionFactory.getCurrentSession()
+//                        .createSQLQuery(queryPlt)
+//                        .list();
+//
+//                for (Object[] obj : results2){
+//                    result.setNip((String) obj[0]);
+//                    result.setNamaPegawai((String) obj[1]);
+//                }
+//            }
 
             // row terakhir sebelum perubahan
             result.setPositionName((String) row[13]);

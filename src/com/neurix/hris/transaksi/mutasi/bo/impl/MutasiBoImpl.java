@@ -470,31 +470,31 @@ public class MutasiBoImpl implements MutasiBo {
                     itDoc.setLastUpdate(bean.getLastUpdate());
 
                     //update tanggal akhir jabatan lama di history jabatan pegawai
-                    String HistoryJabatanId;
-                    ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
-                    try{
-                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(mutasi.getNip());
-                        if (HistoryJabatanId!=null){
-                            if (!HistoryJabatanId.equalsIgnoreCase("")){
-                                pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
-                                pengalamanLama.setTanggalKeluar(bean.getStTanggalEfektif());
-                                pengalamanLama.setJabatanFlag("N");
-                                historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
-                            }else{
-                                String status = "ERROR : history jabatan terakhir tidak ditemukan ";
-                                logger.error("[PengalamanKerjaBoImpl.saveEdit] "+ status);
-                                throw new GeneralBOException(status);
-                            }
-                        }else{
-                            String status = "ERROR : history jabatan terakhir tidak ditemukan ";
-                            logger.error("[PengalamanKerjaBoImpl.saveEdit] "+ status);
-                            throw new GeneralBOException(status);
-                        }
-
-                    }catch (HibernateException e) {
-                        logger.error("[PengalamanKerjaBoImpl.saveEdit] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
-                    }
+//                    String HistoryJabatanId;
+//                    ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
+//                    try{
+//                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(mutasi.getNip());
+//                        if (HistoryJabatanId!=null){
+//                            if (!HistoryJabatanId.equalsIgnoreCase("")){
+//                                pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
+//                                pengalamanLama.setTanggalKeluar(bean.getStTanggalEfektif());
+//                                pengalamanLama.setJabatanFlag("N");
+//                                historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
+//                            }else{
+//                                String status = "ERROR : history jabatan terakhir tidak ditemukan ";
+//                                logger.error("[PengalamanKerjaBoImpl.saveEdit] "+ status);
+//                                throw new GeneralBOException(status);
+//                            }
+//                        }else{
+//                            String status = "ERROR : history jabatan terakhir tidak ditemukan ";
+//                            logger.error("[PengalamanKerjaBoImpl.saveEdit] "+ status);
+//                            throw new GeneralBOException(status);
+//                        }
+//
+//                    }catch (HibernateException e) {
+//                        logger.error("[PengalamanKerjaBoImpl.saveEdit] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
+//                    }
 
                     String tgl[] = CommonUtil.convertTimestampToString(bean.getCreatedDate()).split("-");
                     if (("M").equalsIgnoreCase(mutasi.getStatus())||("R").equalsIgnoreCase(mutasi.getStatus())){
@@ -733,14 +733,16 @@ public class MutasiBoImpl implements MutasiBo {
                         personilPositionEntity.setPersonilPositionId(getNextSeqPersonilPositionId());
                         personilPositionEntity.setNip(mutasi.getNip());
                         personilPositionEntity.setBranchId(mutasi.getBranchBaruId());
+                        personilPositionEntity.setProfesiId(mutasi.getProfesiBaruId());
+                        personilPositionEntity.setPositionId(mutasi.getPositionBaruId());
+                        personilPositionEntity.setJenisPegawai(mutasi.getJenisPegawaiId());
+                        personilPositionEntity.setFlagDigaji(mutasi.getFlagDigaji());
                         personilPositionEntity.setFlag("Y");
+                        personilPositionEntity.setAction("C");
                         personilPositionEntity.setCreatedDate(mutasi.getLastUpdate());
                         personilPositionEntity.setCreatedWho(mutasi.getLastUpdateWho());
                         personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
                         personilPositionEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
-                        personilPositionEntity.setProfesiId(mutasi.getProfesiBaruId());
-                        personilPositionEntity.setJenisPegawai(mutasi.getJenisPegawaiId());
-                        personilPositionEntity.setFlagDigaji(mutasi.getFlagDigaji());
 
                         try {
                             personilPositionDao.addAndSave(personilPositionEntity);
