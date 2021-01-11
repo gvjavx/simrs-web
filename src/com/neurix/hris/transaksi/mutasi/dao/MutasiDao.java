@@ -1,11 +1,13 @@
 
 package com.neurix.hris.transaksi.mutasi.dao;
 
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
 import com.neurix.hris.transaksi.mutasi.model.Mutasi;
 import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
 import com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -366,6 +368,55 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public List<Position> getListOtherPosition(String positionId, String nip) throws HibernateException{
+
+        String SQL = "SELECT pp.position_id, p.position_name FROM it_hris_pegawai_position pp\n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_Id\n" +
+                "WHERE pp.flag = 'Y'\n" +
+                "AND pp.position_id != :position \n" +
+                "AND pp.nip = :nip ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("position", positionId)
+                .setParameter("nip", nip)
+                .list();
+
+        List<Position> positions = new ArrayList<>();
+        if (results.size() > 0){
+            Position position;
+            for (Object[] obj : results){
+                position = new Position();
+                position.setPositionId(obj[0].toString());
+                position.setPositionName(obj[1].toString());
+                positions.add(position);
+            }
+        }
+
+        return positions;
+    }
+
+    public Boolean checkJenisPegawaiIsDefaultWithNip(String nip, String positionId){
+
+        String SQL = "SELECT jp.jenis_pegawai_id, jp.jenis_pegawai_name  \n" +
+                "FROM it_hris_pegawai_position pp\n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "INNER JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.flag = 'Y' \n" +
+                "AND jp.flag_default = 'Y' \n" +
+                "AND pp.nip = :nip \n" +
+                "AND pp.position_id = :position";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("position", positionId)
+                .list();
+
+        if (results != null && results.size() > 0)
+            return true;
+
+        return false;
     }
 
 }

@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.mutasi.bo.impl;
 
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
@@ -1431,5 +1432,37 @@ public class MutasiBoImpl implements MutasiBo {
 
         logger.info("[MutasiBoImpl.getJenisListPegawaiEntity] END <<<");
         return jenisPegawaiEntities;
+    }
+
+    @Override
+    public List<Position> getListOtherPosition(String positionId, String nip) {
+        logger.info("[MutasiBoImpl.getListOtherPosition] START >>>");
+
+        List<Position> positions = new ArrayList<>();
+        try {
+            positions = mutasiDao.getListOtherPosition(positionId, nip);
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.getListOtherPosition] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when search list other position, please inform to your admin...," + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.getListOtherPosition] END <<<");
+        return positions;
+    }
+
+    @Override
+    public Boolean checkJenisPegawaiDefault(String nip, String positionId) {
+        logger.info("[MutasiBoImpl.checkJenisPegawaiDefault] START >>>");
+
+        Boolean found = false;
+        try {
+            found = mutasiDao.checkJenisPegawaiIsDefaultWithNip(nip, positionId);
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.checkJenisPegawaiDefault] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when check is jenis pegawai default, please inform to your admin...," + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.checkJenisPegawaiDefault] END <<<");
+        return found;
     }
 }

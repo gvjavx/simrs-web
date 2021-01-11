@@ -226,7 +226,6 @@
                                                 </tr>
                                             </table>
                                         </div>
-
                                         <br>
 
 
@@ -413,6 +412,8 @@
                                         $('#golonganLamaId2').val(selectedObj.golongan).change();
                                         $('#golonganBaruId2').val(selectedObj.golongan).change();
                                     }
+
+                                    checkAndReturnListPositionPengganti();
                                     return selectedObj.nama;
                                 }
                             });
@@ -561,7 +562,6 @@
                             </div>
                         </div>
 
-
                         <div class="form-group">
                             <label class="control-label col-sm-4" >PJS Baru:</label>
                             <div class="col-sm-8">
@@ -570,19 +570,31 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" > Jenis Jabatan : </label>
-                        <div class="col-sm-8">
-                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
-                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.jenisPegawai"
-                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                    <div id="panel_jenis_jabatan">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Jenis Jabatan : </label>
+                            <div class="col-sm-8">
+                                <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                                <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.jenisPegawai"
+                                          listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Digaji : </label>
+                            <div class="col-sm-8">
+                                <s:select list="#{'N':'Tidak'}" id="flagDigaji"
+                                          headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                            </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" > Digaji : </label>
-                        <div class="col-sm-8">
-                            <s:select list="#{'N':'Tidak'}" id="flagDigaji"
-                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                    <div id="panel_position_pengganti" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Pengganti Posisi Utama : </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="sel_position_pengganti">
+
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -715,130 +727,70 @@
     });
 
     $('.sppdPersonTable').on('click', '.item-edit', function(){
-        $("#nip2").attr("readonly", false);
-        /*$("#branchLamaId1").attr("disabled", false);
-        $("#positionLamaId1").attr("disabled", false);
-        $("#divisiLamaId1").attr("disabled", false);*/
-//        $("#branchBaruId1").prop("disabled", false);
-//        $("#divisiBaruId2").prop("disabled", false);
-//        $("#positionBaruId1").prop("disabled", false);
-//        $("#penggantiId").prop("disabled", false);
-//        $("#pjsBaru").prop("disabled", false);
-//
-//        $('#branchBaruId1').val('').change();
-//        $('#divisiBaruId2').val('').change();
-//        $('#positionBaruId1').val('').change();
-//        $('#penggantiId').val('').change();
+            $("#nip2").attr("readonly", false);
 
         var nip = $(this).attr('data');
         MutasiAction.searchMutasiPersonEdit(nip ,function(listdata) {
-            $.each(listdata, function (i, item) {
-//                $('#statusMutasi').val(item.status);
-//                $('#statusMutasi').prop("disabled", false);
-//                $('#nip1').val(item.nip);
-//                $('#nipOld').val(item.nip);
-//                $('#nip').val(item.nama);
-//
-//                $('#branchLamaId1').val(item.branchLamaId).change();
-//                $('#positionLamaId1').val(item.positionLamaId).change();
-//                $('#divisiLamaId1').val(item.divisiLamaId).change();
-                $('#statusMutasi').val(item.status);
-                $('#statusMutasi').prop("disabled", true);
-                $('#tipeMutasi').val(item.tipeMutasi);
-                $('#tipeMutasi').prop("disabled", true);
-                $('#nip1').val(item.nip);
-                $('#nip2').val(item.nama);
-                $('#nipOld').val(item.nip);
+                $.each(listdata, function (i, item) {
+                    $('#statusMutasi').val(item.status);
+                    $('#statusMutasi').prop("disabled", true);
+                    $('#tipeMutasi').val(item.tipeMutasi);
+                    $('#tipeMutasi').prop("disabled", true);
+                    $('#nip1').val(item.nip);
+                    $('#nip2').val(item.nama);
+                    $('#nipOld').val(item.nip);
 
-                $('#branchLamaId1').val(item.branchLamaId).change();
-                $('#positionLamaId1').val(item.positionLamaId).change();
-                $('#divisiLamaId1').val(item.divisiLamaId).change();
-//                $('#golonganLamaId1').val(item.levelLama).change();
-                console.log(item.tipePegawai);
-                if (item.tipePegawai == 'TP01'){
-                    $('#golonganLamaId1').val(item.levelLama).change();
-                }else {
-                    $('#golonganLamaId2').val(item.levelLama).change();
-                }
-                $('#golonganBaruId1').val(item.levelBaru).change();
+                    $('#branchLamaId1').val(item.branchLamaId).change();
+                    $('#positionLamaId1').val(item.positionLamaId).change();
+                    $('#divisiLamaId1').val(item.divisiLamaId).change();
 
-                if(item.status == "R" || item.status == "P"){
-                    $("#branchBaruId1").prop("disabled", true);
-                    $("#positionBaruId1").prop("disabled", true);
-                    $("#divisiBaruId2").prop("disabled", true);
-                    $("#penggantiId").prop("disabled", true);
-                    $("#pjsBaru").prop("disabled", true);
-                }else{
-                    //alert(item.positionBaruId);
-                    listPosisi(item.branchBaruId, item.divisiBaruId);
-                    $('#branchBaruId1').val(item.branchBaruId).change();
-                    $('#divisiBaruId2').val(item.divisiBaruId).change();
-                    $('#positionBaruId1').val(item.positionBaruId).change();
-                    $('#penggantiId').val(item.penggantiNip).change();
-                }
+                    console.log(item.tipePegawai);
+                    if (item.tipePegawai == 'TP01'){
+                        $('#golonganLamaId1').val(item.levelLama).change();
+                    }else {
+                        $('#golonganLamaId2').val(item.levelLama).change();
+                    }
+                    $('#golonganBaruId1').val(item.levelBaru).change();
 
-                $('#profesiLamaId1').val(item.profesiLamaId).change();
-                $('#profesiBaruId1').val(item.profesiBaruId).change();
+                    if(item.status == "R" || item.status == "P"){
+                        $("#branchBaruId1").prop("disabled", true);
+                        $("#positionBaruId1").prop("disabled", true);
+                        $("#divisiBaruId2").prop("disabled", true);
+                        $("#penggantiId").prop("disabled", true);
+                        $("#pjsBaru").prop("disabled", true);
+                    }else{
+                        listPosisi(item.branchBaruId, item.divisiBaruId);
+                        $('#branchBaruId1').val(item.branchBaruId).change();
+                        $('#divisiBaruId2').val(item.divisiBaruId).change();
+                        $('#positionBaruId1').val(item.positionBaruId).change();
+                        $('#penggantiId').val(item.penggantiNip).change();
+                    }
 
-                if(item.pjsLama == 'Y'){
-                    document.getElementById("pjsLama").checked = true;
-                    $("#txtPjsLama").val('Y');
-                }else{
-                    document.getElementById("pjsLama").checked = false;
-                    $("#txtPjsLama").val('N');
-                }
+                    $('#profesiLamaId1').val(item.profesiLamaId).change();
+                    $('#profesiBaruId1').val(item.profesiBaruId).change();
 
-                if(item.pjs == 'Y'){
-                    document.getElementById("pjsBaru").checked = true;
-                    $("#txtPjsBaru").val('Y');
-                }else{
-                    document.getElementById("pjsBaru").checked = false;
-                    $("#txtPjsBaru").val('N');
-                }
+                    if(item.pjsLama == 'Y'){
+                        document.getElementById("pjsLama").checked = true;
+                        $("#txtPjsLama").val('Y');
+                    }else{
+                        document.getElementById("pjsLama").checked = false;
+                        $("#txtPjsLama").val('N');
+                    }
 
-                //batas
-//                $('#statusMutasi').val(item.status);
-//                $('#statusMutasi').prop("disabled", true);
-//                $('#tipeMutasi').val(item.tipeMutasi);
-//                $('#tipeMutasi').prop("disabled", true);
-//                $('#nip1').val(item.nip);
-//                $('#nip2').val(item.nama);
-//
-//                $('#branchLamaId1').val(item.branchLamaId).change();
-//                $('#positionLamaId1').val(item.positionLamaId).change();
-//                $('#divisiLamaId1').val(item.divisiLamaId).change();
-//                $('#golonganLamaId1').val(item.levelLama).change();
-//                $('#golonganBaruId1').val(item.levelBaru).change();
-//
-//                //listPosisi(item.branchBaruId, item.divisiBaruId);
-//                $('#branchBaruId1').val(item.branchBaruId).change();
-//                $('#divisiBaruId2').val(item.divisiBaruId).change();
-//                $('#positionBaruId1').val(item.positionBaruId).change();
-//
-//
-//                if(item.pjsLama == 'Y'){
-//                    document.getElementById("pjsLama").checked = true;
-//                    $("#txtPjsLama").val('Y');
-//                }else{
-//                    document.getElementById("pjsLama").checked = false;
-//                    $("#txtPjsLama").val('N');
-//                }
-//
-//                if(item.pjs == 'Y'){
-//                    document.getElementById("pjsBaru").checked = true;
-//                    $("#txtPjsBaru").val('Y');
-//                }else{
-//                    document.getElementById("pjsBaru").checked = false;
-//                    $("#txtPjsBaru").val('N');
-//                }
-                //document.getElementById("Check1").checked = item.pjs;
+                    if(item.pjs == 'Y'){
+                        document.getElementById("pjsBaru").checked = true;
+                        $("#txtPjsBaru").val('Y');
+                    }else{
+                        document.getElementById("pjsBaru").checked = false;
+                        $("#txtPjsBaru").val('N');
+                    }
             });
-        });
 
-        $("#btnSave").html('Save');
-        $('#modal-edit').find('.modal-title').text('Edit Data');
-        $('#modal-edit').modal('show');
-        $('#myForm').attr('action', 'editPerson');
+            $("#btnSave").html('Save');
+            $('#modal-edit').find('.modal-title').text('Edit Data');
+            $('#modal-edit').modal('show');
+            $('#myForm').attr('action', 'editPerson');
+        })
     });
 
     $('.sppdPersonTable').on('click', '.item-delete', function(){
@@ -910,7 +862,10 @@
 
     });
 
-    $('#btnSave').click(function(){
+    function save() {
+
+        console.log("save KLIK");
+
         var url = $('#myForm').attr('action');
         var data = $('#myForm').serialize();
 
@@ -918,11 +873,10 @@
         var personName  = document.getElementById("nip2").value;
         var nipOld      = document.getElementById("nipOld").value;
 
-        var branchLamaId  = document.getElementById("branchLamaId1").value;
+        var branchLamaId    = document.getElementById("branchLamaId1").value;
         var divisiLamaId    = document.getElementById("divisiLamaId1").value;
-        var positionLamaId = document.getElementById("positionLamaId1").value;
-//        var levelLamaId = document.getElementById("golonganLamaId1").value;
-        var txtPjsLama = document.getElementById("txtPjsLama").value;
+        var positionLamaId  = document.getElementById("positionLamaId1").value;
+        var txtPjsLama      = document.getElementById("txtPjsLama").value;
 
         var branchLamaName      = $('#branchLamaId1 option:selected').text();
         var divisiLamaName      = $('#divisiLamaId1 option:selected').text();
@@ -930,22 +884,34 @@
 
         var branchBaruId        = document.getElementById("branchBaruId1").value;
         var divisiBaruId        = document.getElementById("divisiBaruId2").value;
-        var positionBaruId      = document.getElementById("positionBaruId1").value;
+
+        // jika status lepas maka ada pengganti
+        var positionBaruId      = "";
+        var positionBaruName    = "";
+        var positionPengganti   = "";
+        if (status == "L"){
+            positionBaruId      = $("#sel_position_pengganti option:selected").val();
+            positionBaruName    = $('#sel_position_pengganti option:selected').text();
+            positionPengganti   = positionBaruId;
+        } else {
+            positionBaruId      = document.getElementById("positionBaruId1").value;
+            positionBaruName    = $('#positionBaruId1 option:selected').text();
+        }
+        // END
+
         var txtPjsBaru          = document.getElementById("txtPjsBaru").value;
         var status              = document.getElementById("statusMutasi").value;
 
         var branchBaruName      = $('#branchBaruId1 option:selected').text();
         var divisiBaruName      = $('#divisiBaruId2 option:selected').text();
-        var positionBaruName    = $('#positionBaruId1 option:selected').text();
 
-        var profesiLamaId = document.getElementById("profesiLamaId1").value;
-        var profesiLamaName = $('#profesiLamaId1 option:selected').text();
-        var profesiBaruId = document.getElementById("profesiBaruId1").value;
-        var profesiBaruName = $('#profesiBaruId1 option:selected').text();
-        var jenisPegawaiId = $("#jenisPegawaiId option:selected").val();
-        var jenisPegawaiName = $("#jenisPegawaiId option:selected").text();
-        var flagDigaji = $("#flagDigaji option:selected").val();
-
+        var profesiLamaId       = document.getElementById("profesiLamaId1").value;
+        var profesiLamaName     = $('#profesiLamaId1 option:selected').text();
+        var profesiBaruId       = document.getElementById("profesiBaruId1").value;
+        var profesiBaruName     = $('#profesiBaruId1 option:selected').text();
+        var jenisPegawaiId      = $("#jenisPegawaiId option:selected").val();
+        var jenisPegawaiName    = $("#jenisPegawaiId option:selected").text();
+        var flagDigaji          = $("#flagDigaji option:selected").val();
 
         if (personName!=''&&branchLamaId!=''&&status!='') {
             if(url == 'addPerson'){
@@ -968,34 +934,31 @@
                     poisitionbaruname : positionBaruName,
                     txtpjsbaru : txtPjsBaru,
                     status : status,
-                    levellamaid : levelLamaId,
-                    levelbaruid : levelBaruId,
-                    levellamaname : levelLamaName,
-                    levelbaruname : levelBaruName,
                     profesilamaid : profesiLamaId,
                     profesilamaname : profesiLamaName,
                     profesibaruid : profesiBaruId,
                     profesibaruname : profesiBaruName,
-                    tipepegawai : tipePegawai,
                     jenispegawai : jenisPegawaiId,
                     jenispegawainame : jenisPegawaiName,
-                    flagdigaji : flagDigaji
-                   };
+                    flagdigaji : flagDigaji,
+                    positionPengganti : positionPengganti
+                };
 
                 var stobj = JSON.stringify(objadd);
+                console.log(objadd);
 
                 if (confirm('Are you sure you want to save this Record?')) {
                     dwr.engine.setAsync(false);
                     MutasiAction.saveAnggotaAdd(stobj, function(result) {
-                            if(result==""){
-                                alert('Data Successfully Added');
-                                $('#modal-edit').modal('hide');
-                                $('#myForm')[0].reset();
-                                loadPerson();
-                            }else{
-                                alert(result);
-                            }
-                        });
+                        if(result==""){
+                            alert('Data Successfully Added');
+                            $('#modal-edit').modal('hide');
+                            $('#myForm')[0].reset();
+                            loadPerson();
+                        }else{
+                            alert(result);
+                        }
+                    });
                 }
             }else if(url == 'editPerson'){
                 if(status == 'M'){
@@ -1067,6 +1030,19 @@
             }
             alert(msg);
         }
+    }
+
+    $('#btnSave').click(function(){
+
+        console.log("Klik Btn Save. ");
+        MutasiAction.checkIsAvailInSession(nip, function(res){
+            if (res.status == "error"){
+                alert(res.msg);
+            } else {
+                // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
+                save();
+            }
+        });
     });
 
     function cekJabatan(){
@@ -1143,6 +1119,10 @@
             $("#tipeMutasi").prop("disabled", false);
         }else{
 
+            if (status == "L" || status == "RS"){
+                $("#panel_jenis_jabatan").hide();
+            }
+
             $("#panel-awal").show();
             $("#panel-target").hide();
 
@@ -1199,7 +1179,9 @@
             $('#branchBaruId1').val($('#branchLamaId1').val());
             listDivisi();
         }
-    }
+    };
+
+
 </script>
 
 
