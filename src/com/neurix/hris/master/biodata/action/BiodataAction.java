@@ -702,6 +702,13 @@ public class BiodataAction extends BaseMasterAction{
                         editBiodata.setTanggalPraPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPraPensiun()));
                     }
 
+                    //RAKA-11JAN2021 ==> Menonaktifkan Cuti Diluar Tanggungan
+                    if ("N".equalsIgnoreCase(editBiodata.getFlagCutiDiluarTanggungan())) {
+                        editBiodata.setTanggalCutiDiluarTanggunganAwal(null);
+                        editBiodata.setTanggalCutiDiluarTanggunganAkhir(null);
+                    }
+                    //RAKA-end
+
 //                    //BARU
 //                    if (editBiodata.getStPeralihanGapok() != null && !"".equalsIgnoreCase(editBiodata.getStPeralihanGapok())){
 //                        editBiodata.setPeralihanGapok(CommonUtil.StringDenganFormatToBigDecimal(editBiodata.getStPeralihanGapok()));

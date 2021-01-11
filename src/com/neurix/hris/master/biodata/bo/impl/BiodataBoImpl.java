@@ -743,6 +743,12 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setPeralihanSankhus(bean.getPeralihanSankhus());
                                 imBiodataEntity.setPeralihanTunjangan(bean.getPeralihanTunjangan());
 
+                                //RAKA-11JAN2021 ==> Menonaktifkan Cuti Diluar Tanggungan
+                                imBiodataEntity.setFlagPegawaiCutiDiluarTanggungan(bean.getFlagCutiDiluarTanggungan());
+                                imBiodataEntity.setTanggalCutiDiluarAwal(bean.getTanggalCutiDiluarTanggunganAwal());
+                                imBiodataEntity.setTanggalCutiDiluarAkhir(bean.getTanggalCutiDiluarTanggunganAkhir());
+                                //RAKA-end
+
 //                            if(itPersonilPositionEntity != null){
 //                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
 //                                    itPerson.setBranchId(bean.getBranch());

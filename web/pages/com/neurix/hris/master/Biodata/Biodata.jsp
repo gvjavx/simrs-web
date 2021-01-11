@@ -1404,6 +1404,24 @@
                                                     </td>
                                                     <td>
                                                         <table>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" class="checkZakat" id="flagCutiLuar" disabled onchange="cekCuti()"/>
+                                                                <s:textfield cssStyle="display: none"  id="flagCuti" name="biodata.flagCutiDiluarTanggungan"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" class="checkZakat"  id="flagCutiLuar" onchange="cekCuti()"/>
+                                                                <s:textfield cssStyle="display: none"  id="flagCuti" name="biodata.flagCutiDiluarTanggungan"/>
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Tanggal Cuti :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
                                                             <div class="row">
                                                                 <div class="col-md-5">
                                                                     <s:textfield id="cutiLuarTanggungAwal" name="biodata.stTanggalCutiDiluarTanggunganAwal" disabled="false" cssClass="form-control col-md-4" readonly="true"/>
@@ -3373,6 +3391,12 @@
             document.getElementById("bpjsTk").checked = true;
         } else {
             document.getElementById("bpjsTk").checked = false;
+        }
+        var flagCutiLuar = document.getElementById("flagCuti").value;
+        if(flagCutiLuar == "Y") {
+            document.getElementById("flagCutiLuar").checked = true;
+        } else {
+            document.getElementById("flagCutiLuar").checked = false;
         }
 
         window.loadStudy= function(nip){
@@ -5898,6 +5922,16 @@
             $("#flagAktif").val("Y");
         } else {
             $("#flagAktif").val("N");
+        }
+    }
+
+    window.cekCuti = function () {
+        if (document.getElementById('flagCutiLuar').checked == true) {
+            $("#flagCuti").val("Y");
+        } else {
+            if (confirm('Apakah anda yakin mengakhiri Cuti Diluar Tanggungan ?')) {
+                $("#flagCuti").val("N");
+            }
         }
     }
 
