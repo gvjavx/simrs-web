@@ -9,4 +9,5 @@ public interface LicenseZebraBo {
     public List<LicenseZebra> getByCriteria(LicenseZebra bean) throws GeneralBOException;
     public boolean isKeyAvailable(String licenseKey, String deviceId) throws GeneralBOException;
     public void updateFlag(LicenseZebra bean) throws GeneralBOException;
+    public void saveAdd(LicenseZebra bean) throws GeneralBOException;
 }

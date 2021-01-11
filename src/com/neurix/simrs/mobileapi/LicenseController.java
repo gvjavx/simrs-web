@@ -101,11 +101,12 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getZebraKey")) {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
-//            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-//            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+            bean.setLicenseKey(encodedLicenseKey);
             bean.setDeviceId(deviceId);
 
             try {
@@ -164,17 +165,21 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("saveAdd")) {
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            String hashedKey = passwordEncoder.encodePassword(licenseKey,null);
+
+            bean.setLicenseKey(hashedKey);
             bean.setDeviceId(deviceId);
             bean.setCreatedWho("admin");
             bean.setCreatedDate(now);
             bean.setLastUpdate(now);
             bean.setLastUpdateWho("admin");
-            bean.setFlag("C");
-            bean.setAction("Y");
+            bean.setFlag("Y");
+            bean.setAction("C");
 
             try {
-
+                licenseZebraBoProxy.saveAdd(bean);
             } catch (GeneralBOException e){
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }

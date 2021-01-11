@@ -152,10 +152,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     }
 
     public void saveAdd(LicenseZebra bean) throws GeneralBOException {
-
+        String id = getNextLicenseId();
         if (bean != null) {
             ImLicenseZebraEntity imLicenseZebraEntity = new ImLicenseZebraEntity();
-            imLicenseZebraEntity.setLicenseId("LCZ" + licenseZebraDao.getNextLicenseId());
+            imLicenseZebraEntity.setLicenseId(id);
             imLicenseZebraEntity.setDeviceId(bean.getDeviceId());
             imLicenseZebraEntity.setLicenseKey(bean.getLicenseKey());
             imLicenseZebraEntity.setAction(bean.getAction());
@@ -166,12 +166,26 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
 
             try {
-                licenseZebraDao.updateAndSave(imLicenseZebraEntity);
+                licenseZebraDao.addAndSave(imLicenseZebraEntity);
             } catch (GeneralBOException e){
                 logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
             }
         }
 
 
+    }
+
+    private String getNextLicenseId() {
+        logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Start >>>>>>>");
+        String id="";
+
+        try {
+            id = licenseZebraDao.getNextLicenseId();
+        } catch (HibernateException e){
+            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
+        }
+
+        logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
+        return id;
     }
 }

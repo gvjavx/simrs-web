@@ -10,3 +10,45 @@ ADD COLUMN flag_konsul_tele VARCHAR(1);
 CREATE SEQUENCE seq_jenis_obat;
 CREATE SEQUENCE seq_jenis_persediaan_obat;
 CREATE SEQUENCE seq_jenis_persediaan_obat_sub;
+
+
+
+
+INSERT INTO im_functions VALUES
+
+(6615,'Kategori Budgeting','/kategoriparameterbudgeting/initForm_kategoriparameterbudgeting.action',6000,2,now(),'admin',now(),'admin','Y','C',6615),
+
+(6616,'Init Form Kategoriparameterbudgeting','/kategoriparameterbudgeting/initForm_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6617,'Search Kategoriparameterbudgeting','/kategoriparameterbudgeting/search_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6618,'Add Kategoriparameterbudgeting','/kategoriparameterbudgeting/add_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6619,'Save Add Kategoriparameterbudgeting','/kategoriparameterbudgeting/saveAdd_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6620,'Edit Kategoriparameterbudgeting','/kategoriparameterbudgeting/edit_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6621,'Save Edit Kategoriparameterbudgeting','/kategoriparameterbudgeting/saveEdit_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6622,'Delete Kategoriparameterbudgeting','/kategoriparameterbudgeting/delete_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6623,'Save Delete Kategoriparameterbudgeting','/kategoriparameterbudgeting/saveDelete_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null),
+
+(6624,'Paging Kategoriparameterbudgeting','/kategoriparameterbudgeting/paging_displaytag_kategoriparameterbudgeting.action',6615,null,now(),'admin',now(),'admin','Y','C',null);
+
+
+
+
+
+** function pada master
+	a. 2361 func_name = Bentuk Barang 				url= /bentukbarang/initForm_bentukbarang.action
+	b. 2362 func_name = Init Form Bentukbarang 			url= /bentukbarang/initForm_bentukbarang.action
+	c. 2363 func_name = Search Bentukbarang 			url= /bentukbarang/search_bentukbarang.action
+	d. 2364 func_name = Add Bentukbarang 				url= /bentukbarang/add_bentukbarang.action
+	e. 2365 func_name = Save Add Bentukbarang 			url= /bentukbarang/saveAdd_bentukbarang.action
+	f. 2366 func_name = Edit Bentukbarang				url= /bentukbarang/edit_bentukbarang.action
+	g. 2367 func_name = Save Edit Bentukbarang 			url= /bentukbarang/saveEdit_bentukbarang.action
+	h. 2368 func_name = Delete Bentukbarang 			url= /bentukbarang/delete_bentukbarang.action
+	i. 2369 func_name = Save Delete Bentukbarang 			url= /bentukbarang/saveDelete_bentukbarang.action
+	j. 2370 func_name = Paging Bentukbarang				url= /bentukbarang/paging_displaytag_bentukbarang.action
+	k. 2370 func_name = Cetak Bentukbarang				url= /bentukbarang/cetak_bentukbarang.action

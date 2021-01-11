@@ -30,6 +30,33 @@ public class StrukturJabatan extends BaseModel {
     private String statusPegawai;
     private String cDate;
     private String lUpdate;
+    private String flagDefault;
+    private String jenisPegawai;
+    private String namaPegawai;
+
+    public String getNamaPegawai() {
+        return namaPegawai;
+    }
+
+    public void setNamaPegawai(String namaPegawai) {
+        this.namaPegawai = namaPegawai;
+    }
+
+    public String getFlagDefault() {
+        return flagDefault;
+    }
+
+    public void setFlagDefault(String flagDefault) {
+        this.flagDefault = flagDefault;
+    }
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
 
     public String getBagianName() {
         return bagianName;
