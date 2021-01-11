@@ -84,7 +84,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         return results;
     }
 
-    //RAKA-9JAN2021 ambil Seq untuk NIP berdasarkan tanggal lahir
+    //RAKA-09JAN2021 ambil Seq untuk NIP berdasarkan tanggal lahir
     // Generate surrogate id from postgre
     public String getNextPersonalId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal')");

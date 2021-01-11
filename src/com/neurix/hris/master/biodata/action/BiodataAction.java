@@ -262,7 +262,7 @@ public class BiodataAction extends BaseMasterAction{
         }catch (GeneralBOException e){
             throw new GeneralBOException(e.getMessage());
         }
-
+        logger.info("[BiodataAction.init] end process >>>");
         return getBiodata();
     }
 
@@ -286,7 +286,7 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public List initComboUser(String query) {
-        logger.info("[UserAction.initComboUser] start process >>>");
+        logger.info("[BiodataAction.initComboUser] start process >>>");
 
         List<Biodata> biodataList = new ArrayList();
 
@@ -300,12 +300,12 @@ public class BiodataAction extends BaseMasterAction{
             try {
                 logId = userBo.saveErrorMessage(e.getMessage(), "UserBO.getComboUserWithCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[UserAction.initComboUser] Error when saving error,", e1);
+                logger.error("[BiodataAction.initComboUser] Error when saving error,", e1);
             }
-            logger.error("[UserAction.initComboUser] Error when get combo User," + "[" + logId + "] Found problem when retrieving combo User data, please inform to your admin.", e);
+            logger.error("[BiodataAction.initComboUser] Error when get combo User," + "[" + logId + "] Found problem when retrieving combo User data, please inform to your admin.", e);
         }
 
-        logger.info("[UserAction.initComboUser] end process <<<");
+        logger.info("[BiodataAction.initComboUser] end process <<<");
 
         return biodataList;
     }
@@ -449,7 +449,7 @@ public class BiodataAction extends BaseMasterAction{
 
     @Override
     public String view() {
-        logger.info("[BiodataAction.saveUpload] start process >>>");
+        logger.info("[BiodataAction.view] start process >>>");
         try {
             Biodata editBiodata = getBiodata();
             if (this.fileUpload!=null) {
@@ -491,15 +491,15 @@ public class BiodataAction extends BaseMasterAction{
             try {
                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.saveEdit");
             } catch (GeneralBOException e1) {
-                logger.error("[BiodataAction.saveEdit] Error when saving error,", e1);
+                logger.error("[BiodataAction.view] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[BiodataAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            logger.error("[BiodataAction.view] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
-        logger.info("[BiodataAction.saveUpload] end process <<<");
+        logger.info("[BiodataAction.view] end process <<<");
 
         return "success_save_edit";
     }
@@ -578,12 +578,12 @@ public class BiodataAction extends BaseMasterAction{
             try {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataPengalaman");
             } catch (GeneralBOException e1) {
-                logger.error("[BiodataAction.searchDataPengalaman] Error when saving error,", e1);
+                logger.error("[BiodataAction.searchDataPengalamanKerja] Error when saving error,", e1);
             }
-            logger.error("[BiodataAction.searchDataPengalaman] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[BiodataAction.searchDataPengalamanKerja] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
         }
-        logger.info("[BiodataAction.searchDataPengalaman] end process >>>");
+        logger.info("[BiodataAction.searchDataPengalamanKerja] end process >>>");
         return pengalamanKerjas;
     }
 
@@ -736,9 +736,9 @@ public class BiodataAction extends BaseMasterAction{
                             try {
                                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
                             } catch (GeneralBOException e1) {
-                                logger.error("[UserAction.save] Error when saving error,", e1);
+                                logger.error("[BiodataAction.save] Error when saving error,", e1);
                             }
-                            logger.error("[UserAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                            logger.error("[BiodataAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                             addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
                             return ERROR;
                         }

@@ -1,3 +1,9 @@
 === 7 Januari 2021 ===
 - Menghilangkan Tunjangan Profesional (comment)
     + NOT SURE [070121-01]
+
+=== 09 Januari 2021 ===
+- Menambahkan Generate NIP Baru berdasarkan Tanggal Lahir dan Seq.
+
+=== 10 Januari 2021 ===
+- Menyimpan info Pensiun Diluar Tanggungan pada Biodata.
