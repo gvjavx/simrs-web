@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
+import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -1780,5 +1781,87 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .addOrder(Order.asc("nip"))
                 .list();
         return results;
+    }
+
+    public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai){
+
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai\n" +
+                "WHERE jenis_pegawai_id IN :listJenisPegawai \n" +
+                "AND flag_default = 'Y'\n" +
+                "ORDER BY flag_default";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameterList("listJenisPegawai", listOfJenisPegawai)
+                .list();
+
+        if (results.size() > 0)
+            return true;
+        return false;
+    }
+
+    public List<JenisPegawai> getAllListJenisPegawai(){
+
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
+                "ORDER BY flag_default";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                JenisPegawai jenisPegawai = new JenisPegawai();
+                jenisPegawai.setJenisPegawaiId(obj[0].toString());
+                jenisPegawai.setJenisPegawaiName(obj[1].toString());
+                jenisPegawais.add(jenisPegawai);
+            }
+        }
+
+        return jenisPegawais;
+    }
+
+    public List<Biodata> getDataPersonilForMutasi(String param, String branchId){
+
+        if (branchId == null || "".equalsIgnoreCase(branchId))
+            branchId = "%";
+
+        String SQL = "SELECT\n" +
+                "a.nip,\n" +
+                "b.nama_pegawai,\n" +
+                "a.position_id,\n" +
+                "c.position_name,\n" +
+                "a.branch_id,\n" +
+                "b.golongan_id,\n" +
+                "a.profesi_id,\n" +
+                "b.tipe_pegawai,\n" +
+                "c.department_id \n" +
+                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y') a\n" +
+                "INNER JOIN (SELECT * FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
+                "INNER JOIN im_position c ON c.position_id = a.position_id\n" +
+                "WHERE a.branch_id ILIKE :unit \n" +
+                "AND b.nama_pegawai ILIKE :nama ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("unit", branchId)
+                .setParameter("nama", param)
+                .list();
+
+        List<Biodata> biodataList = new ArrayList<>();
+        if (results != null && results.size() > 0){
+            for (Object[] obj : results){
+                Biodata biodata = new Biodata();
+                biodata.setNip(obj[0].toString());
+                biodata.setNamaPegawai(obj[1].toString());
+                biodata.setPositionId(obj[2].toString());
+                biodata.setPositionName(obj[3].toString());
+                biodata.setBranch(obj[4].toString());
+                biodata.setGolonganId(obj[5] == null ? null : obj[5].toString());
+                biodata.setProfesiId(obj[6] == null ? null : obj[6].toString());
+                biodata.setTipePegawai(obj[7] == null ? null : obj[7].toString());
+                biodata.setDivisi(obj[8] == null ? null : obj[8].toString());
+                biodataList.add(biodata);
+            }
+        }
+
+        return biodataList;
     }
 }

@@ -377,18 +377,15 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                         if (image == null) {
                             logger.error("Buffered Image is null");
                         } else {
-//                            CrudResponse response = CommonUtil.compresing(image, uploadFile);
-//                            if("success".equalsIgnoreCase(response.getStatus())){
-//                                dataPasien.setUrlKtp(fileName);
-//                            }else{
-//                                Pasien pasien1 = new Pasien();
-//                                pasien1.setStatus(response.getStatus());
-//                                pasien1.setMsg(response.getMsg());
-//                                return pasien1;
-//                            }
-                            File f = new File(uploadFile);
-                            ImageIO.write(image, "png", f);
-                            dataPasien.setUrlKtp(fileName);
+                            CrudResponse response = CommonUtil.compressImage(image, "png", uploadFile);
+                            if("success".equalsIgnoreCase(response.getStatus())){
+                                dataPasien.setUrlKtp(fileName);
+                            }else{
+                                Pasien pasien1 = new Pasien();
+                                pasien1.setStatus(response.getStatus());
+                                pasien1.setMsg(response.getMsg());
+                                return pasien1;
+                            }
 
                         }
                     } catch (IOException e) {

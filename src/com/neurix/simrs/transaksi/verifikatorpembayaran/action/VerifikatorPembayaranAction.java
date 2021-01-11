@@ -220,8 +220,12 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     public String initForm(){
         logger.info("[VerifikatorPembayaranAction.initForm] START >>>");
 
+        String dateNow = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
         setPembayaranOnline(new PembayaranOnline());
-        setAntrianTelemedic(new AntrianTelemedic());
+        AntrianTelemedic antrianTelemedic = new AntrianTelemedic();
+        antrianTelemedic.setStDateFrom(dateNow);
+        antrianTelemedic.setStDateTo(dateNow);
+        setAntrianTelemedic(antrianTelemedic);
         logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
         return "search";
     }
@@ -294,15 +298,17 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
                 searchAntrian.setId(antrianTelemedic.getId());
                 searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
+                searchAntrian.setStDateFrom(antrianTelemedic.getStDateFrom());
+                searchAntrian.setStDateTo(antrianTelemedic.getStDateTo());
             }
         }
 
         // jika pencarian hari ini true, START
-        String stCurDate = "";
-        if ("true".equals(antrianTelemedic.getFlagDateNow())){
-            stCurDate = getStCurrentDate();
-        }
-        searchAntrian.setFlagDateNow(stCurDate);
+//        String stCurDate = "";
+//        if ("true".equals(antrianTelemedic.getFlagDateNow())){
+//            stCurDate = getStCurrentDate();
+//        }
+//        searchAntrian.setFlagDateNow(stCurDate);
         // END
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
@@ -312,6 +318,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             logger.error("[VerifikatorPembayaranAction.search] ERROR. ",e);
             throw new GeneralBOException("[VerifikatorPembayaranAction.search] ERROR. ",e);
         }
+
+//        if (searchAntrian.getStDateFrom() != null && !"".equalsIgnoreCase(searchAntrian.getStDateFrom()))
+//            searchAntrian.setStDateFrom(getStCurrentDate());
+//        if (searchAntrian.getStDateTo() != null && !"".equalsIgnoreCase(searchAntrian.getStDateTo()))
+//            searchAntrian.setStDateTo(getStCurrentDate());
+
+        setAntrianTelemedic(searchAntrian);
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResults");
@@ -1239,6 +1252,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+                        String ktb = "";
+                        if("lab".equalsIgnoreCase(entity.getKategori())){
+                            ktb = "laboratorium";
+                        }else{
+                            ktb = "radiologi";
+                        }
+                        riwayatTindakan.setKategoriTindakanBpjs(ktb);
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);

@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.jadwalShiftKerja.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.transaksi.jadwalShiftKerja.model.*;
@@ -437,27 +438,45 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "e.jam_akhir,\n" +
                 "c.flag_libur,\n" +
                 "b.id_pelayanan,\n" +
-                "f.kurang,\n" +
+                "g.terpakai_nonbpjs,\n" +
+                "h.terpakai_bpjs,\n" +
+                "a.kuota_bpjs,\n" +
+                "f.foto_upload,\n" +
                 "e.branch_id\n" +
                 "FROM im_simrs_dokter a\n" +
                 "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
                 "INNER JOIN it_hris_jadwal_shift_kerja_detail c ON a.id_dokter = c.nip\n" +
                 "INNER JOIN it_hris_jadwal_shift_kerja d ON c.jadwal_shift_kerja_id = d.jadwal_shift_kerja_id\n" +
                 "INNER JOIN im_hris_shift e ON c.shift_id = e.shift_id\n" +
+                "INNER JOIN im_hris_pegawai f ON a.id_dokter = f.nip\n" +
                 "LEFT JOIN (\n" +
                 "SELECT\n" +
-                "COUNT(c.id_dokter) as kurang,\n" +
+                "COUNT(c.id_dokter) as terpakai_nonbpjs,\n" +
                 "c.id_dokter\n" +
                 "FROM it_simrs_header_checkup a \n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                 "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
-                "WHERE a.created_date = CURRENT_DATE\n" +
-                "AND d.tipe_pelayanan IN ('rawat_jalan','igd')\n" +
+                "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
+                "AND d.tipe_pelayanan IN ('rawat_jalan')\n" +
+                "AND b.id_jenis_periksa_pasien NOT LIKE 'bpjs'\n" +
                 "GROUP BY c.id_dokter\n" +
-                ") f ON a.id_dokter = f.id_dokter\n" +
-                "WHERE e.branch_id = :branchId\n" +
-                "AND d.tanggal = CURRENT_DATE\n" + notLikeDokter +
+                ") g ON a.id_dokter = g.id_dokter\n" +
+                "LEFT JOIN (\n" +
+                "SELECT\n" +
+                "COUNT(c.id_dokter) as terpakai_bpjs,\n" +
+                "c.id_dokter\n" +
+                "FROM it_simrs_header_checkup a \n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
+                "AND d.tipe_pelayanan IN ('rawat_jalan')\n" +
+                "AND b.id_jenis_periksa_pasien LIKE 'bpjs'\n" +
+                "GROUP BY c.id_dokter\n" +
+                ") h ON a.id_dokter = h.id_dokter\n" +
+                "WHERE e.branch_id = :branchId \n" +
+                "AND d.tanggal = CURRENT_DATE\n" + notLikeDokter+
                 "AND b.id_pelayanan = :idPelayanan";
 
         List<Object[]> result = new ArrayList<>();
@@ -474,13 +493,18 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 jadwalPelayananDTO.setSip(obj[2] != null ? (String) obj[2] : "");
                 jadwalPelayananDTO.setKodeDpjp(obj[3] != null ? (String) obj[3] : "");
                 jadwalPelayananDTO.setKuota(obj[4] != null ? (String) obj[4] : "");
-                jadwalPelayananDTO.setKuotaOnSite(obj[5] != null ? (BigInteger) obj[5] : null);
+                jadwalPelayananDTO.setKuotaOnSite(obj[5] != null ? (BigInteger) obj[5] : new BigInteger(String.valueOf("0")));
                 jadwalPelayananDTO.setTanggal(obj[6] != null ? (Date) obj[6] : null);
                 jadwalPelayananDTO.setJamAwal(obj[7] != null ? (String) obj[7] : "");
                 jadwalPelayananDTO.setJamAkhir(obj[8] != null ? (String) obj[8] : "");
                 jadwalPelayananDTO.setFlagLibur(obj[9] != null ? (String) obj[9] : "");
                 jadwalPelayananDTO.setIdPelayanan(obj[10] != null ? (String) obj[10] : "");
-                jadwalPelayananDTO.setKuotaTerpakai(obj[11] != null ? (BigInteger) obj[11] : null);
+                jadwalPelayananDTO.setKuotaTerpakaiNonBpjs(obj[11] != null ? (BigInteger) obj[11] : new BigInteger(String.valueOf("0")));
+                jadwalPelayananDTO.setKuotaTerpakaiBpjs(obj[12] != null ? (BigInteger) obj[12] : new BigInteger(String.valueOf("0")));
+                jadwalPelayananDTO.setKuotaBpjs(obj[13] != null ? (BigInteger) obj[13] : new BigInteger(String.valueOf("0")));
+                if(obj[14] != null && !"".equalsIgnoreCase(obj[14].toString())){
+                    jadwalPelayananDTO.setUrlImg(obj[14] != null ? CommonConstant.RESOURCE_PATH_USER_PHOTO+(String) obj[14] : "");
+                }
                 pelayananDTOList.add(jadwalPelayananDTO);
             }
         }

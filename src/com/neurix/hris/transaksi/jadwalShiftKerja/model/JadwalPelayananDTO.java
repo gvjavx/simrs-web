@@ -25,14 +25,41 @@ public class JadwalPelayananDTO extends BaseModel {
     private String sip;
     private String kodeDpjp;
     private BigInteger kuotaOnSite;
-    private BigInteger kuotaTerpakai;
+    private BigInteger kuotaTerpakaiNonBpjs;
+    private BigInteger kuotaTerpakaiBpjs;
+    private BigInteger kuotaBpjs;
+    private String urlImg;
 
-    public BigInteger getKuotaTerpakai() {
-        return kuotaTerpakai;
+    public String getUrlImg() {
+        return urlImg;
     }
 
-    public void setKuotaTerpakai(BigInteger kuotaTerpakai) {
-        this.kuotaTerpakai = kuotaTerpakai;
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
+    public BigInteger getKuotaBpjs() {
+        return kuotaBpjs;
+    }
+
+    public void setKuotaBpjs(BigInteger kuotaBpjs) {
+        this.kuotaBpjs = kuotaBpjs;
+    }
+
+    public BigInteger getKuotaTerpakaiNonBpjs() {
+        return kuotaTerpakaiNonBpjs;
+    }
+
+    public void setKuotaTerpakaiNonBpjs(BigInteger kuotaTerpakaiNonBpjs) {
+        this.kuotaTerpakaiNonBpjs = kuotaTerpakaiNonBpjs;
+    }
+
+    public BigInteger getKuotaTerpakaiBpjs() {
+        return kuotaTerpakaiBpjs;
+    }
+
+    public void setKuotaTerpakaiBpjs(BigInteger kuotaTerpakaiBpjs) {
+        this.kuotaTerpakaiBpjs = kuotaTerpakaiBpjs;
     }
 
     public BigInteger getKuotaOnSite() {

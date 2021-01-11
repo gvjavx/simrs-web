@@ -183,7 +183,7 @@
                             <div class="form-group">
                                 <div class="col-md-6 text-center">
                                     <label>TTD Petugas</label>
-                                    <canvas class="paint-canvas-ttd" id="cppt9" width="220"
+                                    <canvas class="paint-canvas-ttd del-canvas" id="cppt9" width="220"
                                             onmouseover="paintTtd('cppt9')"></canvas>
                                     <input class="form-control nama_petugas" id="nama_petugas" placeholder="Nama Terang">
                                     <input style="margin-top: 3px" class="form-control nip_petugas" id="sip_petugas" placeholder="SIP">
@@ -194,7 +194,7 @@
                                 </div>
                                 <div class="col-md-6 text-center">
                                     <label>TTD DPJP</label>
-                                    <canvas class="paint-canvas-ttd" id="cppt10" width="220"
+                                    <canvas class="paint-canvas-ttd del-canvas" id="cppt10" width="220"
                                             onmouseover="paintTtd('cppt10')"></canvas>
                                     <input class="form-control nama_dokter_ri" id="nama_dpjp" placeholder="Nama Terang">
                                     <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dpjp" placeholder="SIP">

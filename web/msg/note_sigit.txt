@@ -1496,3 +1496,34 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN flag_label_waktu VARCHAR(1);
 
 --
+
+-- 2021-01-05
+
+    ALTER TABLE im_position
+    ADD COLUMN status_pegawai VARCHAR(5);
+
+    ALTER TABLE im_hris_jenis_pegawai
+    ADD COLUMN persen_gaji NUMERIC,
+    ADD COLUMN flag_default VARCHAR(1);
+
+--
+
+-- 2021-01-06
+
+    ALTER TABLE im_hris_kelompok_position
+    ADD COLUMN flag_is_multiple_person VARCHAR(1);
+
+--
+
+-- 2021-01-07
+    ALTER TABLE it_hris_pegawai_position
+    ADD COLUMN jenis_pegawai VARCHAR(5),
+    ADD COLUMN flag_digaji VARCHAR(1)
+--
+
+-- 2020-01-10
+
+    ALTER TABLE im_hris_pegawai
+    ADD COLUMN tanggal_keluar DATE;
+
+--

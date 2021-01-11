@@ -66,6 +66,15 @@ public class Pasien {
 
     private String pendidikan;
     private String statusPerkawinan;
+    private String noRmLama;
+
+    public String getNoRmLama() {
+        return noRmLama;
+    }
+
+    public void setNoRmLama(String noRmLama) {
+        this.noRmLama = noRmLama;
+    }
 
     public String getPendidikan() {
         return pendidikan;

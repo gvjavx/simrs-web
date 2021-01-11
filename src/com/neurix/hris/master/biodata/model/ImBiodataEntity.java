@@ -95,6 +95,16 @@ public class ImBiodataEntity implements Serializable {
     private BigDecimal peralihanSankhus;
     private BigDecimal peralihanTunjangan;
 
+    private Date tanggalKeluar;
+
+    public Date getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(Date tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
+
     public BigDecimal getPeralihanGapok() {
         return peralihanGapok;
     }

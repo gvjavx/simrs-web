@@ -283,6 +283,9 @@
         <property name="peralihanTunjangan">
             <column name="peralihan_tunjangan"/>
         </property>
+        <property name="tanggalKeluar">
+            <column name="tanggal_keluar" sql-type="date"/>
+        </property>
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"
                      insert="false" update="false" fetch="select" cascade="all">

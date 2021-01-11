@@ -159,7 +159,14 @@ function setDataPasien() {
             $('.jenis-kelamin').val(jenisKelamin);
         }
         if (diag > 0) {
-            $('.diagnosa-pasien').val(diagnosa);
+            dwr.engine.setAsync(true);
+            CheckupAction.getDataByKey(idDetailCheckup, "diagnosa", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.diagnosa-pasien').val(res);
+                    }
+                }
+            });
         }
         if (alr > 0) {
             dwr.engine.setAsync(true);
@@ -246,5 +253,14 @@ function setDataPasien() {
         $(function () {
             $('[data-mask]').inputmask();
         });
+
+        var delCanvas = $('.del-canvas');
+        if(delCanvas.length > 0){
+            $.each(delCanvas, function (i, item) {
+                var canvas = document.getElementById(item.id);
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, canvas.width, canvas.height);
+            });
+        }
     }
 }

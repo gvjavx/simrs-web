@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.mutasi.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -68,6 +69,51 @@ public class Mutasi extends BaseModel {
     private String tipePegawai;
 
     private String branchIdUser;
+    private String jenisPegawaiId;
+    private String flagDigaji;
+    private String jenisPegawaiName;
+    private String updatePosisiId;
+    private String stTanggalKeluar;
+
+    public String getStTanggalKeluar() {
+        return stTanggalKeluar;
+    }
+
+    public void setStTanggalKeluar(String stTanggalKeluar) {
+        this.stTanggalKeluar = stTanggalKeluar;
+    }
+
+    public String getUpdatePosisiId() {
+        return updatePosisiId;
+    }
+
+    public void setUpdatePosisiId(String updatePosisiId) {
+        this.updatePosisiId = updatePosisiId;
+    }
+
+    public String getJenisPegawaiName() {
+        return jenisPegawaiName;
+    }
+
+    public void setJenisPegawaiName(String jenisPegawaiName) {
+        this.jenisPegawaiName = jenisPegawaiName;
+    }
+
+    public String getJenisPegawaiId() {
+        return jenisPegawaiId;
+    }
+
+    public void setJenisPegawaiId(String jenisPegawaiId) {
+        this.jenisPegawaiId = jenisPegawaiId;
+    }
+
+    public String getFlagDigaji() {
+        return flagDigaji;
+    }
+
+    public void setFlagDigaji(String flagDigaji) {
+        this.flagDigaji = flagDigaji;
+    }
 
     public String getBranchIdUser() {
         return branchIdUser;

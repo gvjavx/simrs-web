@@ -516,7 +516,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     }else{
                         HeaderCheckup lastAntrian = new HeaderCheckup();
                         try {
-                            lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan());
+                            lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), bean.getIdDokter());
                         }catch (HibernateException e){
                             logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
                             throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");

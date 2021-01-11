@@ -450,6 +450,11 @@
                 flagNilaiDasar = "";
             }
         });
+        BudgetingAction.checkAvailDraftBudgeting(unit, tahun, "INV", function (res) {
+            if (res == true){
+                flagNilaiDasar = "";
+            }
+        });
     }
 
     function showListParameter() {

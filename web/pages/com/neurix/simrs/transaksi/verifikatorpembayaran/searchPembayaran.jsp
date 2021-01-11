@@ -93,10 +93,28 @@
                                                   cssClass="form-control"/>
                                     </div>
                                 </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Hari Ini</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Hari Ini</label>
+                                    <label class="control-label col-sm-4">Tanggal </label>
                                     <div class="col-sm-4">
-                                        <s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <s:textfield name="antrianTelemedic.stDateFrom" cssClass="form-control datepicker"
+                                                             required="false"/>
+                                            </div>
+                                            <div class="col-md-2">
+                                                To
+                                            </div>
+                                            <div class="col-md-5">
+                                                <s:textfield id="tgl_to" name="antrianTelemedic.stDateTo" cssClass="form-control datepicker"
+                                                             required="false"/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <br>
@@ -108,7 +126,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_kasirjalan.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -165,11 +183,11 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 13px">
+                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 11px">
                             <thead >
                                 <tr bgcolor="#90ee90">
-                                    <td>Id</td>
-                                    <td>Id Pasien</td>
+                                    <td>Id Telemedic</td>
+                                    <td>No. RM</td>
                                     <td>Nama</td>
                                     <td>Jenis</td>
                                     <td>Status</td>
@@ -177,6 +195,7 @@
                                     <td>Approve konsultasi</td>
                                     <td>Status Resep</td>
                                     <td>Approve Resep</td>
+                                    <td>Created Date</td>
                                     <td align="center">Action</td>
                                 </tr>
                             </thead>
@@ -266,6 +285,7 @@
                                             <img src="<s:url value="/pages/images/icon_success.ico" />">
                                         </s:if>
                                     </td>
+                                    <td><s:property value="stCreatedDate"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagBatalDokter == "Y"'>
                                             <s:if test='#row.idJenisPeriksaPasien == "umum"'>

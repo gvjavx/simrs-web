@@ -4133,7 +4133,6 @@
         listRuanganInap();
         listResepPasien();
         hitungStatusBiaya();
-        hitungCoverBiaya();
         getJenisResep();
         listICD9();
         cekTranfersPasien('transfer_pasien');

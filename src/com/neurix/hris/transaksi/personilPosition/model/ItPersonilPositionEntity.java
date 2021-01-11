@@ -37,6 +37,8 @@ public class ItPersonilPositionEntity implements Serializable {
     private String lastUpdateWho;
     private String fromPerson;
     private String noRequest;
+    private String jenisPegawai;
+    private String flagDigaji;
 
     private ImBiodataEntity imBiodataEntity ;
     private ImBranches imBranches ;
@@ -44,6 +46,22 @@ public class ItPersonilPositionEntity implements Serializable {
     private ImPosition imPosition ;
 
     private Timestamp tanggalAktif;
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
+
+    public String getFlagDigaji() {
+        return flagDigaji;
+    }
+
+    public void setFlagDigaji(String flagDigaji) {
+        this.flagDigaji = flagDigaji;
+    }
 
     public String getProfesiId() {
         return profesiId;

@@ -454,7 +454,6 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
 
         if (poli != null && !"".equalsIgnoreCase(poli)) {
             pelayanan = "\n AND b.id_pelayanan IN (" + poli + ") \n";
-            ;
         }
 
         String SQL = "SELECT a.id_pasien, a.nama, a.desa_id, d.desa_name, b.id_pelayanan,\n" +
@@ -541,8 +540,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND pr.status IS NOT NULL\n" +
                 "AND pr.flag = 'Y'\n" +
                 "AND a.branch_id LIKE :branchId \n" + pelayanan +
-                "AND pl.tipe_pelayanan = 'rawat_jalan' OR  pl.tipe_pelayanan = 'igd' \n" +
-                "AND CAST(a.created_date AS date) = current_date\n" +
+                "AND pl.tipe_pelayanan IN ('rawat_jalan', 'igd')  \n" +
+                "AND CAST(pr.created_date AS date) = current_date \n" +
                 "AND pr.status IN ('0', '1')\n" +
                 "ORDER BY c.nama_pelayanan, pr.tgl_antrian ASC";
 
@@ -2153,7 +2152,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return res;
     }
 
-    public HeaderCheckup lastAntrian(String branchId, String idPelayanan){
+    public HeaderCheckup lastAntrian(String branchId, String idPelayanan, String idDokter){
         HeaderCheckup res = new HeaderCheckup();
         if(branchId != null && !"".equalsIgnoreCase(branchId) && idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
             String SQL = "SELECT\n" +
@@ -2162,17 +2161,20 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "FROM it_simrs_header_detail_checkup a\n" +
                     "INNER JOIN it_simrs_header_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN it_simrs_dokter_team d ON a.id_detail_checkup = d.id_detail_checkup\n" +
                     "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
                     "AND c.tipe_pelayanan = 'rawat_jalan'\n" +
                     "AND a.no_antrian IS NOT NULL\n" +
-                    "AND b.branch_id = :branch\n" +
-                    "AND a.id_pelayanan = :pelayanan\n" +
+                    "AND b.branch_id = :branch \n" +
+                    "AND a.id_pelayanan = :pelayanan \n" +
                     "AND a.no_checkup_online IS NULL\n" +
+                    "AND d.id_dokter = :idDok \n" +
                     "ORDER BY a.created_date DESC LIMIT 1";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branch", branchId)
                     .setParameter("pelayanan", idPelayanan)
+                    .setParameter("idDok", idDokter)
                     .list();
             if(result.size() > 0){
                 Object[] obj = result.get(0);

@@ -36,6 +36,9 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
+        <property name="noRmLama">
+            <column name="no_rm_lama"/>
+        </property>
 
     </class>
 </hibernate-mapping>
