@@ -341,13 +341,13 @@ public class MutasiBoImpl implements MutasiBo {
 
     @Override
     public void saveMutasi(Mutasi bean, List<Mutasi> mutasiList) throws GeneralBOException {
-//        String status1 ="";
         logger.info("[MutasiBoImpl.saveMutasi] start process >>>");
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
         List<LemburEntity> lemburEntityList = new ArrayList<>();
         List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
 
-        //validasi jika menggantikan maka yang digantikan harus juga move
+        // Sigit 2020-01-06, Penyesuaian dengan bisnis proses yang baru
+
         for (Mutasi dataMutasi : mutasiList){
 
             //validasi jika ada pengajuan menggantung
@@ -374,30 +374,6 @@ public class MutasiBoImpl implements MutasiBo {
             }
 
             if (("M").equalsIgnoreCase(dataMutasi.getStatus())||("R").equalsIgnoreCase(dataMutasi.getStatus())){
-//                if (!("-").equalsIgnoreCase(dataMutasi.getPenggantiNip())){
-//                    boolean adaPengganti = false;
-//
-//                    // Sigit 2020-01-08, pergantian dari for ke stream untuk menghindari multiple loop
-//                    List<Mutasi> filteredMutasi = mutasiList.stream().filter(p->p.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())).collect(Collectors.toList());
-//                    if (filteredMutasi != null && filteredMutasi.size() > 0){
-//                        adaPengganti = true; break;
-//                    }
-////                    for (Mutasi cekData : mutasiList){
-////                        if (cekData.getNip().equalsIgnoreCase(dataMutasi.getPenggantiNip())){
-////                            adaPengganti=true;
-////                            break;
-////                        }
-////                    }
-//
-//                    //END
-//
-//                    if (adaPengganti){
-//                        String status ="ERROR : "+dataMutasi.getPenggantiNama()+" harus dimutasi";
-//                        logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);
-//                        throw new GeneralBOException(status);
-//                    }
-//                }
-
                 if (("M").equalsIgnoreCase(dataMutasi.getTipeMutasi())){
                     if (dataMutasi.getBranchBaruId().equalsIgnoreCase(dataMutasi.getBranchLamaId())){
                         String status ="ERROR : "+dataMutasi.getNama()+" , gunakan rotasi jika unitnya sama";
@@ -414,18 +390,10 @@ public class MutasiBoImpl implements MutasiBo {
             }
         }
 
-        //validasi jika mutasi dan rotasi
-
+        // loop mutasi dan insert berdarkan status mutasi
         if (bean!=null) {
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
-                    //mendapat profesi Id;
-
-//                    String profesiId="";
-//                    List<ItPersonilPositionEntity> posisiPegawai = personilPositionDao.getListNip(mutasi.getNip());
-//                    for (ItPersonilPositionEntity posisi : posisiPegawai ){
-//                        profesiId=posisi.getProfesiId();
-//                    }
 
                     ItMutasiEntity itMutasiEntity = new ItMutasiEntity();
                     ItMutasiDocEntity itDoc = new ItMutasiDocEntity();
@@ -636,6 +604,7 @@ public class MutasiBoImpl implements MutasiBo {
                     // save history jabatan
                     saveHistoryJabatan(mutasi, bean);
                 }
+                // loop END
             }
         }
 
