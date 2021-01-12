@@ -1235,7 +1235,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
                 "\tposition.kelompok_id, \n" +
-                "\tpegawai.tipe_pegawai\n" +
+                "\tpegawai.tipe_pegawai,\n" +
                 "\ttipe.tipe_pegawai_name\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
