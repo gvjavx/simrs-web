@@ -337,7 +337,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
 
     }
 
-    public String getHistoryJabatanIdLama(String nip){
+    public String getHistoryJabatanIdLama(String nip, String positionId){
         String listOfResult = "";
 
 //        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
@@ -345,17 +345,29 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
 //                "order by imt_hris_history_jabatan_pegawai.created_date DESC\n" +
 //                "limit 1";
         //update query reza 02-04-2020
-        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
-                "                where imt_hris_history_jabatan_pegawai.nip = '"+nip+"' AND jabatan_flag = 'Y'\n" +
-                "                order by imt_hris_history_jabatan_pegawai.created_date DESC \n" +
-                "                limit 1";
+//        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
+//                "                where imt_hris_history_jabatan_pegawai.nip = '"+nip+"' AND jabatan_flag = 'Y'\n" +
+//                "                order by imt_hris_history_jabatan_pegawai.created_date DESC \n" +
+//                "                limit 1";
 
-        Object results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query).uniqueResult();
+        // Sigit 2020-01-12, Penambahan pecarian berdasarkan Posisi
+        String SQL = "SELECT history_jabatan_pegawai_id FROM imt_hris_history_jabatan_pegawai \n" +
+                "WHERE \n" +
+                "nip = :nip \n" +
+                "AND position_id = position \n" +
+                "AND jabatan_flag = 'Y'\n" +
+                "ORDER BY created_date DESC \n" +
+                "LIMIT 1";
+
+        Object results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("position", positionId)
+                .uniqueResult();
+
         if (results!=null){
             listOfResult = results.toString();
         }else {
-            listOfResult=null;
+            listOfResult = null;
         }
         return listOfResult;
     }

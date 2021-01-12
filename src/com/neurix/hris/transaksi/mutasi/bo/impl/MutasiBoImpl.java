@@ -420,11 +420,12 @@ public class MutasiBoImpl implements MutasiBo {
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
                     //mendapat profesi Id;
-                    String profesiId="";
-                    List<ItPersonilPositionEntity> posisiPegawai = personilPositionDao.getListNip(mutasi.getNip());
-                    for (ItPersonilPositionEntity posisi : posisiPegawai ){
-                        profesiId=posisi.getProfesiId();
-                    }
+
+//                    String profesiId="";
+//                    List<ItPersonilPositionEntity> posisiPegawai = personilPositionDao.getListNip(mutasi.getNip());
+//                    for (ItPersonilPositionEntity posisi : posisiPegawai ){
+//                        profesiId=posisi.getProfesiId();
+//                    }
 
                     ItMutasiEntity itMutasiEntity = new ItMutasiEntity();
                     ItMutasiDocEntity itDoc = new ItMutasiDocEntity();
@@ -451,7 +452,6 @@ public class MutasiBoImpl implements MutasiBo {
                         itMutasiEntity.setLevelBaruName(mutasi.getLevelBaruName());
                     }
                     itMutasiEntity.setPjs(mutasi.getPjs());
-
                     itMutasiEntity.setFlag(bean.getFlag());
                     itMutasiEntity.setTanggalEfektif(bean.getTanggalEfektif());
                     itMutasiEntity.setAction(bean.getAction());
@@ -470,119 +470,9 @@ public class MutasiBoImpl implements MutasiBo {
                     itDoc.setCreatedDate(bean.getCreatedDate());
                     itDoc.setLastUpdate(bean.getLastUpdate());
 
-                    //update tanggal akhir jabatan lama di history jabatan pegawai
-//                    String HistoryJabatanId;
-//                    ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
-//                    try{
-//                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(mutasi.getNip());
-//                        if (HistoryJabatanId!=null){
-//                            if (!HistoryJabatanId.equalsIgnoreCase("")){
-//                                pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
-//                                pengalamanLama.setTanggalKeluar(bean.getStTanggalEfektif());
-//                                pengalamanLama.setJabatanFlag("N");
-//                                historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
-//                            }else{
-//                                String status = "ERROR : history jabatan terakhir tidak ditemukan ";
-//                                logger.error("[PengalamanKerjaBoImpl.saveEdit] "+ status);
-//                                throw new GeneralBOException(status);
-//                            }
-//                        }else{
-//                            String status = "ERROR : history jabatan terakhir tidak ditemukan ";
-//                            logger.error("[PengalamanKerjaBoImpl.saveEdit] "+ status);
-//                            throw new GeneralBOException(status);
-//                        }
-//
-//                    }catch (HibernateException e) {
-//                        logger.error("[PengalamanKerjaBoImpl.saveEdit] Error, " + e.getMessage());
-//                        throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
-//                    }
-
                     String tgl[] = CommonUtil.convertTimestampToString(bean.getCreatedDate()).split("-");
+                    bean.setStTahun(tgl[2]);
                     if (("M").equalsIgnoreCase(mutasi.getStatus())||("R").equalsIgnoreCase(mutasi.getStatus())){
-                        //variable untuk proses update dan insert ke history jabatan
-                        String golonganId,pengalamanId, branchName, positionname, divisiName, golonganName, tipePegawaiName, tanggalAktif, bidangId, bidangName, stTanggalMasuk;
-                        String[] tanggalMasuk;
-
-                        //save jabatan baru ke history jabatan pegawai
-                        ImtHrisHistoryJabatanPegawaiEntity historyJabatanPegawai = new ImtHrisHistoryJabatanPegawaiEntity();
-                        historyJabatanPegawai.setNip(mutasi.getNip());
-                        historyJabatanPegawai.setBranchId(mutasi.getBranchBaruId());
-                        historyJabatanPegawai.setDivisiId(mutasi.getDivisiBaruId());
-                        historyJabatanPegawai.setBidangId(mutasi.getDivisiBaruId());
-                        historyJabatanPegawai.setBidangName(mutasi.getDivisiBaruName());
-                        historyJabatanPegawai.setPositionId(mutasi.getPositionBaruId());
-                        historyJabatanPegawai.setProfesiId(mutasi.getProfesiBaruId());
-                        historyJabatanPegawai.setTanggalSkMutasi(CommonUtil.convertStringToDate(bean.getStTanggalEfektif()));
-                        historyJabatanPegawai.setPoint("0");
-                        historyJabatanPegawai.setPointLebih("0");
-                        historyJabatanPegawai.setNilaiSmk(BigDecimal.valueOf(0));
-                        historyJabatanPegawai.setTahun(tgl[2]);
-                        historyJabatanPegawai.setGradeSmk("-");
-
-                        //update reza (02-04-2020) penambahan flagmutasi di history jabatan
-                        historyJabatanPegawai.setJabatanFlag("Y");
-                        historyJabatanPegawai.setMutasiFlag("Y");
-
-                        try {
-                            golonganId = mutasiDao.getGolonganId(mutasi.getNip());
-                            historyJabatanPegawai.setGolonganId(golonganId);
-                        }catch (HibernateException e) {
-                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
-                        }
-
-                        historyJabatanPegawai.setFlag(bean.getFlag());
-                        historyJabatanPegawai.setAction(bean.getAction());
-                        historyJabatanPegawai.setCreatedWho(bean.getCreatedWho());
-                        historyJabatanPegawai.setLastUpdateWho(bean.getLastUpdateWho());
-                        historyJabatanPegawai.setCreatedDate(bean.getCreatedDate());
-                        historyJabatanPegawai.setLastUpdate(bean.getLastUpdate());
-
-                        try {
-                            // Generating ID, get from postgre sequence
-                            pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
-                            historyJabatanPegawai.setHistoryJabatanId(pengalamanId);
-
-                            //mengambil branch name, position name, divisi name, golongan name, tipe pegawai name
-                            branchName = historyJabatanPegawaiDao.getBranchById(mutasi.getBranchBaruId());
-                            historyJabatanPegawai.setBranchName(branchName);
-                            positionname = historyJabatanPegawaiDao.getPositionById(mutasi.getPositionBaruId());
-                            historyJabatanPegawai.setPositionName(positionname);
-                            divisiName = historyJabatanPegawaiDao.getDivisiById(mutasi.getDivisiBaruId());
-                            historyJabatanPegawai.setDivisiName(divisiName);
-                            golonganName = historyJabatanPegawaiDao.getGolonganById(golonganId);
-                            historyJabatanPegawai.setGolonganName(golonganName);
-                            historyJabatanPegawai.setTanggal(bean.getStTanggalEfektif());
-
-                            List<ImBiodataEntity> imBiodataEntitys;
-                            imBiodataEntitys = biodataDao.findBiodataLikeNip(mutasi.getNip());
-                            if (imBiodataEntitys != null){
-                                for (ImBiodataEntity imBiodataEntity : imBiodataEntitys) {
-                                    tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(imBiodataEntity.getTipePegawai());
-                                    historyJabatanPegawai.setTipePegawaiName(tipePegawaiName);
-                                }
-                            }
-
-                            List<HistoryJabatanPegawai> historyJabatan = new ArrayList<>();
-                            historyJabatan = historyJabatanPegawaiDao.geyBagianByPositionId(mutasi.getPositionLamaId());
-                            if (historyJabatan.size() >0){
-                                for (HistoryJabatanPegawai result: historyJabatan){
-                                    historyJabatanPegawai.setBagianId(result.getBagianId());
-                                    historyJabatanPegawai.setBagianName(result.getBagianName());
-                                }
-                            }
-
-                            try{
-                                historyJabatanPegawaiDao.addAndSave(historyJabatanPegawai);
-                            }catch (HibernateException e) {
-                                logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
-                            }
-                        } catch (HibernateException e) {
-                            logger.error("[PengalamanKerjaBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
-                        }
-
 
                         // cek apakah update golongan sudah diiinsert
                         List<ImtHistorySmkGolonganEntity> smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
@@ -595,9 +485,6 @@ public class MutasiBoImpl implements MutasiBo {
                                 historyGolonganDao.updateAndSave(smkGolonganEntity);
                             }
                         }
-
-                        // biodata pegawai
-                        ImBiodataEntity imBiodataEntity = biodataDao.getById("nip", mutasi.getNip());
 
                         List<ItPersonilPositionEntity> itPersonil = null;
                         itPersonil = personilPositionDao.getPosisi(mutasi.getNip(), mutasi.getPositionLamaId());
@@ -612,8 +499,6 @@ public class MutasiBoImpl implements MutasiBo {
                                 itPersonilPositionEntity.setFlagDigaji(mutasi.getFlagDigaji());
                                 // END
 
-
-//                            itPersonilPositionEntity.setProfesiId(profesiId);
                                 itPersonilPositionEntity.setProfesiId(mutasi.getProfesiBaruId());
                                 //tanggal aktif digunakan untuk mengisi kolom tanggal / tahun diangkat di biodata-riwayat kerja
                                 itPersonilPositionEntity.setTanggalAktif(bean.getTanggalEfektif());
@@ -622,21 +507,9 @@ public class MutasiBoImpl implements MutasiBo {
                                     itPersonilPositionEntity.setBranchId(mutasi.getBranchBaruId());
                                     itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                     itPersonilPositionEntity.setAction("U");
-                                }else if("R".equalsIgnoreCase(mutasi.getStatus())) {
+                                } else {
                                     itPersonilPositionEntity.setPositionId(mutasi.getPositionBaruId());
                                     itPersonilPositionEntity.setAction("U");
-                                }else{
-//                                imBiodataEntity.setBranchIdTerakhir(mutasi.getBranchLamaId());
-//                                imBiodataEntity.setPositionIdTerakhir(mutasi.getPositionLamaId());
-
-                                    itPersonilPositionEntity.setAction("D");
-                                    itPersonilPositionEntity.setFlag("N");
-                                    itPersonilPositionEntity.setBranchId(mutasi.getBranchLamaId());
-                                    itPersonilPositionEntity.setPositionId(mutasi.getPositionLamaId());
-                                    imBiodataEntity.setFlag("N");
-                                    imBiodataEntity.setLastUpdate(bean.getLastUpdate());
-                                    imBiodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                    imBiodataEntity.setKeterangan("Telah nonaktif pada tanggal " + bean.getTanggalEfektif());
                                 }
 
                                 itPersonilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -644,7 +517,6 @@ public class MutasiBoImpl implements MutasiBo {
 
                                 try {
                                     personilPositionDao.updateAndSave(itPersonilPositionEntity);
-                                    biodataDao.updateAndSave(imBiodataEntity);
                                 } catch (HibernateException e) {
                                     logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
                                     throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
@@ -729,7 +601,7 @@ public class MutasiBoImpl implements MutasiBo {
                     } else {
 
                         // Sigit 2020-01-08
-                        // add jika ada jabatan baru. biasanya pjs / plt
+                        // add jika ada jabatan baru. biasanya pjs / plt, Status Rangkap
                         ItPersonilPositionEntity personilPositionEntity = new ItPersonilPositionEntity();
                         personilPositionEntity.setPersonilPositionId(getNextSeqPersonilPositionId());
                         personilPositionEntity.setNip(mutasi.getNip());
@@ -760,6 +632,9 @@ public class MutasiBoImpl implements MutasiBo {
                         logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when add and save Mutasi, please inform to your admin...," + e.getMessage());
                     }
+
+                    // save history jabatan
+                    saveHistoryJabatan(mutasi, bean);
                 }
             }
         }
@@ -1296,6 +1171,7 @@ public class MutasiBoImpl implements MutasiBo {
             biodataEntity.setAction("U");
             biodataEntity.setLastUpdate(mutasi.getLastUpdate());
             biodataEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
+            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
 
             try {
                 biodataDao.updateAndSave(biodataEntity);
@@ -1480,5 +1356,115 @@ public class MutasiBoImpl implements MutasiBo {
 
         logger.info("[MutasiBoImpl.checkPositionByJenisPegawai] END <<<");
         return found;
+    }
+
+    private void saveHistoryJabatan(Mutasi mutasi, Mutasi bean){
+        logger.info("[MutasiBoImpl.saveHistoryJabatan] START >>>");
+
+        //update tanggal akhir jabatan lama di history jabatan pegawai
+        String historiJabatanId;
+        ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
+        try{
+            historiJabatanId = mutasiDao.getHistoryJabatanIdLama(mutasi.getNip(), mutasi.getPositionLamaId());
+            if (historiJabatanId != null && !"".equalsIgnoreCase(historiJabatanId)){
+                pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", historiJabatanId);
+                pengalamanLama.setTanggalKeluar(bean.getStTanggalEfektif());
+                pengalamanLama.setJabatanFlag("N");
+                historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
+            }
+
+
+        } catch (HibernateException e) {
+            logger.error("[PengalamanKerjaBoImpl.saveEdit] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data Pengalaman by Kode Pengalaman, please inform to your admin...," + e.getMessage());
+        }
+
+        //variable untuk proses update dan insert ke history jabatan
+        String golonganId,pengalamanId, branchName, positionname, divisiName, golonganName, tipePegawaiName, tanggalAktif, bidangId, bidangName, stTanggalMasuk;
+
+        //save jabatan baru ke history jabatan pegawai
+        ImtHrisHistoryJabatanPegawaiEntity historyJabatanPegawai = new ImtHrisHistoryJabatanPegawaiEntity();
+        historyJabatanPegawai.setNip(mutasi.getNip());
+        historyJabatanPegawai.setBranchId(mutasi.getBranchBaruId());
+        historyJabatanPegawai.setDivisiId(mutasi.getDivisiBaruId());
+        historyJabatanPegawai.setBidangId(mutasi.getDivisiBaruId());
+        historyJabatanPegawai.setBidangName(mutasi.getDivisiBaruName());
+        historyJabatanPegawai.setPositionId(mutasi.getPositionBaruId());
+        historyJabatanPegawai.setProfesiId(mutasi.getProfesiBaruId());
+        historyJabatanPegawai.setTanggalSkMutasi(CommonUtil.convertStringToDate(bean.getStTanggalEfektif()));
+        historyJabatanPegawai.setPoint("0");
+        historyJabatanPegawai.setPointLebih("0");
+        historyJabatanPegawai.setNilaiSmk(BigDecimal.valueOf(0));
+        historyJabatanPegawai.setTahun(bean.getStTahun());
+        historyJabatanPegawai.setGradeSmk("-");
+        if ("RS".equalsIgnoreCase(mutasi.getStatus())){
+            historyJabatanPegawai.setTanggalKeluar(mutasi.getStTanggalKeluar());
+        }
+
+        //update reza (02-04-2020) penambahan flagmutasi di history jabatan
+        historyJabatanPegawai.setJabatanFlag("Y");
+        historyJabatanPegawai.setMutasiFlag("Y");
+
+        try {
+            golonganId = mutasiDao.getGolonganId(mutasi.getNip());
+            historyJabatanPegawai.setGolonganId(golonganId);
+        }catch (HibernateException e) {
+            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+        }
+
+        historyJabatanPegawai.setFlag(bean.getFlag());
+        historyJabatanPegawai.setAction(bean.getAction());
+        historyJabatanPegawai.setCreatedWho(bean.getCreatedWho());
+        historyJabatanPegawai.setLastUpdateWho(bean.getLastUpdateWho());
+        historyJabatanPegawai.setCreatedDate(bean.getCreatedDate());
+        historyJabatanPegawai.setLastUpdate(bean.getLastUpdate());
+
+        try {
+            // Generating ID, get from postgre sequence
+            pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
+            historyJabatanPegawai.setHistoryJabatanId(pengalamanId);
+
+            //mengambil branch name, position name, divisi name, golongan name, tipe pegawai name
+            branchName = historyJabatanPegawaiDao.getBranchById(mutasi.getBranchBaruId());
+            historyJabatanPegawai.setBranchName(branchName);
+            positionname = historyJabatanPegawaiDao.getPositionById(mutasi.getPositionBaruId());
+            historyJabatanPegawai.setPositionName(positionname);
+            divisiName = historyJabatanPegawaiDao.getDivisiById(mutasi.getDivisiBaruId());
+            historyJabatanPegawai.setDivisiName(divisiName);
+            golonganName = historyJabatanPegawaiDao.getGolonganById(golonganId);
+            historyJabatanPegawai.setGolonganName(golonganName);
+            historyJabatanPegawai.setTanggal(bean.getStTanggalEfektif());
+
+            List<ImBiodataEntity> imBiodataEntitys;
+            imBiodataEntitys = biodataDao.findBiodataLikeNip(mutasi.getNip());
+            if (imBiodataEntitys != null){
+                for (ImBiodataEntity imBiodataEntity : imBiodataEntitys) {
+                    tipePegawaiName = historyJabatanPegawaiDao.getTipePegawaiById(imBiodataEntity.getTipePegawai());
+                    historyJabatanPegawai.setTipePegawaiName(tipePegawaiName);
+                }
+            }
+
+            List<HistoryJabatanPegawai> historyJabatan = new ArrayList<>();
+            historyJabatan = historyJabatanPegawaiDao.geyBagianByPositionId(mutasi.getPositionLamaId());
+            if (historyJabatan.size() >0){
+                for (HistoryJabatanPegawai result: historyJabatan){
+                    historyJabatanPegawai.setBagianId(result.getBagianId());
+                    historyJabatanPegawai.setBagianName(result.getBagianName());
+                }
+            }
+
+            try{
+                historyJabatanPegawaiDao.addAndSave(historyJabatanPegawai);
+            }catch (HibernateException e) {
+                logger.error("[MutasiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
+            }
+        } catch (HibernateException e) {
+            logger.error("[MutasiBoImpl.saveAdd] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when getting sequence PengalamanKerjaId id, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.saveHistoryJabatan] END <<<");
     }
 }

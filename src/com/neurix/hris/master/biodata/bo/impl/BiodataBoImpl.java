@@ -490,7 +490,7 @@ public class BiodataBoImpl implements BiodataBo {
                                     String HistoryJabatanId;
                                     ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
                                     try{
-                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip());
+                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip(), bean.getPositionId());
                                         if (HistoryJabatanId!=null){
                                             if (!HistoryJabatanId.equalsIgnoreCase("")){
                                                 pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
@@ -847,7 +847,7 @@ public class BiodataBoImpl implements BiodataBo {
                                     String HistoryJabatanId;
                                     ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
                                     try{
-                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip());
+                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip(), bean.getPositionId());
                                         if (HistoryJabatanId!=null){
                                             if (!HistoryJabatanId.equalsIgnoreCase("")){
                                                 pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);

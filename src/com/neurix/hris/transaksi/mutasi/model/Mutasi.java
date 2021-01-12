@@ -74,6 +74,15 @@ public class Mutasi extends BaseModel {
     private String jenisPegawaiName;
     private String updatePosisiId;
     private String stTanggalKeluar;
+    private String stTahun;
+
+    public String getStTahun() {
+        return stTahun;
+    }
+
+    public void setStTahun(String stTahun) {
+        this.stTahun = stTahun;
+    }
 
     public String getStTanggalKeluar() {
         return stTanggalKeluar;
