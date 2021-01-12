@@ -8,7 +8,7 @@
     <!--<bean id="dataSource"-->
         <!--class="org.springframework.jdbc.datasource.DriverManagerDataSource"-->
         <!--p:driverClassName="org.postgresql.Driver"-->
-        <!--p:url="jdbc:postgresql://db.gomedsys.local:5432/gomedsys_nmu"-->
+        <!--p:url="jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu"-->
         <!--p:username="root"-->
         <!--p:password="123456"/>-->
 
