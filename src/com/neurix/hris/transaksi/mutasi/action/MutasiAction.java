@@ -693,6 +693,7 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setJenisPegawaiName(obj.getString("jenispegawainame"));
                 mutasi.setFlagDigaji(obj.getString("flagdigaji"));
                 mutasi.setUpdatePosisiId(obj.getString("positionPengganti"));
+                mutasi.setStTanggalKeluar(obj.getString("tanggalKeluar"));
 
                 if (!"".equalsIgnoreCase(mutasi.getNip())){
                     StatusMutasi search = new StatusMutasi();
@@ -1156,5 +1157,22 @@ public class MutasiAction extends BaseMasterAction{
 
         logger.info("[MutasiAction.getListPositionJabatanLain] end process <<<");
         return listOfPosition;
+    }
+
+    public Boolean checkIsAvailJabatanUtama(String nip, String jenisPegawai){
+        logger.info("[MutasiAction.checkIsAvailJabatanUtama] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
+
+        Boolean isDefault = false;
+        try {
+            isDefault = mutasiBo.checkPositionByJenisPegawai(nip, jenisPegawai);
+        } catch (GeneralBOException e){
+            logger.error("[MutasiAction.checkIsAvailJabatanUtama] Error chek is default,", e);
+        }
+
+        logger.info("[MutasiAction.checkIsAvailJabatanUtama] end process <<<");
+        return isDefault;
     }
 }

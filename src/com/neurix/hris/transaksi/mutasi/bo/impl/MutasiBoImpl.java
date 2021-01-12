@@ -1457,12 +1457,28 @@ public class MutasiBoImpl implements MutasiBo {
         Boolean found = false;
         try {
             found = mutasiDao.checkJenisPegawaiIsDefaultWithNip(nip, positionId);
-        } catch (HibernateException e){
+        } catch (HibernateException e) {
             logger.error("[MutasiBoImpl.checkJenisPegawaiDefault] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when check is jenis pegawai default, please inform to your admin...," + e.getMessage());
         }
 
         logger.info("[MutasiBoImpl.checkJenisPegawaiDefault] END <<<");
+        return found;
+    }
+
+    @Override
+    public Boolean checkPositionByJenisPegawai(String nip, String jenisPegawai) {
+        logger.info("[MutasiBoImpl.checkPositionByJenisPegawai] START >>>");
+
+        Boolean found = false;
+        try {
+            found = mutasiDao.checkPositionUtamaAktif(nip, jenisPegawai);
+        } catch (HibernateException e) {
+            logger.error("[MutasiBoImpl.checkPositionByJenisPegawai] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when check is jenis pegawai default, please inform to your admin...," + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.checkPositionByJenisPegawai] END <<<");
         return found;
     }
 }

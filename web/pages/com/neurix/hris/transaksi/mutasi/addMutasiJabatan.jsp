@@ -440,6 +440,14 @@
                         </div>
                     </div>
 
+                    <div class="form-group" id="panel_tanggal_keluar" style="display: none">
+                        <label class="control-label col-sm-4" >Tanggal Keluar: </label>
+                        <div class="col-sm-8">
+                            <s:textfield id="tanggalKeluar" cssClass="form-control pull-right"
+                                         required="false" cssStyle=""/>
+                        </div>
+                    </div>
+
                     
                     <div id="panel-target" style="display: none;">
                         <div class="form-group">
@@ -590,7 +598,7 @@
                         '<td align="center">' + (i + 1) + '</td>' +
                         '<td >' + item.nip + '</td>' +
                         '<td align="center">' + item.nama+ '</td>' +
-                        '<td align="center">' + item.statusName+ '</td>' +
+                        '<td align="center" style="font-weight: bold;">' + item.statusName+ '</td>' +
                         '<td align="center">' + item.branchLamaName+ '</td>' +
                         '<td align="center">' + item.divisiLamaName+ '</td>' +
                         '<td align="center">' + item.positionLamaName+ '</td>' +
@@ -628,6 +636,12 @@
             changeYear: true
         });
 
+        $('#tanggalKeluar').datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+
         $('#btnAddMutasi').click(function(){
             cekStatusMutasi();
             $('#nip2').prop("readonly", true);
@@ -638,8 +652,8 @@
             $('#myForm').attr('action', 'addPerson');
             $('.form-add').val("");
             $('#modal-edit').find('.modal-title').text('Add Mutasi / Nonaktif');
-            $("#panel-person-aktif").hide();
-            $("#flag-person-aktif").val("Y");
+            setPanelAlert("")
+            $("#flag-person-aktif").val("N");
         });
     });
 
@@ -787,6 +801,7 @@
         var jenisPegawaiName    = $("#jenisPegawaiId option:selected").text();
         var flagDigaji          = $("#flagDigaji option:selected").val();
         var flagPersonAktif     = $("#flag-person-aktif").val();
+        var tanggalKeluar       = $("#tanggalKeluar").val()
 
         // jika status lepas maka ada pengganti
         var positionBaruId      = "";
@@ -813,51 +828,61 @@
         }
         // END
 
+        var isOk = true;
+        if (status == "M" || status == "R" || status == "RA"){
+            if (flagPersonAktif == "Y"){
+                isOk = false;
+            }
+        }
+
         if (personName !='' && branchLamaId !='' && status!='') {
             if(url == 'addPerson'){
 
-                var objadd = {
-                    nip : nip,
-                    personname : personName,
-                    branchlamaid : branchLamaId,
-                    branchlamaname : branchLamaName,
-                    divisilamaid : divisiLamaId,
-                    divisilamaname : divisiLamaName,
-                    positionlamaid : positionLamaId,
-                    positionlamaname : positionLamaName,
-                    branchbaruid : branchBaruId,
-                    branchbaruname : branchBaruName,
-                    divisibaruid : divisiBaruId,
-                    divisibaruname : divisiBaruName,
-                    positionbaruid : positionBaruId,
-                    poisitionbaruname : positionBaruName,
-                    status : status,
-                    profesilamaid : profesiLamaId,
-                    profesilamaname : profesiLamaName,
-                    profesibaruid : profesiBaruId,
-                    profesibaruname : profesiBaruName,
-                    jenispegawai : jenisPegawaiId,
-                    jenispegawainame : jenisPegawaiName,
-                    flagdigaji : flagDigaji,
-                    positionPengganti : positionPengganti
-                };
+                if (isOk){
+                    var objadd = {
+                        nip : nip,
+                        personname : personName,
+                        branchlamaid : branchLamaId,
+                        branchlamaname : branchLamaName,
+                        divisilamaid : divisiLamaId,
+                        divisilamaname : divisiLamaName,
+                        positionlamaid : positionLamaId,
+                        positionlamaname : positionLamaName,
+                        branchbaruid : branchBaruId,
+                        branchbaruname : branchBaruName,
+                        divisibaruid : divisiBaruId,
+                        divisibaruname : divisiBaruName,
+                        positionbaruid : positionBaruId,
+                        poisitionbaruname : positionBaruName,
+                        status : status,
+                        profesilamaid : profesiLamaId,
+                        profesilamaname : profesiLamaName,
+                        profesibaruid : profesiBaruId,
+                        profesibaruname : profesiBaruName,
+                        jenispegawai : jenisPegawaiId,
+                        jenispegawainame : jenisPegawaiName,
+                        flagdigaji : flagDigaji,
+                        positionPengganti : positionPengganti,
+                        tanggalKeluar : tanggalKeluar
+                    };
 
-                console.log(objadd);
+                    console.log(objadd);
 
-                var stobj = JSON.stringify(objadd);
+                    var stobj = JSON.stringify(objadd);
 
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    MutasiAction.saveAnggotaAdd(stobj, function(result) {
-                        if(result==""){
-                            alert('Data Successfully Added');
-                            $('#modal-edit').modal('hide');
-                            $('#myForm')[0].reset();
-                            loadPerson();
-                        }else{
-                            alert(result);
-                        }
-                    });
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        MutasiAction.saveAnggotaAdd(stobj, function(result) {
+                            if(result==""){
+                                alert('Data Successfully Added');
+                                $('#modal-edit').modal('hide');
+                                $('#myForm')[0].reset();
+                                loadPerson();
+                            }else{
+                                alert(result);
+                            }
+                        });
+                    }
                 }
             } else{
                 if (confirm('Are you sure you want to delete this Record?')) {
@@ -888,12 +913,12 @@
         var nip             = $("#nip1").val();
         var status          = $("#statusMutasi").val();
         var positionIdLama  = $("#positionLamaId1").val();
+        var jenisJabatan    = $("#jenisPegawaiId option:selected").val();
         MutasiAction.checkIsAvailInSession(nip, function(res){
             if (res.status == "error"){
+                // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
                 alert(res.msg);
             } else {
-                // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
-                var lebihBaikResign = false;
                 if (status == "L"){
                     MutasiAction.getListPositionJabatanLain(positionIdLama, nip, function (positions) {
                         if (positions.length == 0){
@@ -902,7 +927,16 @@
                             save();
                         }
                     });
+                } else if (status == "RA"){
+                    MutasiAction.checkIsAvailJabatanUtama(nip, jenisJabatan, function (avail) {
+                        if (avail == true){
+                            alert("Sudah Ada Posisi Utama Aktif dari nip ini. \n pilih jenis jabatan yang lain. \n");
+                        } else {
+                            save();
+                        }
+                    });
                 } else {
+
                     save();
                 }
             }
@@ -950,10 +984,16 @@
             $( "#pjsBaru" ).prop( "disabled",false);
             $("#penggantiId").prop("disabled", false);
             $("#tipeMutasi").prop("disabled", false);
+            $("#panel_tanggal_keluar").hide();
         }else{
 
             if (status == "L" || status == "RS"){
                 $("#panel_jenis_jabatan").hide();
+                if (status == "RS"){
+                    $("#panel_tanggal_keluar").show();
+                } else {
+                    $("#panel_tanggal_keluar").hide();
+                }
             }
 
             $("#panel-awal").show();
@@ -1029,7 +1069,7 @@
                 $("#flag-person-aktif").val("Y");
                 setPanelAlert(str);
             } else {
-                str += "<div class='alert alert-danger'><i class='fa fa-check'></i></div>";
+                str += "<div class='alert alert-success' style='text-align: center'>Posisi Tersedia <i class='fa fa-check'></i></div>";
                 $("#flag-person-aktif").val("N");
                 setPanelAlert(str);
             }

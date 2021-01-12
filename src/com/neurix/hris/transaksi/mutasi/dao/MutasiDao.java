@@ -419,4 +419,27 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
         return false;
     }
 
+    public Boolean checkPositionUtamaAktif(String nip, String jenisPegawai){
+
+        String SQL = "SELECT jp.jenis_pegawai_id, jp.jenis_pegawai_name, pp.jenis_pegawai \n" +
+                "FROM it_hris_pegawai_position pp\n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "INNER JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.flag = 'Y'\n" +
+                "AND jp.flag_default = 'Y'\n" +
+                "AND jp.jenis_pegawai_id = :jenispegawai \n" +
+                "AND pp.nip = :nip";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("jenispegawai", jenisPegawai)
+                .list();
+
+        if (results != null && results.size() > 0)
+            return true;
+
+        return false;
+
+    }
+
 }

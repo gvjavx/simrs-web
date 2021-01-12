@@ -31,4 +31,6 @@ public interface MutasiBo extends BaseMasterBo<Mutasi>{
     public BigDecimal getGajiPokok(String golonganId,String tahun);
     public List<Position> getListOtherPosition(String positionId, String nip);
     public Boolean checkJenisPegawaiDefault(String nip, String positionId);
+    public Boolean checkPositionByJenisPegawai(String nip, String jenisPegawai);
+
 }
