@@ -210,10 +210,10 @@
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td style="vertical-align: middle">
                                         <s:if test='#row.statusBayar == "Y"'>
-                                            <label class="label label-success"> sudah bayar</label>
+                                            <span class="span-success"> sudah bayar</span>
                                         </s:if>
                                         <s:else>
-                                            <label class="label label-warning"> belum bayar</label>
+                                            <span class="span-warning"> belum bayar</span>
                                         </s:else>
                                     </td>
                                     <td><s:property value="keteranganSelesai"/></td>
