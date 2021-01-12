@@ -1419,6 +1419,8 @@ public class MutasiBoImpl implements MutasiBo {
         historyJabatanPegawai.setLastUpdateWho(bean.getLastUpdateWho());
         historyJabatanPegawai.setCreatedDate(bean.getCreatedDate());
         historyJabatanPegawai.setLastUpdate(bean.getLastUpdate());
+        historyJabatanPegawai.setJenisPegawai(mutasi.getJenisPegawaiId());
+        historyJabatanPegawai.setFlagDigaji(mutasi.getFlagDigaji());
 
         try {
             // Generating ID, get from postgre sequence

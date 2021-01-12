@@ -109,6 +109,12 @@
         <property name="mutasiFlag">
             <column name="mutasi_flag" sql-type="varchar" length="1" />
         </property>
+        <property name="jenisPegawai">
+            <column name="jenis_pegawai" sql-type="varchar" length="5" />
+        </property>
+        <property name="flagDigaji">
+            <column name="flag_digaji" sql-type="varchar" length="1" />
+        </property>
 
         <many-to-one name="imPosition" class="com.neurix.authorization.position.model.ImPosition"
                      insert="false" update="false" fetch="select" cascade="all">
