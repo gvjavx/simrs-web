@@ -1116,7 +1116,6 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 logger.info("File name : " + videoFileName + " "+ audioFileName);
                 String path = storageDir+videoFileName;
 
-                //TODO CHECK
                 String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
                 try {
                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
