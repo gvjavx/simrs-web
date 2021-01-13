@@ -897,8 +897,6 @@
                         txtket : txtKet
                     };
 
-                    console.log(objadd);
-
                     var stobj = JSON.stringify(objadd);
 
                     if (confirm('Are you sure you want to save this Record?')) {
@@ -968,7 +966,6 @@
                             });
                         }
                     } else if (status == "RA"){
-
                         if (noSk == null || noSk == ""){
                             alert("No.SK harus diisi");
                         } else {
@@ -981,13 +978,15 @@
                             });
                         }
 
-                    } else if (status == "M" || "R"){
+                    } else if (status == "M" || status == "R"){
                         if (noSk == null && noSk == ""){
                             alert("No.SK harus diisi");
                         } else {
                             save();
                         }
                     } else if (status == "RS"){
+                        console.log("tanggal keluar didalam if : " + tanggalKeluar);
+                        console.log("status didalam if : " + status);
 
                         if (tanggalKeluar == null || tanggalKeluar == ""){
                             alert("Tanggal Keluar harus diisi");
@@ -996,6 +995,9 @@
                             var stDateNow               = getStDateNow();
                             var tanggalKeluarSplited    = splitWithoutStripDate(tanggalKeluar);
 
+                            console.log("date now : " + stDateNow);
+                            console.log("tanggal keluar : " + tanggalKeluarSplited);
+
                             if (parseInt(tanggalKeluarSplited) > parseInt(stDateNow)){
                                 alert("Tanggal tidak boleh setelah tanggal sekarang !");
                             } else {
@@ -1003,6 +1005,8 @@
                             }
                         }
                     } else {
+                        console.log("tanggal keluar didalam if : " + tanggalKeluar);
+                        console.log("status didalam if : " + status);
                         save();
                     }
                 }
@@ -1161,16 +1165,23 @@
         var month = d.getMonth()+1;
         var day = d.getDate();
         var year = d.getFullYear();
-        return year+day+month;
+        return year+""+fixLengthForDate(month.toString())+""+fixLengthForDate(day.toString());
     }
     function splitWithoutStripDate(str){
         var res = str.split("-");
         var ln  = res.length;
         var result = "";
-        for (i = 0 ; i > ln ; i++){
+        for (i = 0 ; i < ln ; i++){
             result += res[i];
         }
         return result;
+    }
+
+    function fixLengthForDate(str){
+        if(str.length > 1)
+            return str;
+        else
+            return "0" + str;
     }
 </script>
 
