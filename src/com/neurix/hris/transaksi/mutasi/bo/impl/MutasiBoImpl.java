@@ -412,13 +412,18 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setLevelLama(mutasi.getLevelLama());
                     itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
 
-                    if(mutasi.getStatus().equalsIgnoreCase("M")||mutasi.getStatus().equalsIgnoreCase("R")){
+                    if("M".equalsIgnoreCase(mutasi.getStatus()) || "R".equalsIgnoreCase(mutasi.getStatus())){
                         itMutasiEntity.setBranchBaruId(mutasi.getBranchBaruId());
                         itMutasiEntity.setDivisiBaruId(mutasi.getDivisiBaruId());
                         itMutasiEntity.setPositionBaruId(mutasi.getPositionBaruId());
                         itMutasiEntity.setLevelBaru(mutasi.getLevelBaru());
                         itMutasiEntity.setLevelBaruName(mutasi.getLevelBaruName());
                     }
+
+                    if ("RS".equalsIgnoreCase(mutasi.getStatus())){
+                        itMutasiEntity.setIdKet(mutasi.getIdKetResign());
+                    }
+
                     itMutasiEntity.setPjs(mutasi.getPjs());
                     itMutasiEntity.setFlag(bean.getFlag());
                     itMutasiEntity.setTanggalEfektif(bean.getTanggalEfektif());
@@ -427,7 +432,7 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     itMutasiEntity.setCreatedDate(bean.getCreatedDate());
                     itMutasiEntity.setLastUpdate(bean.getLastUpdate());
-
+                    itMutasiEntity.setNoSk(mutasi.getNoSk());
 
                     itDoc.setDocMutasiId(mutasiDocDao.getNextId());
                     itDoc.setMutasiId(mutasiId);
@@ -848,7 +853,7 @@ public class MutasiBoImpl implements MutasiBo {
     }
 
     public MutasiDoc addMutasiDoc(MutasiDoc bean) throws GeneralBOException {
-        logger.info("[DepartmentBoImpl.saveAdd] start process >>>");
+        logger.info("[MutasiBoImpl.addMutasiDoc] start process >>>");
 
         if (bean!=null) {
 
@@ -868,28 +873,29 @@ public class MutasiBoImpl implements MutasiBo {
                     // insert into database
                     mutasiDocDao.updateAndSave(itMutasiDocEntity);
                 } catch (HibernateException e) {
-                    logger.error("[DepartmentBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[MutasiBoImpl.addMutasiDoc] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data Department, please info to your admin..." + e.getMessage());
                 }
             }
         }
 
-        logger.info("[DepartmentBoImpl.saveAdd] end process <<<");
+        logger.info("[MutasiBoImpl.addMutasiDoc] end process <<<");
         return null;
     }
 
     @Override
     public Mutasi getDataReportMutasi(String mutasiId) throws GeneralBOException {
-        ImBiodataEntity biodata = new ImBiodataEntity();
+        logger.info("[MutasiBoImpl.getDataReportMutasi] start process >>>");
+
         Mutasi resultMutasi = new Mutasi();
         List<Mutasi> mutasiList = null;
-        String label1, label2, label3, label4, label5, label6, label7 ;
-        mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
-        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        java.sql.Date dataDate = new java.sql.Date(updateTime.getTime());
-        SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
-        String stDate = dt1.format(dataDate);
-        String[]tahun = stDate.split("-");
+
+        try {
+            mutasiList = mutasiDao.getDataReportMutasi(mutasiId);
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.getDataReportMutasi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get data mutasi, please info to your admin..." + e.getMessage());
+        }
         if(mutasiList != null){
             for(Mutasi mutasi : mutasiList){
                 resultMutasi.setNama(mutasi.getNama());
@@ -903,6 +909,7 @@ public class MutasiBoImpl implements MutasiBo {
             }
         }
 
+        logger.info("[MutasiBoImpl.getDataReportMutasi] start process <<<");
         return resultMutasi;
     }
 
@@ -1137,6 +1144,9 @@ public class MutasiBoImpl implements MutasiBo {
             biodataEntity.setFlag("N");
             if (mutasi.getStTanggalKeluar() != null && !"".equalsIgnoreCase(mutasi.getStTanggalKeluar()))
                 biodataEntity.setTanggalKeluar(CommonUtil.convertStringToDate2(mutasi.getStTanggalKeluar()));
+            if (mutasi.getKetResign() != null && !"".equalsIgnoreCase(mutasi.getKetResign()))
+                biodataEntity.setKeterangan("Telah "+mutasi.getKetResign()+" Pada Tanggal : "+ mutasi.getStTanggalKeluar());
+
             biodataEntity.setAction("U");
             biodataEntity.setLastUpdate(mutasi.getLastUpdate());
             biodataEntity.setLastUpdateWho(mutasi.getLastUpdateWho());

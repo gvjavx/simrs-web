@@ -43,6 +43,24 @@ public class ItMutasiEntity implements Serializable {
     private Timestamp tanggalAktif;
     private String levelLamaName;
     private String levelBaruName;
+    private String noSk;
+    private String idKet;
+
+    public String getIdKet() {
+        return idKet;
+    }
+
+    public void setIdKet(String idKet) {
+        this.idKet = idKet;
+    }
+
+    public String getNoSk() {
+        return noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
+    }
 
     public String getLevelBaruName() {
         return levelBaruName;

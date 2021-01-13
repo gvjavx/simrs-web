@@ -527,7 +527,25 @@
                             </div>
                         </div>
                     </div>
-
+                    <div id="panel_sk" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > No. SK : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="no_sk"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="panel_ket_resign" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Ket. Pengunduran : </label>
+                            <select class="form-control" id="sel_ket_resign">
+                                <option value="pengunduran_diri">Pengunduran Diri</option>
+                                <option value="diberhentikan">Diberhentikan</option>
+                                <option value="pensiun_dini">Pensiun Dini</option>
+                                <option value="meninggal">Meninggal</option>
+                            </select>
+                        </div>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -801,7 +819,10 @@
         var jenisPegawaiName    = $("#jenisPegawaiId option:selected").text();
         var flagDigaji          = $("#flagDigaji option:selected").val();
         var flagPersonAktif     = $("#flag-person-aktif").val();
-        var tanggalKeluar       = $("#tanggalKeluar").val()
+        var tanggalKeluar       = $("#tanggalKeluar").val();
+        var noSk                = $("#no_sk").val();
+        var idKet               = $("#sel_ket_resign option:selected").val();
+        var txtKet              = $("#sel_ket_resign option:selected").txt();
 
         // jika status lepas maka ada pengganti
         var positionBaruId      = "";
@@ -863,7 +884,10 @@
                         jenispegawainame : jenisPegawaiName,
                         flagdigaji : flagDigaji,
                         positionPengganti : positionPengganti,
-                        tanggalKeluar : tanggalKeluar
+                        tanggalKeluar : tanggalKeluar,
+                        nosk : noSk,
+                        idket : idKet,
+                        txtket : txtKet
                     };
 
                     console.log(objadd);
@@ -914,29 +938,61 @@
         var status          = $("#statusMutasi").val();
         var positionIdLama  = $("#positionLamaId1").val();
         var jenisJabatan    = $("#jenisPegawaiId option:selected").val();
+        var noSk            = $("#no_sk").val();
+        var tanggalKeluar   = $("#tanggalKeluar").val();
         MutasiAction.checkIsAvailInSession(nip, function(res){
             if (res.status == "error"){
                 // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
                 alert(res.msg);
             } else {
                 if (status == "L"){
-                    MutasiAction.getListPositionJabatanLain(positionIdLama, nip, function (positions) {
-                        if (positions.length == 0){
-                            alert("Tidak Ditemukan Posisi Lain dari nip ini. \n tidak bisa lepas jabatan. \n");
-                        } else {
-                            save();
-                        }
-                    });
+                    if (noSk == null && noSk == "") {
+                        alert("No.SK harus diisi");
+                    } else {
+                        MutasiAction.getListPositionJabatanLain(positionIdLama, nip, function (positions) {
+                            if (positions.length == 0){
+                                alert("Tidak Ditemukan Posisi Lain dari nip ini. \n tidak bisa lepas jabatan. \n");
+                            } else {
+                                save();
+                            }
+                        });
+                    }
                 } else if (status == "RA"){
-                    MutasiAction.checkIsAvailJabatanUtama(nip, jenisJabatan, function (avail) {
-                        if (avail == true){
-                            alert("Sudah Ada Posisi Utama Aktif dari nip ini. \n pilih jenis jabatan yang lain. \n");
+
+                    if (noSk == null && noSk == ""){
+                        alert("No.SK harus diisi");
+                    } else {
+                        MutasiAction.checkIsAvailJabatanUtama(nip, jenisJabatan, function (avail) {
+                            if (avail == true){
+                                alert("Sudah Ada Posisi Utama Aktif dari nip ini. \n pilih jenis jabatan yang lain. \n");
+                            } else {
+                                save();
+                            }
+                        });
+                    }
+
+                } else if (status == "M" || "R"){
+                    if (noSk == null && noSk == ""){
+                        alert("No.SK harus diisi");
+                    } else {
+                        save();
+                    }
+                } else if (status == "RS"){
+
+                    if (tanggalKeluar == null && tanggalKeluar == ""){
+                        alert("Tanggal Keluar harus diisi");
+                    } else {
+
+                        var stDateNow               = getStDateNow();
+                        var tanggalKeluarSplited    = splitWithoutStripDate(tanggalKeluar);
+
+                        if (parseInt(tanggalKeluarSplited) > parseInt(stDateNow)){
+                            alert("Tanggal tidak boleh setelah tanggal sekarang !");
                         } else {
                             save();
                         }
-                    });
+                    }
                 } else {
-
                     save();
                 }
             }
@@ -962,7 +1018,9 @@
 
         if(status == 'M' || status == 'R' || status == "RA"){
 
+            $("#panel_sk").show();
             $("#panel_jenis_jabatan").show();
+            $("#panel_ket_resign").hide();
             if (status == "RA"){
                 $("#panel-target").show();
                 $("#panel-awal").hide();
@@ -979,7 +1037,6 @@
             }
             $( "#divisiBaruId2" ).prop( "disabled", false);
             $( "#positionBaruId1" ).prop( "disabled",false);
-            // $( "#golonganBaruId1" ).prop( "disabled",false);
             $( "#profesiBaruId1" ).prop( "disabled",false);
             $( "#pjsBaru" ).prop( "disabled",false);
             $("#penggantiId").prop("disabled", false);
@@ -991,8 +1048,12 @@
                 $("#panel_jenis_jabatan").hide();
                 if (status == "RS"){
                     $("#panel_tanggal_keluar").show();
+                    $("#panel_sk").hide();
+                    $("#panel_ket_resign").show();
                 } else {
                     $("#panel_tanggal_keluar").hide();
+                    $("#panel_sk").show();
+                    $("#panel_ket_resign").hide();
                 }
             }
 
@@ -1079,6 +1140,23 @@
     function setPanelAlert(str){
         console.log(str);
         $("#panel-person-aktif").html(str);
+    }
+
+    function getStDateNow(){
+        var d = new Date();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var year = d.getFullYear();
+        return year+day+month;
+    }
+    function splitWithoutStripDate(str){
+        var res = str.split("-");
+        var ln  = res.length;
+        var result = "";
+        for (i = 0 ; i > ln ; i++){
+            result += res[i];
+        }
+        return result;
     }
 </script>
 

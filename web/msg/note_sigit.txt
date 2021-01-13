@@ -1535,3 +1535,13 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN flag_digaji VARCHAR(1);
 
 --
+
+-- 2021-01-13
+
+    ALTER TABLE it_hris_mutasi_jabatan
+    ADD COLUMN no_sk VARCHAR(100);
+
+    ALTER TABLE it_hris_mutasi_jabatan
+    ADD COLUMN id_ket VARCHAR(100);
+
+--
