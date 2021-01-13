@@ -230,7 +230,7 @@
                 $.each(data, function(i,item){
                     data2.push({_id : item.strukturJabatanId, level : item.level,  nama : item.positionName, parent : item.parentId, branchId : item.branchId,
                         branchName : item.branchName, status : 'Y', jabatan : item.positionName, nip  : item.nip, namaPegawai : item.name,
-                        positionId : item.positionId});
+                        positionId : item.positionId, jenisPegawai : item.jenisPegawai, flagDefault : item.flagDefault});
                 });
 
 
@@ -291,7 +291,13 @@
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level+ '</td>' +
                                 '<td align="center">' + data2[i].nip + '</td>' +
-                                '<td align="center">' + data2[i].namaPegawai + '</td>' +
+                                '<td align="center">' + data2[i].namaPegawai;
+
+                        if (data2[i].flagDefault != "Y"){
+                            tmp_table += ' <div class="label label-warning">'+data2[i].jenisPegawai+'</div>';
+                        }
+
+                        tmp_table +=  '</td>' +
                                 '<td align="center">' +
                                     "<a href='javascript:;' class ='item-edit' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' >" +
                                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+
@@ -310,7 +316,13 @@
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level + '</td>' +
                                 '<td align="center">' + data2[i].nip + '</td>' +
-                                '<td align="center">' + data2[i].namaPegawai + '</td>' +
+                                '<td align="center">' + data2[i].namaPegawai;
+
+                        if (data2[i].flagDefault != "Y"){
+                            tmp_table += ' <div class="label label-warning">'+data2[i].jenisPegawai+'</div>';
+                        }
+
+                        tmp_table +=  '</td>' +
                                 '<td align="center">' +
                                     "<a href='javascript:;' class ='item-edit' branch='"+data2[i].branchId+"' data ='"+data2[i]._id+"' >" +
                                         "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+

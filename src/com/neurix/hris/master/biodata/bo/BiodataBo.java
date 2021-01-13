@@ -115,4 +115,6 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     public List<JenisPegawai> getAllJenisPegawai();
 
     public String getSeqNip();
+
+    public List<Biodata> getListOfPersonilForMutasi(String query, String branchId) throws GeneralBOException;
 }

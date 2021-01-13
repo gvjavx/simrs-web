@@ -54,8 +54,12 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 //                criteria.add(Restrictions.in("tipePelayanan", arrayList));
 //            }
 
-            if (mapCriteria.get("not_own_branch") != null)
+            if (mapCriteria.get("not_own_branch") != null){
                 criteria.add(Restrictions.ne("branchId", mapCriteria.get("not_own_branch")));
+            }
+            if (mapCriteria.get("kode_poli_vclaim") != null){
+                criteria.add(Restrictions.eq("kodePoliVclaim", mapCriteria.get("kode_poli_vclaim")));
+            }
 
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         }

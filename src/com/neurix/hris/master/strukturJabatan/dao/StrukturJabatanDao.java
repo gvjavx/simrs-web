@@ -630,8 +630,8 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
     }
 
 
-    public List<ImStrukturJabatanEntity> getStrukturJabatanSearch(String branchId, String posisiId, String parentId, String nip){
-        List<ImStrukturJabatanEntity> listOfResult = new ArrayList<ImStrukturJabatanEntity>();
+    public List<StrukturJabatan> getStrukturJabatanSearch(String branchId, String posisiId, String parentId, String nip){
+        List<StrukturJabatan> listOfResult = new ArrayList<StrukturJabatan>();
         List<Object[]> results = new ArrayList<Object[]>();
         List<Object[]> results2 = new ArrayList<Object[]>();
         String strPosisi = "";
@@ -649,26 +649,44 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             strNip = " and itPosisi.nip = '"+nip+"' ";
         }
 
-        String query = "select distinct \n" +
-                "\tjabatan.*,\n" +
-                "\titPosisi.nip,\n" +
-                "\tpegawai.nama_pegawai, \n" +
-                "\tposisi.position_name \n" +
-                "from \n" +
-                "\tim_hris_struktur_jabatan jabatan\n" +
-                "\tleft join it_hris_pegawai_position itPosisi on itPosisi.position_id = jabatan.position_id and itPosisi.flag = 'Y' and jabatan.branch_id = itPosisi.branch_id\n" +
-                "\tleft join im_hris_pegawai pegawai on pegawai.nip = itPosisi.nip \n" +
-                "\tleft join im_position posisi on posisi.position_id = jabatan.position_id \n" +
-                "where \n" +
-                "\tjabatan.flag = 'Y'\n" +
+//        String query = "select distinct \n" +
+//                "\tjabatan.*,\n" +
+//                "\titPosisi.nip,\n" +
+//                "\tpegawai.nama_pegawai, \n" +
+//                "\tposisi.position_name \n" +
+//                "from \n" +
+//                "\tim_hris_struktur_jabatan jabatan\n" +
+//                "\tleft join it_hris_pegawai_position itPosisi on itPosisi.position_id = jabatan.position_id and itPosisi.flag = 'Y' and jabatan.branch_id = itPosisi.branch_id\n" +
+//                "\tleft join im_hris_pegawai pegawai on pegawai.nip = itPosisi.nip \n" +
+//                "\tleft join im_position posisi on posisi.position_id = jabatan.position_id \n" +
+//                "where \n" +
+//                "\tjabatan.flag = 'Y'\n" +
+//                "\tand jabatan.branch_id = '"+branchId+"'\n " + strPosisi + strParent + strNip;
+
+        String SQL = "select --distinct \n" +
+                "     jabatan.*,\n" +
+                "     itPosisi.nip,\n" +
+                "     pegawai.nama_pegawai, \n" +
+                "     posisi.position_name,\n" +
+                "\t jenis.flag_default,\n" +
+                "\t jenis.jenis_pegawai_name\n" +
+                " from \n" +
+                "     im_hris_struktur_jabatan jabatan\n" +
+                "     left join it_hris_pegawai_position itPosisi on itPosisi.position_id = jabatan.position_id and itPosisi.flag = 'Y' and jabatan.branch_id = itPosisi.branch_id\n" +
+                "     left join im_hris_pegawai pegawai on pegawai.nip = itPosisi.nip \n" +
+                "     left join im_position posisi on posisi.position_id = jabatan.position_id\n" +
+                "\t LEFT JOIN im_hris_jenis_pegawai jenis ON jenis.jenis_pegawai_id = itPosisi.jenis_pegawai\n" +
+                " where \n" +
+                "     jabatan.flag = 'Y'\n"+
                 "\tand jabatan.branch_id = '"+branchId+"'\n " + strPosisi + strParent + strNip;
 
+
         results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query)
+                .createSQLQuery(SQL)
                 .list();
 
         for (Object[] row : results) {
-            ImStrukturJabatanEntity result  = new ImStrukturJabatanEntity();
+            StrukturJabatan result  = new StrukturJabatan();
 
             result.setStrukturJabatanId((String) row[0]);
             result.setLevel(Long.valueOf(row[1].toString()));
@@ -679,20 +697,25 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             if ((String) row[11]!=null){
                 result.setNip((String) row[11]);
                 result.setNamaPegawai((String) row[12]);
-            } else{
-                String position = (String) row[8];
-                String queryPlt = "select * from im_hris_pegawai where position_plt_id='"+position+"'";
-                results2 = this.sessionFactory.getCurrentSession()
-                        .createSQLQuery(queryPlt)
-                        .list();
-
-                for (Object[] obj : results2){
-                    result.setNip((String) obj[0]);
-                    result.setNamaPegawai((String) obj[1]);
-                }
             }
-            result.setPositionName((String) row[13]);
 
+//            else{
+//                String position = (String) row[8];
+//                String queryPlt = "select * from im_hris_pegawai where position_plt_id='"+position+"'";
+//                results2 = this.sessionFactory.getCurrentSession()
+//                        .createSQLQuery(queryPlt)
+//                        .list();
+//
+//                for (Object[] obj : results2){
+//                    result.setNip((String) obj[0]);
+//                    result.setNamaPegawai((String) obj[1]);
+//                }
+//            }
+
+            // row terakhir sebelum perubahan
+            result.setPositionName((String) row[13]);
+            result.setFlagDefault(row[14] == null ? "N" : row[14].toString());
+            result.setJenisPegawai(row[15] == null ? "" : row[15].toString());
             listOfResult.add(result);
         }
         return listOfResult;

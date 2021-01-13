@@ -501,7 +501,7 @@ public class BiodataBoImpl implements BiodataBo {
                                     String HistoryJabatanId;
                                     ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
                                     try{
-                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip());
+                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip(), bean.getPositionId());
                                         if (HistoryJabatanId!=null){
                                             if (!HistoryJabatanId.equalsIgnoreCase("")){
                                                 pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
@@ -840,7 +840,7 @@ public class BiodataBoImpl implements BiodataBo {
                                     String HistoryJabatanId;
                                     ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
                                     try{
-                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip());
+                                        HistoryJabatanId = mutasiDao.getHistoryJabatanIdLama(bean.getNip(), bean.getPositionId());
                                         if (HistoryJabatanId!=null){
                                             if (!HistoryJabatanId.equalsIgnoreCase("")){
                                                 pengalamanLama = historyJabatanPegawaiDao.getById("historyJabatanId", HistoryJabatanId);
@@ -2256,7 +2256,11 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlagBpjsTk(personalEntity.getFlagBpjsTk());
 //                    returnBiodata.setFlagPercobaan(personalEntity.getFlagPercobaan()); //RAKA-delete
 
-                    returnBiodata.setFlagCutiDiluarTanggungan(personalEntity.getFlagPegawaiCutiDiluarTanggungan());
+                    if(personalEntity.getFlagPegawaiCutiDiluarTanggungan() != null && !"".equalsIgnoreCase(personalEntity.getFlagPegawaiCutiDiluarTanggungan())){
+                        returnBiodata.setFlagCutiDiluarTanggungan(personalEntity.getFlagPegawaiCutiDiluarTanggungan());
+                    } else {
+                        returnBiodata.setFlagCutiDiluarTanggungan("N");
+                    }
                     returnBiodata.setTanggalCutiDiluarTanggunganAwal(personalEntity.getTanggalCutiDiluarAwal());
                     returnBiodata.setTanggalCutiDiluarTanggunganAkhir(personalEntity.getTanggalCutiDiluarAkhir());
 
@@ -5354,5 +5358,23 @@ public class BiodataBoImpl implements BiodataBo {
 
         logger.info("[UserBoImpl.checkAvailJenisPegawaiDefault] END process <<<");
         return jenisPegawais;
+    }
+
+    @Override
+    public List<Biodata> getListOfPersonilForMutasi(String query, String branchId) throws GeneralBOException {
+        logger.info("[BiodataBoImpl.getListOfPersonilForMutasi] START process >>>");
+
+        String whereid = "%" + query + "%";
+
+        List<Biodata> biodataList = new ArrayList<>();
+        try {
+            biodataList = biodataDao.getDataPersonilForMutasi(whereid, branchId);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.getListOfPersonilForMutasi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[BiodataBoImpl.getListOfPersonilForMutasi] END process <<<");
+        return biodataList;
     }
 }

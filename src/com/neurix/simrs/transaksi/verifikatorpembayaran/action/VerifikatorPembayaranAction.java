@@ -1252,6 +1252,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         riwayatTindakan.setLastUpdate(updateTime);
                         riwayatTindakan.setLastUpdateWho(user);
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
+                        String ktb = "";
+                        if("lab".equalsIgnoreCase(entity.getKategori())){
+                            ktb = "laboratorium";
+                        }else{
+                            ktb = "radiologi";
+                        }
+                        riwayatTindakan.setKategoriTindakanBpjs(ktb);
 
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);

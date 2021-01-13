@@ -123,21 +123,22 @@ public class UserBoImpl implements UserBo {
     public void setRoleDao(RoleDao roleDao) {
         this.roleDao = roleDao;
     }
+
     public void setUserDao(UserDao userDao) {
         this.userDao = userDao;
     }
 
-    public UserDetailsLogin getUserByUsername(String username, String active, String contexPath) throws HibernateException,UsernameNotFoundException {
+    public UserDetailsLogin getUserByUsername(String username, String active, String contexPath) throws HibernateException, UsernameNotFoundException {
         logger.info("[UserBoImpl.getUserByUsername] start process >>>");
 
         ImUsersPK userPK = new ImUsersPK();
         userPK.setId(username);
 
-        ImUsers loginUser = (ImUsers) userDao.getById(userPK,active);
+        ImUsers loginUser = (ImUsers) userDao.getById(userPK, active);
 
         // changed by Sigit, 2020-10-10
         boolean checkForEmail = loginUser == null;
-        if (checkForEmail){
+        if (checkForEmail) {
             loginUser = userDao.getById("email", username);
         }
 
@@ -156,9 +157,9 @@ public class UserBoImpl implements UserBo {
                 Roles roles = new Roles(imRoles.getRoleId(), imRoles.getRoleName());
                 Collection<ImFunctions> listOfImFunction = imRoles.getImFunction();
                 List<Functions> listOfFunction = new ArrayList();
-                for ( ImFunctions imFunctions : listOfImFunction ) {
-                    if (imFunctions.getMenu()==null) {
-                        Functions functions=new Functions();
+                for (ImFunctions imFunctions : listOfImFunction) {
+                    if (imFunctions.getMenu() == null) {
+                        Functions functions = new Functions();
                         functions.setFuncId(imFunctions.getFuncId());
                         functions.setFuncName(imFunctions.getFuncName());
                         functions.setUrl(imFunctions.getUrl());
@@ -174,8 +175,8 @@ public class UserBoImpl implements UserBo {
             String statusCaption = "";
             String positionId = loginUser.getImPosition().getPositionId();
             String positionName = loginUser.getImPosition().getPositionName();
-            String divisiId=loginUser.getImPosition().getDepartmentId();
-            String divisiName=loginUser.getImPosition().getDepartmentName();
+            String divisiId = loginUser.getImPosition().getDepartmentId();
+            String divisiName = loginUser.getImPosition().getDepartmentName();
             String bagianId = loginUser.getImPosition().getBagianId();
             String bagianName = loginUser.getImPosition().getBagianName();
 
@@ -184,19 +185,19 @@ public class UserBoImpl implements UserBo {
 //                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
 //            }
 
-            try{
-                if(loginUser.getImBiodataEntity().getStatusCaption() != null){
+            try {
+                if (loginUser.getImBiodataEntity().getStatusCaption() != null) {
                     statusCaption = loginUser.getImBiodataEntity().getStatusCaption();
-                }else{
+                } else {
                     statusCaption = "-";
                 }
                 photoUrl = loginUser.getImBiodataEntity().getFotoUpload();
-            }catch (Exception e){
+            } catch (Exception e) {
                 logger.info("[UserBoImpl.getUserByUsername] end process <<<" + e);
             }
 
 
-            ImCompany imCompany=companyDao.getCompanyInfo("Y");
+            ImCompany imCompany = companyDao.getCompanyInfo("Y");
             String companyId = imCompany.getCompanyId();
             String companyName = imCompany.getCompanyName();
 //            ImBiodataEntity imBiodataEntity = null;
@@ -321,7 +322,7 @@ public class UserBoImpl implements UserBo {
         logger.info("[UserBoImpl.updateUserSessionLog] start process >>>");
 
 
-        List<ItUserSessionLog>  listOfLogs = userSessionLogDao.getRecordByCriteria(sessionId);
+        List<ItUserSessionLog> listOfLogs = userSessionLogDao.getRecordByCriteria(sessionId);
         if (listOfLogs != null) {
 
             ItUserSessionLog itUserSessionLog = null;
@@ -341,7 +342,7 @@ public class UserBoImpl implements UserBo {
     }
 
 
-    public UserDetailsLogin retrievePhotoUser(String path, String username) throws HibernateException,IOException {
+    public UserDetailsLogin retrievePhotoUser(String path, String username) throws HibernateException, IOException {
         logger.info("[UserBoImpl.retrievePhotoUser] start process >>>");
 
         UserDetailsLogin userDetailsLogin = new UserDetailsLogin();
@@ -394,18 +395,18 @@ public class UserBoImpl implements UserBo {
 
         //get function based on role user
         List<ImFunctions> listOfFunctions = new ArrayList<ImFunctions>();
-        List listdownMenu=new ArrayList();
-        List<String> listdownMenuString=new ArrayList<String>();
+        List listdownMenu = new ArrayList();
+        List<String> listdownMenuString = new ArrayList<String>();
 
         for (Roles roles : userRoles) {
 
-            ImRoles imRoles = (ImRoles) roleDao.getById("id",roles.getRoleId(),"Y");
+            ImRoles imRoles = (ImRoles) roleDao.getById("id", roles.getRoleId(), "Y");
 
-            if (imRoles!=null) {
+            if (imRoles != null) {
 
-                Set<ImFunctions> listOfAllFunctions=imRoles.getImFunction();
+                Set<ImFunctions> listOfAllFunctions = imRoles.getImFunction();
                 for (ImFunctions imFunctions : listOfAllFunctions) {
-                    if ("Y".equalsIgnoreCase(imFunctions.getFlag()) && imFunctions.getMenu()!=null) {
+                    if ("Y".equalsIgnoreCase(imFunctions.getFlag()) && imFunctions.getMenu() != null) {
                         listOfFunctions.add(imFunctions);
                     }
                 }
@@ -426,7 +427,7 @@ public class UserBoImpl implements UserBo {
             //parsing function to formated list
 
             for (ImFunctions func : listOfCleanMenuFunctions) {
-                if (func.getParent() == null || func.getFuncLevel()==1) {
+                if (func.getParent() == null || func.getFuncLevel() == 1) {
                     if (!isHasMenuInListDownMenu(func, listdownMenu)) {
                         List itemMenu;
                         if (listdownMenu.isEmpty()) {
@@ -455,16 +456,16 @@ public class UserBoImpl implements UserBo {
 
         List itemMenu;
         List itemMenuTmp;
-        String menuName, menuNameString= "";
+        String menuName, menuNameString = "";
 
         for (int i = 0; i < listdownMenu.size(); i++) {
 
             itemMenu = (List) listdownMenu.get(i);
             menuName = (String) itemMenu.get(0);
-            menuName = menuName.substring(menuName.lastIndexOf('|')+1); //get menu name
-            String menuId   = (String) itemMenu.get(9);
+            menuName = menuName.substring(menuName.lastIndexOf('|') + 1); //get menu name
+            String menuId = (String) itemMenu.get(9);
 
-            if (itemMenu.size()>1) { //get url
+            if (itemMenu.size() > 1) { //get url
 
                 if (itemMenu.get(2).equals("2")) {
 
@@ -490,216 +491,216 @@ public class UserBoImpl implements UserBo {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span><div style=\"color:#ff2445;\">" + menuName + "</div></span></a></li>";
                     } else if (menuName.equalsIgnoreCase("Menu Utama")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-square-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("SPPD")) {
+                    } else if (menuName.equalsIgnoreCase("SPPD")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-car\"></i><span> " + menuName + "</span></a></li>";
                     } else if (menuName.equalsIgnoreCase("Medical Record")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-ambulance \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Training")) {
+                    } else if (menuName.equalsIgnoreCase("Training")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-desktop \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Mutasi")) {
+                    } else if (menuName.equalsIgnoreCase("Mutasi")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-exchange \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Kualifikasi Calon Pejabat")) {
+                    } else if (menuName.equalsIgnoreCase("Kualifikasi Calon Pejabat")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-balance-scale \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Dispensasi")) {
+                    } else if (menuName.equalsIgnoreCase("Dispensasi")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-close \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Cuti Pegawai")) {
+                    } else if (menuName.equalsIgnoreCase("Cuti Pegawai")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-calendar-times-o \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rekruitmen")) {
+                    } else if (menuName.equalsIgnoreCase("Rekruitmen")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-users \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Evaluasi Pegawai")) {
+                    } else if (menuName.equalsIgnoreCase("Evaluasi Pegawai")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-text \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rekruitmen Pabrik")) {
+                    } else if (menuName.equalsIgnoreCase("Rekruitmen Pabrik")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-plus \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Lembur")) {
+                    } else if (menuName.equalsIgnoreCase("Lembur")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-black-tie \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Jadwal Shift Kerja")) {
+                    } else if (menuName.equalsIgnoreCase("Jadwal Shift Kerja")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sticky-note-o \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Absensi")) {
+                    } else if (menuName.equalsIgnoreCase("Absensi")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square-o \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Ijin Keluar Kantor")) {
+                    } else if (menuName.equalsIgnoreCase("Ijin Keluar Kantor")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-hourglass-start \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Payroll")) {
+                    } else if (menuName.equalsIgnoreCase("Payroll")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-paypal \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Indisipliner")) {
+                    } else if (menuName.equalsIgnoreCase("Indisipliner")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-warning \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Golongan")) {
+                    } else if (menuName.equalsIgnoreCase("Golongan")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-bullseye \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Department")) {
+                    } else if (menuName.equalsIgnoreCase("Department")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-university \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Struktur Jabatan")) {
+                    } else if (menuName.equalsIgnoreCase("Struktur Jabatan")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa   fa-user-md \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Ijin")) {
+                    } else if (menuName.equalsIgnoreCase("Ijin")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-hourglass-start \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Kelompok Position")) {
+                    } else if (menuName.equalsIgnoreCase("Kelompok Position")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-square-o \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Biodata")) {
+                    } else if (menuName.equalsIgnoreCase("Biodata")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-user \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Tipe Pegawai")) {
+                    } else if (menuName.equalsIgnoreCase("Tipe Pegawai")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-paw \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Keluarga")) {
+                    } else if (menuName.equalsIgnoreCase("Keluarga")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-child \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Study")) {
+                    } else if (menuName.equalsIgnoreCase("Study")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa  fa-book \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Tipe Notif")) {
+                    } else if (menuName.equalsIgnoreCase("Tipe Notif")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bell \"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Status Rekruitment")) {
+                    } else if (menuName.equalsIgnoreCase("Status Rekruitment")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-users\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("User")) {
+                    } else if (menuName.equalsIgnoreCase("User")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Position")) {
+                    } else if (menuName.equalsIgnoreCase("Position")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-briefcase\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Ubah Password")) {
+                    } else if (menuName.equalsIgnoreCase("Ubah Password")) {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-unlock\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Dashboard")) {
+                    } else if (menuName.equalsIgnoreCase("Dashboard")) {
                         menuNameString = "<li id=\"dashboard\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Stok Obat")) {
+                    } else if (menuName.equalsIgnoreCase("Stok Obat")) {
                         menuNameString = "<li id=\"stok_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
+                    } else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
                         menuNameString = "<li id=\"permintaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Permintaan Obat Gudang")) {
+                    } else if (menuName.equalsIgnoreCase("Permintaan Obat Gudang")) {
                         menuNameString = "<li id=\"permintaan_obat_gudang\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Penerimaan Obat")) {
+                    } else if (menuName.equalsIgnoreCase("Penerimaan Obat")) {
                         menuNameString = "<li id=\"penerimaan_obat_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rawat Jalan")) {
+                    } else if (menuName.equalsIgnoreCase("Rawat Jalan")) {
                         menuNameString = "<li id=\"bayar_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Uang Muka")) {
+                    } else if (menuName.equalsIgnoreCase("Uang Muka")) {
                         menuNameString = "<li id=\"pembayaran_uang_muka\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Kode Rekening")) {
+                    } else if (menuName.equalsIgnoreCase("Kode Rekening")) {
                         menuNameString = "<li id=\"kode_rekening1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
+                    } else if (menuName.equalsIgnoreCase("Rawat Inap")) {
                         menuNameString = "<li id=\"bayar_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("FPK")) {
+                    } else if (menuName.equalsIgnoreCase("FPK")) {
                         menuNameString = "<li id=\"fpk\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Tipe Jurnal")) {
+                    } else if (menuName.equalsIgnoreCase("Tipe Jurnal")) {
                         menuNameString = "<li id=\"tipe_jurnal1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Tipe Rekening")) {
+                    } else if (menuName.equalsIgnoreCase("Tipe Rekening")) {
                         menuNameString = "<li id=\"tipe_rekening1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Tipe Transaksi")) {
+                    } else if (menuName.equalsIgnoreCase("Tipe Transaksi")) {
                         menuNameString = "<li id=\"tipe_transaksi1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Mapping Jurnal ")) {
+                    } else if (menuName.equalsIgnoreCase("Mapping Jurnal ")) {
                         menuNameString = "<li id=\"mapping_jurnal1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Vendor")) {
+                    } else if (menuName.equalsIgnoreCase("Vendor")) {
                         menuNameString = "<li id=\"vendor1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Setting Report Akuntansi")) {
+                    } else if (menuName.equalsIgnoreCase("Setting Report Akuntansi")) {
                         menuNameString = "<li id=\"setting_report_akuntansi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-cog\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Setting User Report")) {
+                    } else if (menuName.equalsIgnoreCase("Setting User Report")) {
                         menuNameString = "<li id=\"setting_user_report1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-cog\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Laporan Akuntansi")) {
+                    } else if (menuName.equalsIgnoreCase("Laporan Akuntansi")) {
                         menuNameString = "<li id=\"laporan_akuntansi1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Pembayaran Hutang Piutang")) {
+                    } else if (menuName.equalsIgnoreCase("Pembayaran Hutang Piutang")) {
                         menuNameString = "<li id=\"pembayaran_hutang_piutang1\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Peralihan Biaya")) {
+                    } else if (menuName.equalsIgnoreCase("Peralihan Biaya")) {
                         menuNameString = "<li id=\"peralihan_biaya\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rencana Kegiatan Rawat")) {
+                    } else if (menuName.equalsIgnoreCase("Rencana Kegiatan Rawat")) {
                         menuNameString = "<li id=\"rencana_kegiatan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rawat Intensif")) {
+                    } else if (menuName.equalsIgnoreCase("Rawat Intensif")) {
                         menuNameString = "<li id=\"rawat_intensif\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rawat Operasi")) {
+                    } else if (menuName.equalsIgnoreCase("Rawat Operasi")) {
                         menuNameString = "<li id=\"rawat_operasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rawat Bersalin")) {
+                    } else if (menuName.equalsIgnoreCase("Rawat Bersalin")) {
                         menuNameString = "<li id=\"rawat_bersalin\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Rawat Isolasi")) {
+                    } else if (menuName.equalsIgnoreCase("Rawat Isolasi")) {
                         menuNameString = "<li id=\"rawat_isolasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Periksa Lab")) {
+                    } else if (menuName.equalsIgnoreCase("Periksa Lab")) {
                         menuNameString = "<li id=\"periksa_lab\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
+                    } else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
                         menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Tindakan")) {
+                    } else if (menuName.equalsIgnoreCase("Tindakan")) {
                         menuNameString = "<li id=\"tindakan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else if (menuName.equalsIgnoreCase("Recovery Room")) {
+                    } else if (menuName.equalsIgnoreCase("Recovery Room")) {
                         menuNameString = "<li id=\"rawat_rr\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
-                    }else {
+                    } else {
                         menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     }
 
-                    if(i < listdownMenu.size() - 1){
+                    if (i < listdownMenu.size() - 1) {
                         itemMenuTmp = (List) listdownMenu.get(i + 1);
-                        if(itemMenuTmp.get(2).equals("1")){
+                        if (itemMenuTmp.get(2).equals("1")) {
                             menuNameString += "</ul>" +
                                     "</li>";
                         }
                     }
 
-                } else if(itemMenu.get(2).equals("1")) {
+                } else if (itemMenu.get(2).equals("1")) {
                     //menuNameString = "<li><a href=\"#\"><i class=\"fa fa-files-o\"></i><span><strong> "+ menuName + "</strong></span></a></li>";
                     menuNameString = "";
 
-                    if(itemMenu.get(1) != null){
+                    if (itemMenu.get(1) != null) {
 
-                        if(menuName.equalsIgnoreCase("Dashboard")){
+                        if (menuName.equalsIgnoreCase("Dashboard")) {
                             menuNameString = "<li id=\"dashboard\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-bar-chart\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Jalan")) {
+                        } else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Jalan")) {
                             menuNameString = "<li id=\"pendaftaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Ply. Rawat Jalan")) {
+                        } else if (menuName.equalsIgnoreCase("Ply. Rawat Jalan")) {
                             menuNameString = "<li id=\"rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-stethoscope\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rawat Inap")) {
+                        } else if (menuName.equalsIgnoreCase("Rawat Inap")) {
                             menuNameString = "<li id=\"rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Periksa Lab")) {
+                        } else if (menuName.equalsIgnoreCase("Periksa Lab")) {
                             menuNameString = "<li id=\"periksa_lab\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-hospital-o\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
+                        } else if (menuName.equalsIgnoreCase("Periksa Radiologi")) {
                             menuNameString = "<li id=\"periksa_radiologi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-heartbeat\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Obat")) {
+                        } else if (menuName.equalsIgnoreCase("Obat")) {
                             menuNameString = "<li id=\"menu_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
+                        } else if (menuName.equalsIgnoreCase("Permintaan Obat")) {
                             menuNameString = "<li id=\"permintaan_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Transaksi Apotek")) {
+                        } else if (menuName.equalsIgnoreCase("Transaksi Apotek")) {
                             menuNameString = "<li id=\"transaksi_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("IGD")) {
+                        } else if (menuName.equalsIgnoreCase("IGD")) {
                             menuNameString = "<li id=\"igd\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-plus-square\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Resep Poli")) {
+                        } else if (menuName.equalsIgnoreCase("Resep Poli")) {
                             menuNameString = "<li id=\"resep_poli\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-file-text-o\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Purchase Order")) {
+                        } else if (menuName.equalsIgnoreCase("Purchase Order")) {
                             menuNameString = "<li id=\"permintaan_po\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-tasks\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Verifikasi BPJS RJ")) {
+                        } else if (menuName.equalsIgnoreCase("Verifikasi BPJS RJ")) {
                             menuNameString = "<li id=\"verifikasi_rawat_jalan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Verifikasi BPJS RI")) {
+                        } else if (menuName.equalsIgnoreCase("Verifikasi BPJS RI")) {
                             menuNameString = "<li id=\"verifikasi_rawat_inap\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-check-square\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Permintaan Gizi")) {
+                        } else if (menuName.equalsIgnoreCase("Permintaan Gizi")) {
                             menuNameString = "<li id=\"permintaan_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Pembayaran")) {
+                        } else if (menuName.equalsIgnoreCase("Pembayaran")) {
                             menuNameString = "<li id=\"pembayaran\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Ruangan")) {
+                        } else if (menuName.equalsIgnoreCase("Ruangan")) {
                             menuNameString = "<li id=\"monitor_ruangan\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-television\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Pasien")) {
+                        } else if (menuName.equalsIgnoreCase("Pasien")) {
                             menuNameString = "<li id=\"pasien\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Harga Obat")) {
+                        } else if (menuName.equalsIgnoreCase("Harga Obat")) {
                             menuNameString = "<li id=\"harga_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Vendor Obat")) {
+                        } else if (menuName.equalsIgnoreCase("Vendor Obat")) {
                             menuNameString = "<li id=\"vendor_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Paket Periksa")) {
+                        } else if (menuName.equalsIgnoreCase("Paket Periksa")) {
                             menuNameString = "<li id=\"paket_periksa\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-briefcase\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Pendaftaran Paket")) {
+                        } else if (menuName.equalsIgnoreCase("Pendaftaran Paket")) {
                             menuNameString = "<li id=\"daftar_paket\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-archive\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Status Pasien")) {
+                        } else if (menuName.equalsIgnoreCase("Status Pasien")) {
                             menuNameString = "<li id=\"status_pasien\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-suitcase\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Daftar Ulang Pasien")) {
+                        } else if (menuName.equalsIgnoreCase("Daftar Ulang Pasien")) {
                             menuNameString = "<li id=\"daftar_ulang_pasien\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Retur Obat")) {
+                        } else if (menuName.equalsIgnoreCase("Retur Obat")) {
                             menuNameString = "<li id=\"retur_obat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-refresh\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rekam Medik")) {
+                        } else if (menuName.equalsIgnoreCase("Rekam Medik")) {
                             menuNameString = "<li id=\"rekam_medik\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-book\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rencana Kegiatan Rawat")) {
+                        } else if (menuName.equalsIgnoreCase("Rencana Kegiatan Rawat")) {
                             menuNameString = "<li id=\"rencana_kegiatan_rawat\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-calendar\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Verifikasi Non BPJS")) {
+                        } else if (menuName.equalsIgnoreCase("Verifikasi Non BPJS")) {
                             menuNameString = "<li id=\"verifikasi_transaksi_pasien\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-gavel\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Inap")) {
+                        } else if (menuName.equalsIgnoreCase("Pendaftaran Rawat Inap")) {
                             menuNameString = "<li id=\"tppri\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-user-md\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rawat Intensif")) {
+                        } else if (menuName.equalsIgnoreCase("Rawat Intensif")) {
                             menuNameString = "<li id=\"rawat_intensif\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-stethoscope\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rawat Isolasi")) {
+                        } else if (menuName.equalsIgnoreCase("Rawat Isolasi")) {
                             menuNameString = "<li id=\"rawat_isolasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-hospital-o\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rawat Operasi")) {
+                        } else if (menuName.equalsIgnoreCase("Rawat Operasi")) {
                             menuNameString = "<li id=\"rawat_operasi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-heartbeat\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Rawat Bersalin")) {
+                        } else if (menuName.equalsIgnoreCase("Rawat Bersalin")) {
                             menuNameString = "<li id=\"rawat_bersalin\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-medkit\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Verifikasi Cover Asuransi")) {
+                        } else if (menuName.equalsIgnoreCase("Verifikasi Cover Asuransi")) {
                             menuNameString = "<li id=\"verifikasi_cover\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
-                        }else if (menuName.equalsIgnoreCase("Logout")) {
+                        } else if (menuName.equalsIgnoreCase("Logout")) {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
-                        }else{
+                        } else {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }
-                    }else{
+                    } else {
 
                         //sodiq 17-12-2019, dicomment agar tidak benrantakan di sidebar
 
@@ -710,117 +711,115 @@ public class UserBoImpl implements UserBo {
 //                                        "</li>";
 //                            }
 //                        }
-                        String icon ="";
+                        String icon = "";
                         String idLi = "";
-                        String openLu ="";
+                        String openLu = "";
 
-                        if (("Transaksi").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-folder-open\"></i>";
-                        } else if (("Master").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-database\"></i>";
+                        if (("Transaksi").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-folder-open\"></i>";
+                        } else if (("Master").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-database\"></i>";
                             idLi = "master_active";
                             openLu = "master_open";
-                        }else if (("Approval").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-check-square-o\"></i>";
-                        }else if (("Setting").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-cogs\"></i>";
-                        }else if (("Kas/Bank Masuk").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-money\"></i>";
-                        }else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)) {
+                        } else if (("Approval").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-check-square-o\"></i>";
+                        } else if (("Setting").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-cogs\"></i>";
+                        } else if (("Kas/Bank Masuk").equalsIgnoreCase(menuName)) {
                             icon = "<i class=\"fa fa-money\"></i>";
-                        }else if (("Koreksi/Penyesuaian").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-money\"></i>";
-                        }else if (("Obat").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-medkit\"></i>";
+                        } else if (("Kas/Bank Keluar").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-money\"></i>";
+                        } else if (("Koreksi/Penyesuaian").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-money\"></i>";
+                        } else if (("Obat").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-medkit\"></i>";
                             idLi = "obat_poli_active";
                             openLu = "obat_poli_open";
-                        } else if (("Pembayaran").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-money\"></i>";
+                        } else if (("Pembayaran").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-money\"></i>";
                             idLi = "pembayaran_active";
                             openLu = "pembayaran_open";
-                        }else if (("Verifikasi BPJS / PTPN").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-gavel\"></i>";
+                        } else if (("Verifikasi BPJS / PTPN").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_bpjs_active";
                             openLu = "verif_bpjs_open";
-                        }else if (("Verifikasi Umum").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-gavel\"></i>";
+                        } else if (("Verifikasi Umum").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_umum_active";
                             openLu = "verif_umum_open";
-                        }else if (("Verifikasi Asuransi").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-gavel\"></i>";
+                        } else if (("Verifikasi Asuransi").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_asuransi_active";
                             openLu = "verif_asuransi_open";
-                        }else if (("Pendaftaran").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-user-md\"></i>";
+                        } else if (("Pendaftaran").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-user-md\"></i>";
                             idLi = "pendaftaran_active";
                             openLu = "pendaftaran_open";
-                        }else if (("Ply. Rawat Inap").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-bed\"></i>";
+                        } else if (("Ply. Rawat Inap").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-bed\"></i>";
                             idLi = "pel_ri_active";
                             openLu = "pel_ri_open";
-                        }else if (("Penunjang Medis").equalsIgnoreCase(menuName)){
-                            icon="<i class=\"fa fa-heartbeat\"></i>";
+                        } else if (("Penunjang Medis").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-heartbeat\"></i>";
                             idLi = "penunjang_active";
                             openLu = "penunjang_open";
                         }
 
 
-
                         menuNameString +=
-                                "<li class=\"treeview\" id="+idLi+"> " +
-                                        "<a href=\"#\">"+icon+"<span> "+" "+ menuName+"</span>" +
+                                "<li class=\"treeview\" id=" + idLi + "> " +
+                                        "<a href=\"#\">" + icon + "<span> " + " " + menuName + "</span>" +
                                         "<span class=\"pull-right-container\">" +
-                                        "<i class=\"fa fa-angle-left pull-right\"></i>"+
-                                        "<span>"+
+                                        "<i class=\"fa fa-angle-left pull-right\"></i>" +
+                                        "<span>" +
                                         "</a>" +
-                                        "<ul class=\"treeview-menu\" id="+openLu+">";
+                                        "<ul class=\"treeview-menu\" id=" + openLu + ">";
                     }
-                } else if(itemMenu.get(2).equals("3")) {
+                } else if (itemMenu.get(2).equals("3")) {
                     //menuNameString = "<li><a href=\"#\"><i class=\"fa fa-files-o\"></i><span><strong> "+ menuName + "</strong></span></a></li>";
                     menuNameString = "";
 
-                    if(i > 0){
+                    if (i > 0) {
                         itemMenuTmp = (List) listdownMenu.get(i + 1);
-                        if(!itemMenuTmp.get(2).equals("4")){
+                        if (!itemMenuTmp.get(2).equals("4")) {
                             menuNameString = "</ul>" +
                                     "</li>";
                         }
                     }
 
                     String icon = "<i class=\"fa fa-files-o\"></i>";
-                    if(menuName.equalsIgnoreCase("SPPD")){
+                    if (menuName.equalsIgnoreCase("SPPD")) {
                         icon = "<i class=\"fa fa-car\"></i>";
-                    }else if(menuName.equalsIgnoreCase("Payroll")){
+                    } else if (menuName.equalsIgnoreCase("Payroll")) {
                         icon = "<i class=\"fa fa-paypal\"></i>";
-                    }else if(menuName.equalsIgnoreCase("SMK")){
+                    } else if (menuName.equalsIgnoreCase("SMK")) {
                         icon = "<i class=\"fa fa-file-text\"></i>";
-                    }else if(menuName.equalsIgnoreCase("Medical Record")){
+                    } else if (menuName.equalsIgnoreCase("Medical Record")) {
                         icon = "<i class=\"fa fa-ambulance\"></i>";
-                    }else if(menuName.equalsIgnoreCase("Lembur")){
+                    } else if (menuName.equalsIgnoreCase("Lembur")) {
                         icon = "<i class=\"fa fa-black-tie\"></i>";
-                    }else if(menuName.equalsIgnoreCase("Jadwal Shift Kerja")){
+                    } else if (menuName.equalsIgnoreCase("Jadwal Shift Kerja")) {
                         icon = "<i class=\"fa fa-sticky-note-o\"></i>";
-                    }else if(menuName.equalsIgnoreCase("Absensi")){
+                    } else if (menuName.equalsIgnoreCase("Absensi")) {
                         icon = "<i class=\"fa fa-plus-square-o\"></i>";
-                    }else if(menuName.equalsIgnoreCase("Cuti")){
+                    } else if (menuName.equalsIgnoreCase("Cuti")) {
                         icon = "<i class=\"fa fa-calendar-times-o\"></i>";
                     }
 
                     menuNameString +=
                             "<li class=\"treeview\"> " +
-                                    "<a href=\"#\">"+icon+" <span>"+menuName+"</span>" +
+                                    "<a href=\"#\">" + icon + " <span>" + menuName + "</span>" +
                                     "<span class=\"pull-right-container\">" +
-                                    "<i class=\"fa fa-angle-left pull-right\"></i>"+
-                                    "<span>"+
+                                    "<i class=\"fa fa-angle-left pull-right\"></i>" +
+                                    "<span>" +
                                     "</a>" +
                                     "<ul class=\"treeview-menu\">";
-                }
-                else if(itemMenu.get(2).equals("4")) {
+                } else if (itemMenu.get(2).equals("4")) {
                     //menuNameString = "<li><a href=\"#\"><i class=\"fa fa-files-o\"></i><span><strong> "+ menuName + "</strong></span></a></li>";
                     menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-gear\"></i><span> " + menuName + "</span></a></li>";
-                    if(i < listdownMenu.size() - 1){
+                    if (i < listdownMenu.size() - 1) {
                         itemMenuTmp = (List) listdownMenu.get(i + 1);
-                        if(!itemMenuTmp.get(2).equals("4")) {
+                        if (!itemMenuTmp.get(2).equals("4")) {
                             menuNameString += "</ul>" +
                                     "</li>";
                         }
@@ -829,10 +828,10 @@ public class UserBoImpl implements UserBo {
 
             } else {
                 String icon = "<i class=\"fa fa-files-o\"></i>";
-                if(menuName.equalsIgnoreCase("SPPD")){
+                if (menuName.equalsIgnoreCase("SPPD")) {
                 }
                 icon = "<i class=\"fa fa-car\"></i>";
-                menuNameString = "<li><a href=\"#\">"+icon+"<span><strong> "+ menuName + "</strong></span></a></li>";
+                menuNameString = "<li><a href=\"#\">" + icon + "<span><strong> " + menuName + "</strong></span></a></li>";
 
             }
 
@@ -853,17 +852,17 @@ public class UserBoImpl implements UserBo {
         //get function based on role user
         List<Roles> userRoles = userDetailsLogin.getRoles();
         List<ImFunctions> listOfFunctions = new ArrayList<ImFunctions>();
-        List listdownMenu=new ArrayList();
+        List listdownMenu = new ArrayList();
 
         for (Roles roles : userRoles) {
 
-            ImRoles imRoles = (ImRoles) roleDao.getById("id",roles.getRoleId(),"Y");
+            ImRoles imRoles = (ImRoles) roleDao.getById("id", roles.getRoleId(), "Y");
 
-            if (imRoles!=null) {
+            if (imRoles != null) {
 
-                Set<ImFunctions> listOfAllFunctions=imRoles.getImFunction();
+                Set<ImFunctions> listOfAllFunctions = imRoles.getImFunction();
                 for (ImFunctions imFunctions : listOfAllFunctions) {
-                    if ("Y".equalsIgnoreCase(imFunctions.getFlag()) && imFunctions.getMenu()!=null) {
+                    if ("Y".equalsIgnoreCase(imFunctions.getFlag()) && imFunctions.getMenu() != null) {
                         listOfFunctions.add(imFunctions);
                     }
                 }
@@ -884,7 +883,7 @@ public class UserBoImpl implements UserBo {
             //parsing function to formated list
 
             for (ImFunctions func : listOfCleanMenuFunctions) {
-                if (func.getParent() == null || func.getFuncLevel()==1) {
+                if (func.getParent() == null || func.getFuncLevel() == 1) {
                     if (!isHasMenuInListDownMenu(func, listdownMenu)) {
                         List itemMenu;
                         if (listdownMenu.isEmpty()) {
@@ -931,7 +930,7 @@ public class UserBoImpl implements UserBo {
         for (int i = 0; i < listOfMenuDB.size(); i++) {
             func = (ImFunctions) listOfMenuDB.get(i);
             if (func.getParent() != null && func.getParent() != null) {
-                if (func.getParent().equals(whereCluse )) {
+                if (func.getParent().equals(whereCluse)) {
                     listRecord.add(func);
                 }
             }
@@ -980,7 +979,7 @@ public class UserBoImpl implements UserBo {
         List itemMenu;
         for (int i = 0; i < listdownMenu.size() && !flag; i++) {
             itemMenu = (List) listdownMenu.get(i);
-            if (selectedFunc.getUrl() != null && !selectedFunc.getUrl().equalsIgnoreCase("") && itemMenu.get(1) != null  ) {
+            if (selectedFunc.getUrl() != null && !selectedFunc.getUrl().equalsIgnoreCase("") && itemMenu.get(1) != null) {
 
                 if (((String) itemMenu.get(1)).equalsIgnoreCase(selectedFunc.getUrl())) {
                     flag = true;
@@ -1004,7 +1003,7 @@ public class UserBoImpl implements UserBo {
             itemMenu = (List) listdownMenu.get(i);
             //comment, updated 30-04-2016, menu dont have url, is null
 //            if (!((String) itemMenu.get(0)).startsWith("|") && ((String) itemMenu.get(1)).equalsIgnoreCase("")) {
-            if (!((String) itemMenu.get(0)).startsWith("|") && (itemMenu.get(1)==null)) {
+            if (!((String) itemMenu.get(0)).startsWith("|") && (itemMenu.get(1) == null)) {
                 if (((String) itemMenu.get(0)).equalsIgnoreCase(selectedFunc.getFuncName())) {
                     flag = true;
                 }
@@ -1124,7 +1123,7 @@ public class UserBoImpl implements UserBo {
                 User resultUsers;
                 for (ImUsers imUsers : listOfUsers) {
 
-                    if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                    if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                         List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
 
@@ -1189,7 +1188,7 @@ public class UserBoImpl implements UserBo {
                 User resultUsers;
                 for (ImUsers imUsers : listOfUsers) {
 
-                    if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                    if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                         boolean isFound = false;
                         Set<ImRoles> listRoles = imUsers.getImRoles();
@@ -1263,7 +1262,7 @@ public class UserBoImpl implements UserBo {
                 User resultUsers;
                 for (ImUsers imUsers : listOfUsers) {
 
-                    if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                    if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                         resultUsers = new User();
 
@@ -1302,7 +1301,7 @@ public class UserBoImpl implements UserBo {
             User resultUsers;
             for (ImUsers imUsers : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                     List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
 
@@ -1346,7 +1345,7 @@ public class UserBoImpl implements UserBo {
             User resultUsers;
             for (ImUsers imUsers : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                     List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
 
@@ -1390,7 +1389,7 @@ public class UserBoImpl implements UserBo {
             User resultUsers;
             for (ImUsers imUsers : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                     List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
 
@@ -1434,7 +1433,7 @@ public class UserBoImpl implements UserBo {
             User resultUsers;
             for (ImUsers imUsers : imUsersEntityList) {
 
-                if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+                if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
 
                     List<ImAreasBranchesUsers> listOfImBranches = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
 
@@ -1527,7 +1526,7 @@ public class UserBoImpl implements UserBo {
 
             for (ItUserSessionLog userSessionLog : listusersessionLog) {
 
-                if (userSessionLog.getLogoutTimestamp()==null) {
+                if (userSessionLog.getLogoutTimestamp() == null) {
                     isActive = true;
                 }
 
@@ -1561,16 +1560,16 @@ public class UserBoImpl implements UserBo {
         ImUsersPK userPK = new ImUsersPK();
         userPK.setId(username);
 
-        ImUsers loginUser = (ImUsers) userDao.getById(userPK,active);
-        if(loginUser == null) {
+        ImUsers loginUser = (ImUsers) userDao.getById(userPK, active);
+        if (loginUser == null) {
             loginUser = getUserByEmailId(username);
         }
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
             String namaPosisi = "";
-            List <ItPersonilPositionEntity> personal = personilPositionDao.getListNip(loginUser.getPrimaryKey().getId());
-            if(personal.size() > 0){
-                for(ItPersonilPositionEntity peronilLoop: personal){
+            List<ItPersonilPositionEntity> personal = personilPositionDao.getListNip(loginUser.getPrimaryKey().getId());
+            if (personal.size() > 0) {
+                for (ItPersonilPositionEntity peronilLoop : personal) {
                     namaPosisi = peronilLoop.getImPosition().getPositionName();
                 }
             }
@@ -1592,8 +1591,8 @@ public class UserBoImpl implements UserBo {
 
             String positionName = namaPosisi;
 
-            String kelompokId =loginUser.getImPosition().getKelompokId();
-            ImCompany imCompany=companyDao.getCompanyInfo("Y");
+            String kelompokId = loginUser.getImPosition().getKelompokId();
+            ImCompany imCompany = companyDao.getCompanyInfo("Y");
             String companyId = imCompany.getCompanyId();
             String companyName = imCompany.getCompanyName();
 
@@ -1627,13 +1626,13 @@ public class UserBoImpl implements UserBo {
 
             ImBiodataEntity biodata = biodataDao.getById("nip", userId, "Y");
 
-            if  (biodata != null) {
+            if (biodata != null) {
                 userDetailsLogin.setJenisKelamin(biodata.getGender());
                 userDetailsLogin.setFlagFingerMoblie(biodata.getFlagFingerMobile());
 
                 try {
                     userDetailsLogin.setPin(biodata.getPin());
-                } catch (NullPointerException e){
+                } catch (NullPointerException e) {
                     e.printStackTrace();
                 }
             }
@@ -1767,7 +1766,7 @@ public class UserBoImpl implements UserBo {
 
             // Sigit, 2020-11-30 jika terdapat list user berdasarkan criteria yang dicari, START
             // maka cari berdasarkan list user untuk mendapatkan data lengkap user
-            if (stringListUserId.size() > 0){
+            if (stringListUserId.size() > 0) {
                 hsCriteria = new HashMap();
                 hsCriteria.put("list_user_id", stringListUserId);
                 hsCriteria.put("flag", flag);
@@ -1784,8 +1783,8 @@ public class UserBoImpl implements UserBo {
             // END
 
             try {
-                if (listOfUsers.size() > 0){
-                    for (ImUsers imUsers : listOfUsers){
+                if (listOfUsers.size() > 0) {
+                    for (ImUsers imUsers : listOfUsers) {
 
                         ImRoles itemImRoles = new ImRoles();
                         List<ImRoles> imRolesList = new ArrayList<>(imUsers.getImRoles());
@@ -1845,7 +1844,7 @@ public class UserBoImpl implements UserBo {
 
                     }
                 }
-            } catch (Exception e){
+            } catch (Exception e) {
                 logger.error("[UserBoImpl.getByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
@@ -1856,19 +1855,15 @@ public class UserBoImpl implements UserBo {
         return listOfResultUsers;
     }
 
-    public User saveAdd(User addUsers) throws GeneralBOException {
+    public void saveAdd(User addUsers) throws GeneralBOException {
 
         logger.info("[UserBoImpl.saveAdd] start process >>>");
 
         if (addUsers != null) {
 
-            String userId = addUsers.getUserId();
-            String branchId = addUsers.getBranchId();
-            String areaId = addUsers.getAreaId();
-
             //cek if found same id, then throws exeception
             ImUsersPK primaryKey = new ImUsersPK();
-            primaryKey.setId(userId);
+            primaryKey.setId(addUsers.getUserId());
 
             ImUsers imUsersCheck = null;
             try {
@@ -1878,7 +1873,7 @@ public class UserBoImpl implements UserBo {
                 throw new GeneralBOException("Found problem when searching data user by id, please inform to your admin...," + e.getMessage());
             }
 
-            if (imUsersCheck==null) { //if not exist in table user then save this record
+            if (imUsersCheck == null) { //if not exist in table user then save this record
 
                 //save users table imUsers
                 ImUsers imUsersNew = new ImUsers();
@@ -1889,13 +1884,13 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setUserName(addUsers.getUsername());
                 imUsersNew.setPassword(addUsers.getPassword());
                 imUsersNew.setEmail(addUsers.getEmail());
-//                imUsersNew.setPhoto(addUsers.getContentFile());
                 imUsersNew.setPhotoUrl(addUsers.getPhotoUserUrl());
                 imUsersNew.setPositionId(String.valueOf(addUsers.getPositionId()));
                 imUsersNew.setCreatedDate(addUsers.getCreatedDate());
 
-                if(addUsers.getDivisiId() != null && !"".equalsIgnoreCase(addUsers.getDivisiId()))
+                if (addUsers.getDivisiId() != null && !"".equalsIgnoreCase(addUsers.getDivisiId())) {
                     imUsersNew.setDivisiId(addUsers.getDivisiId());
+                }
 
                 imUsersNew.setCreatedWho(addUsers.getCreatedWho());
                 imUsersNew.setLastUpdate(addUsers.getLastUpdate());
@@ -1908,11 +1903,10 @@ public class UserBoImpl implements UserBo {
                 imUsersNew.setIdRuangan(addUsers.getIdRuangan());
                 imUsersNew.setIdVendor(addUsers.getIdVendor());
 
-                String userid = addUsers.getUserId();
-                boolean isAda ;
+                boolean isAda;
 
                 try {
-                    isAda=userDao.isExistUser(userid);
+                    isAda = userDao.isExistUser(addUsers.getUserId());
                 } catch (HibernateException e) {
                     logger.error("[UserBoImpl.saveAddFunctions] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when checking exist function, please info to your admin..." + e.getMessage());
@@ -1948,9 +1942,6 @@ public class UserBoImpl implements UserBo {
                 //save uers into table im_areas_branches_users, update by ferdi, 10-10-2016
                 ImAreasBranchesUsers imAreasBranchesUsers = new ImAreasBranchesUsers();
                 ImAreasBranchesUsersPK imAreasBranchesUsersPK = new ImAreasBranchesUsersPK();
-//                imAreasBranchesUsersPK.setUserId(userId);
-//                imAreasBranchesUsersPK.setAreaId(areaId);
-//                imAreasBranchesUsersPK.setBranchId(branchId);
 
                 //sodiq, 10/12/2019, penambahan user id, area id, dan branch id form front end
                 imAreasBranchesUsersPK.setUserId(addUsers.getUserId());
@@ -1980,8 +1971,6 @@ public class UserBoImpl implements UserBo {
         }
 
         logger.info("[UserBoImpl.saveAdd] end process <<<");
-
-        return addUsers;
     }
 
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
@@ -2014,7 +2003,7 @@ public class UserBoImpl implements UserBo {
 
             try {
                 userDao.updateAndSave(imUsersOld);
-            } catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[UserBoImpl.saveEditIdDevice] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when saving edit data users, please info to your admin..." + e.getMessage());
             }
@@ -2051,7 +2040,7 @@ public class UserBoImpl implements UserBo {
                 String positionIdOld = imUsersOld.getPositionId();
                 String sPositionIdOld = positionIdOld.toString();
 
-                List<ImAreasBranchesUsers> imAreasBranchesUsersListOld = new ArrayList<ImAreasBranchesUsers> (imUsersOld.getImAreasBranchesUsers());
+                List<ImAreasBranchesUsers> imAreasBranchesUsersListOld = new ArrayList<ImAreasBranchesUsers>(imUsersOld.getImAreasBranchesUsers());
                 ImAreasBranchesUsers imAreasBranchesUsersOld = imAreasBranchesUsersListOld.get(0);
                 String branchIdOld = imAreasBranchesUsersOld.getPrimaryKey().getBranchId();
 
@@ -2082,16 +2071,26 @@ public class UserBoImpl implements UserBo {
                 primaryKey.setId(usersNew.getUserId());
                 imUsersOld.setPrimaryKey(primaryKey);
                 imUsersOld.setUserName(usersNew.getUsername());
-                imUsersOld.setPassword(usersNew.getPassword());
-                imUsersOld.setEmail(usersNew.getEmail());
-                if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan()))
+
+                if(usersNew.getPassword() != null && !"".equalsIgnoreCase(usersNew.getPassword())){
+                    imUsersOld.setPassword(usersNew.getPassword());
+                }
+                if(usersNew.getEmail() != null && !"".equalsIgnoreCase(usersNew.getEmail())){
+                    imUsersOld.setEmail(usersNew.getEmail());
+                }
+                if (usersNew.getIdPelayanan() != null && !"".equalsIgnoreCase(usersNew.getIdPelayanan())){
                     imUsersOld.setIdPelayanan(usersNew.getIdPelayanan());
-                if (usersNew.getIdRuangan() != null && !"".equalsIgnoreCase(usersNew.getIdRuangan()))
+                }
+                if (usersNew.getIdRuangan() != null && !"".equalsIgnoreCase(usersNew.getIdRuangan())){
                     imUsersOld.setIdRuangan(usersNew.getIdRuangan());
-                if (usersNew.getIdVendor() != null && !"".equalsIgnoreCase(usersNew.getIdVendor()))
+                }
+                if (usersNew.getIdVendor() != null && !"".equalsIgnoreCase(usersNew.getIdVendor())){
                     imUsersOld.setIdVendor(usersNew.getIdVendor());
-//                if (usersNew.getContentFile()!=null) imUsersOld.setPhoto(usersNew.getContentFile());
-                if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
+                }
+                if(usersNew.getPhotoUserUrl() != null && !"".equalsIgnoreCase(usersNew.getPhotoUserUrl())){
+                    imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
+                }
+
                 imUsersOld.setPositionId(String.valueOf(usersNew.getPositionId()));
                 imUsersOld.setDivisiId(usersNew.getDivisiId());
                 imUsersOld.setLastUpdate(usersNew.getLastUpdate());
@@ -2108,7 +2107,7 @@ public class UserBoImpl implements UserBo {
                 //update old to be N, and add new data
                 //deactive old data, set Flag = N
                 Map hsCriteria = new HashMap();
-                hsCriteria.put("user_id",userId);
+                hsCriteria.put("user_id", userId);
 
                 List<ImUsersRoles> listOfImUsersRoleses = new ArrayList<ImUsersRoles>();
                 try {
@@ -2223,19 +2222,19 @@ public class UserBoImpl implements UserBo {
             if (imUsersOld != null) {
 
                 Map hsCriteria = new HashMap();
-                hsCriteria.put("user_id",userId);
-                hsCriteria.put("flag","Y");
+                hsCriteria.put("user_id", userId);
+                hsCriteria.put("flag", "Y");
 
                 //cek into im_areas_branches_users
                 ImAreasBranchesUsers imAreasBranchesUsers = null;
                 try {
-                    imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId,"Y");
+                    imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId, "Y");
                 } catch (HibernateException e) {
                     logger.error("[UserBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
                 }
 
-                if (imAreasBranchesUsers!=null) {
+                if (imAreasBranchesUsers != null) {
 
                     imAreasBranchesUsers.setFlag("N");
                     imAreasBranchesUsers.setLastUpdate(usersDelete.getLastUpdate());
@@ -2265,7 +2264,7 @@ public class UserBoImpl implements UserBo {
                     throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
                 }
 
-                if (imUsersRolesOld!=null) {
+                if (imUsersRolesOld != null) {
 
                     imUsersRolesOld.setFlag("N");
                     imUsersRolesOld.setLastUpdate(usersDelete.getLastUpdate());
@@ -2327,7 +2326,7 @@ public class UserBoImpl implements UserBo {
             if (imUsersOld != null) {
 
                 imUsersOld.setUserName(usersNew.getUsername());
-                if (usersNew.getPhotoUserUrl()!=null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
+                if (usersNew.getPhotoUserUrl() != null) imUsersOld.setPhotoUrl(usersNew.getPhotoUserUrl());
 
                 imUsersOld.setPassword(usersNew.getPassword());
                 imUsersOld.setLastUpdate(usersNew.getLastUpdate());
@@ -2365,7 +2364,7 @@ public class UserBoImpl implements UserBo {
             getFlag = "Y";
         }
 
-        ImUsersPK primaryKey=new ImUsersPK();
+        ImUsersPK primaryKey = new ImUsersPK();
         primaryKey.setId(userId);
 
         ImUsers imUsers = null;
@@ -2379,7 +2378,7 @@ public class UserBoImpl implements UserBo {
         User resultUsers = new User();
         if (imUsers != null) {
 
-            if (imUsers.getImRoles()!=null && !imUsers.getImRoles().isEmpty()) {
+            if (imUsers.getImRoles() != null && !imUsers.getImRoles().isEmpty()) {
                 List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsers.getImRoles());
                 ImRoles itemImRoles = listOfImRoles.get(0);
                 resultUsers = new User();
@@ -2405,7 +2404,7 @@ public class UserBoImpl implements UserBo {
                 StringBuffer imageUpload = new StringBuffer("<img border=\"0\" class=\"circularDetail centerImg\" src=\"");
                 imageUpload.append(ServletActionContext.getRequest().getContextPath());
                 imageUpload.append(CommonConstant.RESOURCE_PATH_USER_UPLOAD);
-                if (imUsers.getPhotoUrl()==null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
+                if (imUsers.getPhotoUrl() == null || "".equalsIgnoreCase(imUsers.getPhotoUrl())) {
                     imageUpload.append(CommonConstant.RESOURCE_PATH_DEFAULT_USER_PHOTO_MINI);
                 } else {
                     imageUpload.append(imUsers.getPhotoUrl());
@@ -2439,13 +2438,13 @@ public class UserBoImpl implements UserBo {
 
         if (listUser != null) {
             for (ImUsers imUsers : listUser) {
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
                 ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
                 User itemComboUser = new User();
                 itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
                 itemComboUser.setUsername(imUsers.getUserName());
                 itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
-                if(imUsers.getImDepartmentEntity() != null){
+                if (imUsers.getImDepartmentEntity() != null) {
                     itemComboUser.setDivisiId(imUsers.getImDepartmentEntity().getDepartmentId());
                 }
                 itemComboUser.setPositionId(imUsers.getImPosition().getPositionId().toString());
@@ -2458,7 +2457,7 @@ public class UserBoImpl implements UserBo {
         return listComboUser;
     }
 
-    public List<User>getComboUserWithCriteria(String query, String Branch, String Divisi) throws GeneralBOException {
+    public List<User> getComboUserWithCriteria(String query, String Branch, String Divisi) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
         List<User> listComboUser = new ArrayList();
@@ -2475,12 +2474,12 @@ public class UserBoImpl implements UserBo {
 
         if (listUser != null) {
             for (ImUsers imUsers : listUser) {
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
-                if (imUsers.getItPersonilPositionEntity() !=null) {
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
+                if (imUsers.getItPersonilPositionEntity() != null) {
                     ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
                     User itemComboUser = new User();
-                    if(!Branch.equals("") && !Divisi.equals("")){
-                        if(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equals(Branch) && imUsers.getImDepartmentEntity().getDepartmentId().equals(Divisi)){
+                    if (!Branch.equals("") && !Divisi.equals("")) {
+                        if (imAreasBranchesUsers.getImBranch().getPrimaryKey().getId().equals(Branch) && imUsers.getImDepartmentEntity().getDepartmentId().equals(Divisi)) {
                             itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
                             itemComboUser.setUsername(imUsers.getImBiodataEntity().getNamaPegawai());
                             itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
@@ -2488,7 +2487,7 @@ public class UserBoImpl implements UserBo {
                             itemComboUser.setPositionId(imUsers.getImPosition().getPositionId().toString());
                             listComboUser.add(itemComboUser);
                         }
-                    }else{
+                    } else {
                         itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
                         itemComboUser.setUsername(imUsers.getImBiodataEntity().getNamaPegawai());
                         itemComboUser.setBranchId(imAreasBranchesUsers.getImBranch().getPrimaryKey().getId());
@@ -2628,15 +2627,15 @@ public class UserBoImpl implements UserBo {
                     resultUserSessionLog.setLoginTimestamp(itUserSessionLog.getLoginTimestamp());
                     resultUserSessionLog.setStLoginTimestamp(CommonUtil.longDateFormat(itUserSessionLog.getLoginTimestamp()));
                     resultUserSessionLog.setLogoutTimestamp(itUserSessionLog.getLogoutTimestamp());
-                    resultUserSessionLog.setStLogoutTimestamp(itUserSessionLog.getLogoutTimestamp()!=null ? CommonUtil.longDateFormat(itUserSessionLog.getLogoutTimestamp()) : "" );
+                    resultUserSessionLog.setStLogoutTimestamp(itUserSessionLog.getLogoutTimestamp() != null ? CommonUtil.longDateFormat(itUserSessionLog.getLogoutTimestamp()) : "");
 
                     ImUsersPK usersPK = new ImUsersPK();
                     usersPK.setId(itUserSessionLog.getUserName());
-                    ImUsers imUsers = userDao.getById(usersPK,"Y");
+                    ImUsers imUsers = userDao.getById(usersPK, "Y");
 
                     resultUserSessionLog.setName(imUsers.getUserName());
 
-                    if (itUserSessionLog.getLogoutTimestamp()!=null) {
+                    if (itUserSessionLog.getLogoutTimestamp() != null) {
                         resultUserSessionLog.setEnabledKill(false);
                     } else {
                         resultUserSessionLog.setEnabledKill(true);
@@ -2727,6 +2726,7 @@ public class UserBoImpl implements UserBo {
         logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
         return listComboUser;
     }
+
     public List<User> getComboUserIdWithCriteria(String query) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
@@ -2743,7 +2743,7 @@ public class UserBoImpl implements UserBo {
 
         if (listUser != null) {
             for (ImUsers imUsers : listUser) {
-                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers> (imUsers.getImAreasBranchesUsers());
+                List<ImAreasBranchesUsers> imAreasBranchesUsersList = new ArrayList<ImAreasBranchesUsers>(imUsers.getImAreasBranchesUsers());
                 ImAreasBranchesUsers imAreasBranchesUsers = imAreasBranchesUsersList.get(0);
                 User itemComboUser = new User();
                 itemComboUser.setUserId(imUsers.getPrimaryKey().getId());
@@ -2769,12 +2769,12 @@ public class UserBoImpl implements UserBo {
 
         try {
             result = userDao.getUserByIdDevice(idDevice);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.info("[UserBoImpl.getUserByIdDevice] error get user id device");
         }
 
         User user = new User();
-        if (result.size() > 0){
+        if (result.size() > 0) {
             user.setUserId(result.get(0).getPrimaryKey().getId());
             user.setUsername(result.get(0).getUserName());
             user.setIdDevice(result.get(0).getIdDevice());
@@ -2791,7 +2791,7 @@ public class UserBoImpl implements UserBo {
 
         try {
             result = userDao.getUserByIdPelayanan(idPelayanan);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.info("[UserBoImpl.getUserByIdDevice] error get user id device");
         }
 
@@ -2805,7 +2805,7 @@ public class UserBoImpl implements UserBo {
     }
 
     @Override
-    public List<User> getUserByRoleAndBranch(String roleId,String branchId) throws GeneralBOException {
+    public List<User> getUserByRoleAndBranch(String roleId, String branchId) throws GeneralBOException {
         logger.info("[UserBoImpl.getUserByRoleAndBranch] start process <<<");
         List<User> result = new ArrayList<>();
 
@@ -2821,6 +2821,26 @@ public class UserBoImpl implements UserBo {
 
     public ImUsers getUserByEmailId(String email) throws GeneralBOException {
         return userDao.getById("email", email);
+    }
+
+    @Override
+    public ImUsers getUserByUserId(String userId) throws GeneralBOException {
+        return userDao.getById("primaryKey.id", userId);
+    }
+
+    @Override
+    public List<User> getListUserByQuery(User user) throws GeneralBOException {
+        logger.info("[UserBoImpl.getListUserByQuery] start process <<<");
+        List<User> result = new ArrayList<>();
+
+        try {
+            result = userDao.getListUserByQuery(user);
+        } catch (GeneralBOException e) {
+            logger.info("[UserBoImpl.getListUserByQuery] error get user id device");
+        }
+
+        logger.info("[UserBoImpl.getListUserByQuery] end process <<<");
+        return result;
     }
 
 

@@ -2004,8 +2004,6 @@ public class BiodataAction extends BaseMasterAction{
         logger.info("[StudyAction.saveAdd] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
 
-
-
         try {
             PengalamanKerja pengalamanKerja = new PengalamanKerja();
 
@@ -2060,42 +2058,47 @@ public class BiodataAction extends BaseMasterAction{
             pengalamanKerja.setLastUpdateWho(userLogin);
             pengalamanKerja.setAction("C");
             pengalamanKerja.setFlag("Y");
+
+            // Sigit 2020-01-07, Penambahan jenis pegawai dan flag gaji
             pengalamanKerja.setJenisPegawaiId(jenisPegawaiId);
             pengalamanKerja.setFlagDigaji(flagDigaji);
+            //END
 
             int id = 0;
             int jumlah = 0;
-            boolean status = false;
+            boolean status = true;
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<PengalamanKerja> listOfResult = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
 
             if(listOfResult != null){
                 if (listOfResult.size() > 0){
-                    for (PengalamanKerja pengalamanKerja2 : listOfResult){
-                        if (aktifFlag.equalsIgnoreCase(pengalamanKerja2.getFlagJabatanAktif())){
-                            if ("N".equalsIgnoreCase(aktifFlag)){
-                                status = true;
-                            }else {
-                                status = false;
-                                break;
-                            }
-                        }else {
-                            status = true;
-                        }
+
+                    // Sigit 2020-01-07, melososkan jabatan aktif > 1
+                    for(PengalamanKerja pengalamanKerja1: listOfResult){
+                        id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
                     }
+                    id++;
+                    pengalamanKerja.setPengalamanId(id + "");
+                    listOfResult.add(pengalamanKerja);
+                    // END
 
-                    if (status){
-
-                        for(PengalamanKerja pengalamanKerja1: listOfResult){
-                            id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
-                        }
-                        id++;
-                        pengalamanKerja.setPengalamanId(id + "");
-
-                        listOfResult.add(pengalamanKerja);
-                    }else {
-                        throw new GeneralBOException("Perhatian!!! Jabatan aktif sudah ada");
-                    }
+//                    for (PengalamanKerja pengalamanKerja2 : listOfResult){
+//                        if (aktifFlag.equalsIgnoreCase(pengalamanKerja2.getFlagJabatanAktif()) && !"Y".equalsIgnoreCase(aktifFlag)){
+//                            status = false;
+//                            break;
+//                        }
+//                    }
+//
+//                    if (status){
+//                        for(PengalamanKerja pengalamanKerja1: listOfResult){
+//                            id = Integer.parseInt(pengalamanKerja1.getPengalamanId());
+//                        }
+//                        id++;
+//                        pengalamanKerja.setPengalamanId(id + "");
+//                        listOfResult.add(pengalamanKerja);
+//                    }else {
+//                        throw new GeneralBOException("Perhatian!!! Jabatan aktif sudah ada");
+//                    }
                 }else {
                     listOfResult = new ArrayList<>();
                     pengalamanKerja.setPengalamanId(id + "");
@@ -2143,11 +2146,6 @@ public class BiodataAction extends BaseMasterAction{
                 }else if (listDate.compareTo(tanggalKeluar) == 0){
                     status = "true";
                 }
-//                try {
-////                    String tglMasuk = pengalamanKerja.getTanggalMasuk();
-//
-//                } catch (ParseException e) {
-//                }
             }
         }
 
@@ -3283,7 +3281,7 @@ public class BiodataAction extends BaseMasterAction{
 
         // collecting data jenis pegawai yg disimpan pada session, disimpan pada stringListJenisPegawaiId
         List<String> stringListJenisPegawaiId = new ArrayList<>();
-        if (listOfResult.size() > 0){
+        if (listOfResult != null && listOfResult.size() > 0){
             for (PengalamanKerja pengalamanKerja : listOfResult){
                 stringListJenisPegawaiId.add(pengalamanKerja.getJenisPegawaiId());
             }
@@ -3304,8 +3302,8 @@ public class BiodataAction extends BaseMasterAction{
             } catch (GeneralBOException e){
                 logger.error("[BiodataAction.checkAvailJenisPegawaiDefault] ERROR, ", e);
             }
-        }
-
+        } else
+            response.setStatus("success");
 
         logger.info("[BiodataAction.checkAvailJenisPegawaiDefault] END <<<");
         return response;

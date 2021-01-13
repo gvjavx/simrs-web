@@ -3392,11 +3392,12 @@
         } else {
             document.getElementById("bpjsTk").checked = false;
         }
-        var flagCutiLuar = document.getElementById("flagCuti").value;
+        // var flagCutiLuar = document.getElementById("flagCuti").value;
+        var flagCutiLuar = $("#flagCuti").val();
         if(flagCutiLuar == "Y") {
-            document.getElementById("flagCutiLuar").checked = true;
+            $("#flagCutiLuar").prop('checked', true);
         } else {
-            document.getElementById("flagCutiLuar").checked = false;
+            $("#flagCutiLuar").prop('checked', false);
         }
 
         window.loadStudy= function(nip){
@@ -4442,12 +4443,6 @@
                     alert('Semua Field Harus Diisi !');
                 } else {
 
-                    // check jabatan aktif;
-                    checkJabatanAktif();
-
-                    // check jika di session ada jabatan utama
-                    checkJenisJabatanUtama();
-
                     var msg ="Field:  \n";
                     var msg2 ="";
                     if (branchId == '' || divisiId == '' || posisiId == '' || tanggal == ''||tipePegawaiId =='') {
@@ -4476,20 +4471,15 @@
                         alert(msg+"Harus Diisi\n"+msg2);
                     }else if(tanggalKeluar == ''){
 
-                        if(tanggalKeluar.length <10){
-                            if(aktifFlag == 'N'){
-                                msg+="- Format Tanggal Selesai Salah\n";
-                                alert(msg);
-                            }
-                        } else {
-                            if(aktifFlag == 'N'){
-                                msg+="- Jabatan aktif harus 'YA' apabila Tanggal Selesai kosong\n";
-                                alert(msg);
-                            }else {
-                                if (confirm('Are you sure you want to save this Record?')) {
-                                    savePengalaman(nip, branchId, posisiId, divisiId, profesiId,
-                                        tanggal, tanggalKeluar, tipePegawaiId, golonganId, "",
-                                        aktifFlag, jenisPegawaiId, flagDigaji);
+                        if(aktifFlag == 'N'){
+                            msg+="- Jabatan aktif harus 'YA' apabila Tanggal Selesai kosong\n";
+                            alert(msg);
+                        }else {
+                            savePengalaman(nip, branchId, posisiId, divisiId, profesiId,
+                                tanggal, tanggalKeluar, tipePegawaiId, golonganId, "",
+                                aktifFlag, jenisPegawaiId, flagDigaji);
+
+//                            if (confirm('Are you sure you want to save this Record?')) {
 
 //                                    dwr.engine.setAsync(false);
 //                                    dwr.engine.beginBatch();
@@ -4504,11 +4494,17 @@
 //                                            alert('Jabatan aktif sudah ada');
 //                                        }
 //                                    });
-                                }
-                            }
+//                            }
                         }
+
                     }else {
-                        if (aktifFlag == 'Y'){
+
+                        if(aktifFlag == 'N'){
+                            if(tanggalKeluar.length <10) {
+                                msg += "- Format Tanggal Selesai Salah\n";
+                                alert(msg);
+                            }
+                        } else if (aktifFlag == 'Y'){
                             msg+="- Tanggal Selesai harus kosong apabila jabatan masih aktif\n";
                             alert(msg);
                             $('#pengalamanTanggalKeluar').val('');
@@ -6221,33 +6217,37 @@
     };
 
 
-    function checkJabatanAktif(){
+    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
 
-        var positionId = $("#positionId3 option:selected").val();
-        var branchId = $("#branchIdRiwayatKerja option:selected").val();
-
-        PositionAction.checkAndGetPositionAktif(positionId, branchId, function(res){
+        PositionAction.checkAndGetPositionAktif(posisiId, branchId, function(res){
             if (res.status == "error"){
                 alert(res.msg);
-                return true;
+            } else {
+                BiodataAction.checkAvailJenisPegawaiDefault(function(res){
+                    if (res.status == "error"){
+                        alert(res.msg);
+                    } else {
+                        if (confirm('Are you sure you want to save this Record?')) {
+                            dwr.engine.setAsync(false);
+                            BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (res) {
+                                if (res.status == 'success'){
+                                    alert('Data Berhasil Disimpan');
+                                    $('#modal-pengalamanKerja').modal('hide');
+                                    $('#myFormPengalaman')[0].reset();
+                                    loadSessionPengalamanKerja();
+                                }
+                            });
+//                            dwr.engine.endBatch({
+//                                errorHandler:function(errorString, exception){
+//                                    alert('Jabatan aktif sudah ada');
+//                                }
+//                            });
+                        }
+                    }
+                });
             }
         });
-
-        return true;
     }
-
-
-    function checkJenisJabatanUtama(){
-        PositionAction.checkAvailJenisPegawaiDefault(function(res){
-            if (res.status == "error"){
-                alert(res.msg);
-                return true;
-            }
-        });
-
-        return true;
-    }
-
 
     function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
         dwr.engine.setAsync(false);
