@@ -75,6 +75,34 @@ public class Mutasi extends BaseModel {
     private String updatePosisiId;
     private String stTanggalKeluar;
     private String stTahun;
+    private String noSk;
+    private String idKetResign;
+    private String ketResign;
+
+    public String getIdKetResign() {
+        return idKetResign;
+    }
+
+    public void setIdKetResign(String idKetResign) {
+        this.idKetResign = idKetResign;
+    }
+
+
+    public String getKetResign() {
+        return ketResign;
+    }
+
+    public void setKetResign(String ketResign) {
+        this.ketResign = ketResign;
+    }
+
+    public String getNoSk() {
+        return noSk;
+    }
+
+    public void setNoSk(String noSk) {
+        this.noSk = noSk;
+    }
 
     public String getStTahun() {
         return stTahun;

@@ -361,7 +361,6 @@ public class MutasiAction extends BaseMasterAction{
                 throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[mutasiAction.saveMutasi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-//            mutasi.setErrorMessage("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
             addActionMessage("Error, mohon periksa inputan anda kembali");
             throw new GeneralBOException(e.getMessage());
         }
@@ -445,22 +444,30 @@ public class MutasiAction extends BaseMasterAction{
     public String printReportMutasi() {
         logger.info("[ReportAction.printReportMutasi] start process >>>");
         String id = getIdMutasi();
-        String noSurat = getNoSurat();
         if (id != null) {
             Mutasi searchMutasi = new Mutasi();
 
             searchMutasi.setMutasiId(id);
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
-            searchMutasi = mutasiBo.getDataReportMutasi(id);
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+            try {
+                searchMutasi = mutasiBo.getDataReportMutasi(id);
+            } catch (GeneralBOException e){
+                logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
+            }
+
+            String tahun            = "";
+            BigDecimal gajiPegawai  = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
+            String stGajiPegawai    = CommonUtil.numbericFormat(gajiPegawai,"###,###");
+            String noSurat          = searchMutasi.getNoSk();
+
             Branch branch = new Branch();
-            String tahun ="";
-            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
-            String stGajiPegawai = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             try{
-                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                 branch = branchBo.getBranchById("KP","Y");
             }catch( HibernateException e){
+                logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
             }
             reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
@@ -469,7 +476,6 @@ public class MutasiAction extends BaseMasterAction{
             reportParams.put("titleReport", "Surat Mutasi");
             reportParams.put("noSurat", noSurat);
             reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
-
 
             reportParams.put("namaPegawai", searchMutasi.getNama());
             reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
@@ -694,6 +700,9 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setFlagDigaji(obj.getString("flagdigaji"));
                 mutasi.setUpdatePosisiId(obj.getString("positionPengganti"));
                 mutasi.setStTanggalKeluar(obj.getString("tanggalKeluar"));
+                mutasi.setNoSk(obj.getString("nosk"));
+                mutasi.setIdKetResign(obj.getString("idket"));
+                mutasi.setKetResign(obj.getString("txtket"));
 
                 if (!"".equalsIgnoreCase(mutasi.getNip())){
                     StatusMutasi search = new StatusMutasi();
