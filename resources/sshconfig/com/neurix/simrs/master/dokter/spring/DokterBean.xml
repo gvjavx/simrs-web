@@ -19,6 +19,7 @@
           p:spesialisDao-ref="spesialisDao"
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
+          p:dokterPelayananDao-ref="dokterPelayananDao"
     />
 
     <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
@@ -61,6 +62,8 @@
     <bean id="branchDao" class="com.neurix.authorization.company.dao.BranchDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="dokterPelayananDao" class="com.neurix.simrs.master.dokter.dao.DokterPelayananDao"
           p:sessionFactory-ref="sessionFactory" />
 
 
