@@ -46,23 +46,91 @@
 
 <body class="hold-transition skin-blue sidebar-mini" >
 <%@ include file="/pages/common/headerNav.jsp" %>
-<div id="modal-payroll" class="modal fade modal2" role="dialog">
+
+<div id="modal-menu" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:1200px;">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+                <h4 class="modal-title">Menu Biodata</h4>
             </div>
-            <div class="modal-body" >
+            <%--MENU-tab--%>
+            <input id="menu-nip" readonly="true" style="display: none;">
+            <ul class="nav nav-tabs">
+                <li class=active"><a href="#menu-payroll">Payroll</a></li>
+                <li><a href="#menu-absensi">Absensi</a></li>
+                <li><a href="#menu-cuti">Cuti</a></li>
+            </ul>
+
+            <h4 class="menu-title"></h4>
+
+            <%--PAYROLL--%>
+            <div id="menu-payroll" class="modal-body" >
                 <table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>
             </div>
+
+            <%--ABSENSI--%>
+            <form class="form-horizontal" id="formGaji">
+                <div class="form-group">
+                    <label class="control-label col-sm-1" >Bulan</label>
+                    <input type="text" id="nipAbsensi" style="display:none;">
+                    <div class="col-sm-4">
+                        <select class="form-control" id="bulanAbsensi">
+                            <option value="01"> Januari </option>
+                            <option value="02"> Februari </option>
+                            <option value="03"> Maret </option>
+                            <option value="04"> April </option>
+                            <option value="05"> Mei </option>
+                            <option value="06"> Juni </option>
+                            <option value="07"> Juli </option>
+                            <option value="08"> Agustus </option>
+                            <option value="09"> September </option>
+                            <option value="10"> Oktober </option>
+                            <option value="11"> Nopember </option>
+                            <option value="12"> Desember </option>
+                        </select>
+                    </div>
+                    <label class="control-label col-sm-1" >Tahun</label>
+                    <div class="col-sm-3">
+                        <select id="tahunAbsensi" class="form-control" ></select>
+                    </div>
+                    <div class="col-sm-3">
+                        <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
+                    </div>
+                </div>
+            </form>
+            <table style="width: 100%;" class="tableAbsensi table table-bordered">
+            </table>
+
+            <%--CUTI--%>
+            <table style="width: 100%;" class="tableCuti table table-bordered">
+            </table>
+
             <div class="modal-footer">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>
 </div>
+
+<%--<div id="modal-payroll" class="modal fade modal2" role="dialog">--%>
+    <%--<div class="modal-dialog " style="width:1200px;">--%>
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title"></h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body" >--%>
+                <%--<table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 <div id="modal-jabatan" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:800px;">
         <!-- Modal content-->
@@ -100,59 +168,59 @@
     </div>
 </div>
 
-<div id="modal-absensi" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+<%--<div id="modal-absensi" class="modal fade" role="dialog">--%>
+    <%--<div class="modal-dialog " style="width:500px;">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="formGaji">
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title"></h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<form class="form-horizontal" id="formGaji">--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Bulan</label>
-                        <input type="text" id="nipAbsensi" style="display:none;">
-                        <div class="col-sm-4">
-                            <select class="form-control" id="bulanAbsensi">
-                                <option value="01"> Januari </option>
-                                <option value="02"> Februari </option>
-                                <option value="03"> Maret </option>
-                                <option value="04"> April </option>
-                                <option value="05"> Mei </option>
-                                <option value="06"> Juni </option>
-                                <option value="07"> Juli </option>
-                                <option value="08"> Agustus </option>
-                                <option value="09"> September </option>
-                                <option value="10"> Oktober </option>
-                                <option value="11"> Nopember </option>
-                                <option value="12"> Desember </option>
-                            </select>
-                        </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-1" >Bulan</label>--%>
+                        <%--<input type="text" id="nipAbsensi" style="display:none;">--%>
+                        <%--<div class="col-sm-4">--%>
+                            <%--<select class="form-control" id="bulanAbsensi">--%>
+                                <%--<option value="01"> Januari </option>--%>
+                                <%--<option value="02"> Februari </option>--%>
+                                <%--<option value="03"> Maret </option>--%>
+                                <%--<option value="04"> April </option>--%>
+                                <%--<option value="05"> Mei </option>--%>
+                                <%--<option value="06"> Juni </option>--%>
+                                <%--<option value="07"> Juli </option>--%>
+                                <%--<option value="08"> Agustus </option>--%>
+                                <%--<option value="09"> September </option>--%>
+                                <%--<option value="10"> Oktober </option>--%>
+                                <%--<option value="11"> Nopember </option>--%>
+                                <%--<option value="12"> Desember </option>--%>
+                            <%--</select>--%>
+                        <%--</div>--%>
 
-                        <label class="control-label col-sm-1" >Tahun</label>
+                        <%--<label class="control-label col-sm-1" >Tahun</label>--%>
 
-                        <div class="col-sm-3">
-                            <select id="tahunAbsensi" class="form-control" ></select>
-                        </div>
+                        <%--<div class="col-sm-3">--%>
+                            <%--<select id="tahunAbsensi" class="form-control" ></select>--%>
+                        <%--</div>--%>
 
-                        <div class="col-sm-3">
-                            <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
-                        </div>
-                    </div>
+                        <%--<div class="col-sm-3">--%>
+                            <%--<a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
-                </form>
-                <table style="width: 100%;" class="tableAbsensi table table-bordered">
-                </table>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-            </div>
-        </div>
-    </div>
-</div>
+                <%--</form>--%>
+                <%--<table style="width: 100%;" class="tableAbsensi table table-bordered">--%>
+                <%--</table>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 <div id="modal-sppd" class="modal fade" role="dialog">
     <div class="modal-dialog " style="width:1000px;">
@@ -174,25 +242,25 @@
     </div>
 </div>
 
-<div id="modal-cuti" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:400px;">
+<%--<div id="modal-cuti" class="modal fade" role="dialog">--%>
+    <%--<div class="modal-dialog " style="width:400px;">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <table style="width: 100%;" class="tableCuti table table-bordered">
-                </table>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-            </div>
-        </div>
-    </div>
-</div>
+        <%--<!-- Modal content-->--%>
+        <%--<div class="modal-content">--%>
+            <%--<div class="modal-header">--%>
+                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+                <%--<h4 class="modal-title"></h4>--%>
+            <%--</div>--%>
+            <%--<div class="modal-body">--%>
+                <%--<table style="width: 100%;" class="tableCuti table table-bordered">--%>
+                <%--</table>--%>
+            <%--</div>--%>
+            <%--<div class="modal-footer">--%>
+                <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+            <%--</div>--%>
+        <%--</div>--%>
+    <%--</div>--%>
+<%--</div>--%>
 
 <div id="modal-detail" class="modal fade" role="dialog">
     <div class="modal-dialog " style="width:550px;">
@@ -741,6 +809,11 @@
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <ul class="dropdown-menu" role="menu">
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
+                                                                </a>
+                                                            </li>
                                                             <s:if test="#attr.row.flagYes">
                                                                 <li>
                                                                     <s:a action="edit_biodata.action">
@@ -808,6 +881,11 @@
                                                             <span class="sr-only">Toggle Dropdown</span>
                                                         </button>
                                                         <ul class="dropdown-menu" role="menu">
+                                                            <li>
+                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
+                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
+                                                                </a>
+                                                            </li>
                                                             <s:if test="#attr.row.flagYes">
                                                                 <li>
                                                                     <s:a action="edit_biodata.action">
@@ -1267,6 +1345,98 @@
             window.location.href = 'printReportBiodata_biodata?id='+nip;
         }
     });
+
+    //RAKA-start
+    $('.listOfBiodata').on('click', '.item-menu', function(){
+        var nip = $(this).attr('data');
+
+        $("#model-menu").find("#menu-nip").val(nip);
+        $("#modal-menu").modal("show");
+
+    });
+
+
+    $("#modal-menu nav-tabs a").click(function() {
+        var nip = $("#menu-nip").val();
+        var target = $(this).attr('href');
+
+        if(target == "#menu-payroll") {
+            menuPayroll(nip);
+        }else if (target == "#menu-absensi") {
+            menuAbsensi(nip);
+        }else if(target == "#menu-cuti") {
+            menuCuti(nip);
+        }
+        $(this).tab('show');
+    });
+
+    function menuPayroll(nip){
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        BiodataAction.searchPayroll(nip, function(listdata) {
+            tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Download</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
+                "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
+                tmp_table += '<tr  style="font-size: 12px">' +
+                    '<td ><a href="'+link+'" >Download</a></td>' +
+                    '<td >' + item.bulan+ '</td>' +
+                    '<td >' + item.tahun+ '</td>' +
+                    '<td >' + item.totalA+ '</td>' +
+                    '<td >' + item.totalB+ '</td>' +
+                    '<td >' + item.pphGaji+ '</td>' +
+                    "</tr>";
+            });
+            $('.tabelPayroll').append(tmp_table);
+        });
+
+        $(".menu-title").text("Payroll");
+    }
+
+    function menuAbsensi(nip){
+        $('#nipAbsensi').val(nip);
+        $('.tableAbsensi').find('tbody').remove();
+        $('.tableAbsensi').find('thead').remove();
+
+
+        $('.menu-title').text('Absensi');
+    }
+
+    function menuCuti(nip){
+        $('.tableCuti').find('tbody').remove();
+        $('.tableCuti').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        CutiPegawaiAction.sisaCuti(nip, function(listdata) {
+            tmp_table = "<thead style='font-size: 15px; color: white' ><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cuti</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Sisa Cuti(Hari)</th>"+
+                "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td>' + item.cutiName + '</td>' +
+                    '<td align="center">' + item.sisaCutiHari + '</td>' +
+                    "</tr>";
+            });
+            $('.tableCuti').append(tmp_table);
+        });
+
+        $('#modal-menu').find('.menu-title').text('Cuti');
+    }
+    // RAKA-end
 
     $('.listOfbiodata').on('click', '.item-cuti', function(){
         var nip = $(this).attr('data');
