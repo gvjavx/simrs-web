@@ -4,8 +4,10 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
+import com.neurix.simrs.master.license.dao.LicenseLogZebraDao;
 import com.neurix.simrs.master.license.dao.LicenseZebraDao;
 import com.neurix.simrs.master.license.model.ImLicenseZebraEntity;
+import com.neurix.simrs.master.license.model.ImLicenseZebraLogEntity;
 import com.neurix.simrs.master.license.model.LicenseZebra;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -20,6 +22,11 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
     protected static transient Logger logger = Logger.getLogger(com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl.class);
     private LicenseZebraDao licenseZebraDao;
+    private LicenseLogZebraDao licenseLogZebraDao;
+
+    public void setLicenseLogZebraDao(LicenseLogZebraDao licenseLogZebraDao) {
+        this.licenseLogZebraDao = licenseLogZebraDao;
+    }
 
     public void setLicenseZebraDao(LicenseZebraDao licenseZebraDao) {
         this.licenseZebraDao = licenseZebraDao;
@@ -120,6 +127,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         LicenseZebra bean = new LicenseZebra();
         bean.setLicenseKey(licenseKey);
         bean.setDeviceId(deviceId);
+        bean.setFlag("Y");
 
         try {
             listLicenseZebra = getByCriteria(bean);
@@ -148,6 +156,27 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         entity.setAction(bean.getAction());
         entity.setLastUpdate(bean.getLastUpdate());
         entity.setLastUpdateWho("admin");
+
+        //saveAdd ke tabel log
+        String idLog = getNextLicenseLogId();
+
+        ImLicenseZebraLogEntity imLicenseZebraLogEntity = new ImLicenseZebraLogEntity();
+        imLicenseZebraLogEntity.setLicenseLogId(idLog);
+        imLicenseZebraLogEntity.setLicenseId(entity.getLicenseId());
+        imLicenseZebraLogEntity.setDeviceId(entity.getDeviceId());
+        imLicenseZebraLogEntity.setLicenseKey(entity.getLicenseKey());
+        imLicenseZebraLogEntity.setAction(entity.getAction());
+        imLicenseZebraLogEntity.setFlag(entity.getFlag());
+        imLicenseZebraLogEntity.setCreatedDate(entity.getLastUpdate());
+        imLicenseZebraLogEntity.setCreatedWho(entity.getCreatedWho());
+        imLicenseZebraLogEntity.setLastUpdateWho(entity.getLastUpdateWho());
+        imLicenseZebraLogEntity.setLastUpdate(entity.getLastUpdate());
+
+        try {
+            licenseLogZebraDao.addAndSave(imLicenseZebraLogEntity);
+        } catch (GeneralBOException e) {
+            logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
+        }
 
         logger.info("[LicenseZebraBoImpl.saveEdit] End >>>>>>>");
     }
@@ -182,6 +211,20 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
         try {
             id = licenseZebraDao.getNextLicenseId();
+        } catch (HibernateException e){
+            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
+        }
+
+        logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
+        return id;
+    }
+
+    private String getNextLicenseLogId() {
+        logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Start >>>>>>>");
+        String id="";
+
+        try {
+            id = licenseLogZebraDao.getNextLicenseLogId();
         } catch (HibernateException e){
             logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
         }

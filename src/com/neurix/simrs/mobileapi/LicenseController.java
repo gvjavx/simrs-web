@@ -1,6 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
 import com.neurix.simrs.master.license.model.LicenseZebra;
 import com.neurix.simrs.mobileapi.model.LicenseZebraMobile;
@@ -102,8 +103,12 @@ public class LicenseController implements ModelDriven<Object> {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
 
+            String encodedLicenseKey = null;
             ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+            if(licenseKey != null && !"".equalsIgnoreCase(licenseKey)) {
+                encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+            }
+
 
             LicenseZebra bean = new LicenseZebra();
             bean.setLicenseKey(encodedLicenseKey);
@@ -148,11 +153,14 @@ public class LicenseController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("updateFlag")) {
 
+            String encodedLicenseKey = null;
             ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String encodedlicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+            if(licenseKey != null && !"".equalsIgnoreCase(licenseKey)) {
+                encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+            }
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(encodedlicenseKey);
+            bean.setLicenseKey(encodedLicenseKey);
             bean.setDeviceId(deviceId);
             bean.setFlag(flag);
             bean.setAction("U");
@@ -171,8 +179,9 @@ public class LicenseController implements ModelDriven<Object> {
 
             LicenseZebra bean = new LicenseZebra();
 
+            String key = CommonUtil.getRandomString(8);
             ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String hashedKey = passwordEncoder.encodePassword(licenseKey,null);
+            String hashedKey = passwordEncoder.encodePassword(key,null);
 
             bean.setLicenseKey(hashedKey);
             bean.setDeviceId(deviceId);
@@ -185,6 +194,7 @@ public class LicenseController implements ModelDriven<Object> {
 
             try {
                 licenseZebraBoProxy.saveAdd(bean);
+                model.setMessage(key);
             } catch (GeneralBOException e){
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }
