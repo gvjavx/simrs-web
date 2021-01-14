@@ -1532,6 +1532,8 @@ ADD COLUMN no_rm_lama VARCHAR(50);
 ALTER TABLE im_simrs_rekam_medic_lama
 ADD COLUMN no_rm_lama VARCHAR (50);
 
+CREATE SEQUENCE seq_dokter_pelayanan;
+
 
 
 

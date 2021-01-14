@@ -638,9 +638,7 @@
             </div>
             <div class="modal-body">
                 <div id="body-img">
-
                 </div>
-
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1253,14 +1251,11 @@
 
     function viewUpload() {
         $("#modal-view-img").modal('show');
-//        $("#modal-detail-rekam-medic-lama").modal("show");
         var batch = $("#mod_batch").text();
         $("#body-img").html("");
         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
-
             var str = '';
             $.each(list, function (i, item) {
-
                 str += '<div class="row">' +
                         '<div class="col-md-12" align="center">' +
                         '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
@@ -1273,10 +1268,8 @@
                             '</div>' +
                         '</div>' +
                     '</div>';
-
                 showImg(item.idItem);
             });
-
          $("#body-img").html(str);
         });
     }
@@ -1285,14 +1278,8 @@
         var first = firstpath();
         var indicator = "";
         PermintaanVendorAction.getListImg(idItem, function (listimg) {
-            console.log(listimg);
-//            var str = '<div class="row">';
             var str = '';
             $.each(listimg, function (n, img) {
-
-//                str += '<div class="col-md-4" align="center">' +
-//                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
-//                    '</div>';
 
                 if(n == 0){
                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-displayed" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
@@ -1300,10 +1287,6 @@
                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-noDisplay" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
                 }
             });
-//            str += '</div>' +
-//                '<br>';
-//            $("#body-img-"+idItem).html(str);
-            $("#indicator-img").html(indicator);
             $("#body-img-"+idItem).html(str);
         });
     }

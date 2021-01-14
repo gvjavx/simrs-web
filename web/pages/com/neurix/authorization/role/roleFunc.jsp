@@ -175,8 +175,8 @@
                                                 </td>
                                             </tr>
                                         </table>
-                                        <br><br>
-                                        <table>
+                                        <br>
+                                        <table style="margin-left: 140px">
                                             <tr>
                                                 <td>
                                                     <table>
@@ -216,22 +216,10 @@
 
                                                     </table>
                                                 </td>
-
-
                                                 <td>
                                                     <table>
                                                         <s:url id="urlAdd" namespace="/admin/rolefunction" action="add_rolefunc" escapeAmp="false"/>
-                                                        <div class="btn-group">
-                                                            <button class="btn dropdown-toggle btn-success" data-toggle="dropdown">
-                                                                <i class="fa fa-edit"></i>
-                                                                Role-Func
-                                                                <span class="caret"></span>
-                                                            </button>
-                                                            <ul class="dropdown-menu">
-                                                                <li><s:a href="%{urlAdd}"><i class="fa fa-plus"></i> Add</s:a></li>
-                                                            </ul>
-                                                        </div>
-
+                                                        <s:a href="%{urlAdd}" cssClass="btn btn-success"><i class="fa fa-plus"></i> Add</s:a>
                                                     </table>
                                                 </td>
                                                 <td>

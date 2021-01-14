@@ -38,12 +38,12 @@ function showModalSPS(jenis, idRM, isSetIdRM) {
         loadImgToCanvas(url, 'area_jantung');
     }
     if ("asesmen_gigi" == jenis) {
-        var url = contextPath + '/pages/images/scala-gigi.png';
+        var url = contextPath + '/pages/images/scala-gigi-new.png';
         loadImgToCanvas(url, 'area_gigi1');
     }
 
     if ("rencana_gigi_pasien" == jenis) {
-        var url = contextPath + '/pages/images/scala-gigi.png';
+        var url = contextPath + '/pages/images/scala-gigi-new.png';
         loadImgToCanvas(url, 'area_gigi2');
     }
 
