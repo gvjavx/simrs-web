@@ -46,9 +46,9 @@
 
 <body class="hold-transition skin-blue sidebar-mini" >
 <%@ include file="/pages/common/headerNav.jsp" %>
-
+<%--RAKA-14JAN2021 ==> Pembuatan modal menu biodata dengan tab --%>
 <div id="modal-menu" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:1200px;">
+    <div class="modal-dialog " style="width:1000px;">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -58,54 +58,59 @@
             <%--MENU-tab--%>
             <input id="menu-nip" readonly="true" style="display: none;">
             <ul class="nav nav-tabs">
-                <li class=active"><a href="#menu-payroll">Payroll</a></li>
+                <li><a href="#menu-payroll" class="active">Payroll</a></li>
                 <li><a href="#menu-absensi">Absensi</a></li>
                 <li><a href="#menu-cuti">Cuti</a></li>
             </ul>
 
-            <h4 class="menu-title"></h4>
+            <h4 class="menu-title" style="padding-left: 5%"></h4>
 
             <%--PAYROLL--%>
-            <div id="menu-payroll" class="modal-body" >
+            <div id="menu-payroll" style="display: none;">
                 <table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>
             </div>
 
             <%--ABSENSI--%>
-            <form class="form-horizontal" id="formGaji">
-                <div class="form-group">
-                    <label class="control-label col-sm-1" >Bulan</label>
-                    <input type="text" id="nipAbsensi" style="display:none;">
-                    <div class="col-sm-4">
-                        <select class="form-control" id="bulanAbsensi">
-                            <option value="01"> Januari </option>
-                            <option value="02"> Februari </option>
-                            <option value="03"> Maret </option>
-                            <option value="04"> April </option>
-                            <option value="05"> Mei </option>
-                            <option value="06"> Juni </option>
-                            <option value="07"> Juli </option>
-                            <option value="08"> Agustus </option>
-                            <option value="09"> September </option>
-                            <option value="10"> Oktober </option>
-                            <option value="11"> Nopember </option>
-                            <option value="12"> Desember </option>
-                        </select>
+            <div class="menu-absensi" style="display: none;">
+                <form class="form-horizontal" id="formGaji">
+                    <div class="form-group">
+                        <label class="control-label col-sm-1" >Bulan</label>
+                        <input type="text" id="nipAbsensi" style="display:none;">
+                        <div class="col-sm-4">
+                            <select class="form-control" id="bulanAbsensi">
+                                <option value="01"> Januari </option>
+                                <option value="02"> Februari </option>
+                                <option value="03"> Maret </option>
+                                <option value="04"> April </option>
+                                <option value="05"> Mei </option>
+                                <option value="06"> Juni </option>
+                                <option value="07"> Juli </option>
+                                <option value="08"> Agustus </option>
+                                <option value="09"> September </option>
+                                <option value="10"> Oktober </option>
+                                <option value="11"> Nopember </option>
+                                <option value="12"> Desember </option>
+                            </select>
+                        </div>
+                        <label class="control-label col-sm-1" >Tahun</label>
+                        <div class="col-sm-3">
+                            <select id="tahunAbsensi" class="form-control" ></select>
+                        </div>
+                        <div class="col-sm-3">
+                            <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
+                        </div>
                     </div>
-                    <label class="control-label col-sm-1" >Tahun</label>
-                    <div class="col-sm-3">
-                        <select id="tahunAbsensi" class="form-control" ></select>
-                    </div>
-                    <div class="col-sm-3">
-                        <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
-                    </div>
-                </div>
-            </form>
-            <table style="width: 100%;" class="tableAbsensi table table-bordered">
-            </table>
+                </form>
+                <table style="width: 100%;" class="tableAbsensi table table-bordered">
+                </table>
+            </div>
+
 
             <%--CUTI--%>
-            <table style="width: 100%;" class="tableCuti table table-bordered">
-            </table>
+            <div class="menu-cuti" style="display: none;">
+                <table style="width: 100%;" class="tableCuti table table-bordered">
+                </table>
+            </div>
 
             <div class="modal-footer">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
@@ -113,6 +118,7 @@
         </div>
     </div>
 </div>
+<%--RAKA-end--%>
 
 <%--<div id="modal-payroll" class="modal fade modal2" role="dialog">--%>
     <%--<div class="modal-dialog " style="width:1200px;">--%>
@@ -800,61 +806,89 @@
                                                        requestURI="paging_displaytag_biodata.action" export="true" id="row" pagesize="40" style="font-size:10">
 
                                             <s:if test='%{#attr.row.flagCutiDiluarTanggungan == "Y"}'>
+                                                <%--RAKA-08JAN2021 ==> Menu biodata dalam drop-down--%>
+                                                <%--<display:column class="bg-danger" media="html" title="Menu">--%>
+                                                    <%--<div class="btn-group">--%>
+                                                        <%--<button type="button" class="btn btn-info dropdown-toggle"--%>
+                                                                <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                            <%--<i class="fa fa-id-badge"></i> Action--%>
+                                                            <%--<span class="caret"></span>--%>
+                                                            <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                                        <%--</button>--%>
+                                                        <%--<ul class="dropdown-menu" role="menu">--%>
+                                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                                                <%--<li>--%>
+                                                                    <%--<s:a action="edit_biodata.action">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</li>--%>
+                                                            <%--</s:if>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                                                <%--<li>--%>
+                                                                    <%--<s:a action="delete_biodata.action">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</li>--%>
+                                                            <%--</s:if>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                        <%--</ul>--%>
+                                                    <%--</div>--%>
+                                                <%--</display:column>--%>
+                                                <%--RAKA-end --%>
+
+                                                <%--RAKA-14JAN2021 ==> Menu berisi modal tab--%>
                                                 <display:column class="bg-danger" media="html" title="Menu">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info dropdown-toggle"
-                                                                data-toggle="dropdown" style="height: 34px">
-                                                            <i class="fa fa-id-badge"></i> Action
-                                                            <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <ul class="dropdown-menu" role="menu">
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
-                                                                </a>
-                                                            </li>
-                                                            <s:if test="#attr.row.flagYes">
-                                                                <li>
-                                                                    <s:a action="edit_biodata.action">
-                                                                        <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
-                                                                    </s:a>
-                                                                </li>
-                                                            </s:if>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti
-                                                                </a>
-                                                            </li>
-                                                            <s:if test="#attr.row.flagYes">
-                                                                <li>
-                                                                    <s:a action="delete_biodata.action">
-                                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
-                                                                    </s:a>
-                                                                </li>
-                                                            </s:if>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
+                                                    </a>
                                                 </display:column>
+                                                <display:column class="bg-danger" media="html" title="Edit">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="edit_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column class="bg-danger" media="html" title="Detail">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="delete_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column class="bg-danger" media="html" title="Print">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                    </a>
+                                                </display:column>
+                                                <%--RAKA-end --%>
 
                                                 <display:column class="bg-danger" property="nip" sortable="true" title="NIP" />
                                                 <display:column class="bg-danger" property="nipLama" sortable="true" title="NIP Lama"/>
@@ -872,61 +906,61 @@
                                             </s:if>
                                             <s:else>
                                                 <%--RAKA-try start--%>
-                                                <display:column media="html" title="Menu">
-                                                    <div class="btn-group">
-                                                        <button type="button" class="btn btn-info dropdown-toggle"
-                                                                data-toggle="dropdown" style="height: 34px">
-                                                            <i class="fa fa-id-badge"></i> Action
-                                                            <span class="caret"></span>
-                                                            <span class="sr-only">Toggle Dropdown</span>
-                                                        </button>
-                                                        <ul class="dropdown-menu" role="menu">
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
-                                                                </a>
-                                                            </li>
-                                                            <s:if test="#attr.row.flagYes">
-                                                                <li>
-                                                                    <s:a action="edit_biodata.action">
-                                                                        <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
-                                                                    </s:a>
-                                                                </li>
-                                                            </s:if>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi
-                                                                </a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti
-                                                                </a>
-                                                            </li>
-                                                            <s:if test="#attr.row.flagYes">
-                                                                <li>
-                                                                    <s:a action="delete_biodata.action">
-                                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
-                                                                    </s:a>
-                                                                </li>
-                                                            </s:if>
-                                                            <li>
-                                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
-                                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </display:column>
+                                                <%--<display:column media="html" title="Menu">--%>
+                                                    <%--<div class="btn-group">--%>
+                                                        <%--<button type="button" class="btn btn-info dropdown-toggle"--%>
+                                                                <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                            <%--<i class="fa fa-id-badge"></i> Action--%>
+                                                            <%--<span class="caret"></span>--%>
+                                                            <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                                        <%--</button>--%>
+                                                        <%--<ul class="dropdown-menu" role="menu">--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                                                <%--<li>--%>
+                                                                    <%--<s:a action="edit_biodata.action">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</li>--%>
+                                                            <%--</s:if>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                                                <%--<li>--%>
+                                                                    <%--<s:a action="delete_biodata.action">--%>
+                                                                        <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail--%>
+                                                                    <%--</s:a>--%>
+                                                                <%--</li>--%>
+                                                            <%--</s:if>--%>
+                                                            <%--<li>--%>
+                                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print--%>
+                                                                <%--</a>--%>
+                                                            <%--</li>--%>
+                                                        <%--</ul>--%>
+                                                    <%--</div>--%>
+                                                <%--</display:column>--%>
                                                 <%--RAKA-try end--%>
 
                                                 <%--RAKA-bu--%>
@@ -1013,6 +1047,36 @@
                                                 <%--</a>--%>
                                                 <%--</display:column>--%>
 
+                                                <%--RAKA-14JAN2021 ==> Menu berisi modal tab--%>
+                                                <display:column media="html" title="Menu">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
+                                                    </a>
+                                                </display:column>
+                                                <display:column media="html" title="Edit">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="edit_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column media="html" title="Detail">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="delete_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column media="html" title="Print">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                    </a>
+                                                </display:column>
+                                                <%--RAKA-end --%>
 
                                                 <display:column property="nip" sortable="true" title="NIP" />
                                                 <display:column property="nipLama" sortable="true" title="NIP Lama"/>
@@ -1350,15 +1414,27 @@
     $('.listOfBiodata').on('click', '.item-menu', function(){
         var nip = $(this).attr('data');
 
-        $("#model-menu").find("#menu-nip").val(nip);
+        menuPayroll(nip);
+
+        $('.tableAbsensi').find('tbody').remove();
+        $('.tableAbsensi').find('thead').remove();
+
+        $('.tableCuti').find('tbody').remove();
+        $('.tableCuti').find('thead').remove();
+
+        $("#menu-nip").val(nip);
         $("#modal-menu").modal("show");
 
     });
 
 
-    $("#modal-menu nav-tabs a").click(function() {
+    $("#modal-menu .nav-tabs a").click(function() {
         var nip = $("#menu-nip").val();
         var target = $(this).attr('href');
+
+        $('.menu-payroll').css('display', 'none');
+        $('.menu-absensi').css('display', 'none');
+        $('.menu-cuti').css('display', 'none');
 
         if(target == "#menu-payroll") {
             menuPayroll(nip);
@@ -1367,7 +1443,7 @@
         }else if(target == "#menu-cuti") {
             menuCuti(nip);
         }
-        $(this).tab('show');
+        // $(this).tab('show');
     });
 
     function menuPayroll(nip){
@@ -1401,6 +1477,7 @@
         });
 
         $(".menu-title").text("Payroll");
+        $('.menu-payroll').css('display', 'block');
     }
 
     function menuAbsensi(nip){
@@ -1410,6 +1487,7 @@
 
 
         $('.menu-title').text('Absensi');
+        $('.menu-absensi').css('display', 'block');
     }
 
     function menuCuti(nip){
@@ -1435,6 +1513,7 @@
         });
 
         $('#modal-menu').find('.menu-title').text('Cuti');
+        $('.menu-cuti').css('display', 'block');
     }
     // RAKA-end
 
