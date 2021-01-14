@@ -146,6 +146,33 @@ public class Biodata extends BaseModel {
     private String stPeralihanGapok;
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
+    private String flagCutiDiluarTanggungan;
+    private Date tanggalCutiDiluarTanggunganAwal;
+    private Date tanggalCutiDiluarTanggunganAkhir;
+
+    public String getFlagCutiDiluarTanggungan() {
+        return flagCutiDiluarTanggungan;
+    }
+
+    public void setFlagCutiDiluarTanggungan(String flagCutiDiluarTanggungan) {
+        this.flagCutiDiluarTanggungan = flagCutiDiluarTanggungan;
+    }
+
+    public Date getTanggalCutiDiluarTanggunganAwal() {
+        return tanggalCutiDiluarTanggunganAwal;
+    }
+
+    public void setTanggalCutiDiluarTanggunganAwal(Date tanggalCutiDiluarTanggunganAwal) {
+        this.tanggalCutiDiluarTanggunganAwal = tanggalCutiDiluarTanggunganAwal;
+    }
+
+    public Date getTanggalCutiDiluarTanggunganAkhir() {
+        return tanggalCutiDiluarTanggunganAkhir;
+    }
+
+    public void setTanggalCutiDiluarTanggunganAkhir(Date tanggalCutiDiluarTanggunganAkhir) {
+        this.tanggalCutiDiluarTanggunganAkhir = tanggalCutiDiluarTanggunganAkhir;
+    }
 
     public String getStPeralihanGapok() {
         return stPeralihanGapok;
