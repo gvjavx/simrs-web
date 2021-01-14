@@ -715,7 +715,7 @@ public class MutasiAction extends BaseMasterAction{
                 }
 
                 //save to session
-                if (!("").equalsIgnoreCase(mutasi.getStatus())){
+                if (!"".equalsIgnoreCase(mutasi.getStatus())){
                     mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
                     if(mutasiList != null){
                         mutasiList.add(mutasi);
