@@ -417,7 +417,7 @@
 
 
                                 <s:if test="!(isAddOrEdit() || isDelete())">
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-top: -9px">
                                         <label class="control-label col-sm-5" for="branch.flag">Flag :</label>
                                         <div class="col-sm-3">
                                             <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="branch.flag"
