@@ -84,6 +84,7 @@ import java.math.BigInteger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -5510,11 +5511,15 @@ public class BiodataBoImpl implements BiodataBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         if (imBiodataEntity != null){
-            if ("TP01".equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
-                if (tipePegawai.equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
-                    status = "true";
-                }else {
-                    status = "false";
+            if (tipePegawai == null){
+                status = "false";
+            } else {
+                if ("TP01".equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
+                    if (tipePegawai.equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
+                        status = "true";
+                    }else {
+                        status = "false";
+                    }
                 }
             }
         }
@@ -5695,5 +5700,107 @@ public class BiodataBoImpl implements BiodataBo {
 
         logger.info("[BiodataBoImpl.getListOfPersonilForMutasi] END process <<<");
         return biodataList;
+    }
+
+    @Override
+    public void saveEditDokterKso(Biodata bean) {
+        logger.info("BiodataBoImpl.saveEditDokterKso] START process >>>");
+
+        if (bean.getNip() == null || "".equalsIgnoreCase(bean.getNip())){
+            throw new GeneralBOException("BiodataBoImpl.saveEditDokterKso] Tidak Bisa Melakukan Update karna Nip tidak ditemukan");
+        }
+        if (bean.getPositionId() == null || "".equalsIgnoreCase(bean.getPositionId())){
+            throw new GeneralBOException("BiodataBoImpl.saveEditDokterKso] Tidak Bisa Melakukan Update Jabatan Dokter Karna Tidak Ditemukan Position Id");
+        }
+        if (bean.getProfesiId() == null || "".equalsIgnoreCase(bean.getProfesiId())){
+            throw new GeneralBOException("BiodataBoImpl.saveEditDokterKso] Tidak Bisa Melakukan Update Jabatan Dokter Karna Tidak Ditemukan Profesi Id");
+        }
+
+        ImBiodataEntity biodataEntity = new ImBiodataEntity();
+        try {
+            biodataEntity = biodataDao.getById("nip", bean.getNip());
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.saveEditDokterKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching biodata by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (biodataEntity == null){
+            throw new GeneralBOException("BiodataBoImpl.saveEditDokterKso] Tidak Menemukan Biodata. ");
+        }
+
+        // saving biodata dokter kso
+        biodataEntity.setNamaPegawai(bean.getNamaPegawai());
+        biodataEntity.setGender(bean.getGender());
+        biodataEntity.setAgama(bean.getAgama());
+        biodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
+        biodataEntity.setTempatLahir(bean.getTempatLahir());
+        biodataEntity.setTanggalLahir(bean.getTanggalLahir());
+        biodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
+        biodataEntity.setTanggalAktif(bean.getTanggalAktif());
+        biodataEntity.setBranchId(bean.getBranch());
+        biodataEntity.setGelarDepan(bean.getGelarDepan());
+        biodataEntity.setGelarBelakang(bean.getGelarBelakang());
+        biodataEntity.setNoKtp(bean.getNoKtp());
+        biodataEntity.setNoTelp(bean.getNoTelp());
+        biodataEntity.setAlamat(bean.getAlamat());
+        biodataEntity.setProvinsiId(bean.getProvinsiId());
+        biodataEntity.setKotaId(bean.getKabupatenId());
+        biodataEntity.setKecamatanId(bean.getKecamatanId());
+        biodataEntity.setDesaId(bean.getDesaId());
+        biodataEntity.setRtRw(bean.getRtRw());
+        biodataEntity.setNamaBank(bean.getNamaBank());
+        biodataEntity.setNoRekBank(bean.getNoRekBank());
+        biodataEntity.setCabangBank(bean.getCabangBank());
+
+        if(bean.getFotoUpload() != null){
+            biodataEntity.setFotoUpload(bean.getFotoUpload());
+        }
+        biodataEntity.setFlag(bean.getFlag());
+        biodataEntity.setAction(bean.getAction());
+        biodataEntity.setLastUpdateWho(bean.getLastUpdateWho());
+        biodataEntity.setLastUpdate(bean.getLastUpdate());
+        biodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
+
+        try {
+            biodataDao.updateAndSave(biodataEntity);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.saveEditDokterKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when updating biodata by criteria, please info to your admin..." + e.getMessage());
+        }
+
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("nip", bean.getNip());
+        hsCriteria.put("flag", "Y");
+
+        List<ItPersonilPositionEntity> personilPositionEntities = new ArrayList<>();
+        try {
+            personilPositionEntities = personilPositionDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.saveEditDokterKso] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when updating biodata by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (personilPositionEntities == null || personilPositionEntities.size() == 0){
+            throw new GeneralBOException("BiodataBoImpl.saveEditDokterKso] Tidak Menemukan Data Jabatan Dokter untuk di update. ");
+        }
+
+        if (personilPositionEntities.size() > 0){
+
+            ItPersonilPositionEntity personilPositionEntity = personilPositionEntities.get(0);
+            personilPositionEntity.setLastUpdate(bean.getLastUpdate());
+            personilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            personilPositionEntity.setProfesiId(bean.getProfesiId());
+            personilPositionEntity.setPositionId(bean.getPositionId());
+
+            try {
+                personilPositionDao.updateAndSave(personilPositionEntity);
+            } catch (HibernateException e){
+                logger.error("[BiodataBoImpl.saveEditDokterKso] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when updating personil position, please info to your admin..." + e.getMessage());
+            }
+
+        }
+        logger.info("[BiodataBoImpl.saveEditDokterKso] END process <<<");
     }
 }

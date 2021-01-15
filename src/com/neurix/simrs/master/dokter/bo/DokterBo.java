@@ -24,4 +24,7 @@ public interface DokterBo extends BaseMasterBo<Dokter> {
 
     public List<Dokter> getListDokterByBranchId(String branchId, String idDokter) throws GeneralBOException;
     public List<Dokter> getListDokterByIdDetailCheckup(String idDetailChekcup, String approve) throws GeneralBOException;
+
+    public List<Dokter> searchByQuery(Dokter bean) throws GeneralBOException;
+    public void saveEditDokter(Dokter bean) throws GeneralBOException;
 }

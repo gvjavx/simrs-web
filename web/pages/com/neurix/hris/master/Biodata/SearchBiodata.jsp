@@ -1139,8 +1139,8 @@
         $('#tahunAbsensi').empty();
         for(a = n-5 ; a <= (n + 5) ; a++){
             $('#tahunAbsensi').append($("<option></option>")
-                    .attr("value", a)
-                    .text(a));
+                .attr("value", a)
+                .text(a));
         }
 
         $('#btnCariAbsensi').click(function() {
@@ -1156,12 +1156,12 @@
             var blnThn = tahun +"-"+bulan;
             AbsensiAction.cariAbseni(nip, blnThn, function(listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-             "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>"+
-             "<th style='text-align: center; background-color:  #3c8dbc''>In</th>"+
-             "<th style='text-align: center; background-color:  #3c8dbc''>Out</th>"+
-             "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
-             "</tr></thead>";
-             var i = i ;
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>In</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Out</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
+                    "</tr></thead>";
+                var i = i ;
                 $.each(listdata, function (i, item) {
                     var jamMasuk = "-";
                     var jamKeluar = "-";
@@ -1178,20 +1178,20 @@
                     }
 
                     tmp_table += '<tr  style="font-size: 12px;" ">' +
-                                    '<td >' + item.stTanggal+ '</td>' +
-                                    '<td align="center">' + jamMasuk+ '</td>' +
-                                    '<td align="center">' + jamKeluar  + '</td>' +
-                                    '<td align="center">' + statusName + '</td>' +
-                                    "</tr>";
+                        '<td >' + item.stTanggal+ '</td>' +
+                        '<td align="center">' + jamMasuk+ '</td>' +
+                        '<td align="center">' + jamKeluar  + '</td>' +
+                        '<td align="center">' + statusName + '</td>' +
+                        "</tr>";
                 });
                 $('.tableAbsensi').append(tmp_table);
-             });
+            });
         });
     });
 
     $('.listOfbiodata').on('click', '.item-jabatan', function(){
         var nip = $(this).attr('data');
-        
+
         $('.tabelDetailJabatan').find('tbody').remove();
         $('.tabelDetailJabatan').find('thead').remove();
         $('.tabelDetailJabatan').find('tfoot').remove();
@@ -1199,15 +1199,15 @@
         var tmp_table = "";
         BiodataAction.historyJabatan(nip, function(listdata) {
             tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Bidang/Divisi</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Unit</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>PJS</th>"+
-//                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>Bidang/Divisi</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Unit</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>PJS</th>"+
+                //                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>"+
+                "</tr></thead>";
             var i = i ;
             var totalPoin = 0;
             $.each(listdata, function (i, item) {
@@ -1251,15 +1251,15 @@
                     }
                 }
                 tmp_table += '<tr  style="font-size: 12px">' +
-                        '<td >' + bidang + '</td>' +
-                        '<td >' + branchName+ '</td>' +
-                        '<td >' + positionName+ '</td>' +
-                        '<td >' + status+ '</td>' +
-                        '<td >' + pjs+ '</td>' +
-//                        '<td >' + tahun+ '</td>' +
-                        '<td >' + tglMasuk+ '</td>' +
-                        '<td >' + tglKeluar+ '</td>' +
-                        "</tr>";
+                    '<td >' + bidang + '</td>' +
+                    '<td >' + branchName+ '</td>' +
+                    '<td >' + positionName+ '</td>' +
+                    '<td >' + status+ '</td>' +
+                    '<td >' + pjs+ '</td>' +
+                    //                        '<td >' + tahun+ '</td>' +
+                    '<td >' + tglMasuk+ '</td>' +
+                    '<td >' + tglKeluar+ '</td>' +
+                    "</tr>";
             });
             $('.tabelDetailJabatan').append(tmp_table);
         });
@@ -1278,24 +1278,24 @@
         var tmp_table = "";
         BiodataAction.searchPayroll(nip, function(listdata) {
             tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Download</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>Download</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
                 tmp_table += '<tr  style="font-size: 12px">' +
-                        '<td ><a href="'+link+'" >Download</a></td>' +
-                        '<td >' + item.bulan+ '</td>' +
-                        '<td >' + item.tahun+ '</td>' +
-                        '<td >' + item.totalA+ '</td>' +
-                        '<td >' + item.totalB+ '</td>' +
-                        '<td >' + item.pphGaji+ '</td>' +
-                        "</tr>";
+                    '<td ><a href="'+link+'" >Download</a></td>' +
+                    '<td >' + item.bulan+ '</td>' +
+                    '<td >' + item.tahun+ '</td>' +
+                    '<td >' + item.totalA+ '</td>' +
+                    '<td >' + item.totalB+ '</td>' +
+                    '<td >' + item.pphGaji+ '</td>' +
+                    "</tr>";
             });
             $('.tabelPayroll').append(tmp_table);
         });
@@ -1315,12 +1315,12 @@
         StudyAction.searchData(nip, function(listdata) {
 
             tmp_table = "<thead style='font-size: 15px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Akhir</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Akhir</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var typeStudy = "-";
@@ -1342,16 +1342,16 @@
                 }
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td >' + typeStudy + '</td>' +
-                        '<td >' + studyName + '</td>' +
-                        '<td align="center">' + tahunAwal + '</td>' +
-                        '<td align="center">' + tahunAkhir + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td >' + typeStudy + '</td>' +
+                    '<td >' + studyName + '</td>' +
+                    '<td align="center">' + tahunAwal + '</td>' +
+                    '<td align="center">' + tahunAkhir + '</td>' +
+                    "</tr>";
             });
             $('.tablePendidikan').append(tmp_table);
         });
-        
+
         $('#modal-pendidikan').find('.modal-title').text('Riwayat Pendidikan');
         $('#modal-pendidikan').modal('show');
     });
@@ -1525,17 +1525,17 @@
         var tmp_table = "";
         CutiPegawaiAction.sisaCuti(nip, function(listdata) {
             tmp_table = "<thead style='font-size: 15px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cuti</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Sisa Cuti(Hari)</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cuti</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Sisa Cuti(Hari)</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td>' + item.cutiName + '</td>' +
-                        '<td align="center">' + item.sisaCutiHari + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td>' + item.cutiName + '</td>' +
+                    '<td align="center">' + item.sisaCutiHari + '</td>' +
+                    "</tr>";
             });
             $('.tableCuti').append(tmp_table);
         });
@@ -1564,15 +1564,15 @@
         SppdAction.searchSppdPerson(nip, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Sppd ID</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Dinas</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Berangkat Dari</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tujuan Ke</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Berangkat</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Kembali</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Detail</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Sppd ID</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Dinas</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Berangkat Dari</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tujuan Ke</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Berangkat</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Kembali</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Detail</th>"+
+                "</tr></thead>";
 
             $.each(listdata, function (i, item) {
                 var atasan = '';
@@ -1584,15 +1584,15 @@
                     var myDate = new Date(item.tanggalBerangkat);
                     var myDateKembali = new Date(item.tanggalKembali);
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center">' + (i +1) + '</td>' +
-                            '<td >' + item.sppdId + '</td>' +
-                            '<td >' + item.dinas + '</td>' +
-                            '<td align="center">' + item.berangkatDari+ '</td>' +
-                            '<td align="center">' + item.tujuanKe+ '</td>' +
-                            '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
-                            '<td align="center">' + (myDateKembali.getDate()) +' - '+ ("0" + (myDateKembali.getMonth() + 1)).slice(-2) +' - '+myDateKembali.getFullYear() + '</td>' +
-                            '<td align="center"> <a class="item-sppd-detail" href="javascript:;"  data="'+item.sppdId+'"><i class="fa fa-book" style="font-size:19px"></i></a> </td>' +
-                            "</tr>";
+                        '<td align="center">' + (i +1) + '</td>' +
+                        '<td >' + item.sppdId + '</td>' +
+                        '<td >' + item.dinas + '</td>' +
+                        '<td align="center">' + item.berangkatDari+ '</td>' +
+                        '<td align="center">' + item.tujuanKe+ '</td>' +
+                        '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + (myDateKembali.getDate()) +' - '+ ("0" + (myDateKembali.getMonth() + 1)).slice(-2) +' - '+myDateKembali.getFullYear() + '</td>' +
+                        '<td align="center"> <a class="item-sppd-detail" href="javascript:;"  data="'+item.sppdId+'"><i class="fa fa-book" style="font-size:19px"></i></a> </td>' +
+                        "</tr>";
                 }
 
 
@@ -1652,21 +1652,21 @@
         SppdAction.searchAnggota(id, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Branch</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Divisi</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Position</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval SDM</th>"+
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Nip Pengganti</th>"+*/
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Nama Pengganti</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Branch</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Divisi</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Position</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval SDM</th>"+
+                /*"<th style='text-align: center; background-color:  #3c8dbc''>Nip Pengganti</th>"+*/
+                "<th style='text-align: center; background-color:  #3c8dbc''>Nama Pengganti</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var atasan = '';
@@ -1680,21 +1680,21 @@
                 }
 
                 tmp_table += '<tr  style="font-size: 12px;" ">' +
-                        '<td >' + (i + 1) + '</td>' +
-                        '<td >' + item.personName + '</td>' +
-                        '<td align="center">' + item.branchName + '</td>' +
-                        '<td align="center">' + item.divisiName  + '</td>' +
-                        '<td align="center">' + item.positionName + '</td>' +
-                        '<td align="center">' + item.tipePerson + '</td>' +
-                        '<td align="center">' + item.approvalName + '</td>' +
-                        '<td align="center"><img src="' + atasan + '"</td>' +
-                        '<td align="center">' + item.notApprovalNote + '</td>' +
-                        '<td align="center">' + item.approvalSdmName+ '</td>' +
-                        '<td align="center"><img src="' + sdm + '"</td>' +
-                        '<td align="center">' + item.notApprovalSdmNote + '</td>' +
-                        '<td align="center">' + item.pejabatSementaraNama + '</td>' +
+                    '<td >' + (i + 1) + '</td>' +
+                    '<td >' + item.personName + '</td>' +
+                    '<td align="center">' + item.branchName + '</td>' +
+                    '<td align="center">' + item.divisiName  + '</td>' +
+                    '<td align="center">' + item.positionName + '</td>' +
+                    '<td align="center">' + item.tipePerson + '</td>' +
+                    '<td align="center">' + item.approvalName + '</td>' +
+                    '<td align="center"><img src="' + atasan + '"</td>' +
+                    '<td align="center">' + item.notApprovalNote + '</td>' +
+                    '<td align="center">' + item.approvalSdmName+ '</td>' +
+                    '<td align="center"><img src="' + sdm + '"</td>' +
+                    '<td align="center">' + item.notApprovalSdmNote + '</td>' +
+                    '<td align="center">' + item.pejabatSementaraNama + '</td>' +
 
-                        "</tr>";
+                    "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
 
@@ -1710,26 +1710,26 @@
         SppdAction.searchReroute(sppdId, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Dari</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Ke</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Dari Tanggal</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Sampai Tanggal</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Dari</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Ke</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Dari Tanggal</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Sampai Tanggal</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var myDate = new Date(item.tanggalRerouteDari);
                 var myDate1 = new Date(item.tanggalRerouteKe);
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td >' + item.sppdPersonName + '</td>' +
-                        '<td align="center">' + item.rerouteDari + '</td>' +
-                        '<td align="center">' + item.rerouteKe  + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
-                        '<td align="center">' + (myDate1.getDate()) +' - '+ ("0" + (myDate1.getMonth() + 1)).slice(-2) +' - '+myDate1.getFullYear() + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td >' + item.sppdPersonName + '</td>' +
+                    '<td align="center">' + item.rerouteDari + '</td>' +
+                    '<td align="center">' + item.rerouteKe  + '</td>' +
+                    '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
+                    '<td align="center">' + (myDate1.getDate()) +' - '+ ("0" + (myDate1.getMonth() + 1)).slice(-2) +' - '+myDate1.getFullYear() + '</td>' +
+                    "</tr>";
             });
             $('.sppdRerouteTable').append(tmp_table);
 
@@ -1745,18 +1745,18 @@
         SppdAction.searchDoc(sppdId, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>View</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center"> <a class="item-download" href="javascript:;"  data="'+item.sppdDocId+'"><i class="fa fa-download" style="font-size:19px"></i></a> </td>' +
-                        '<td align="center">' + item.note + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center"> <a class="item-download" href="javascript:;"  data="'+item.sppdDocId+'"><i class="fa fa-download" style="font-size:19px"></i></a> </td>' +
+                    '<td align="center">' + item.note + '</td>' +
+                    "</tr>";
             });
             $('.sppdDocTable').append(tmp_table);
         });

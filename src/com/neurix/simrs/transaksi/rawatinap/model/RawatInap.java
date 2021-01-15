@@ -123,6 +123,16 @@ public class RawatInap {
     private String jenisDiet;
     private String bentukGizi;
 
+    private String noTelp;
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
     public String getBentukGizi() {
         return bentukGizi;
     }

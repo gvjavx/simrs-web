@@ -538,12 +538,14 @@
                     <div id="panel_ket_resign" style="display: none">
                         <div class="form-group">
                             <label class="control-label col-sm-4" > Ket. Pengunduran : </label>
-                            <select class="form-control" id="sel_ket_resign">
-                                <option value="pengunduran_diri">Pengunduran Diri</option>
-                                <option value="diberhentikan">Diberhentikan</option>
-                                <option value="pensiun_dini">Pensiun Dini</option>
-                                <option value="meninggal">Meninggal</option>
-                            </select>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="sel_ket_resign">
+                                    <option value="pengunduran_diri">Pengunduran Diri</option>
+                                    <option value="diberhentikan">Diberhentikan</option>
+                                    <option value="pensiun_dini">Pensiun Dini</option>
+                                    <option value="meninggal">Meninggal</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -786,6 +788,11 @@
         $('#modal-edit').find('.modal-title').text('Delete Data Anggota');
         $('#modal-edit').modal('show');
         $('#myForm').attr('action', 'deletePerson');
+        $("#panel_tanggal_keluar").hide();
+        $("#panel_sk").hide();
+        $("#panel_ket_resign").hide();
+        $("#panel_jenis_jabatan").hide();
+        $("#panel-target").hide();
 
     });
 
@@ -822,7 +829,7 @@
         var tanggalKeluar       = $("#tanggalKeluar").val();
         var noSk                = $("#no_sk").val();
         var idKet               = $("#sel_ket_resign option:selected").val();
-        var txtKet              = $("#sel_ket_resign option:selected").txt();
+        var txtKet              = $("#sel_ket_resign option:selected").text();
 
         // jika status lepas maka ada pengganti
         var positionBaruId      = "";
@@ -849,15 +856,15 @@
         }
         // END
 
-        var isOk = true;
-        if (status == "M" || status == "R" || status == "RA"){
-            if (flagPersonAktif == "Y"){
-                isOk = false;
-            }
-        }
-
         if (personName !='' && branchLamaId !='' && status!='') {
             if(url == 'addPerson'){
+
+                var isOk = true;
+                if (status == "M" || status == "R" || status == "RA"){
+                    if (flagPersonAktif == "Y"){
+                        isOk = false;
+                    }
+                }
 
                 if (isOk){
                     var objadd = {
@@ -889,8 +896,6 @@
                         idket : idKet,
                         txtket : txtKet
                     };
-
-                    console.log(objadd);
 
                     var stobj = JSON.stringify(objadd);
 
@@ -940,63 +945,76 @@
         var jenisJabatan    = $("#jenisPegawaiId option:selected").val();
         var noSk            = $("#no_sk").val();
         var tanggalKeluar   = $("#tanggalKeluar").val();
-        MutasiAction.checkIsAvailInSession(nip, function(res){
-            if (res.status == "error"){
-                // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
-                alert(res.msg);
-            } else {
-                if (status == "L"){
-                    if (noSk == null && noSk == "") {
-                        alert("No.SK harus diisi");
-                    } else {
-                        MutasiAction.getListPositionJabatanLain(positionIdLama, nip, function (positions) {
-                            if (positions.length == 0){
-                                alert("Tidak Ditemukan Posisi Lain dari nip ini. \n tidak bisa lepas jabatan. \n");
-                            } else {
-                                save();
-                            }
-                        });
-                    }
-                } else if (status == "RA"){
+        var url             = $('#myForm').attr('action');
 
-                    if (noSk == null && noSk == ""){
-                        alert("No.SK harus diisi");
-                    } else {
-                        MutasiAction.checkIsAvailJabatanUtama(nip, jenisJabatan, function (avail) {
-                            if (avail == true){
-                                alert("Sudah Ada Posisi Utama Aktif dari nip ini. \n pilih jenis jabatan yang lain. \n");
-                            } else {
-                                save();
-                            }
-                        });
-                    }
+        if (url == "addPerson"){
+            MutasiAction.checkIsAvailInSession(nip, function(res){
+                if (res.status == "error"){
+                    // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
+                    alert(res.msg);
+                } else {
+                    if (status == "L"){
+                        if (noSk == null || noSk == "") {
+                            alert("No.SK harus diisi");
+                        } else {
+                            MutasiAction.getListPositionJabatanLain(positionIdLama, nip, function (positions) {
+                                if (positions.length == 0){
+                                    alert("Tidak Ditemukan Posisi Lain dari nip ini. \n tidak bisa lepas jabatan. \n");
+                                } else {
+                                    save();
+                                }
+                            });
+                        }
+                    } else if (status == "RA"){
+                        if (noSk == null || noSk == ""){
+                            alert("No.SK harus diisi");
+                        } else {
+                            MutasiAction.checkIsAvailJabatanUtama(nip, jenisJabatan, function (avail) {
+                                if (avail == true){
+                                    alert("Sudah Ada Posisi Utama Aktif dari nip ini. \n pilih jenis jabatan yang lain. \n");
+                                } else {
+                                    save();
+                                }
+                            });
+                        }
 
-                } else if (status == "M" || "R"){
-                    if (noSk == null && noSk == ""){
-                        alert("No.SK harus diisi");
-                    } else {
-                        save();
-                    }
-                } else if (status == "RS"){
-
-                    if (tanggalKeluar == null && tanggalKeluar == ""){
-                        alert("Tanggal Keluar harus diisi");
-                    } else {
-
-                        var stDateNow               = getStDateNow();
-                        var tanggalKeluarSplited    = splitWithoutStripDate(tanggalKeluar);
-
-                        if (parseInt(tanggalKeluarSplited) > parseInt(stDateNow)){
-                            alert("Tanggal tidak boleh setelah tanggal sekarang !");
+                    } else if (status == "M" || status == "R"){
+                        if (noSk == null && noSk == ""){
+                            alert("No.SK harus diisi");
                         } else {
                             save();
                         }
+                    } else if (status == "RS"){
+                        console.log("tanggal keluar didalam if : " + tanggalKeluar);
+                        console.log("status didalam if : " + status);
+
+                        if (tanggalKeluar == null || tanggalKeluar == ""){
+                            alert("Tanggal Keluar harus diisi");
+                        } else {
+
+                            var stDateNow               = getStDateNow();
+                            var tanggalKeluarSplited    = splitWithoutStripDate(tanggalKeluar);
+
+                            console.log("date now : " + stDateNow);
+                            console.log("tanggal keluar : " + tanggalKeluarSplited);
+
+                            if (parseInt(tanggalKeluarSplited) > parseInt(stDateNow)){
+                                alert("Tanggal tidak boleh setelah tanggal sekarang !");
+                            } else {
+                                save();
+                            }
+                        }
+                    } else {
+                        console.log("tanggal keluar didalam if : " + tanggalKeluar);
+                        console.log("status didalam if : " + status);
+                        save();
                     }
-                } else {
-                    save();
                 }
-            }
-        });
+            });
+        } else {
+            save();
+        }
+
     });
 
     window.listPosisi = function(branch, divisi){
@@ -1147,16 +1165,23 @@
         var month = d.getMonth()+1;
         var day = d.getDate();
         var year = d.getFullYear();
-        return year+day+month;
+        return year+""+fixLengthForDate(month.toString())+""+fixLengthForDate(day.toString());
     }
     function splitWithoutStripDate(str){
         var res = str.split("-");
         var ln  = res.length;
         var result = "";
-        for (i = 0 ; i > ln ; i++){
+        for (i = 0 ; i < ln ; i++){
             result += res[i];
         }
         return result;
+    }
+
+    function fixLengthForDate(str){
+        if(str.length > 1)
+            return str;
+        else
+            return "0" + str;
     }
 </script>
 

@@ -659,7 +659,6 @@ public class BiodataAction extends BaseMasterAction{
     @Override
     public String save() {
         if (isAddOrEdit()) {
-
             if (!isAdd()) {
                 logger.info("[BiodataAction.saveEdit] start process >>>");
                 try {
@@ -726,6 +725,7 @@ public class BiodataAction extends BaseMasterAction{
 //                        editBiodata.setPeralihanGapok(BigDecimal.ZERO);
 //                    }
 
+
                     if (this.fileUpload!=null) {
 
 //                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
@@ -761,7 +761,12 @@ public class BiodataAction extends BaseMasterAction{
                     editBiodata.setAction("U");
                     editBiodata.setFlag(editBiodata.getFlag());
 
-                    biodataBoProxy.saveEdit(editBiodata);
+                    if ("Y".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
+                        biodataBoProxy.saveEditDokterKso(editBiodata);
+                    } else {
+                        biodataBoProxy.saveEdit(editBiodata);
+                    }
+
                 } catch (GeneralBOException e) {
                     Long logId = null;
                     try {
@@ -807,23 +812,6 @@ public class BiodataAction extends BaseMasterAction{
                     if (biodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(biodata.getStTanggalPraPensiun())){
                         biodata.setTanggalPraPensiun(CommonUtil.convertToDate(biodata.getStTanggalPraPensiun()));
                     }
-
-//                    //BARU
-//                    if (biodata.getStPeralihanGapok() != null && !"".equalsIgnoreCase(biodata.getStPeralihanGapok())){
-//                        biodata.setPeralihanGapok(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanGapok()));
-//                    }else{
-//                        biodata.setPeralihanGapok(BigDecimal.ZERO);
-//                    }
-//                    if (biodata.getStPeralihanSankhus() != null && !"".equalsIgnoreCase(biodata.getStPeralihanSankhus())){
-//                        biodata.setPeralihanSankhus(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanSankhus()));
-//                    }else{
-//                        biodata.setPeralihanGapok(BigDecimal.ZERO);
-//                    }
-//                    if (biodata.getStPeralihanTunjangan() != null && !"".equalsIgnoreCase(biodata.getStPeralihanTunjangan())){
-//                        biodata.setPeralihanTunjangan(CommonUtil.StringDenganFormatToBigDecimal(biodata.getStPeralihanTunjangan()));
-//                    }else{
-//                        biodata.setPeralihanGapok(BigDecimal.ZERO);
-//                    }
 
                     if (this.fileUpload!=null) {
 //                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;

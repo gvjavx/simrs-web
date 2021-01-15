@@ -417,7 +417,7 @@
 
 
                                 <s:if test="!(isAddOrEdit() || isDelete())">
-                                    <div class="form-group">
+                                    <div class="form-group" style="margin-top: -9px">
                                         <label class="control-label col-sm-5" for="branch.flag">Flag :</label>
                                         <div class="col-sm-3">
                                             <s:select list="#{'Y':'Active', 'N':'NonActive'}" id="flag" name="branch.flag"
@@ -428,9 +428,7 @@
                                 <br>
                                 <div id="crud"></div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" style="visibility: hidden"></label>
-
-                                    <div style="padding-left: 140px" class="col-sm-4">
+                                    <div class="col-md-offset-5 col-sm-7">
                                         <s:if test="isAddOrEdit()">
                                             <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="branchForm" id="save" name="save"
                                                        onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
@@ -615,17 +613,8 @@
                                                 Search
                                             </sj:submit>
 
-                                            <div class="btn-group">
-                                                <s:url id="urlAdd" namespace="/admin/branch" action="add_branch" escapeAmp="false"/>
-                                                <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                                    <i class="fa fa-edit"></i>
-                                                    Branch
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><s:a href="%{urlAdd}"><i class="fa fa-plus"></i> Add</s:a></li>
-                                                </ul>
-                                            </div>
+                                            <s:url id="urlAdd" namespace="/admin/branch" action="add_branch" escapeAmp="false"/>
+                                            <s:a href="%{urlAdd}" cssClass="btn btn-success"><i class="fa fa-plus"></i> Add</s:a>
 
                                             <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_branch"/>'">
                                                 <i class="fa fa-refresh"></i> Reset

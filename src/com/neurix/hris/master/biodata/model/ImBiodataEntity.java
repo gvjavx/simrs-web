@@ -93,6 +93,33 @@ public class ImBiodataEntity implements Serializable {
     private BigDecimal peralihanTunjangan;
 
     private Date tanggalKeluar;
+    private String flagPegawaiCutiDiluarTanggungan;
+    private Date tanggalCutiDiluarAwal;
+    private Date tanggalCutiDiluarAkhir;
+
+    public String getFlagPegawaiCutiDiluarTanggungan() {
+        return flagPegawaiCutiDiluarTanggungan;
+    }
+
+    public void setFlagPegawaiCutiDiluarTanggungan(String flagPegawaiCutiDiluarTanggungan) {
+        this.flagPegawaiCutiDiluarTanggungan = flagPegawaiCutiDiluarTanggungan;
+    }
+
+    public Date getTanggalCutiDiluarAwal() {
+        return tanggalCutiDiluarAwal;
+    }
+
+    public void setTanggalCutiDiluarAwal(Date tanggalCutiDiluarAwal) {
+        this.tanggalCutiDiluarAwal = tanggalCutiDiluarAwal;
+    }
+
+    public Date getTanggalCutiDiluarAkhir() {
+        return tanggalCutiDiluarAkhir;
+    }
+
+    public void setTanggalCutiDiluarAkhir(Date tanggalCutiDiluarAkhir) {
+        this.tanggalCutiDiluarAkhir = tanggalCutiDiluarAkhir;
+    }
 
     public Date getTanggalKeluar() {
         return tanggalKeluar;
@@ -346,34 +373,6 @@ public class ImBiodataEntity implements Serializable {
     private Date tanggalAkhirKontrak;
     private Date tanggalMenikah;
 //    private int poinLebih; //hris-02
-
-    private String flagPegawaiCutiDiluarTanggungan;
-    private Date tanggalCutiDiluarAwal;
-    private Date tanggalCutiDiluarAkhir;
-
-    public String getFlagPegawaiCutiDiluarTanggungan() {
-        return flagPegawaiCutiDiluarTanggungan;
-    }
-
-    public void setFlagPegawaiCutiDiluarTanggungan(String flagPegawaiCutiDiluarTanggungan) {
-        this.flagPegawaiCutiDiluarTanggungan = flagPegawaiCutiDiluarTanggungan;
-    }
-
-    public Date getTanggalCutiDiluarAwal() {
-        return tanggalCutiDiluarAwal;
-    }
-
-    public void setTanggalCutiDiluarAwal(Date tanggalCutiDiluarAwal) {
-        this.tanggalCutiDiluarAwal = tanggalCutiDiluarAwal;
-    }
-
-    public Date getTanggalCutiDiluarAkhir() {
-        return tanggalCutiDiluarAkhir;
-    }
-
-    public void setTanggalCutiDiluarAkhir(Date tanggalCutiDiluarAkhir) {
-        this.tanggalCutiDiluarAkhir = tanggalCutiDiluarAkhir;
-    }
 
     public String getPjs() {
         return pjs;

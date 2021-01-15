@@ -146,22 +146,9 @@ public class Biodata extends BaseModel {
     private String stPeralihanGapok;
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
-
-    //RAKA-7JAN2021==>penambahan property cuti diluar tanggungan
-    private Date tanggalKeluar;
     private String flagCutiDiluarTanggungan;
     private Date tanggalCutiDiluarTanggunganAwal;
     private Date tanggalCutiDiluarTanggunganAkhir;
-    private String stTanggalCutiDiluarTanggunganAwal;
-    private String stTanggalCutiDiluarTanggunganAkhir;
-
-    public Date getTanggalKeluar() {
-        return tanggalKeluar;
-    }
-
-    public void setTanggalKeluar(Date tanggalKeluar) {
-        this.tanggalKeluar = tanggalKeluar;
-    }
 
     public String getFlagCutiDiluarTanggungan() {
         return flagCutiDiluarTanggungan;
@@ -186,6 +173,20 @@ public class Biodata extends BaseModel {
     public void setTanggalCutiDiluarTanggunganAkhir(Date tanggalCutiDiluarTanggunganAkhir) {
         this.tanggalCutiDiluarTanggunganAkhir = tanggalCutiDiluarTanggunganAkhir;
     }
+
+    //RAKA-7JAN2021==>penambahan property cuti diluar tanggungan
+    private Date tanggalKeluar;
+    private String stTanggalCutiDiluarTanggunganAwal;
+    private String stTanggalCutiDiluarTanggunganAkhir;
+
+    public Date getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(Date tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
+
 
     public String getStTanggalCutiDiluarTanggunganAwal() {
         return stTanggalCutiDiluarTanggunganAwal;
