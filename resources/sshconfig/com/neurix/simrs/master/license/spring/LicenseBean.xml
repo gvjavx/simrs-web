@@ -12,6 +12,7 @@
 
     <bean id="licenseZebraBo" class="com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl"
           p:licenseZebraDao-ref="licenseZebraDao"
+          p:licenseLogZebraDao-ref="licenseLogZebraDao"
     />
 
     <bean id="licenseZebraBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -37,6 +38,8 @@
     </bean>
 
     <bean id="licenseZebraDao" class="com.neurix.simrs.master.license.dao.LicenseZebraDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="licenseLogZebraDao" class="com.neurix.simrs.master.license.dao.LicenseLogZebraDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>
