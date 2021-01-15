@@ -1264,14 +1264,17 @@ public class BiodataBoImpl implements BiodataBo {
 
         if (bean!=null) {
             if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
-                String dokterId = "";
+                String dokterNip = "";
                 try{
-                    dokterId = dokterDao.getNextDokter();
+                    String dokterId = dokterDao.getNextDokter();
+                    String[] birthDate = bean.getStTanggalLahir().split("-");
+                    dokterNip = birthDate[0]+birthDate[1]+birthDate[2]+dokterId;
+
                 } catch (HibernateException e) {
                     logger.error("[BiodataBoImpl.saveAdd] Error : " + e.getMessage());
                     throw new GeneralBOException("Found problem when retrieving next ID. " + e.getMessage());
                 }
-                bean.setNip(dokterId);
+                bean.setNip(dokterNip);
                 bean.setTanggalAktif(CommonUtil.convertStringToDate(bean.getStTanggalMasuk()));
             }
 

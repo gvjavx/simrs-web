@@ -175,9 +175,10 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
     public String getNextDokter() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_dokter')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%08d", iter.next());
+        String sId = String.format("%04d", iter.next());
 
-        return "DKR" + sId;
+        return  sId;
+//        return "DKR" + sId;
     }
 
     public String getNextKodering() throws HibernateException {

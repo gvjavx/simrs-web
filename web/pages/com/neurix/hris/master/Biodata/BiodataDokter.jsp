@@ -307,6 +307,18 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <table style="width:100%;">
+                                            <%--RAKA-15JAN2021 ==> Generate NIP--%>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label><small>NIP <span style="color:red;">*</span> :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control" readonly="true" />--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
+
                                             <tr>
                                                 <td>
                                                     <label><small>Nama <span style="color:red;">*</span> :</small></label>
