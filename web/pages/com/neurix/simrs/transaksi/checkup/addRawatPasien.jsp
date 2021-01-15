@@ -2783,7 +2783,7 @@
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="'+foto+'">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px; width: 55%;" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
