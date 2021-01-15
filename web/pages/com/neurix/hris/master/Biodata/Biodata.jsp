@@ -164,11 +164,11 @@
 //                loadSessionStudy();
 //            loadStudy(nip);
             <s:if test="isAdd()">
-                loadSessionStudy();
+            loadSessionStudy();
             </s:if>
             <s:else>
-                var nip = document.getElementById("nip1").value;
-                loadStudy(nip);
+            var nip = document.getElementById("nip1").value;
+            loadStudy(nip);
             </s:else>
         });
 
@@ -222,11 +222,11 @@
         $.subscribe('successDialogDocument', function(event, data){
 //            loadSessionStudy();
             <s:if test="isAdd()">
-                loadSessionStudy();
+            loadSessionStudy();
             </s:if>
             <s:else>
-                var nip = document.getElementById("nip1").value;
-                loadStudy(nip);
+            var nip = document.getElementById("nip1").value;
+            loadStudy(nip);
             </s:else>
         });
 
@@ -306,9 +306,9 @@
                 </ul>
 
                 <%--<sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"--%>
-                           <%--height="500" width="900" autoOpen="false"--%>
-                           <%--title="keluarga ">--%>
-                    <%--<center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>--%>
+                <%--height="500" width="900" autoOpen="false"--%>
+                <%--title="keluarga ">--%>
+                <%--<center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>--%>
                 <%--</sj:dialog>--%>
 
                 <s:form id="homeForm" theme="simple" namespace="/biodata" enctype="multipart/form-data" action="save_biodata.action" cssClass="well form-horizontal">
@@ -340,15 +340,16 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdd()">
-                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:elseif test="isDelete()">
-                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
-                                                        </s:elseif>
-                                                        <s:else>
-                                                            <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
-                                                        </s:else>
+                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir--%>
+                                                            <%--<s:if test="isAdd()">--%>
+                                                        <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control" readonly="true" />
+                                                            <%--</s:if>--%>
+                                                            <%--<s:elseif test="isDelete()">--%>
+                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
+                                                            <%--</s:elseif>--%>
+                                                            <%--<s:else>--%>
+                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
+                                                            <%--</s:else>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -476,7 +477,7 @@
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -1320,25 +1321,25 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <%--<tr>--%>
+                                                <%--<tr>--%>
                                                 <%--<td>--%>
-                                                    <%--<label><small>Kelompok Pegawai :</small></label>--%>
+                                                <%--<label><small>Kelompok Pegawai :</small></label>--%>
                                                 <%--</td>--%>
                                                 <%--<td>--%>
-                                                    <%--<table>--%>
-                                                        <%--<s:if test="isDelete()">--%>
-                                                            <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
-                                                            <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" disabled="true"--%>
-                                                                      <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
-                                                        <%--</s:if>--%>
-                                                        <%--<s:else>--%>
-                                                            <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
-                                                            <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai"--%>
-                                                                      <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
-                                                        <%--</s:else>--%>
-                                                    <%--</table>--%>
+                                                <%--<table>--%>
+                                                <%--<s:if test="isDelete()">--%>
+                                                <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
+                                                <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai" disabled="true"--%>
+                                                <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                                <%--</s:if>--%>
+                                                <%--<s:else>--%>
+                                                <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
+                                                <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawai" name="biodata.jenisPegawai"--%>
+                                                <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                                <%--</s:else>--%>
+                                                <%--</table>--%>
                                                 <%--</td>--%>
-                                            <%--</tr>--%>
+                                                <%--</tr>--%>
                                             <tr>
                                                 <td>
                                                     <label><small>Jabatan PLT :</small></label>
@@ -1395,6 +1396,48 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
+                                            <s:if test='biodata.flagCutiDiluarTanggungan == "Y"'>
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Cuti Luar Tanggungan:</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" class="checkZakat" id="flagCutiLuar" disabled onchange="cekCuti()"/>
+                                                                <s:textfield cssStyle="display: none"  id="flagCuti" name="biodata.flagCutiDiluarTanggungan"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" class="checkZakat"  id="flagCutiLuar" onchange="cekCuti()"/>
+                                                                <s:textfield cssStyle="display: none"  id="flagCuti" name="biodata.flagCutiDiluarTanggungan"/>
+                                                            </s:else>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <td>
+                                                        <label><small>Tanggal Cuti :</small></label>
+                                                    </td>
+                                                    <td>
+                                                        <table>
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <s:textfield id="cutiLuarTanggungAwal" name="biodata.stTanggalCutiDiluarTanggunganAwal" disabled="false" cssClass="form-control col-md-4" readonly="true"/>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <label style="padding-top: 20%;" ><small>hingga</small></label>
+                                                                </div>
+                                                                <div class="col-md-5">
+                                                                    <s:textfield id="cutiLuarTanggungAkhir" name="biodata.stTanggalCutiDiluarTanggunganAkhir" disabled="false" cssClass="form-control col-md-4" readonly="true"/>
+                                                                </div>
+                                                            </div>
+                                                        </table>
+                                                    </td>
+                                                </tr>
+                                            </s:if>
+
                                                 <%--<tr>--%>
                                                 <%--<td>--%>
                                                 <%--<label><small>Zakat Profesi :</small></label>--%>
@@ -1783,16 +1826,16 @@
                     </s:if>
 
                     <%--<sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"--%>
-                               <%--onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"--%>
-                               <%--onSuccessTopics="successDialog" onErrorTopics="errorDialog" >                        --%>
-                        <%--<s:if test="isDelete()">--%>
-                            <%--<i class="fa fa-trash"></i>--%>
-                            <%--Delete--%>
-                        <%--</s:if>--%>
-                        <%--<s:else>--%>
-                            <%--<i class="fa fa-check"></i>--%>
-                            <%--Save--%>
-                        <%--</s:else>--%>
+                    <%--onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"--%>
+                    <%--onSuccessTopics="successDialog" onErrorTopics="errorDialog" >                        --%>
+                    <%--<s:if test="isDelete()">--%>
+                    <%--<i class="fa fa-trash"></i>--%>
+                    <%--Delete--%>
+                    <%--</s:if>--%>
+                    <%--<s:else>--%>
+                    <%--<i class="fa fa-check"></i>--%>
+                    <%--Save--%>
+                    <%--</s:else>--%>
                     <%--</sj:submit>--%>
 
                     <s:if test="isDelete()">
@@ -1895,109 +1938,109 @@
 
 
 <%--<div id="modal-edit-study" class="modal fade" role="dialog">--%>
-    <%--<div class="modal-dialog" style="width: 450px">--%>
+<%--<div class="modal-dialog" style="width: 450px">--%>
 
-        <%--<!-- Modal content-->--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header">--%>
-                <%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
-                <%--<h4 class="modal-title">Edit Study</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<s:url id="urlProcess" namespace="/study" action="editStudy_study"--%>
-                       <%--includeContext="false"/>--%>
-                <%--<s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"--%>
-                        <%--theme="simple" cssClass="form-horizontal">--%>
-                    <%--<s:hidden name="addOrEdit"/>--%>
-                    <%--<s:hidden id="add" name="add"/>--%>
-                    <%--<s:hidden name="delete"/>--%>
+<%--<!-- Modal content-->--%>
+<%--<div class="modal-content">--%>
+<%--<div class="modal-header">--%>
+<%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+<%--<h4 class="modal-title">Edit Study</h4>--%>
+<%--</div>--%>
+<%--<div class="modal-body">--%>
+<%--<s:url id="urlProcess" namespace="/study" action="editStudy_study"--%>
+<%--includeContext="false"/>--%>
+<%--<s:form id="myFormDocument1" enctype="multipart/form-data" method="post" action="%{urlProcess}"--%>
+<%--theme="simple" cssClass="form-horizontal">--%>
+<%--<s:hidden name="addOrEdit"/>--%>
+<%--<s:hidden id="add" name="add"/>--%>
+<%--<s:hidden name="delete"/>--%>
 
-                    <%--<s:if test="isAddOrEdit()">--%>
-                    <%--<div style="display: none" class="form-group">--%>
-                        <%--<label class="control-label col-sm-3" >Id : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="text" class="form-control" id="studyId" name="study.studyId">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<s:if test="isAddOrEdit()">--%>
+<%--<div style="display: none" class="form-group">--%>
+<%--<label class="control-label col-sm-3" >Id : </label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<input type="text" class="form-control" id="studyId" name="study.studyId">--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" for="gender">Type Study :</label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<select class="form-control" id="studyTypeStudy" name="study.typeStudy">--%>
-                                <%--<option value="SD">SD</option>--%>
-                                <%--<option value="SMP">SMP</option>--%>
-                                <%--<option value="SMA">SMA</option>--%>
-                                <%--<option value="D1">Diploma D1</option>--%>
-                                <%--<option value="D2">Diploma D2</option>--%>
-                                <%--<option value="D3">Diploma D3</option>--%>
-                                <%--<option value="S1">Sarjana (S1)</option>--%>
-                                <%--<option value="S2">Sarjana (S2)</option>--%>
-                                <%--<option value="S3">Sarjana (S3)</option>--%>
-                            <%--</select>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4" for="gender">Type Study :</label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<select class="form-control" id="studyTypeStudy" name="study.typeStudy">--%>
+<%--<option value="SD">SD</option>--%>
+<%--<option value="SMP">SMP</option>--%>
+<%--<option value="SMA">SMA</option>--%>
+<%--<option value="D1">Diploma D1</option>--%>
+<%--<option value="D2">Diploma D2</option>--%>
+<%--<option value="D3">Diploma D3</option>--%>
+<%--<option value="S1">Sarjana (S1)</option>--%>
+<%--<option value="S2">Sarjana (S2)</option>--%>
+<%--<option value="S3">Sarjana (S3)</option>--%>
+<%--</select>--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Study Name : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="text" class="form-control" id="studyName" name="study.studyName">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4" >Study Name : </label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<input type="text" class="form-control" id="studyName" name="study.studyName">--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" for="gender">Fakultas :</label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<select class="form-control" id="studyFakultas1" name="study.studyFakultas" >--%>
-                            <%--</select>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4" for="gender">Fakultas :</label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<select class="form-control" id="studyFakultas1" name="study.studyFakultas" >--%>
+<%--</select>--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Program Studi : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4" >Program Studi : </label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Tahun Awal : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4" >Tahun Awal : </label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Tahun Lulus : </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4" >Tahun Lulus : </label>--%>
+<%--<div class="col-sm-8">--%>
+<%--<input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4">Ijazah (Jpeg) : </label>--%>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-4">Ijazah (Jpeg) : </label>--%>
 
-                        <%--<div class="col-sm-8">--%>
-                            <%--<input type="file" id="file" class="form-control" name="fileUpload"/>--%>
-                            <%--<input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"--%>
-                                   <%--name="study.uploadFile" readonly />--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
+<%--<div class="col-sm-8">--%>
+<%--<input type="file" id="file" class="form-control" name="fileUpload"/>--%>
+<%--<input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"--%>
+<%--name="study.uploadFile" readonly />--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                    <%--<div class="modal-footer">--%>
-                        <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"--%>
-                                   <%--id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"--%>
-                                   <%--onCompleteTopics="closeDialog,successDialogDocument1"--%>
-                                   <%--onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">--%>
-                            <%--<i class="fa fa-check"></i>--%>
-                            <%--Save--%>
-                        <%--</sj:submit>--%>
-                        <%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
-                    <%--</div>--%>
-                    <%--</s:if>--%>
-                <%--</s:form>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
+<%--<div class="modal-footer">--%>
+<%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument1"--%>
+<%--id="saveDocument1" name="save" onBeforeTopics="beforeProcessSaveStudy1"--%>
+<%--onCompleteTopics="closeDialog,successDialogDocument1"--%>
+<%--onSuccessTopics="successDialogDocument1" onErrorTopics="errorDialog">--%>
+<%--<i class="fa fa-check"></i>--%>
+<%--Save--%>
+<%--</sj:submit>--%>
+<%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+<%--</div>--%>
+<%--</s:if>--%>
+<%--</s:form>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
 <%--</div>--%>
 
 
@@ -2022,81 +2065,81 @@
                     <s:hidden name="biodata.nip"/>
 
                     <s:if test="isAddOrEdit()">
-                    <div style="display: none" class="form-group">
-                        <label class="control-label col-sm-3" >Id : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyId" name="txtStdudyName">
+                        <div style="display: none" class="form-group">
+                            <label class="control-label col-sm-3" >Id : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="studyId" name="txtStdudyName">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Type Study :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
-                                <option value="SD">SD</option>
-                                <option value="SMP">SMP</option>
-                                <option value="SMA">SMA</option>
-                                <option value="D1">Diploma D1</option>
-                                <option value="D2">Diploma D2</option>
-                                <option value="D3">Diploma D3</option>
-                                <option value="S1">Sarjana (S1)</option>
-                                <option value="S2">Sarjana (S2)</option>
-                                <option value="S3">Sarjana (S3)</option>
-                            </select>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="gender">Type Study :</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="studyTypeStudy" name="study.typeStudy">
+                                    <option value="SD">SD</option>
+                                    <option value="SMP">SMP</option>
+                                    <option value="SMA">SMA</option>
+                                    <option value="D1">Diploma D1</option>
+                                    <option value="D2">Diploma D2</option>
+                                    <option value="D3">Diploma D3</option>
+                                    <option value="S1">Sarjana (S1)</option>
+                                    <option value="S2">Sarjana (S2)</option>
+                                    <option value="S3">Sarjana (S3)</option>
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Study Name : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyName" name="study.studyName">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" >Study Name : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="studyName" name="study.studyName">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" for="gender">Fakultas :</label>
-                        <div class="col-sm-8">
-                            <select class="form-control" id="studyFakultas" name="study.studyFakultas" >
-                            </select>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" for="gender">Fakultas :</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="studyFakultas" name="study.studyFakultas" >
+                                </select>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Program Studi : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" >Program Studi : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="pendidikanProgramStudi" name="study.programStudy">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Awal : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" >Tahun Awal : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" >Tahun Lulus : </label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" >Tahun Lulus : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
+                            </div>
                         </div>
-                    </div>
-                    <%--<div class="form-group">--%>
-                    <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
-                    <%--<div class="col-sm-8">--%>
-                    <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
-                    <%--</div>--%>
-                    <%--</div>--%>
+                        <%--<div class="form-group">--%>
+                        <%--<label class="control-label col-sm-4" >Ijazah (Jpg): </label>--%>
+                        <%--<div class="col-sm-8">--%>
+                        <%--<s:file id="fileUploadIjazah" name="fileUploadIjazah" cssClass="form-control" />--%>
+                        <%--</div>--%>
+                        <%--</div>--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4">Ijazah (Jpeg) : </label>
 
-                        <div class="col-sm-8">
-                            <input type="file" id="file" class="form-control" name="fileUpload"/>
-                            <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
-                                   name="study.uploadFile" readonly style="display: none;"/>
+                            <div class="col-sm-8">
+                                <input type="file" id="file" class="form-control" name="fileUpload"/>
+                                <input type="text" id="cpiddoc" class="form-control" accept="application/pdf,image/jpeg"
+                                       name="study.uploadFile" readonly style="display: none;"/>
+                            </div>
                         </div>
-                    </div>
 
                         <div class="modal-footer">
                             <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="myFormDocument"
@@ -2116,8 +2159,8 @@
                 <%--</form>--%>
             </div>
             <%--<div class="modal-footer">--%>
-                <%--<button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>--%>
-                <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
+            <%--<button id="btnSave" type="button" class="btn btn-default btn-success">Simpan</button>--%>
+            <%--<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>--%>
             <%--</div>--%>
         </div>
     </div>
@@ -2254,11 +2297,11 @@
                         </div>
                     </div>
                     <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Pjs: </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<s:select list="#{'Y':'Ya'}" id="pjsFlag1"--%>
-                                      <%--headerKey="N" headerValue="Tidak" cssClass="form-control" />--%>
-                        <%--</div>--%>
+                    <%--<label class="control-label col-sm-4" >Pjs: </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<s:select list="#{'Y':'Ya'}" id="pjsFlag1"--%>
+                    <%--headerKey="N" headerValue="Tidak" cssClass="form-control" />--%>
+                    <%--</div>--%>
                     <%--</div>--%>
 
                     <div class="form-group">
@@ -2273,18 +2316,18 @@
                         <label class="control-label col-sm-4" > Digaji : </label>
                         <div class="col-sm-8">
                             <s:select list="#{'N':'Tidak'}" id="flagDigaji"
-                            headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
                         </div>
                     </div>
                     <s:hidden id="flagAktif1" value="Y"></s:hidden>
 
 
                     <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" >Jabatan Aktif?: </label>--%>
-                        <%--<div class="col-sm-8">--%>
-                            <%--<s:select list="#{'Y':'Ya'}" id="flagAktif1"--%>
-                                      <%--headerKey="N" headerValue="Tidak" cssClass="form-control" />--%>
-                        <%--</div>--%>
+                    <%--<label class="control-label col-sm-4" >Jabatan Aktif?: </label>--%>
+                    <%--<div class="col-sm-8">--%>
+                    <%--<s:select list="#{'Y':'Ya'}" id="flagAktif1"--%>
+                    <%--headerKey="N" headerValue="Tidak" cssClass="form-control" />--%>
+                    <%--</div>--%>
                     <%--</div>--%>
 
                 </form>
@@ -3059,8 +3102,8 @@
         PositionAction.searchDivisi2(branch, function(listdata){
             $.each(listdata, function (i, item) {
                 $('#departmentId').append($("<option></option>")
-                        .attr("value",item.departmentId)
-                        .text(item.departmentName));
+                    .attr("value",item.departmentId)
+                    .text(item.departmentName));
             });
         });
         listPosisi();
@@ -3072,8 +3115,8 @@
         PositionAction.searchDivisi2(branch, function(listdata){
             $.each(listdata, function (i, item) {
                 $('#departmentId').append($("<option></option>")
-                        .attr("value",item.departmentId)
-                        .text(item.departmentName));
+                    .attr("value",item.departmentId)
+                    .text(item.departmentName));
             });
         });
         listPosisiHistory();
@@ -3096,13 +3139,13 @@
         var divisi = document.getElementById("divisi1").value;
         $('#positionId1').empty();
         $('#positionId1').append($("<option></option>")
-                .attr("value", '')
-                .text(''));
+            .attr("value", '')
+            .text(''));
         PositionAction.searchPositionBiodata(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#positionId1').append($("<option></option>")
-                        .attr("value", item.positionId)
-                        .text(item.positionName));
+                    .attr("value", item.positionId)
+                    .text(item.positionName));
             });
         });
     }
@@ -3111,13 +3154,13 @@
         var divisi = document.getElementById("departmentId").value;
         $('#positionId3').empty();
         $('#positionId3').append($("<option></option>")
-                .attr("value", '')
-                .text(''));
+            .attr("value", '')
+            .text(''));
         PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#positionId3').append($("<option></option>")
-                        .attr("value", item.positionId)
-                        .text(item.positionName));
+                    .attr("value", item.positionId)
+                    .text(item.positionName));
             });
         });
     }
@@ -3127,9 +3170,9 @@
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
-           $('#tanggalAktif').removeAttr('disabled');
-           $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
-           $('#tanggalAktifHid').val("");
+            $('#tanggalAktif').removeAttr('disabled');
+            $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
+            $('#tanggalAktifHid').val("");
         } else {
             $('#golongan1Group').hide();
             $('#golongan2Group').show();
@@ -3155,6 +3198,7 @@
             $('.label-pensiun').html("<small>Tgl Kontrak Berakhir : </small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak : </small>");
             $('.label-tanggal-aktif').html("<small>Tanggal Aktif : </small>");
+
         } else{
             $('.label-prapensiun').html("<small>Tanggal MBT : </small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun : </small>");
@@ -3286,19 +3330,19 @@
         } else {
             document.getElementById("siaga").checked = false;
         }
-        var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
-        if (flagTunjProfesional == "Y") {
-            document.getElementById("profesional").checked = true;
-        } else {
-            document.getElementById("profesional").checked = false;
-        }
+        // var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
+        // if (flagTunjProfesional == "Y") {
+        //     document.getElementById("profesional").checked = true;
+        // } else {
+        //     document.getElementById("profesional").checked = false;
+        // }
 
-        var flagMess = document.getElementById("flagMess").value;
-        if (flagMess == "Y") {
-            document.getElementById("mess").checked = true;
-        } else {
-            document.getElementById("mess").checked = false;
-        }
+        // var flagMess = document.getElementById("flagMess").value;
+        // if (flagMess == "Y") {
+        //     document.getElementById("mess").checked = true;
+        // } else {
+        //     document.getElementById("mess").checked = false;
+        // }
 //        var flagPLT = document.getElementById("flagPLT").value;
 //        if (flagPLT == "Y") {
 //            document.getElementById("plt").checked = true;
@@ -3348,6 +3392,13 @@
         } else {
             document.getElementById("bpjsTk").checked = false;
         }
+        // var flagCutiLuar = document.getElementById("flagCuti").value;
+        var flagCutiLuar = $("#flagCuti").val();
+        if(flagCutiLuar == "Y") {
+            $("#flagCutiLuar").prop('checked', true);
+        } else {
+            $("#flagCutiLuar").prop('checked', false);
+        }
 
         window.loadStudy= function(nip){
             $('.studyTable').find('tbody').remove();
@@ -3358,29 +3409,29 @@
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3388,42 +3439,42 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.fakultasName + '</td>' +
-                            '<td align="center">' + item.programStudy + '</td>' +
-                            '<td align="center">' + item.tahunAwal + '</td>' +
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        '<td align="center">' + item.fakultasName + '</td>' +
+                        '<td align="center">' + item.programStudy + '</td>' +
+                        '<td align="center">' + item.tahunAwal + '</td>' +
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                        '</a>' +
+                        '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.fakultasName + '</td>' +
-                            '<td align="center">' + item.programStudy + '</td>' +
-                            '<td align="center">' + item.tahunAwal + '</td>' +
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        '<td align="center">' + item.fakultasName + '</td>' +
+                        '<td align="center">' + item.programStudy + '</td>' +
+                        '<td align="center">' + item.tahunAwal + '</td>' +
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
+                        "</tr>";
                     </s:else>
                 });
                 $('.studyTable').append(tmp_table);
@@ -3438,29 +3489,29 @@
             StudyAction.searchData(nip, function (listdata) {
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Study Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Fakultas</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Program Studi</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun Awal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Ijazah</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Study Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Fakultas</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Program Studi</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tahun Awal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ijazah</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Fakultas</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Program Studi</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3468,47 +3519,47 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.fakultasName + '</td>' +
-                            '<td align="center">' + item.programStudy + '</td>' +
-                            '<td align="center">' + item.tahunAwal + '</td>' +
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        '<td align="center">' + item.fakultasName + '</td>' +
+                        '<td align="center">' + item.programStudy + '</td>' +
+                        '<td align="center">' + item.tahunAwal + '</td>' +
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                        '</a>' +
+                        '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.fakultasName + '</td>' +
-                            '<td align="center">' + item.programStudy + '</td>' +
-                            '<td align="center">' + item.tahunAwal + '</td>' +
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        '<td align="center">' + item.fakultasName + '</td>' +
+                        '<td align="center">' + item.programStudy + '</td>' +
+                        '<td align="center">' + item.tahunAwal + '</td>' +
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:else>
                 });
                 $('.studyTable').append(tmp_table);
@@ -3525,33 +3576,33 @@
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
-//                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
+                    //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
 
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
-//                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
+                    //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
 
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3559,39 +3610,39 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.namaPerusahaan + '</td>' +
-                            '<td align="center">' + item.jabatan + '</td>' +
-                            '<td align="center">' + item.profesiName + '</td>' +
-                            '<td align="center">' + item.stTtahunMasuk + '</td>' +
-                            '<td align="center">' + item.stTahunKeluar + '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.namaPerusahaan + '</td>' +
+                        '<td align="center">' + item.jabatan + '</td>' +
+                        '<td align="center">' + item.profesiName + '</td>' +
+                        '<td align="center">' + item.stTtahunMasuk + '</td>' +
+                        '<td align="center">' + item.stTahunKeluar + '</td>' +
 
-                            '<td align="center">' + item.tipePegawai + '</td>' +
-                            '<td align="center">' + item.golonganName + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center">' + item.tipePegawai + '</td>' +
+                        '<td align="center">' + item.golonganName + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.namaPerusahaan + '</td>' +
-                            '<td align="center">' + item.jabatan + '</td>' +
-                            '<td align="center">' + item.profesiName + '</td>' +
-                            '<td align="center">' + item.stTtahunMasuk + '</td>' +
-                            '<td align="center">' + item.stTahunKeluar + '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.namaPerusahaan + '</td>' +
+                        '<td align="center">' + item.jabatan + '</td>' +
+                        '<td align="center">' + item.profesiName + '</td>' +
+                        '<td align="center">' + item.stTtahunMasuk + '</td>' +
+                        '<td align="center">' + item.stTahunKeluar + '</td>' +
 
-                            '<td align="center">' + item.tipePegawai + '</td>' +
-                            '<td align="center">' + item.golonganName + '</td>' +
-                            "</tr>";
+                        '<td align="center">' + item.tipePegawai + '</td>' +
+                        '<td align="center">' + item.golonganName + '</td>' +
+                        "</tr>";
                     </s:else>
                 });
                 $('.pengalamanKerjaTable').append(tmp_table);
@@ -3606,21 +3657,21 @@
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>"+
-                "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jenis</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jenis</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3628,30 +3679,30 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td align="center">' + item.stTanggal + '</td>' +
-                            '<td >' + item.jenis + '</td>' +
-                            '<td align="center">' + item.keterangan+ '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.rewardId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.rewardId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td align="center">' + item.stTanggal + '</td>' +
+                        '<td >' + item.jenis + '</td>' +
+                        '<td align="center">' + item.keterangan+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.rewardId+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.rewardId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.stTanggal+ '</td>' +
-                            '<td align="center">' + item.jenis+ '</td>' +
-                            '<td align="center">' + item.keterangan+ '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.stTanggal+ '</td>' +
+                        '<td align="center">' + item.jenis+ '</td>' +
+                        '<td align="center">' + item.keterangan+ '</td>' +
 
-                            "</tr>";
+                        "</tr>";
                     </s:else>
                 });
                 $('.rewardTable').append(tmp_table);
@@ -3668,18 +3719,18 @@
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
@@ -3700,30 +3751,30 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center" >' + (i + 1) + '</td>' +
-                            '<td >' + item.jenis+ '</td>' +
-                            '<td >' + item.nama + '</td>' +
-                            '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.jumlahHari+ '</td>' +
-                            '<td align="center">' + item.lulus+ '</td>' +
-                            '<td align="center">' + item.stTanggalPengesahan+ '</td>' +
-                            '<td align="center">' + item.prestasiGrade+ '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.sertifikatId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center" >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis+ '</td>' +
+                        '<td >' + item.nama + '</td>' +
+                        '<td align="center">' + item.lembaga+ '</td>' +
+                        '<td align="center">' + item.jumlahHari+ '</td>' +
+                        '<td align="center">' + item.lulus+ '</td>' +
+                        '<td align="center">' + item.stTanggalPengesahan+ '</td>' +
+                        '<td align="center">' + item.prestasiGrade+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-lampiran' sertifikat ='" + item.tempatPelaksana+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icons8-search-25.png'/>'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.sertifikatId+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
@@ -3846,23 +3897,23 @@
 
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    /*"<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +*/
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "</tr></thead>";
                 </s:else>
 
 
@@ -3870,32 +3921,32 @@
                 $.each(listdata, function (i, item) {
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            /*'<td align="center">' + item.tahunAwal + '</td>' +*/
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        /*'<td align="center">' + item.tahunAwal + '</td>' +*/
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            /*'<td align="center">' + item.tahunAwal + '</td>' +*/
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        /*'<td align="center">' + item.tahunAwal + '</td>' +*/
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
 
-                            "</tr>";
+                        "</tr>";
                     </s:else>
                 });
                 $('.studyTable').append(tmp_table);
@@ -3910,41 +3961,41 @@
             StudyAction.searchDataSession(function (listdata) {
 
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.tahunAwal + '</td>' +
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        '<td align="center">' + item.tahunAwal + '</td>' +
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                        '</a>' +
+                        '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.studyTable').append(tmp_table);
             });
@@ -3958,40 +4009,40 @@
             StudyAction.searchDataSession(function (listdata) {
 
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Ijazah</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.typeStudy + '</td>' +
-                            '<td align="center">' + item.studyName + '</td>' +
-                            '<td align="center">' + item.tahunAwal + '</td>' +
-                            '<td align="center">' + item.tahunAkhir + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
-                            '</a>' +
-                            '</td>' +
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.typeStudy + '</td>' +
+                        '<td align="center">' + item.studyName + '</td>' +
+                        '<td align="center">' + item.tahunAwal + '</td>' +
+                        '<td align="center">' + item.tahunAkhir + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-view-document' data ='" + item.uploadFile + "' judul ='" + item.studyName + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/view.png'/>' name='icon_view'>" +
+                        '</a>' +
+                        '</td>' +
 
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.studyId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.studyTable').append(tmp_table);
             });
@@ -4005,33 +4056,33 @@
             BiodataAction.searchDataSessionPengalamanKerja(function (listdata) {
 
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.branchName + '</td>' +
-                            '<td align="center">' + item.jabatanName + '</td>' +
-                            '<td align="center">' + item.stTtahunMasuk + '</td>' +
-                            '<td align="center">' + item.stTahunKeluar + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.branchName + '</td>' +
+                        '<td align="center">' + item.jabatanName + '</td>' +
+                        '<td align="center">' + item.stTtahunMasuk + '</td>' +
+                        '<td align="center">' + item.stTahunKeluar + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.pengalamanKerjaTable').append(tmp_table);
             });
@@ -4044,31 +4095,31 @@
             var tmp_table = "";
             BiodataAction.searchDataSessionReward(function (listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jenis</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.stTanggal + '</td>' +
-                            '<td align="center">' + item.jenis+ '</td>' +
-                            '<td align="center">' + item.keterangan+ '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.rewardId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.rewardId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.stTanggal + '</td>' +
+                        '<td align="center">' + item.jenis+ '</td>' +
+                        '<td align="center">' + item.keterangan+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.rewardId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.rewardId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.rewardTable').append(tmp_table);
             });
@@ -4081,35 +4132,35 @@
             var tmp_table = "";
             BiodataAction.searchDataSessionSertifikat(function (listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jenis</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Sertifikat</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Lembaga</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nilai</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Lulus</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.jenis+ '</td>' +
-                            '<td align="center">' + item.nama+ '</td>' +
-                            '<td align="center">' + item.lembaga+ '</td>' +
-                            '<td align="center">' + item.nilai+ '</td>' +
-                            '<td align="center">' + item.lulus+ '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.sertifikatId+ "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.jenis+ '</td>' +
+                        '<td align="center">' + item.nama+ '</td>' +
+                        '<td align="center">' + item.lembaga+ '</td>' +
+                        '<td align="center">' + item.nilai+ '</td>' +
+                        '<td align="center">' + item.lulus+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.sertifikatId+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.sertifikatId+ "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.pelatihanJabatanTable').append(tmp_table);
             });
@@ -4122,33 +4173,33 @@
             var tmp_table = "";
             BiodataAction.searchDataSessionPengalamanKerja(function (listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Perusahaan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 var i = i;
                 $.each(listdata, function (i, item) {
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.namaPerusahaan + '</td>' +
-                            '<td align="center">' + item.jabatan + '</td>' +
-                            '<td align="center">' + item.stTtahunMasuk + '</td>' +
-                            '<td align="center">' + item.stTahunKeluar + '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.namaPerusahaan + '</td>' +
+                        '<td align="center">' + item.jabatan + '</td>' +
+                        '<td align="center">' + item.stTtahunMasuk + '</td>' +
+                        '<td align="center">' + item.stTahunKeluar + '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.pengalamanKerjaTable').append(tmp_table);
             });
@@ -4164,56 +4215,56 @@
             KeluargaAction.searchData(nip, "", function (listdata) {
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
                 </s:if>
                 <s:else>
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Gender</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    "</tr></thead>";
                 </s:else>
 
                 $.each(listdata, function (i, item) {
                     var myDate = new Date(item.tanggalLahir);
                     <s:if test="isAddOrEdit()">
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.name + '</td>' +
-                            '<td align="center">' + item.statusKeluargaName + '</td>' +
-                            '<td align="center">' + item.gender + '</td>' +
-                            '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
-                                /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.keluargaId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.keluargaId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.name + '</td>' +
+                        '<td align="center">' + item.statusKeluargaName + '</td>' +
+                        '<td align="center">' + item.gender + '</td>' +
+                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.keluargaId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.keluargaId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                     </s:if>
                     <s:else>
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1 ) + '</td>' +
-                            '<td >' + item.name + '</td>' +
-                            '<td align="center">' + item.statusKeluargaName + '</td>' +
-                            '<td align="center">' + item.gender + '</td>' +
-                            '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
-                                /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                            "</tr>";
+                        '<td >' + (i + 1 ) + '</td>' +
+                        '<td >' + item.name + '</td>' +
+                        '<td align="center">' + item.statusKeluargaName + '</td>' +
+                        '<td align="center">' + item.gender + '</td>' +
+                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
+                        "</tr>";
                     </s:else>
                 });
                 $('.keluargaTable').append(tmp_table);
@@ -4229,33 +4280,33 @@
             KeluargaAction.searchDataSession(function (listdata) {
 
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                        "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
-                        "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Status Keluarga</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Lahir</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+                    "</tr></thead>";
 
                 $.each(listdata, function (i, item) {
                     var myDate = new Date(item.tanggalLahir);
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td >' + (i + 1) + '</td>' +
-                            '<td >' + item.name + '</td>' +
-                            '<td align="center">' + item.statusKeluargaName + '</td>' +
-                            '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
-                                /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-edit' data ='" + item.statusKeluargaId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            '<td align="center">' +
-                            "<a href='javascript:;' class ='item-delete' data ='" + item.statusKeluargaId + "' >" +
-                            "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                            '</a>' +
-                            '</td>' +
-                            "</tr>";
+                        '<td >' + (i + 1) + '</td>' +
+                        '<td >' + item.name + '</td>' +
+                        '<td align="center">' + item.statusKeluargaName + '</td>' +
+                        '<td align="center">' + (myDate.getDate()) + ' - ' + ("0" + (myDate.getMonth() + 1)).slice(-2) + ' - ' + myDate.getFullYear() + '</td>' +
+                        /*'<td align="center">' + myDate.toTimeString("dd-mm-yy") + '</td>' +*/
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-edit' data ='" + item.statusKeluargaId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='" + item.statusKeluargaId + "' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
+                        '</a>' +
+                        '</td>' +
+                        "</tr>";
                 });
                 $('.keluargaTable').append(tmp_table);
             });
@@ -4610,12 +4661,12 @@
                                     dwr.engine.setAsync(false);
                                     dwr.engine.beginBatch();
                                     BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                            golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId, function (listdata) {
-                                                alert('Data Successfully Added');
-                                                $('#modal-pengalamanKerja').modal('hide');
-                                                $('#myFormPengalaman')[0].reset();
-                                                loadPengalamanKerja(nip);
-                                            });
+                                        golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId, function (listdata) {
+                                            alert('Data Successfully Added');
+                                            $('#modal-pengalamanKerja').modal('hide');
+                                            $('#myFormPengalaman')[0].reset();
+                                            loadPengalamanKerja(nip);
+                                        });
                                     dwr.engine.endBatch({
                                         errorHandler:function(errorString, exception){
                                             alert('Jabatan aktif sudah ada');
@@ -4641,12 +4692,12 @@
                             if (confirm('Are you sure you want to save this Record?')) {
                                 dwr.engine.setAsync(false);
                                 BiodataAction.saveAddDataPengalamaKerja(nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                        golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId,  function (listdata) {
-                                            alert('Data Successfully Added');
-                                            $('#modal-pengalamanKerja').modal('hide');
-                                            $('#myFormPengalaman')[0].reset();
-                                            loadPengalamanKerja(nip);
-                                        });
+                                    golonganId, pjsFlag, perusahaanLain, bidangLain, jabatanLain, aktifFlag,profesiId,  function (listdata) {
+                                        alert('Data Successfully Added');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadPengalamanKerja(nip);
+                                    });
                             }
                         }
 
@@ -4705,12 +4756,12 @@
                                 dwr.engine.setAsync(false);
                                 dwr.engine.beginBatch();
                                 BiodataAction.saveEditPengalamanKerja(id, nip, branchId, divisiId, posisiId, tanggal,tanggalKeluar, tipePegawaiId,
-                                        golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, profesiId, pjsFlag, function (listdata) {
-                                            alert('Data Successfully Updated');
-                                            $('#modal-pengalamanKerja').modal('hide');
-                                            $('#myFormPengalaman')[0].reset();
-                                            loadPengalamanKerja(nip);
-                                        });
+                                    golonganId, perusahaanLain, bidangLain, jabatanLain, aktifFlag, profesiId, pjsFlag, function (listdata) {
+                                        alert('Data Successfully Updated');
+                                        $('#modal-pengalamanKerja').modal('hide');
+                                        $('#myFormPengalaman')[0].reset();
+                                        loadPengalamanKerja(nip);
+                                    });
                                 dwr.engine.endBatch({
                                     errorHandler:function(errorString, exception){
                                         alert('Jabatan aktif sudah ada');
@@ -4813,30 +4864,30 @@
             <s:if test="isAdd()">
             if (url == 'addSertifikat') {
                 if (jenis == '' && tanggalPengesahan == '' && masaBerlaku != '' && masaBerakhir != '' && nama != '' && lembaga != '' && tempatPelaksana != '' &&
-                nilai != '' && lulus != '' && prestasi != '') {
+                    nilai != '' && lulus != '' && prestasi != '') {
                     alert('Semua Field Harus Diisi !');
                 } else {
                     if (confirm('Apakah anda yakin ingin menyimpan data?')) {
                         dwr.engine.setAsync(false);
                         BiodataAction.saveAddSertifikat(nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                                nilai, lulus, prestasi, function (listdata) {
-                            alert('Data Berhasil Disimpan');
-                            $('#modal-sertifikat').modal('hide');
-                            $('#myFormSertifikat')[0].reset();
-                            loadSessionSertifikat();
-                        });
+                            nilai, lulus, prestasi, function (listdata) {
+                                alert('Data Berhasil Disimpan');
+                                $('#modal-sertifikat').modal('hide');
+                                $('#myFormSertifikat')[0].reset();
+                                loadSessionSertifikat();
+                            });
                     }
                 }
             } else {
                 if (confirm('Are you sure you want to save this Record?')) {
                     dwr.engine.setAsync(false);
                     BiodataAction.initEditSertifikat(id, nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                            nilai, lulus, prestasi, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-sertifikat').modal('hide');
-                        $('#myFormSertifikat')[0].reset();
-                        loadSessionSertifikat();
-                    });
+                        nilai, lulus, prestasi, function (listdata) {
+                            alert('Data Successfully Updated');
+                            $('#modal-sertifikat').modal('hide');
+                            $('#myFormSertifikat')[0].reset();
+                            loadSessionSertifikat();
+                        });
                 }
             }
             </s:if>
@@ -4848,24 +4899,24 @@
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
                         BiodataAction.saveAddDataSertifikat(nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                                nilai, lulus, prestasi, jumlahHari, function (listdata) {
-                            alert('Data Successfully Added');
-                            $('#modal-sertifikat').modal('hide');
-                            $('#myFormSertifikat')[0].reset();
-                            loadSertifikat(nip);
-                        });
+                            nilai, lulus, prestasi, jumlahHari, function (listdata) {
+                                alert('Data Successfully Added');
+                                $('#modal-sertifikat').modal('hide');
+                                $('#myFormSertifikat')[0].reset();
+                                loadSertifikat(nip);
+                            });
                     }
                 }
             } else {
                 if (confirm('Are you sure you want to save this Record?')) {
                     dwr.engine.setAsync(false);
                     BiodataAction.saveEditSertifikat(id, nip, jenis, tanggalPengesahan, masaBerlaku, masaBerakhir, nama, lembaga, tempatPelaksana,
-                            nilai, lulus, prestasi, jumlahHari, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-sertifikat').modal('hide');
-                        $('#myFormSertifikat')[0].reset();
-                        loadSertifikat(nip);
-                    });
+                        nilai, lulus, prestasi, jumlahHari, function (listdata) {
+                            alert('Data Successfully Updated');
+                            $('#modal-sertifikat').modal('hide');
+                            $('#myFormSertifikat')[0].reset();
+                            loadSertifikat(nip);
+                        });
                 }
             }
             </s:else>
@@ -4979,11 +5030,11 @@
                             dwr.engine.setAsync(false);
                             BiodataAction.saveAddDataPelatihan(nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
                                 sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
-                                alert('Data Successfully Added');
-                                $('#modal-pelatihanJabatan').modal('hide');
-                                $('#myFormPelatihanJabatan')[0].reset();
-                                loadPelatihanJabatan(nip);
-                            });
+                                    alert('Data Successfully Added');
+                                    $('#modal-pelatihanJabatan').modal('hide');
+                                    $('#myFormPelatihanJabatan')[0].reset();
+                                    loadPelatihanJabatan(nip);
+                                });
                         }
                     }
                 } else {
@@ -4991,11 +5042,11 @@
                         dwr.engine.setAsync(false);
                         BiodataAction.saveEditPelatihan(id, nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
                             sertifikatPelatihan , tanggalPelatihan , masaBerlakuSertifikat,gambar, function () {
-                            alert('Data Successfully Updated');
-                            $('#modal-pelatihanJabatan').modal('hide');
-                            $('#myFormPelatihanJabatan')[0].reset();
-                            loadPelatihanJabatan(nip);
-                        });
+                                alert('Data Successfully Updated');
+                                $('#modal-pelatihanJabatan').modal('hide');
+                                $('#myFormPelatihanJabatan')[0].reset();
+                                loadPelatihanJabatan(nip);
+                            });
                     }
                 }
                 </s:else>
@@ -5853,13 +5904,13 @@
 
     });
 
-//    window.cekZakat = function () {
-//        if ($('#zakatProfesi').is(":checked")) {
-//            $("#flagZakat").val("Y");
-//        } else {
-//            $("#flagZakat").val("N");
-//        }
-//    }
+    //    window.cekZakat = function () {
+    //        if ($('#zakatProfesi').is(":checked")) {
+    //            $("#flagZakat").val("Y");
+    //        } else {
+    //            $("#flagZakat").val("N");
+    //        }
+    //    }
 
 
     window.cekAktif = function () {
@@ -5867,6 +5918,16 @@
             $("#flagAktif").val("Y");
         } else {
             $("#flagAktif").val("N");
+        }
+    }
+
+    window.cekCuti = function () {
+        if (document.getElementById('flagCutiLuar').checked == true) {
+            $("#flagCuti").val("Y");
+        } else {
+            if (confirm('Apakah anda yakin mengakhiri Cuti Diluar Tanggungan ?')) {
+                $("#flagCuti").val("N");
+            }
         }
     }
 
@@ -5894,28 +5955,28 @@
             $("#flagTunjSiaga").val("N");
         }
     }
-    window.cekProfesional = function () {
-        if (document.getElementById("profesional").checked == true) {
-            $("#flagTunjProfesional").val("Y");
-        } else {
-            $("#flagTunjProfesional").val("N");
-        }
-    }
+    // window.cekProfesional = function () {
+    //     if (document.getElementById("profesional").checked == true) {
+    //         $("#flagTunjProfesional").val("Y");
+    //     } else {
+    //         $("#flagTunjProfesional").val("N");
+    //     }
+    // }
 
-    window.cekMess = function () {
-        if (document.getElementById("mess").checked == true) {
-            $("#flagMess").val("Y");
-        } else {
-            $("#flagMess").val("N");
-        }
-    }
-//    window.cekPLT = function () {
-//        if (document.getElementById("plt").checked == true) {
-//            $("#flagPLT").val("Y");
-//        } else {
-//            $("#flagPLT").val("N");
-//        }
-//    }
+    // window.cekMess = function () {
+    //     if (document.getElementById("mess").checked == true) {
+    //         $("#flagMess").val("Y");
+    //     } else {
+    //         $("#flagMess").val("N");
+    //     }
+    // }
+    //    window.cekPLT = function () {
+    //        if (document.getElementById("plt").checked == true) {
+    //            $("#flagPLT").val("Y");
+    //        } else {
+    //            $("#flagPLT").val("N");
+    //        }
+    //    }
 
     window.cekFingerMobile = function () {
         if (document.getElementById("fingerMobile").checked == true) {
@@ -5998,29 +6059,29 @@
         $('#statusKeluarga').empty();
         if (gender == 'L') {
             $('#statusKeluarga').append($("<option></option>")
-                    .attr("value", "I")
-                    .text("Istri"));
+                .attr("value", "I")
+                .text("Istri"));
         } else {
             $('#statusKeluarga').append($("<option></option>")
-                    .attr("value", "S")
-                    .text("Suami"));
+                .attr("value", "S")
+                .text("Suami"));
         }
 
         $('#statusKeluarga').append($("<option></option>")
-                .attr("value", "A1")
-                .text("Anak Pertama"));
+            .attr("value", "A1")
+            .text("Anak Pertama"));
         $('#statusKeluarga').append($("<option></option>")
-                .attr("value", "A2")
-                .text("Anak Kedua"));
+            .attr("value", "A2")
+            .text("Anak Kedua"));
         $('#statusKeluarga').append($("<option></option>")
-                .attr("value", "A3")
-                .text("Anak Ketiga"));
+            .attr("value", "A3")
+            .text("Anak Ketiga"));
         $('#statusKeluarga').append($("<option></option>")
-                .attr("value", "A4")
-                .text("Anak Keempat"));
+            .attr("value", "A4")
+            .text("Anak Keempat"));
         $('#statusKeluarga').append($("<option></option>")
-                .attr("value", "A5")
-                .text("Anak Kelima"));
+            .attr("value", "A5")
+            .text("Anak Kelima"));
     }
 
     window.listPendidikanFakultas = function () {
@@ -6032,8 +6093,8 @@
             //         .text(""));
             $.each(listdata, function (i, item) {
                 $('#studyFakultas').append($("<option></option>")
-                        .attr("value", item.jurusanId)
-                        .text(item.jurusanName));
+                    .attr("value", item.jurusanId)
+                    .text(item.jurusanName));
             });
         });
     }
@@ -6047,8 +6108,8 @@
             //         .text(""));
             $.each(listdata, function (i, item) {
                 $('#studyFakultas1').append($("<option></option>")
-                        .attr("value", item.jurusanId)
-                        .text(item.jurusanName));
+                    .attr("value", item.jurusanId)
+                    .text(item.jurusanName));
             });
         });
     }
@@ -6058,39 +6119,39 @@
         $('#statusKeluargaDelete').empty();
         if (gender == 'L') {
             $('#statusKeluargaDelete').append($("<option></option>")
-                    .attr("value", "istri")
-                    .text("Istri"));
+                .attr("value", "istri")
+                .text("Istri"));
         } else {
             $('#statusKeluargaDelete').append($("<option></option>")
-                    .attr("value", "suami")
-                    .text("Suami"));
+                .attr("value", "suami")
+                .text("Suami"));
         }
         $('#statusKeluargaDelete').append($("<option></option>")
-                .attr("value", "A1")
-                .text("Anak Pertama"));
+            .attr("value", "A1")
+            .text("Anak Pertama"));
         $('#statusKeluargaDelete').append($("<option></option>")
-                .attr("value", "A2")
-                .text("Anak Kedua"));
+            .attr("value", "A2")
+            .text("Anak Kedua"));
         $('#statusKeluargaDelete').append($("<option></option>")
-                .attr("value", "A3")
-                .text("Anak Ketiga"));
+            .attr("value", "A3")
+            .text("Anak Ketiga"));
         $('#statusKeluargaDelete').append($("<option></option>")
-                .attr("value", "A4")
-                .text("Anak Keempat"));
+            .attr("value", "A4")
+            .text("Anak Keempat"));
         $('#statusKeluargaDelete').append($("<option></option>")
-                .attr("value", "A5")
-                .text("Anak Kelima"));
+            .attr("value", "A5")
+            .text("Anak Kelima"));
     }
 
-//    window.getTanggalPensiun = function (tanggal) {
-//        var tanggalPensiun = document.getElementById("tanggalPensiun").value;
-//        var res = tanggal.split("-");
-//        var tahun = parseInt(res[2]) + 55;
-//
-//        if(tanggalPensiun == ''){
-//            $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
-//        }
-//    };
+    //    window.getTanggalPensiun = function (tanggal) {
+    //        var tanggalPensiun = document.getElementById("tanggalPensiun").value;
+    //        var res = tanggal.split("-");
+    //        var tahun = parseInt(res[2]) + 55;
+    //
+    //        if(tanggalPensiun == ''){
+    //            $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+    //        }
+    //    };
 
     window.getTanggalPensiun = function (tanggal) {
         var tanggalPensiun = document.getElementById("tanggalPensiun").value;
@@ -6188,5 +6249,32 @@
         });
     }
 
-</script>
+    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
+        dwr.engine.setAsync(false);
+        dwr.engine.beginBatch();
+        BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+            alert('Data Berhasil Disimpan');
+            $('#modal-pengalamanKerja').modal('hide');
+            $('#myFormPengalaman')[0].reset();
+            loadSessionPengalamanKerja();
+        });
+        dwr.engine.endBatch({
+            errorHandler:function(errorString, exception){
+                alert('Jabatan aktif sudah ada');
+            }
+        });
+    }
 
+    function getNip(birthDate){
+        var nip = $("#nip1").val();
+        var headNip = birthDate.split("-");
+        if(nip==""){
+            BiodataAction.getSeqNip(function(seq){
+                $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+            })
+        } else {
+            var seq = nip.substr(8, 4);
+            $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+        }
+    }
+</script>

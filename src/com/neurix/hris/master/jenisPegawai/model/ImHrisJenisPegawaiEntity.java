@@ -1,5 +1,6 @@
 package com.neurix.hris.master.jenisPegawai.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.Objects;
 
@@ -12,6 +13,24 @@ public class ImHrisJenisPegawaiEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal persenGaji;
+    private String flagDefault;
+
+    public BigDecimal getPersenGaji() {
+        return persenGaji;
+    }
+
+    public void setPersenGaji(BigDecimal persenGaji) {
+        this.persenGaji = persenGaji;
+    }
+
+    public String getFlagDefault() {
+        return flagDefault;
+    }
+
+    public void setFlagDefault(String flagDefault) {
+        this.flagDefault = flagDefault;
+    }
 
     public String getJenisPegawaiId() {
         return jenisPegawaiId;

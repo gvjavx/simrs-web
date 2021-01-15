@@ -20,6 +20,24 @@ public class PersonilPosition extends BaseModel {
     private String positionId;
     private String positionName;
     private String tanggalAktif;
+    private String jenisPegawai;
+    private String flagDigaji;
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
+
+    public String getFlagDigaji() {
+        return flagDigaji;
+    }
+
+    public void setFlagDigaji(String flagDigaji) {
+        this.flagDigaji = flagDigaji;
+    }
 
     public String getDivisiId() {
         return divisiId;
