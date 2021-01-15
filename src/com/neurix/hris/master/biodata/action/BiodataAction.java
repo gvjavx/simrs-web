@@ -744,7 +744,12 @@ public class BiodataAction extends BaseMasterAction{
                     editBiodata.setAction("U");
                     editBiodata.setFlag(editBiodata.getFlag());
 
-                    biodataBoProxy.saveEdit(editBiodata);
+                    if ("Y".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
+                        biodataBoProxy.saveEditDokterKso(editBiodata);
+                    } else {
+                        biodataBoProxy.saveEdit(editBiodata);
+                    }
+
                 } catch (GeneralBOException e) {
                     Long logId = null;
                     try {
