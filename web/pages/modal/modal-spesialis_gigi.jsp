@@ -77,7 +77,7 @@
                             <input type="color" style="margin-left: -6px; margin-top: -8px" class="js-color-picker-op  color-picker pull-left">
                         </div>
                     </div>
-                    <div class="row jarak">
+                    <div class="row jarak text-center">
                         <div class="col-md-12">
                             <div class="text-center">
                                 <canvas class="paint-canvas" style="cursor: pointer" id="area_gigi1" onmouseover="paintTtd('area_gigi1', true)"></canvas>

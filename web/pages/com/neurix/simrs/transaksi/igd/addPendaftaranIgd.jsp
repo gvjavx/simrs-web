@@ -73,18 +73,22 @@
 
 
                 if (tipe == "umum") {
-                    if (pembayaran != '' && uangMuka != '') {
+                    if($('#is_uang_muka').is(':checked')){
+                        if (pembayaran != '' && uangMuka != '') {
+                            $('#confirm_dialog').dialog('open');
+                        } else {
+                            $("html, body").animate({scrollTop: 0}, 600);
+                            $('#warning_pasien').show().fadeOut(10000);
+                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                            if (pembayaran == '') {
+                                $('#war_pembayaran').show();
+                            }
+                            if (uangMuka == '') {
+                                $('#war_uang_muka').show();
+                            }
+                        }
+                    }else{
                         $('#confirm_dialog').dialog('open');
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                        if (pembayaran == '') {
-                            $('#war_pembayaran').show();
-                        }
-                        if (uangMuka == '') {
-                            $('#war_uang_muka').show();
-                        }
                     }
                 }
 

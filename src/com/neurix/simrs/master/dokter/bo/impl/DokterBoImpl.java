@@ -6,9 +6,8 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
-import com.neurix.simrs.master.dokter.model.Dokter;
-import com.neurix.simrs.master.dokter.model.DokterSpesialis;
-import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.dokter.dao.DokterPelayananDao;
+import com.neurix.simrs.master.dokter.model.*;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.dao.PelayananSpesialisDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPoliSpesialisEntity;
@@ -33,6 +32,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     private PositionDao positionDao;
     private BranchDao branchDao;
     private PelayananSpesialisDao pelayananSpesialisDao;
+    private DokterPelayananDao dokterPelayananDao;
 
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
@@ -670,6 +670,115 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
         return dokterDao.getListDokterByIdDetailCheckup(idDetailChekcup, approve);
     }
 
+    @Override
+    public List<Dokter> searchByQuery(Dokter bean) throws GeneralBOException {
+        List<Dokter> dokterList = new ArrayList<>();
+        try {
+            dokterList = dokterDao.getListDokterByQuery(bean);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return dokterList;
+    }
+
+    @Override
+    public void saveEditDokter(Dokter bean) throws GeneralBOException {
+        if(bean != null){
+            ImSimrsDokterEntity dokterEntity = new ImSimrsDokterEntity();
+            try {
+                dokterEntity = dokterDao.getById("idDokter", bean.getIdDokter());
+                if(dokterEntity != null){
+                    if(bean.getNamaDokter() != null){
+                        dokterEntity.setNamaDokter(bean.getNamaDokter());
+                    }
+                    if(bean.getKodeDpjp() != null){
+                        dokterEntity.setKodeDpjp(bean.getKodeDpjp());
+                    }
+                    if(bean.getSip() != null){
+                        dokterEntity.setSip(bean.getSip());
+                    }
+                    if(bean.getKuota() != null){
+                        dokterEntity.setKuota(bean.getKuota());
+                    }
+                    if(bean.getKuotaTele() != null){
+                        dokterEntity.setKuotaTele(bean.getKuotaTele());
+                    }
+                    if(bean.getKuotaOnSite() != null){
+                        dokterEntity.setKuotaOnSite(bean.getKuotaOnSite());
+                    }
+                    if(bean.getKuotaBpjs() != null){
+                        dokterEntity.setKuotaBpjs(bean.getKuotaBpjs());
+                    }
+                    if(bean.getFlagCall() != null){
+                        dokterEntity.setFlagCall(bean.getFlagCall());
+                    }
+                    if(bean.getFlagTele() != null){
+                        dokterEntity.setFlagTele(bean.getFlagTele());
+                    }
+                    dokterEntity.setFlag(bean.getFlag());
+                    dokterEntity.setAction(bean.getAction());
+                    dokterEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    dokterEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        dokterDao.updateAndSave(dokterEntity);
+                    }catch (HibernateException e){
+                        logger.error(e.getMessage());
+                        throw new GeneralBOException("Error when search data dokter, "+e.getMessage());
+                    }
+
+                    if(bean.getPelayananList().size() > 0){
+                        HashMap hsCriteria = new HashMap();
+                        hsCriteria.put("id_dokter", bean.getIdDokter());
+                        List<ImSimrsDokterPelayananEntity> dokterPelayananEntity = new ArrayList<>();
+                        try {
+                            dokterPelayananEntity = dokterPelayananDao.getByCriteria(hsCriteria);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
+                            throw new GeneralBOException("Error when search data dokter pelayanan, "+e.getMessage());
+                        }
+                        if(dokterPelayananEntity.size() > 0){
+                            for (ImSimrsDokterPelayananEntity entity: dokterPelayananEntity){
+                                entity.setLastUpdate(bean.getLastUpdate());
+                                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                entity.setAction("D");
+                                entity.setFlag("N");
+                                try {
+                                    dokterPelayananDao.deleteAndSave(entity);
+                                }catch (HibernateException e){
+                                    logger.error(e.getMessage());
+                                    throw new GeneralBOException("Error when search data dokter pelayanan, "+e.getMessage());
+                                }
+                            }
+                        }
+
+                        for (DokterPelayanan list: bean.getPelayananList()){
+                            ImSimrsDokterPelayananEntity entity = new ImSimrsDokterPelayananEntity();
+                            entity.setIdDokterPelayanan(dokterPelayananDao.getNextId());
+                            entity.setIdDokter(bean.getIdDokter());
+                            entity.setIdPelayanan(list.getIdPelayanan());
+                            entity.setAction("C");
+                            entity.setFlag("Y");
+                            entity.setCreatedDate(bean.getLastUpdate());
+                            entity.setCreatedWho(bean.getLastUpdateWho());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            try {
+                                dokterPelayananDao.addAndSave(entity);
+                            }catch (HibernateException e){
+                                logger.error(e.getMessage());
+                                throw new GeneralBOException("Error when search data dokter pelayanan, "+e.getMessage());
+                            }
+                        }
+                    }
+                }
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                throw new GeneralBOException("Error when search data dokter, "+e.getMessage());
+            }
+        }
+    }
+
     public void setDokterDao(DokterDao dokterDao) {
         this.dokterDao = dokterDao;
     }
@@ -715,5 +824,9 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             status="notExits";
         }
         return status;
+    }
+
+    public void setDokterPelayananDao(DokterPelayananDao dokterPelayananDao) {
+        this.dokterPelayananDao = dokterPelayananDao;
     }
 }

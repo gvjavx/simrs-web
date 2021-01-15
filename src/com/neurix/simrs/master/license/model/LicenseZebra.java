@@ -4,6 +4,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 
 public class LicenseZebra {
+
+    private String licenseLogId;
     private String licenseId;
     private String licenseKey;
     private String deviceId;
@@ -13,6 +15,14 @@ public class LicenseZebra {
     private Timestamp lastUpdate;
     private String flag;
     private String action;
+
+    public String getLicenseLogId() {
+        return licenseLogId;
+    }
+
+    public void setLicenseLogId(String licenseLogId) {
+        this.licenseLogId = licenseLogId;
+    }
 
     public String getLicenseId() {
         return licenseId;

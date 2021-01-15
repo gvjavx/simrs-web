@@ -202,8 +202,7 @@
                                                     <s:textfield id="no_ktp" name="pasien.noKtp"
                                                                  onkeypress="$(this).css('border','')"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"
-                                                                 data-inputmask="'mask': ['9999999999999999']"
-                                                                 data-mask=""/>
+                                                                 type="number"/>
                                                 </div>
                                             </div>
                                         </div>
@@ -464,7 +463,7 @@
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
                                                 <a type="button" class="btn btn-warning" href="initForm_pasien.action">
-                                                    <i class="fa fa-arrow-left"></i> Back
+                                                    <i class="fa fa-check"></i> Back
                                                 </a>
                                             </div>
                                         </div>

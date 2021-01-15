@@ -8,30 +8,27 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-
     <style>
-        .pagebanner{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-        }
-        .pagelinks{
-            background-color: #ededed;
-            width: 100%;
-            font-size: 14px;
-            margin-bottom: 30px;
+        .jarak_atas {
+            margin-top: 7px
         }
     </style>
+
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DokterAction.js"/>'></script>
+
     <script type='text/javascript'>
 
-        function link(){
-            window.location.href="<s:url action='initForm_dokter'/>";
-        }
+        $(document).ready(function () {
+            $('#tindakan').addClass('active');
+        });
 
     </script>
 </head>
-<body class="hold-transition skin-blue sidebar-mini" >
 
+<body class="hold-transition skin-blue fixed sidebar-mini">
+<div class="se-pre-con"></div>
 <%@ include file="/pages/common/headerNav.jsp" %>
 
 <ivelincloud:mainMenu/>
@@ -41,238 +38,731 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Dokter
+            Data Dokter
         </h1>
     </section>
+
     <!-- Main content -->
     <section class="content">
+        <!-- Your Page Content Here -->
         <div class="row">
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Form Dokter </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Dokter</h3>
                     </div>
                     <div class="box-body">
-                        <table width="100%" align="center">
-                            <tr>
-                                <td align="center">
-                                    <s:form id="dokterForm" method="post"  theme="simple" namespace="/dokter"
-                                            action="search_dokter.action" cssClass="form-horizontal">
-                                        <table>
-                                            <tr>
-                                                <td width="10%" align="center">
-                                                    <%@ include file="/pages/common/message.jsp" %>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                        <table>
-                                            <tr>
-                                                <td width="15%">
-                                                    <label class="control-label"><small>Dokter ID :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield id="idDokter" name="dokter.idDokter" required="true"
-                                                                     disabled="false" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                        <div class="form-group">
+                            <s:form id="dokterForm" method="post"  theme="simple" namespace="/dokter"
+                                    action="search_dokter.action" cssClass="form-horizontal">
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Dokter</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_dokter" name="dokter.idDokter"
+                                                     required="false" readonly="false"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Nama Dokter</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="nama_dokter" name="dokter.namaDokter"
+                                                     required="false" readonly="false"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Pelayanan</label>
+                                    <div class="col-sm-4">
+                                        <s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>
+                                        <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="dokter.idPelayanan"
+                                                  listKey="idPelayanan" listValue="namaPelayanan"
+                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Flag</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="dokter.flag"
+                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2"
+                                                  cssStyle="width: 100%"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4"></label>
+                                    <div class="col-sm-6" style="margin-top: 7px">
+                                        <sj:submit type="button" cssClass="btn btn-success" formIds="dokterForm"
+                                                   id="search" name="search"
+                                                   onClickTopics="showDialogLoading"
+                                                   onCompleteTopics="closeDialogLoading">
+                                            <i class="fa fa-search"></i>
+                                            Search
+                                        </sj:submit>
+                                        <a type="button" class="btn btn-danger" href="initForm_dokter.action">
+                                            <i class="fa fa-refresh"></i> Reset
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-5"></label>
+                                    <div class="col-sm-5" style="display: none">
 
-                                            <tr>
-                                                <td >
-                                                    <label class="control-label"><small> Nama Dokter :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:textfield id="namaDokter" name="dokter.namaDokter" required="true" cssStyle="margin-top: 7px"
-                                                                     disabled="false" cssClass="form-control"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Pelayanan :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:action id="initComboPelayanan" namespace="/dokter" name="initComboPelayanan_dokter"/>
-                                                        <s:select list="#initComboPelayanan.listOfComboPelayanan" id="idPelayanan" name="dokter.idPelayanan"
-                                                                  listKey="idPelayanan" listValue="namaPelayanan"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="dokter.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
-                                                    </table>
-
-                                                </td>
-                                            </tr>
-
-                                        </table>
-                                        <br>
-                                        <div id="actions" class="form-actions">
-                                            <table align="center">
-                                                <tr>
-                                                    <td>
-                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="dokterForm" id="search" name="search"
-                                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
-                                                            <i class="fa fa-search"></i>
-                                                            Search
-                                                        </sj:submit>
-                                                    </td>
-
-                                                    <td>
-                                                        <button type="button"  class="btn btn-danger"
-                                                                onclick="window.location.href='<s:url action="initForm_dokter"/>'">
-                                                            <i class="fa fa-refresh"></i> Reset
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                        <br>
-                                        <br>
-                                        <center>
-                                            <table id="showdata" width="90%">
-                                                <tr>
-                                                    <td align="center">
-                                                        <sj:dialog id="waiting_dialog_loading" openTopics="showDialog"
-                                                                   closeTopics="closeDialog" modal="true"
-                                                                   resizable="false"
-                                                                   height="250" width="600" autoOpen="false"
-                                                                   title="Search Data ...">
-                                                            Please don't close this window, server is processing your request ...
-                                                            <br>
-                                                            <center>
-                                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
-                                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
-                                                                     name="image_indicator_write">
-                                                                <br>
-                                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
-                                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
-                                                                     name="image_indicator_write">
-                                                            </center>
-                                                        </sj:dialog>
-                                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="650" width="600" autoOpen="false"
-                                                                   title="Dokter ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                                                        </sj:dialog>
-
-                                                        <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
-                                                                   height="570" width="700" autoOpen="false"
-                                                                   title="Pendapatan Dokter">
-                                                        </sj:dialog>
-                                                        <sj:dialog id="view_dialog_keterangan" openTopics="showDialogMenuKeterangan" modal="true"
-                                                                   height="680" width="700" autoOpen="false"
-                                                                   title="Pendapatan Dokter">
-                                                        </sj:dialog>
-
-                                                        <s:set name="listOfsearchDokter" value="#session.listOfResultDokter" scope="request" />
-                                                        <display:table name="listOfsearchDokter" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_dokter.action"
-                                                                       export="true" id="row" pagesize="14" style="font-size:12">
-                                                            <display:column media="html" title="Edit">
-                                                                <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/dokter" action="edit_dokter" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idDokter"/></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                                    </sj:a>
-                                                                </s:if>
-                                                            </display:column>
-
-                                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                                <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/dokter" action="delete_dokter" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idDokter" /></s:param>
-                                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                                    </s:url>
-                                                                    <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                                        <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
-                                                                    </sj:a>
-                                                                </s:if>
-                                                            </display:column>
-
-                                                            <display:column property="idDokter" sortable="true" title="ID Dokter" />
-                                                            <display:column property="namaDokter" sortable="true" title="Nama Dokter"  />
-                                                            <display:column property="namaPelayanan" sortable="true" title="Nama Pelayanan"/>
-                                                            <display:column property="kuota" sortable="true" title="Kuota"/>
-                                                            <display:column property="kodeDpjp" sortable="true" title="Kode DPJP"/>
-                                                            <display:column property="kodering" sortable="true" title="Kode"/>
-                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
-
-                                                            <%--<display:column property="sip" sortable="true" title="Surat ijin praktek"  />--%>
-                                                            <display:column property="sip" sortable="true" title="sip" />
-                                                            <display:column property="kuotaOnSite" sortable="true" title="kuota OnSite"  />
-                                                            <display:column property="flagCall" sortable="true" title="flag Call"  />
-                                                            <display:column property="flagTele" sortable="true" title="flag Tele"  />
-                                                            <display:column property="kuotaTele" sortable="true" title="kuota Tele"  />
-                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
-                                                            <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
-
-                                                            <%--<display:column property="kuotaBpjs" sortable="true" title="kuota Bpjs"  />--%>
-
-
-                                                        </display:table>
-                                                    </td>
-                                                </tr>
-                                            </table>
-                                        </center>
-                                        <div id="actions" class="form-actions">
-                                            <table>
-                                                <tr>
-                                                    <div id="crud">
-                                                        <td>
-                                                            <table>
-                                                                <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
-                                                                           height="280" width="500" autoOpen="false" title="Warning"
-                                                                           buttons="{
-                                                                        'OK':function() { $('#error_validation_dialog').dialog('close'); }
-                                                                    }"
-                                                                >
-                                                                    <div class="alert alert-error fade in">
-                                                                        <label class="control-label" align="left">
-                                                                            <img border="0" src="<s:url value="/pages/images/icon_error.png"/>" name="icon_error"> Please check this field :
-                                                                            <br/>
-                                                                            <center><div id="errorValidationMessage"></div></center>
-                                                                        </label>
-                                                                    </div>
-                                                                </sj:dialog>
-                                                            </table>
-                                                        </td>
-                                                    </div>
-                                                </tr>
-                                            </table>
-                                        </div>
-                                    </s:form>
-                                </td>
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                   closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0"
+                                                     style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true"
+                                                   resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <s:hidden id="close_pos"></s:hidden>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+                                        <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
+                                                   resizable="false" cssStyle="text-align:left;"
+                                                   height="650" width="900" autoOpen="false" title="View Detail"
+                                        >
+                                            <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                                         alt="Loading..."/></center>
+                                        </sj:dialog>
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
+                                                                                'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                            }"
+                                        >
+                                            <div class="alert alert-danger alert-dismissible">
+                                                <label class="control-label" align="left">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_error.png"/>"
+                                                         name="icon_error"> System Found : <p id="errorMessage"></p>
+                                                </label>
+                                            </div>
+                                        </sj:dialog>
+                                    </div>
+                                </div>
+                            </s:form>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Dokter</h3>
+                    </div>
+                    <div class="box-body">
+                        <table id="sortTable" class="table table-bordered table-striped">
+                            <thead>
+                            <tr bgcolor="#90ee90">
+                                <td>ID Dokter</td>
+                                <td>Nama Dokter</td>
+                                <td>Kode DPJP</td>
+                                <td>SIP</td>
+                                <td align="center">Action</td>
                             </tr>
+                            </thead>
+                            <tbody>
+                            <s:iterator value="#session.listOfResult" var="row">
+                                <tr>
+                                    <td><s:property value="idDokter"/></td>
+                                    <td><s:property value="namaDokter"/></td>
+                                    <td><s:property value="kodeDpjp"/></td>
+                                    <td><s:property value="sip"/></td>
+                                    <td align="center" width="10%">
+                                        <img class="hvr-grow"
+                                             onclick="showModal('detail', '<s:property value="idDokter"/>')"
+                                             style="cursor: pointer"
+                                             src="<s:url value="/pages/images/icons8-view-25.png"/>">
+                                        <img class="hvr-grow"
+                                             onclick="showModal('edit', '<s:property value="idDokter"/>', '<s:property
+                                                     value="branchId"/>')"
+                                             style="cursor: pointer"
+                                             src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        <%--<img class="hvr-grow"--%>
+                                             <%--onclick="showModal('delete', '<s:property value="idDokter"/>')"--%>
+                                             <%--style="cursor: pointer"--%>
+                                             <%--src="<s:url value="/pages/images/cancel-flat-new.png"/>">--%>
+                                    </td>
+                                </tr>
+                            </s:iterator>
+                            </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
-        <!-- Your Page Content Here -->
     </section>
     <!-- /.content -->
 </div>
-<!-- /.content-wrapper -->
+
+<div class="modal fade" id="modal-edit">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Edit Data Dokter
+                </h4>
+            </div>
+            <div class="modal-body" id="temp_scrol">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_edit"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">ID Dokter</label>
+                        <div class="col-md-7">
+                            <input readonly id="set_id_dokter" class="form-control" oninput="inputWarning('war_set_id_dokter','cor_set_id_doktert')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_id_dokter">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_id_doktert"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Kode DPJP</label>
+                        <div class="col-md-7">
+                            <input  id="set_kode_dpjp" class="form-control" oninput="inputWarning('war_set_kode_dpjp','cor_set_kode_dpjpt')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_kode_dpjp">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_kode_dpjpt"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">SIP</label>
+                        <div class="col-md-7">
+                            <input  id="set_sip" class="form-control" oninput="inputWarning('war_set_sip','cor_set_sipt')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_sip">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_sipt"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Nama Dokter</label>
+                        <div class="col-md-7">
+                            <input  id="set_nama_dokter" class="form-control" oninput="inputWarning('war_set_nama_dokter','cor_set_nama_doktert')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_nama_dokter">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_nama_doktert"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Kuota Online</label>
+                        <div class="col-md-7">
+                            <input type="number" id="set_kuota_online" class="form-control" oninput="inputWarning('war_set_kuota_online','cor_set_kuota_onlinet')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_kuota_online">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_kuota_onlinet"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Kuota Telemedic</label>
+                        <div class="col-md-7">
+                            <input type="number" id="set_kuota_telemedic" class="form-control" oninput="inputWarning('war_set_kuota_telemedic','cor_set_kuota_telemedict')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_kuota_telemedic">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_kuota_telemedict"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Kuota Non BPJS</label>
+                        <div class="col-md-7">
+                            <input type="number" id="set_kuota_no_bpjs" class="form-control" oninput="inputWarning('war_set_kuota_no_bpjs','cor_set_kuota_no_bpjst')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_kuota_no_bpjs">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_kuota_no_bpjst"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Kuota BPJS</label>
+                        <div class="col-md-7">
+                            <input type="number" id="set_kuota_bpjs" class="form-control" oninput="inputWarning('war_set_kuota_bpjs','cor_set_kuota_bpjst')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_kuota_bpjs">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_kuota_bpjst"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Flag Call</label>
+                        <div class="col-md-1">
+                            <div class="custom02">
+                                <input class="radio_remove" onclick="inputWarning('war_set_flag_call', 'cor_set_flag_call')" type="radio" value="Y" id="set_flag_call1" name="set_flag_call" /><label for="set_flag_call1" >Ya</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="custom02" >
+                                <input class="radio_remove" onclick="inputWarning('war_set_flag_call', 'cor_set_flag_call')" type="radio" value="N" id="set_flag_call2" name="set_flag_call" /><label for="set_flag_call2" >Tidak</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_flag_call">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_flag_callt"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Flag Telemedic</label>
+                        <div class="col-md-1">
+                            <div class="custom02">
+                                <input class="radio_remove" onclick="inputWarning('war_set_flag_tele', 'cor_set_flag_tele')" type="radio" value="Y" id="set_flag_tele1" name="set_flag_tele" /><label for="set_flag_tele1" >Ya</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="custom02" >
+                                <input class="radio_remove" onclick="inputWarning('war_set_flag_tele', 'cor_set_flag_tele')" type="radio" value="N" id="set_flag_tele2" name="set_flag_tele" /><label for="set_flag_tele2" >Tidak</label>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_flag_tele">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_flag_telet"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3 jarak_atas">Pelayanan</label>
+                        <div class="col-md-7">
+                            <select style="width: 100%" class="form-control select2" id="set_pelayanan"></select>
+                        </div>
+                        <div class="col-md-2">
+                            <a class="btn btn-success" onclick="addToList()"><i class="fa fa-plus"></i> Add</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="col-md-12">
+                        <table id="table_pelayanan" class="table table-bordered table-striped" style="font-size: 12px">
+                            <thead>
+                            <tr style="font-weight: bold">
+                                <td>Nama Pelayanan</td>
+                                <td width="10%">Action</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_pelayanan"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_scrol', 'temp_scrol')" class="pull-left hvr-grow" style="color: black; margin-top: 11px">
+                    <i id="fa_scrol" class="fa fa-unlock"></i>
+                </span>
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_edit"><i
+                        class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-view">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Detail Data Dokter</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped" style="font-size: 12px">
+                                <tr>
+                                    <td width="40%"><b>ID Dokter</b></td>
+                                    <td><span id="v_id_dokter"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kode DPJP</b></td>
+                                    <td><span id="v_kode_dpjp"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>SIP</b></td>
+                                    <td><span id="v_sip"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Nama Dokter</b></td>
+                                    <td><span id="v_nama_dokter"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kuota Online</b></td>
+                                    <td><span id="v_kuota_online"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kuota Telemedic</b></td>
+                                    <td><span id="v_kuota_telemedic"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kuota On Site Non BPJS</b></td>
+                                    <td><span id="v_kuota_onsite_nonbpjs"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Kuota On Site BPJS</b></td>
+                                    <td><span id="v_kuota_onsite_bpjs"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Flag Call</b></td>
+                                    <td><span id="v_flag_call"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Flag Telemedic</b></td>
+                                    <td><span id="v_flag_telemdic"></span></td>
+                                </tr>
+                            </table>
+                            <hr>
+                            <label style="font-size: 12px">Daftar Pelayanan Dokter</label>
+                            <table class="table table-bordered table-striped" style="font-size: 12px">
+                                <thead>
+                                <tr>
+                                    <td width="10%">No</td>
+                                    <td>Nama Pelayanan</td>
+                                </tr>
+                                </thead>
+                                <tbody id="view_pelayanan"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 id="pesan"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type='text/javascript'>
+
+    function showModal(tipe, id) {
+        getDataDokter(id);
+        if ('detail' == tipe) {
+            $('#modal-view').modal({show: true, static: 'backdrop'});
+        }
+        if ('edit' == tipe || 'delete' == tipe) {
+            getPelayanan();
+            $('#modal-edit').modal({show: true, static: 'backdrop'});
+            $('#save_edit').attr('onclick', 'saveDokter(\'' + tipe + '\')');
+        }
+    }
+
+    function addToList() {
+        var data = $('#table_pelayanan').tableToJSON();
+        var idPelayanan = $('#set_pelayanan').val();
+        var namaPelayanan = $('#set_pelayanan option:selected').text();
+        var idCount = data.length;
+        if (idPelayanan != '') {
+            var cek = false;
+            $.each(data, function (i, item) {
+                var pelayananId = $('#id_pelayanan_' + i).val();
+                if (idPelayanan == pelayananId) {
+                    cek = true;
+                }
+            });
+            if (cek) {
+                $('#warning_edit').show().fadeOut(5000);
+                $('#msg_edit').text("Data "+namaPelayanan+" sudah ada dalam list...!");
+                $('#modal-edit').scrollTop(0)
+            } else {
+                var row = 'row_'+idPelayanan;
+                var table = '<tr id="'+row+'">' +
+                            '<td>' +
+                            '<input type="hidden" id="id_pelayanan_'+idCount+'" value="'+idPelayanan+'">'+ namaPelayanan+
+                            '</td>'+
+                            '<td align="center"><img border="0" onclick="delRow(\'' + row + '\')" class="hvr-grow" src="' + contextPathHeader + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                            '</tr>';
+                '</tr>';
+                $('#body_pelayanan').append(table);
+            }
+        } else {
+            $('#warning_edit').show().fadeOut(5000);
+            $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
+            $('#modal-edit').scrollTop(0)
+            if (idPelayanan == '') {
+                $('#war_set_pelayanan').show();
+            }
+        }
+    }
+
+    function delRow(id) {
+        $('#' + id).remove();
+    }
+
+    function saveDokter(tipe) {
+        var data = "";
+        if(!cekSession()){
+            var dataPelayanan = $('#table_pelayanan').tableToJSON();
+            var idDokter = $('#set_id_dokter').val();
+            var kodeDpjp = $('#set_kode_dpjp').val();
+            var sip = $('#set_sip').val();
+            var namaDokter = $('#set_nama_dokter').val();
+            var kuotaOnline = $('#set_kuota_online').val();
+            var kuotaTelemedic = $('#set_kuota_telemedic').val();
+            var kuotaNonBpjs = $('#set_kuota_no_bpjs').val();
+            var kuotaBpjs = $('#set_kuota_bpjs').val();
+            var flagCall = $('[name=set_flag_call]:checked').val();
+            var flagTele = $('[name=set_flag_tele]:checked').val();
+
+            if (idDokter && kodeDpjp && sip && namaDokter && kuotaOnline && kuotaTelemedic &&
+                kuotaNonBpjs && kuotaBpjs != '' && flagCall && flagTele != undefined && dataPelayanan.length > 0) {
+                var tempPelayanan = [];
+                $('#save_edit').hide();
+                $('#load_edit').show();
+                $.each(dataPelayanan, function (i, item) {
+                    var idPelayanan = $('#id_pelayanan_' + i).val();
+                    tempPelayanan.push({
+                        'id_pelayanan': idPelayanan
+                    });
+                });
+                var stringPelayanan = JSON.stringify(tempPelayanan);
+                data = {
+                    'tipe': tipe,
+                    'id_dokter': idDokter,
+                    'kode_dpjp': kodeDpjp,
+                    'sip': sip,
+                    'nama_dokter': namaDokter,
+                    'kuota_online': kuotaOnline,
+                    'kuota_tele': kuotaTelemedic,
+                    'kuota_on_site': kuotaNonBpjs,
+                    'kuota_bpjs': kuotaBpjs,
+                    'flag_call': flagCall,
+                    'flag_tele': flagTele,
+                    'list_pelayanan': stringPelayanan
+                }
+                var dataString = JSON.stringify(data);
+                dwr.engine.setAsync(true);
+                DokterAction.saveEditDokter(dataString, {
+                    callback: function (response) {
+                        if (response.status == "success") {
+                            $('#modal-edit').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#save_edit').show();
+                            $('#load_edit').hide();
+                            $('body').scrollTop(0);
+
+                        } else {
+                            $('#warning_edit').show().fadeOut(5000);
+                            $('#msg_edit').text(response.msg);
+                            $('#save_edit').show();
+                            $('#load_edit').hide();
+                            $('#modal-edit').scrollTop(0);
+                        }
+                    }
+                });
+            } else {
+                $('#warning_edit').show().fadeOut(5000);
+                $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
+                $('#modal-edit').scrollTop(0);
+
+                if (idDokter == '') {
+                    $('#war_set_id_dokter').show();
+                }
+                if (kodeDpjp == '') {
+                    $('#war_set_kode_dpjp').show();
+                }
+                if (sip == '') {
+                    $('#war_set_sip').show();
+                }
+                if (namaDokter == '') {
+                    $('#war_set_nama_dokter').show();
+                }
+                if (kuotaOnline == '') {
+                    $('#war_set_kuota_online').show();
+                }
+                if (kuotaTelemedic == '') {
+                    $('#war_set_kuota_telemedic').show();
+                }
+                if (kuotaNonBpjs == '') {
+                    $('#war_set_kuota_no_bpjs').show();
+                }
+                if (kuotaBpjs == '') {
+                    $('#war_set_kuota_bpjs').show();
+                }
+                if (flagCall == '') {
+                    $('#war_set_flag_call').show();
+                }
+                if (flagTele == '') {
+                    $('#war_set_flag_tele').show();
+                }
+            }
+        }
+    }
+
+    function getPelayanan() {
+        var option = '<option value="">[Select One]</option>';
+        DokterAction.getComboPelayanan(function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    option += '<option value="' + item.idPelayanan + '">' + item.namaPelayanan + '</option>'
+                });
+            }
+            $('#set_pelayanan').html(option);
+        });
+    }
+
+    function getDataDokter(id) {
+        if(!cekSession()){
+            DokterAction.initDokter(id, function (res) {
+                if (res.idDokter != null) {
+                    $('#v_id_dokter').text(res.idDokter);
+                    $('#v_kode_dpjp').text(res.kodeDpjp);
+                    $('#v_sip').text(res.sip);
+                    $('#v_nama_dokter').text(res.namaDokter);
+                    $('#v_kuota_online').text(res.kuota);
+                    $('#v_kuota_telemedic').text(res.kuotaTele);
+                    $('#v_kuota_onsite_nonbpjs').text(res.kuotaOnSite);
+                    $('#v_kuota_onsite_bpjs').text(res.kuotaBpjs);
+                    $('#v_flag_call').text(res.flagCall);
+                    $('#v_flag_telemdic').text(res.flagTele);
+
+                    $('#set_id_dokter').val(res.idDokter);
+                    $('#set_kode_dpjp').val(res.kodeDpjp);
+                    $('#set_sip').val(res.sip);
+                    $('#set_nama_dokter').val(res.namaDokter);
+                    $('#set_kuota_online').val(res.kuota);
+                    $('#set_kuota_telemedic').val(res.kuotaTele);
+                    $('#set_kuota_no_bpjs').val(res.kuotaOnSite);
+                    $('#set_kuota_bpjs').val(res.kuotaBpjs);
+
+                    if(res.pelayananList.length > 0){
+                        var table = '';
+                        var view = '';
+                        $.each(res.pelayananList, function (i, item) {
+                            var row = 'row_'+i;
+                            table += '<tr id="'+row+'">' +
+                                '<td>' +
+                                '<input type="hidden" id="id_pelayanan_'+i+'" value="'+item.idPelayanan+'">'+ item.namaPelayanan+
+                                '</td>'+
+                                '<td align="center"><img border="0" onclick="delRow(\'' + row + '\')" class="hvr-grow" src="' + contextPathHeader + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                                '</tr>';
+
+                            var nomor = i+1;
+                            view += '<tr>' +
+                                '<td>' + nomor + '</td>'+
+                                '<td>' + item.namaPelayanan+ '</td>'+
+                                '</tr>';
+                        });
+                        $('#view_pelayanan').html(view);
+                        $('#body_pelayanan').html(table);
+                    }else{
+                        $('#body_pelayanan').html(table);
+                        $('#view_pelayanan').html(view);
+                    }
+
+                    $('[name=set_flag_call]').filter("[value='"+res.flagCall+"']").attr('checked', true);
+                    $('[name=set_flag_tele]').filter("[value='"+res.flagTele+"']").attr('checked', true);
+                }
+            });
+        }
+    }
+</script>
+
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>
+
 </body>
 </html>

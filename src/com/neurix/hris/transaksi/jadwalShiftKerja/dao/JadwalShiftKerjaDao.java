@@ -477,7 +477,10 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 ") h ON a.id_dokter = h.id_dokter\n" +
                 "WHERE e.branch_id = :branchId \n" +
                 "AND d.tanggal = CURRENT_DATE\n" + notLikeDokter+
-                "AND b.id_pelayanan = :idPelayanan";
+                "AND b.id_pelayanan = :idPelayanan\n" +
+                "AND a.flag = 'Y' \n" +
+                "AND b.flag = 'Y' \n" +
+                "AND c.flag = 'Y' \n";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

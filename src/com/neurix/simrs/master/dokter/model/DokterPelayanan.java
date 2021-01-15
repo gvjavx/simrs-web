@@ -14,6 +14,16 @@ public class DokterPelayanan {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
+    private String namaPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
     public String getIdDokterPelayanan() {
         return idDokterPelayanan;
     }
