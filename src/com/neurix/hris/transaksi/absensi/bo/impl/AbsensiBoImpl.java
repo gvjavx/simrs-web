@@ -5008,7 +5008,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 }
 
                                 //ambil lembur hari libur
-                                List<LemburEntity> lemburEntityList = lemburDao.getListLemburByNipAndTanggal(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil()));
+                                List<LemburEntity> lemburEntityList = new ArrayList<>();
+                                try{
+                                    lemburEntityList = lemburDao.getListLemburByNipAndTanggal(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil()));
+                                } catch (HibernateException e) {
+                                    logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                }
+
                                 if (lemburEntityList.size()>0) {
                                     if (tsJamAwalFinger != null && tsJamAkhirFinger != null) {
                                         absensiPegawai.setLembur("Y");
@@ -5099,7 +5106,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         Double upahLembur = 0d;
                                         Double gapok = 0d;
                                         Double sankhus = 0d;
-                                        pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+
+                                        try{
+                                            pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                        } catch (HibernateException e) {
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                        }
+
                                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                                             faktor = pengaliFaktorLemburEntity.getFaktor();
                                         }
@@ -5173,10 +5187,25 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         // Sigit 2020-11-26, Pencarian prosentase gaji dari unutk perhitungan upah lembur perjam, START
                                         BigDecimal prosentase = new BigDecimal(0);
 //                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
-                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(personilPositionDao.getJenisPegawaiByNip(biodata.getNip()));
+                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList =new ArrayList<>();
+                                        String personPosition = "";
+
+                                        try {
+                                            personPosition = personilPositionDao.getJenisPegawaiByNip(biodata.getNip());
+                                        } catch (HibernateException e) {
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                        }
+
+                                        try {
+                                            mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(personPosition);
+                                        } catch (HibernateException e) {
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                                        }
+
                                         if (mappingPersenGajiList.size() > 0){
                                             for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
-
                                                 if (persenGaji.getPresentase() != null){
                                                     BigDecimal bdPersenGaji = new BigDecimal(persenGaji.getPresentase());
                                                     prosentase = bdPersenGaji.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
