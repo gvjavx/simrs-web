@@ -77,8 +77,11 @@
             <result name="success">/pages/com/neurix/hris/transaksi/mutasi/SearchMutasi.jsp</result>
 
             <result name="error">/pages/com/neurix/hris/transaksi/mutasi/SearchMutasiKualifikasi.jsp</result>
-            <result name="init_add">/pages/com/neurix/hris/transaksi/mutasi/addMutasi.jsp</result>
-            <result name="success_save_add">/pages/com/neurix/hris/transaksi/mutasi/addMutasi.jsp</result>
+            <!--<result name="init_add">/pages/com/neurix/hris/transaksi/mutasi/addMutasi.jsp</result>-->
+            <!--<result name="success_save_add">/pages/com/neurix/hris/transaksi/mutasi/addMutasi.jsp</result>-->
+            <result name="init_add">/pages/com/neurix/hris/transaksi/mutasi/addMutasiJabatan.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/hris/transaksi/mutasi/addMutasiJabatan.jsp</result>
+
 
             <result name="success_save_delete">/pages/com/neurix/hris/transaksi/mutasi/deleteMutasi.jsp</result>
             <result name="init_delete">/pages/com/neurix/hris/transaksi/mutasi/deleteMutasi.jsp</result>

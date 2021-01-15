@@ -67,6 +67,7 @@
         <property name="transactionAttributes">
             <props>
                 <prop key="getByCriteria">readOnly</prop>
+                <prop key="saveEditDokterKso">PROPAGATION_REQUIRED</prop>
             </props>
         </property>
     </bean>

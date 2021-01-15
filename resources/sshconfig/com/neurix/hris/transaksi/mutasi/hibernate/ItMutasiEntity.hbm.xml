@@ -79,6 +79,12 @@
         <property name="lastUpdate">
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
+        <property name="noSk">
+            <column name="no_sk" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="idKet">
+            <column name="id_ket" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
         <many-to-one name="imBiodataEntity" class="com.neurix.hris.master.biodata.model.ImBiodataEntity"
                      insert="false" update="false" fetch="select" cascade="all">

@@ -289,18 +289,28 @@ public class HistoryJabatanPegawaiDao extends GenericDao<ImtHrisHistoryJabatanPe
     public List<HistoryJabatanPegawai> geyBagianByPositionId(String positionId) throws HibernateException {
         List<HistoryJabatanPegawai> listOfResult = new ArrayList<HistoryJabatanPegawai>();
 
-        String query = "select DISTINCT \n" +
-                "\t im_hris_position_bagian.bagian_id, \n" +
-                "\t im_hris_position_bagian.nama_bagian \n" +
-                "from\n" +
-                "\t im_hris_position_bagian, \n"+
-                "\t im_position \n"+
-                "WHERE \n"+
-                "\t im_position.bagian_id = im_hris_position_bagian.bagian_id \n"+
-                "\t and im_position.position_id = '"+positionId+"'";
-        List<Object[]> results ;
-        results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query)
+//        String query = "select DISTINCT \n" +
+//                "\t im_hris_position_bagian.bagian_id, \n" +
+//                "\t im_hris_position_bagian.nama_bagian \n" +
+//                "from\n" +
+//                "\t im_hris_position_bagian, \n"+
+//                "\t im_position \n"+
+//                "WHERE \n"+
+//                "\t im_position.bagian_id = im_hris_position_bagian.bagian_id \n"+
+//                "\t and im_position.position_id = '"+positionId+"'";
+
+        // Sigit 2020-01-09, Perubahan SQL dengan join
+        String SQL = "SELECT \n" +
+                "pb.bagian_id,\n" +
+                "pb.nama_bagian\n" +
+                "FROM im_hris_position_bagian pb\n" +
+                "INNER JOIN im_position p ON p.bagian_id = pb.bagian_id\n" +
+                "INNER JOIN it_hris_pegawai_position pp ON pp.position_id = p.position_id\n" +
+                "WHERE pp.position_id = :id ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(SQL)
+                .setParameter("id", positionId)
                 .list();
 
         HistoryJabatanPegawai historyJabatan;

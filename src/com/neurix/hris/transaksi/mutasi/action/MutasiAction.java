@@ -22,6 +22,7 @@ import com.neurix.hris.transaksi.mutasi.model.Mutasi;
 import com.neurix.hris.transaksi.mutasi.model.MutasiDoc;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.sppd.model.SppdPerson;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -330,7 +331,7 @@ public class MutasiAction extends BaseMasterAction{
     }
 
     public String saveMutasi(){
-        logger.info("[MutasiAction.saveAdd] start process >>>");
+        logger.info("[MutasiAction.saveMutasi] start process >>>");
         try {
             Mutasi mutasi = getMutasi();
             HttpSession session = ServletActionContext.getRequest().getSession();
@@ -356,16 +357,15 @@ public class MutasiAction extends BaseMasterAction{
             try {
                 logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[mutasiAction.saveAdd] Error when saving error,", e1);
+                logger.error("[mutasiAction.saveMutasi] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[mutasiAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-//            mutasi.setErrorMessage("Error, " + "[code=" + logId + "] Found problem when saving delete data, please inform to your admin.\n" + e.getMessage());
+            logger.error("[mutasiAction.saveMutasi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionMessage("Error, mohon periksa inputan anda kembali");
             throw new GeneralBOException(e.getMessage());
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfMutasi");
+        session.removeAttribute("saveMutasi");
         return INPUT;
     }
 
@@ -444,22 +444,30 @@ public class MutasiAction extends BaseMasterAction{
     public String printReportMutasi() {
         logger.info("[ReportAction.printReportMutasi] start process >>>");
         String id = getIdMutasi();
-        String noSurat = getNoSurat();
         if (id != null) {
             Mutasi searchMutasi = new Mutasi();
 
             searchMutasi.setMutasiId(id);
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
-            searchMutasi = mutasiBo.getDataReportMutasi(id);
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+            try {
+                searchMutasi = mutasiBo.getDataReportMutasi(id);
+            } catch (GeneralBOException e){
+                logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
+            }
+
+            String tahun            = "";
+            BigDecimal gajiPegawai  = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
+            String stGajiPegawai    = CommonUtil.numbericFormat(gajiPegawai,"###,###");
+            String noSurat          = searchMutasi.getNoSk();
+
             Branch branch = new Branch();
-            String tahun ="";
-            BigDecimal gajiPegawai = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
-            String stGajiPegawai = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             try{
-                BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
                 branch = branchBo.getBranchById("KP","Y");
             }catch( HibernateException e){
+                logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
             }
             reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
             String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
@@ -468,7 +476,6 @@ public class MutasiAction extends BaseMasterAction{
             reportParams.put("titleReport", "Surat Mutasi");
             reportParams.put("noSurat", noSurat);
             reportParams.put("tanggalSk", searchMutasi.getStTanggalEfektif());
-
 
             reportParams.put("namaPegawai", searchMutasi.getNama());
             reportParams.put("jabatanLama", searchMutasi.getPositionLamaName());
@@ -675,26 +682,8 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiLamaName(obj.getString("divisilamaname"));
                 mutasi.setPositionLamaId(obj.getString("positionlamaid"));
                 mutasi.setPositionLamaName(obj.getString("positionlamaname"));
-                mutasi.setLevelLama(obj.getString("levellamaid"));
-                mutasi.setLevelLamaName(obj.getString("levelbaruid"));
-                mutasi.setPjsLama(obj.getString("txtpjslama"));
                 mutasi.setProfesiLamaId(obj.getString("profesilamaid"));
                 mutasi.setProfesiLamaName(obj.getString("profesibaruid"));
-
-                String menggantikanId = obj.getString("menggantikanid");
-
-                if (menggantikanId!=null && !"".equalsIgnoreCase(menggantikanId)){
-                    if (!menggantikanId.equalsIgnoreCase("-")){
-                        mutasi.setPenggantiNip(menggantikanId);
-                    }
-                    else {
-                        mutasi.setPenggantiNip("-");
-                    }
-                }else{
-                    mutasi.setPenggantiNip("-");
-                }
-
-                mutasi.setPenggantiNama(obj.getString("menggantikannama"));
 
                 mutasi.setBranchBaruId(obj.getString("branchbaruid"));
                 mutasi.setBranchBaruName(obj.getString("branchbaruname"));
@@ -702,17 +691,18 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setDivisiBaruName(obj.getString("divisibaruname"));
                 mutasi.setPositionBaruId(obj.getString("positionbaruid"));
                 mutasi.setPositionBaruName(obj.getString("poisitionbaruname"));
-                mutasi.setLevelBaru(obj.getString("levelbaruid"));
-                mutasi.setLevelBaruName(obj.getString("levelbaruname"));
-                mutasi.setPjs(obj.getString("txtpjsbaru"));
                 mutasi.setProfesiBaruId(obj.getString("profesibaruid"));
                 mutasi.setProfesiBaruName(obj.getString("profesibaruname"));
-                mutasi.setTipePegawai(obj.getString("tipepegawai"));
 
                 mutasi.setStatus(obj.getString("status"));
                 mutasi.setJenisPegawaiId(obj.getString("jenispegawai"));
                 mutasi.setJenisPegawaiName(obj.getString("jenispegawainame"));
                 mutasi.setFlagDigaji(obj.getString("flagdigaji"));
+                mutasi.setUpdatePosisiId(obj.getString("positionPengganti"));
+                mutasi.setStTanggalKeluar(obj.getString("tanggalKeluar"));
+                mutasi.setNoSk(obj.getString("nosk"));
+                mutasi.setIdKetResign(obj.getString("idket"));
+                mutasi.setKetResign(obj.getString("txtket"));
 
                 if (!"".equalsIgnoreCase(mutasi.getNip())){
                     StatusMutasi search = new StatusMutasi();
@@ -725,7 +715,7 @@ public class MutasiAction extends BaseMasterAction{
                 }
 
                 //save to session
-                if (!("").equalsIgnoreCase(mutasi.getStatus())){
+                if (!"".equalsIgnoreCase(mutasi.getStatus())){
                     mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
                     if(mutasiList != null){
                         mutasiList.add(mutasi);
@@ -1107,5 +1097,91 @@ public class MutasiAction extends BaseMasterAction{
         logger.info("[MutasiAction.getListPersonilByNameAndBranch] end process <<<");
 
         return listOfUser;
+    }
+
+    // Sigit 2020-01-11, check data nip disession untuk menghindari proses mutasi lebih dari 1
+    public CrudResponse checkIsAvailInSession(String nip){
+        logger.info("[MutasiAction.checkIsAvailInSession] start process >>>");
+
+        CrudResponse response   = new CrudResponse();
+        HttpSession session     = ServletActionContext.getRequest().getSession();
+        List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
+
+        if (mutasiList != null && mutasiList.size() > 0 && nip != null && !"".equalsIgnoreCase(nip)){
+            List<Mutasi> filteredMutasi = mutasiList.stream().filter(p->p.getNip().equalsIgnoreCase(nip)).collect(Collectors.toList());
+            if (filteredMutasi.size() > 0){
+                Mutasi mutasiData = filteredMutasi.get(0);
+                response.setStatus("error");
+                response.setMsg("Data Atas Nama : " + mutasiData.getNama() + " Sudah Ada !. Cek kembali list Mutasi");
+            }
+        }
+
+        if (response.getStatus() == null || "".equalsIgnoreCase(response.getStatus()))
+            response.setStatus("success");
+
+        logger.info("[MutasiAction.checkIsAvailInSession] end process <<<");
+        return response;
+    }
+
+    public List<Position> getListOtherPosition(String positionId, String nip){
+        logger.info("[MutasiAction.getListOtherPosition] start process >>>");
+
+        List<Position> listOfPosition = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
+
+        Boolean isDefault = false;
+        try {
+            isDefault = mutasiBo.checkJenisPegawaiDefault(nip, positionId);
+        } catch (GeneralBOException e){
+            logger.error("[MutasiAction.getListOtherPosition] Error chek is default,", e);
+        }
+
+        if (isDefault){
+            try {
+                listOfPosition = mutasiBo.getListOtherPosition(positionId, nip);
+            } catch (GeneralBOException e){
+                logger.error("[MutasiAction.getListOtherPosition] Error search data other position,", e);
+            }
+        }
+
+        logger.info("[MutasiAction.getListOtherPosition] end process <<<");
+        return listOfPosition;
+    }
+
+    public List<Position> getListPositionJabatanLain(String positionId, String nip){
+        logger.info("[MutasiAction.getListPositionJabatanLain] start process >>>");
+
+        List<Position> listOfPosition = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
+
+        try {
+            listOfPosition = mutasiBo.getListOtherPosition(positionId, nip);
+        } catch (GeneralBOException e){
+            logger.error("[MutasiAction.getListPositionJabatanLain] Error search data other position,", e);
+        }
+
+        logger.info("[MutasiAction.getListPositionJabatanLain] end process <<<");
+        return listOfPosition;
+    }
+
+    public Boolean checkIsAvailJabatanUtama(String nip, String jenisPegawai){
+        logger.info("[MutasiAction.checkIsAvailJabatanUtama] start process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
+
+        Boolean isDefault = false;
+        try {
+            isDefault = mutasiBo.checkPositionByJenisPegawai(nip, jenisPegawai);
+        } catch (GeneralBOException e){
+            logger.error("[MutasiAction.checkIsAvailJabatanUtama] Error chek is default,", e);
+        }
+
+        logger.info("[MutasiAction.checkIsAvailJabatanUtama] end process <<<");
+        return isDefault;
     }
 }

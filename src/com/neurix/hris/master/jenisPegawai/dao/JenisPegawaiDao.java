@@ -40,6 +40,18 @@ public class JenisPegawaiDao extends GenericDao<ImHrisJenisPegawaiEntity, String
             if (mapCriteria.get("tipe_payroll_name")!=null) {
                 criteria.add(Restrictions.ilike("jenisPegawaiName", "%" + (String)mapCriteria.get("tipe_payroll_name") + "%"));
             }
+
+            // Sigit 2020-01-10
+            if (mapCriteria.get("jenis_pegawai_id")!=null) {
+                criteria.add(Restrictions.eq("jenisPegawaiId", (String) mapCriteria.get("jenis_pegawai_id")));
+            }
+            if (mapCriteria.get("jenis_pegawai_name")!=null) {
+                criteria.add(Restrictions.ilike("jenisPegawaiName", "%" + (String)mapCriteria.get("jenis_pegawai_name") + "%"));
+            }
+            if (mapCriteria.get("flag_default") != null)
+                criteria.add(Restrictions.eq("flagDefault", (String) mapCriteria.get("flag_default")));
+            // END
+
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -81,5 +93,21 @@ public class JenisPegawaiDao extends GenericDao<ImHrisJenisPegawaiEntity, String
                 .list();
 
         return results;
+    }
+
+    public Boolean checkJenisPegawaiIsDefault(String jenisPegawaiId){
+
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai \n" +
+                "WHERE jenis_pegawai_Id = :jenis \n" +
+                "AND flag = 'Y' \n" +
+                "AND flag_default = 'Y' ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("jenis", jenisPegawaiId).list();
+
+        if (results != null && results.size() > 0)
+            return true;
+
+        return false;
     }
 }

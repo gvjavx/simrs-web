@@ -2,6 +2,7 @@ package com.neurix.hris.master.biodata.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.biodata.model.ItTunjLainPegawaiEntity;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
@@ -27,7 +28,14 @@ public class TunjLainPegawaiDao extends GenericDao<ItTunjLainPegawaiEntity, Stri
 
     @Override
     public List<ItTunjLainPegawaiEntity> getByCriteria(Map mapCriteria) {
-        return null;
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItTunjLainPegawaiEntity.class);
+        if (mapCriteria.get("tunj_lain_id") != null)
+            criteria.add(Restrictions.eq("tunjLainId", (String) mapCriteria.get("tunj_lain_id")));
+        if (mapCriteria.get("nip") != null)
+            criteria.add(Restrictions.eq("nip", (String) mapCriteria.get("nip")));
+        if (mapCriteria.get("flag") != null)
+            criteria.add(Restrictions.eq("flag", (String) mapCriteria.get("flag")));
+        return criteria.list();
     }
 
     public String getNextTunjLain() throws HibernateException {
