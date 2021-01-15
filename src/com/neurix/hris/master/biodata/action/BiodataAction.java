@@ -3288,13 +3288,38 @@ public class BiodataAction extends BaseMasterAction{
         try {
             jenisPegawais = biodataBoProxy.getAllJenisPegawai();
         } catch (GeneralBOException e){
-            logger.error("[BiodataAction.initComboJenisPegawai] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[BiodataAction.initComboJenisPegawai] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, Found problem when searching data by criteria, please inform to your admin" );
         }
 
         listOfComboJenisPegawai.addAll(jenisPegawais);
         logger.info("[BiodataAction.initComboJenisPegawai] END <<<");
         return SUCCESS;
+    }
+
+    public List<PersonilPosition> listPersonilPosition(String nip){
+        logger.info("[BiodataAction.listPersonilPosition] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+        if (listOfResultPersonil == null){
+            try {
+                listOfResultPersonil = biodataBo.getListPesonilPosition(nip);
+            } catch (GeneralBOException e){
+                logger.error("[BiodataAction.listPersonilPosition] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+                addActionError("Error, Found problem when searching data by criteria, please inform to your admin" );
+            }
+        }
+
+        session.removeAttribute("listOfPersonilPosition");
+        session.setAttribute("listOfPersonilPosition", listOfResultPersonil);
+
+        logger.info("[BiodataAction.listPersonilPosition] END <<<");
+        return listOfResultPersonil;
     }
 
 

@@ -299,7 +299,7 @@
                     <li><a href="#RiwayatPendidikan">Riwayat Pendidikan</a></li>
                     <li><a href="#pelatihanJabatan">Riwayat Pelatihan</a></li>
 
-                    <li><a href="#pengalamanKerja">Riwayat Kerja</a></li>
+                    <li><a href="#pengalamanKerja">Jabatan & Riwayat</a></li>
                     <%--<li><a href="#reward">Reward</a></li>
                     <li><a href="#sertifikat">Sertifikat</a></li>--%>
 
@@ -1775,10 +1775,32 @@
                         </div>
 
                         <div id="pengalamanKerja" class="tab-pane fade">
-                            <h3>Riwayat Kerja
-                                <s:if test="isAddOrEdit()">
-                                    <button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>
+
+                            <h3>Jabatan Existing
+                                <s:if test="isAdd()">
+                                    <button id="btnAddJabatan" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>
                                 </s:if>
+                            </h3>
+                            <table style="width: 100%;" class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td>Jabatan</td>
+                                        <td>Profesi</td>
+                                        <td>Unit</td>
+                                        <td>Jenis Jabatan</td>
+                                        <td>Digaji</td>
+                                        <td style="text-align: center">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-position">
+
+                                </tbody>
+                            </table>
+
+                            <h3>Riwayat Jabatan
+                                <%--<s:if test="isAddOrEdit()">--%>
+                                    <%--<button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>--%>
+                                <%--</s:if>--%>
                             </h3>
                             <table style="width: 100%;" class="pengalamanKerjaTable table table-bordered">
                             </table>
@@ -3586,8 +3608,8 @@
 
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
                 </s:if>
                 <s:else>
@@ -3619,16 +3641,16 @@
 
                         '<td align="center">' + item.tipePegawai + '</td>' +
                         '<td align="center">' + item.golonganName + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                        '</a>' +
-                        '</td>' +
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
                         "</tr>";
                     </s:if>
                     <s:else>

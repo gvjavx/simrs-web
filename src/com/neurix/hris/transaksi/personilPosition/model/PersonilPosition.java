@@ -22,6 +22,33 @@ public class PersonilPosition extends BaseModel {
     private String tanggalAktif;
     private String jenisPegawai;
     private String flagDigaji;
+    private String profesiId;
+    private String profesiName;
+    private String jenisPegawaiName;
+
+    public String getJenisPegawaiName() {
+        return jenisPegawaiName;
+    }
+
+    public void setJenisPegawaiName(String jenisPegawaiName) {
+        this.jenisPegawaiName = jenisPegawaiName;
+    }
+
+    public String getProfesiId() {
+        return profesiId;
+    }
+
+    public void setProfesiId(String profesiId) {
+        this.profesiId = profesiId;
+    }
+
+    public String getProfesiName() {
+        return profesiName;
+    }
+
+    public void setProfesiName(String profesiName) {
+        this.profesiName = profesiName;
+    }
 
     public String getJenisPegawai() {
         return jenisPegawai;

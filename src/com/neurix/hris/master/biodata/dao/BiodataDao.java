@@ -7,6 +7,7 @@ import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
 import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -1863,5 +1864,48 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
 
         return biodataList;
+    }
+
+    public List<PersonilPosition> getListPersonilPositionByNip(String nip){
+
+        String SQL = "SELECT \n" +
+                "pp.position_id,\n" +
+                "p.position_name,\n" +
+                "pp.profesi_id,\n" +
+                "pr.profesi_name, \n" +
+                "pp.branch_id,\n" +
+                "br.branch_name,\n" +
+                "pp.jenis_pegawai,\n" +
+                "jp.jenis_pegawai_name,\n" +
+                "pp.flag_digaji\n" +
+                "FROM it_hris_pegawai_position pp \n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "INNER JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
+                "INNER JOIN im_branches br ON br.branch_id = pp.branch_id\n" +
+                "INNER JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.nip LIKE :nip \n" +
+                "AND pp.flag = 'Y' ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .list();
+
+        List<PersonilPosition> personilPositions = new ArrayList<>();
+
+        for (Object[] obj : results){
+            PersonilPosition personilPosition = new PersonilPosition();
+            personilPosition.setPositionId(obj[0].toString());
+            personilPosition.setPersonName(obj[1].toString());
+            personilPosition.setProfesiId(obj[2].toString());
+            personilPosition.setProfesiName(obj[3].toString());
+            personilPosition.setBranchId(obj[4].toString());
+            personilPosition.setBranchName(obj[5].toString());
+            personilPosition.setJenisPegawai(obj[6].toString());
+            personilPosition.setJenisPegawaiName(obj[7].toString());
+            personilPosition.setFlagDigaji(obj[8].toString());
+            personilPositions.add(personilPosition);
+        }
+
+        return personilPositions;
     }
 }

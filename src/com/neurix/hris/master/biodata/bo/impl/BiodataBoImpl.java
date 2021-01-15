@@ -5450,4 +5450,21 @@ public class BiodataBoImpl implements BiodataBo {
         }
         logger.info("[BiodataBoImpl.saveEditDokterKso] END process <<<");
     }
+
+    @Override
+    public List<PersonilPosition> getListPesonilPosition(String nip) {
+        logger.info("BiodataBoImpl.getListPesonilPosition] START process >>>");
+
+        List<PersonilPosition> personilPositions = new ArrayList<>();
+
+        try {
+            personilPositions = biodataDao.getListPersonilPositionByNip(nip);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.getListPesonilPosition] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get data personil position, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[BiodataBoImpl.getListPesonilPosition] END process <<<");
+        return personilPositions;
+    }
 }
