@@ -322,6 +322,7 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setAlamatLengkap(checkup.getNamaDesa() + ", " + checkup.getNamaKecamatan() + ", " + checkup.getNamaKota());
                 rawatInap.setIsStay(checkup.getIsStay());
                 rawatInap.setIdKelas(checkup.getKelasPasien());
+                rawatInap.setNoTelp(checkup.getNoTelp());
                 RawatInap rt = new RawatInap();
                 rt.setIdRawatInap(idx);
                 rt.setIdDetailCheckup(id);
