@@ -49,6 +49,8 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -66,6 +68,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -387,6 +390,7 @@ public class BiodataAction extends BaseMasterAction{
         //remove session
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listSertifikat");
+        session.removeAttribute("listOfPersonilPosition");
 
         logger.info("[BiodataAction.edit] end process >>>");
 
@@ -3320,6 +3324,59 @@ public class BiodataAction extends BaseMasterAction{
 
         logger.info("[BiodataAction.listPersonilPosition] END <<<");
         return listOfResultPersonil;
+    }
+
+    public CrudResponse saveAddToPersonilPositionSession(String stJson) throws JSONException{
+        logger.info("[BiodataAction.listPersonilPosition] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        CrudResponse response = new CrudResponse();
+        if (stJson == null || "".equalsIgnoreCase(stJson)){
+            response.setStatus("error");
+            response.setMsg("Tidak dapat mendapatkan JSON");
+            return response;
+        }
+
+        JSONObject jsonObject = new JSONObject(stJson);
+        PersonilPosition personilPosition = new PersonilPosition();
+        personilPosition.setNip(jsonObject.getString("nip"));
+        personilPosition.setPositionId(jsonObject.getString("positionid"));
+
+        if (listOfResultPersonil != null){
+            List<PersonilPosition> filteredPersonil = listOfResultPersonil.stream().filter(
+                    p-> p.getNip().equalsIgnoreCase(personilPosition.getNip()) &&
+                            p.getPersonilPositionId().equalsIgnoreCase(personilPosition.getPositionId())
+            ).collect(Collectors.toList());
+
+            if (filteredPersonil != null || filteredPersonil.size() > 0){
+                response.setStatus("error");
+                response.setMsg("Data Sudah Ada Pada List");
+                return response;
+            }
+        }
+
+        if (listOfResultPersonil == null)
+            listOfResultPersonil = new ArrayList<>();
+
+        // add to session list of Personil Position;
+        personilPosition.setPositionName(jsonObject.getString("positionname"));
+        personilPosition.setProfesiId(jsonObject.getString("profesiid"));
+        personilPosition.setProfesiName(jsonObject.getString("profesiname"));
+        personilPosition.setBranchId(jsonObject.getString("branchid"));
+        personilPosition.setBranchName(jsonObject.getString("branchname"));
+        personilPosition.setJenisPegawai(jsonObject.getString("jenispegawi"));
+        personilPosition.setJenisPegawaiName(jsonObject.getString("jenispegawainame"));
+        personilPosition.setFlagDigaji(jsonObject.getString("flagdigaji"));
+        listOfResultPersonil.add(personilPosition);
+
+        session.removeAttribute("listOfPersonilPosition");
+        session.setAttribute("listOfPersonilPosition", listOfResultPersonil);
+        // END
+
+        logger.info("[BiodataAction.listPersonilPosition] END <<<");
+        return response;
     }
 
 
