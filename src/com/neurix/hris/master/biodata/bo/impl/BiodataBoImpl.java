@@ -1263,20 +1263,21 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[BiodataBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-            if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
-                String dokterNip = "";
-                try{
-                    String dokterId = dokterDao.getNextDokter();
-                    String[] birthDate = bean.getStTanggalLahir().split("-");
-                    dokterNip = birthDate[0]+birthDate[1]+birthDate[2]+dokterId;
-
-                } catch (HibernateException e) {
-                    logger.error("[BiodataBoImpl.saveAdd] Error : " + e.getMessage());
-                    throw new GeneralBOException("Found problem when retrieving next ID. " + e.getMessage());
-                }
-                bean.setNip(dokterNip);
-                bean.setTanggalAktif(CommonUtil.convertStringToDate(bean.getStTanggalMasuk()));
-            }
+            //RAKA-15JAN2021 ==> Sementara NIP digenerate di depan (DWR) mengunakan seq pegawai.
+//            if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+//                String dokterNip = "";
+//                try{
+//                    String dokterId = dokterDao.getNextDokter();
+//                    String[] birthDate = bean.getStTanggalLahir().split("-");
+//                    dokterNip = birthDate[0]+birthDate[1]+birthDate[2]+dokterId;
+//
+//                } catch (HibernateException e) {
+//                    logger.error("[BiodataBoImpl.saveAdd] Error : " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when retrieving next ID. " + e.getMessage());
+//                }
+//                bean.setNip(dokterNip);
+//                bean.setTanggalAktif(CommonUtil.convertStringToDate(bean.getStTanggalMasuk()));
+//            }
 
             String status = cekStatus(bean.getNip(), bean.getNoKtp());
             if (!status.equalsIgnoreCase("Exist")){
