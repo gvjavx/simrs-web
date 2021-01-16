@@ -49,6 +49,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.taglibs.standard.lang.jpath.example.Person;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -3327,7 +3328,7 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public CrudResponse saveAddToPersonilPositionSession(String stJson) throws JSONException{
-        logger.info("[BiodataAction.listPersonilPosition] START >>>");
+        logger.info("[BiodataAction.saveAddToPersonilPositionSession] START >>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
@@ -3375,11 +3376,107 @@ public class BiodataAction extends BaseMasterAction{
         session.setAttribute("listOfPersonilPosition", listOfResultPersonil);
         // END
 
-        logger.info("[BiodataAction.listPersonilPosition] END <<<");
+        logger.info("[BiodataAction.saveAddToPersonilPositionSession] END <<<");
         return response;
     }
 
+    public CrudResponse saveEditToPersonilPositionSession(String stJson) throws JSONException{
+        logger.info("[BiodataAction.saveEditToPersonilPositionSession] START >>>");
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        CrudResponse response = new CrudResponse();
+        if (stJson == null || "".equalsIgnoreCase(stJson)){
+            response.setStatus("error");
+            response.setMsg("Tidak dapat mendapatkan JSON");
+            return response;
+        }
+
+        JSONObject jsonObject = new JSONObject(stJson);
+        PersonilPosition personilPosition = new PersonilPosition();
+
+        String nip                  = jsonObject.getString("nip");
+        String positionId           = jsonObject.getString("positionid");
+        String idPersonilPosition   = jsonObject.getString("idpersonilposition");
+        String positionIdLama       = jsonObject.getString("positionidlama");
+        String flagEdited           = "";
+        // jika yg diedit adalah position yg sudah tersimpan
+        if (idPersonilPosition != null && !"".equalsIgnoreCase(idPersonilPosition)){
+            flagEdited = "Y";
+        }
+        // END
+
+        List<PersonilPosition> personilPositoinNew = listOfResultPersonil;
+        for (PersonilPosition editPersonilPosition : personilPositoinNew){
+
+            // jika ditemukan position nip dan position id lama; maka input nilai-nilai nya
+            if (editPersonilPosition.getNip().equalsIgnoreCase(nip) &&
+                    editPersonilPosition.getPositionId().equalsIgnoreCase(positionIdLama))
+            {
+                editPersonilPosition.setNip(nip);
+                editPersonilPosition.setPositionId(positionId);
+                editPersonilPosition.setPersonilPositionId(idPersonilPosition);
+                editPersonilPosition.setFlagEdited(flagEdited);
+                editPersonilPosition.setPositionIdLama(positionIdLama);
+                editPersonilPosition.setPositionName(jsonObject.getString("positionname"));
+                editPersonilPosition.setProfesiId(jsonObject.getString("profesiid"));
+                editPersonilPosition.setProfesiName(jsonObject.getString("profesiname"));
+                editPersonilPosition.setBranchId(jsonObject.getString("branchid"));
+                editPersonilPosition.setBranchName(jsonObject.getString("branchname"));
+                editPersonilPosition.setJenisPegawai(jsonObject.getString("jenispegawi"));
+                editPersonilPosition.setJenisPegawaiName(jsonObject.getString("jenispegawainame"));
+                editPersonilPosition.setFlagDigaji(jsonObject.getString("flagdigaji"));
+            }
+            // END
+        }
+
+        // validasi jika ditemukan nip dan position baru yang sama
+        List<PersonilPosition> filterdPersonilPosition = personilPositoinNew.stream().filter(
+                p -> p.getNip().equalsIgnoreCase(nip) &&
+                        p.getPositionId().equalsIgnoreCase(positionId)
+        ).collect(Collectors.toList());
+
+        if (filterdPersonilPosition.size() > 1){
+            response.setStatus("error");
+            response.setMsg("Tidak dapat mendapatkan JSON");
+            return response;
+        }
+        // END;
+
+        session.removeAttribute("listOfPersonilPosition");
+        session.setAttribute("listOfPersonilPosition", personilPositoinNew);
+
+        logger.info("[BiodataAction.saveEditToPersonilPositionSession] END <<<");
+        return response;
+    }
+
+    public PersonilPosition initEditSessionPosition(String nip, String positionId){
+        logger.info("[BiodataAction.initEditSessionPosition] START >>>");
+
+        PersonilPosition personilPosition = new PersonilPosition();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        if (listOfResultPersonil != null && listOfResultPersonil.size() > 0){
+
+            List<PersonilPosition> filteredPosition = listOfResultPersonil.stream().filter(
+                    p-> p.getNip().equalsIgnoreCase(nip) &&
+                            p.getPositionId().equalsIgnoreCase(positionId)
+            ).collect(Collectors.toList());
+
+            if (filteredPosition != null && filteredPosition.size() > 0){
+                personilPosition = listOfResultPersonil.get(0);
+            } else {
+                logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan");
+            }
+        } else {
+            logger.error("[BiodataAction.initEditSessionPosition] ERROR Session tidak ditemukan");
+        }
+
+        logger.info("[BiodataAction.initEditSessionPosition] END <<<");
+        return personilPosition;
+    }
 
     public String paging(){
         return SUCCESS;

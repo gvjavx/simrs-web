@@ -25,6 +25,24 @@ public class PersonilPosition extends BaseModel {
     private String profesiId;
     private String profesiName;
     private String jenisPegawaiName;
+    private String flagEdited;
+    private String positionIdLama;
+
+    public String getPositionIdLama() {
+        return positionIdLama;
+    }
+
+    public void setPositionIdLama(String positionIdLama) {
+        this.positionIdLama = positionIdLama;
+    }
+
+    public String getFlagEdited() {
+        return flagEdited;
+    }
+
+    public void setFlagEdited(String flagEdited) {
+        this.flagEdited = flagEdited;
+    }
 
     public String getJenisPegawaiName() {
         return jenisPegawaiName;
