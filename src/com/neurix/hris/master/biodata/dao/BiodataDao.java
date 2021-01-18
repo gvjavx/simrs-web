@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 /**
@@ -606,133 +607,138 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .createSQLQuery(query)
                 .list();
 
+        List<String> bioNIP = new ArrayList<>();
+
         //RAKA-trouble HRIS
         for (Object[] row : results) {
-            ImBiodataEntity result  = new ImBiodataEntity();
-            result.setBranchId((String) row[0]);
-            result.setDivisiId((String) row[1]);
-            result.setPosisiId((String) row[2]);
-            result.setProvinsiName((String) row[3]);
-            result.setKotaName((String) row[4]);
-            result.setKecamatanName((String) row[5]);
-            result.setDesaName((String) row[6]);
-            result.setTipePegawaiName((String) row[7]);
-            result.setPjs((String) row[10]);
+            if(!bioNIP.contains((String) row[11])) {
+                bioNIP.add((String) row[11]);
 
-            result.setNip((String) row[11]);
-            result.setNamaPegawai((String) row[12]);
-            result.setGelarDepan((String) row[13]);
-            result.setGelarBelakang((String) row[14]);
-            result.setNoKtp((String) row[15]);
-            result.setAlamat((String) row[16]);
-            result.setRtRw((String) row[17]);
-            result.setDesaId((String) row[18]);
-            result.setKecamatanId((String) row[19]);
-            result.setNoTelp((String) row[20]);
+                ImBiodataEntity result = new ImBiodataEntity();
+                result.setBranchId((String) row[0]);
+                result.setDivisiId((String) row[1]);
+                result.setPosisiId((String) row[2]);
+                result.setProvinsiName((String) row[3]);
+                result.setKotaName((String) row[4]);
+                result.setKecamatanName((String) row[5]);
+                result.setDesaName((String) row[6]);
+                result.setTipePegawaiName((String) row[7]);
+                result.setPjs((String) row[10]);
 
-            result.setKotaId((String) row[21]);
-            result.setProvinsiId((String) row[22]);
-            result.setTanggalLahir((Date) row[23]);
-            result.setTempatLahir((String) row[24]);
-            result.setTipePegawai((String) row[25]);
-            result.setFotoUpload((String) row[26]);
-            result.setStatusCaption((String) row[27]);
-            result.setKeterangan((String) row[28]);
-            result.setFlag((String) row[29]);
-            result.setAction((String) row[30]);
+                result.setNip((String) row[11]);
+                result.setNamaPegawai((String) row[12]);
+                result.setGelarDepan((String) row[13]);
+                result.setGelarBelakang((String) row[14]);
+                result.setNoKtp((String) row[15]);
+                result.setAlamat((String) row[16]);
+                result.setRtRw((String) row[17]);
+                result.setDesaId((String) row[18]);
+                result.setKecamatanId((String) row[19]);
+                result.setNoTelp((String) row[20]);
 
-            result.setShift((String)row[60]);
-            result.setCreatedWho((String) row[31]);
-            result.setLastUpdateWho((String) row[32]);
-            result.setTanggalAktif((Date) row[33]);
-            result.setGolongan((String) row[34]);
-            result.setStatusPegawai((String) row[35]);
-            result.setStatusKeluarga((String) row[36]);
-            if (row[37] != null)
-                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
-            else
-                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(0)));
-            result.setGender((String) row[38]);
+                result.setKotaId((String) row[21]);
+                result.setProvinsiId((String) row[22]);
+                result.setTanggalLahir((Date) row[23]);
+                result.setTempatLahir((String) row[24]);
+                result.setTipePegawai((String) row[25]);
+                result.setFotoUpload((String) row[26]);
+                result.setStatusCaption((String) row[27]);
+                result.setKeterangan((String) row[28]);
+                result.setFlag((String) row[29]);
+                result.setAction((String) row[30]);
+
+                result.setShift((String) row[60]);
+                result.setCreatedWho((String) row[31]);
+                result.setLastUpdateWho((String) row[32]);
+                result.setTanggalAktif((Date) row[33]);
+                result.setGolongan((String) row[34]);
+                result.setStatusPegawai((String) row[35]);
+                result.setStatusKeluarga((String) row[36]);
+                if (row[37] != null)
+                    result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
+                else
+                    result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(0)));
+                result.setGender((String) row[38]);
 //            result.setStatusGiling((String) row[39]);
-            result.setNoSkAktif((String) row[40]);
+                result.setNoSkAktif((String) row[40]);
 
-            result.setPin((String) row[41]);
+                result.setPin((String) row[41]);
 //            result.setPoint((int) row[42]);
 //            result.setZakatProfesi((String) row[43]);
-            result.setLastUpdate((Timestamp)row[44]);
-            result.setCreatedDate((Timestamp) row[45]);
-            result.setTanggalPensiun((Date) row[46]);
-            result.setDanaPensiun((String) row[47]);
-            result.setStrukturGaji((String) row[48]);
-            if(row[49] != null){
-                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
-            }
+                result.setLastUpdate((Timestamp) row[44]);
+                result.setCreatedDate((Timestamp) row[45]);
+                result.setTanggalPensiun((Date) row[46]);
+                result.setDanaPensiun((String) row[47]);
+                result.setStrukturGaji((String) row[48]);
+                if (row[49] != null) {
+                    result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
+                }
 //            result.setPoinLebih((int) row[50]);
 
-            result.setAgama((String) row[51]);
-            result.setTanggalMenikah((Date) row[52]);
-            result.setNpwp((String) row[53]);
+                result.setAgama((String) row[51]);
+                result.setTanggalMenikah((Date) row[52]);
+                result.setNpwp((String) row[53]);
 //            result.setMt((String) row[54]);
-            result.setTanggalAkhirKontrak((Date) row[55]);
-            result.setNoAnggotaDapen((String) row[56]);
-            result.setNoBpjsKetenagakerjaan((String) row[57]);
-            result.setNoBpjsKetenagakerjaanPensiun((String) row[58]);
-            result.setNoBpjsKesehatan((String) row[59]);
+                result.setTanggalAkhirKontrak((Date) row[55]);
+                result.setNoAnggotaDapen((String) row[56]);
+                result.setNoBpjsKetenagakerjaan((String) row[57]);
+                result.setNoBpjsKetenagakerjaanPensiun((String) row[58]);
+                result.setNoBpjsKesehatan((String) row[59]);
 
-            result.setNamaBank((String) row[63]);
-            result.setNoRekBank((String) row[64]);
-            result.setCabangBank((String) row[66]);
+                result.setNamaBank((String) row[63]);
+                result.setNoRekBank((String) row[64]);
+                result.setCabangBank((String) row[66]);
 
-            if (row[68] != null){
-                result.setTanggalMasuk((Date) row[68]);
-            }
+                if (row[68] != null) {
+                    result.setTanggalMasuk((Date) row[68]);
+                }
 //            if (row[69]!=null){
 //                result.setGolonganDapenId(row[69].toString());
 //            }
-            result.setMasaKerjaGolongan((Integer) row[70]);
+                result.setMasaKerjaGolongan((Integer) row[70]);
 
-            if(row[71] != null){
-                result.setTanggalAkhirKontrak((Date)row[71]);
-            }
+                if (row[71] != null) {
+                    result.setTanggalAkhirKontrak((Date) row[71]);
+                }
 
-            if (row[78] != null){
-                result.setTanggalPraPensiun((Date) row[78]);
-            }
+                if (row[78] != null) {
+                    result.setTanggalPraPensiun((Date) row[78]);
+                }
 
-            result.setFlagMess((String) row[67]);
+                result.setFlagMess((String) row[67]);
 //            result.setFlagPlt((String) row[79]);
 //            result.setFlagPjs((String) row[80]);
 
-            result.setFlagFingerMobile((String) row[81]);
-            result.setFlagTunjRumah((String) row[82]);
-            result.setFlagTunjAir((String) row[83]);
-            result.setFlagTunjListrik((String) row[84]);
-            result.setFlagTunjBbm((String) row[85]);
-            result.setFlagBpjsKs((String) row[86]);
-            result.setFlagBpjsTk((String) row[87]);
+                result.setFlagFingerMobile((String) row[81]);
+                result.setFlagTunjRumah((String) row[82]);
+                result.setFlagTunjAir((String) row[83]);
+                result.setFlagTunjListrik((String) row[84]);
+                result.setFlagTunjBbm((String) row[85]);
+                result.setFlagBpjsKs((String) row[86]);
+                result.setFlagBpjsTk((String) row[87]);
 //            result.setFlagPercobaan((String) row[88]);
 //            result.setPositionPltId((String) row[89]);
-            result.setNipLama((String) row[90]);
-            result.setFlagDokterKso((String) row[91]);
+                result.setNipLama((String) row[90]);
+                result.setFlagDokterKso((String) row[91]);
 //            result.setJenisPegawai((String) row[92]);
 
 
-            if(row[93] != null){
-                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
-            }
-            if(row[94] != null){
-                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
-            }
-            if(row[95] != null){
-                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
-            }
+                if (row[93] != null) {
+                    result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
+                }
+                if (row[94] != null) {
+                    result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
+                }
+                if (row[95] != null) {
+                    result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
+                }
 
-            result.setFlagPegawaiCutiDiluarTanggungan((String) row[97]);
-            result.setTanggalCutiDiluarAwal((Date) row[98]);
-            result.setTanggalCutiDiluarAkhir((Date) row[99]);
-            result.setBagianId((String) row[100]);
-            result.setBagianName((String) row[101]);
-            result.setProfesiId((String)row[102]);
+                result.setFlagPegawaiCutiDiluarTanggungan((String) row[97]);
+                result.setTanggalCutiDiluarAwal((Date) row[98]);
+                result.setTanggalCutiDiluarAkhir((Date) row[99]);
+                result.setBagianId((String) row[100]);
+                result.setBagianName((String) row[101]);
+                result.setProfesiId((String) row[102]);
 
 //            === DISESUAIKAN ===
 //            if(row[93] != null){
@@ -750,8 +756,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 //            result.setProfesiId((String)row[98]);
 //            ======
 
-            result.setDivisiName((String)row[9]);
-            listOfResult.add(result);
+                result.setDivisiName((String) row[9]);
+                listOfResult.add(result);
+            }
         }
         return listOfResult;
     }
