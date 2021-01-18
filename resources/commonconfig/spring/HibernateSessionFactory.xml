@@ -494,6 +494,8 @@
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebra.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebraLog.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImVersionZebra.hbm.xml</value>
+
                 <value>sshconfig/com/neurix/simrs/master/hargaterakhir/hibernate/MtSimrsHargaTerakhirEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/jenispersediaanobat/hibernate/ImSimrsJenisPersediaanObatEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/jenispersediaanobatsub/hibernate/ImSimrsJenisPersediaanObatSubEntity.xml</value>

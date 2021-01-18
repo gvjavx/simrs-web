@@ -314,5 +314,42 @@ CREATE SEQUENCE public.seq_license_zebra_log
 ALTER SEQUENCE public.seq_license_zebra_log
     OWNER TO postgres;
 
+--2021-01-18
+
+-- Table: public.im_version_zebra
+
+-- DROP TABLE public.im_version_zebra;
+
+CREATE TABLE public.im_version_zebra
+(
+    id_version character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    version_code character varying(20) COLLATE pg_catalog."default",
+    version_name character varying(20) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    created_who character varying(50) COLLATE pg_catalog."default",
+    last_update_who character varying(50) COLLATE pg_catalog."default",
+    description text COLLATE pg_catalog."default",
+    CONSTRAINT im_version_zebra_pkey PRIMARY KEY (id_version)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.im_version_zebra
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_version_zebra
+
+-- DROP SEQUENCE public.seq_version_zebra;
+
+CREATE SEQUENCE public.seq_version_zebra
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_version_zebra
+    OWNER TO postgres;
 
 
