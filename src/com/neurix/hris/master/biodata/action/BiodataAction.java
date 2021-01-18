@@ -664,6 +664,11 @@ public class BiodataAction extends BaseMasterAction{
 
     @Override
     public String save() {
+
+        // Sigit 2021-01-18, Mengambil Session ListOfPersonilPosition
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
         if (isAddOrEdit()) {
             if (!isAdd()) {
                 logger.info("[BiodataAction.saveEdit] start process >>>");
@@ -749,6 +754,10 @@ public class BiodataAction extends BaseMasterAction{
                     editBiodata.setAction("U");
                     editBiodata.setFlag(editBiodata.getFlag());
 
+                    // Sigit 2021-01-18, Set PersonilPosition pada object editBiodata
+                    editBiodata.setListOfPersonilPosition(listOfResultPersonil);
+                    // END
+
                     if ("Y".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
                         biodataBoProxy.saveEditDokterKso(editBiodata);
                     } else {
@@ -768,8 +777,8 @@ public class BiodataAction extends BaseMasterAction{
                     throw new GeneralBOException(e.getMessage());
                 }
 
+                clearAllSession();
                 logger.info("[BiodataAction.saveEdit] end process <<<");
-
                 return "success_save_edit";
             } else {
                 //add
@@ -853,14 +862,7 @@ public class BiodataAction extends BaseMasterAction{
                 }
 
 
-                HttpSession session = ServletActionContext.getRequest().getSession();
-                session.removeAttribute("listOfResultBiodata");
-                session.removeAttribute("listKeluarga");
-                session.removeAttribute("listStudy");
-                session.removeAttribute("listPengalamanKerja");
-                session.removeAttribute("listReward");
-                session.removeAttribute("listSertifikat");
-
+                clearAllSession();
                 logger.info("[pengalamanKerjaAction.saveAdd] end process >>>");
                 return "success_save_add";
             }
@@ -901,6 +903,17 @@ public class BiodataAction extends BaseMasterAction{
         }
 
         return null;
+    }
+
+    private void clearAllSession(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultBiodata");
+        session.removeAttribute("listKeluarga");
+        session.removeAttribute("listStudy");
+        session.removeAttribute("listPengalamanKerja");
+        session.removeAttribute("listReward");
+        session.removeAttribute("listSertifikat");
+        session.removeAttribute("listOfPersonilPosition");
     }
 
     public String saveEdit(){
@@ -3311,7 +3324,8 @@ public class BiodataAction extends BaseMasterAction{
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-        if (listOfResultPersonil == null){
+        if (listOfResultPersonil == null)
+        {
             try {
                 listOfResultPersonil = biodataBo.getListPesonilPosition(nip);
             } catch (GeneralBOException e){
@@ -3334,7 +3348,8 @@ public class BiodataAction extends BaseMasterAction{
         List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
 
         CrudResponse response = new CrudResponse();
-        if (stJson == null || "".equalsIgnoreCase(stJson)){
+        if (stJson == null || "".equalsIgnoreCase(stJson))
+        {
             response.setStatus("error");
             response.setMsg("Tidak dapat mendapatkan JSON");
             return response;
@@ -3345,13 +3360,15 @@ public class BiodataAction extends BaseMasterAction{
         personilPosition.setNip(jsonObject.getString("nip"));
         personilPosition.setPositionId(jsonObject.getString("positionid"));
 
-        if (listOfResultPersonil != null){
+        if (listOfResultPersonil != null)
+        {
             List<PersonilPosition> filteredPersonil = listOfResultPersonil.stream().filter(
                     p-> p.getNip().equalsIgnoreCase(personilPosition.getNip()) &&
                             p.getPersonilPositionId().equalsIgnoreCase(personilPosition.getPositionId())
             ).collect(Collectors.toList());
 
-            if (filteredPersonil != null || filteredPersonil.size() > 0){
+            if (filteredPersonil != null || filteredPersonil.size() > 0)
+            {
                 response.setStatus("error");
                 response.setMsg("Data Sudah Ada Pada List");
                 return response;
@@ -3387,28 +3404,29 @@ public class BiodataAction extends BaseMasterAction{
         List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
 
         CrudResponse response = new CrudResponse();
-        if (stJson == null || "".equalsIgnoreCase(stJson)){
+        if (stJson == null || "".equalsIgnoreCase(stJson))
+        {
             response.setStatus("error");
             response.setMsg("Tidak dapat mendapatkan JSON");
             return response;
         }
 
         JSONObject jsonObject = new JSONObject(stJson);
-        PersonilPosition personilPosition = new PersonilPosition();
 
         String nip                  = jsonObject.getString("nip");
         String positionId           = jsonObject.getString("positionid");
         String idPersonilPosition   = jsonObject.getString("idpersonilposition");
         String positionIdLama       = jsonObject.getString("positionidlama");
         String flagEdited           = "";
+
         // jika yg diedit adalah position yg sudah tersimpan
-        if (idPersonilPosition != null && !"".equalsIgnoreCase(idPersonilPosition)){
+        if (idPersonilPosition != null && !"".equalsIgnoreCase(idPersonilPosition))
             flagEdited = "Y";
-        }
         // END
 
         List<PersonilPosition> personilPositoinNew = listOfResultPersonil;
-        for (PersonilPosition editPersonilPosition : personilPositoinNew){
+        for (PersonilPosition editPersonilPosition : personilPositoinNew)
+        {
 
             // jika ditemukan position nip dan position id lama; maka input nilai-nilai nya
             if (editPersonilPosition.getNip().equalsIgnoreCase(nip) &&
@@ -3439,7 +3457,7 @@ public class BiodataAction extends BaseMasterAction{
 
         if (filterdPersonilPosition.size() > 1){
             response.setStatus("error");
-            response.setMsg("Tidak dapat mendapatkan JSON");
+            response.setMsg("Data Nip dan Position Tersebut Sudah ada.");
             return response;
         }
         // END;
@@ -3458,20 +3476,22 @@ public class BiodataAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
 
-        if (listOfResultPersonil != null && listOfResultPersonil.size() > 0){
-
+        if (listOfResultPersonil == null || listOfResultPersonil.size() == 0)
+            logger.error("[BiodataAction.initEditSessionPosition] ERROR Session tidak ditemukan");
+        else
+        {
+            // mencari pada session list berdasarkan nip dan position id
             List<PersonilPosition> filteredPosition = listOfResultPersonil.stream().filter(
                     p-> p.getNip().equalsIgnoreCase(nip) &&
                             p.getPositionId().equalsIgnoreCase(positionId)
             ).collect(Collectors.toList());
+            // END
 
-            if (filteredPosition != null && filteredPosition.size() > 0){
+            // set ke object personilPosition untuk direturn dan print log error bila tidak ditemukan;
+            if (filteredPosition == null || filteredPosition.size() == 0)
+                logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan pada session");
+            else
                 personilPosition = listOfResultPersonil.get(0);
-            } else {
-                logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan");
-            }
-        } else {
-            logger.error("[BiodataAction.initEditSessionPosition] ERROR Session tidak ditemukan");
         }
 
         logger.info("[BiodataAction.initEditSessionPosition] END <<<");

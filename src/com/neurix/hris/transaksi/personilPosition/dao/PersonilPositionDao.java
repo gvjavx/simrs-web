@@ -56,6 +56,9 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
             if (mapCriteria.get("flag_digaji")!=null) {
                 criteria.add(Restrictions.eq("flagDigaji", (String) mapCriteria.get("flag_digaji")));
             }
+            if (mapCriteria.get("personil_position_id")!=null) {
+                criteria.add(Restrictions.eq("personilPositionId", (String) mapCriteria.get("personil_position_id")));
+            }
         }
 
         // Order by

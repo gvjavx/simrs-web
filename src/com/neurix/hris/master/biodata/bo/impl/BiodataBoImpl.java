@@ -72,6 +72,7 @@ import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.taglibs.standard.lang.jpath.example.Person;
 import org.hibernate.HibernateException;
 import org.joda.time.*;
 import org.springframework.context.ApplicationContext;
@@ -447,7 +448,8 @@ public class BiodataBoImpl implements BiodataBo {
     public void saveEdit(Biodata bean) throws GeneralBOException {
         logger.info("[BiodataBoImpl.saveEdit] start process >>>");
 
-//        String condition = null;
+        // Sigit 2021-01-18, Deklasi list prsonil positon pada objec listOfPersonilPosition
+        List<PersonilPosition> listOfPersonilPosition = bean.getListOfPersonilPosition();
 
         if (bean!=null) {
             String cekTipePgw = cekStatusPgw(bean.getNip(), bean.getTipePegawai());
@@ -613,9 +615,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setRtRw(imBiodataEntity.getRtRw());
                                 imBiodataHistoryEntity.setTipePegawai(imBiodataEntity.getTipePegawai());
                                 imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
-//                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-//                                imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling()); //RAKA-delete
-//                                imBiodataHistoryEntity.setMt(imBiodataEntity.getMt()); //RAKA-delete
                                 imBiodataHistoryEntity.setGolongan(imBiodataEntity.getGolongan());
                                 imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
                                 imBiodataHistoryEntity.setStatusPegawai(imBiodataEntity.getStatusPegawai());
@@ -715,7 +714,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setLastUpdate(bean.getLastUpdate());
 
                                 imBiodataEntity.setFlagMess(bean.getFlagMess());
-//                                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
                                 imBiodataEntity.setFlagDokterKso(bean.getFlagDokterKso());
                                 imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                                 imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
@@ -739,20 +737,78 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setTanggalCutiDiluarAkhir(bean.getTanggalCutiDiluarTanggunganAkhir());
                                 //RAKA-end
 
-//                            if(itPersonilPositionEntity != null){
-//                                for(ItPersonilPositionEntity itPerson : itPersonilPositionEntity){
-//                                    itPerson.setBranchId(bean.getBranch());
-//                                    itPerson.setDivisiId(bean.getDivisi());
-//                                    itPerson.setPositionId(bean.getPositionId());
-//                                    itPerson.setProfesiId(bean.getProfesiId());
-//                                    itPerson.setPjs(bean.getPjs());
-//                                    itPerson.setFlag(bean.getFlag());
-//                                    itPerson.setAction(bean.getAction());
-//                                    itPerson.setLastUpdateWho(bean.getLastUpdateWho());
-//                                    itPerson.setLastUpdate(bean.getLastUpdate());
-//                                    personilPositionDao.updateAndSave(itPerson);
-//                                }
-//                            }
+                                // Sigit 2021-01-18, Save Add Or Edit Personil Position
+                                if(listOfPersonilPosition != null && listOfPersonilPosition.size() > 0)
+                                {
+                                    for (PersonilPosition personilPosition : listOfPersonilPosition)
+                                    {
+                                        boolean isEdited = personilPosition.getPersonilPositionId() != null && !"".equalsIgnoreCase(personilPosition.getPersonilPositionId())
+                                                && personilPosition.getFlagEdited() != null && "Y".equalsIgnoreCase(personilPosition.getFlagEdited());
+
+                                        boolean isNew = (personilPosition.getPersonilPositionId() == null || "".equalsIgnoreCase(personilPosition.getPersonilPositionId()))
+                                                && (personilPosition.getFlagEdited() == null || !"Y".equalsIgnoreCase(personilPosition.getFlagEdited()));
+
+                                        if (isEdited)
+                                        {
+                                            ItPersonilPositionEntity personilPositionEntity = getPersonilPositionEntityById(personilPosition.getPersonilPositionId());
+
+                                            // check jika tidak ditemukan throw error;
+                                            if (personilPositionEntity == null)
+                                            {
+                                                logger.error("[BiodataBoImpl.saveEdit] Tidak ditemukan personil by id untuk update");
+                                                throw new GeneralBOException("[BiodataBoImpl.saveEdit] Tidak ditemukan personil by id untuk update");
+                                            }
+                                            // END
+
+                                            // set masing - masing value yg diupdate pada personilPositionEntity
+                                            personilPositionEntity.setPositionId(personilPosition.getPositionId());
+                                            personilPositionEntity.setJenisPegawai(personilPosition.getJenisPegawai());
+                                            personilPositionEntity.setFlagDigaji(personilPosition.getFlagDigaji());
+                                            personilPositionEntity.setProfesiId(personilPosition.getProfesiId());
+                                            personilPositionEntity.setFlag(personilPosition.getFlag());
+                                            personilPositionEntity.setAction("U");
+                                            personilPositionEntity.setLastUpdate(personilPosition.getLastUpdate());
+                                            personilPositionEntity.setLastUpdateWho(personilPosition.getLastUpdateWho());
+                                            // END
+
+                                            try {
+                                                personilPositionDao.updateAndSave(personilPositionEntity);
+                                            } catch (HibernateException e){
+                                                logger.error("[BiodataBoImpl.saveEdit] Error When Update Personil Position. ",e);
+                                                throw new GeneralBOException("[BiodataBoImpl.saveEdit] Error When Update Personil Position. ",e);
+                                            }
+                                        }
+
+                                        // jika baru maka ditambahkan
+                                        if (isNew)
+                                        {
+                                            ItPersonilPositionEntity personilPositionEntity = new ItPersonilPositionEntity();
+                                            personilPositionEntity.setPersonilPositionId(getNextPersonilPositionId());
+                                            personilPositionEntity.setNip(personilPosition.getNip());
+                                            personilPositionEntity.setPersonilName(personilPosition.getPersonName());
+                                            personilPositionEntity.setPositionId(personilPosition.getPositionId());
+                                            personilPositionEntity.setJenisPegawai(personilPosition.getJenisPegawai());
+                                            personilPositionEntity.setProfesiId(personilPosition.getProfesiId());
+                                            personilPositionEntity.setBranchId(personilPosition.getBranchId());
+                                            personilPositionEntity.setFlagDigaji(personilPosition.getFlagDigaji());
+                                            personilPositionEntity.setFlag("Y");
+                                            personilPositionEntity.setAction("C");
+                                            personilPositionEntity.setCreatedDate(bean.getLastUpdate());
+                                            personilPositionEntity.setCreatedWho(bean.getLastUpdateWho());
+                                            personilPositionEntity.setLastUpdate(bean.getLastUpdate());
+                                            personilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
+
+                                            try {
+                                                personilPositionDao.addAndSave(personilPositionEntity);
+                                            } catch (HibernateException e){
+                                                logger.error("[BiodataBoImpl.saveEdit] Error When Add Personil Position. ",e);
+                                                throw new GeneralBOException("[BiodataBoImpl.saveEdit] Error When Add Personil Position. ",e);
+                                            }
+                                        }
+                                        // END
+                                    }
+                                }
+
                                 List<ItTunjLainPegawaiEntity> tunjLainPegawaiEntityList = tunjLainPegawaiDao.getAllData(bean.getNip());
                                 if (tunjLainPegawaiEntityList!=null){
                                     for (ItTunjLainPegawaiEntity itTunjLainPegawaiEntity : tunjLainPegawaiEntityList){
@@ -804,7 +860,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }else {
                             throw new GeneralBOException("Peringatan!!!, Form Keluarga harus diisi dahulu apabila berstatus keluarga (harus memiliki suami atau istri");
                         }
-                    }else {
+                    } else {
                         String historyId = "";
                         String personalId = bean.getNip();
                         ImBiodataEntity imBiodataEntity = null;
@@ -5466,5 +5522,63 @@ public class BiodataBoImpl implements BiodataBo {
 
         logger.info("[BiodataBoImpl.getListPesonilPosition] END process <<<");
         return personilPositions;
+    }
+
+    private List<ItPersonilPositionEntity> getListPersonilPositionEntity(PersonilPosition bean){
+        logger.info("BiodataBoImpl.getListPersonilPositionEntity] START process >>>");
+
+        List<ItPersonilPositionEntity> personilPositionEntityList = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip()))
+            hsCriteria.put("nip", bean.getNip());
+        if (bean.getPositionId() != null && !"".equalsIgnoreCase(bean.getPositionId()))
+            hsCriteria.put("position_id", bean.getPositionId());
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
+            hsCriteria.put("flag", bean.getFlag());
+
+        try {
+            personilPositionEntityList = personilPositionDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.getListPersonilPositionEntity] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get data personil position, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[BiodataBoImpl.getListPersonilPositionEntity] END process <<<");
+        return personilPositionEntityList;
+    }
+
+    private ItPersonilPositionEntity getPersonilPositionEntityById(String id){
+        logger.info("BiodataBoImpl.getPersonilPositionEntityById] START process >>>");
+
+
+        ItPersonilPositionEntity personilPositionEntity = new ItPersonilPositionEntity();
+
+        try {
+            personilPositionEntity = personilPositionDao.getById("personilPositionId", id);
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.getPersonilPositionEntityById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get data personil position, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[BiodataBoImpl.getPersonilPositionEntityById] END process <<<");
+        return personilPositionEntity;
+    }
+
+    private String getNextPersonilPositionId(){
+        logger.info("BiodataBoImpl.getPersonilPositionEntityById] START process >>>");
+
+        String id = "";
+
+        try {
+            id = personilPositionDao.getNextPersonilPositionId();
+        } catch (HibernateException e){
+            logger.error("[BiodataBoImpl.getPersonilPositionEntityById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get next personil position id, please info to your admin..." + e.getMessage());
+        }
+
+
+        logger.info("[BiodataBoImpl.getPersonilPositionEntityById] END process <<<");
+        return id;
     }
 }
