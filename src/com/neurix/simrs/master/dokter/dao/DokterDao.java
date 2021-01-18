@@ -324,8 +324,8 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
             if(bean.getNamaDokter() != null && !"".equalsIgnoreCase(bean.getNamaDokter())){
                 condition += "AND a.nama_dokter ILIKE '%"+bean.getNamaDokter()+"%' \n";
             }
-            if(bean.getNamaPelayanan() != null && !"".equalsIgnoreCase(bean.getNamaPelayanan())){
-                condition +="AND c.nama_pelayanan ILIKE '%"+bean.getNamaPelayanan()+"%' \n";
+            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                condition +="AND c.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
             }
             if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
                 branchId = bean.getBranchId();
