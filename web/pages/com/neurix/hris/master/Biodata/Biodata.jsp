@@ -1782,17 +1782,18 @@
                                 </s:if>
                             </h3>
                             <table style="width: 100%;" class="table table-bordered">
-                                <thead>
+                                <thead style="font-size: 15px;font-weight:bold;background-color:  #3c8dbc; color: white" align="center">
                                     <tr>
+                                        <td>No</td>
+                                        <td>Unit</td>
                                         <td>Jabatan</td>
                                         <td>Profesi</td>
-                                        <td>Unit</td>
                                         <td>Jenis Jabatan</td>
                                         <td>Digaji</td>
                                         <td style="text-align: center">Action</td>
                                     </tr>
                                 </thead>
-                                <tbody id="tbody-position">
+                                <tbody id="tbody-position" style="font-size: 12px" align="center">
 
                                 </tbody>
                             </table>
@@ -3082,6 +3083,7 @@
 </div>
 
 </html>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/biodata.js"/>'></script>
 
 <script>
     window.cekPerusahaanLain = function(){
@@ -3231,6 +3233,7 @@
 
     $(document).ready(function() {
         loadStatusPegawai();
+        loadPositionJabatan();
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
@@ -3599,7 +3602,7 @@
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Unit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                     //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
@@ -6299,4 +6302,5 @@
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
     }
+
 </script>

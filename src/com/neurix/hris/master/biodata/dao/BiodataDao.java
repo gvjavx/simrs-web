@@ -1895,7 +1895,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         for (Object[] obj : results){
             PersonilPosition personilPosition = new PersonilPosition();
             personilPosition.setPositionId(obj[0].toString());
-            personilPosition.setPersonName(obj[1].toString());
+            personilPosition.setPositionName(obj[1].toString());
             personilPosition.setProfesiId(obj[2].toString());
             personilPosition.setProfesiName(obj[3].toString());
             personilPosition.setBranchId(obj[4].toString());
