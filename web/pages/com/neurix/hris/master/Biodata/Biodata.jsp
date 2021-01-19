@@ -47,13 +47,12 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DepartmentAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 
+
     <script type="text/javascript">
-
-        $(document).ready(function () {
-
-        });
 
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
@@ -3082,6 +3081,79 @@
     </div>
 </div>
 
+<div id="modal-edit-jabatan" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 30%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-edit-jabatan-title">Add Data</h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="personil-position-id"/>
+                <input type="hidden" id="personil-position-flag"/>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Bidang : </label>
+                        <div class="col-sm-6">
+                                <select class="form-control" id="department-jabatan" onchange="listPositionJabatan()">
+
+                                </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Posisi : </label>
+                        <div class="col-sm-6">
+                            <select class="form-control" id="posisi-jabatan">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="gender">Profesi :</label>
+                        <div class="col-sm-6">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesi-jabatan"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Jenis Jabatan : </label>
+                        <div class="col-sm-6">
+                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenis-jabatan"
+                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Digaji : </label>
+                        <div class="col-sm-6">
+                            <s:select list="#{'N':'Tidak'}" id="flag-digaji"
+                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveJabatan" type="button" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/biodata.js"/>'></script>
 
@@ -3234,6 +3306,7 @@
     $(document).ready(function() {
         loadStatusPegawai();
         loadPositionJabatan();
+        getAllDepartment();
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
@@ -6262,11 +6335,6 @@
                                     loadSessionPengalamanKerja();
                                 }
                             });
-//                            dwr.engine.endBatch({
-//                                errorHandler:function(errorString, exception){
-//                                    alert('Jabatan aktif sudah ada');
-//                                }
-//                            });
                         }
                     }
                 });

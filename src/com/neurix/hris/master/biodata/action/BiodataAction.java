@@ -849,6 +849,8 @@ public class BiodataAction extends BaseMasterAction{
                     biodata.setStatusCaption("Online");
                     biodata.setFlag("Y");
 
+                    biodata.setListOfPersonilPosition(listOfResultPersonil);
+
                     biodataBoProxy.saveAdd(biodata);
                 }catch (GeneralBOException e) {
                     Long logId = null;
@@ -3366,14 +3368,13 @@ public class BiodataAction extends BaseMasterAction{
 
         JSONObject jsonObject = new JSONObject(stJson);
         PersonilPosition personilPosition = new PersonilPosition();
-        personilPosition.setNip(jsonObject.getString("nip"));
+        personilPosition.setNip(jsonObject.getString("1")); // nip sementara;
         personilPosition.setPositionId(jsonObject.getString("positionid"));
 
         if (listOfResultPersonil != null)
         {
             List<PersonilPosition> filteredPersonil = listOfResultPersonil.stream().filter(
-                    p-> p.getNip().equalsIgnoreCase(personilPosition.getNip()) &&
-                            p.getPersonilPositionId().equalsIgnoreCase(personilPosition.getPositionId())
+                    p-> p.getPersonilPositionId().equalsIgnoreCase(personilPosition.getPositionId())
             ).collect(Collectors.toList());
 
             if (filteredPersonil != null || filteredPersonil.size() > 0)
