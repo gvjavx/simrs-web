@@ -58,8 +58,8 @@
             <%--MENU-tab--%>
             <input id="menu-nip" readonly="true" style="display: none;">
             <ul class="nav nav-tabs">
-                <li><a href="#menu-payroll" class="active">Payroll</a></li>
-                <li><a href="#menu-absensi">Absensi</a></li>
+                <li><a href="#menu-absensi" class="active">Absensi</a></li>
+                <li><a href="#menu-payroll">Payroll</a></li>
                 <li><a href="#menu-cuti">Cuti</a></li>
             </ul>
 
@@ -1414,10 +1414,11 @@
     $('.listOfBiodata').on('click', '.item-menu', function(){
         var nip = $(this).attr('data');
 
-        menuPayroll(nip);
+        menuAbsensi(nip);
 
-        $('.tableAbsensi').find('tbody').remove();
-        $('.tableAbsensi').find('thead').remove();
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
 
         $('.tableCuti').find('tbody').remove();
         $('.tableCuti').find('thead').remove();
