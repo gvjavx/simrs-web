@@ -3552,7 +3552,8 @@ public class BiodataAction extends BaseMasterAction{
                                 && !p.getPositionId().equalsIgnoreCase(positionId)
                 ).collect(Collectors.toList());
 
-                if (filteredPersonilPosition == null || filteredPersonilPosition.size() == 0){
+                if (filteredPersonilPosition == null || filteredPersonilPosition.size() == 0)
+                {
                     response.setMsg("Tidak ditemukan posisi utama lain pada list posisi jika di hapus. ");
                     return response;
                 }
