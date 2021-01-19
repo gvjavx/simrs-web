@@ -1,9 +1,8 @@
 package com.neurix.simrs.master.license.model;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 
-public class LicenseZebra {
+public class ImLicenseZebraLogEntity {
 
     private String licenseLogId;
     private String licenseId;
@@ -22,6 +21,22 @@ public class LicenseZebra {
 
     public void setLicenseLogId(String licenseLogId) {
         this.licenseLogId = licenseLogId;
+    }
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
     }
 
     public String getLicenseId() {
@@ -44,8 +59,8 @@ public class LicenseZebra {
         return deviceId;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setDeviceId(String deviceid) {
+        this.deviceId = deviceid;
     }
 
     public String getCreatedWho() {
@@ -78,21 +93,5 @@ public class LicenseZebra {
 
     public void setLastUpdate(Timestamp lastUpdate) {
         this.lastUpdate = lastUpdate;
-    }
-
-    public String getFlag() {
-        return flag;
-    }
-
-    public void setFlag(String flag) {
-        this.flag = flag;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
     }
 }

@@ -30,6 +30,7 @@ import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
 import com.neurix.simrs.transaksi.reseponline.model.PengirimanObat;
 import com.neurix.simrs.transaksi.reseponline.model.ResepOnline;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
+import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 import com.neurix.simrs.transaksi.verifikatorasuransi.dao.StrukAsuransiDao;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.ItSimrsStrukAsuransiEntity;
 import com.neurix.simrs.transaksi.verifikatorasuransi.model.StrukAsuransi;
@@ -1140,14 +1141,40 @@ public class TelemedicineController implements ModelDriven<Object> {
                         transaksiObatDetail.setQty(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
                         transaksiObatDetail.setQtyApprove(BigInteger.valueOf(Long.valueOf(jsonArray.getJSONObject(i).getString("qty"))));
                         transaksiObatDetail.setJenisSatuan(jsonArray.getJSONObject(i).getString("jenisSatuan"));
-                        transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
-                        transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+//                        transaksiObatDetail.setKeterangan(jsonArray.getJSONObject(i).getString("keterangan"));
+//                        transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
                         transaksiObatDetail.setHariKronis(!jsonArray.getJSONObject(i).getString("hariKronis").equalsIgnoreCase("") ? Integer.valueOf(jsonArray.getJSONObject(i).getString("hariKronis")) : null);
                         transaksiObatDetail.setCreatedDate(now);
                         transaksiObatDetail.setLastUpdate(now);
                         transaksiObatDetail.setCreatedWho(idDokter);
                         transaksiObatDetail.setLastUpdateWho(idDokter);
                         transaksiObatDetail.setIdPelayanan(tujuanPelayanan);
+                        if ("Y".equalsIgnoreCase(jsonArray.getJSONObject(i).getString("flagRacik"))) {
+                            transaksiObatDetail.setFlagRacik(jsonArray.getJSONObject(i).getString("flagRacik"));
+                            transaksiObatDetail.setNamaRacik(jsonArray.getJSONObject(i).getString("namaRacik"));
+                            transaksiObatDetail.setIdRacik(jsonArray.getJSONObject(i).getString("idRacik"));
+                        } else {
+                            transaksiObatDetail.setFlagRacik("");
+                        }
+
+                        List<ItSimrsKeteranganResepEntity> resepEntityList = new ArrayList<>();
+                        JSONArray jsonKet = jsonArray.getJSONObject(i).getJSONArray("keteranganDetail");
+                        for (int j = 0; j < jsonKet.size(); j++) {
+                            net.sf.json.JSONObject obj = jsonKet.getJSONObject(j);
+                            ItSimrsKeteranganResepEntity resepEntity = new ItSimrsKeteranganResepEntity();
+                            resepEntity.setIdKeteranganObat(obj.getString("idWaktu"));
+                            resepEntity.setKeteranganLain(obj.getString("keterangan"));
+                            resepEntity.setCreatedDate(now);
+                            resepEntity.setLastUpdate(now);
+                            resepEntity.setCreatedWho(username);
+                            resepEntity.setLastUpdateWho(username);
+                            resepEntity.setAction("C");
+                            resepEntity.setFlag("Y");
+                            resepEntityList.add(resepEntity);
+                        }
+
+                        transaksiObatDetail.setKeteranganResepEntityList(resepEntityList);
+
                         transaksiObatDetail.setTtdDokter(fileName);
 
                         list.add(transaksiObatDetail);

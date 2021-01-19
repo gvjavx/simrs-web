@@ -318,7 +318,7 @@ public class PembayaranController implements ModelDriven<Object> {
                     pembayaranMobile.setNamaRekening(rekeningTelemedicList.get(0).getNamaRekening());
                 }
 
-                pembayaranMobile.setWaktuBayar(CommonUtil.addJamBayar(item.getCreatedDate()));
+                pembayaranMobile.setWaktuBayar(CommonUtil.addJamBayar(item.getWaktuBayar()));
 
                 listOfPembayaran.add(pembayaranMobile);
             }

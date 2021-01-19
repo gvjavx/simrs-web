@@ -589,11 +589,13 @@ public class  CommonUtil {
     }
 
     public static String addJamBayar(Timestamp date) {
-        String jam = "null";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        java.util.Date createdDate = date;
-        java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
-        jam = dateFormat.format(newJam);
+        String jam = "";
+        if(date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            java.util.Date createdDate = date;
+            java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
+            jam = dateFormat.format(newJam);
+        }
 
         return jam;
     }
@@ -1374,6 +1376,17 @@ public class  CommonUtil {
     public static int getRandomNumberInts(int min, int max){
         Random random = new Random();
         return random.ints(min,(max+1)).findFirst().getAsInt();
+    }
+
+    public static String getRandomString(int length) {
+        int leftLimit = 48;
+        int rightLimit = 122;
+
+        return new Random().ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(length)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
     }
 
     //Convert Date to Calendar
