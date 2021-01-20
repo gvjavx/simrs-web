@@ -66,6 +66,7 @@
             var unitPg = $('#unit_pg').val();
             var cekBpjs = $('#cek_is_bpjs').val();
             var poliUmum = $('#poli_umum').val();
+            var cekEksekutif = $('#cek_poli_eksekutif').val();
 
             if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
@@ -73,17 +74,37 @@
 
 
                 if (tipe == "umum") {
-                    if (pembayaran != '' && uangMuka != '') {
-                        $('#confirm_dialog').dialog('open');
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                        if (pembayaran == '') {
-                            $('#war_pembayaran').show();
+                    if(cekEksekutif == 'Y'){
+                        if($('#is_uang_muka').is(':checked')){
+                            if (pembayaran != '' && uangMuka != '') {
+                                $('#confirm_dialog').dialog('open');
+                            } else {
+                                $("html, body").animate({scrollTop: 0}, 600);
+                                $('#warning_pasien').show().fadeOut(10000);
+                                $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                                if (pembayaran == '') {
+                                    $('#war_pembayaran').show();
+                                }
+                                if (uangMuka == '') {
+                                    $('#war_uang_muka').show();
+                                }
+                            }
+                        }else{
+                            $('#confirm_dialog').dialog('open');
                         }
-                        if (uangMuka == '') {
-                            $('#war_uang_muka').show();
+                    }else{
+                        if (pembayaran != '' && uangMuka != '') {
+                            $('#confirm_dialog').dialog('open');
+                        } else {
+                            $("html, body").animate({scrollTop: 0}, 600);
+                            $('#warning_pasien').show().fadeOut(10000);
+                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                            if (pembayaran == '') {
+                                $('#war_pembayaran').show();
+                            }
+                            if (uangMuka == '') {
+                                $('#war_uang_muka').show();
+                            }
                         }
                     }
                 }
@@ -1464,13 +1485,19 @@
                             <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
+                            <s:hidden id="cek_poli_eksekutif"></s:hidden>
 
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
+                                        <div class="form-check" id="centang" style="display: none">
+                                            <input checked onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
+                                            <label for="is_uang_muka"></label>
+                                        </div>
+                                    </h3>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body" id="form-um-ex">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
@@ -2477,6 +2504,19 @@
                     } else {
                         $('#h_id_order_lab').val(null);
                         $('#form-lab').hide();
+                    }
+
+                    if(res.isEksekutif == 'Y'){
+                        $('#centang').show();
+                        $('#text_centang').text("Uang Muka ? ");
+                        $('#cek_poli_eksekutif').val('Y');
+                        $('#form-um-ex').show();
+                        $('#is_uang_muka').prop('checked', true);
+                    }else{
+                        $('#centang').hide();
+                        $('#text_centang').text("Pembayaran");
+                        $('#cek_poli_eksekutif').val('N');
+                        $('#form-um-ex').show();
                     }
                 }
             });
@@ -3794,6 +3834,14 @@
                 $('#poli').val(res.idPelayanan).trigger('change');
             }
         });
+    }
+
+    function isUangMuka(id){
+        if($('#'+id).is(':checked')){
+            $('#form-um-ex').show();
+        }else{
+            $('#form-um-ex').hide();
+        }
     }
 
 </script>
