@@ -1263,7 +1263,16 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
                 "\t\tAND posisi.flag = 'Y' \n" +
-                tipeWhere;
+                tipeWhere +
+                //RAKA-20JAN2021 ==> Memastikan hanya menghasilkan satu biodata perorang
+                "\nGROUP BY \n" +
+                "\tpegawai.nip, \n" +
+                "\tpegawai.nama_pegawai, \n" +
+                "\tposition.position_name, \n" +
+                "\tposition.kelompok_id, \n" +
+                "\tpegawai.tipe_pegawai,\n" +
+                "\ttipe.tipe_pegawai_name\n" +
+                "\n";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -1327,7 +1336,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   divisi.department_id, \n" +
                 "                   divisi.department_name,\n" +
                 "                   position.bagian_id,\n" +
-                "                   bagian2.nama_bagian\n" +
+                "                   bagian2.nama_bagian,\n" +
                 "                   tipe.tipe_pegawai_name\n" +
                 "                                FROM im_hris_pegawai pegawai  \n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
@@ -1453,7 +1462,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   position.bagian_id,\n" +
                 "                   bagian2.nama_bagian,\n" +
                 "                   pegawai.shift,\n" +
-                "                   pegawai.tanggal_aktif \n" +
+                "                   pegawai.tanggal_aktif, \n" +
                 "                   tipe.tipe_pegawai_name\n" +
                 "                                FROM im_hris_pegawai pegawai\n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi ON posisi.nip = pegawai.nip  \n" +
