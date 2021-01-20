@@ -6279,17 +6279,3 @@
         }
     }
 </script>
-
-    function getNip(birthDate){
-        var nip = $("#nip1").val();
-        var headNip = birthDate.split("-");
-        if(nip==""){
-            BiodataAction.getSeqNip(function(seq){
-                $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
-            })
-        } else {
-            var seq = nip.substr(8, 4);
-            $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
-        }
-    }
-</script>
