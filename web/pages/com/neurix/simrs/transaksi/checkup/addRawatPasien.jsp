@@ -1778,7 +1778,7 @@
 </div>
 
 <div class="modal fade" id="modal-jadwal-dokter">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog" style="width: 57%">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
