@@ -297,6 +297,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             if ("bpjs".equalsIgnoreCase(jenisPasien) || "asuransi".equalsIgnoreCase(jenisPasien)) {
                 tindakanRawat.setJenisPasien("umum");
             }
+
+            if("umum".equalsIgnoreCase(jenisPasien)){
+                tindakanRawat.setJenisPasien(jenisPasien);
+            }
             tindakanRawat.setNoCheckup(noCheckup);
             tindakanRawat.setBranchId(CommonUtil.userBranchLogin());
 
@@ -401,7 +405,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
 
                 List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
-                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup(), "3");
+                detailCheckupList = checkupDetailBoProxy.getIDDetailCheckup(checkup.getNoCheckup(), "3", checkup.getIdJenisPeriksaPasien());
                 List<UangMuka> mukaList = new ArrayList<>();
                 for (HeaderDetailCheckup detailCheckup : detailCheckupList) {
                     UangMuka uangMuka = new UangMuka();
@@ -693,7 +697,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         List<UangMuka> obatDetailListFinal = new ArrayList<>();
 
         if (noCheckup != null && !"".equalsIgnoreCase(noCheckup)) {
-            List<HeaderDetailCheckup> detailCheckup = checkupDetailBo.getIDDetailCheckup(noCheckup, "3");
+            List<HeaderDetailCheckup> detailCheckup = checkupDetailBo.getIDDetailCheckup(noCheckup, "3", null);
             if (statusBayar != null && !"".equalsIgnoreCase(statusBayar)) {
                 if (detailCheckup.size() > 0) {
                     for (HeaderDetailCheckup detail : detailCheckup) {
@@ -1155,6 +1159,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                     String jenis = obj.getString("jenis");
                     String noRekening = obj.getString("no_rekening");
                     String noCheckup = obj.getString("no_checkup");
+                    String jenisPasienFront = obj.getString("jenis_pasien");
 
                     BigDecimal lebihBiaya = null;
                     if(obj.has("lebih_biaya")){
@@ -1620,7 +1625,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                             //** creat Jurnal **//
                             Jurnal jurnal = billingSystemBo.createJurnal(transId, mapJurnal, branchId, catatan, "Y");
 
-                            List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup, "3");
+                            List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup, "3", jenisPasienFront);
                             List<HeaderDetailCheckup> list = new ArrayList<>();
                             if (detailCheckupList.size() > 0) {
                                 for (HeaderDetailCheckup dtl : detailCheckupList) {

@@ -429,8 +429,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     }
 
     @Override
-    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status) throws GeneralBOException {
-        return checkupDetailDao.getIDDetailCheckup(noCheckup, status);
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status, String jenisPasien) throws GeneralBOException {
+        return checkupDetailDao.getIDDetailCheckup(noCheckup, status, jenisPasien);
     }
 
     @Override

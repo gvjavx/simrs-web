@@ -340,7 +340,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         return lab;
     }
 
-    public List<PeriksaLab> getListLab(String noCheckup) {
+    public List<PeriksaLab> getListLab(String noCheckup, String jenis) {
         List<PeriksaLab> labList = new ArrayList<>();
         String SQL = "SELECT \n" +
                 "a.id_periksa_lab,\n" +
@@ -360,13 +360,14 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
                 "INNER JOIN im_simrs_kategori_lab e ON a.id_kategori_lab = e.id_kategori_lab\n" +
                 "LEFT JOIN im_simrs_pelayanan f ON b.id_pelayanan = f.id_pelayanan\n" +
-                "WHERE c.no_checkup = :id \n" +
+                "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
                 "AND a.flag = 'Y'\n" +
                 "ORDER BY a.id_detail_checkup ASC";
 
         List<Objects[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", noCheckup)
+                .setParameter("jen", jenis)
                 .list();
         if (result.size() > 0) {
             for (Object[] obj : result) {
