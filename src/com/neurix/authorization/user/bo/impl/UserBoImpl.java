@@ -1559,7 +1559,12 @@ public class UserBoImpl implements UserBo {
         ImUsersPK userPK = new ImUsersPK();
         userPK.setId(username);
 
-        ImUsers loginUser = (ImUsers) userDao.getById(userPK, active);
+        ImUsers loginUser = null;
+        try {
+            loginUser = (ImUsers) userDao.getById(userPK, active);
+        } catch (HibernateException e) {
+            logger.info("[UserBoImpl.getMobileUserByUsername] " + e.getMessage());
+        }
         if (loginUser == null) {
             loginUser = getUserByEmailId(username);
         }
