@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.mutasi.bo;
 
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.transaksi.mutasi.model.Mutasi;
@@ -20,7 +21,6 @@ import java.util.List;
 public interface MutasiBo extends BaseMasterBo<Mutasi>{
     public void saveDelete(Mutasi bean) throws GeneralBOException;
     public void saveMutasi(Mutasi bean, List<Mutasi> mutasiList) throws GeneralBOException;
-//    public List<Mutasi> getKualifikasi(Mutasi bean) throws GeneralBOException;
     public List<Mutasi> getComboMutasi(String nip) throws GeneralBOException;
     public Mutasi getDataReportMutasi(String mutasiId) throws GeneralBOException;
     public List<MutasiDoc> getMutasiDoc(String mutasiId) throws GeneralBOException;
@@ -29,4 +29,8 @@ public interface MutasiBo extends BaseMasterBo<Mutasi>{
     public String cekDataMutasiSys() throws GeneralBOException ;
     public String getDirektur() throws GeneralBOException;
     public BigDecimal getGajiPokok(String golonganId,String tahun);
+    public List<Position> getListOtherPosition(String positionId, String nip);
+    public Boolean checkJenisPegawaiDefault(String nip, String positionId);
+    public Boolean checkPositionByJenisPegawai(String nip, String jenisPegawai);
+
 }

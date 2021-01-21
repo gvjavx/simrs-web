@@ -801,7 +801,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             pasienEntity.setSuku(bean.getSuku());
             pasienEntity.setAgama(bean.getAgama());
             pasienEntity.setProfesi(bean.getProfesi());
-            pasienEntity.setNoTelp(bean.getNoTelp());
             pasienEntity.setPendidikan(bean.getPendidikan());
             pasienEntity.setStatusPerkawinan(bean.getStatusPerkawinan());
             pasienEntity.setAction("U");

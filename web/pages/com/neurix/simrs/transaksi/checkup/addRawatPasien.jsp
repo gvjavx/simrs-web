@@ -94,8 +94,7 @@
 
                         if (statusBpjs != '' && statusRujukan != '') {
 
-                            if (statusBpjs == "aktif") {
-                                // if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                            if (statusBpjs == "aktif" && statusRujukan == "aktif") {
                                 $('#confirm_dialog').dialog('open');
                             } else {
                                 var msg1 = "";
@@ -2204,13 +2203,6 @@
                     var icon = "";
                     var val = "";
                     if (response.status == "200") {
-                        val = "aktif";
-                        icon = "fa-info";
-                        title = "Info!";
-                        warnClass = "alert-success";
-                        msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
-                            '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
-                            '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
@@ -2218,6 +2210,40 @@
                         $('#diagnosa_awal').val(response.kodeDiagnosa);
                         $('#diagnosa_ket').val(response.namaDiagnosa);
                         setPelayananByKodeVclaim(response.kodePoliRujukan);
+
+                        const oneDay = 24 * 60 * 60 * 1000;
+                        const firstDate = new Date(response.tglKunjungan);
+                        const secondDate = new Date(2020, 9, 21);
+                        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+
+                        if(diffDays == 0){
+                            val = "aktif";
+                            icon = "fa-info";
+                            title = "Info!";
+                            warnClass = "alert-success";
+                            msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
+                                '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                        }else{
+                            if(diffDays <= 90){
+                                val = "aktif";
+                                icon = "fa-warning";
+                                title = "Info!";
+                                warnClass = "alert-warning";
+                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan masih kurang 90 hari. Silahkan dilanjutkan...!</p>' +
+                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                            }else{
+                                val = "tidak ditemukan";
+                                icon = "fa-warning";
+                                title = "Warning!";
+                                warnClass = "alert-danger";
+                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan sudah melebihi 90 hari. Silahkan urus kembali surat rujukan...!</p>' +
+                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                            }
+                        }
+
                     } else {
                         val = "tidak ditemukan";
                         icon = "fa-warning";
@@ -2783,7 +2809,7 @@
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="'+foto+'">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px; width: 55%;" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +

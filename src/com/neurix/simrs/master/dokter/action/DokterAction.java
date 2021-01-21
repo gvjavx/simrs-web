@@ -7,14 +7,20 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.DokterPelayanan;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -226,43 +232,29 @@ public class DokterAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[DokterAction.search] start process >>>");
-
         Dokter searchDokter = getDokter();
         List<Dokter> listOfsearchDokter = new ArrayList();
-
         try {
-            listOfsearchDokter = dokterBoProxy.getSearchByCriteria(searchDokter);
+            listOfsearchDokter = dokterBoProxy.searchByQuery(searchDokter);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = dokterBoProxy.saveErrorMessage(e.getMessage(), "DokterBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[DokterAction.search] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[DokterAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-            return ERROR;
+            logger.error("[DokterAction.save] Error when searching alat by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResultDokter");
-        session.setAttribute("listOfResultDokter", listOfsearchDokter);
-
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchDokter);
         logger.info("[DokterAction.search] end process <<<");
-
-        return SUCCESS;
+        return "search";
     }
 
     @Override
     public String initForm() {
         logger.info("[DokterAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-
-        session.removeAttribute("listOfResultDokter");
+        setDokter(new Dokter());
+        session.removeAttribute("listOfResult");
         logger.info("[DokterAction.initForm] end process >>>");
-        return INPUT;
+        return "search";
     }
 
     @Override
@@ -445,5 +437,120 @@ public class DokterAction extends BaseMasterAction {
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
         }
         return dokterList;
+    }
+
+    public List<ImSimrsPelayananEntity> getComboPelayanan() {
+        logger.info("[DokterAction.initDokter] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        List<ImSimrsPelayananEntity> pelayanans = new ArrayList();
+        String branchId = CommonUtil.userBranchLogin();
+        if("ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
+            branchId = null;
+        }
+        try {
+            pelayanans = pelayananBo.getJustPelayananAndLab(branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[DokterAction.initDokter] Error when searching data by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        return pelayanans;
+    }
+
+    public Dokter initDokter(String id) {
+        logger.info("[DokterAction.initDokter] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+        Dokter dokter = new Dokter();
+        List<Dokter> dokterList = new ArrayList();
+        if(id != null && !"".equalsIgnoreCase(id)){
+            dokter.setIdDokter(id);
+            try {
+                dokterList = dokterBo.searchByQuery(dokter);
+            } catch (GeneralBOException e) {
+                logger.error("[DokterAction.initDokter] Error when searching data by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
+            }
+            if(dokterList.size() > 0){
+                dokter = dokterList.get(0);
+            }
+        }
+        return dokter;
+    }
+
+    public CrudResponse saveEditDokter(String data) {
+        logger.info("[DokterAction.saveEdit] start process >>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterBo dokterBo = (DokterBo) ctx.getBean("dokterBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        if(data != null && !"".equalsIgnoreCase(data)){
+            try {
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    Dokter dokter = new Dokter();
+                    String type = obj.getString("tipe");
+                    dokter.setIdDokter(obj.getString("id_dokter"));
+                    dokter.setNamaDokter(obj.getString("nama_dokter"));
+                    dokter.setKuota(obj.getString("kuota_online"));
+                    dokter.setKuotaTele(obj.getString("kuota_tele"));
+                    if(obj.getString("kuota_on_site") != null && !"".equalsIgnoreCase(obj.getString("kuota_on_site"))){
+                        dokter.setKuotaOnSite(new BigInteger(obj.getString("kuota_on_site")));
+                    }
+                    if(obj.getString("kuota_bpjs") != null && !"".equalsIgnoreCase(obj.getString("kuota_bpjs"))){
+                        dokter.setKuotaBpjs(new BigInteger(obj.getString("kuota_bpjs")));
+                    }
+                    dokter.setKodeDpjp(obj.getString("kode_dpjp"));
+                    dokter.setSip(obj.getString("sip"));
+                    dokter.setFlagCall(obj.getString("flag_call"));
+                    dokter.setFlagTele(obj.getString("flag_tele"));
+                    dokter.setLastUpdateWho(userLogin);
+                    dokter.setLastUpdate(updateTime);
+                    if("delete".equalsIgnoreCase(type)){
+                        dokter.setAction("D");
+                        dokter.setFlag("N");
+                    }else{
+                        if(obj.getString("list_pelayanan") != null && !"".equalsIgnoreCase(obj.getString("list_pelayanan"))){
+                            JSONArray json = new JSONArray(obj.getString("list_pelayanan"));
+                            if(json != null){
+                                List<DokterPelayanan> dokterPelayananList = new ArrayList<>();
+                                for (int i=0; i < json.length(); i++){
+                                    DokterPelayanan dokterPelayanan = new DokterPelayanan();
+                                    JSONObject job = json.getJSONObject(i);
+                                    dokterPelayanan.setIdDokter(obj.getString("id_dokter"));
+                                    dokterPelayanan.setIdPelayanan(job.getString("id_pelayanan"));
+                                    dokterPelayananList.add(dokterPelayanan);
+                                }
+                                if(dokterPelayananList.size() > 0){
+                                    dokter.setPelayananList(dokterPelayananList);
+                                }
+                            }
+                        }
+                        dokter.setAction("U");
+                        dokter.setFlag("Y");
+                    }
+                    try {
+                        dokterBo.saveEditDokter(dokter);
+                        response.setStatus("success");
+                        response.setMsg("OK");
+                    } catch (GeneralBOException e) {
+                        response.setStatus("error");
+                        response.setMsg("Error when save edit dokter, "+e.getMessage());
+                        logger.error("[DokterAction.saveEdit] Error when searching data by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
+                    }
+                }else{
+                    response.setStatus("error");
+                    response.setMsg("Error, Data JSON objact tidak ada...!");
+                }
+            }catch (Exception e){
+                response.setStatus("error");
+                response.setMsg("Error, JSON object Parse...!" +e.getMessage());
+                logger.info("[DokterAction.saveEdit] end process >>>");
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Error, Data JSON objact tidak ada...!");
+        }
+        logger.info("[DokterAction.saveEdit] end process >>>");
+        return response;
     }
 }

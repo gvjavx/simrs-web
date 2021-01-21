@@ -1019,6 +1019,27 @@ apply the skin class to the body tag so the changes take effect.
         }
     }
 
+    function getPartDate(tanggal, tipe){
+        var res = "";
+        if(tanggal != '' && tanggal != null){
+            tanggal = new Date(dateTime);
+            if(tipe == 'yyyy'){
+                res = tanggal.getFullYear();
+            }else if(tipe == 'mm'){
+                res = String(tanggal.getMonth() + 1).padStart(2, '0'); //January is 0!
+            }else if(tipe == 'dd'){
+                res = String(tanggal.getDate()).padStart(2, '0');
+            }else if(tipe == 'hh'){
+                res = ((tanggal.getHours() < 10 ? '0' : '') + tanggal.getHours());
+            }else if(tipe == 'min'){
+                res = ((tanggal.getMinutes() < 10 ? '0' : '') + tanggal.getMinutes());
+            }else if(tipe == 'sec'){
+                res = tanggal.getSeconds();
+            }
+        }
+        return res;
+    }
+
 </script>
 
 

@@ -206,6 +206,16 @@ public class HeaderDetailCheckup extends BaseModel{
     private String poliRujukanInternal;
     private String noRujukanInternal;
 
+    private String noTelp;
+
+    public String getNoTelp() {
+        return noTelp;
+    }
+
+    public void setNoTelp(String noTelp) {
+        this.noTelp = noTelp;
+    }
+
     public String getNoRujukanInternal() {
         return noRujukanInternal;
     }

@@ -389,11 +389,12 @@
                                     $('#branchLamaId1').val(selectedObj.branchId).change();
                                     $('#branchBaruId1').val(selectedObj.branchId).change();
                                     $('#divisiLamaId1').val(selectedObj.divisiId).change();
-                                    $('#divisiBaruId2').val(selectedObj.divisiId).change();
                                     $('#positionLamaId1').val(selectedObj.positionId).change();
-                                    $('#positionBaruId1').val(selectedObj.positionId).change();
                                     $('#profesiLamaId1').val(selectedObj.profesiId).change();
-                                    $('#profesiBaruId1').val(selectedObj.profesiId).change();
+                                    $('#divisiBaruId2').val(selectedObj.divisiId);
+                                    $('#positionBaruId1').val(selectedObj.positionId);
+                                    $('#profesiBaruId1').val(selectedObj.profesiId);
+                                    checkAndReturnListPositionPengganti();
                                     return selectedObj.nama;
                                 }
                             });
@@ -437,45 +438,14 @@
                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
                             </div>
                         </div>
+                    </div>
 
-                        <%--<div class="form-group">--%>
-                        <%--<label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>--%>
-                        <%--<div class="col-sm-8">--%>
-                        <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
-                        <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"--%>
-                        <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="" cssClass="form-control"/>--%>
-                        <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div style="display: none" class="form-group">--%>
-                            <%--<label class="control-label col-sm-4" >Status Pegawai: </label>--%>
-                            <%--<div class="col-sm-8">--%>
-                                <%--<s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>--%>
-                                <%--<s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="mutasi.tipePegawai" onchange="changePegawai(this.value)"--%>
-                                          <%--listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-
-                        <%--<div class="form-group">--%>
-                            <%--<label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>--%>
-                            <%--<div id="golongan1Group" class="col-sm-8">--%>
-                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
-                                <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"--%>
-                                          <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>--%>
-                            <%--</div>--%>
-                            <%--<div style="display: none" id="golongan2Group" class="col-sm-8">--%>
-                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>--%>
-                                <%--<s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganLamaId2" name="mutasi.levelLama" disabled="true"--%>
-                                          <%--listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-
-                        <%--<div class="form-group">--%>
-                            <%--<label class="control-label col-sm-4" >PJS Lama:</label>--%>
-                            <%--<div class="col-sm-8">--%>
-                                <%--<input type="checkbox" class="form-check-input big-checkbox form-add" id="pjsLama" disabled onchange="cekPjsLama()">--%>
-                                <%--<input style="display: none" type="text" class="form-check-input form-add" id="txtPjsLama" >--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
+                    <div class="form-group" id="panel_tanggal_keluar" style="display: none">
+                        <label class="control-label col-sm-4" >Tanggal Keluar: </label>
+                        <div class="col-sm-8">
+                            <s:textfield id="tanggalKeluar" cssClass="form-control pull-right"
+                                         required="false" cssStyle=""/>
+                        </div>
                     </div>
 
                     
@@ -506,7 +476,7 @@
                             <label class="control-label col-sm-4" >Posisi Baru:</label>
                             <div class="col-sm-8">
                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                <s:select list="#comboPosition" id="positionBaruId1" name="mutasi.positionBaruId" onchange=""
+                                <s:select list="#comboPosition" id="positionBaruId1" name="mutasi.positionBaruId" onchange="checkPositionAktif()"
                                           listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control form-add"/>
                             </div>
                         </div>
@@ -519,51 +489,63 @@
                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
                             </div>
                         </div>
-
-                        <%--<div class="form-group">--%>
-                            <%--<label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>--%>
-                            <%--<div id="golonganBaru1Group" class="col-sm-8">--%>
-                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>--%>
-                                <%--<s:select list="#initComboTipe.listComboGolongan" id="golonganBaruId1" name="mutasi.levelBaru" disabled="true"--%>
-                                          <%--listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>--%>
-                            <%--</div>--%>
-                            <%--<div style="display: none" id="golonganBaru2Group" class="col-sm-8">--%>
-                                <%--<s:action id="initComboTipe" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>--%>
-                                <%--<s:select list="#initComboTipe.listComboGolonganPkwt" id="golonganBaruId2" name="mutasi.levelBaru" disabled="true"--%>
-                                          <%--listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control form-add"/>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-
                         <div class="form-group">
                             <label class="control-label col-sm-4">Pegawai Aktif:</label>
                             <div class="col-sm-8" id="panel-person-aktif">
                                 <%--<s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>--%>
                                 <%--<select class="form-control form-add" id="penggantiId" name="mutasi.penggantiNip"></select>--%>
                             </div>
-                        </div>
-
-
-                        <%--<div class="form-group">--%>
-                            <%--<label class="control-label col-sm-4" >PJS Baru:</label>--%>
-                            <%--<div class="col-sm-8">--%>
-                                <%--<input type="checkbox" class="form-check-input big-checkbox form-add" onchange="cekPjsBaru()" id="pjsBaru">--%>
-                                <%--<input style="display: none" type="text" class="form-check-input" value="N" id="txtPjsBaru" >--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" > Jenis Jabatan : </label>
-                        <div class="col-sm-8">
-                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
-                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.jenisPegawai"
-                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                            <input type="hidden" id="flag-person-aktif" value="N">
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label col-sm-4" > Digaji : </label>
-                        <div class="col-sm-8">
-                            <s:select list="#{'N':'Tidak'}" id="flagDigaji"
-                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
+
+                    <div id="panel_jenis_jabatan">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Jenis Jabatan : </label>
+                            <div class="col-sm-8">
+                                <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                                <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiId" name="biodata.jenisPegawai"
+                                          listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Digaji : </label>
+                            <div class="col-sm-8">
+                                <s:select list="#{'N':'Tidak'}" id="flagDigaji"
+                                          headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="panel_position_pengganti" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Pengganti Posisi Utama : </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="sel_position_pengganti">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="panel_sk" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > No. SK : </label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" id="no_sk"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="panel_ket_resign" style="display: none">
+                        <div class="form-group">
+                            <label class="control-label col-sm-4" > Ket. Pengunduran : </label>
+                            <div class="col-sm-8">
+                                <select class="form-control" id="sel_ket_resign">
+                                    <option value="pengunduran_diri">Pengunduran Diri</option>
+                                    <option value="diberhentikan">Diberhentikan</option>
+                                    <option value="pensiun_dini">Pensiun Dini</option>
+                                    <option value="meninggal">Meninggal</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -615,7 +597,6 @@
         MutasiAction.searchMutasiPerson(function(listdata){
             tmp_table = "<thead style='font-size: 10px;' ><tr class='active'>"+
                     "<th style='text-align: center; background-color:  #90ee90'>No</th>"+
-                    "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>NIP</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Nama</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Status</th>"+
@@ -629,24 +610,15 @@
                     "<th style='text-align: center; background-color:  #90ee90'>Profesi Baru</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Jenis Jabatan</th>"+
                     "<th style='text-align: center; background-color:  #90ee90'>Digaji</th>"+
-                    "</tr></thead>";
+                    "<th style='text-align: center; background-color:  #90ee90'>Delete</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 10px;" ">' +
                         '<td align="center">' + (i + 1) + '</td>' +
-                        <%--'<td align="center">' +--%>
-                        <%--"<a href='javascript:;' class ='item-edit' data ='"+item.nip+"' >" +--%>
-                        <%--"<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>"+--%>
-                        <%--'</a>' +--%>
-                        <%--'</td>' +--%>
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='"+item.nip+"' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
-                        '</a>' +
-                        '</td>' +
                         '<td >' + item.nip + '</td>' +
                         '<td align="center">' + item.nama+ '</td>' +
-                        '<td align="center">' + item.statusName+ '</td>' +
+                        '<td align="center" style="font-weight: bold;">' + item.statusName+ '</td>' +
                         '<td align="center">' + item.branchLamaName+ '</td>' +
                         '<td align="center">' + item.divisiLamaName+ '</td>' +
                         '<td align="center">' + item.positionLamaName+ '</td>' +
@@ -657,6 +629,11 @@
                         '<td align="center">' + item.profesiBaruName+ '</td>' +
                         '<td align="center">' + item.jenisPegawaiName+ '</td>' +
                         '<td align="center">' + labeledWhiteFlag(item.flagDigaji)+ '</td>' +
+                        '<td align="center">' +
+                        "<a href='javascript:;' class ='item-delete' data ='"+item.nip+"' >" +
+                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>"+
+                        '</a>' +
+                        '</td>' +
                         "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
@@ -679,6 +656,12 @@
             changeYear: true
         });
 
+        $('#tanggalKeluar').datepicker({
+            dateFormat: 'yy-mm-dd',
+            changeMonth: true,
+            changeYear: true
+        });
+
         $('#btnAddMutasi').click(function(){
             cekStatusMutasi();
             $('#nip2').prop("readonly", true);
@@ -689,6 +672,8 @@
             $('#myForm').attr('action', 'addPerson');
             $('.form-add').val("");
             $('#modal-edit').find('.modal-title').text('Add Mutasi / Nonaktif');
+            setPanelAlert("")
+            $("#flag-person-aktif").val("N");
         });
     });
 
@@ -803,10 +788,15 @@
         $('#modal-edit').find('.modal-title').text('Delete Data Anggota');
         $('#modal-edit').modal('show');
         $('#myForm').attr('action', 'deletePerson');
+        $("#panel_tanggal_keluar").hide();
+        $("#panel_sk").hide();
+        $("#panel_ket_resign").hide();
+        $("#panel_jenis_jabatan").hide();
+        $("#panel-target").hide();
 
     });
 
-    $('#btnSave').click(function(){
+    function save(){
         var url = $('#myForm').attr('action');
 
         var nip         = document.getElementById("nip1").value;
@@ -823,12 +813,10 @@
 
         var branchBaruId        = document.getElementById("branchBaruId1").value;
         var divisiBaruId        = document.getElementById("divisiBaruId2").value;
-        var positionBaruId      = document.getElementById("positionBaruId1").value;
         var status              = document.getElementById("statusMutasi").value;
 
         var branchBaruName      = $('#branchBaruId1 option:selected').text();
         var divisiBaruName      = $('#divisiBaruId2 option:selected').text();
-        var positionBaruName    = $('#positionBaruId1 option:selected').text();
 
         var profesiLamaId       = document.getElementById("profesiLamaId1").value;
         var profesiLamaName     = $('#profesiLamaId1 option:selected').text();
@@ -837,41 +825,83 @@
         var jenisPegawaiId      = $("#jenisPegawaiId option:selected").val();
         var jenisPegawaiName    = $("#jenisPegawaiId option:selected").text();
         var flagDigaji          = $("#flagDigaji option:selected").val();
+        var flagPersonAktif     = $("#flag-person-aktif").val();
+        var tanggalKeluar       = $("#tanggalKeluar").val();
+        var noSk                = $("#no_sk").val();
+        var idKet               = $("#sel_ket_resign option:selected").val();
+        var txtKet              = $("#sel_ket_resign option:selected").text();
 
+        // jika status lepas maka ada pengganti
+        var positionBaruId      = "";
+        var positionBaruName    = "";
+        var positionPengganti   = "";
+        if (status == "L" || status == "RS"){
+            positionBaruId      = $("#sel_position_pengganti option:selected").val();
+            if (positionBaruId == "" || positionBaruId == null)
+                positionBaruId  = positionLamaId;
 
-        if (personName!=''&&branchLamaId!=''&&status!='') {
+            positionBaruName    = $("#sel_position_pengganti option:selected").text();
+            if (positionBaruName == "" || positionBaruName == null)
+                positionBaruName = positionLamaName;
+
+            positionPengganti   = $("#sel_position_pengganti option:selected").val();
+            if (positionPengganti == "" || positionPengganti == null){
+                positionPengganti = positionBaruId;
+                flagDigaji = "";
+            }
+
+        } else {
+            positionBaruId      = document.getElementById("positionBaruId1").value;
+            positionBaruName    = $("#positionBaruId1 option:selected").text();
+        }
+        // END
+
+        if (personName !='' && branchLamaId !='' && status!='') {
             if(url == 'addPerson'){
 
-                var objadd = {
-                    nip : nip,
-                    personname : personName,
-                    branchlamaid : branchLamaId,
-                    branchlamaname : branchLamaName,
-                    divisilamaid : divisiLamaId,
-                    divisilamaname : divisiLamaName,
-                    positionlamaid : positionLamaId,
-                    positionlamaname : positionLamaName,
-                    branchbaruid : branchBaruId,
-                    branchbaruname : branchBaruName,
-                    divisibaruid : divisiBaruId,
-                    divisibaruname : divisiBaruName,
-                    positionbaruid : positionBaruId,
-                    poisitionbaruname : positionBaruName,
-                    status : status,
-                    profesilamaid : profesiLamaId,
-                    profesilamaname : profesiLamaName,
-                    profesibaruid : profesiBaruId,
-                    profesibaruname : profesiBaruName,
-                    jenispegawai : jenisPegawaiId,
-                    jenispegawainame : jenisPegawaiName,
-                    flagdigaji : flagDigaji
-                   };
+                var isOk = true;
+                if (status == "M" || status == "R" || status == "RA"){
+                    if (flagPersonAktif == "Y"){
+                        isOk = false;
+                    }
+                }
 
-                var stobj = JSON.stringify(objadd);
+                if (isOk){
+                    var objadd = {
+                        nip : nip,
+                        personname : personName,
+                        branchlamaid : branchLamaId,
+                        branchlamaname : branchLamaName,
+                        divisilamaid : divisiLamaId,
+                        divisilamaname : divisiLamaName,
+                        positionlamaid : positionLamaId,
+                        positionlamaname : positionLamaName,
+                        branchbaruid : branchBaruId,
+                        branchbaruname : branchBaruName,
+                        divisibaruid : divisiBaruId,
+                        divisibaruname : divisiBaruName,
+                        positionbaruid : positionBaruId,
+                        poisitionbaruname : positionBaruName,
+                        status : status,
+                        profesilamaid : profesiLamaId,
+                        profesilamaname : profesiLamaName,
+                        profesibaruid : profesiBaruId,
+                        profesibaruname : profesiBaruName,
+                        jenispegawai : jenisPegawaiId,
+                        jenispegawainame : jenisPegawaiName,
+                        flagdigaji : flagDigaji,
+                        positionPengganti : positionPengganti,
+                        tanggalKeluar : tanggalKeluar,
+                        nosk : noSk,
+                        idket : idKet,
+                        txtket : txtKet
+                    };
 
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    MutasiAction.saveAnggotaAdd(stobj, function(result) {
+                    var stobj = JSON.stringify(objadd);
+
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        MutasiAction.saveAnggotaAdd(stobj, function(result) {
                             if(result==""){
                                 alert('Data Successfully Added');
                                 $('#modal-edit').modal('hide');
@@ -880,7 +910,8 @@
                             }else{
                                 alert(result);
                             }
-                    });
+                        });
+                    }
                 }
             } else{
                 if (confirm('Are you sure you want to delete this Record?')) {
@@ -905,53 +936,86 @@
             }
             alert(msg);
         }
-    });
-
-    function checkJabatan() {
-
-        var branchIdBaru = $("#initComboBranch option:selected").val();
-        var positionIdBaru = $("#positionBaruId1").val();
-
-        PositionAction.checkAndGetPositionAktif(positionIdBaru, branchIdBaru, function (res) {
-           if (res.status == "error"){
-               alert(res.msg);
-           }
-        });
-
-
     }
 
-//    function cekJabatan(){
-//        var branchBaruId  = document.getElementById("branchBaruId1").value;
-//        var divisiBaruId  = document.getElementById("divisiBaruId2").value;
-//        var positionBaruId= document.getElementById("positionBaruId1").value;
-//        $('#penggantiId').empty();
-//        if(branchBaruId != ''  && positionBaruId !=''){
-//            MutasiAction.getButuhPengganti(positionBaruId,function(result){
-//                if (result=="Y"){
-//                    MutasiAction.getAvailableJabatan(branchBaruId, divisiBaruId, positionBaruId, function (listdata) {
-//                        if (listdata.length==0){
-//                            alert("Jabatan Masih Kosong");
-//                            $('#penggantiId').append($("<option></option>")
-//                                .attr("value","-")
-//                                .text("-"));
-//                        } else{
-//                            $('#penggantiId').empty();
-//                            $.each(listdata, function (i, item) {
-//                                $('#penggantiId').append($("<option></option>")
-//                                    .attr("value",item.nip)
-//                                    .text(item.personName));
-//                            });
-//                        }
-//                    });
-//                } else{
-//                    $('#penggantiId').append($("<option></option>")
-//                        .attr("value","-")
-//                        .text("-"));
-//                }
-//            })
-//        }
-//    }
+    $('#btnSave').click(function(){
+        var nip             = $("#nip1").val();
+        var status          = $("#statusMutasi").val();
+        var positionIdLama  = $("#positionLamaId1").val();
+        var jenisJabatan    = $("#jenisPegawaiId option:selected").val();
+        var noSk            = $("#no_sk").val();
+        var tanggalKeluar   = $("#tanggalKeluar").val();
+        var url             = $('#myForm').attr('action');
+
+        if (url == "addPerson"){
+            MutasiAction.checkIsAvailInSession(nip, function(res){
+                if (res.status == "error"){
+                    // jika tidak ditemukan nip yng sudah terdaftar akan dimutasi
+                    alert(res.msg);
+                } else {
+                    if (status == "L"){
+                        if (noSk == null || noSk == "") {
+                            alert("No.SK harus diisi");
+                        } else {
+                            MutasiAction.getListPositionJabatanLain(positionIdLama, nip, function (positions) {
+                                if (positions.length == 0){
+                                    alert("Tidak Ditemukan Posisi Lain dari nip ini. \n tidak bisa lepas jabatan. \n");
+                                } else {
+                                    save();
+                                }
+                            });
+                        }
+                    } else if (status == "RA"){
+                        if (noSk == null || noSk == ""){
+                            alert("No.SK harus diisi");
+                        } else {
+                            MutasiAction.checkIsAvailJabatanUtama(nip, jenisJabatan, function (avail) {
+                                if (avail == true){
+                                    alert("Sudah Ada Posisi Utama Aktif dari nip ini. \n pilih jenis jabatan yang lain. \n");
+                                } else {
+                                    save();
+                                }
+                            });
+                        }
+
+                    } else if (status == "M" || status == "R"){
+                        if (noSk == null && noSk == ""){
+                            alert("No.SK harus diisi");
+                        } else {
+                            save();
+                        }
+                    } else if (status == "RS"){
+                        console.log("tanggal keluar didalam if : " + tanggalKeluar);
+                        console.log("status didalam if : " + status);
+
+                        if (tanggalKeluar == null || tanggalKeluar == ""){
+                            alert("Tanggal Keluar harus diisi");
+                        } else {
+
+                            var stDateNow               = getStDateNow();
+                            var tanggalKeluarSplited    = splitWithoutStripDate(tanggalKeluar);
+
+                            console.log("date now : " + stDateNow);
+                            console.log("tanggal keluar : " + tanggalKeluarSplited);
+
+                            if (parseInt(tanggalKeluarSplited) > parseInt(stDateNow)){
+                                alert("Tanggal tidak boleh setelah tanggal sekarang !");
+                            } else {
+                                save();
+                            }
+                        }
+                    } else {
+                        console.log("tanggal keluar didalam if : " + tanggalKeluar);
+                        console.log("status didalam if : " + status);
+                        save();
+                    }
+                }
+            });
+        } else {
+            save();
+        }
+
+    });
 
     window.listPosisi = function(branch, divisi){
         var branch = document.getElementById("branchBaruId1").value;
@@ -972,6 +1036,9 @@
 
         if(status == 'M' || status == 'R' || status == "RA"){
 
+            $("#panel_sk").show();
+            $("#panel_jenis_jabatan").show();
+            $("#panel_ket_resign").hide();
             if (status == "RA"){
                 $("#panel-target").show();
                 $("#panel-awal").hide();
@@ -988,12 +1055,25 @@
             }
             $( "#divisiBaruId2" ).prop( "disabled", false);
             $( "#positionBaruId1" ).prop( "disabled",false);
-            // $( "#golonganBaruId1" ).prop( "disabled",false);
             $( "#profesiBaruId1" ).prop( "disabled",false);
             $( "#pjsBaru" ).prop( "disabled",false);
             $("#penggantiId").prop("disabled", false);
             $("#tipeMutasi").prop("disabled", false);
+            $("#panel_tanggal_keluar").hide();
         }else{
+
+            if (status == "L" || status == "RS"){
+                $("#panel_jenis_jabatan").hide();
+                if (status == "RS"){
+                    $("#panel_tanggal_keluar").show();
+                    $("#panel_sk").hide();
+                    $("#panel_ket_resign").show();
+                } else {
+                    $("#panel_tanggal_keluar").hide();
+                    $("#panel_sk").show();
+                    $("#panel_ket_resign").hide();
+                }
+            }
 
             $("#panel-awal").show();
             $("#panel-target").hide();
@@ -1030,8 +1110,78 @@
         }
     }
 
-    function checkJabatanLainNormal(id){
+    function checkAndReturnListPositionPengganti(){
+        var nip         = $("#nip1").val();
+        var positionid  = $("#positionLamaId1").val();
+        var status      = $("#statusMutasi").val();
 
+        if (status == "L"){
+            MutasiAction.getListOtherPosition(positionid, nip, function (res) {
+                var str = "";
+                if (res.length > 0){
+                    $.each(res, function (i, item) {
+                        str += "<option value='"+item.positionId+"'>"+item.positionName+"</option>";
+                    });
+
+                    $("#panel_position_pengganti").show();
+                    $("#sel_position_pengganti").html(str);
+                } else {
+                    $("#panel_position_pengganti").hide();
+                    $("#sel_position_pengganti").html("");
+                }
+            });
+        } else {
+            $("#panel_position_pengganti").hide();
+            $("#sel_position_pengganti").html("");
+        }
+    }
+
+    function checkPositionAktif(){
+        console.log("checkPositionAktif");
+        var branch      = $("#branchBaruId1 option:selected").val();
+        var positionId  = $("#positionBaruId1 option:selected").val();
+        setPanelAlert("");
+        PositionAction.checkAndGetPositionAktif(positionId, branch, function (res) {
+            var str = "";
+            if (res.status == "error"){
+                str += "<div class='alert alert-danger'>"+res.msg+"</div>";
+                $("#flag-person-aktif").val("Y");
+                setPanelAlert(str);
+            } else {
+                str += "<div class='alert alert-success' style='text-align: center'>Posisi Tersedia <i class='fa fa-check'></i></div>";
+                $("#flag-person-aktif").val("N");
+                setPanelAlert(str);
+            }
+        });
+    }
+
+    function setPanelAlert(str){
+        console.log(str);
+        $("#panel-person-aktif").html(str);
+    }
+
+    function getStDateNow(){
+        var d = new Date();
+        var month = d.getMonth()+1;
+        var day = d.getDate();
+        var year = d.getFullYear();
+        return year+""+fixLengthForDate(month.toString())+""+fixLengthForDate(day.toString());
+    }
+    function splitWithoutStripDate(str){
+        var res = str.split("-");
+        var ln  = res.length;
+        var result = "";
+        for (i = 0 ; i < ln ; i++){
+            result += res[i];
+        }
+        return result;
+    }
+
+    function fixLengthForDate(str){
+        if(str.length > 1)
+            return str;
+        else
+            return "0" + str;
     }
 </script>
 
