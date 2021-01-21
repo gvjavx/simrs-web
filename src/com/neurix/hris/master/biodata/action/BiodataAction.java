@@ -336,9 +336,11 @@ public class BiodataAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
-        session.removeAttribute("historyJabatanForSmk");
-        session.removeAttribute("branchForSmk");
-        session.removeAttribute("positionIdForSmk");
+//        session.removeAttribute("historyJabatanForSmk");
+//        session.removeAttribute("branchForSmk");
+//        session.removeAttribute("positionIdForSmk");
+
+        clearAllSession();
 
         logger.info("[BiodataAction.add] stop process >>>");
         if ("dokter".equalsIgnoreCase(getTipe())){
@@ -912,6 +914,9 @@ public class BiodataAction extends BaseMasterAction{
     private void clearAllSession(){
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultBiodata");
+        session.removeAttribute("historyJabatanForSmk");
+        session.removeAttribute("branchForSmk");
+        session.removeAttribute("positionIdForSmk");
         session.removeAttribute("listKeluarga");
         session.removeAttribute("listStudy");
         session.removeAttribute("listPengalamanKerja");
@@ -3368,16 +3373,17 @@ public class BiodataAction extends BaseMasterAction{
 
         JSONObject jsonObject = new JSONObject(stJson);
         PersonilPosition personilPosition = new PersonilPosition();
-        personilPosition.setNip(jsonObject.getString("1")); // nip sementara;
+        personilPosition.setNip(jsonObject.getString("nip")); // nip sementara default 1;
         personilPosition.setPositionId(jsonObject.getString("positionid"));
 
         if (listOfResultPersonil != null)
         {
             List<PersonilPosition> filteredPersonil = listOfResultPersonil.stream().filter(
-                    p-> p.getPersonilPositionId().equalsIgnoreCase(personilPosition.getPositionId())
+                    p-> p.getPositionId().equalsIgnoreCase(personilPosition.getPositionId())
+                    && p.getFlag().equalsIgnoreCase("Y")
             ).collect(Collectors.toList());
 
-            if (filteredPersonil != null || filteredPersonil.size() > 0)
+            if (filteredPersonil != null && filteredPersonil.size() > 0)
             {
                 response.setStatus("error");
                 response.setMsg("Data Sudah Ada Pada List");
@@ -3394,9 +3400,12 @@ public class BiodataAction extends BaseMasterAction{
         personilPosition.setProfesiName(jsonObject.getString("profesiname"));
         personilPosition.setBranchId(jsonObject.getString("branchid"));
         personilPosition.setBranchName(jsonObject.getString("branchname"));
-        personilPosition.setJenisPegawai(jsonObject.getString("jenispegawi"));
+        personilPosition.setJenisPegawai(jsonObject.getString("jenispegawai"));
         personilPosition.setJenisPegawaiName(jsonObject.getString("jenispegawainame"));
         personilPosition.setFlagDigaji(jsonObject.getString("flagdigaji"));
+        personilPosition.setDivisiId(jsonObject.getString("divisiid"));
+        personilPosition.setDivisiName(jsonObject.getString("divisiname"));
+        personilPosition.setFlag(jsonObject.getString("flag"));
         listOfResultPersonil.add(personilPosition);
 
         session.removeAttribute("listOfPersonilPosition");
@@ -3459,10 +3468,12 @@ public class BiodataAction extends BaseMasterAction{
                 editPersonilPosition.setProfesiName(jsonObject.getString("profesiname"));
                 editPersonilPosition.setBranchId(jsonObject.getString("branchid"));
                 editPersonilPosition.setBranchName(jsonObject.getString("branchname"));
-                editPersonilPosition.setJenisPegawai(jsonObject.getString("jenispegawi"));
+                editPersonilPosition.setJenisPegawai(jsonObject.getString("jenispegawai"));
                 editPersonilPosition.setJenisPegawaiName(jsonObject.getString("jenispegawainame"));
                 editPersonilPosition.setFlagDigaji(jsonObject.getString("flagdigaji"));
                 editPersonilPosition.setFlag(jsonObject.getString("flag"));
+                editPersonilPosition.setDivisiId(jsonObject.getString("divisiid"));
+                editPersonilPosition.setDivisiName(jsonObject.getString("divisiname"));
             }
             // END
         }
@@ -3509,7 +3520,7 @@ public class BiodataAction extends BaseMasterAction{
             if (filteredPosition == null || filteredPosition.size() == 0)
                 logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan pada session");
             else
-                personilPosition = listOfResultPersonil.get(0);
+                personilPosition = filteredPosition.get(0);
         }
 
         return personilPosition;
@@ -3547,7 +3558,7 @@ public class BiodataAction extends BaseMasterAction{
             if (isJenisPegawaiDefault)
             {
                 List<PersonilPosition> filteredPersonilPosition = listOfResultPersonil.stream().filter(
-                        p->p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiId)
+                        p->p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiIdDefault)
                                 && p.getNip().equalsIgnoreCase(nip)
                                 && p.getFlag().equalsIgnoreCase("Y")
                                 && !p.getPositionId().equalsIgnoreCase(positionId)
@@ -3672,6 +3683,25 @@ public class BiodataAction extends BaseMasterAction{
 
         logger.info("[BiodataAction.getJenisPegawaiDefault] END <<<");
         return jenisPegawai;
+    }
+
+    public List<JenisPegawai> getAllJenisPegawai(){
+        logger.info("[BiodataAction.getJenisPegawaiDefault] START >>>");
+
+        ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo     = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+
+        try {
+            jenisPegawais = biodataBo.getAllJenisPegawai();
+        } catch (GeneralBOException e){
+            logger.info("[BiodataAction.checkIsJenisPegawaiDefault] ERROR. ",e);
+        }
+
+
+        logger.info("[BiodataAction.getJenisPegawaiDefault] END <<<");
+        return jenisPegawais;
     }
 
     public String paging(){

@@ -1777,7 +1777,7 @@
 
                             <h3>Jabatan Existing
                                 <s:if test="isAdd()">
-                                    <button id="btnAddJabatan" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>
+                                    <button id="btnAddJabatan" type="button" class="btn btn-success" onclick="initAddJabatan()"><i class="fa fa-plus"></i> </button>
                                 </s:if>
                             </h3>
                             <table style="width: 100%;" class="table table-bordered">
@@ -3087,15 +3087,32 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-edit-jabatan-title">Add Data</h4>
+                <h4 id="modal-edit-jabatan-title"></h4>
             </div>
             <div class="modal-body">
                 <input type="hidden" id="personil-position-id"/>
                 <input type="hidden" id="personil-position-flag"/>
+                <input type="hidden" id="position-id-lama"/>
+                <input type="hidden" id="position-name-lama"/>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Unit : </label>
+                        <div class="col-sm-9">
+                            <s:action id="initComboBranch" namespace="/admin/branch"
+                                      name="initComboBranch_branch"/>
+                            <s:select list="#initComboBranch.listOfComboBranch" id="position-branch-id"
+                                      name="biodata.branchId" onchange="listDivisiHistory()"
+                                      listKey="branchId" listValue="branchName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row">
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Bidang : </label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-9">
                                 <select class="form-control" id="department-jabatan" onchange="listPositionJabatan()">
 
                                 </select>
@@ -3106,7 +3123,7 @@
                 <div class="row">
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Posisi : </label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-9">
                             <select class="form-control" id="posisi-jabatan">
 
                             </select>
@@ -3117,7 +3134,7 @@
                 <div class="row">
                     <div class="form-group">
                         <label class="control-label col-sm-3" for="gender">Profesi :</label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-9">
                             <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                             <s:select list="#comboProfesi.listComboProfesi" id="profesi-jabatan"
                                       listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control" />
@@ -3128,18 +3145,19 @@
                 <div class="row">
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Jenis Jabatan : </label>
-                        <div class="col-sm-6">
-                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
-                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenis-jabatan"
-                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
-                        </div>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="jenis-jabatan"></select>
+                            <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
+                            <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenis-jabatan"--%>
+                                      <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Digaji : </label>
-                        <div class="col-sm-6">
+                        <div class="col-sm-9">
                             <s:select list="#{'N':'Tidak'}" id="flag-digaji"
                                       headerKey="Y" headerValue="Ya" cssClass="form-control" />
                         </div>
@@ -3307,6 +3325,7 @@
         loadStatusPegawai();
         loadPositionJabatan();
         getAllDepartment();
+        getAllJenisPegawai();
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;

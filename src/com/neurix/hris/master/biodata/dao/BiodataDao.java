@@ -1802,7 +1802,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
     public List<JenisPegawai> getAllListJenisPegawai(){
 
-        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name, flag_default FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
                 "ORDER BY flag_default";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
@@ -1813,6 +1813,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 JenisPegawai jenisPegawai = new JenisPegawai();
                 jenisPegawai.setJenisPegawaiId(obj[0].toString());
                 jenisPegawai.setJenisPegawaiName(obj[1].toString());
+                jenisPegawai.setFlagDefault(obj[2] == null ? "" : obj[2].toString());
                 jenisPegawais.add(jenisPegawai);
             }
         }
@@ -1880,7 +1881,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "pp.flag_digaji, \n" +
                 "pp.personil_position_id, \n" +
                 "pp.nip, \n" +
-                "p.department_id \n" +
+                "p.department_id," +
+                "pp.flag \n" +
                 "FROM it_hris_pegawai_position pp \n" +
                 "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
                 "INNER JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
@@ -1909,6 +1911,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             personilPosition.setPersonilPositionId(obj[9].toString());
             personilPosition.setNip(obj[10].toString());
             personilPosition.setDivisiId(obj[11].toString());
+            personilPosition.setFlag(obj[12] == null ? "" : obj[12].toString());
             personilPositions.add(personilPosition);
         }
 
