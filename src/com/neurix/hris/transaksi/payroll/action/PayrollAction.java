@@ -2422,7 +2422,7 @@ public class PayrollAction extends BaseMasterAction{
                 payroll.setTahun(getTahun());
                 payroll.setBranchId(getBranchId());
                 payroll.setTipe(getTipe());
-                payroll.setNip("");
+                payroll.setNip("031219880003"); // jangan lupa kembalikan ke defaul ""
             }
 
             List<Payroll> listDataPayroll = new ArrayList();

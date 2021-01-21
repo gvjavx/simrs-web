@@ -110,6 +110,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -6633,6 +6634,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         kursIndonesia.setDecimalFormatSymbols(formatRp);
 
         List<ImBiodataEntity> dataBiodata = biodataDao.getAllData();
+
+        // cari berdasarkan nip
+        if (!"".equalsIgnoreCase(bean.getNip()))
+        {
+            dataBiodata = dataBiodata.stream().filter(p->p.getNip().equalsIgnoreCase(bean.getNip())).collect(Collectors.toList());
+        }
+
         if(bean.getNip().equalsIgnoreCase("")){
             itPayrollEntities = payrollDao.getDataView(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getTipe());
             /*if(bean.getTipe().equalsIgnoreCase("PN")){
@@ -8431,11 +8439,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setTotalB(payroll.getTotalBNilai());
                 itPayrollEntity.setTotalC(payroll.getTotalCNilai());
                 itPayrollEntity.setGajiBersih(payroll.getTotalGajiBersihNilai());
-                payrollDao.updateAndSave(itPayrollEntity);
 
-                //jika terjadi perubahan nilai tunjangan Peralihan
-                if (perubahanPeralihan.equalsIgnoreCase("Y")) {
+                try {
+                    payrollDao.updateAndSave(itPayrollEntity);
+                } catch (HibernateException e){
+                    logger.info("[]");
                 }
+
             }
         }
     }

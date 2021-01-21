@@ -39,7 +39,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_alat'/>";
+            window.location.href="<s:url action='initForm_payroll'/>";
         }
 
         $.subscribe('successDialog', function (event, data) {
@@ -3509,7 +3509,7 @@
     </div>
 </div>
 
-<div class="modal fade" id="modal-success-dialog">
+<div class="modal fade" id="modal-success-dialog-edit">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
@@ -3524,10 +3524,10 @@
                 Record has been saved successfully.
             </div>
             <div class="modal-footer">
-                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
-                <%--</button>--%>
-                <button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok
+                <button type="button" class="btn btn-sm btn-success" data-dismiss="modal"><i class="fa fa-check"></i> Ok
                 </button>
+                <%--<button type="button" class="btn btn-sm btn-success" id="ok_con"><i class="fa fa-check"></i> Ok--%>
+                <%--</button>--%>
             </div>
         </div>
     </div>
@@ -3569,8 +3569,11 @@
             dwr.engine.setAsync(true);
             PayrollAction.reprosesPayrollById(branchId, bulan, tahun, tipe,id,nip, function(listdata){
                 dwr.engine.setAsync(false);
-                showDialog("success");
+//                showDialog("success");
+                $("#modal-loading-dialog").modal('hide');
+                $("#modal-success-dialog-edit").modal('show');
                 $('#modal-reproses').modal('hide');
+                window.location.reload();
             });
         }
     });
@@ -3627,6 +3630,35 @@
         var flagPensiun = "N";
         var flagJubileum = "N";
 
+        var tunjDapen = $("#tunjDapen").val();
+        var tunjBpjsKs = $("#tunjBpjsKs").val();
+        var tunjBpjsTk = $("#tunjBpjsTk").val();
+        var tunjPph = $("#tunjPph").val();
+        var iuranDapenPeg = $("#iuranDapenPeg").val();
+        var iuranDapenPersh = $("#iuranDapenPersh").val();
+        var iuranBpjsTkPeg = $("#iuranBpjsTkPeg").val();
+        var iuranBpjsTkPers = $("#iuranBpjsTkPers").val();
+        var iuranBpjsKsPeg = $("#iuranBpjsKsPeg").val();
+        var iuranBpjsKsPers = $("#iuranBpjsKsPers").val();
+        var pphGaji1 = $("#pphGaji1").val();
+        var totalPotonganLain = $("#totalPotonganLain").val();
+
+        var jsonObj = {
+            tunjdapen : tunjDapen,
+            tunjbpjsks : tunjBpjsKs,
+            tunjbpjstk : tunjBpjsTk,
+            tunjpph : tunjPph,
+            iurandapenpeg : iuranDapenPeg,
+            iurandapenpers : iuranDapenPersh,
+            iurandapentkpeg : iuranBpjsTkPeg,
+            iuranbpjstkpers : iuranBpjsTkPers,
+            iuranbpjskspeg : iuranBpjsKsPeg,
+            iuranbpjskspers : iuranBpjsKsPers,
+            pphgaji : pphGaji1
+        }
+
+        var strJson = JSON.stringify(jsonObj);
+
         if (confirm('Apakah Anda ingin merubah Data?')) {
             var url_string = window.location.href ;
             var url = new URL(url_string);
@@ -3636,7 +3668,9 @@
                 PayrollAction.saveEditData(payrollId, nip, tunjanganPeralihan,pemondokan,
                         komunikasi, kopkar, iuranSp, iuranPiikb,bankBri, bankMandiri, infaq, perkesDanObat,
                         listrik, iuranProfesi, potonganLain,
-                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih,totalPttSetahun,pphSeharusnya,pph11Bulan,selisihPph21,totalPotLainLain,bulan,tahun,peralihanGapok,peralihanSankhus,peralihanTunjangan, function(listdata) {
+                        flagJubileum, flagPensiun, tunjPph, pphGaji,nilaiPtt,totalA,totalB,totalC,gajiBersih,totalPttSetahun,pphSeharusnya,pph11Bulan,selisihPph21,totalPotLainLain,bulan,tahun,peralihanGapok,peralihanSankhus,peralihanTunjangan,
+                    strJson,
+                    function(listdata) {
                             alert('Data Berhasil Dirubah');
                             $('#modal-edit').modal('hide');
                             $('#formEdit')[0].reset();
