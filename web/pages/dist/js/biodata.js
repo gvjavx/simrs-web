@@ -265,3 +265,9 @@ function getAllJenisPegawai(){
         $("#jenis-jabatan").html(str);
     });
 }
+
+function clearPositionJabatanSession() {
+    BiodataAction.clearSessionJabatan(function () {
+        loadPositionJabatan();
+    });
+}

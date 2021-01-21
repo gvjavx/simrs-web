@@ -65,6 +65,7 @@
         <convert converter="bean" match="com.neurix.hris.master.reward.model.Reward"/>
         <convert converter="bean" match="com.neurix.hris.master.sertifikat.model.Sertifikat"/>
         <convert converter="bean" match="com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai"/>
+        <convert converter="bean" match="com.neurix.hris.master.jenisPegawai.model.JenisPegawai"/>
         <convert converter="bean"
                  match="com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity"/>
 

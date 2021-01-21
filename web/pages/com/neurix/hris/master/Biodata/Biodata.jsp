@@ -1777,7 +1777,8 @@
 
                             <h3>Jabatan Existing
                                 <s:if test="isAdd()">
-                                    <button id="btnAddJabatan" type="button" class="btn btn-success" onclick="initAddJabatan()"><i class="fa fa-plus"></i> </button>
+                                    <button id="btnAddJabatan" type="button" class="btn btn-success" onclick="initAddJabatan()"><i class="fa fa-plus"></i> Add</button>
+                                    <button id="btnAddJabatan" type="button" class="btn btn-danger" onclick="clearPositionJabatanSession()"><i class="fa fa-refresh"></i> Clear</button>
                                 </s:if>
                             </h3>
                             <table style="width: 100%;" class="table table-bordered">
@@ -3082,7 +3083,7 @@
 </div>
 
 <div id="modal-edit-jabatan" class="modal fade" role="dialog">
-    <div class="modal-dialog" style="width: 30%;">
+    <div class="modal-dialog" style="width: 40%;">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -3146,11 +3147,10 @@
                     <div class="form-group">
                         <label class="control-label col-sm-3" >Jenis Jabatan : </label>
                         <div class="col-sm-9">
-                            <select class="form-control" id="jenis-jabatan"></select>
-                            <%--<s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>--%>
-                            <%--<s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenis-jabatan"--%>
-                                      <%--listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>--%>
-                        <%--</div>--%>
+                            <select class="form-control" id="jenis-jabatan">
+
+                            </select>
+                        </div>
                     </div>
                 </div>
 

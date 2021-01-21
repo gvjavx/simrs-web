@@ -3578,6 +3578,7 @@ public class BiodataAction extends BaseMasterAction{
             List<PersonilPosition> filteredPersonilPosition = listOfResultPersonil.stream().filter(
                     p->p.getPositionId().equalsIgnoreCase(positionId)
                             && p.getNip().equalsIgnoreCase(nip)
+                            && p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiId)
                             && p.getFlag().equalsIgnoreCase("Y")
             ).collect(Collectors.toList());
 
@@ -3601,24 +3602,34 @@ public class BiodataAction extends BaseMasterAction{
                 return response;
             }
             // END
-        }
 
-        // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
-        if (!isJenisPegawaiDefault)
-        {
-            List<PersonilPosition> filteredPersonilPosition = listOfResultPersonil.stream().filter(
+            List<PersonilPosition> filteredForJenisPegawaiDefaultAktif = listOfResultPersonil.stream().filter(
                     p->p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiIdDefault)
                             && p.getNip().equalsIgnoreCase(nip)
                             && p.getFlag().equalsIgnoreCase("Y")
             ).collect(Collectors.toList());
 
-            if (filteredPersonilPosition != null && filteredPersonilPosition.size() > 0)
+            if (!isJenisPegawaiDefault)
             {
-                response.setMsg("Tidak Ada Jabatan Utama Aktif Pada List. Tambahkan / Edit Terlebih Dahulu.");
-                return response;
+                // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
+                if (filteredForJenisPegawaiDefaultAktif == null || filteredForJenisPegawaiDefaultAktif.size() == 0)
+                {
+                    response.setMsg("Tidak Ada Jabatan Utama Aktif Pada List. Tambahkan / Edit Terlebih Dahulu.");
+                    return response;
+                } //END
+            }
+            else
+            {
+                // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
+                if (filteredForJenisPegawaiDefaultAktif != null && filteredForJenisPegawaiDefaultAktif.size() > 0)
+                {
+                    response.setMsg("Sudah Ada Jabatan Utama Aktif.");
+                    return response;
+                } //END
             }
         }
-        //END
+
+
 
         response.setStatus("success");
         logger.info("[BiodataAction.validationPersonilPosition] END <<<");
@@ -3644,6 +3655,7 @@ public class BiodataAction extends BaseMasterAction{
         {
             List<JenisPegawai> filteredJenisPegawai = jenisPegawais.stream().filter(
                     p->p.getJenisPegawaiId().equalsIgnoreCase(jenisPegawai)
+                    && p.getFlagDefault().equalsIgnoreCase("Y")
             ).collect(Collectors.toList());
 
             if (filteredJenisPegawai != null && filteredJenisPegawai.size() > 0)
@@ -3703,6 +3715,17 @@ public class BiodataAction extends BaseMasterAction{
         logger.info("[BiodataAction.getJenisPegawaiDefault] END <<<");
         return jenisPegawais;
     }
+
+    public void clearSessionJabatan(){
+        logger.info("[BiodataAction.clearSessionJabatan] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfPersonilPosition");
+
+        logger.info("[BiodataAction.clearSessionJabatan] END <<<");
+    }
+
+
 
     public String paging(){
         return SUCCESS;
