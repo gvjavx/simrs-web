@@ -190,6 +190,7 @@ function saveEditJabatan() {
 }
 
 function saveAddJabatan() {
+    var nip                 = $("#nip1").val() == "" ? "1" : $("#nip1").val();
     var departmentId        = $("#department-jabatan option:selected").val();
     var departmentName      = $("#department-jabatan option:selected").text();
     var posisiBaruId        = $("#posisi-jabatan option:selected").val();
@@ -207,7 +208,7 @@ function saveAddJabatan() {
     var flagDigaji          = $("#flag-digaji").val();
 
     var objJson = {
-        nip : "1",
+        nip : nip,
         positionid : posisiBaruId,
         idpersonilposition : personilPositionId,
         positionidlama : posisiIdLama,

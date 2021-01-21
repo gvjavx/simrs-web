@@ -87,9 +87,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public String getNextPersonalId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
-
-        return "D"+sId;
+        String sId = String.format("%04d", iter.next());
+        return sId;
     }
 
     public String getNextPengalamanKerja() throws HibernateException {

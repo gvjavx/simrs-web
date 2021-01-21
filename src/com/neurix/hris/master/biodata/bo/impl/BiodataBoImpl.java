@@ -1528,7 +1528,7 @@ public class BiodataBoImpl implements BiodataBo {
 
                 try {
                     // insert into database
-                    personilPositionDao.addAndSave(itPersonilPositionEntity);
+//                    personilPositionDao.addAndSave(itPersonilPositionEntity);
                     biodataDao.addAndSave(imBiodataEntity);
                 } catch (HibernateException e) {
                     logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
@@ -5692,5 +5692,17 @@ public class BiodataBoImpl implements BiodataBo {
 
         logger.info("[BiodataBoImpl.getPersonilPositionEntityById] END process <<<");
         return id;
+    }
+
+    @Override
+    public String getSeqNip() {
+        logger.info("[BiodateBoImpl.getSeqNip] START >>>>>>");
+        String seq = "";
+        try{
+            seq = biodataDao.getNextPersonalId();
+        } catch (HibernateException e) {
+            logger.error("[BiodataBoImpl.getSeqNip] Failed to get Sequence ==> " +e.getMessage());
+        }
+        return seq;
     }
 }
