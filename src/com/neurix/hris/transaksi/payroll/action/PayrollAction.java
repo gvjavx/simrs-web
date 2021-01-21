@@ -24,6 +24,8 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -2619,7 +2621,13 @@ public class PayrollAction extends BaseMasterAction{
                              String tunjPeralihan,String pemondokan,String komunikasi, //komponen A
                              String kopkar, String iuranSp, String iuranPiikb, String bankBri, String bankMandiri, // Komponen rincian C
                              String infaq, String perkesDanObat, String listrik, String iuranProfesi, String potonganLain, // Komponen rincian C
-                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,String totalB,String totalC,String gajiBersih,String totalPttSetahun,String pphSeharusnya,String pph11Bulan,String selisihPph21,String totalPotLainLain,String bulan,String tahun,String peralihanGapok,String peralihanSankhus,String peralihanTunjangan){
+                             String flagJubileum, String flagPensiun, String tunjPph, String pphGaji, String nilaiPtt, String totalA,
+                             String totalB,String totalC,String gajiBersih,String totalPttSetahun,String pphSeharusnya,String pph11Bulan,
+                             String selisihPph21,String totalPotLainLain,String bulan,String tahun,String peralihanGapok,
+                             String peralihanSankhus,String peralihanTunjangan, String stJson
+    )
+    throws JSONException
+    {
         Payroll newPayroll = new Payroll();
         newPayroll.setNip(nip);
 //        newPayroll.setTipePegawai(tipePegawai);
@@ -2697,6 +2705,37 @@ public class PayrollAction extends BaseMasterAction{
         newPayroll.setPphSeharusnyaNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(pphSeharusnya))));
         newPayroll.setPph11BulanNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(pph11Bulan))));
         newPayroll.setSelisihPphNilai(BigDecimal.valueOf(Double.parseDouble(CommonUtil.removeCommaNumber(selisihPph21))));
+
+        // Sigit 2021-01-21
+        if (stJson == null && !"".equalsIgnoreCase(stJson)){
+            logger.error("[PayrollAction.saveEditData] ERROR. inputan JSON tidak lengkap. ");
+            throw new GeneralBOException("[PayrollAction.saveEditData] ERROR. inputan JSON tidak lengkap. ");
+        } // END
+
+        JSONObject jsonObject = new JSONObject(stJson);
+        BigDecimal tunjdapen        = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("tunjdapen")));
+        BigDecimal tunjbpjsks       = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("tunjbpjsks")));
+        BigDecimal tunjbpjstk       = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("tunjbpjstk")));
+        BigDecimal tunjpph          = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("tunjpph")));
+        BigDecimal iurandapenpeg    = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("iurandapenpeg")));
+        BigDecimal iurandapenpers   = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("iurandapenpers")));
+        BigDecimal iuranbpjstkpeg   = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("iuranbpjstkpeg")));
+        BigDecimal iuranbpjstkpers  = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("iuranbpjstkpers")));
+        BigDecimal iuranbpjskspeg   = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("iuranbpjskspeg")));
+        BigDecimal iuranbpjskspers  = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("iuranbpjskspers")));
+        BigDecimal pphgaji          = new BigDecimal(CommonUtil.removeCommaNumber(jsonObject.getString("pphgaji")));
+
+        newPayroll.setTunjanganDapenNilai(tunjdapen);
+        newPayroll.setTunjanganBpjsKsNilai(tunjbpjsks);
+        newPayroll.setTunjanganBpjsTkNilai(tunjbpjstk);
+        newPayroll.setTunjanganPphNilai(tunjpph);
+        newPayroll.setIuranDapenPegNilai(iurandapenpeg);
+        newPayroll.setIuranDapenPershNilai(iurandapenpers);
+        newPayroll.setIuranBpjsTkKaryNilai(iuranbpjstkpeg);
+        newPayroll.setIuranBpjsTkPersNilai(iuranbpjstkpers);
+        newPayroll.setIuranBpjsKsKaryNilai(iuranbpjskspeg);
+        newPayroll.setIuranBpjsKsPersNilai(iuranbpjskspers);
+        newPayroll.setPphGajiNilai(pphgaji);
 
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());

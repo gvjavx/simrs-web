@@ -3650,7 +3650,7 @@
             tunjpph : tunjPph,
             iurandapenpeg : iuranDapenPeg,
             iurandapenpers : iuranDapenPersh,
-            iurandapentkpeg : iuranBpjsTkPeg,
+            iuranbpjstkpeg : iuranBpjsTkPeg,
             iuranbpjstkpers : iuranBpjsTkPers,
             iuranbpjskspeg : iuranBpjsKsPeg,
             iuranbpjskspers : iuranBpjsKsPers,

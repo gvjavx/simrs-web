@@ -8426,6 +8426,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setPphSeharusnya(payroll.getPphSeharusnyaNilai());
                 itPayrollEntity.setPph11Bulan(payroll.getPph11BulanNilai());
 
+                // Sigit 2021-01-21, Penambahan Baru
+                itPayrollEntity.setTunjanganDapen(payroll.getTunjanganDapenNilai());
+                itPayrollEntity.setTunjanganBpjsKs(payroll.getTunjanganBpjsKsNilai());
+                itPayrollEntity.setTunjanganBpjsTk(payroll.getTunjanganBpjsTkNilai());
+                itPayrollEntity.setTunjanganPph(payroll.getTunjanganPphNilai());
+                itPayrollEntity.setIuranDapenPeg(payroll.getIuranDapenPegNilai());
+                itPayrollEntity.setIuranDapenPersh(payroll.getIuranDapenPershNilai());
+                itPayrollEntity.setIuranBpjsTkKary(payroll.getIuranBpjsTkKaryNilai());
+                itPayrollEntity.setIuranBpjsTkPers(payroll.getIuranBpjsTkPersNilai());
+                itPayrollEntity.setIuranBpjsKsKary(payroll.getIuranBpjsKsKaryNilai());
+                itPayrollEntity.setIuranBpjsKsPers(payroll.getIuranBpjsKsPersNilai());
+                itPayrollEntity.setPphGaji(payroll.getPphGajiNilai());
+                // END
+
                 //peralihan
                 itPayrollEntity.setPeralihanGapok(payroll.getPeralihanGapok());
                 itPayrollEntity.setPeralihanSankhus(payroll.getPeralihanSankhus());
