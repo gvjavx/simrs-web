@@ -243,25 +243,28 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
             //Ubah flag versi sebelumnya menjadi N
             List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
+            VersionZebra versionZebra = new VersionZebra();
+            versionZebra.setFlag(bean.getFlag());
 
             try {
-                imVersionZebraEntities = getListEntityVersionByCriteria(bean);
+                imVersionZebraEntities = getListEntityVersionByCriteria(versionZebra);
             } catch (GeneralBOException e){
                 logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
             }
 
             if (imVersionZebraEntities.size() > 0) {
-               ImVersionZebraEntity lastVersion = imVersionZebraEntities.get(imVersionZebraEntities.size()-1);
-               lastVersion.setFlag("N");
-               lastVersion.setAction("U");
-               lastVersion.setLastUpdate(bean.getLastUpdate());
-               lastVersion.setLastUpdateWho("admin");
+                for (ImVersionZebraEntity entity: imVersionZebraEntities){
+                    entity.setFlag("N");
+                    entity.setAction("D");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
 
-               try {
-                   versionZebraDao.updateAndSave(lastVersion);
-               } catch (GeneralBOException e) {
-                   logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
-               }
+                    try {
+                        versionZebraDao.updateAndSave(entity);
+                    } catch (GeneralBOException e) {
+                        logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
+                    }
+                }
             }
 
             //Add versi baru
@@ -269,8 +272,8 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imVersionZebraEntity.setIdVersion(id);
             imVersionZebraEntity.setVersionName(bean.getVersionName());
             imVersionZebraEntity.setDescription(bean.getDescription());
-            imVersionZebraEntity.setFlag("Y");
-            imVersionZebraEntity.setAction("U");
+            imVersionZebraEntity.setFlag(bean.getFlag());
+            imVersionZebraEntity.setAction(bean.getAction());
             imVersionZebraEntity.setCreatedDate(bean.getCreatedDate());
             imVersionZebraEntity.setLastUpdate(bean.getLastUpdate());
             imVersionZebraEntity.setCreatedWho(bean.getCreatedWho());

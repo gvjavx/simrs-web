@@ -27,6 +27,8 @@
             var cekFile = cekFileAtas('set_upload_apk');
             if (!cekFile && deskripsi != '') {
                 event.originalEvent.options.submit = true;
+                $('#save').hide();
+                $('#load_add').show();
             } else {
                 event.originalEvent.options.submit = false;
                 $('#warning_add').show().fadeOut(5000);
@@ -45,12 +47,16 @@
                 jQuery(".ui-dialog-titlebar-close").hide();
                 $('#modal-add').modal('hide');
                 $.publish('showInfoDialog');
+                $('#save').show();
+                $('#load_add').hide();
             }
         });
 
         $.subscribe('errorDialog', function (event, data) {
             $('#warning_add').show().fadeOut(5000);
             $('#msg_add').text(event.originalEvent.request.getResponseHeader('message'));
+            $('#save').show();
+            $('#load_add').hide();
         });
 
     </script>
@@ -304,21 +310,17 @@
                         </div>
                     </div>
                 </div>
-                <div class="row jarak_atas">
-                    <div class="col-md-offset-4 col-md-8">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-success"
-                                   formIds="addForm" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave"
-                                   onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog">
-                            <i class="fa fa-check"></i>
-                            Save
-                        </sj:submit>
-                        <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_add"><i
-                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                        </button>
-                    </div>
-                </div>
+                    <sj:submit cssStyle="margin-left: 147px; margin-top: 20px" targets="crud" type="button" cssClass="btn btn-success"
+                               formIds="addForm" id="save" name="save"
+                               onBeforeTopics="beforeProcessSave"
+                               onCompleteTopics="closeDialog,successDialog"
+                               onSuccessTopics="successDialog" onErrorTopics="errorDialog">
+                        <i class="fa fa-check"></i>
+                        Save
+                    </sj:submit>
+                    <button style="display: none; cursor: no-drop; margin-left: 147px; margin-top: 20px" type="button" class="btn btn-success" id="load_add"><i
+                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                    </button>
                 </s:form>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
