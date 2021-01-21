@@ -2284,8 +2284,18 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setTanggalLahir(personalEntity.getTanggalLahir());
                     returnBiodata.setTempatLahir(personalEntity.getTempatLahir());
                     returnBiodata.setTipePegawai(personalEntity.getTipePegawai());
-                    if(tipePegawaiDao.getTipeById(personalEntity.getTipePegawai()) != "")
-                        returnBiodata.setTipePegawaiName(tipePegawaiDao.getTipeById(personalEntity.getTipePegawai()));
+
+                    String pegawaiTipe = "";
+                    try{
+                        pegawaiTipe = tipePegawaiDao.getTipeById(personalEntity.getTipePegawai());
+                    } catch (HibernateException e) {
+                        logger.error("[BiodataBoImpl.getByCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when getting Tipe Pegawai by ID, " + e.getMessage());
+                    }
+
+                    if(pegawaiTipe != null && !"".equalsIgnoreCase(pegawaiTipe) ) {
+                        returnBiodata.setTipePegawaiName(pegawaiTipe);
+                    }
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
