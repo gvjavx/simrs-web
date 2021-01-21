@@ -22,22 +22,35 @@
         });
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            event.originalEvent.options.submit = true;
-            $('#confirm_dialog').dialog('close');
-            $.publish('showDialog');
+            var versionId = $('#set_version_id').val();
+            var deskripsi = $('#set_deskripsi').val();
+            var cekFile = cekFileAtas('set_upload_apk');
+            if (!cekFile && deskripsi != '') {
+                event.originalEvent.options.submit = true;
+            } else {
+                event.originalEvent.options.submit = false;
+                $('#warning_add').show().fadeOut(5000);
+                $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                if (cekFile) {
+                    $('#war_set_upload_apk').show();
+                }
+                if(deskripsi == ''){
+                    $('#war_set_deskripsi').show();
+                }
+            }
         });
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
                 jQuery(".ui-dialog-titlebar-close").hide();
+                $('#modal-add').modal('hide');
                 $.publish('showInfoDialog');
-                $('body').scrollTop(0);
             }
         });
 
         $.subscribe('errorDialog', function (event, data) {
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
+            $('#warning_add').show().fadeOut(5000);
+            $('#msg_add').text(event.originalEvent.request.getResponseHeader('message'));
         });
 
     </script>
@@ -223,7 +236,6 @@
 
 <div class="modal fade" id="modal-add">
     <div class="modal-dialog modal-md">
-        <form id="addForm" enctype="multipart/form-data" namespace="/pasien" action="saveVersion_version.action" method="post">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -232,6 +244,7 @@
                 </h4>
             </div>
             <div class="modal-body">
+                <s:form id="addForm" enctype="multipart/form-data" namespace="/pasien" action="saveVersion_version.action" method="post">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_add"></p>
@@ -291,24 +304,28 @@
                         </div>
                     </div>
                 </div>
+                <div class="row jarak_atas">
+                    <div class="col-md-offset-4 col-md-8">
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-success"
+                                   formIds="addForm" id="save" name="save"
+                                   onBeforeTopics="beforeProcessSave"
+                                   onCompleteTopics="closeDialog,successDialog"
+                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog">
+                            <i class="fa fa-check"></i>
+                            Save
+                        </sj:submit>
+                        <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_add"><i
+                                class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                        </button>
+                    </div>
+                </div>
+                </s:form>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <sj:submit type="button" cssClass="btn btn-success"
-                           formIds="addForm" id="save" name="save"
-                           onBeforeTopics="beforeProcessSave"
-                           onCompleteTopics="closeDialog,successDialog"
-                           onSuccessTopics="successDialog" onErrorTopics="errorDialog">
-                    <i class="fa fa-arrow-right"></i>
-                    Save
-                </sj:submit>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_add"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                </button>
             </div>
         </div>
-        </form>
     </div>
 </div>
 
@@ -456,7 +473,6 @@
             $('#for_edit').hide();
             $('#for_edit-2').show();
             $('#set_device_id').val('');
-            // $('#save_add').attr('onclick', 'saveVersion(\''+tipe+'\')');
             $('#set_judul').text("Tambah Version");
             $('#modal-add').modal({show: true, backdrop: 'static'});
         }

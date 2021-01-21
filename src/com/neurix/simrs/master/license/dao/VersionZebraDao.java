@@ -3,6 +3,7 @@ package com.neurix.simrs.master.license.dao;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.license.model.ImLicenseZebraEntity;
 import com.neurix.simrs.master.license.model.ImVersionZebraEntity;
+import com.neurix.simrs.master.license.model.LicenseZebra;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;

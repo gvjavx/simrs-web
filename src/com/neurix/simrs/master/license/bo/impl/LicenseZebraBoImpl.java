@@ -57,9 +57,6 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
-//            else {
-//                hsCriteria.put("flag", "Y");
-//            }
 
             try {
                 imLicenseZebraEntities = licenseZebraDao.getByCriteria(hsCriteria);
@@ -107,11 +104,6 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             if (bean.getDeviceId() != null && !"".equalsIgnoreCase(bean.getDeviceId())) {
                 hsCriteria.put("device_id", bean.getDeviceId());
             }
-//            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-//                hsCriteria.put("flag", bean.getFlag());
-//            } else {
-//                hsCriteria.put("flag", "Y");
-//            }
 
             try {
                 imLicenseZebraEntities = licenseZebraDao.getByCriteria(hsCriteria);
@@ -205,16 +197,22 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imLicenseZebraEntity.setCreatedWho(bean.getCreatedWho());
             imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
-
-            if(!isKeyAvailable(licenseKey, bean.getDeviceId())){
-                try {
-                    licenseZebraDao.addAndSave(imLicenseZebraEntity);
-                } catch (GeneralBOException e){
-                    logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
-                    throw new GeneralBOException("Error...! @_@");
-                }
+            List<ImLicenseZebraEntity> list = licenseZebraDao.getDeviceId(bean.getDeviceId());
+            if(list.size() > 0){
+                logger.error("Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                throw new GeneralBOException("Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
             }else{
-                throw new GeneralBOException("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                if(!isKeyAvailable(licenseKey, bean.getDeviceId())){
+                    try {
+                        licenseZebraDao.addAndSave(imLicenseZebraEntity);
+                    } catch (GeneralBOException e){
+                        logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
+                        throw new GeneralBOException("Error...! @_@");
+                    }
+                }else{
+                    logger.error("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                    throw new GeneralBOException("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                }
             }
         }
 
@@ -295,10 +293,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             Map hsCriteria = new HashMap();
 
             if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
-                hsCriteria.put("license_id", bean.getIdVersion());
+                hsCriteria.put("id_version", bean.getIdVersion());
             }
             if (bean.getVersionName() != null && !"".equalsIgnoreCase(bean.getVersionName())) {
-                hsCriteria.put("license_key", bean.getVersionName());
+                hsCriteria.put("version_name", bean.getVersionName());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
@@ -342,10 +340,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             Map hsCriteria = new HashMap();
 
             if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
-                hsCriteria.put("license_id", bean.getIdVersion());
+                hsCriteria.put("id_version", bean.getIdVersion());
             }
             if (bean.getVersionName() != null && !"".equalsIgnoreCase(bean.getVersionName())) {
-                hsCriteria.put("license_key", bean.getVersionName());
+                hsCriteria.put("version_name", bean.getVersionName());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
