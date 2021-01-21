@@ -122,9 +122,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <br>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4" style="visibility: hidden">To :</label>
-                                    <div style="padding-left: 140px" class="col-sm-3">
+                                    <div class="col-md-offset-5 col-sm-7">
                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="errorLogForm" id="search" name="search"
                                                    onClickTopics="showDialogSearch" onCompleteTopics="closeDialogSearch">
                                             <i class="fa fa-search"></i>

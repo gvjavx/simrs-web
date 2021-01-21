@@ -22,13 +22,18 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.context.ContextLoader;
+import sun.misc.BASE64Decoder;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
@@ -172,7 +177,7 @@ public class UserAction extends BaseMasterAction {
         return "init_combo_role";
     }
 
-    public String initComboMaster(){
+    public String initComboMaster() {
 
         Master master = new Master();
         master.setFlag("Y");
@@ -268,8 +273,8 @@ public class UserAction extends BaseMasterAction {
             return "failure";
         }
 
-        for (Branch branch : listOfBranches){
-            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(branch.getBranchId())){
+        for (Branch branch : listOfBranches) {
+            if (!CommonConstant.ID_KANPUS.equalsIgnoreCase(branch.getBranchId())) {
                 listOfResult.add(branch);
             }
         }
@@ -476,14 +481,14 @@ public class UserAction extends BaseMasterAction {
 //                String hashedPassword = passwordEncoder.encode(rawPassword);
 
                 ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-                String hashedPassword = passwordEncoder.encodePassword(rawPassword,null);
+                String hashedPassword = passwordEncoder.encodePassword(rawPassword, null);
 
                 editUser.setPassword(hashedPassword);
 
-                String itemId = editUser.getUserId()!=null ? editUser.getUserId() : getUserId();
+                String itemId = editUser.getUserId() != null ? editUser.getUserId() : getUserId();
                 if (itemId != null && !"".equalsIgnoreCase(itemId)) {
 
-                    if (this.fileUpload!=null) {
+                    if (this.fileUpload != null) {
 
                         //note : for linux directory
                         //String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
@@ -510,7 +515,7 @@ public class UserAction extends BaseMasterAction {
                             return ERROR;
                         }
 
-                        if (contentFile!=null) {
+                        if (contentFile != null) {
                             editUser.setContentFile(contentFile);
                             editUser.setPhotoUserUrl(fileName);
                         }
@@ -564,7 +569,7 @@ public class UserAction extends BaseMasterAction {
 //                String hashedPassword = passwordEncoder.encode(rawPassword);
 
                 ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-                String hashedPassword = passwordEncoder.encodePassword(rawPassword,null);
+                String hashedPassword = passwordEncoder.encodePassword(rawPassword, null);
 
                 if (rawPassword.equalsIgnoreCase(addUser.getConfirmPassword())) {
 
@@ -573,7 +578,7 @@ public class UserAction extends BaseMasterAction {
                     String itemId = addUser.getUserId();
                     if (itemId != null && !"".equalsIgnoreCase(itemId)) {
 
-                        if (this.fileUpload!=null) {
+                        if (this.fileUpload != null) {
 
                             //note : for linux directory
                             //String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
@@ -602,7 +607,7 @@ public class UserAction extends BaseMasterAction {
                                 return ERROR;
                             }
 
-                            if (contentFile!=null) {
+                            if (contentFile != null) {
                                 addUser.setContentFile(contentFile);
                                 addUser.setPhotoUserUrl(fileName);
                             }
@@ -663,9 +668,9 @@ public class UserAction extends BaseMasterAction {
                 String userLogin = CommonUtil.userLogin();
                 Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-                User deleteUsers = getUsers()!=null ? getUsers() : new User();
+                User deleteUsers = getUsers() != null ? getUsers() : new User();
 
-                if (getUsers()==null) deleteUsers.setUserId(getUserId());
+                if (getUsers() == null) deleteUsers.setUserId(getUserId());
                 deleteUsers.setLastUpdate(updateTime);
                 deleteUsers.setLastUpdateWho(userLogin);
                 deleteUsers.setAction("D");
@@ -737,7 +742,7 @@ public class UserAction extends BaseMasterAction {
         User searchUsers = getUsers();
         List<User> listOfSearchUsers = new ArrayList();
         try {
-            listOfSearchUsers = userBoProxy.getByCriteria(searchUsers);
+            listOfSearchUsers = userBoProxy.getListUserByQuery(searchUsers);
             users.setSuccessMessage("Data Search Success");
         } catch (GeneralBOException e) {
             Long logId = null;
@@ -753,7 +758,7 @@ public class UserAction extends BaseMasterAction {
             return "failure";
         }
 
-        if (listOfSearchUsers.size() == 0){
+        if (listOfSearchUsers.size() == 0) {
             users.setErrorMessage("Cannot Found Data");
             users.setSuccessMessage("");
         }
@@ -793,7 +798,7 @@ public class UserAction extends BaseMasterAction {
             users.setSuccessMessage("");
         }
 
-        if (listOfSearchUsers.size() == 0){
+        if (listOfSearchUsers.size() == 0) {
             users.setErrorMessage("Cannot Found Data");
             users.setSuccessMessage("");
         }
@@ -831,7 +836,7 @@ public class UserAction extends BaseMasterAction {
 
         logger.info("[UserAction.initComboUser] end process <<<");
 
-            return listOfUser;
+        return listOfUser;
     }
 
     public List comboUser(String query) {
@@ -871,6 +876,7 @@ public class UserAction extends BaseMasterAction {
 
         return "init_change_password";
     }
+
     public List initComboUserId(String query) {
         logger.info("[UserAction.initComboUser] start process >>>");
 
@@ -895,6 +901,7 @@ public class UserAction extends BaseMasterAction {
 
         return listOfUser;
     }
+
     public String saveNewPassword() {
 
         logger.info("[UserAction.saveNewPassword] end process <<<");
@@ -905,7 +912,7 @@ public class UserAction extends BaseMasterAction {
 //        String hashedPassword = passwordEncoder.encode(rawPassword);
 
         ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-        String hashedPassword = passwordEncoder.encodePassword(rawPassword,null);
+        String hashedPassword = passwordEncoder.encodePassword(rawPassword, null);
 
 
         if (rawPassword.equalsIgnoreCase(addUser.getConfirmPassword())) {
@@ -916,7 +923,7 @@ public class UserAction extends BaseMasterAction {
 
             if (itemId != null && !"".equalsIgnoreCase(itemId)) {
 
-                if (this.fileUpload!=null) {
+                if (this.fileUpload != null) {
 
                     //note : for linux directory
                     //String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD;
@@ -943,7 +950,7 @@ public class UserAction extends BaseMasterAction {
                         return ERROR;
                     }
 
-                    if (contentFile!=null) {
+                    if (contentFile != null) {
                         addUser.setContentFile(contentFile);
                         addUser.setPhotoUserUrl(fileName);
                     }
@@ -954,7 +961,7 @@ public class UserAction extends BaseMasterAction {
                     String userLogin = CommonUtil.userLogin();
                     Timestamp createTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
-                    if (addUser.getUserId()==null) addUser.setUserId(itemId);
+                    if (addUser.getUserId() == null) addUser.setUserId(itemId);
                     addUser.setCreatedDate(createTime);
                     addUser.setCreatedWho(userLogin);
                     addUser.setLastUpdate(createTime);
@@ -990,7 +997,7 @@ public class UserAction extends BaseMasterAction {
         return "success_save_newpassword";
     }
 
-    public User getUserData(){
+    public User getUserData() {
         logger.info("[UserAction.getUserData] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1011,14 +1018,14 @@ public class UserAction extends BaseMasterAction {
         }
 
         if (branches.getBranchId() != null) {
-            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() +CommonConstant.RESOURCE_PATH_IMAGES+branches.getLogoName());
+            user.setLogoBranch(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName());
         }
 
         logger.info("[UserAction.getUserData] end process <<<");
         return user;
     }
 
-    public CrudResponse checkEmailAvailable(String email){
+    public CrudResponse checkEmailAvailable(String email) {
         CrudResponse response = new CrudResponse();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -1026,13 +1033,13 @@ public class UserAction extends BaseMasterAction {
 
         try {
             ImUsers users = userBo.getUserByEmailId(email);
-            if (users == null){
+            if (users == null) {
                 response.setStatus("success");
             } else {
                 response.setStatus("error");
                 response.setMsg("Email Not Available");
             }
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("Error Where Search By Email Address");
             response.setStatus("error");
             response.setMsg("Error Where Search By Email Address");
@@ -1041,7 +1048,7 @@ public class UserAction extends BaseMasterAction {
         return response;
     }
 
-    public String getStringUrlPhotoProfile(){
+    public String getStringUrlPhotoProfile() {
 
         String url = "";
         String userId = CommonUtil.userIdLogin();
@@ -1053,14 +1060,182 @@ public class UserAction extends BaseMasterAction {
 
         try {
             user = userBo.getUserById(userId, "Y");
-        } catch (GeneralBOException e){
-            logger.error("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. "+e);
-            throw new GeneralBOException("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. "+e);
+        } catch (GeneralBOException e) {
+            logger.error("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. " + e);
+            throw new GeneralBOException("[UserAction.getStringUrlPhotoProfile] Error Where Search User ID. " + e);
         }
 
         if (user != null && user.getUserId() != null && user.getPhotoUserUrl() != null)
             url = ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD + user.getPhotoUserUrl();
 
         return url;
+    }
+
+    public User initUser(String userId, String flag) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+        User user = new User();
+        List<User> userList = new ArrayList<>();
+        if (userId != null && !"".equalsIgnoreCase(userId)) {
+            user.setUserId(userId);
+            user.setFlag(flag);
+            try {
+                userList = userBo.getListUserByQuery(user);
+            } catch (GeneralBOException e) {
+                logger.error(e.getMessage());
+            }
+
+            if (userList.size() > 0) {
+                user = userList.get(0);
+            }
+        }
+        return user;
+    }
+
+    public CrudResponse checkUserIdAvailable(String userId) {
+        CrudResponse response = new CrudResponse();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+
+        try {
+            ImUsers users = userBo.getUserByUserId(userId);
+            if (users == null) {
+                response.setStatus("success");
+            } else {
+                response.setStatus("error");
+                response.setMsg("User ID Not Available");
+            }
+        } catch (GeneralBOException e) {
+            logger.error("Error Where Search By User ID Address");
+            response.setStatus("error");
+            response.setMsg("Error Where Search By User ID Address");
+        }
+        return response;
+    }
+
+    public CrudResponse saveAdd(String data) {
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        UserBo userBo = (UserBo) ctx.getBean("userBoProxy");
+        if (data != null && !"".equalsIgnoreCase(data)) {
+            try {
+                JSONObject obj = new JSONObject(data);
+                if (obj != null) {
+                    User user = new User();
+                    String tipe = obj.getString("tipe_action");
+
+                    if(!"delete".equalsIgnoreCase(tipe)){
+                        if (obj.getString("foto") != null && !"".equalsIgnoreCase(obj.getString("foto"))) {
+                            try {
+                                BASE64Decoder decoder = new BASE64Decoder();
+                                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("foto"));
+                                String fileName = obj.getString("user_id") + ".jpg";
+                                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD + fileName;
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                                if (image == null) {
+                                    logger.error("Buffered Image is null");
+                                } else {
+                                    CrudResponse crudResponse = CommonUtil.compressImage(image, "png", uploadFile);
+                                    if("success".equalsIgnoreCase(crudResponse.getStatus())){
+                                        user.setPhotoUserUrl(fileName);
+                                    }else{
+                                        return crudResponse;
+                                    }
+
+                                }
+                            } catch (IOException e) {
+                                response.setStatus("error");
+                                response.setMsg("Error " + e.getMessage());
+                                return response;
+                            }
+                        }
+                    }
+
+                    if(obj.getString("password") != null && !"".equalsIgnoreCase(obj.getString("password"))){
+                        String rawPassword = obj.getString("password");
+                        ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+                        String hashedPassword = passwordEncoder.encodePassword(rawPassword, null);
+                        user.setPassword(hashedPassword);
+                    }
+
+                    user.setUserId(obj.getString("user_id"));
+                    user.setUsername(obj.getString("user_name"));
+                    user.setAreaId(obj.getString("area_id"));
+                    user.setBranchId(obj.getString("branch_id"));
+                    user.setDivisiId(obj.getString("divisi_id"));
+                    user.setPositionId(obj.getString("position_id"));
+                    user.setRoleId(obj.getString("role_id"));
+
+                    if(obj.has("id_pelayanan")){
+                        if(obj.getString("id_pelayanan") != null && !"".equalsIgnoreCase(obj.getString("id_pelayanan"))){
+                            user.setIdPelayanan(obj.getString("id_pelayanan"));
+                        }
+                    }
+                    if(obj.has("id_ruangan")){
+                        if(obj.getString("id_ruangan") != null && !"".equalsIgnoreCase(obj.getString("id_ruangan"))){
+                            user.setIdRuangan(obj.getString("id_ruangan"));
+                        }
+                    }
+                    if(obj.has("id_vendor")){
+                        if(obj.getString("id_vendor") != null && !"".equalsIgnoreCase(obj.getString("id_vendor"))){
+                            user.setIdVendor(obj.getString("id_vendor"));
+                        }
+                    }
+
+                    user.setEmail(obj.getString("email"));
+
+                    if("edit".equalsIgnoreCase(tipe)){
+                        user.setAction("U");
+                        user.setFlag("Y");
+                    }else if ("delete".equalsIgnoreCase(tipe)){
+                        user.setAction("D");
+                        user.setFlag("N");
+                    }else{
+                        user.setFlag("Y");
+                        user.setAction("C");
+                        user.setCreatedDate(now);
+                        user.setCreatedWho(userLogin);
+                    }
+
+                    user.setLastUpdate(now);
+                    user.setLastUpdateWho(userLogin);
+
+                    try {
+                        if("edit".equalsIgnoreCase(tipe)){
+                            userBo.saveEdit(user);
+                            response.setStatus("success");
+                            response.setMsg("OK");
+                        }else if("delete".equalsIgnoreCase(tipe)){
+                            userBo.saveDelete(user);
+                            response.setStatus("success");
+                            response.setMsg("OK");
+                        }else{
+                            userBo.saveAdd(user);
+                            response.setStatus("success");
+                            response.setMsg("OK");
+                        }
+                    }catch (Exception e){
+                        response.setStatus("error");
+                        response.setMsg("Error when save user...! "+e.getMessage());
+                    }
+
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("Data object yang dikirim tidak ada...!");
+                }
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("JSON parse tidak bisa...!" + e.getMessage());
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Data object yang dikirim tidak ada...!");
+        }
+        return response;
     }
 }

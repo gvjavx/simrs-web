@@ -194,10 +194,11 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     public void saveAdd(LicenseZebra bean) throws GeneralBOException {
         String id = getNextLicenseId();
         if (bean != null) {
+            String licenseKey = CommonUtil.getRandomString(8);
             ImLicenseZebraEntity imLicenseZebraEntity = new ImLicenseZebraEntity();
             imLicenseZebraEntity.setLicenseId(id);
             imLicenseZebraEntity.setDeviceId(bean.getDeviceId());
-            imLicenseZebraEntity.setLicenseKey(bean.getLicenseKey());
+            imLicenseZebraEntity.setLicenseKey(licenseKey);
             imLicenseZebraEntity.setAction(bean.getAction());
             imLicenseZebraEntity.setFlag(bean.getFlag());
             imLicenseZebraEntity.setCreatedDate(bean.getCreatedDate());
@@ -205,13 +206,37 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
 
-            try {
-                licenseZebraDao.addAndSave(imLicenseZebraEntity);
-            } catch (GeneralBOException e){
-                logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
+            if(!isKeyAvailable(licenseKey, bean.getDeviceId())){
+                try {
+                    licenseZebraDao.addAndSave(imLicenseZebraEntity);
+                } catch (GeneralBOException e){
+                    logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
+                    throw new GeneralBOException("Error...! @_@");
+                }
+            }else{
+                throw new GeneralBOException("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
             }
         }
 
+    }
+
+    @Override
+    public void saveEdit(LicenseZebra bean) throws GeneralBOException {
+        if(bean != null){
+            ImLicenseZebraEntity imLicenseZebraEntity = licenseZebraDao.getById("licenseId", bean.getLicenseId());
+            if(imLicenseZebraEntity != null){
+                imLicenseZebraEntity.setDeviceId(bean.getDeviceId());
+                imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
+                imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                imLicenseZebraEntity.setAction(bean.getAction());
+                imLicenseZebraEntity.setFlag(bean.getFlag());
+                try {
+                    licenseZebraDao.updateAndSave(imLicenseZebraEntity);
+                }catch (HibernateException e){
+                    logger.error("[LicenseZebraBoImpl.saveEdit] error when edit license" + e.getMessage());
+                }
+            }
+        }
     }
 
     public void saveAddVersion(VersionZebra bean) throws GeneralBOException {

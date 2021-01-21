@@ -851,6 +851,7 @@
                                                         <option value="kembali_ke_inap">Kembali Ke Inap</option>
                                                     </s:if>
                                                     <s:else>
+                                                        <option value="selesai">Selesai</option>
                                                         <option value="rawat_inap">Rawat Inap</option>
                                                     </s:else>
                                                     <option value="rawat_isolasi">Rawat Isolasi</option>
@@ -867,6 +868,7 @@
                                                         <option value="kembali_ke_inap">Kembali Ke Inap</option>
                                                     </s:if>
                                                     <s:else>
+                                                        <option value="selesai">Selesai</option>
                                                         <option value="rawat_inap">Rawat Inap</option>
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
@@ -883,6 +885,7 @@
                                                         <option value="kembali_ke_inap">Kembali Ke Inap</option>
                                                     </s:if>
                                                     <s:else>
+                                                        <option value="selesai">Selesai</option>
                                                         <option value="rawat_inap">Rawat Inap</option>
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
@@ -897,6 +900,7 @@
                                                         <option value="kembali_ke_inap">Kembali Ke Inap</option>
                                                     </s:if>
                                                     <s:else>
+                                                        <option value="selesai">Selesai</option>
                                                         <option value="rawat_inap">Rawat Inap</option>
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
@@ -908,6 +912,7 @@
                                                         <option value="kembali_ke_inap">Kembali Ke Inap</option>
                                                     </s:if>
                                                     <s:else>
+                                                        <option value="selesai">Selesai</option>
                                                         <option value="rawat_inap">Rawat Inap</option>
                                                     </s:else>
                                                     <option value="rawat_intensif">Rawat Intensif</option>
@@ -4133,7 +4138,6 @@
         listRuanganInap();
         listResepPasien();
         hitungStatusBiaya();
-        hitungCoverBiaya();
         getJenisResep();
         listICD9();
         cekTranfersPasien('transfer_pasien');

@@ -1,8 +1,11 @@
 package com.neurix.simrs.master.dokter.dao;
 
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.DokterPelayanan;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.teamdokter.model.ItSimrsDokterTeamEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
@@ -298,6 +301,126 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     dokter.setJenisDpjp(obj[6] != null ? obj[6].toString() : null);
                     dokter.setKeterangan(obj[7] != null ? obj[7].toString() : null);
                     dokterList.add(dokter);
+                }
+            }
+        }
+        return dokterList;
+    }
+
+    public List<Dokter> getListDokterByQuery(Dokter bean) {
+        List<Dokter> dokterList = new ArrayList<>();
+        if (bean != null){
+
+            String flag         = "%";
+            String condition    = "";
+            String branchId     = "%";
+
+            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+                flag = bean.getFlag();
+            }
+            if(bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
+                condition += "AND a.id_dokter LIKE '%"+bean.getIdDokter()+"%' \n";
+            }
+            if(bean.getNamaDokter() != null && !"".equalsIgnoreCase(bean.getNamaDokter())){
+                condition += "AND a.nama_dokter ILIKE '%"+bean.getNamaDokter()+"%' \n";
+            }
+            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                condition +="AND c.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                branchId = bean.getBranchId();
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.id_dokter,\n" +
+                    "a.nama_dokter,\n" +
+                    "a.kuota,\n" +
+                    "a.kode_dpjp,\n" +
+                    "a.flag_call,\n" +
+                    "a.flag_tele,\n" +
+                    "a.kuota_tele,\n" +
+                    "a.sip,\n" +
+                    "a.kuota_on_site,\n" +
+                    "a.kuota_bpjs,\n" +
+                    "c.id_dokter_pelayanan,\n" +
+                    "c.id_pelayanan,\n" +
+                    "c.nama_pelayanan,\n" +
+                    "b.foto_upload,\n" +
+                    "a.flag\n" +
+                    "FROM im_simrs_dokter a\n" +
+                    "INNER JOIN im_hris_pegawai b ON a.id_dokter = b.nip\n" +
+                    "LEFT JOIN (\n" +
+                    "SELECT\n" +
+                    "a.id_dokter_pelayanan,\n" +
+                    "a.id_dokter,\n" +
+                    "b.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "b.branch_id\n" +
+                    "FROM im_simrs_dokter_pelayanan a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "WHERE a.flag = 'Y' AND b.flag = 'Y' \n"+
+                    ") c ON a.id_dokter = c.id_dokter\n" +
+                    "WHERE a.flag LIKE :flag \n" + condition +
+                    "ORDER BY a.id_dokter ASC";
+
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("flag", flag)
+                    .list();
+
+            if(result.size() > 0){
+                String idDok = "";
+                Dokter dokter = null;
+                int i = 1;
+                List<DokterPelayanan> dokterPelayananList = new ArrayList<>();
+                for (Object[] obj: result){
+                    if(obj[0] != null && !"".equalsIgnoreCase(obj[0].toString())){
+                        if(!idDok.equalsIgnoreCase(obj[0].toString())){
+                            if(dokter != null){
+                                dokter.setPelayananList(dokterPelayananList);
+                                dokterList.add(dokter);
+                            }
+                            idDok = obj[0].toString();
+                            dokter = new Dokter();
+                            dokter.setIdDokter(obj[0] == null ? "" : obj[0].toString());
+                            dokter.setNamaDokter(obj[1] == null ? "" : obj[1].toString());
+                            dokter.setKuota(obj[2] == null ? "" : obj[2].toString());
+                            dokter.setKodeDpjp(obj[3] == null ? "" : obj[3].toString());
+                            dokter.setFlagCall(obj[4] == null ? "" : obj[4].toString());
+                            dokter.setFlagTele(obj[5] == null ? "" : obj[5].toString());
+                            dokter.setKuotaTele(obj[6] == null ? "" : obj[6].toString());
+                            dokter.setSip(obj[7] == null ? "" : obj[7].toString());
+                            dokter.setKuotaOnSite(obj[8] == null ? null : (BigInteger) obj[8]);
+                            dokter.setKuotaBpjs(obj[9] == null ? null : (BigInteger) obj[9]);
+                            if(obj[13] != null && !"".equalsIgnoreCase(obj[13].toString())){
+                                dokter.setUrlImg(obj[13] == null ? "" : CommonConstant.RESOURCE_PATH_USER_PHOTO+obj[13].toString());
+                            }
+                            dokter.setFlag(obj[14] == null ? null : (String) obj[14]);
+
+                            if(obj[11] != null && !"".equalsIgnoreCase(obj[11].toString())){
+                                DokterPelayanan dokterPelayanan = new DokterPelayanan();
+                                dokterPelayanan.setIdDokterPelayanan(obj[10] == null ? null : obj[10].toString());
+                                dokterPelayanan.setIdPelayanan(obj[11] == null ? null : obj[11].toString());
+                                dokterPelayanan.setNamaPelayanan(obj[12] == null ? null : obj[12].toString());
+                                dokterPelayananList.add(dokterPelayanan);
+                            }
+                        }else{
+                            if(obj[11] != null && !"".equalsIgnoreCase(obj[11].toString())){
+                                DokterPelayanan dokterPelayanan = new DokterPelayanan();
+                                dokterPelayanan.setIdDokterPelayanan(obj[10] == null ? null : obj[10].toString());
+                                dokterPelayanan.setIdPelayanan(obj[11] == null ? null : obj[11].toString());
+                                dokterPelayanan.setNamaPelayanan(obj[12] == null ? null : obj[12].toString());
+                                dokterPelayananList.add(dokterPelayanan);
+                            }
+                        }
+
+                        if(i == result.size()){
+                            dokter.setPelayananList(dokterPelayananList);
+                            dokterList.add(dokter);
+                        }
+
+                        i++;
+                    }
                 }
             }
         }

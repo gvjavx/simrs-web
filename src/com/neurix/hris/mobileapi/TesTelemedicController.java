@@ -561,24 +561,25 @@ public class TesTelemedicController implements ModelDriven<Object> {
 
         KasirRawatJalanAction kasirRawatJalanAction = new KasirRawatJalanAction();
         try {
-            kasirRawatJalanAction.savePembayaranTagihan(
-                    "",
-                    "RS0104200035",
-                    "",
-                    "Y",
-                    "transfer",
-                    "1.1.01.02.02",
-                    "JRJ",
-                    "tunai",
-                    "01010101010101",
-                    noCheckup
-            );
+//            kasirRawatJalanAction.savePembayaranTagihan(
+//                    "",
+//                    "RS0104200035",
+//                    "",
+//                    "Y",
+//                    "transfer",
+//                    "1.1.01.02.02",
+//                    "JRJ",
+//                    "tunai",
+//                    "01010101010101",
+//                    noCheckup
+//            );
         } catch (GeneralBOException e){
             logger.error("[TesTelemedicController.savePembayaranTagihan] Save Pembayaran Tagihan TEST. ",e);
-        } catch (JSONException e) {
-            logger.error("[TesTelemedicController.savePembayaranTagihan] Save Pembayaran Tagihan TEST JSON. ",e);
-            e.printStackTrace();
         }
+//        catch (JSONException e) {
+//            logger.error("[TesTelemedicController.savePembayaranTagihan] Save Pembayaran Tagihan TEST JSON. ",e);
+//            e.printStackTrace();
+//        }
 
     }
 

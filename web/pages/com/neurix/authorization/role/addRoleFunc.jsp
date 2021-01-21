@@ -193,6 +193,10 @@
 
         }
 
+        $(document).ready(function () {
+            $('#selectall').css('margin-left', '-20px');
+        });
+
 
     </script>
 

@@ -265,6 +265,14 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>No Telp. Penanggung Jawab</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="headerDetailCheckup.noTelp"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <%--<s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>--%>
                                         <%--<tr>--%>
                                             <%--<td><b>Metode Pembayaran</b></td>--%>
@@ -2413,7 +2421,6 @@
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
-        hitungCoverBiaya();
         listICD9();
 
         $('#img_ktp').on('click', function (e) {

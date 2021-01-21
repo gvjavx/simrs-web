@@ -5,6 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
+    <bean id="licenseAction" class="com.neurix.simrs.master.license.action.LicenseAction"
+          p:licenseZebraBoProxy-ref="licenseZebraBoProxy"
+    />
 
     <bean id="licenseController" class="com.neurix.simrs.mobileapi.LicenseController"
           p:licenseZebraBoProxy-ref="licenseZebraBoProxy"

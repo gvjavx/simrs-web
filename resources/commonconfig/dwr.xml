@@ -762,6 +762,7 @@
             <param name="class" value="com.neurix.simrs.master.dokter.action.DokterAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.dokter.model.Dokter"/>
+        <convert converter="bean" match="com.neurix.simrs.master.dokter.model.DokterPelayanan"/>
         <convert converter="bean" match="com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity"/>
 
         <create creator="new">
@@ -951,6 +952,12 @@
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.ImMasterEntity"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.MasterPK"/>
         <!--END-->
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.license.action.LicenseAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.LicenseZebra"/>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.VersionZebra"/>
 
     </allow>
 </dwr>

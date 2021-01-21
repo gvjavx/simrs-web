@@ -341,9 +341,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span
-                                            style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px"
-                                            id="jenis_pasien"></span></td>
+                                    <td><span id="jenis_pasien"></span></td>
                                 </tr>
                                 <tr style="display: none" id="form-id_kelas">
                                     <td><b>Hak Kamar</b></td>
@@ -988,7 +986,7 @@
                         $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
                         $('#alamat').html(alamat);
                         $('#poli').html(res.namaPelayanan);
-                        $('#jenis_pasien').html(res.statusPeriksaName);
+                        $('#jenis_pasien').html(changeJenisPasien(res.idJenisPeriksaPasien ,res.statusPeriksaName));
                         $('#diagnosa').html(diagnosa);
                         $('#h_id_pasien').val(res.idPasien);
                         $('#h_id_detail_pasien').val(res.idDetailCheckup);
@@ -1002,7 +1000,6 @@
                         $('#dokter_dpjp_1').removeAttr('disabled');
                         $('#kelas_kamar').removeAttr('disabled');
                         $('#msg_dpjp').hide();
-                        setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
                         $('#modal-detail').modal({show: true, backdrop: 'static'});
                     }
                 }

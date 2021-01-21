@@ -356,14 +356,12 @@ public class PasienAction extends BaseMasterAction {
             if (this.fileUpload != null) {
                 if ("image/jpeg".equalsIgnoreCase(this.fileUploadContentType)) {
                     if (this.fileUpload.length() <= 5242880 && this.fileUpload.length() > 0) {
-
                         // file name
                         String fileName = this.fileUploadFileName;
                         String fileNameReplace = fileName.replace(" ", "_");
                         String newFileName = pasien.getNoKtp() + "-" + dateFormater("MM") + dateFormater("yy") + "-" + fileNameReplace;
                         // deklarasi path file
                         String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_KTP_PASIEN;
-
                         // persiapan pemindahan file
                         File fileToCreate = new File(filePath, newFileName);
 
@@ -375,6 +373,9 @@ public class PasienAction extends BaseMasterAction {
                             logger.error("[CheckupAction.uploadImages] error, " + e.getMessage());
                             throw new GeneralBOException("[CheckupAction.uploadImages] error, " + e.getMessage());
                         }
+                    }else{
+                        logger.error("[CheckupAction.uploadImages] error image size more then 5MB, ");
+                        throw new GeneralBOException("[CheckupAction.uploadImages] error image size more then 5MB");
                     }
                 }
             }

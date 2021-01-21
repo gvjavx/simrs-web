@@ -1,7 +1,11 @@
 package com.neurix.simrs.master.dokter.model;
 
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Toshiba on 07/11/2019.
@@ -40,6 +44,34 @@ public class Dokter {
     private String jenisDpjp;
     private String keterangan;
     private BigInteger kuotaBpjs;
+
+    private String branchId;
+    private List<DokterPelayanan> pelayananList = new ArrayList<>();
+    private String urlImg;
+
+    public String getUrlImg() {
+        return urlImg;
+    }
+
+    public void setUrlImg(String urlImg) {
+        this.urlImg = urlImg;
+    }
+
+    public List<DokterPelayanan> getPelayananList() {
+        return pelayananList;
+    }
+
+    public void setPelayananList(List<DokterPelayanan> pelayananList) {
+        this.pelayananList = pelayananList;
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public BigInteger getKuotaBpjs() {
         return kuotaBpjs;

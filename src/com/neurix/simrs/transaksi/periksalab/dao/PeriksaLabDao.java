@@ -233,30 +233,17 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     }
 
     public String getDivisiIdLabTransaction(String idDetailCheckup, String tipe) {
-//        String SQL = "SELECT c.id_kategori_lab, a.id_detail_checkup, d.kodering\n" +
-//                "FROM it_simrs_periksa_lab a \n" +
-//                "INNER JOIN im_simrs_lab b ON b.id_lab = a.id_lab\n" +
-//                "INNER JOIN im_simrs_kategori_lab c ON c.id_kategori_lab = b.id_kategori_lab\n" +
-//                "INNER JOIN im_position d ON d.position_id = c.divisi_id\n" +
-//                "WHERE c.nama_kategori ILIKE :tipe\n" +
-//                "AND a.id_detail_checkup ILIKE :idDetail\n" +
-//                "ORDER BY a.last_update DESC LIMIT 1";
+
         String type = tipe;
         if("laboratorium".equalsIgnoreCase(tipe)){
             type = "lab";
         }
-        String SQL = "SELECT\n" +
-                "c.id_kategori_lab,\n" +
-                "a.id_detail_checkup,\n" +
-                "d.kodering\n" +
-                "FROM it_simrs_periksa_lab a\n" +
-                "INNER JOIN im_simrs_lab_detail lb ON a.id_lab = lb.id_lab\n" +
-                "INNER JOIN im_simrs_parameter_pemeriksaan pp ON lb.id_parameter_pemeriksaan = pp.id_parameter_pemeriksaan\n" +
-                "INNER JOIN im_simrs_kategori_lab c ON pp.id_kategori_lab = c.id_kategori_lab\n" +
-                "INNER JOIN im_position d ON d.position_id = c.divisi_id\n" +
-                "WHERE c.kategori = :tipe \n" +
-                "AND a.id_detail_checkup ILIKE :idDetail \n" +
-                "ORDER BY a.last_update DESC LIMIT 1";
+        String SQL = "SELECT a.branch_id, a.id_detail_checkup, c.kodering\n" +
+                "FROM it_simrs_header_detail_checkup a \n" +
+                "INNER JOIN im_simrs_pelayanan b ON b.branch_id = a.branch_id \n" +
+                "INNER JOIN im_position c ON c.position_id = b.divisi_id\n" +
+                "WHERE a.id_detail_checkup = :idDetail \n" +
+                "AND b.tipe_pelayanan ILIKE :tipe";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idDetail", idDetailCheckup)

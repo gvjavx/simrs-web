@@ -58,6 +58,32 @@ public class ImtHrisHistoryJabatanPegawaiEntity implements Serializable {
 
     private String jabatanFlag;
     private String mutasiFlag;
+    private String jenisPegawai;
+    private String flagDigaji;
+
+    public String getHistoryJabatanPegawaiId() {
+        return historyJabatanPegawaiId;
+    }
+
+    public void setHistoryJabatanPegawaiId(String historyJabatanPegawaiId) {
+        this.historyJabatanPegawaiId = historyJabatanPegawaiId;
+    }
+
+    public String getJenisPegawai() {
+        return jenisPegawai;
+    }
+
+    public void setJenisPegawai(String jenisPegawai) {
+        this.jenisPegawai = jenisPegawai;
+    }
+
+    public String getFlagDigaji() {
+        return flagDigaji;
+    }
+
+    public void setFlagDigaji(String flagDigaji) {
+        this.flagDigaji = flagDigaji;
+    }
 
     public String getProfesiId() {
         return profesiId;

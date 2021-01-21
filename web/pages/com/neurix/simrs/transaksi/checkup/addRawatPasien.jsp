@@ -66,6 +66,7 @@
             var unitPg = $('#unit_pg').val();
             var cekBpjs = $('#cek_is_bpjs').val();
             var poliUmum = $('#poli_umum').val();
+            var cekEksekutif = $('#cek_poli_eksekutif').val();
 
             if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
@@ -73,17 +74,37 @@
 
 
                 if (tipe == "umum") {
-                    if (pembayaran != '' && uangMuka != '') {
-                        $('#confirm_dialog').dialog('open');
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                        if (pembayaran == '') {
-                            $('#war_pembayaran').show();
+                    if(cekEksekutif == 'Y'){
+                        if($('#is_uang_muka').is(':checked')){
+                            if (pembayaran != '' && uangMuka != '') {
+                                $('#confirm_dialog').dialog('open');
+                            } else {
+                                $("html, body").animate({scrollTop: 0}, 600);
+                                $('#warning_pasien').show().fadeOut(10000);
+                                $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                                if (pembayaran == '') {
+                                    $('#war_pembayaran').show();
+                                }
+                                if (uangMuka == '') {
+                                    $('#war_uang_muka').show();
+                                }
+                            }
+                        }else{
+                            $('#confirm_dialog').dialog('open');
                         }
-                        if (uangMuka == '') {
-                            $('#war_uang_muka').show();
+                    }else{
+                        if (pembayaran != '' && uangMuka != '') {
+                            $('#confirm_dialog').dialog('open');
+                        } else {
+                            $("html, body").animate({scrollTop: 0}, 600);
+                            $('#warning_pasien').show().fadeOut(10000);
+                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                            if (pembayaran == '') {
+                                $('#war_pembayaran').show();
+                            }
+                            if (uangMuka == '') {
+                                $('#war_uang_muka').show();
+                            }
                         }
                     }
                 }
@@ -94,8 +115,7 @@
 
                         if (statusBpjs != '' && statusRujukan != '') {
 
-                            if (statusBpjs == "aktif") {
-                                // if(statusBpjs == "aktif" && statusRujukan == "aktif"){
+                            if (statusBpjs == "aktif" && statusRujukan == "aktif") {
                                 $('#confirm_dialog').dialog('open');
                             } else {
                                 var msg1 = "";
@@ -1465,13 +1485,19 @@
                             <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
+                            <s:hidden id="cek_poli_eksekutif"></s:hidden>
 
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
+                                        <div class="form-check" id="centang" style="display: none">
+                                            <input checked onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
+                                            <label for="is_uang_muka"></label>
+                                        </div>
+                                    </h3>
                                 </div>
-                                <div class="box-body">
+                                <div class="box-body" id="form-um-ex">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
@@ -2204,13 +2230,6 @@
                     var icon = "";
                     var val = "";
                     if (response.status == "200") {
-                        val = "aktif";
-                        icon = "fa-info";
-                        title = "Info!";
-                        warnClass = "alert-success";
-                        msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
-                            '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
-                            '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
@@ -2218,6 +2237,40 @@
                         $('#diagnosa_awal').val(response.kodeDiagnosa);
                         $('#diagnosa_ket').val(response.namaDiagnosa);
                         setPelayananByKodeVclaim(response.kodePoliRujukan);
+
+                        const oneDay = 24 * 60 * 60 * 1000;
+                        const firstDate = new Date(response.tglKunjungan);
+                        const secondDate = new Date(2020, 9, 21);
+                        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+
+                        if(diffDays == 0){
+                            val = "aktif";
+                            icon = "fa-info";
+                            title = "Info!";
+                            warnClass = "alert-success";
+                            msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
+                                '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                        }else{
+                            if(diffDays <= 90){
+                                val = "aktif";
+                                icon = "fa-warning";
+                                title = "Info!";
+                                warnClass = "alert-warning";
+                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan masih kurang 90 hari. Silahkan dilanjutkan...!</p>' +
+                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                            }else{
+                                val = "tidak ditemukan";
+                                icon = "fa-warning";
+                                title = "Warning!";
+                                warnClass = "alert-danger";
+                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan sudah melebihi 90 hari. Silahkan urus kembali surat rujukan...!</p>' +
+                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                            }
+                        }
+
                     } else {
                         val = "tidak ditemukan";
                         icon = "fa-warning";
@@ -2451,6 +2504,19 @@
                     } else {
                         $('#h_id_order_lab').val(null);
                         $('#form-lab').hide();
+                    }
+
+                    if(res.isEksekutif == 'Y'){
+                        $('#centang').show();
+                        $('#text_centang').text("Uang Muka ? ");
+                        $('#cek_poli_eksekutif').val('Y');
+                        $('#form-um-ex').show();
+                        $('#is_uang_muka').prop('checked', true);
+                    }else{
+                        $('#centang').hide();
+                        $('#text_centang').text("Pembayaran");
+                        $('#cek_poli_eksekutif').val('N');
+                        $('#form-um-ex').show();
                     }
                 }
             });
@@ -2783,7 +2849,7 @@
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="'+foto+'">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px; width: 55%;" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
@@ -3768,6 +3834,14 @@
                 $('#poli').val(res.idPelayanan).trigger('change');
             }
         });
+    }
+
+    function isUangMuka(id){
+        if($('#'+id).is(':checked')){
+            $('#form-um-ex').show();
+        }else{
+            $('#form-um-ex').hide();
+        }
     }
 
 </script>

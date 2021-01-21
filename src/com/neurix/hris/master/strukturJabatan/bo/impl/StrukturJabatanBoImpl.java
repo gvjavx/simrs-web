@@ -407,22 +407,22 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
     public List<StrukturJabatan> getDataStrukturJab(String branchId, String positionId, String nip) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
-        String parentId = "";
-        List<ImStrukturJabatanEntity>listStrukturJabatan = null;
-        try {
-            listStrukturJabatan = strukturJabatanDao.getStrukturJabatanSearch(branchId, positionId, "", nip);
-        } catch (HibernateException e) {
-            logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
-        }
-
-        if(!positionId.equalsIgnoreCase("") || !nip.equalsIgnoreCase("")){
-            if (listStrukturJabatan != null) {
-                for (ImStrukturJabatanEntity imStrukturJabatanEntity : listStrukturJabatan) {
-                    parentId = imStrukturJabatanEntity.getStrukturJabatanId();
-                }
-            }
-        }
+//        String parentId = "";
+//        List<ImStrukturJabatanEntity>listStrukturJabatan = null;
+//        try {
+//            listStrukturJabatan = strukturJabatanDao.getStrukturJabatanSearch(branchId, positionId, "", nip);
+//        } catch (HibernateException e) {
+//            logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
+//            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+//        }
+//
+//        if(!positionId.equalsIgnoreCase("") || !nip.equalsIgnoreCase("")){
+//            if (listStrukturJabatan != null) {
+//                for (ImStrukturJabatanEntity imStrukturJabatanEntity : listStrukturJabatan) {
+//                    parentId = imStrukturJabatanEntity.getStrukturJabatanId();
+//                }
+//            }
+//        }
 
         strukturJabatanList.clear();
         if(!positionId.equalsIgnoreCase("") && !nip.equalsIgnoreCase("")){
@@ -442,11 +442,11 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
 
     //recursiv
     private String getListStruktur(String branchId, String positionId, String parentId, String nip){
-        List<ImStrukturJabatanEntity> imStrukturJabatanEntities = null;
+        List<StrukturJabatan> strukturJabatans = null;
         String hasil = "";
-        imStrukturJabatanEntities = strukturJabatanDao.getStrukturJabatanSearch(branchId, positionId, parentId, nip);
-        if(imStrukturJabatanEntities.size() > 0){
-            for(ImStrukturJabatanEntity imStrukturJabatanEntity : imStrukturJabatanEntities){
+        strukturJabatans = strukturJabatanDao.getStrukturJabatanSearch(branchId, positionId, parentId, nip);
+        if(strukturJabatans.size() > 0){
+            for(StrukturJabatan imStrukturJabatanEntity : strukturJabatans){
                 StrukturJabatan itemComboStrukturJabatan = new StrukturJabatan();
                 itemComboStrukturJabatan.setStrukturJabatanId(imStrukturJabatanEntity.getStrukturJabatanId());
                 itemComboStrukturJabatan.setPositionName(imStrukturJabatanEntity.getPositionName());
@@ -454,6 +454,8 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
                 itemComboStrukturJabatan.setBranchId(imStrukturJabatanEntity.getBranchId());
                 itemComboStrukturJabatan.setLevel(imStrukturJabatanEntity.getLevel());
                 itemComboStrukturJabatan.setParentId(imStrukturJabatanEntity.getParentId());
+                itemComboStrukturJabatan.setJenisPegawai(imStrukturJabatanEntity.getJenisPegawai());
+                itemComboStrukturJabatan.setFlagDefault(imStrukturJabatanEntity.getFlagDefault());
                 if(imStrukturJabatanEntity.getNip() == null){
                     itemComboStrukturJabatan.setNip("-");
                     itemComboStrukturJabatan.setName("-");

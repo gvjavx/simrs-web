@@ -25,6 +25,11 @@
           p:lemburDao-ref="lemburDao"
           p:statusMutasiDao-ref="statusMutasiDao"
           p:ijinKeluarDao-ref="ijinKeluarDao"
+          p:jenisPegawaiDao-ref="jenisPegawaiDao"
+          p:keluargaDao-ref="keluargaDao"
+          p:pelatihanJabatanUserDao-ref="pelatihanJabatanUserDao"
+          p:studyJurusanDao-ref="studyJurusanDao"
+          p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

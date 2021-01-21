@@ -215,17 +215,7 @@
                                             <table>
 
                                                 <s:url id="urlAdd" namespace="/admin/areabranchuser" action="add_areabranchuser" escapeAmp="false"/>
-
-                                                <div class="btn-group">
-                                                    <button class="btn dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="icon-briefcase"></i>
-                                                        Area-Branch-User
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><s:a href="%{urlAdd}"><i class="icon-plus"></i> Add</s:a></li>
-                                                    </ul>
-                                                </div>
+                                                <s:a href="%{urlAdd}" cssClass="btn btn-success"><i class="icon-plus"></i> Add</s:a>
 
                                             </table>
                                         </td>
