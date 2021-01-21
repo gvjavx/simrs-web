@@ -57,9 +57,6 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
-//            else {
-//                hsCriteria.put("flag", "Y");
-//            }
 
             try {
                 imLicenseZebraEntities = licenseZebraDao.getByCriteria(hsCriteria);
@@ -107,11 +104,6 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             if (bean.getDeviceId() != null && !"".equalsIgnoreCase(bean.getDeviceId())) {
                 hsCriteria.put("device_id", bean.getDeviceId());
             }
-//            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-//                hsCriteria.put("flag", bean.getFlag());
-//            } else {
-//                hsCriteria.put("flag", "Y");
-//            }
 
             try {
                 imLicenseZebraEntities = licenseZebraDao.getByCriteria(hsCriteria);
@@ -205,16 +197,22 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imLicenseZebraEntity.setCreatedWho(bean.getCreatedWho());
             imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
             imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
-
-            if(!isKeyAvailable(licenseKey, bean.getDeviceId())){
-                try {
-                    licenseZebraDao.addAndSave(imLicenseZebraEntity);
-                } catch (GeneralBOException e){
-                    logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
-                    throw new GeneralBOException("Error...! @_@");
-                }
+            List<ImLicenseZebraEntity> list = licenseZebraDao.getDeviceId(bean.getDeviceId());
+            if(list.size() > 0){
+                logger.error("Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                throw new GeneralBOException("Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
             }else{
-                throw new GeneralBOException("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                if(!isKeyAvailable(licenseKey, bean.getDeviceId())){
+                    try {
+                        licenseZebraDao.addAndSave(imLicenseZebraEntity);
+                    } catch (GeneralBOException e){
+                        logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
+                        throw new GeneralBOException("Error...! @_@");
+                    }
+                }else{
+                    logger.error("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                    throw new GeneralBOException("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                }
             }
         }
 
@@ -245,25 +243,28 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
             //Ubah flag versi sebelumnya menjadi N
             List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
+            VersionZebra versionZebra = new VersionZebra();
+            versionZebra.setFlag(bean.getFlag());
 
             try {
-                imVersionZebraEntities = getListEntityVersionByCriteria(bean);
+                imVersionZebraEntities = getListEntityVersionByCriteria(versionZebra);
             } catch (GeneralBOException e){
                 logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
             }
 
             if (imVersionZebraEntities.size() > 0) {
-               ImVersionZebraEntity lastVersion = imVersionZebraEntities.get(imVersionZebraEntities.size()-1);
-               lastVersion.setFlag("N");
-               lastVersion.setAction("U");
-               lastVersion.setLastUpdate(bean.getLastUpdate());
-               lastVersion.setLastUpdateWho("admin");
+                for (ImVersionZebraEntity entity: imVersionZebraEntities){
+                    entity.setFlag("N");
+                    entity.setAction("D");
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
 
-               try {
-                   versionZebraDao.updateAndSave(lastVersion);
-               } catch (GeneralBOException e) {
-                   logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
-               }
+                    try {
+                        versionZebraDao.updateAndSave(entity);
+                    } catch (GeneralBOException e) {
+                        logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
+                    }
+                }
             }
 
             //Add versi baru
@@ -271,8 +272,8 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imVersionZebraEntity.setIdVersion(id);
             imVersionZebraEntity.setVersionName(bean.getVersionName());
             imVersionZebraEntity.setDescription(bean.getDescription());
-            imVersionZebraEntity.setFlag("Y");
-            imVersionZebraEntity.setAction("U");
+            imVersionZebraEntity.setFlag(bean.getFlag());
+            imVersionZebraEntity.setAction(bean.getAction());
             imVersionZebraEntity.setCreatedDate(bean.getCreatedDate());
             imVersionZebraEntity.setLastUpdate(bean.getLastUpdate());
             imVersionZebraEntity.setCreatedWho(bean.getCreatedWho());

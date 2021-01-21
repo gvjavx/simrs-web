@@ -194,28 +194,33 @@ public class LicenseAction{
         if(versionZebra != null){
             try {
                 if (this.fileUpload != null) {
-                    String fileName = this.fileUploadFileName;
-                    String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_APK_ZEBRA;
-                    File fileToCreate = new File(filePath, fileName);
-                    try {
-                        FileUtils.copyFile(this.fileUpload, fileToCreate);
-                        versionZebra.setVersionName(fileName);
-                        versionZebra.setCreatedDate(now);
-                        versionZebra.setCreatedWho(userLogin);
-                        versionZebra.setCreatedDate(now);
-                        versionZebra.setLastUpdate(now);
-                        versionZebra.setLastUpdateWho(userLogin);
-                        versionZebra.setAction("C");
-                        versionZebra.setFlag("Y");
+                    if("application/vnd.android.package-archive".equalsIgnoreCase(this.fileUploadContentType)){
+                        String fileName = this.fileUploadFileName;
+                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_APK_ZEBRA;
+                        File fileToCreate = new File(filePath, fileName);
                         try {
-                            licenseZebraBoProxy.saveAddVersion(versionZebra);
-                        }catch (Exception e){
-                            logger.error("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
-                            throw new GeneralBOException("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
+                            FileUtils.copyFile(this.fileUpload, fileToCreate);
+                            versionZebra.setVersionName(fileName.replace(".apk",""));
+                            versionZebra.setCreatedDate(now);
+                            versionZebra.setCreatedWho(userLogin);
+                            versionZebra.setCreatedDate(now);
+                            versionZebra.setLastUpdate(now);
+                            versionZebra.setLastUpdateWho(userLogin);
+                            versionZebra.setAction("C");
+                            versionZebra.setFlag("Y");
+                            try {
+                                licenseZebraBoProxy.saveAddVersion(versionZebra);
+                            }catch (Exception e){
+                                logger.error("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
+                                throw new GeneralBOException("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
+                            }
+                        } catch (IOException e) {
+                            logger.error("[LicenseAction.saveVersion] error, " + e.getMessage());
+                            throw new GeneralBOException("[LicenseAction.saveVersion] error, " + e.getMessage());
                         }
-                    } catch (IOException e) {
-                        logger.error("[LicenseAction.saveVersion] error, " + e.getMessage());
-                        throw new GeneralBOException("[LicenseAction.saveVersion] error, " + e.getMessage());
+                    }else{
+                        logger.error("[LicenseAction.saveVersion] Detected virus application, @_@");
+                        throw new GeneralBOException("[LicenseAction.saveVersion] Detected virus application, @_@");
                     }
                 }else{
                     logger.error("[LicenseAction.saveVersion] File not found, @_@");
