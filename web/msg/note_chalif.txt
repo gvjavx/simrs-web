@@ -241,7 +241,7 @@ ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
 
 CREATE TABLE public.im_license_zebra
 (
-  license_id character varying(10) NOT NULL,
+  license_id character varying(20) NOT NULL,
   license_key character varying(100),
   device_id character varying(100),
   created_who character varying(50),
@@ -265,7 +265,7 @@ ALTER TABLE public.im_license_zebra
   CREATE SEQUENCE public.seq_license_zebra
     INCREMENT 1
     MINVALUE 1
-    MAXVALUE 9223372036854775807VARCHAR(100)
+    MAXVALUE 9223372036854775807
     START 1
     CACHE 1;
   ALTER TABLE public.seq_license_zebra
@@ -282,8 +282,8 @@ ALTER TABLE it_simrs_pembayaran_online ADD COLUMN flag_upload_ulang VARCHAR(1);
 
 CREATE TABLE public.im_license_zebra_log
 (
-    license_log_id character varying(10) COLLATE pg_catalog."default" NOT NULL,
-    license_id character varying(10) COLLATE pg_catalog."default",
+    license_log_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    license_id character varying(20) COLLATE pg_catalog."default",
     license_key character varying(100) COLLATE pg_catalog."default",
     device_id character varying(100) COLLATE pg_catalog."default",
     flag character varying(1) COLLATE pg_catalog."default",

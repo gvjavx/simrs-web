@@ -270,10 +270,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             Map hsCriteria = new HashMap();
 
             if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
-                hsCriteria.put("license_id", bean.getIdVersion());
+                hsCriteria.put("id_version", bean.getIdVersion());
             }
             if (bean.getVersionName() != null && !"".equalsIgnoreCase(bean.getVersionName())) {
-                hsCriteria.put("license_key", bean.getVersionName());
+                hsCriteria.put("version_name", bean.getVersionName());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
@@ -317,10 +317,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             Map hsCriteria = new HashMap();
 
             if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
-                hsCriteria.put("license_id", bean.getIdVersion());
+                hsCriteria.put("id_version", bean.getIdVersion());
             }
             if (bean.getVersionName() != null && !"".equalsIgnoreCase(bean.getVersionName())) {
-                hsCriteria.put("license_key", bean.getVersionName());
+                hsCriteria.put("version_name", bean.getVersionName());
             }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
