@@ -2606,7 +2606,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         int iJamMasukDB= 0,iJamPulangDB = 0,iJamIstirahatAwalDB= 0,iJamIstirahatAkhirDB= 0;
 
         try {
-            pegawaiList = biodataDao.getDataBiodata("","",branchId,"","","Y");
+            pegawaiList = biodataDao.getDataBiodata("", "", branchId, "", null, "", "Y");
         } catch (HibernateException e) {
             logger.error("[biodataDao.getAbsensiPerson] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
@@ -4791,7 +4791,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         Integer hari = calTanggalInquiry.get(Calendar.DAY_OF_WEEK);
 
         try {
-            biodataList=biodataDao.getDataBiodata(data.getNip(),"",data.getBranchId(),"","","Y");
+            biodataList=biodataDao.getDataBiodata(data.getNip(),"",data.getBranchId(),"",null,"","Y");
         } catch (HibernateException e){
             String status ="[AbsensiBoImpl.cronInquiry] ERROR : saat mengambil biodata";
             logger.error(status);

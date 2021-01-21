@@ -21254,7 +21254,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     public List<PayrollJubileum> searchJubileumSys(Payroll payroll) throws GeneralBOException {
 
         List <PayrollJubileum> payrollJubileumList = new ArrayList<>();
-        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", "", "Y");
+        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", null,"", "Y");
 
         if(imBiodataEntities.size() > 0){
             for(ImBiodataEntity biodata: imBiodataEntities){
@@ -21311,7 +21311,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             }
         }*/
 
-        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", "", "Y");
+        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", null, "", "Y");
         if(imBiodataEntities.size() > 0){
             for(ImBiodataEntity imBiodataEntity: imBiodataEntities){
                 String strTglPensiun = "";
