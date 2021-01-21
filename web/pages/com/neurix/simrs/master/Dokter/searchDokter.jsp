@@ -749,8 +749,8 @@
                         $('#view_pelayanan').html(view);
                         $('#body_pelayanan').html(table);
                     }else{
-                        $('#body_pelayanan').html(table);
-                        $('#view_pelayanan').html(view);
+                        $('#body_pelayanan').html('');
+                        $('#view_pelayanan').html('');
                     }
 
                     $('[name=set_flag_call]').filter("[value='"+res.flagCall+"']").attr('checked', true);
