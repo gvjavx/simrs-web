@@ -778,7 +778,6 @@
                                         }else{
                                             row = row + 1;
                                         }
-                                        console.log('--------------- row+i ->'+row);
                                     }
                                     var tarif = item.tarif;
                                     if (isPersen) {
@@ -1064,8 +1063,11 @@
                                     if(data.length == 0){
                                         row = i;
                                     }else{
-                                        i++;
-                                        row = row + i;
+                                        if(i == 0){
+                                            row = row;
+                                        }else{
+                                            row = row + 1;
+                                        }
                                     }
                                     var tarif = item.tarif;
                                     if (isPersen) {
