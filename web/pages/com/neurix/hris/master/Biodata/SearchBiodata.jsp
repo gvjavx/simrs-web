@@ -56,60 +56,65 @@
                 <h4 class="modal-title">Menu Biodata</h4>
             </div>
             <%--MENU-tab--%>
-            <input id="menu-nip" readonly="true" style="display: none;">
-            <ul class="nav nav-tabs">
-                <li><a href="#menu-payroll" class="active">Payroll</a></li>
-                <li><a href="#menu-absensi">Absensi</a></li>
-                <li><a href="#menu-cuti">Cuti</a></li>
-            </ul>
+            <div class="modal-body col-md-12">
+                <input id="menu-nip" readonly="true" style="display: none;">
+                <ul class="nav nav-tabs">
+                    <li><a href="#menu-absensi" class="tab-absensi">Absensi</a></li>
+                    <li><a href="#menu-payroll" class="tab-payroll">Payroll</a></li>
+                    <li><a href="#menu-cuti" class="tab-cuti">Cuti</a></li>
+                </ul>
 
-            <h4 class="menu-title" style="padding-left: 5%"></h4>
+                <br>
 
-            <%--PAYROLL--%>
-            <div id="menu-payroll" style="display: none;">
-                <table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>
-            </div>
+                <%--PAYROLL--%>
+                <div class="menu-payroll col-md-12" style="display: none;">
+                    <table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>
+                </div>
 
-            <%--ABSENSI--%>
-            <div class="menu-absensi" style="display: none;">
-                <form class="form-horizontal" id="formGaji">
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Bulan</label>
-                        <input type="text" id="nipAbsensi" style="display:none;">
-                        <div class="col-sm-4">
-                            <select class="form-control" id="bulanAbsensi">
-                                <option value="01"> Januari </option>
-                                <option value="02"> Februari </option>
-                                <option value="03"> Maret </option>
-                                <option value="04"> April </option>
-                                <option value="05"> Mei </option>
-                                <option value="06"> Juni </option>
-                                <option value="07"> Juli </option>
-                                <option value="08"> Agustus </option>
-                                <option value="09"> September </option>
-                                <option value="10"> Oktober </option>
-                                <option value="11"> Nopember </option>
-                                <option value="12"> Desember </option>
-                            </select>
+                <%--ABSENSI--%>
+                <div class="menu-absensi col-md-12" style="display: none;">
+                    <form class="form-horizontal" id="formGaji">
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Bulan</label>
+                            <input type="text" id="nipAbsensi" style="display:none;">
+                            <div class="col-sm-4">
+                                <select class="form-control" id="bulanAbsensi">
+                                    <option value="01"> Januari </option>
+                                    <option value="02"> Februari </option>
+                                    <option value="03"> Maret </option>
+                                    <option value="04"> April </option>
+                                    <option value="05"> Mei </option>
+                                    <option value="06"> Juni </option>
+                                    <option value="07"> Juli </option>
+                                    <option value="08"> Agustus </option>
+                                    <option value="09"> September </option>
+                                    <option value="10"> Oktober </option>
+                                    <option value="11"> Nopember </option>
+                                    <option value="12"> Desember </option>
+                                </select>
+                            </div>
+                            <label class="control-label col-sm-1" >Tahun</label>
+                            <div class="col-sm-3">
+                                <select id="tahunAbsensi" class="form-control" ></select>
+                            </div>
+                            <div class="col-sm-3">
+                                <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
+                            </div>
                         </div>
-                        <label class="control-label col-sm-1" >Tahun</label>
-                        <div class="col-sm-3">
-                            <select id="tahunAbsensi" class="form-control" ></select>
-                        </div>
-                        <div class="col-sm-3">
-                            <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
-                        </div>
+                    </form>
+                    <br>
+                    <div>
+                        <table style="width: 100%;" class="tableAbsensi table table-bordered">
+                        </table>
                     </div>
-                </form>
-                <table style="width: 100%;" class="tableAbsensi table table-bordered">
-                </table>
-            </div>
+                </div>
 
 
-            <%--CUTI--%>
-            <div class="menu-cuti" style="display: none;">
-                <table style="width: 100%;" class="tableCuti table table-bordered">
-                </table>
+                <%--CUTI--%>
+                <div class="menu-cuti col-md-12" style="display: none;">
+                    <table style="width: 100%;" class="tableCuti table table-bordered">
+                    </table>
+                </div>
             </div>
 
             <div class="modal-footer">
@@ -1414,10 +1419,11 @@
     $('.listOfBiodata').on('click', '.item-menu', function(){
         var nip = $(this).attr('data');
 
-        menuPayroll(nip);
+        menuAbsensi(nip);
 
-        $('.tableAbsensi').find('tbody').remove();
-        $('.tableAbsensi').find('thead').remove();
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
 
         $('.tableCuti').find('tbody').remove();
         $('.tableCuti').find('thead').remove();
@@ -1431,6 +1437,10 @@
     $("#modal-menu .nav-tabs a").click(function() {
         var nip = $("#menu-nip").val();
         var target = $(this).attr('href');
+
+        $('.tab-absensi').removeClass('bg-info');
+        $('.tab-payroll').removeClass('bg-info');
+        $('.tab-cuti').removeClass('bg-info');
 
         $('.menu-payroll').css('display', 'none');
         $('.menu-absensi').css('display', 'none');
@@ -1447,6 +1457,8 @@
     });
 
     function menuPayroll(nip){
+        $('.tab-payroll').addClass('bg-info');
+
         $('.tabelPayroll').find('tbody').remove();
         $('.tabelPayroll').find('thead').remove();
         $('.tabelPayroll').find('tfoot').remove();
@@ -1476,21 +1488,24 @@
             $('.tabelPayroll').append(tmp_table);
         });
 
-        $(".menu-title").text("Payroll");
         $('.menu-payroll').css('display', 'block');
     }
 
     function menuAbsensi(nip){
         $('#nipAbsensi').val(nip);
+
+        $('.tab-absensi').addClass('bg-info');
+
         $('.tableAbsensi').find('tbody').remove();
         $('.tableAbsensi').find('thead').remove();
 
 
-        $('.menu-title').text('Absensi');
         $('.menu-absensi').css('display', 'block');
     }
 
     function menuCuti(nip){
+        $('.tab-cuti').addClass('bg-info');
+
         $('.tableCuti').find('tbody').remove();
         $('.tableCuti').find('thead').remove();
         dwr.engine.setAsync(false);
@@ -1512,7 +1527,6 @@
             $('.tableCuti').append(tmp_table);
         });
 
-        $('#modal-menu').find('.menu-title').text('Cuti');
         $('.menu-cuti').css('display', 'block');
     }
     // RAKA-end
