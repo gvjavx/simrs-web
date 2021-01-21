@@ -1040,6 +1040,10 @@ apply the skin class to the body tag so the changes take effect.
         return res;
     }
 
+    function cekFileAtas(id){
+        return $('#'+id).get(0).files.length === 0;
+    }
+
 </script>
 
 

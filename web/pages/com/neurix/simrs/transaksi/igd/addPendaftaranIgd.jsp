@@ -2294,7 +2294,7 @@
 
     function listSelectPaket() {
         var option = "<option value=''>[Select One]</option>";
-        PaketPeriksaAction.getListPaketPeriksaByTipe("rawat_jalan", function (response) {
+        PaketPeriksaAction.getListPaketPeriksaByTipe("igd", function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
@@ -2757,6 +2757,12 @@
                             clasBox = 'btn-trans-02';
                             btnSet = 'style="cursor: no-drop"';
                         }
+
+                        var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
+                        if(item.urlImg != null && item.urlImg != ''){
+                            foto = contextPathHeader+item.urlImg;
+                        }
+
                         table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +
                             '<div style="text-align:left; cursor:pointer; font-size:11px;">\n' +
                             '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px;">\n' +
@@ -2764,12 +2770,11 @@
                             '            <td align="left" colspan="2">\n' +
                             '                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
                             '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
-                            '                <%--<img style="margin-top: -6px" class="pull-right" src="<s:url value="/pages/images/icon_failure.ico"/>">--%>\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="<s:url value="/pages/images/guy-5.jpg"/>">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px; width: 55%;" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +

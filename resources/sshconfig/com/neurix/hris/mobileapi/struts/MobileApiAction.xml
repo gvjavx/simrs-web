@@ -235,6 +235,9 @@
         <action name="license/*" class="com.neurix.simrs.mobileapi.LicenseController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="version/*" class="com.neurix.simrs.mobileapi.VersionController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

@@ -1,6 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
 import com.neurix.simrs.master.license.model.LicenseZebra;
 import com.neurix.simrs.mobileapi.model.LicenseZebraMobile;
@@ -101,12 +102,18 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getZebraKey")) {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
-//            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-//            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+
+            String encodedLicenseKey = null;
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            if(licenseKey != null && !"".equalsIgnoreCase(licenseKey)) {
+                encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+            }
+
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+            bean.setLicenseKey(encodedLicenseKey);
             bean.setDeviceId(deviceId);
+            bean.setFlag(flag);
 
             try {
               result = licenseZebraBoProxy.getByCriteria(bean);
@@ -146,10 +153,17 @@ public class LicenseController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("updateFlag")) {
 
+            String encodedLicenseKey = null;
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            if(licenseKey != null && !"".equalsIgnoreCase(licenseKey)) {
+                encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
+            }
+
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+            bean.setLicenseKey(encodedLicenseKey);
             bean.setDeviceId(deviceId);
             bean.setFlag(flag);
+            bean.setAction("U");
             bean.setLastUpdate(now);
             bean.setLastUpdateWho("admin");
 
@@ -164,17 +178,23 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("saveAdd")) {
 
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(licenseKey);
+
+            String key = CommonUtil.getRandomString(8);
+            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+            String hashedKey = passwordEncoder.encodePassword(key,null);
+
+            bean.setLicenseKey(hashedKey);
             bean.setDeviceId(deviceId);
             bean.setCreatedWho("admin");
             bean.setCreatedDate(now);
             bean.setLastUpdate(now);
             bean.setLastUpdateWho("admin");
-            bean.setFlag("C");
-            bean.setAction("Y");
+            bean.setFlag("Y");
+            bean.setAction("C");
 
             try {
-
+                licenseZebraBoProxy.saveAdd(bean);
+                model.setMessage(key);
             } catch (GeneralBOException e){
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }

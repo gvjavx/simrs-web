@@ -1602,6 +1602,30 @@ INSERT INTO it_hris_pegawai_position VALUES
 ('PP000727','DKR00000028','RS01','Y','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','C','P009','N','PR001','JP05','Y');
 
 
+INSERT INTO im_roles VALUES
+(86,'ADMIN ZEBRA',now(),'adminzebra',now(),'adminzebra','Y','C',null);
+
+INSERT INTO im_functions VALUES
+(2357, 'License', '/licenseapps/initLicense_licenseapps.action', 10, 1, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', 2357),
+(2358, 'init license', '/licenseapps/initLicense_licenseapps.action', 2357, null, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', null),
+(2359, 'search lisence', '/licenseapps/searchLicense_licenseapps.action', 2357, null, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', null),
+
+(2360, 'Version', '/version/initVersion_version.action', 10, 1, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', 2360),
+(2361, 'init version', '/version/initVersion_version.action', 2360, null, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', null),
+(2362, 'search version', '/version/searchVersion_version.action', 2360, null, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', null),
+(2363, 'Save Version', '/version/saveVersion_version.action', 2360, null, now(), 'adminzebra', now(), 'adminzebra', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2357, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
+(2358, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
+(2359, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
+
+(2360, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
+(2361, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
+(2362, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
+(2363, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra');
+
+
 
 
 
