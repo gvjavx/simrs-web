@@ -1350,6 +1350,14 @@ public class BiodataBoImpl implements BiodataBo {
                     itPersonilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
                     itPersonilPositionEntity.setCreatedDate(bean.getCreatedDate());
                     itPersonilPositionEntity.setLastUpdate(bean.getLastUpdate());
+
+                    try {
+                        personilPositionDao.addAndSave(itPersonilPositionEntity);
+                    } catch (HibernateException e){
+                        logger.error("[BiodataBoImpl.saveAdd] Error When Add Personil Position. ",e);
+                        throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Add Personil Position. ",e);
+                    }
+
                 }else{
 
                     // check jika bukan dokter kso harus memiliki setidaknya 1 jabatan
@@ -1404,30 +1412,6 @@ public class BiodataBoImpl implements BiodataBo {
                             // END
                         }
                     }
-
-
-//                    if (listPengalamanKerja != null){
-//                        for (PengalamanKerja pengalamanKerja : listPengalamanKerja){
-//                            if ("Y".equalsIgnoreCase(pengalamanKerja.getFlagJabatanAktif())) {
-//                                itPersonilPositionEntity.setPersonilPositionId(personPosition);
-//                                itPersonilPositionEntity.setNip(bean.getNip());
-//                                itPersonilPositionEntity.setBranchId(pengalamanKerja.getBranchId());
-//                                itPersonilPositionEntity.setPositionId(pengalamanKerja.getJabatan());
-//                                itPersonilPositionEntity.setProfesiId(pengalamanKerja.getProfesiId());
-//                                itPersonilPositionEntity.setPjs(pengalamanKerja.getPjsFlag());
-//                                itPersonilPositionEntity.setFlag(bean.getFlag());
-//                                itPersonilPositionEntity.setAction(bean.getAction());
-//                                itPersonilPositionEntity.setCreatedWho(bean.getCreatedWho());
-//                                itPersonilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                                itPersonilPositionEntity.setCreatedDate(bean.getCreatedDate());
-//                                itPersonilPositionEntity.setLastUpdate(bean.getLastUpdate());
-//                            }else {
-//                                throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif");
-//                            }
-//                        }
-//                    }else {
-//                        throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif");
-//                    }
                 }
 
                 imBiodataEntity.setNip(bean.getNip());
@@ -1459,16 +1443,9 @@ public class BiodataBoImpl implements BiodataBo {
                 if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 }
-//                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
                 imBiodataEntity.setFlagDokterKso(bean.getFlag());
-
-                //Tanggal Pensiun Lama
-                /*DateTime tglLahir = new DateTime(bean.getTanggalLahir());
-                tglLahir = tglLahir.plusYears(55);
-                String strTglLahir[] = CommonUtil.convertDateToString(bean.getTanggalLahir()).split("-");
-                imBiodataEntity.setTanggalPensiun(CommonUtil.convertStringToDate((strTglLahir[0]) + "-" + strTglLahir[1] + "-" + strTglLahir[2]));*/
 
                 imBiodataEntity.setGender(bean.getGender());
 
@@ -1479,7 +1456,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }
                     }
                 }
-//                imBiodataEntity.setJumlahAnak(bean.getJumlahAnak());
+
                 imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
 
                 imBiodataEntity.setNpwp(bean.getNpwp());
@@ -1495,15 +1472,12 @@ public class BiodataBoImpl implements BiodataBo {
                     imBiodataEntity.setGaji(BigDecimal.valueOf(0));
                 }
                 imBiodataEntity.setAgama(bean.getAgama());
-//                imBiodataEntity.setMt(bean.getMt()); //RAKA-delete
                 imBiodataEntity.setPin(bean.getPin());
                 imBiodataEntity.setNamaBank(bean.getNamaBank());
                 imBiodataEntity.setCabangBank(bean.getCabangBank());
                 imBiodataEntity.setNoRekBank(bean.getNoRekBank());
-//                imBiodataEntity.setZakatProfesi(bean.getFlagZakat()); //RAKA-delete
 
                 imBiodataEntity.setFlagMess(bean.getFlagMess());
-//                imBiodataEntity.setFlagPlt(bean.getFlagPLT());
                 imBiodataEntity.setFlagFingerMobile(bean.getFlagFingerMobile());
                 imBiodataEntity.setFlagTunjRumah(bean.getFlagTunjRumah());
                 imBiodataEntity.setFlagTunjAir(bean.getFlagTunjAir());
@@ -1511,13 +1485,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setFlagTunjBbm(bean.getFlagTunjBbm());
                 imBiodataEntity.setFlagBpjsKs(bean.getFlagBpjsKs());
                 imBiodataEntity.setFlagBpjsTk(bean.getFlagBpjsTk());
-//                imBiodataEntity.setFlagPercobaan(bean.getFlagPercobaan());
                 imBiodataEntity.setNipLama(bean.getNipLama());
-
-                //BARU
-//                imBiodataEntity.setPeralihanGapok(bean.getPeralihanGapok());
-//                imBiodataEntity.setPeralihanSankhus(bean.getPeralihanSankhus());
-//                imBiodataEntity.setPeralihanTunjangan(bean.getPeralihanTunjangan());
 
                 imBiodataEntity.setFlag(bean.getFlag());
                 imBiodataEntity.setAction(bean.getAction());
@@ -1528,7 +1496,6 @@ public class BiodataBoImpl implements BiodataBo {
 
                 try {
                     // insert into database
-//                    personilPositionDao.addAndSave(itPersonilPositionEntity);
                     biodataDao.addAndSave(imBiodataEntity);
                 } catch (HibernateException e) {
                     logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
@@ -1602,12 +1569,6 @@ public class BiodataBoImpl implements BiodataBo {
                     }else{
                         tunjanganentity.setFlagTunjSiaga("N");
                     }
-                    //RAKA-07JAN2021==>may be bug
-//                    if (!bean.getFlagTunjProfesional().equalsIgnoreCase("")){
-//                        tunjanganentity.setFlagTunjProfesional("Y");
-//                    }else{
-//                        tunjanganentity.setFlagTunjProfesional("N");
-//                    }
 
                     tunjanganentity.setFlag(bean.getFlag());
                     tunjanganentity.setAction(bean.getAction());
@@ -1624,30 +1585,6 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                 }
 
-//                HttpSession session = ServletActionContext.getRequest().getSession();
-//                List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");
-//                if(listKeluarga != null){
-//                    for(Keluarga keluarga: listKeluarga){
-//                        ImKeluargaEntity imKeluargaEntity = new ImKeluargaEntity();
-//                        imKeluargaEntity.setKeluargaId(keluargaDao.getNextKeluargaId());
-//                        imKeluargaEntity.setNip(bean.getNip());
-//                        imKeluargaEntity.setName(keluarga.getName());
-//                        imKeluargaEntity.setStatusKeluarga(keluarga.getStatusKeluargaId());
-//
-//                        imKeluargaEntity.setFlag(bean.getFlag());
-//                        imKeluargaEntity.setAction(bean.getAction());
-//                        imKeluargaEntity.setCreatedWho(bean.getCreatedWho());
-//                        imKeluargaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                        imKeluargaEntity.setCreatedDate(bean.getCreatedDate());
-//                        imKeluargaEntity.setLastUpdate(bean.getLastUpdate());
-//                        try {
-//                            keluargaDao.addAndSave(imKeluargaEntity);
-//                        } catch (HibernateException e) {
-//                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
-//                            throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
-//                        }
-//                    }
-//                }
                 int keluargaPgw = 0;
                 if ("K".equalsIgnoreCase(bean.getStatusKeluarga())){
                     if(listKeluarga != null){
@@ -1739,35 +1676,6 @@ public class BiodataBoImpl implements BiodataBo {
                         }
                     }
                 }
-
-//                List<PengalamanKerja> listPengalamanKerja = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
-//                if(listPengalamanKerja != null){
-//                    for(PengalamanKerja pengalamanKerja: listPengalamanKerja){
-//                        ImPengalamanKerjaEntity imPengalamanKerjaEntity = new ImPengalamanKerjaEntity();
-//                        imPengalamanKerjaEntity.setPengalamanId(pengalamanKerjaDao.getNextPengalamanKerja());
-//                        imPengalamanKerjaEntity.setNip(bean.getNip());
-//                        imPengalamanKerjaEntity.setNamaPerusahaan(pengalamanKerja.getNamaPerusahaan());
-//                        imPengalamanKerjaEntity.setJabatan(pengalamanKerja.getJabatan());
-//                        if(pengalamanKerja.getStTahunKeluar() != null && !"".equalsIgnoreCase(pengalamanKerja.getStTahunKeluar()) &&
-//                                pengalamanKerja.getStTtahunMasuk() != null && !"".equalsIgnoreCase(pengalamanKerja.getStTtahunMasuk())){
-//                            imPengalamanKerjaEntity.setTahunMasuk(CommonUtil.convertStringToDate(pengalamanKerja.getStTtahunMasuk()));
-//                            imPengalamanKerjaEntity.setTahunKeluar(CommonUtil.convertStringToDate(pengalamanKerja.getStTahunKeluar()));
-//                        }
-//
-//                        imPengalamanKerjaEntity.setFlag(bean.getFlag());
-//                        imPengalamanKerjaEntity.setAction(bean.getAction());
-//                        imPengalamanKerjaEntity.setCreatedWho(bean.getCreatedWho());
-//                        imPengalamanKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-//                        imPengalamanKerjaEntity.setCreatedDate(bean.getCreatedDate());
-//                        imPengalamanKerjaEntity.setLastUpdate(bean.getLastUpdate());
-//                        try {
-//                            pengalamanKerjaDao.addAndSave(imPengalamanKerjaEntity);
-//                        } catch (HibernateException e) {
-//                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
-//                            throw new GeneralBOException("Found problem when saving new data Biodata, please info to your admin..." + e.getMessage());
-//                        }
-//                    }
-//                }
 
                 String pengalamanId;
                 List<HistoryJabatanPegawai> historyJabatanPegawai = new ArrayList<>();
