@@ -2410,7 +2410,7 @@ public class PayrollAction extends BaseMasterAction{
 
     @Override
     public String edit() {
-        logger.info("[PayrollAction.saveAdd] start process >>>");
+        logger.info("[PayrollAction.edit] start process >>>");
         try {
             Payroll payroll ;
             if(getPayroll() != null){
@@ -2424,7 +2424,7 @@ public class PayrollAction extends BaseMasterAction{
                 payroll.setTahun(getTahun());
                 payroll.setBranchId(getBranchId());
                 payroll.setTipe(getTipe());
-                payroll.setNip("031219880003"); // jangan lupa kembalikan ke defaul ""
+                payroll.setNip(""); // jangan lupa kembalikan ke defaul ""; untuk testing disikan nip
             }
 
             List<Payroll> listDataPayroll = new ArrayList();
@@ -2440,17 +2440,17 @@ public class PayrollAction extends BaseMasterAction{
             try {
                 logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "payrollBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[payrollAction.saveAdd] Error when saving error,", e1);
+                logger.error("[payrollAction.edit] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[payrollAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[payrollAction.edit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
         if (("12").equalsIgnoreCase(getBulan())){
             payrollBulan12=true;
         }
-        logger.info("[payrollAction.saveAdd] end process >>>");
+        logger.info("[payrollAction.edit] end process >>>");
         return "init_edit";
     }
 
