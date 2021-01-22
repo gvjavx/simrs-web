@@ -241,22 +241,24 @@ ALTER TABLE public.it_hris_mesin_absensi_detail_oncall
 
 CREATE TABLE public.im_license_zebra
 (
-  license_id character varying(20) NOT NULL,
-  license_key character varying(100),
-  device_id character varying(100),
-  created_who character varying(50),
-  created_date timestamp without time zone,
-  last_update timestamp without time zone,
-  last_update_who character varying(50),
-  flag character varying(1),
-  action character varying(1),
-  CONSTRAINT im_license_zebra_pkey PRIMARY KEY (license_id)
+    license_id character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    license_key character varying(100) COLLATE pg_catalog."default",
+    device_id character varying(100) COLLATE pg_catalog."default",
+    created_who character varying(50) COLLATE pg_catalog."default",
+    created_date timestamp without time zone,
+    last_update timestamp without time zone,
+    last_update_who character varying(50) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    CONSTRAINT im_license_zebra_pkey PRIMARY KEY (license_id)
 )
 WITH (
-  OIDS=FALSE
-);
+    OIDS = FALSE
+)
+TABLESPACE pg_default;
+
 ALTER TABLE public.im_license_zebra
-  OWNER TO postgres;
+    OWNER to postgres;
 
   -- Sequence: public.seq_license_zebra
 
@@ -265,7 +267,7 @@ ALTER TABLE public.im_license_zebra
   CREATE SEQUENCE public.seq_license_zebra
     INCREMENT 1
     MINVALUE 1
-    MAXVALUE 9223372036854775807VARCHAR(100)
+    MAXVALUE 9223372036854775807
     START 1
     CACHE 1;
   ALTER TABLE public.seq_license_zebra
@@ -275,7 +277,6 @@ ALTER TABLE public.im_license_zebra
 ALTER TABLE it_simrs_pembayaran_online ADD COLUMN waktu_bayar timestamp without time zone;
 ALTER TABLE it_simrs_pembayaran_online ADD COLUMN flag_upload_ulang VARCHAR(1);
 
---2021-01-13
 -- Table: public.im_license_zebra_log
 
 -- DROP TABLE public.im_license_zebra_log;
@@ -294,7 +295,9 @@ CREATE TABLE public.im_license_zebra_log
     last_update timestamp without time zone,
     CONSTRAINT im_license_zebra_log_pkey PRIMARY KEY (license_log_id)
 )
-
+WITH (
+    OIDS = FALSE
+)
 TABLESPACE pg_default;
 
 ALTER TABLE public.im_license_zebra_log
@@ -330,9 +333,13 @@ CREATE TABLE public.im_version_zebra
     created_who character varying(50) COLLATE pg_catalog."default",
     last_update_who character varying(50) COLLATE pg_catalog."default",
     description text COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
     CONSTRAINT im_version_zebra_pkey PRIMARY KEY (id_version)
 )
-
+WITH (
+    OIDS = FALSE
+)
 TABLESPACE pg_default;
 
 ALTER TABLE public.im_version_zebra

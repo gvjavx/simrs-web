@@ -82,7 +82,6 @@ public class CommonConstant {
     public final static String NOTIFICATION_URL = "/notificationlahan/initForm_notificationlahan.action";
 
     public final static String EXCEL = "xls";
-
     public final static String RESOURCE_PATH_USER_UPLOAD_DOC = "/pages/upload/doc/";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
@@ -143,10 +142,10 @@ public class CommonConstant {
 
     public final static String IMAGE_CARD = "/pages/images/card.png";
 
-    public final static String BRANCH_RS01 = "RS01";
-    public final static String BRANCH_RS02 = "RS02";
-    public final static String BRANCH_RS03 = "RS03";
-    public final static String BRANCH_KP = "KP";
+    public final static String BRANCH_RS01 = CommonUtil.getPropertyParams("branch.gatoel");
+    public final static String BRANCH_RS02 = CommonUtil.getPropertyParams("branch.toeloengredjo");
+    public final static String BRANCH_RS03 = CommonUtil.getPropertyParams("branch.perkebunan");
+    public final static String BRANCH_KP = CommonUtil.getPropertyParams("branch.kp");
 
     public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
     //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";

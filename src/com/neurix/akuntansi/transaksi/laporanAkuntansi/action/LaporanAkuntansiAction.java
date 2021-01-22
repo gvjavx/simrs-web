@@ -2092,7 +2092,7 @@ public class LaporanAkuntansiAction extends BaseMasterAction{
         List<String> branchId = new ArrayList<>();
 
         if (("K").equalsIgnoreCase(data.getTipeLaporan())){
-            data.setUnit("KP");
+            data.setUnit(CommonConstant.BRANCH_KP);
             titleReport="LAPORAN KEUANGAN KOMPILASI";
             result="print_report_kompilasi_all";
 
