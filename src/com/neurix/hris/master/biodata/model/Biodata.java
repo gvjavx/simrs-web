@@ -149,10 +149,21 @@ public class Biodata extends BaseModel {
     private String stPeralihanGapok;
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
+
+    private Date tanggalKeluar;
     private String flagCutiDiluarTanggungan;
     private Date tanggalCutiDiluarTanggunganAwal;
     private Date tanggalCutiDiluarTanggunganAkhir;
+    private String stTanggalCutiDiluarTanggunganAwal;
+    private String stTanggalCutiDiluarTanggunganAkhir;
 
+    public Date getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(Date tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
 
     // Sigit 2021-01-18, penambahan atribute
     private List<PersonilPosition> listOfPersonilPosition = new ArrayList<>();
@@ -187,6 +198,22 @@ public class Biodata extends BaseModel {
 
     public void setTanggalCutiDiluarTanggunganAkhir(Date tanggalCutiDiluarTanggunganAkhir) {
         this.tanggalCutiDiluarTanggunganAkhir = tanggalCutiDiluarTanggunganAkhir;
+    }
+
+    public String getStTanggalCutiDiluarTanggunganAwal() {
+        return stTanggalCutiDiluarTanggunganAwal;
+    }
+
+    public void setStTanggalCutiDiluarTanggunganAwal(String stTanggalCutiDiluarTanggunganAwal) {
+        this.stTanggalCutiDiluarTanggunganAwal = stTanggalCutiDiluarTanggunganAwal;
+    }
+
+    public String getStTanggalCutiDiluarTanggunganAkhir() {
+        return stTanggalCutiDiluarTanggunganAkhir;
+    }
+
+    public void setStTanggalCutiDiluarTanggunganAkhir(String stTanggalCutiDiluarTanggunganAkhir) {
+        this.stTanggalCutiDiluarTanggunganAkhir = stTanggalCutiDiluarTanggunganAkhir;
     }
 
     public String getStPeralihanGapok() {

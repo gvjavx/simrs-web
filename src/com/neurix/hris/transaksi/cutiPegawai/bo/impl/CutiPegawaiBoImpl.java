@@ -586,12 +586,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             try {
                 statusValidasi = ijinKeluarDao.cekPengajuanDiTanggalYangSama(tanggal,bean.getNip());
             }catch (HibernateException e){
-                logger.error("[IjinKeluarBoImpl.saveAddIjinKeluar] Error, " + e.getMessage());
+                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
             if (!"".equalsIgnoreCase(statusValidasi)){
-                logger.error("[IjinKeluarBoImpl.saveAddIjinKeluar] Error, " + statusValidasi);
+                logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + statusValidasi);
                 throw new GeneralBOException(statusValidasi);
             }
         }
@@ -718,8 +718,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         try {
                             imPositionList = positionDao.getDataKelompokId(bean.getPosisiId());
                         } catch (HibernateException e) {
-                            logger.error("[TrainingBoImpl.saveUpdateTraining] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching Data Kelompok Id by criteria, please info to your admin..." + e.getMessage());
                         }
 
                         if ("KL44".equalsIgnoreCase(imPositionList.get(0).getKelompokId())){
@@ -2228,6 +2228,21 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     }
                 }
 
+                //RAKA-10JAN2021 ==> Memeriksa Cuti Diluar Tanggungan kemudian set pada Biodata
+                if("Y".equalsIgnoreCase(bean.getApprovalFlag()) && itCutiPegawaiEntity.getCutiId().equalsIgnoreCase("CT007")){
+                    try{
+                        ImBiodataEntity personal = biodataDao.getById("nip", itCutiPegawaiEntity.getNip());
+
+                        personal.setFlagPegawaiCutiDiluarTanggungan("Y");
+                        personal.setTanggalCutiDiluarAwal(itCutiPegawaiEntity.getTanggalDari());
+                        personal.setTanggalCutiDiluarAkhir(itCutiPegawaiEntity.getTanggalSelesai());
+
+                        biodataDao.updateAndSave(personal);
+                    } catch (HibernateException e){
+                        logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when set Cuti Diluar Tanggungan to Biodata, please info to your admin..." + e.getMessage());
+                    }
+                }
 
                 if (minus){
                     BigInteger selisih= itCutiPegawaiEntity.getSisaCutiHari().abs();
