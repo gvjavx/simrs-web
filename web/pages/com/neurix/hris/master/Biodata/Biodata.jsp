@@ -3321,6 +3321,10 @@
         }
     }
 
+    // function detLmtMsGol(gol){
+    //
+    // }
+
     $(document).ready(function() {
         loadStatusPegawai();
         loadPositionJabatan();

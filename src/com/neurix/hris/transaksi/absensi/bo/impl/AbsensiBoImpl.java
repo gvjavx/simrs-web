@@ -6014,7 +6014,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                             }
                         }
                         //LEMBUR ON CALL DISINI
-                        }else if (jamKerjaShiftOnCall.size()>0){
+                        } if (jamKerjaShiftOnCall.size()>0){
+//                        }else if (jamKerjaShiftOnCall.size()>0){
                             absensiPegawai.setTipeHari("on_call");
                             for (AbsensiPegawai jamKerja : jamKerjaShiftOnCall) {
                                 if (jamKerja.getJamMasuk() != null && jamKerja.getJamPulang() != null) {
