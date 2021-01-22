@@ -448,9 +448,9 @@
                         stopSpinner('spin_', idDetailCheckup);
                         dwr.engine.setAsync(false);
                         jenisKelamin = res.jenisKelamin;
-                        listTindakan(noCheckup);
-                        listResepPasien(noCheckup);
-                        listLab(noCheckup);
+                        listTindakan(noCheckup, res.idJenisPeriksaPasien);
+                        listResepPasien(noCheckup, res.idJenisPeriksaPasien);
+                        listLab(noCheckup, res.idJenisPeriksaPasien);
                         var jk = "";
                         var alamat = res.namaDesa + ", " + res.namaKecamatan + ", " + res.namaKota;
                         var diagnosa = res.diagnosa + ", " + res.namaDiagnosa;
@@ -498,12 +498,12 @@
         }
     }
 
-    function listTindakan(idDetailCheckup) {
+    function listTindakan(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
             var trfTtl = 0;
-            TindakanRawatAction.getListTindakanRawat(idDetailCheckup, function (response) {
+            TindakanRawatAction.getListTindakanRawat(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var tanggal = item.createdDate;
@@ -556,11 +556,11 @@
         }
     }
 
-    function listResepPasien(idDetailCheckup) {
+    function listResepPasien(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
-            PermintaanResepAction.getListRespPasien(idDetailCheckup, function (response) {
+            PermintaanResepAction.getListRespPasien(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var idResep = "";
@@ -596,11 +596,11 @@
         }
     }
 
-    function listLab(idDetailCheckup) {
+    function listLab(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
-            PeriksaLabAction.getListLab(idDetailCheckup, function (response) {
+            PeriksaLabAction.getListLab(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var pemeriksaan = "-";

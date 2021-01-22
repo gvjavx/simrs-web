@@ -118,7 +118,7 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
         return tindakanRawatList;
     }
 
-    public List<TindakanRawat> getListTindakanRawat(String noCheckup){
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis){
         List<TindakanRawat> rawatList = new ArrayList<>();
         String SQL = "SELECT\n" +
                 "a.id_tindakan_rawat,\n" +
@@ -135,11 +135,12 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
-                "WHERE c.no_checkup = :id\n" +
-                "ORDER BY a.id_detail_checkup ASC;";
+                "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
+                "ORDER BY a.id_detail_checkup ASC";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", noCheckup)
+                .setParameter("jen", jenis)
                 .list();
         if(result.size() > 0){
             for (Object[] obj: result){

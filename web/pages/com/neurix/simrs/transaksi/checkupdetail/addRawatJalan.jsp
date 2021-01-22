@@ -735,53 +735,53 @@
                         </div>
                     </div>
 
-                    <div id="status_asuransi" style="display: none">
-                        <div class="box-header with-border">
-                        </div>
-                        <div class="box-header with-border">
-                            <h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>
-                        </div>
-                        <div class="box-body">
-                            <div class="row">
-                                <div class="col-md-offset-2 col-md-8">
-                                    <h5>
-                                        Cover Biaya Asuransi
-                                        <small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>
-                                        </small>
-                                    </h5>
-                                    <div class="progress">
-                                        <div id="sts_cover_biaya_asuransi">
-                                        </div>
-                                    </div>
-                                    <h5>
-                                        Total Biaya Tindakan
-                                        <small class="pull-right" style="margin-top: 7px">Rp. <span
-                                                id="b_tindakan_asuransi"></span></small>
-                                    </h5>
-                                    <div class="progress">
-                                        <div id="sts_biaya_tindakan_asuransi">
-                                        </div>
-                                    </div>
-                                    <ul style="list-style-type: none">
-                                        <li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi
-                                        </li>
-                                        <li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <
-                                            50% dari cover biaya Asuransi
-                                        </li>
-                                        <li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >
-                                            50% dan < 70% dari cover biaya Asuransi
-                                        </li>
-                                        <li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >
-                                            70% dari cover biaya Asuransi
-                                        </li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-2">
+                    <%--<div id="status_asuransi" style="display: none">--%>
+                        <%--<div class="box-header with-border">--%>
+                        <%--</div>--%>
+                        <%--<div class="box-header with-border">--%>
+                            <%--<h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>--%>
+                        <%--</div>--%>
+                        <%--<div class="box-body">--%>
+                            <%--<div class="row">--%>
+                                <%--<div class="col-md-offset-2 col-md-8">--%>
+                                    <%--<h5>--%>
+                                        <%--Cover Biaya Asuransi--%>
+                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>--%>
+                                        <%--</small>--%>
+                                    <%--</h5>--%>
+                                    <%--<div class="progress">--%>
+                                        <%--<div id="sts_cover_biaya_asuransi">--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<h5>--%>
+                                        <%--Total Biaya Tindakan--%>
+                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span--%>
+                                                <%--id="b_tindakan_asuransi"></span></small>--%>
+                                    <%--</h5>--%>
+                                    <%--<div class="progress">--%>
+                                        <%--<div id="sts_biaya_tindakan_asuransi">--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                    <%--<ul style="list-style-type: none">--%>
+                                        <%--<li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi--%>
+                                        <%--</li>--%>
+                                        <%--<li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <--%>
+                                            <%--50% dari cover biaya Asuransi--%>
+                                        <%--</li>--%>
+                                        <%--<li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >--%>
+                                            <%--50% dan < 70% dari cover biaya Asuransi--%>
+                                        <%--</li>--%>
+                                        <%--<li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >--%>
+                                            <%--70% dari cover biaya Asuransi--%>
+                                        <%--</li>--%>
+                                    <%--</ul>--%>
+                                <%--</div>--%>
+                                <%--<div class="col-md-2">--%>
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border" id="pos_icd9">
                     </div>

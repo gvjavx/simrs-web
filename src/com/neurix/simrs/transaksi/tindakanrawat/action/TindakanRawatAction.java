@@ -358,7 +358,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         return response;
     }
 
-    public List<TindakanRawat> getListTindakanRawat(String noCheckup){
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis){
 
         logger.info("[TindakanRawatAction.getListTindakanRawat] start process >>>");
         List<TindakanRawat> tindakanRawatList = new ArrayList<>();
@@ -367,7 +367,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
         if(!"".equalsIgnoreCase(noCheckup) && noCheckup != null){
             try {
-                tindakanRawatList = tindakanRawatBo.getListTindakanRawat(noCheckup);
+                tindakanRawatList = tindakanRawatBo.getListTindakanRawat(noCheckup, jenis);
             }catch (GeneralBOException e){
                 logger.error("[TindakanRawatAction.getListTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }
