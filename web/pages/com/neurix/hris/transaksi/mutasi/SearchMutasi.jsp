@@ -76,7 +76,7 @@ To change this template use File | Settings | File Templates.
                             <div class="form-group">
                                 <label class="control-label col-sm-4">Unit</label>
                                 <div class="col-sm-4">
-                                    <s:if test='mutasi.branchIdUser == "KP"'>
+                                    <s:if test='mutasi.branchIdUser == "01"'>
                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="mutasi.branchLamaId" cssStyle="margin-top: 7px"
                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
