@@ -52,6 +52,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_IMG_RM = "/upload/img_rm/";
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
     public static final String RESOURCE_PATH_FOTO_KIRIM = "/upload/foto_kirim/";
+    public static final String RESOURCE_PATH_APK_ZEBRA = "/upload/apk_zebra";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -81,7 +82,6 @@ public class CommonConstant {
     public final static String NOTIFICATION_URL = "/notificationlahan/initForm_notificationlahan.action";
 
     public final static String EXCEL = "xls";
-
     public final static String RESOURCE_PATH_USER_UPLOAD_DOC = "/pages/upload/doc/";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";

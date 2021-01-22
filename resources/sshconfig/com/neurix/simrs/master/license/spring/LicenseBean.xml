@@ -5,6 +5,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 
+    <bean id="licenseAction" class="com.neurix.simrs.master.license.action.LicenseAction"
+          p:licenseZebraBoProxy-ref="licenseZebraBoProxy"
+    />
 
     <bean id="licenseController" class="com.neurix.simrs.mobileapi.LicenseController"
           p:licenseZebraBoProxy-ref="licenseZebraBoProxy"
@@ -13,6 +16,7 @@
     <bean id="licenseZebraBo" class="com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl"
           p:licenseZebraDao-ref="licenseZebraDao"
           p:licenseLogZebraDao-ref="licenseLogZebraDao"
+          p:versionZebraDao-ref="versionZebraDao"
     />
 
     <bean id="licenseZebraBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -41,5 +45,6 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="licenseLogZebraDao" class="com.neurix.simrs.master.license.dao.LicenseLogZebraDao"
           p:sessionFactory-ref="sessionFactory" />
-
+    <bean id="versionZebraDao" class="com.neurix.simrs.master.license.dao.VersionZebraDao"
+          p:sessionFactory-ref="sessionFactory" />
 </beans>

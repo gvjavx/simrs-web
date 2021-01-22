@@ -407,7 +407,7 @@ public class PaketPeriksaAction extends BaseTransactionAction {
                     logger.error("Found Error " + e.getMessage());
                 }
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             pasien.setStatus("error");
             pasien.setMsg("Error " + e.getMessage());
         }

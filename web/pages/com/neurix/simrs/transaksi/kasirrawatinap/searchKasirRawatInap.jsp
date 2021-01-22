@@ -311,6 +311,7 @@
                         <input type="hidden" id="fin_metode_bayar"/>
                         <input type="hidden" id="fin_bukti"/>
                         <input type="hidden" id="h_no_checkup"/>
+                        <input type="hidden" id="h_jenis_pasien"/>
 
                         <div class="col-md-6">
                             <table class="table table-striped">
@@ -548,8 +549,10 @@
                         } else {
                             metode = "bpjs";
                         }
+
                         $('#fin_no_rm').html(response.idPasien);
                         $("#fin_id_pasien").val(response.idPasien);
+                        $("#h_jenis_pasien").val(response.idJenisPeriksaPasien);
                     }
                 });
 
@@ -784,6 +787,7 @@
             var bukti = $('#fin_bukti').val();
             var noRekening = $('#no_rekening').val();
             var noCheckup = $('#h_no_checkup').val();
+            var jenisPasien = $('#h_jenis_pasien').val();
             var lebihBiaya = "";
             if($('#kelebihan_biaya').val() != ''){
                 lebihBiaya = $('#kelebihan_biaya').val();
@@ -799,7 +803,8 @@
                 'jenis': metodeBayarDiAwal,
                 'no_rekening': noRekening,
                 'no_checkup': noCheckup,
-                'lebih_biaya': lebihBiaya
+                'lebih_biaya': lebihBiaya,
+                'jenis_pasien': jenisPasien
             }
             dwr.engine.setAsync(true);
             var jsonString = JSON.stringify(dataObj);

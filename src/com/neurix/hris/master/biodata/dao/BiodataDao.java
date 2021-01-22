@@ -7,6 +7,7 @@ import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
 import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -18,10 +19,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by IntelliJ IDEA.
@@ -86,9 +84,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public String getNextPersonalId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
-
-        return "D"+sId;
+        String sId = String.format("%04d", iter.next());
+        return sId;
     }
 
     public String getNextPengalamanKerja() throws HibernateException {
@@ -391,9 +388,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tdivisi.department_id,\n" +
                 "\tdivisi.department_name,\n" +
                 "\titPosisi.pjs_flag,\n" +
-                "\tpegawai.*,\n" +
                 "\tbagian.bagian_id,\n" +
-                "\tbagian.nama_bagian\n" +
+                "\tbagian.nama_bagian,\n" +
+                "\tpegawai.*\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -426,78 +423,78 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setDesaName((String) row[6]);
             result.setTipePegawaiName((String) row[7]);
             result.setPjs((String) row[10]);
+            result.setBagianId((String) row[11]);
+            result.setBagianName((String) row[12]);
 
-            result.setNip((String) row[11]);
-            result.setNamaPegawai((String) row[12]);
-            result.setGelarDepan((String) row[13]);
-            result.setGelarBelakang((String) row[14]);
-            result.setNoKtp((String) row[15]);
-            result.setAlamat((String) row[16]);
-            result.setRtRw((String) row[17]);
-            result.setDesaId((String) row[18]);
-            result.setKecamatanId((String) row[19]);
-            result.setNoTelp((String) row[20]);
-            result.setKotaId((String) row[21]);
-            result.setProvinsiId((String) row[22]);
-            result.setTanggalLahir((Date) row[23]);
-            result.setTempatLahir((String) row[24]);
-            result.setTipePegawai((String) row[25]);
-            result.setFotoUpload((String) row[26]);
-            result.setStatusCaption((String) row[27]);
-            result.setKeterangan((String) row[28]);
-            result.setFlag((String) row[29]);
-            result.setAction((String) row[30]);
-            result.setCreatedWho((String) row[31]);
-            result.setLastUpdateWho((String) row[32]);
-            result.setTanggalAktif((Date) row[33]);
-            result.setGolongan((String) row[34]);
-            result.setStatusPegawai((String) row[35]);
-            result.setStatusKeluarga((String) row[36]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
-            result.setGender((String) row[38]);
-            result.setStatusGiling((String) row[39]);
-            result.setNoSkAktif((String) row[40]);
-            result.setPin((String) row[41]);
-            result.setPoint((int) row[42]);
-            result.setZakatProfesi((String) row[43]);
-            result.setTanggalPensiun((Date) row[46]);
-            result.setDanaPensiun((String) row[47]);
-            result.setStrukturGaji((String) row[48]);
-            if(row[49] != null){
-                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
+            result.setNip((String) row[13]);
+            result.setNamaPegawai((String) row[14]);
+            result.setGelarDepan((String) row[15]);
+            result.setGelarBelakang((String) row[16]);
+            result.setNoKtp((String) row[17]);
+            result.setAlamat((String) row[18]);
+            result.setRtRw((String) row[19]);
+            result.setDesaId((String) row[20]);
+            result.setKecamatanId((String) row[21]);
+            result.setNoTelp((String) row[22]);
+            result.setKotaId((String) row[23]);
+            result.setProvinsiId((String) row[24]);
+            result.setTanggalLahir((Date) row[25]);
+            result.setTempatLahir((String) row[26]);
+            result.setTipePegawai((String) row[27]);
+            result.setFotoUpload((String) row[28]);
+            result.setStatusCaption((String) row[29]);
+            result.setKeterangan((String) row[30]);
+            result.setFlag((String) row[31]);
+            result.setAction((String) row[32]);
+            result.setCreatedWho((String) row[33]);
+            result.setLastUpdateWho((String) row[34]);
+            result.setTanggalAktif((Date) row[35]);
+            result.setGolongan((String) row[36]);
+            result.setStatusPegawai((String) row[37]);
+            result.setStatusKeluarga((String) row[38]);
+            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[39].toString())));
+            result.setGender((String) row[40]);
+            result.setStatusGiling((String) row[41]);
+            result.setNoSkAktif((String) row[42]);
+            result.setPin((String) row[43]);
+            result.setPoint((int) row[44]);
+            result.setZakatProfesi((String) row[45]);
+            result.setTanggalPensiun((Date) row[48]);
+            result.setDanaPensiun((String) row[49]);
+            result.setStrukturGaji((String) row[50]);
+            if(row[51] != null){
+                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[51].toString())));
             }
-            result.setPoinLebih((int) row[50]);
-            result.setAgama((String) row[51]);
-            result.setTanggalMenikah((Date) row[52]);
-            result.setNpwp((String) row[53]);
-            result.setMt((String) row[54]);
-            result.setTanggalAkhirKontrak((Date) row[55]);
-            result.setNoAnggotaDapen((String) row[56]);
-            result.setNoBpjsKetenagakerjaan((String) row[57]);
-            result.setNoBpjsKetenagakerjaanPensiun((String) row[58]);
-            result.setNoBpjsKesehatan((String) row[59]);
+            result.setPoinLebih((int) row[52]);
+            result.setAgama((String) row[53]);
+            result.setTanggalMenikah((Date) row[54]);
+            result.setNpwp((String) row[55]);
+            result.setMt((String) row[56]);
+            result.setTanggalAkhirKontrak((Date) row[57]);
+            result.setNoAnggotaDapen((String) row[58]);
+            result.setNoBpjsKetenagakerjaan((String) row[59]);
+            result.setNoBpjsKetenagakerjaanPensiun((String) row[60]);
+            result.setNoBpjsKesehatan((String) row[61]);
 
-            result.setGolonganDapen((String) row[61]);
-            result.setGolonganDapenNusindo((String) row[62]);
-            result.setNamaBank((String) row[63]);
-            result.setNoRekBank((String) row[64]);
-            result.setCabangBank((String) row[66]);
-
-            result.setTanggalMasuk((Date) row[68]);
-            result.setBagianId((String) row[71]);
-            result.setBagianName((String) row[72]);
+            result.setGolonganDapen((String) row[64]);
+            result.setGolonganDapenNusindo((String) row[65]);
+            result.setNamaBank((String) row[65]);
+            result.setNoRekBank((String) row[66]);
+            result.setCabangBank((String) row[68]);
+            result.setTanggalMasuk((Date) row[70]);
 
             listOfResult.add(result);
         }
         return listOfResult;
     }
 
-    public List<ImBiodataEntity> getDataBiodata(String nip, String nama, String branchId, String divisiId, String tipePegawai, String flag){
+    public List<ImBiodataEntity> getDataBiodata(String nip, String nama, String branchId, String divisiId, BigInteger jmlAnak, String tipePegawai, String flag){
         String searchNip = "" ;
         String searchNama = "" ;
         String searchBranchId = "" ;
         String searchDivisiId = "" ;
         String searchTipePegawai = "" ;
+        String searchJmlAnak = "";
 
         if (nip!=null){
             if(!nip.equalsIgnoreCase("")){
@@ -524,6 +521,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 searchTipePegawai = " and pegawai.tipe_pegawai= '" + tipePegawai + "' " ;
             }
         }
+        if(jmlAnak!=null){
+            String anak = jmlAnak.toString();
+            if(!anak.equalsIgnoreCase("")) {
+                searchJmlAnak = " AND pegawai.jumlah_anak = '" + anak + "' ";
+            }
+        }
 
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
@@ -539,10 +542,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tdivisi.department_id,\n" +
                 "\tdivisi.department_name,\n" +
                 "\titPosisi.pjs_flag,\n" +
-                "\tpegawai.*,\n" +
                 "\tbagian.bagian_id,\n" +
                 "\tbagian.nama_bagian,\n" +
-                "\titPosisi.profesi_id\n" +
+                "\titPosisi.profesi_id,\n" +
+                "\tpegawai.*\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -556,7 +559,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = posisi.bagian_id\n" +
                 "where " +
                 "\t itPosisi.flag='"+flag+"' AND" +
-                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai +
+                "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
                 "\torder by \n" +
                 "\titPosisi.position_id";
 
@@ -599,130 +602,119 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .createSQLQuery(query)
                 .list();
 
+        List<String> bioNIP = new ArrayList<>();
+
         for (Object[] row : results) {
-            ImBiodataEntity result  = new ImBiodataEntity();
-            result.setBranchId((String) row[0]);
-            result.setDivisiId((String) row[1]);
-            result.setPosisiId((String) row[2]);
-            result.setProvinsiName((String) row[3]);
-            result.setKotaName((String) row[4]);
-            result.setKecamatanName((String) row[5]);
-            result.setDesaName((String) row[6]);
-            result.setTipePegawaiName((String) row[7]);
-            result.setPjs((String) row[10]);
+            if(!bioNIP.contains((String) row[11])) {
+                bioNIP.add((String) row[11]);
 
-            result.setNip((String) row[11]);
-            result.setNamaPegawai((String) row[12]);
-            result.setGelarDepan((String) row[13]);
-            result.setGelarBelakang((String) row[14]);
-            result.setNoKtp((String) row[15]);
-            result.setAlamat((String) row[16]);
-            result.setRtRw((String) row[17]);
-            result.setDesaId((String) row[18]);
-            result.setKecamatanId((String) row[19]);
-            result.setNoTelp((String) row[20]);
+                ImBiodataEntity result = new ImBiodataEntity();
+                result.setBranchId((String) row[0]);
+                result.setDivisiId((String) row[1]);
+                result.setPosisiId((String) row[2]);
+                result.setProvinsiName((String) row[3]);
+                result.setKotaName((String) row[4]);
+                result.setKecamatanName((String) row[5]);
+                result.setDesaName((String) row[6]);
+                result.setTipePegawaiName((String) row[7]);
+                result.setDivisiName((String) row[9]);
+                result.setPjs((String) row[10]);
 
-            result.setKotaId((String) row[21]);
-            result.setProvinsiId((String) row[22]);
-            result.setTanggalLahir((Date) row[23]);
-            result.setTempatLahir((String) row[24]);
-            result.setTipePegawai((String) row[25]);
-            result.setFotoUpload((String) row[26]);
-            result.setStatusCaption((String) row[27]);
-            result.setKeterangan((String) row[28]);
-            result.setFlag((String) row[29]);
-            result.setAction((String) row[30]);
+                result.setBagianId((String) row[11]);
+                result.setBagianName((String) row[12]);
+                result.setProfesiId((String) row[13]);
 
-            result.setShift((String)row[60]);
-            result.setCreatedWho((String) row[31]);
-            result.setLastUpdateWho((String) row[32]);
-            result.setTanggalAktif((Date) row[33]);
-            result.setGolongan((String) row[34]);
-            result.setStatusPegawai((String) row[35]);
-            result.setStatusKeluarga((String) row[36]);
-            if (row[37] != null)
-                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
-            else
-                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(0)));
-            result.setGender((String) row[38]);
-            result.setStatusGiling((String) row[39]);
-            result.setNoSkAktif((String) row[40]);
+                ImBiodataEntity person = getById("nip", row[14].toString());
 
-            result.setPin((String) row[41]);
-            result.setPoint((int) row[42]);
-            result.setZakatProfesi((String) row[43]);
-            result.setLastUpdate((Timestamp)row[44]);
-            result.setCreatedDate((Timestamp) row[45]);
-            result.setTanggalPensiun((Date) row[46]);
-            result.setDanaPensiun((String) row[47]);
-            result.setStrukturGaji((String) row[48]);
-            if(row[49] != null){
-                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
+                result.setNip(person.getNip());
+                result.setNamaPegawai(person.getNamaPegawai());
+                result.setGelarDepan(person.getGelarDepan());
+                result.setGelarBelakang(person.getGelarBelakang());
+                result.setNoKtp(person.getNoKtp());
+                result.setAlamat(person.getAlamat());
+                result.setRtRw(person.getRtRw());
+                result.setDesaId(person.getDesaId());
+                result.setKecamatanId(person.getKecamatanId());
+                result.setNoTelp(person.getNoTelp());
+
+                result.setKotaId(person.getKotaId());
+                result.setProvinsiId(person.getProvinsiId());
+                result.setTanggalLahir(person.getTanggalLahir());
+                result.setTempatLahir(person.getTempatLahir());
+                result.setTipePegawai(person.getTipePegawai());
+                result.setFotoUpload(person.getFotoUpload());
+                result.setStatusCaption(person.getStatusCaption());
+                result.setKeterangan(person.getKeterangan());
+                result.setFlag(person.getFlag());
+                result.setAction(person.getAction());
+
+                result.setShift(person.getShift());
+                result.setCreatedWho(person.getCreatedWho());
+                result.setLastUpdateWho(person.getLastUpdateWho());
+                result.setTanggalAktif(person.getTanggalAktif());
+                result.setGolongan(person.getGolongan());
+                result.setStatusPegawai(person.getStatusPegawaiName());
+                result.setStatusKeluarga(person.getStatusKeluarga());
+                result.setJumlahAnak(person.getJumlahAnak());
+                result.setGender(person.getGender());
+                result.setStatusGiling(person.getStatusGiling());
+                result.setNoSkAktif(person.getNoSkAktif());
+
+                result.setPin(person.getPin());
+                result.setPoint(person.getPoint());
+                result.setZakatProfesi(person.getZakatProfesi());
+                result.setLastUpdate(person.getLastUpdate());
+                result.setCreatedDate(person.getCreatedDate());
+                result.setTanggalPensiun(person.getTanggalPensiun());
+                result.setDanaPensiun(person.getDanaPensiun());
+                result.setStrukturGaji(person.getStrukturGaji());
+                result.setGaji(person.getGaji());
+                result.setPoinLebih(person.getPoinLebih());
+
+                result.setAgama(person.getAgama());
+                result.setTanggalMenikah(person.getTanggalMenikah());
+                result.setNpwp(person.getNpwp());
+                result.setMt(person.getMt());
+                result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
+                result.setNoAnggotaDapen(person.getNoAnggotaDapen());
+                result.setNoBpjsKetenagakerjaan(person.getNoBpjsKetenagakerjaan());
+                result.setNoBpjsKetenagakerjaanPensiun(person.getNoBpjsKetenagakerjaanPensiun());
+                result.setNoBpjsKesehatan(person.getNoBpjsKesehatan());
+
+                result.setNamaBank(person.getNamaBank());
+                result.setNoRekBank(person.getNoRekBank());
+                result.setCabangBank(person.getCabangBank());
+                result.setTanggalMasuk(person.getTanggalMasuk());
+                result.setGolonganDapenId(person.getGolonganDapenId());
+                result.setMasaKerjaGolongan(person.getMasaKerjaGolongan());
+                result.setTanggalAkhirKontrak(person.getTanggalAkhirKontrak());
+                result.setTanggalPraPensiun(person.getTanggalPraPensiun());
+                result.setFlagMess(person.getFlagMess());
+                result.setFlagPlt(person.getFlagPlt());
+                result.setFlagPjs(person.getFlagPjs());
+                result.setFlagFingerMobile(person.getFlagFingerMobile());
+                result.setFlagTunjRumah(person.getFlagTunjRumah());
+                result.setFlagTunjAir(person.getFlagTunjAir());
+                result.setFlagTunjListrik(person.getFlagTunjListrik());
+                result.setFlagTunjBbm(person.getFlagTunjBbm());
+                result.setFlagBpjsKs(person.getFlagBpjsKs());
+                result.setFlagBpjsTk(person.getFlagBpjsTk());
+                result.setFlagPercobaan(person.getFlagPercobaan());
+                result.setPositionPltId(person.getPositionPltId());
+                result.setNipLama(person.getNipLama());
+                result.setFlagDokterKso(person.getFlagDokterKso());
+                result.setJenisPegawai(person.getJenisPegawai());
+
+                result.setPeralihanGapok(person.getPeralihanGapok());
+                result.setPeralihanSankhus(person.getPeralihanSankhus());
+                result.setPeralihanTunjangan(person.getPeralihanTunjangan());
+
+                result.setFlagPegawaiCutiDiluarTanggungan(person.getFlagPegawaiCutiDiluarTanggungan());
+                result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
+                result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());
+
+                listOfResult.add(result);
             }
-            result.setPoinLebih((int) row[50]);
-
-            result.setAgama((String) row[51]);
-            result.setTanggalMenikah((Date) row[52]);
-            result.setNpwp((String) row[53]);
-            result.setMt((String) row[54]);
-            result.setTanggalAkhirKontrak((Date) row[55]);
-            result.setNoAnggotaDapen((String) row[56]);
-            result.setNoBpjsKetenagakerjaan((String) row[57]);
-            result.setNoBpjsKetenagakerjaanPensiun((String) row[58]);
-            result.setNoBpjsKesehatan((String) row[59]);
-
-            result.setNamaBank((String) row[63]);
-            result.setNoRekBank((String) row[64]);
-            result.setCabangBank((String) row[66]);
-
-            if (row[68] != null){
-                result.setTanggalMasuk((Date) row[68]);
-            }
-            if (row[69]!=null){
-                result.setGolonganDapenId(row[69].toString());
-            }
-            result.setMasaKerjaGolongan((Integer) row[70]);
-
-            if(row[71] != null){
-                result.setTanggalAkhirKontrak((Date)row[71]);
-            }
-
-            if (row[78] != null){
-                result.setTanggalPraPensiun((Date) row[78]);
-            }
-
-            result.setFlagMess((String) row[67]);
-            result.setFlagPlt((String) row[79]);
-            result.setFlagPjs((String) row[80]);
-            result.setFlagFingerMobile((String) row[81]);
-            result.setFlagTunjRumah((String) row[82]);
-            result.setFlagTunjAir((String) row[83]);
-            result.setFlagTunjListrik((String) row[84]);
-            result.setFlagTunjBbm((String) row[85]);
-            result.setFlagBpjsKs((String) row[86]);
-            result.setFlagBpjsTk((String) row[87]);
-            result.setFlagPercobaan((String) row[88]);
-            result.setPositionPltId((String) row[89]);
-            result.setNipLama((String) row[90]);
-            result.setFlagDokterKso((String) row[91]);
-            result.setJenisPegawai((String) row[92]);
-
-            if(row[93] != null){
-                result.setPeralihanGapok(BigDecimal.valueOf(Double.parseDouble(row[93].toString())));
-            }
-            if(row[94] != null){
-                result.setPeralihanSankhus(BigDecimal.valueOf(Double.parseDouble(row[94].toString())));
-            }
-            if(row[95] != null){
-                result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
-            }
-
-            result.setBagianId((String) row[96]);
-            result.setBagianName((String) row[97]);
-            result.setProfesiId((String)row[98]);
-
-            result.setDivisiName((String)row[9]);
-            listOfResult.add(result);
         }
         return listOfResult;
     }
@@ -767,8 +759,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tdivisi.department_id,\n" +
                 "\tdivisi.department_name,\n" +
                 "\titPosisi.pjs_flag,\n" +
-                "\tpegawai.*,\n" +
-                "\tposisi.bagian_id\n" +
+                "\tposisi.bagian_id,\n" +
+                "\tpegawai.*\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -799,62 +791,65 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setDesaName((String) row[6]);
             result.setTipePegawaiName((String) row[7]);
             result.setPjs((String) row[10]);
+            result.setBagianId((String) row[11]);
 
-            result.setNip((String) row[11]);
-            result.setNamaPegawai((String) row[12]);
-            result.setGelarDepan((String) row[13]);
-            result.setGelarBelakang((String) row[14]);
-            result.setNoKtp((String) row[15]);
-            result.setAlamat((String) row[16]);
-            result.setRtRw((String) row[17]);
-            result.setDesaId((String) row[18]);
-            result.setKecamatanId((String) row[19]);
-            result.setNoTelp((String) row[20]);
-            result.setKotaId((String) row[21]);
-            result.setProvinsiId((String) row[22]);
-            result.setTanggalLahir((Date) row[23]);
-            result.setTempatLahir((String) row[24]);
-            result.setTipePegawai((String) row[25]);
-            result.setFotoUpload((String) row[26]);
-            result.setStatusCaption((String) row[27]);
-            result.setKeterangan((String) row[28]);
-            result.setFlag((String) row[29]);
-            result.setAction((String) row[30]);
-            result.setCreatedWho((String) row[31]);
-            result.setLastUpdateWho((String) row[32]);
-            result.setTanggalAktif((Date) row[33]);
-            result.setGolongan((String) row[34]);
-            result.setStatusPegawai((String) row[35]);
-            result.setStatusKeluarga((String) row[36]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
-            result.setGender((String) row[38]);
-            result.setStatusGiling((String) row[39]);
-            result.setNoSkAktif((String) row[40]);
-            result.setPin((String) row[41]);
-            result.setPoint((int) row[42]);
-            result.setZakatProfesi((String) row[43]);
-            result.setTanggalPensiun((Date) row[46]);
-            result.setDanaPensiun((String) row[47]);
-            result.setStrukturGaji((String) row[48]);
-            if(row[49] != null){
-                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
+            result.setNip((String) row[12]);
+
+            // mencari data biodata by id
+            ImBiodataEntity biodataEntity = getById("nip", result.getNip());
+
+            if (biodataEntity != null){
+                result.setNamaPegawai(biodataEntity.getNamaPegawai());
+                result.setGelarDepan(biodataEntity.getGelarDepan());
+                result.setGelarBelakang(biodataEntity.getGelarBelakang());
+                result.setNoKtp(biodataEntity.getNoKtp());
+                result.setAlamat(biodataEntity.getAlamat());
+                result.setRtRw(biodataEntity.getRtRw());
+                result.setDesaId(biodataEntity.getDesaId());
+                result.setKecamatanId(biodataEntity.getKecamatanId());
+                result.setNoTelp(biodataEntity.getNoTelp());
+                result.setKotaId(biodataEntity.getKotaId());
+                result.setProvinsiId(biodataEntity.getProvinsiId());
+                result.setTanggalLahir(biodataEntity.getTanggalLahir());
+                result.setTempatLahir(biodataEntity.getTempatLahir());
+                result.setTipePegawai(biodataEntity.getTipePegawai());
+                result.setFotoUpload(biodataEntity.getFotoUpload());
+                result.setStatusCaption(biodataEntity.getStatusCaption());
+                result.setKeterangan(biodataEntity.getKeterangan());
+                result.setFlag(biodataEntity.getFlag());
+                result.setAction(biodataEntity.getAction());
+                result.setCreatedWho(biodataEntity.getCreatedWho());
+                result.setLastUpdateWho(biodataEntity.getLastUpdateWho());
+                result.setTanggalAktif(biodataEntity.getTanggalAktif());
+                result.setGolongan(biodataEntity.getGolongan());
+                result.setStatusPegawai(biodataEntity.getStatusPegawai());
+                result.setStatusKeluarga(biodataEntity.getStatusKeluarga());
+                result.setJumlahAnak(biodataEntity.getJumlahAnak());
+                result.setNoSkAktif(biodataEntity.getNoSkAktif());
+                result.setPin(biodataEntity.getPin());
+                result.setTanggalPensiun(biodataEntity.getTanggalPensiun());
+                result.setDanaPensiun(biodataEntity.getDanaPensiun());
+                result.setStrukturGaji(biodataEntity.getStrukturGaji());
+                result.setGaji(biodataEntity.getGaji());
+                result.setAgama(biodataEntity.getAgama());
+                result.setTanggalMenikah(biodataEntity.getTanggalMenikah());
+                result.setNpwp(biodataEntity.getNpwp());
+                result.setTanggalAkhirKontrak(biodataEntity.getTanggalAkhirKontrak());
+                result.setNoAnggotaDapen(biodataEntity.getNoAnggotaDapen());
+                result.setNoBpjsKetenagakerjaan(biodataEntity.getNoBpjsKetenagakerjaan());
+                result.setNoBpjsKetenagakerjaanPensiun(biodataEntity.getNoBpjsKetenagakerjaanPensiun());
+                result.setNoBpjsKesehatan(biodataEntity.getNoBpjsKesehatan());
+                result.setGolonganDapen(biodataEntity.getGolonganDapen());
+                result.setNamaBank(biodataEntity.getNamaBank());
+                result.setNoRekBank(biodataEntity.getNoRekBank());
+                result.setCabangBank(biodataEntity.getCabangBank());
+                result.setTanggalMasuk(biodataEntity.getTanggalMasuk());
+                result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+                result.setZakatProfesi(biodataEntity.getZakatProfesi());
+                result.setMt(biodataEntity.getMt());
+                result.setStatusGiling(biodataEntity.getStatusGiling());
+
             }
-            result.setPoinLebih((int) row[50]);
-            result.setAgama((String) row[51]);
-            result.setTanggalMenikah((Date) row[52]);
-            result.setNpwp((String) row[53]);
-            result.setMt((String) row[54]);
-            result.setTanggalAkhirKontrak((Date) row[55]);
-            result.setNoAnggotaDapen((String) row[56]);
-            result.setNoBpjsKetenagakerjaan((String) row[57]);
-            result.setNoBpjsKetenagakerjaanPensiun((String) row[58]);
-            result.setNoBpjsKesehatan((String) row[59]);
-
-            result.setNamaBank((String) row[63]);
-            result.setNoRekBank((String) row[64]);
-            result.setCabangBank((String) row[66]);
-
-            result.setBagianId((String) row[69]);
 
             listOfResult.add(result);
         }
@@ -869,7 +864,6 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\titPosisi.branch_id,\n" +
                 "\tdivisi.department_id,\n" +
                 "\titPosisi.position_id,\n" +
-                "\tpegawai.*,\n" +
                 "\tprovinsi_name,\n" +
                 "\tkabupaten.kota_name,\n" +
                 "\tkecamatan.kecamatan_name,\n" +
@@ -877,9 +871,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\ttipePegawai.tipe_pegawai_name,\n" +
                 "\tdivisi.department_id,\n" +
                 "\tdivisi.department_name,\n" +
-                "\tpegawai.nama_bank,\n" +
-                "\tpegawai.no_rek_bank,\n " +
-                "\tpegawai.cabang_bank\n" +
+                "\tpegawai.*\n" +
+
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -906,64 +899,65 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBranchId((String) row[0]);
             result.setDivisiId((String) row[1]);
             result.setPosisiId((String) row[2]);
-            result.setNip((String) row[3]);
-            result.setNamaPegawai((String) row[4]);
-            result.setGelarDepan((String) row[5]);
-            result.setGelarBelakang((String) row[6]);
-            result.setNoKtp((String) row[7]);
-            result.setAlamat((String) row[8]);
-            result.setRtRw((String) row[9]);
-            result.setDesaId((String) row[10]);
-            result.setKecamatanId((String) row[11]);
-            result.setNoTelp((String) row[12]);
-            result.setKotaId((String) row[13]);
-            result.setProvinsiId((String) row[14]);
-            result.setTanggalLahir((Date) row[15]);
-            result.setTempatLahir((String) row[16]);
-            result.setTipePegawai((String) row[17]);
-            result.setFotoUpload((String) row[18]);
-            result.setStatusCaption((String) row[19]);
-            result.setKeterangan((String) row[20]);
-            result.setFlag((String) row[21]);
-            result.setAction((String) row[22]);
-            result.setCreatedWho((String) row[23]);
-            result.setLastUpdateWho((String) row[24]);
-            result.setTanggalAktif((Date) row[25]);
-            result.setGolongan((String) row[26]);
-            result.setStatusPegawai((String) row[27]);
-            result.setStatusKeluarga((String) row[28]);
-            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[29].toString())));
-            result.setGender((String) row[30]);
-            result.setStatusGiling((String) row[31]);
-            result.setNoSkAktif((String) row[32]);
-            result.setPin((String) row[33]);
-            result.setPoint((int) row[34]);
-            result.setZakatProfesi((String) row[35]);
-            result.setTanggalPensiun((Date) row[38]);
-            result.setDanaPensiun((String) row[39]);
-            result.setStrukturGaji((String) row[40]);
-            if(row[41] != null){
-                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[41].toString())));
-            }
-            result.setPoinLebih((int) row[42]);
-            result.setAgama((String) row[43]);
-            result.setTanggalMenikah((Date) row[44]);
-            result.setNpwp((String) row[45]);
-            result.setMt((String) row[46]);
-            result.setTanggalAkhirKontrak((Date) row[47]);
-            result.setNoAnggotaDapen((String) row[48]);
-            result.setNoBpjsKetenagakerjaan((String) row[49]);
-            result.setNoBpjsKetenagakerjaanPensiun((String) row[50]);
-            result.setNoBpjsKesehatan((String) row[51]);
+            result.setProvinsiName((String) row[3]);
+            result.setKotaName((String) row[4]);
+            result.setKecamatanName((String) row[5]);
+            result.setDesaName((String) row[6]);
+            result.setTipePegawaiName((String) row[7]);
 
-            result.setProvinsiName((String) row[59]);
-            result.setKotaName((String) row[60]);
-            result.setKecamatanName((String) row[61]);
-            result.setDesaName((String) row[62]);
-            result.setTipePegawaiName((String) row[63]);
-            result.setNamaBank((String) row[66]);
-            result.setNoRekBank((String) row[67]);
-            result.setCabangBank((String) row[68]);
+            result.setNip((String) row[10]);
+            result.setNamaPegawai((String) row[11]);
+            result.setGelarDepan((String) row[12]);
+            result.setGelarBelakang((String) row[13]);
+            result.setNoKtp((String) row[14]);
+            result.setAlamat((String) row[15]);
+            result.setRtRw((String) row[16]);
+            result.setDesaId((String) row[17]);
+            result.setKecamatanId((String) row[18]);
+            result.setNoTelp((String) row[19]);
+            result.setKotaId((String) row[20]);
+            result.setProvinsiId((String) row[21]);
+            result.setTanggalLahir((Date) row[22]);
+            result.setTempatLahir((String) row[23]);
+            result.setTipePegawai((String) row[24]);
+            result.setFotoUpload((String) row[25]);
+            result.setStatusCaption((String) row[26]);
+            result.setKeterangan((String) row[27]);
+            result.setFlag((String) row[28]);
+            result.setAction((String) row[29]);
+            result.setCreatedWho((String) row[30]);
+            result.setLastUpdateWho((String) row[31]);
+            result.setTanggalAktif((Date) row[32]);
+            result.setGolongan((String) row[33]);
+            result.setStatusPegawai((String) row[34]);
+            result.setStatusKeluarga((String) row[35]);
+            result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[36].toString())));
+            result.setGender((String) row[37]);
+            result.setStatusGiling((String) row[38]);
+            result.setNoSkAktif((String) row[39]);
+            result.setPin((String) row[40]);
+            result.setPoint((int) row[41]);
+            result.setZakatProfesi((String) row[42]);
+            result.setTanggalPensiun((Date) row[45]);
+            result.setDanaPensiun((String) row[46]);
+            result.setStrukturGaji((String) row[47]);
+            if(row[48]!= null){
+                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[48].toString())));
+            }
+            result.setPoinLebih((int) row[49]);
+            result.setAgama((String) row[50]);
+            result.setTanggalMenikah((Date) row[51]);
+            result.setNpwp((String) row[52]);
+            result.setMt((String) row[53]);
+            result.setTanggalAkhirKontrak((Date) row[54]);
+            result.setNoAnggotaDapen((String) row[55]);
+            result.setNoBpjsKetenagakerjaan((String) row[56]);
+            result.setNoBpjsKetenagakerjaanPensiun((String) row[57]);
+            result.setNoBpjsKesehatan((String) row[58]);
+
+            result.setNamaBank((String) row[62]);
+            result.setNoRekBank((String) row[63]);
+            result.setCabangBank((String) row[65]);
 
             listOfResult.add(result);
         }
@@ -1075,6 +1069,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.tipe_pegawai, \n" +
                 "\tpegawai.tanggal_masuk, \n" +
                 "\tposisi.profesi_id\n" +
+                "\ttipe.tipe_pegawai_name\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
                 "\t\tLEFT JOIN it_hris_pegawai_position posisi \n" +
@@ -1083,6 +1078,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON branch.branch_id = posisi.branch_id \n" +
                 "\t\tLEFT JOIN im_position position \n" +
                 "\t\t\tON position.position_id = posisi.position_id \n" +
+                "\t\tLEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "\t\t\tON tipe.tipe_pegawai_id = pegawai.tipe_pegawai \n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
@@ -1102,6 +1099,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setTipePegawai((String) row[3]);
             result.setTanggalMasuk((Date) row[4]);
             result.setProfesiId((String)row[5]);
+            result.setTipePegawaiName((String) row[6]);
 
             listOfResult.add(result);
         }
@@ -1201,7 +1199,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.nama_pegawai, \n" +
                 "\tposition.position_name, \n" +
                 "\tposition.kelompok_id, \n" +
-                "\tpegawai.tipe_pegawai\n" +
+                "\tpegawai.tipe_pegawai,\n" +
+                "\ttipe.tipe_pegawai_name\n" +
                 "\n" +
                 "\tFROM im_hris_pegawai pegawai\n" +
                 "\t\tLEFT JOIN it_hris_pegawai_position posisi \n" +
@@ -1210,6 +1209,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\t\t\tON branch.branch_id = posisi.branch_id \n" +
                 "\t\tLEFT JOIN im_position position \n" +
                 "\t\t\tON position.position_id = posisi.position_id \n" +
+                "\t\tLEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "\t\t\tON tipe.tipe_pegawai_name= pegawai.tipe_pegawai\n" +
                 "\t\t\t\n" +
                 "\tWHERE pegawai.flag = 'Y'\n" +
                 "\t\tAND pegawai.pin IS NOT NULL\n" +
@@ -1228,6 +1229,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setPositionName((String) row[2]);
             result.setKelompokId((String) row[3]);
             result.setTipePegawai((String) row[4]);
+            result.setTipePegawaiName((String) row[5]);
 
             listOfResult.add(result);
         }
@@ -1276,7 +1278,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   divisi.department_id, \n" +
                 "                   divisi.department_name,\n" +
                 "                   position.bagian_id,\n" +
-                "                   bagian2.nama_bagian\n" +
+                "                   bagian2.nama_bagian,\n" +
+                "                   tipe.tipe_pegawai_name\n" +
                 "                                FROM im_hris_pegawai pegawai  \n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
                 "                                ON posisi.nip = pegawai.nip  \n" +
@@ -1290,6 +1293,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
                 "                                ON position.bagian_id = bagian2.bagian_id\n" +
+                "                                LEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "                                ON tipe.tipe_pegawai_name= pegawai.tipe_pegawai\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1309,6 +1314,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[8]);
             result.setDivisi((String) row[9]);
             result.setDivisiName((String) row[10]);
+            result.setTipePegawaiName((String) row[11]);
 
             if (row[11] !=null){
                 result.setBagianId((String) row[11]);
@@ -1397,7 +1403,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   position.bagian_id,\n" +
                 "                   bagian2.nama_bagian,\n" +
                 "                   pegawai.shift,\n" +
-                "                   pegawai.tanggal_aktif \n" +
+                "                   pegawai.tanggal_aktif, \n" +
+                "                   tipe.tipe_pegawai_name\n" +
                 "                                FROM im_hris_pegawai pegawai\n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi ON posisi.nip = pegawai.nip  \n" +
                 "                                LEFT JOIN im_branches branch ON branch.branch_id = posisi.branch_id   \n" +
@@ -1406,6 +1413,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                LEFT JOIN im_hris_department divisi ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 ON position.bagian_id = bagian2.bagian_id\n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian3 ON position.bagian_id = bagian3.bagian_id\n" +
+                "                                LEFT JOIN im_hris_tipe_pegawai tipe ON tipe.tipe_pegawai_name = pegawai.tipe_pegawai\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1426,6 +1434,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[8]);
             result.setDivisi((String) row[9]);
             result.setDivisiName((String) row[10]);
+            result.setTipePegawaiName((String) row[15]);
 
             if (row[11] !=null){
                 result.setBagianId((String) row[11]);
@@ -1496,8 +1505,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   bagian.nama_bagian, \n" +
                 "                   divisi.department_id, \n" +
                 "                   divisi.department_name,\n" +
-                "                   position.bagian_asli_id,\n" +
-                "                   bagian2.nama_bagian\n" +
+                "                   position.bagian_id,\n" +
+                "                   bagian2.nama_bagian,\n" +
+                "                   tipe.tipe_pegawai_name \n" +
                 "                                FROM im_hris_pegawai pegawai  \n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi   \n" +
                 "                                ON posisi.nip = pegawai.nip  \n" +
@@ -1510,7 +1520,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                LEFT JOIN im_hris_department divisi \n" +
                 "                                ON position.department_id = divisi.department_id \n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian2 \n" +
-                "                                ON position.bagian_asli_id = bagian2.bagian_id\n" +
+                "                                ON position.bagian_id = bagian2.bagian_id\n" +
+                "                                LEFT JOIN im_hris_tipe_pegawai tipe \n" +
+                "                                ON tipe.tipe_pegawai_id = pegawai.tipe_pegawai\n" +
                 "                                WHERE pegawai.flag = 'Y'  \n" +
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
@@ -1530,6 +1542,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             result.setBagianName((String) row[8]);
             result.setDivisi((String) row[9]);
             result.setDivisiName((String) row[10]);
+            result.setTipePegawaiName((String) row[13]);
 
             listOfResult.add(result);
         }
@@ -1592,9 +1605,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tdivisi.department_id,\n" +
                 "\tdivisi.department_name,\n" +
                 "\titPosisi.pjs_flag,\n" +
-                "\tpegawai.*,\n" +
                 "\tbagian.bagian_id,\n" +
-                "\tbagian.nama_bagian\n" +
+                "\tbagian.nama_bagian,\n" +
+                "\tpegawai.nip\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -1615,83 +1628,81 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 .createSQLQuery(query)
                 .list();
 
+        List<String> bioNIP = new ArrayList<>();
+
         for (Object[] row : results) {
-            ImBiodataEntity result  = new ImBiodataEntity();
-            result.setBranchId((String) row[0]);
-            result.setDivisiId((String) row[1]);
-            result.setPosisiId((String) row[2]);
-            result.setProvinsiName((String) row[3]);
-            result.setKotaName((String) row[4]);
-            result.setKecamatanName((String) row[5]);
-            result.setDesaName((String) row[6]);
-            result.setTipePegawaiName((String) row[7]);
-            result.setPjs((String) row[10]);
+            if (!bioNIP.contains((String) row[13])) {
+                bioNIP.add((String) row[13]);
 
-            result.setNip((String) row[11]);
-            result.setNamaPegawai((String) row[12]);
-            result.setGelarDepan((String) row[13]);
-            result.setGelarBelakang((String) row[14]);
-            result.setNoKtp((String) row[15]);
-            result.setAlamat((String) row[16]);
-            result.setRtRw((String) row[17]);
-            result.setDesaId((String) row[18]);
-            result.setKecamatanId((String) row[19]);
-            result.setNoTelp((String) row[20]);
-            result.setKotaId((String) row[21]);
-            result.setProvinsiId((String) row[22]);
-            result.setTanggalLahir((Date) row[23]);
-            result.setTempatLahir((String) row[24]);
-            result.setTipePegawai((String) row[25]);
-            result.setFotoUpload((String) row[26]);
-            result.setStatusCaption((String) row[27]);
-            result.setKeterangan((String) row[28]);
-            result.setFlag((String) row[29]);
-            result.setAction((String) row[30]);
-            result.setCreatedWho((String) row[31]);
-            result.setLastUpdateWho((String) row[32]);
-            result.setTanggalAktif((Date) row[33]);
-            result.setGolongan((String) row[34]);
-            result.setStatusPegawai((String) row[35]);
-            result.setStatusKeluarga((String) row[36]);
-            if (row[37] != null)
-                result.setJumlahAnak(BigInteger.valueOf(Integer.valueOf(row[37].toString())));
-            else
-                result.setJumlahAnak(BigInteger.valueOf(0));
-            result.setGender((String) row[38]);
-            result.setStatusGiling((String) row[39]);
-            result.setNoSkAktif((String) row[40]);
-            result.setPin((String) row[41]);
-            result.setPoint((int) row[42]);
-            result.setZakatProfesi((String) row[43]);
-            result.setTanggalPensiun((Date) row[46]);
-            result.setDanaPensiun((String) row[47]);
-            result.setStrukturGaji((String) row[48]);
-            if(row[49] != null){
-                result.setGaji(BigDecimal.valueOf(Double.parseDouble(row[49].toString())));
+                ImBiodataEntity result = new ImBiodataEntity();
+                result.setBranchId((String) row[0]);
+                result.setDivisiId((String) row[1]);
+                result.setPosisiId((String) row[2]);
+                result.setProvinsiName((String) row[3]);
+                result.setKotaName((String) row[4]);
+                result.setKecamatanName((String) row[5]);
+                result.setDesaName((String) row[6]);
+                result.setTipePegawaiName((String) row[7]);
+                result.setPjs((String) row[10]);
+                result.setBagianId((String) row[11]);
+                result.setBagianName((String) row[12]);
+
+                result.setNip((String) row[13]);
+
+                // mencari data biodata by id
+                ImBiodataEntity biodataEntity = getById("nip", result.getNip());
+
+                if (biodataEntity != null){
+                    result.setNamaPegawai(biodataEntity.getNamaPegawai());
+                    result.setGelarDepan(biodataEntity.getGelarDepan());
+                    result.setGelarBelakang(biodataEntity.getGelarBelakang());
+                    result.setNoKtp(biodataEntity.getNoKtp());
+                    result.setAlamat(biodataEntity.getAlamat());
+                    result.setRtRw(biodataEntity.getRtRw());
+                    result.setDesaId(biodataEntity.getDesaId());
+                    result.setKecamatanId(biodataEntity.getKecamatanId());
+                    result.setNoTelp(biodataEntity.getNoTelp());
+                    result.setKotaId(biodataEntity.getKotaId());
+                    result.setProvinsiId(biodataEntity.getProvinsiId());
+                    result.setTanggalLahir(biodataEntity.getTanggalLahir());
+                    result.setTempatLahir(biodataEntity.getTempatLahir());
+                    result.setTipePegawai(biodataEntity.getTipePegawai());
+                    result.setFotoUpload(biodataEntity.getFotoUpload());
+                    result.setStatusCaption(biodataEntity.getStatusCaption());
+                    result.setKeterangan(biodataEntity.getKeterangan());
+                    result.setFlag(biodataEntity.getFlag());
+                    result.setAction(biodataEntity.getAction());
+                    result.setCreatedWho(biodataEntity.getCreatedWho());
+                    result.setLastUpdateWho(biodataEntity.getLastUpdateWho());
+                    result.setTanggalAktif(biodataEntity.getTanggalAktif());
+                    result.setGolongan(biodataEntity.getGolongan());
+                    result.setStatusPegawai(biodataEntity.getStatusPegawai());
+                    result.setStatusKeluarga(biodataEntity.getStatusKeluarga());
+                    result.setJumlahAnak(biodataEntity.getJumlahAnak());
+                    result.setNoSkAktif(biodataEntity.getNoSkAktif());
+                    result.setPin(biodataEntity.getPin());
+                    result.setTanggalPensiun(biodataEntity.getTanggalPensiun());
+                    result.setDanaPensiun(biodataEntity.getDanaPensiun());
+                    result.setStrukturGaji(biodataEntity.getStrukturGaji());
+                    result.setGaji(biodataEntity.getGaji());
+                    result.setAgama(biodataEntity.getAgama());
+                    result.setTanggalMenikah(biodataEntity.getTanggalMenikah());
+                    result.setNpwp(biodataEntity.getNpwp());
+                    result.setTanggalAkhirKontrak(biodataEntity.getTanggalAkhirKontrak());
+                    result.setNoAnggotaDapen(biodataEntity.getNoAnggotaDapen());
+                    result.setNoBpjsKetenagakerjaan(biodataEntity.getNoBpjsKetenagakerjaan());
+                    result.setNoBpjsKetenagakerjaanPensiun(biodataEntity.getNoBpjsKetenagakerjaanPensiun());
+                    result.setNoBpjsKesehatan(biodataEntity.getNoBpjsKesehatan());
+                    result.setGolonganDapen(biodataEntity.getGolonganDapen());
+                    result.setNamaBank(biodataEntity.getNamaBank());
+                    result.setNoRekBank(biodataEntity.getNoRekBank());
+                    result.setCabangBank(biodataEntity.getCabangBank());
+                    result.setTanggalMasuk(biodataEntity.getTanggalMasuk());
+                    result.setMasaKerjaGolongan(biodataEntity.getMasaKerjaGolongan());
+                }
+
+                listOfResult.add(result);
             }
-            result.setPoinLebih((int) row[50]);
-            result.setAgama((String) row[51]);
-            result.setTanggalMenikah((Date) row[52]);
-            result.setNpwp((String) row[53]);
-            result.setMt((String) row[54]);
-            result.setTanggalAkhirKontrak((Date) row[55]);
-            result.setNoAnggotaDapen((String) row[56]);
-            result.setNoBpjsKetenagakerjaan((String) row[57]);
-            result.setNoBpjsKetenagakerjaanPensiun((String) row[58]);
-            result.setNoBpjsKesehatan((String) row[59]);
-
-            result.setGolonganDapen((String) row[65]);
-            result.setGolonganDapenNusindo((String) row[59]);
-            result.setNamaBank((String) row[63]);
-            result.setNoRekBank((String) row[64]);
-            result.setCabangBank((String) row[66]);
-
-            result.setTanggalMasuk((Date) row[68]);
-            result.setMasaKerjaGolongan((Integer) row[70]);
-            result.setBagianId((String) row[72]);
-            result.setBagianName((String) row[73]);
-
-            listOfResult.add(result);
         }
         return listOfResult;
     }
@@ -1801,7 +1812,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
     public List<JenisPegawai> getAllListJenisPegawai(){
 
-        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name, flag_default FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
                 "ORDER BY flag_default";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
@@ -1812,6 +1823,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 JenisPegawai jenisPegawai = new JenisPegawai();
                 jenisPegawai.setJenisPegawaiId(obj[0].toString());
                 jenisPegawai.setJenisPegawaiName(obj[1].toString());
+                jenisPegawai.setFlagDefault(obj[2] == null ? "" : obj[2].toString());
                 jenisPegawais.add(jenisPegawai);
             }
         }
@@ -1863,5 +1875,56 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
 
         return biodataList;
+    }
+
+    public List<PersonilPosition> getListPersonilPositionByNip(String nip){
+
+        String SQL = "SELECT \n" +
+                "pp.position_id,\n" +
+                "p.position_name,\n" +
+                "pp.profesi_id,\n" +
+                "pr.profesi_name, \n" +
+                "pp.branch_id,\n" +
+                "br.branch_name,\n" +
+                "pp.jenis_pegawai,\n" +
+                "jp.jenis_pegawai_name,\n" +
+                "pp.flag_digaji, \n" +
+                "pp.personil_position_id, \n" +
+                "pp.nip, \n" +
+                "p.department_id," +
+                "pp.flag \n" +
+                "FROM it_hris_pegawai_position pp \n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "LEFT JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
+                "INNER JOIN im_branches br ON br.branch_id = pp.branch_id\n" +
+                "LEFT JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.nip LIKE :nip \n" +
+                "AND pp.flag = 'Y' ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .list();
+
+        List<PersonilPosition> personilPositions = new ArrayList<>();
+
+        for (Object[] obj : results){
+            PersonilPosition personilPosition = new PersonilPosition();
+            personilPosition.setPositionId(obj[0] == null ? "" : obj[0].toString());
+            personilPosition.setPositionName(obj[1] == null ? "" : obj[1].toString());
+            personilPosition.setProfesiId(obj[2] == null ? "" : obj[2].toString());
+            personilPosition.setProfesiName(obj[3] == null ? "" : obj[3].toString());
+            personilPosition.setBranchId(obj[4] == null ? "" : obj[4].toString());
+            personilPosition.setBranchName(obj[5] == null ? "" : obj[5].toString());
+            personilPosition.setJenisPegawai(obj[6] == null ? "" : obj[6].toString());
+            personilPosition.setJenisPegawaiName(obj[7] == null ? "" : obj[7].toString());
+            personilPosition.setFlagDigaji(obj[8] == null ? "" : obj[8].toString());
+            personilPosition.setPersonilPositionId(obj[9] == null ? "" : obj[9].toString());
+            personilPosition.setNip(obj[10] == null ? "" : obj[10].toString());
+            personilPosition.setDivisiId(obj[11] == null ? "" : obj[11].toString());
+            personilPosition.setFlag(obj[12] == null ? "" : obj[12].toString());
+            personilPositions.add(personilPosition);
+        }
+
+        return personilPositions;
     }
 }

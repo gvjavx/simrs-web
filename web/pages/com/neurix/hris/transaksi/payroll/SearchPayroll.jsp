@@ -37,7 +37,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_alat'/>";
+            window.location.href="<s:url action='initForm_payroll'/>";
         }
 
     </script>

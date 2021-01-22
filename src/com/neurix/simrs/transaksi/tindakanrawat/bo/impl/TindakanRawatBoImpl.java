@@ -193,8 +193,8 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     }
 
     @Override
-    public List<TindakanRawat> getListTindakanRawat(String noCheckup) throws GeneralBOException {
-        return tindakanRawatDao.getListTindakanRawat(noCheckup);
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis) throws GeneralBOException {
+        return tindakanRawatDao.getListTindakanRawat(noCheckup, jenis);
     }
 
     protected void updateDetailCheckup(TindakanRawat bean) throws GeneralBOException{

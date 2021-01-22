@@ -696,6 +696,10 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"verifikasi_cover\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-money\"></i><span> " + menuName + "</span></a></li>";
                         } else if (menuName.equalsIgnoreCase("Logout")) {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-sign-out\"></i><span> " + menuName + "</span></a></li>";
+                        } else if (menuName.equalsIgnoreCase("License")) {
+                            menuNameString = "<li id=\"lisence\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
+                        } else if (menuName.equalsIgnoreCase("Version")) {
+                            menuNameString = "<li id=\"version\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         } else {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }
