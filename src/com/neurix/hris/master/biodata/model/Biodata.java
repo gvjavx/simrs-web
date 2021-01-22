@@ -1,11 +1,14 @@
 package com.neurix.hris.master.biodata.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -149,6 +152,18 @@ public class Biodata extends BaseModel {
     private String flagCutiDiluarTanggungan;
     private Date tanggalCutiDiluarTanggunganAwal;
     private Date tanggalCutiDiluarTanggunganAkhir;
+
+
+    // Sigit 2021-01-18, penambahan atribute
+    private List<PersonilPosition> listOfPersonilPosition = new ArrayList<>();
+
+    public List<PersonilPosition> getListOfPersonilPosition() {
+        return listOfPersonilPosition;
+    }
+
+    public void setListOfPersonilPosition(List<PersonilPosition> listOfPersonilPosition) {
+        this.listOfPersonilPosition = listOfPersonilPosition;
+    }
 
     public String getFlagCutiDiluarTanggungan() {
         return flagCutiDiluarTanggungan;

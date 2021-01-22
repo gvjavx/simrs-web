@@ -47,13 +47,12 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DepartmentAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 
+
     <script type="text/javascript">
-
-        $(document).ready(function () {
-
-        });
 
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
@@ -299,7 +298,7 @@
                     <li><a href="#RiwayatPendidikan">Riwayat Pendidikan</a></li>
                     <li><a href="#pelatihanJabatan">Riwayat Pelatihan</a></li>
 
-                    <li><a href="#pengalamanKerja">Riwayat Kerja</a></li>
+                    <li><a href="#pengalamanKerja">Jabatan & Riwayat</a></li>
                     <%--<li><a href="#reward">Reward</a></li>
                     <li><a href="#sertifikat">Sertifikat</a></li>--%>
 
@@ -1775,10 +1774,34 @@
                         </div>
 
                         <div id="pengalamanKerja" class="tab-pane fade">
-                            <h3>Riwayat Kerja
-                                <s:if test="isAddOrEdit()">
-                                    <button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>
+
+                            <h3>Jabatan Existing
+                                <s:if test="isAdd()">
+                                    <button id="btnAddJabatan" type="button" class="btn btn-success" onclick="initAddJabatan()"><i class="fa fa-plus"></i> Add</button>
+                                    <button id="btnAddJabatan" type="button" class="btn btn-danger" onclick="clearPositionJabatanSession()"><i class="fa fa-refresh"></i> Clear</button>
                                 </s:if>
+                            </h3>
+                            <table style="width: 100%;" class="table table-bordered">
+                                <thead style="font-size: 15px;font-weight:bold;background-color:  #3c8dbc; color: white" align="center">
+                                    <tr>
+                                        <td>No</td>
+                                        <td>Unit</td>
+                                        <td>Jabatan</td>
+                                        <td>Profesi</td>
+                                        <td>Jenis Jabatan</td>
+                                        <td>Digaji</td>
+                                        <td style="text-align: center">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-position" style="font-size: 12px" align="center">
+
+                                </tbody>
+                            </table>
+
+                            <h3>Riwayat Jabatan
+                                <%--<s:if test="isAddOrEdit()">--%>
+                                    <%--<button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>--%>
+                                <%--</s:if>--%>
                             </h3>
                             <table style="width: 100%;" class="pengalamanKerjaTable table table-bordered">
                             </table>
@@ -3059,7 +3082,98 @@
     </div>
 </div>
 
+<div id="modal-edit-jabatan" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 40%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="modal-edit-jabatan-title"></h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="personil-position-id"/>
+                <input type="hidden" id="personil-position-flag"/>
+                <input type="hidden" id="position-id-lama"/>
+                <input type="hidden" id="position-name-lama"/>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Unit : </label>
+                        <div class="col-sm-9">
+                            <s:action id="initComboBranch" namespace="/admin/branch"
+                                      name="initComboBranch_branch"/>
+                            <s:select list="#initComboBranch.listOfComboBranch" id="position-branch-id"
+                                      name="biodata.branchId" onchange="listDivisiHistory()"
+                                      listKey="branchId" listValue="branchName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Bidang : </label>
+                        <div class="col-sm-9">
+                                <select class="form-control" id="department-jabatan" onchange="listPositionJabatan()">
+
+                                </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Posisi : </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="posisi-jabatan">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="gender">Profesi :</label>
+                        <div class="col-sm-9">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesi-jabatan"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Jenis Jabatan : </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="jenis-jabatan">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Digaji : </label>
+                        <div class="col-sm-9">
+                            <s:select list="#{'N':'Tidak'}" id="flag-digaji"
+                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveJabatan" type="button" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/biodata.js"/>'></script>
 
 <script>
     window.cekPerusahaanLain = function(){
@@ -3209,6 +3323,9 @@
 
     $(document).ready(function() {
         loadStatusPegawai();
+        loadPositionJabatan();
+        getAllDepartment();
+        getAllJenisPegawai();
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
@@ -3577,7 +3694,7 @@
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Unit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                     //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
@@ -3586,8 +3703,8 @@
 
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
                 </s:if>
                 <s:else>
@@ -3619,16 +3736,16 @@
 
                         '<td align="center">' + item.tipePegawai + '</td>' +
                         '<td align="center">' + item.golonganName + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                        '</a>' +
-                        '</td>' +
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
                         "</tr>";
                     </s:if>
                     <s:else>
@@ -6237,11 +6354,6 @@
                                     loadSessionPengalamanKerja();
                                 }
                             });
-//                            dwr.engine.endBatch({
-//                                errorHandler:function(errorString, exception){
-//                                    alert('Jabatan aktif sudah ada');
-//                                }
-//                            });
                         }
                     }
                 });
@@ -6277,4 +6389,5 @@
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
     }
+
 </script>

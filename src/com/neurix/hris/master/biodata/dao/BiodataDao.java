@@ -7,6 +7,7 @@ import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.biodata.model.ImBiodataHistoryEntity;
 import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.tipepegawai.model.ImHrisTipePegawai;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -86,9 +87,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public String getNextPersonalId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
-
-        return "D"+sId;
+        String sId = String.format("%04d", iter.next());
+        return sId;
     }
 
     public String getNextPengalamanKerja() throws HibernateException {
@@ -1801,7 +1801,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
     public List<JenisPegawai> getAllListJenisPegawai(){
 
-        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
+        String SQL = "SELECT jenis_pegawai_id, jenis_pegawai_name, flag_default FROM im_hris_jenis_pegawai WHERE flag = 'Y' \n" +
                 "ORDER BY flag_default";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
@@ -1812,6 +1812,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 JenisPegawai jenisPegawai = new JenisPegawai();
                 jenisPegawai.setJenisPegawaiId(obj[0].toString());
                 jenisPegawai.setJenisPegawaiName(obj[1].toString());
+                jenisPegawai.setFlagDefault(obj[2] == null ? "" : obj[2].toString());
                 jenisPegawais.add(jenisPegawai);
             }
         }
@@ -1863,5 +1864,56 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         }
 
         return biodataList;
+    }
+
+    public List<PersonilPosition> getListPersonilPositionByNip(String nip){
+
+        String SQL = "SELECT \n" +
+                "pp.position_id,\n" +
+                "p.position_name,\n" +
+                "pp.profesi_id,\n" +
+                "pr.profesi_name, \n" +
+                "pp.branch_id,\n" +
+                "br.branch_name,\n" +
+                "pp.jenis_pegawai,\n" +
+                "jp.jenis_pegawai_name,\n" +
+                "pp.flag_digaji, \n" +
+                "pp.personil_position_id, \n" +
+                "pp.nip, \n" +
+                "p.department_id," +
+                "pp.flag \n" +
+                "FROM it_hris_pegawai_position pp \n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "INNER JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
+                "INNER JOIN im_branches br ON br.branch_id = pp.branch_id\n" +
+                "INNER JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.nip LIKE :nip \n" +
+                "AND pp.flag = 'Y' ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .list();
+
+        List<PersonilPosition> personilPositions = new ArrayList<>();
+
+        for (Object[] obj : results){
+            PersonilPosition personilPosition = new PersonilPosition();
+            personilPosition.setPositionId(obj[0].toString());
+            personilPosition.setPositionName(obj[1].toString());
+            personilPosition.setProfesiId(obj[2].toString());
+            personilPosition.setProfesiName(obj[3].toString());
+            personilPosition.setBranchId(obj[4].toString());
+            personilPosition.setBranchName(obj[5].toString());
+            personilPosition.setJenisPegawai(obj[6].toString());
+            personilPosition.setJenisPegawaiName(obj[7].toString());
+            personilPosition.setFlagDigaji(obj[8].toString());
+            personilPosition.setPersonilPositionId(obj[9].toString());
+            personilPosition.setNip(obj[10].toString());
+            personilPosition.setDivisiId(obj[11].toString());
+            personilPosition.setFlag(obj[12] == null ? "" : obj[12].toString());
+            personilPositions.add(personilPosition);
+        }
+
+        return personilPositions;
     }
 }
