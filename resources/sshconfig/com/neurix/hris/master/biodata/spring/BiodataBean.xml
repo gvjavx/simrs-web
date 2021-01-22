@@ -49,6 +49,7 @@
           p:profesiDao-ref="profesiDao"
           p:mutasiDao-ref="mutasiDao"
           p:dokterDao-ref="dokterDao"
+          p:tipePegawaiDao-ref="tipePegawaiDao"
     />
 
     <bean id="biodataBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
