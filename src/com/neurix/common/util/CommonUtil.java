@@ -1389,6 +1389,15 @@ public class  CommonUtil {
                 .toString();
     }
 
+    public static String getSecurityCode() {
+        String prefix = "00";
+        String suffix = "09";
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+        java.util.Date date = new java.util.Date();
+
+        return prefix + format.format(date) + suffix;
+    }
+
     //Convert Date to Calendar
     public static Calendar dateToCalendar(java.util.Date date) {
 

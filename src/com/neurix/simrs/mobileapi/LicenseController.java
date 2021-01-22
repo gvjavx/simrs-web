@@ -184,6 +184,10 @@ public class LicenseController implements ModelDriven<Object> {
             }
         }
 
+        if (action.equalsIgnoreCase("securityCode")) {
+          model.setMessage(CommonUtil.getSecurityCode());
+        }
+
         logger.info("[LicenseController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
     }
