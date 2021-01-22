@@ -321,7 +321,7 @@ public class GolonganBoImpl implements GolonganBo {
     }
 
     public List<Golongan> getComboGolonganWithCriteria(String query) throws GeneralBOException {
-        logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
+        logger.info("[GolonganBoImpl.getComboGolonganWithCriteria] start process >>>");
 
         List<Golongan> listComboGolongan = new ArrayList();
         String criteria = "%" + query + "%";
@@ -330,8 +330,8 @@ public class GolonganBoImpl implements GolonganBo {
         try {
             listGolongan = golonganDao.getListGolongan(criteria);
         } catch (HibernateException e) {
-            logger.error("[UserBoImpl.getComboUserWithCriteria] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            logger.error("[GolonganBoImpl.getComboGolonganWithCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list golongan with criteria, please info to your admin..." + e.getMessage());
         }
 
         if (listGolongan != null) {
@@ -342,7 +342,7 @@ public class GolonganBoImpl implements GolonganBo {
                 listComboGolongan.add(itemComboGolongan);
             }
         }
-        logger.info("[UserBoImpl.getComboUserWithCriteria] end process <<<");
+        logger.info("[GolonganBoImpl.getComboGolonganWithCriteria] end process <<<");
         return listComboGolongan;
     }
     public String cekStatus(Integer level,String nama, String flag)throws GeneralBOException{
@@ -377,5 +377,33 @@ public class GolonganBoImpl implements GolonganBo {
             status = "notExist";
         }
         return status;
+    }
+
+    public List<Golongan> getRangeMasaGol(String golPen) throws GeneralBOException{
+        logger.info("[GolonganBoImpl.getRangeMasaGol] start process >>>");
+
+        List<Golongan> listGolongan = new ArrayList();
+        String criteria = "%" + golPen + "%";
+
+        List<ImGolonganEntity> listGolonganEntities = null;
+        try {
+            listGolonganEntities = golonganDao.getListGolongan(criteria);
+        } catch (HibernateException e) {
+            logger.error("[GolonganBoImpl.getRangeMasaGol] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list range masa golongan with criteria, please info to your admin..." + e.getMessage());
+        }
+
+        if (listGolongan != null) {
+            for (ImGolonganEntity imGolonganEntity : listGolonganEntities) {
+                Golongan itemGolongan = new Golongan();
+                itemGolongan.setGolonganId(imGolonganEntity.getGolonganId());
+                itemGolongan.setGolonganName(imGolonganEntity.getGolonganName());
+                itemGolongan.setMsKerjaAwal(imGolonganEntity.getMsKerjaGolAwal());
+                itemGolongan.setMsKerjaAkhir(imGolonganEntity.getMsKerjaGolAkhir());
+                listGolongan.add(itemGolongan);
+            }
+        }
+        logger.info("[GolonganBoImpl.getComboGolonganWithCriteria] end process <<<");
+        return listGolongan;
     }
 }

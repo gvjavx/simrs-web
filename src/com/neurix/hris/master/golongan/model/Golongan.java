@@ -20,6 +20,34 @@ public class Golongan extends BaseModel {
     private String stCreatedDate;
     private String stLastUpdate;
 
+    private String golPensiun;
+    private String msKerjaAwal;
+    private String msKerjaAkhir;
+
+    public String getGolPensiun() {
+        return golPensiun;
+    }
+
+    public void setGolPensiun(String golPensiun) {
+        this.golPensiun = golPensiun;
+    }
+
+    public String getMsKerjaAwal() {
+        return msKerjaAwal;
+    }
+
+    public void setMsKerjaAwal(String msKerjaAwal) {
+        this.msKerjaAwal = msKerjaAwal;
+    }
+
+    public String getMsKerjaAkhir() {
+        return msKerjaAkhir;
+    }
+
+    public void setMsKerjaAkhir(String msKerjaAkhir) {
+        this.msKerjaAkhir = msKerjaAkhir;
+    }
+
     public String getStLevel() {
         return stLevel;
     }
