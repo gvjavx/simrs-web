@@ -729,12 +729,12 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                     result.setPeralihanTunjangan(BigDecimal.valueOf(Double.parseDouble(row[95].toString())));
                 }
 
-                result.setFlagPegawaiCutiDiluarTanggungan((String) row[97]);
-                result.setTanggalCutiDiluarAwal((Date) row[98]);
-                result.setTanggalCutiDiluarAkhir((Date) row[99]);
-                result.setBagianId((String) row[100]);
-                result.setBagianName((String) row[101]);
-                result.setProfesiId((String) row[102]);
+//                result.setFlagPegawaiCutiDiluarTanggungan((String) row[97]);
+//                result.setTanggalCutiDiluarAwal((Date) row[98]);
+//                result.setTanggalCutiDiluarAkhir((Date) row[99]);
+//                result.setBagianId((String) row[100]);
+//                result.setBagianName((String) row[101]);
+//                result.setProfesiId((String) row[102]);
 
                 result.setBagianId((String) row[96]);
                 result.setBagianName((String) row[97]);
