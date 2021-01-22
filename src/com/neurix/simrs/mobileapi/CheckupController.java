@@ -1123,7 +1123,7 @@ public class CheckupController implements ModelDriven<Object> {
             HeaderCheckup result = new HeaderCheckup();
 
             String branch = "";
-            if(!branchId.equalsIgnoreCase("KP")) {
+            if(!branchId.equalsIgnoreCase(CommonConstant.BRANCH_KP)) {
                 branch = branchId;
             }
 
@@ -1201,7 +1201,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<Branch> result = new ArrayList<>();
 
             Branch bean = new Branch();
-            if (!branchId.equalsIgnoreCase("KP")) {
+            if (!branchId.equalsIgnoreCase(CommonConstant.BRANCH_KP)) {
                 bean.setBranchId(branchId);
             }
 
@@ -1213,7 +1213,7 @@ public class CheckupController implements ModelDriven<Object> {
 
             listOfCheckup = new ArrayList<>();
             for (Branch item : result) {
-                if(!item.getBranchId().equalsIgnoreCase("KP")) {
+                if(!item.getBranchId().equalsIgnoreCase(CommonConstant.BRANCH_KP)) {
                     CheckupMobile checkupMobile = new CheckupMobile();
                     checkupMobile.setBranchName(item.getBranchName());
                     checkupMobile.setBranchId(item.getBranchId());
