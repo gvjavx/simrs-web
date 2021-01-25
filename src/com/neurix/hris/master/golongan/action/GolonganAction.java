@@ -13,6 +13,9 @@ import com.neurix.hris.master.golonganPkwt.model.GolonganPkwt;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
+
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -749,6 +752,20 @@ public class GolonganAction extends BaseMasterAction{
         return "input_pkwt";
     }
 
+    public List<Golongan> getRangeMasaGol(String golPen){
+        List<Golongan> masaGol = new ArrayList<>();
+
+        try {
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            GolonganBo golonganBo = (GolonganBo) ctx.getBean("golonganBoProxy");
+            masaGol = golonganBo.getRangeMasaGol(golPen);
+        } catch (GeneralBOException e) {
+            logger.error("[GolonganAction.getRangeMasaGol] Error when searching Masa Golongan by Golongan Pensiun," + "[] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=] Found problem when searching data by criteria, please inform to your admin" );
+        }
+
+        return masaGol;
+    }
 
     public String paging(){
         return SUCCESS;
