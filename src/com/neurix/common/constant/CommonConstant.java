@@ -205,7 +205,7 @@ public class CommonConstant {
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
     //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 30; //MENIT
+    public static final int ADD_JAM_BAYAR = 5; //MENIT
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
