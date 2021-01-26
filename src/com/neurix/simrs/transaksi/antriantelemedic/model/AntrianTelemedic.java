@@ -1,8 +1,11 @@
 package com.neurix.simrs.transaksi.antriantelemedic.model;
 
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Comparator;
 
 /**
  * Created by reza on 08/06/20.
@@ -74,6 +77,33 @@ public class AntrianTelemedic {
     private String flagDateNow;
     private String stDateFrom;
     private String stDateTo;
+    private String stTangalUpload;
+    private Timestamp tanggalUpload;
+    private Integer urutan;
+
+    public String getStTangalUpload() {
+        return stTangalUpload;
+    }
+
+    public void setStTangalUpload(String stTangalUpload) {
+        this.stTangalUpload = stTangalUpload;
+    }
+
+    public Timestamp getTanggalUpload() {
+        return tanggalUpload;
+    }
+
+    public void setTanggalUpload(Timestamp tanggalUpload) {
+        this.tanggalUpload = tanggalUpload;
+    }
+
+    public Integer getUrutan() {
+        return urutan;
+    }
+
+    public void setUrutan(Integer urutan) {
+        this.urutan = urutan;
+    }
 
     public String getStDateFrom() {
         return stDateFrom;
@@ -641,5 +671,49 @@ public class AntrianTelemedic {
 
     public void setNoTelp(String noTelp) {
         this.noTelp = noTelp;
+    }
+
+    public static Comparator<AntrianTelemedic> urutanPembayaranSorting = new Comparator<AntrianTelemedic>() {
+
+        public int compare(AntrianTelemedic s1, AntrianTelemedic s2) {
+            Integer urutan1 = s1.getUrutan();
+            Integer urutan2 = s2.getUrutan();
+
+            //ascending order
+            return urutan1.compareTo(urutan2);
+
+            //descending order
+            //return kdRekening2.compareTo(kdRekening1);
+        }
+    };
+
+    public static Comparator<AntrianTelemedic> tanggalUploadSorting = new Comparator<AntrianTelemedic>() {
+
+        public int compare(AntrianTelemedic s1, AntrianTelemedic s2) {
+            Timestamp urutan1 = s1.getTanggalUpload() == null ? s1.getCreatedDate() : s1.getTanggalUpload();
+            Timestamp urutan2 = s2.getTanggalUpload() == null ? s2.getCreatedDate() : s2.getTanggalUpload();
+
+            //ascending order
+            return urutan1.compareTo(urutan2);
+
+            //descending order
+//            return urutan2.compareTo(urutan1);
+        }
+    };
+
+    public static Comparator<AntrianTelemedic> getUrutanPembayaranSorting() {
+        return urutanPembayaranSorting;
+    }
+
+    public static void setUrutanPembayaranSorting(Comparator<AntrianTelemedic> urutanPembayaranSorting) {
+        AntrianTelemedic.urutanPembayaranSorting = urutanPembayaranSorting;
+    }
+
+    public static Comparator<AntrianTelemedic> getTanggalUploadSorting() {
+        return tanggalUploadSorting;
+    }
+
+    public static void setTanggalUploadSorting(Comparator<AntrianTelemedic> tanggalUploadSorting) {
+        AntrianTelemedic.tanggalUploadSorting = tanggalUploadSorting;
     }
 }
