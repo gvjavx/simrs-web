@@ -288,10 +288,14 @@ public class ShiftBoImpl implements ShiftBo {
                         returnData.setBranchName("");
                     }
 
-                    if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())){
+                    if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())) {
 
-                        ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",listEntity.getProfesiId());
-                        returnData.setProfesiName(positionBagianEntity.getBagianName());
+                        ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId", listEntity.getProfesiId());
+                        if (positionBagianEntity != null){
+                            returnData.setProfesiName(positionBagianEntity.getBagianName());
+                        } else {
+                            returnData.setProfesiName("");
+                        }
                     }else{
                         returnData.setProfesiName("");
                     }

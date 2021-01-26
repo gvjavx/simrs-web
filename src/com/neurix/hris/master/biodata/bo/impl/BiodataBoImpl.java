@@ -777,6 +777,28 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setTanggalCutiDiluarAkhir(bean.getTanggalCutiDiluarTanggunganAkhir());
                                 //RAKA-end
 
+                                //RAKA-25JAN2021
+//                                if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+//                                    ItPersonilPositionEntity itPersonilPosition = null;
+//                                    try{
+//                                        itPersonilPosition = personilPositionDao.getById("nip", bean.getNip() ,"Y");
+//                                    } catch (HibernateException e) {
+//                                        logger.error("[BiodataBoImpl.saveEdit] Error : " + e.getMessage());
+//                                        throw new GeneralBOException("Found problem when retrieving data Personil Position by ID. " + e.getMessage());
+//                                    }
+//                                    itPersonilPosition.setBranchId(bean.getBranch());
+//                                    itPersonilPosition.setDivisiId(bean.getDivisi());
+//                                    itPersonilPosition.setPositionId(bean.getPositionId());
+//                                    itPersonilPosition.setProfesiId(bean.getProfesiId());
+//                                    itPersonilPosition.setPjs(bean.getPjs());
+//                                    itPersonilPosition.setFlag(bean.getFlag());
+//                                    itPersonilPosition.setAction(bean.getAction());
+//                                    itPersonilPosition.setLastUpdateWho(bean.getLastUpdateWho());
+//                                    itPersonilPosition.setLastUpdate(bean.getLastUpdate());
+//                                    personilPositionDao.updateAndSave(itPersonilPosition);
+//                                }
+                                //RAKA-end
+
                                 // Sigit 2021-01-18, Save Add Or Edit Personil Position
                                 if(listOfPersonilPosition != null && listOfPersonilPosition.size() > 0)
                                 {

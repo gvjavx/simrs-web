@@ -503,12 +503,14 @@
                                             <s:else>
                                                 <tr>
                                                     <td>
-                                                        <label><small>Jabatan :</small></label>
+                                                        <label><small>Jabatan <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
                                                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                            <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                                            <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId"
+                                                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                <%--<select id="positionId1" name="biodata.positionId" class="form-control"></select>--%>
                                                         </table>
                                                     </td>
                                                 </tr>
