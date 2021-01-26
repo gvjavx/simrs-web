@@ -29,6 +29,26 @@ public class LicenseController implements ModelDriven<Object> {
     private String deviceId;
     private String flag;
 
+    //sodiq, 25-01-2021
+    private String status;
+    private String lastUpdateWho;
+
+    public String getLastUpdateWho() {
+        return lastUpdateWho;
+    }
+
+    public void setLastUpdateWho(String lastUpdateWho) {
+        this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public void setLicenseZebraBoProxy(LicenseZebraBo licenseZebraBoProxy) {
         this.licenseZebraBoProxy = licenseZebraBoProxy;
     }
@@ -195,6 +215,24 @@ public class LicenseController implements ModelDriven<Object> {
             try {
                 licenseZebraBoProxy.saveAdd(bean);
                 model.setMessage(key);
+            } catch (GeneralBOException e){
+                logger.error("LicenseController.create] Error, " + e.getMessage());
+            }
+        }
+
+        //sodiq, 25-01-2021 --update license
+        if (action.equalsIgnoreCase("saveEdit")) {
+
+            LicenseZebra licenseZebra = new LicenseZebra();
+            licenseZebra.setLicenseId(licenseId);
+            licenseZebra.setLastUpdate(now);
+            licenseZebra.setLastUpdateWho(lastUpdateWho);
+            licenseZebra.setStatus(status);
+            licenseZebra.setFlag("Y");
+            licenseZebra.setAction("U");
+
+            try {
+                licenseZebraBoProxy.saveEdit(licenseZebra);
             } catch (GeneralBOException e){
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }

@@ -175,8 +175,8 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Lisence ID</td>
-                                <td>Lisence Key</td>
                                 <td>Device ID</td>
+                                <td align="center">Status</td>
                                 <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
@@ -184,8 +184,21 @@
                             <s:iterator value="#session.listOfLicense" var="row">
                                 <tr>
                                     <td><s:property value="licenseId"/></td>
-                                    <td><s:property value="licenseKey"/></td>
                                     <td><s:property value="deviceId"/></td>
+                                    <td align="center">
+                                        <s:if test='#row.status == "0"'>
+                                            <span class="span-warning">menunggu aktivasi</span>
+                                        </s:if>
+                                        <s:elseif test='#row.status == "1"'>
+                                            <span class="span-success">aktif</span>
+                                        </s:elseif>
+                                        <s:elseif test='#row.status == "2'>
+                                            <span class="span-danger">ditolak</span>
+                                        </s:elseif>
+                                        <s:else>
+                                            <span class="span-kuning">tidak ditemukan</span>
+                                        </s:else>
+                                    </td>
                                     <td align="center">
                                         <img class="hvr-grow"
                                              onclick="showModal('detail', '<s:property value="licenseId"/>')"
@@ -235,14 +248,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak_atas">
-                        <div class="form-group">
-                            <label class="col-md-3">Lisence Key</label>
-                            <div class="col-md-7">
-                                <input class="form-control" id="set_license_key" disabled>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row jarak_atas">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Lisence Key</label>--%>
+                            <%--<div class="col-md-7">--%>
+                                <%--<input class="form-control" id="set_license_key" disabled>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
                 <div class="row jarak_atas">
                     <div class="form-group">
@@ -292,10 +305,10 @@
                                     <td><b>Lisence ID</b></td>
                                     <td><span id="v_license_id"></span></td>
                                 </tr>
-                                <tr>
-                                    <td><b>Lisence Key</b></td>
-                                    <td><span id="v_license_key"></span></td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td><b>Lisence Key</b></td>--%>
+                                    <%--<td><span id="v_license_key"></span></td>--%>
+                                <%--</tr>--%>
                                 <tr>
                                     <td><b>Device ID</b></td>
                                     <td><span id="v_device_id"></span></td>

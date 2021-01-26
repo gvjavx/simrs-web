@@ -4,6 +4,7 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
+import com.neurix.simrs.master.license.model.Email;
 import com.neurix.simrs.master.license.model.LicenseZebra;
 import com.neurix.simrs.master.license.model.VersionZebra;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -81,7 +82,6 @@ public class LicenseAction {
                             licenseZebraBo.saveAdd(licenseZebra);
                             response.setStatus("success");
                             response.setMsg("OK");
-                            sendEmail();
                         } else if ("edit".equalsIgnoreCase(type)) {
                             licenseZebra.setLicenseId(obj.getString("license_id"));
                             licenseZebra.setAction("U");
@@ -270,62 +270,6 @@ public class LicenseAction {
             versionZebra = versionZebraList.get(0);
         }
         return versionZebra;
-    }
-
-    public CrudResponse sendEmail() {
-        CrudResponse response = new CrudResponse();
-        try {
-            String to = "muhmmdsodiq@gmail.com";
-            String subject = "subject";
-            String msg ="email text....";
-            final String password ="********";
-            final String username = "muhammadsodiq291@gmail.com";
-
-            Properties props = System.getProperties();
-            props.put("mail.smtp.starttls.enable", "true"); // added this line
-            props.put("mail.smtp.host", "smtp.gmail.com");
-            props.put("mail.smtp.user", username);
-            props.put("mail.smtp.password", password);
-            props.put("mail.smtp.port", "587");
-            props.put("mail.smtp.auth", "true");
-            props.put("mail.debug", "true");
-
-            Session session = Session.getInstance(props,null);
-            MimeMessage message = new MimeMessage(session);
-
-            System.out.println("Port: "+session.getProperty("mail.smtp.port"));
-
-            InternetAddress from = new InternetAddress(username);
-            message.setSubject("Yes we can");
-            message.setFrom(from);
-            message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-
-            // Create a multi-part to combine the parts
-            Multipart multipart = new MimeMultipart("alternative");
-
-            // Create your text message part
-            BodyPart messageBodyPart = new MimeBodyPart();
-            String htmlMessage = "Our html text";
-            messageBodyPart.setContent(htmlMessage, "text/html");
-
-            // Add html part to multi part
-            multipart.addBodyPart(messageBodyPart);
-
-            // Associate multi-part with message
-            message.setContent(multipart);
-
-            // Send message
-            Transport transport = session.getTransport("smtp");
-            transport.connect("smtp.gmail.com", username, password);
-            System.out.println("Transport: "+transport.toString());
-            transport.sendMessage(message, message.getAllRecipients());
-
-        } catch (MessagingException e) {
-            System.out.println("error mail,"+e.getMessage());
-            throw new RuntimeException(e);
-        }
-
-        return response;
     }
 
     public static Logger getLogger() {
