@@ -1,8 +1,11 @@
 package com.neurix.simrs.transaksi.verifikatorpembayaran.model;
 
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Comparator;
 
 /**
  * Created by reza on 10/06/20.
@@ -38,6 +41,24 @@ public class PembayaranOnline {
     private String idRekening;
     private Timestamp waktuBayar;
     private String flagUploadUlang;
+    private Integer urutan;
+    private Timestamp tanggalUpload;
+
+    public Integer getUrutan() {
+        return urutan;
+    }
+
+    public void setUrutan(Integer urutan) {
+        this.urutan = urutan;
+    }
+
+    public Timestamp getTanggalUpload() {
+        return tanggalUpload;
+    }
+
+    public void setTanggalUpload(Timestamp tanggalUpload) {
+        this.tanggalUpload = tanggalUpload;
+    }
 
     public String getFlagUploadUlang() {
         return flagUploadUlang;
@@ -277,5 +298,49 @@ public class PembayaranOnline {
 
     public void setIdRiwayatTindakan(String idRiwayatTindakan) {
         this.idRiwayatTindakan = idRiwayatTindakan;
+    }
+
+    public static Comparator<PembayaranOnline> urutanPembayaranSorting = new Comparator<PembayaranOnline>() {
+
+        public int compare(PembayaranOnline s1, PembayaranOnline s2) {
+            Integer urutan1 = s1.getUrutan();
+            Integer urutan2 = s2.getUrutan();
+
+            //ascending order
+            return urutan1.compareTo(urutan2);
+
+            //descending order
+            //return kdRekening2.compareTo(kdRekening1);
+        }
+    };
+
+    public static Comparator<PembayaranOnline> tanggalUploadSorting = new Comparator<PembayaranOnline>() {
+
+        public int compare(PembayaranOnline s1, PembayaranOnline s2) {
+            Timestamp urutan1 = s1.getTanggalUpload();
+            Timestamp urutan2 = s2.getTanggalUpload();
+
+            //ascending order
+            return urutan1.compareTo(urutan2);
+
+            //descending order
+            //return kdRekening2.compareTo(kdRekening1);
+        }
+    };
+
+    public static Comparator<PembayaranOnline> getUrutanPembayaranSorting() {
+        return urutanPembayaranSorting;
+    }
+
+    public static void setUrutanPembayaranSorting(Comparator<PembayaranOnline> urutanPembayaranSorting) {
+        PembayaranOnline.urutanPembayaranSorting = urutanPembayaranSorting;
+    }
+
+    public static Comparator<PembayaranOnline> getTanggalUploadSorting() {
+        return tanggalUploadSorting;
+    }
+
+    public static void setTanggalUploadSorting(Comparator<PembayaranOnline> tanggalUploadSorting) {
+        PembayaranOnline.tanggalUploadSorting = tanggalUploadSorting;
     }
 }

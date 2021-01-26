@@ -298,18 +298,13 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
                 searchAntrian.setId(antrianTelemedic.getId());
                 searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
-                searchAntrian.setStDateFrom(antrianTelemedic.getStDateFrom());
-                searchAntrian.setStDateTo(antrianTelemedic.getStDateTo());
             }
         }
 
-        // jika pencarian hari ini true, START
-//        String stCurDate = "";
-//        if ("true".equals(antrianTelemedic.getFlagDateNow())){
-//            stCurDate = getStCurrentDate();
-//        }
-//        searchAntrian.setFlagDateNow(stCurDate);
-        // END
+        // Sigit 2021-01-26, Pencarian Untuk Hari Ini
+        searchAntrian.setStDateFrom(getStCurrentDate());
+        searchAntrian.setStDateTo(getStCurrentDate());
+
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
         try {

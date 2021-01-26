@@ -99,24 +99,24 @@
                                         <%--<s:checkbox value="Y" name="antrianTelemedic.flagDateNow" cssStyle="margin-top: 10px;" id="check_hari_ini"/>--%>
                                     <%--</div>--%>
                                 <%--</div>--%>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal </label>
-                                    <div class="col-sm-4">
-                                        <div class="row">
-                                            <div class="col-md-5">
-                                                <s:textfield name="antrianTelemedic.stDateFrom" cssClass="form-control datepicker"
-                                                             required="false"/>
-                                            </div>
-                                            <div class="col-md-2">
-                                                To
-                                            </div>
-                                            <div class="col-md-5">
-                                                <s:textfield id="tgl_to" name="antrianTelemedic.stDateTo" cssClass="form-control datepicker"
-                                                             required="false"/>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tanggal </label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<div class="row">--%>
+                                            <%--<div class="col-md-5">--%>
+                                                <%--<s:textfield name="antrianTelemedic.stDateFrom" cssClass="form-control datepicker"--%>
+                                                             <%--required="false"/>--%>
+                                            <%--</div>--%>
+                                            <%--<div class="col-md-2">--%>
+                                                <%--To--%>
+                                            <%--</div>--%>
+                                            <%--<div class="col-md-5">--%>
+                                                <%--<s:textfield id="tgl_to" name="antrianTelemedic.stDateTo" cssClass="form-control datepicker"--%>
+                                                             <%--required="false"/>--%>
+                                            <%--</div>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -196,6 +196,7 @@
                                     <td>Status Resep</td>
                                     <td>Approve Resep</td>
                                     <td>Created Date</td>
+                                    <td>Pembayaran / Assigned Date</td>
                                     <td align="center">Action</td>
                                 </tr>
                             </thead>
@@ -286,6 +287,7 @@
                                         </s:if>
                                     </td>
                                     <td><s:property value="stCreatedDate"/></td>
+                                    <td><s:property value="stTanggalUpload"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagBatalDokter == "Y"'>
                                             <s:if test='#row.idJenisPeriksaPasien == "umum"'>

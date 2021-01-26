@@ -68,6 +68,9 @@
             <basic name="flagUploadUlang">
                 <column name="flag_upload_ulang"/>
             </basic>
+            <basic name="tanggalUpload">
+                <column name="tanggal_upload"/>
+            </basic>
 
         </attributes>
     </entity>

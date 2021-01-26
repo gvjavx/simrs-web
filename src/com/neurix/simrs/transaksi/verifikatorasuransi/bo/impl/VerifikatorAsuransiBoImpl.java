@@ -21,6 +21,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -172,9 +173,12 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
                     if (antrianTelemedicEntity != null){
 
                         antrianTelemedicEntity.setFlagBayarKonsultasi("Y");
+                        updateTanggalUpload(antrianTelemedicEntity.getId(), "konsultasi");
 
-                        if (checkIsWithResep(strukAsuransiEntity.getIdAntrianTelemedic()))
+                        if (checkIsWithResep(strukAsuransiEntity.getIdAntrianTelemedic())){
                             antrianTelemedicEntity.setFlagBayarResep("Y");
+                            updateTanggalUpload(antrianTelemedicEntity.getId(), "resep");
+                        }
 
                         try {
                             telemedicDao.updateAndSave(antrianTelemedicEntity);
@@ -189,6 +193,42 @@ public class VerifikatorAsuransiBoImpl implements VerifikatorAsurasiBo{
         }
         logger.info("[VerifikatorAsuransiBoImpl.saveUploadStrukAsuransi] END <<<");
         return "";
+    }
+
+    private void updateTanggalUpload(String idAntrianAntrianTemedic, String jenis){
+        logger.info("[VerifikatorAsuransiBoImpl.updateTanggalUpload] Start >>>");
+
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("id_antrian_telemedic", idAntrianAntrianTemedic);
+        hsCriteria.put("flag" , "Y");
+        hsCriteria.put("keterangan", jenis);
+
+        try {
+            pembayaranOnlineEntities = verifikatorPembayaranDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorAsuransiBoImpl.updateTanggalUpload] ERROR. When Update Flag Bayar Antrian Telemedic ", e);
+            throw new GeneralBOException("[VerifikatorAsuransiBoImpl.updateTanggalUpload] ERROR. When Update Flag Bayar Antrian Telemedic "+ e);
+        }
+
+        if (pembayaranOnlineEntities.size() > 0){
+            for (ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity : pembayaranOnlineEntities){
+                pembayaranOnlineEntity.setTanggalUpload(now);
+
+                try {
+                    verifikatorPembayaranDao.updateAndSave(pembayaranOnlineEntity);
+                } catch (HibernateException e){
+                    logger.error("[VerifikatorAsuransiBoImpl.updateTanggalUpload] ERROR. When Update Flag Bayar Antrian Telemedic ", e);
+                    throw new GeneralBOException("[VerifikatorAsuransiBoImpl.updateTanggalUpload] ERROR. When Update Flag Bayar Antrian Telemedic "+ e);
+                }
+            }
+        }
+
+
+        logger.info("[VerifikatorAsuransiBoImpl.updateTanggalUpload] END <<<");
     }
 
     private Boolean checkIsWithResep(String idAntrian) throws GeneralBOException{
