@@ -204,10 +204,10 @@
                                              onclick="showModal('detail', '<s:property value="licenseId"/>')"
                                              style="cursor: pointer"
                                              src="<s:url value="/pages/images/icons8-view-25.png"/>">
-                                        <img class="hvr-grow"
-                                             onclick="showModal('edit', '<s:property value="licenseId"/>')"
-                                             style="cursor: pointer"
-                                             src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        <%--<img class="hvr-grow"--%>
+                                             <%--onclick="showModal('edit', '<s:property value="licenseId"/>')"--%>
+                                             <%--style="cursor: pointer"--%>
+                                             <%--src="<s:url value="/pages/images/icons8-create-25.png"/>">--%>
                                         <%--<img class="hvr-grow"--%>
                                              <%--onclick="showModal('delete', '<s:property value="idHeaderTindakan"/>')"--%>
                                              <%--style="cursor: pointer"--%>
@@ -312,6 +312,10 @@
                                 <tr>
                                     <td><b>Device ID</b></td>
                                     <td><span id="v_device_id"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Status</b></td>
+                                    <td><span id="v_status"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Created Who</b></td>
@@ -432,7 +436,7 @@
 
     function getDataLicense(id) {
         LicenseAction.getDataLicense(id, function (res) {
-            if (res.licenseKey != null) {
+            if (res.deviceId != null) {
                 $('#v_license_id').text(res.licenseId);
                 $('#v_license_key').text(res.licenseKey);
                 $('#v_device_id').text(res.deviceId);
@@ -440,11 +444,30 @@
                 $('#v_created_date').text(converterDateYmdHms(res.createdDate));
                 $('#v_last_update').text(converterDateYmdHms(res.lastUpdate));
                 $('#v_last_update_who').text(res.lastUpdateWho);
+                var sts = '';
+                if(res.status == "0"){
+                    sts = '<span class="span-warning">menunggu aktivasi</span>';
+                }else if(res.status == "1"){
+                    sts = '<span class="span-success">aktif</span>';
+                }else if(res.status == "2"){
+                    sts = '<span class="span-danger">ditolak</span>';
+                }else{
+                    sts = '<span class="span-kuning">tidak ditemukan</span>';
+                }
+                $('#v_status').html(sts);
 
                 $('#for_edit').show();
                 $('#set_license_id').val(res.licenseId);
                 $('#set_license_key').val(res.licenseKey);
                 $('#set_device_id').val(res.deviceId);
+            }else{
+                $('#v_license_id, #v_license_key, #v_device_id, #v_created_who').text('');
+                $('#v_created_date, #v_last_update, #v_last_update_who').text('');
+                $('#v_status').html('');
+
+                $('#set_license_id').val('');
+                $('#set_license_key').val('');
+                $('#set_device_id').val('');
             }
         });
     }

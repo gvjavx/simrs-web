@@ -231,8 +231,8 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                         email.setFrom(CommonConstant.EMAIL_USERNAME);
                         email.setPassword(CommonConstant.EMAIL_PASSWORD);
                         email.setTo("muhmmdsodiq@gmail.com");
-                        email.setSubject("License Verification");
-                        email.setMsg("<h2>Verification License Key</h2>\n" +
+                        email.setSubject("License Key Verification");
+                        email.setMsg("<h2>License Key Verification</h2>\n" +
                                 "=========================================\n" +
                                 "<table width=\"100%\">\n" +
                                 "<tr>\n" +
@@ -256,7 +256,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                                 "<br> \n" +
                                 "<br>\n" +
                                 "<span style=\"color: blue\">click this button for activation!</span>\n" +
-                                "<a href=\"http://localhost:9090/license/auth?id="+imLicenseZebraEntity.getLicenseId()+"\" target=\"__blank\"><button>Activation</button></a>");
+                                "<a href=\"http://localhost:9090/license/auth?id="+imLicenseZebraEntity.getLicenseId()+"\" target=\"__blank\"><button style=\"cursor: pointer\">Activation</button></a>");
                         CommonUtil.sendEmail(email);
                     } catch (GeneralBOException e){
                         logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
@@ -276,7 +276,6 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         if(bean != null){
             ImLicenseZebraEntity imLicenseZebraEntity = licenseZebraDao.getById("licenseId", bean.getLicenseId());
             if(imLicenseZebraEntity != null){
-                imLicenseZebraEntity.setDeviceId(bean.getDeviceId());
                 imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
                 imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imLicenseZebraEntity.setAction(bean.getAction());
