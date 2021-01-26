@@ -46,6 +46,16 @@ public class ImSimrsPasienEntity implements Serializable{
     private String statusPerkawinan;
     private String noRmLama;
 
+    private String flagLogin;
+
+    public String getFlagLogin() {
+        return flagLogin;
+    }
+
+    public void setFlagLogin(String flagLogin) {
+        this.flagLogin = flagLogin;
+    }
+
     public String getNoRmLama() {
         return noRmLama;
     }

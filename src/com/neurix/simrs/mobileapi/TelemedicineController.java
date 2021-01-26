@@ -1,5 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -73,6 +75,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private BpjsBo bpjsBoProxy;
     private NotifikasiBo notifikasiBoProxy;
+    private BranchBo branchBoProxy;
 
     private String action;
 
@@ -120,6 +123,10 @@ public class TelemedicineController implements ModelDriven<Object> {
 
     private String path1;
     private String path2;
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public String getPath1() {
         return path1;
@@ -951,6 +958,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlagResep(flagResep);
             bean.setStatus(this.status);
             bean.setIdPasien(idPasien);
+            bean.setFlagEresep(flagEresep);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
             bean.setFlagDateNow(CommonUtil.convertTimestampToString2(now));
@@ -982,6 +990,14 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setJenisPengambilan(item.getJenisPengambilan());
                 telemedicineMobile.setUrlResep(item.getUrlResep());
                 telemedicineMobile.setJenisPembayaran(item.getJenisPembayaran());
+                telemedicineMobile.setBranchId(item.getBranchId());
+
+                try {
+                   Branch branch = branchBoProxy.getBranchById(item.getBranchId(), "Y");
+                   telemedicineMobile.setBranchName(branch.getBranchName());
+                } catch (GeneralBOException e) {
+                    logger.error("[TelemedicineController.checkTele] Error, " + e.getMessage());
+                }
 
                 if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
 
