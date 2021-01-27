@@ -374,8 +374,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
 
         // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
-//        Collections.sort(results, AntrianTelemedic.getTanggalUploadSorting());
-//        Collections.sort(results, AntrianTelemedic.getUrutanPembayaranSorting());
+        Collections.sort(results, new SortingByTanggalAntrian());
+        Collections.sort(results, new SortingByUrutanUpload());
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
         if (bean.getStatusTransaksi() == null) {
@@ -383,6 +383,32 @@ public class TelemedicBoImpl implements TelemedicBo {
         } else {
             final String statusTransaksi = bean.getStatusTransaksi();
             return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
+        }
+    }
+
+    private class SortingByTanggalAntrian implements Comparator<AntrianTelemedic> {
+
+        @Override
+        public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
+
+            Timestamp tanggal1 = antrianTelemedic.getTanggalUpload();
+            Timestamp tanggal2 = t1.getTanggalUpload();
+
+            // SORTING ASC
+            return tanggal1.compareTo(tanggal2);
+        }
+    }
+
+    private class SortingByUrutanUpload implements Comparator<AntrianTelemedic> {
+
+        @Override
+        public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
+
+            Integer tanggal1 = antrianTelemedic.getUrutan();
+            Integer tanggal2 = t1.getUrutan();
+
+            // SORTING ASC
+            return tanggal1.compareTo(tanggal2);
         }
     }
 
