@@ -503,7 +503,6 @@ public class TelemedicineController implements ModelDriven<Object> {
         }
 
         if (action.equalsIgnoreCase("editStatus")) {
-
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setId(idTele);
             bean.setStatus(this.status);
