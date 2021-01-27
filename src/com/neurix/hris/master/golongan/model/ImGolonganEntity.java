@@ -22,6 +22,34 @@ public class ImGolonganEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
+    private String golPensiun;
+    private String msKerjaGolAwal;
+    private String msKerjaGolAkhir;
+
+    public String getGolPensiun() {
+        return golPensiun;
+    }
+
+    public void setGolPensiun(String golPensiun) {
+        this.golPensiun = golPensiun;
+    }
+
+    public String getMsKerjaGolAwal() {
+        return msKerjaGolAwal;
+    }
+
+    public void setMsKerjaGolAwal(String msKerjaGolAwal) {
+        this.msKerjaGolAwal = msKerjaGolAwal;
+    }
+
+    public String getMsKerjaGolAkhir() {
+        return msKerjaGolAkhir;
+    }
+
+    public void setMsKerjaGolAkhir(String msKerjaGolAkhir) {
+        this.msKerjaGolAkhir = msKerjaGolAkhir;
+    }
+
     public Integer getLevel() {
         return level;
     }

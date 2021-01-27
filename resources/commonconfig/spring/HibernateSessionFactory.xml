@@ -57,6 +57,7 @@
                 <!--<prop key="hibernate.connection.username">postgres</prop>-->
                 <!--<prop key="hibernate.connection.password">postgres</prop>-->
 
+
             </props>
         </property>
         <property name="mappingResources">

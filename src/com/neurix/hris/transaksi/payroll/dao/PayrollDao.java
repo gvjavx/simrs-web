@@ -1220,6 +1220,7 @@ public class PayrollDao extends GenericDao<ItPayrollEntity, String> {
                 .add(Restrictions.eq("bulan", bulan))
                 .add(Restrictions.eq("tahun", tahun))
                 .add(Restrictions.eq(tipeWhere, "Y"))
+                .add(Restrictions.eq("flag", "Y"))
                 .list();
         return results;
     }

@@ -56,6 +56,9 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
             if (mapCriteria.get("flag_digaji")!=null) {
                 criteria.add(Restrictions.eq("flagDigaji", (String) mapCriteria.get("flag_digaji")));
             }
+            if (mapCriteria.get("personil_position_id")!=null) {
+                criteria.add(Restrictions.eq("personilPositionId", (String) mapCriteria.get("personil_position_id")));
+            }
         }
 
         // Order by
@@ -268,5 +271,17 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
                 .addOrder(Order.asc("personilPositionId"))
                 .list();
         return results;
+    }
+
+    public String getJenisPegawaiByNip(String nip) throws HibernateException {
+        String result = "";
+        List<ItPersonilPositionEntity> personils = this.sessionFactory.getCurrentSession().createCriteria(ItPersonilPositionEntity.class)
+                .add(Restrictions.eq("nip", nip))
+                .addOrder(Order.asc("personilPositionId"))
+                .list();
+        for(ItPersonilPositionEntity personil:personils){
+            result = personil.getJenisPegawai();
+        }
+        return result;
     }
 }
