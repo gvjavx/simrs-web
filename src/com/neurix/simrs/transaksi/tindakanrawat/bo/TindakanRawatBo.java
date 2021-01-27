@@ -19,5 +19,5 @@ public interface TindakanRawatBo {
     public CheckResponse updateFlagApproveTindakan(TindakanRawat bean) throws GeneralBOException;
     public ItSimrsTindakanRawatEntity getTindakanRawatEntityById(String id) throws GeneralBOException;
 
-    public List<TindakanRawat> getListTindakanRawat(String noCheckup)throws GeneralBOException;
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis)throws GeneralBOException;
 }

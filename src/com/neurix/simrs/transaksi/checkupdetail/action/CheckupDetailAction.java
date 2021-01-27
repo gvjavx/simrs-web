@@ -1120,7 +1120,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         statusPeriksa = "";
                     }
 
-                    List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup, statusPeriksa);
+                    List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup, statusPeriksa, jenisPasien);
 
                     if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
                         if (justLab != null && !"".equalsIgnoreCase(justLab)) {

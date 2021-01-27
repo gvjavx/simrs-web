@@ -883,7 +883,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         return response;
     }
 
-    public List<PeriksaLab> getListLab(String noChekcup) {
+    public List<PeriksaLab> getListLab(String noChekcup, String jenis) {
         logger.info("[PeriksaLabAction.getListLab] start process >>>");
         List<PeriksaLab> periksaLabList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -891,7 +891,7 @@ public class PeriksaLabAction extends BaseMasterAction {
 
         if (!"".equalsIgnoreCase(noChekcup) && noChekcup != null) {
             try {
-                periksaLabList = periksaLabBo.getListLab(noChekcup);
+                periksaLabList = periksaLabBo.getListLab(noChekcup, jenis);
             } catch (GeneralBOException e) {
                 logger.error("[PeriksaLabAction.getListLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }

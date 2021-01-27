@@ -855,8 +855,8 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     }
 
     @Override
-    public List<PeriksaLab> getListLab(String noChekcup) throws GeneralBOException {
-        return periksaLabDao.getListLab(noChekcup);
+    public List<PeriksaLab> getListLab(String noChekcup, String jenis) throws GeneralBOException {
+        return periksaLabDao.getListLab(noChekcup, jenis);
     }
 
     @Override

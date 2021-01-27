@@ -309,7 +309,7 @@ public class PermintaanResepAction extends BaseMasterAction{
         return response;
     }
 
-    public List<PermintaanResep> getListRespPasien(String noCheckup){
+    public List<PermintaanResep> getListRespPasien(String noCheckup, String jenis){
         logger.info("[PermintaanResepAction.getListRespPasien] start process >>>");
         List<PermintaanResep> permintaanResepList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -317,7 +317,7 @@ public class PermintaanResepAction extends BaseMasterAction{
 
         if(!"".equalsIgnoreCase(noCheckup) && noCheckup != null){
             try {
-                permintaanResepList = permintaanResepBo.getListResepPasien(noCheckup);
+                permintaanResepList = permintaanResepBo.getListResepPasien(noCheckup, jenis);
             }catch (GeneralBOException e){
                 logger.error("[PermintaanResepAction.getListRespPasien] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }
