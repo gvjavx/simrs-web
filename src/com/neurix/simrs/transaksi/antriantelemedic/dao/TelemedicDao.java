@@ -13,10 +13,7 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by reza on 08/06/20.
@@ -248,5 +245,122 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             return true;
         }
         return false;
+    }
+
+    public List<AntrianTelemedic> getListAntrianTelemedicSearch(AntrianTelemedic bean){
+
+        String where = "";
+
+        if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
+            where += "AND at.id_dokter = '"+bean.getIdDokter()+"' \n";
+        }
+        if (bean.getIdPelayanan() != null  && !"".equalsIgnoreCase(bean.getIdPelayanan()) ){
+            where += "AND at.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
+        }
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+            where += "AND at.status = '"+bean.getStatus()+"' \n";
+        }
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+            where += "AND at.flag = '"+bean.getFlag()+"' \n";
+        }
+        if (bean.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            where += "AND at.id_jenis_periksa_pasien = '"+bean.getIdJenisPeriksaPasien()+"' \n";
+        }
+        if (bean.getFlagResep() != null && !"".equalsIgnoreCase(bean.getFlagResep())){
+            where += "AND at.flag_resep = '"+bean.getFlagResep()+"' \n";
+        }
+        if (bean.getFlagBayarResep() != null && !"".equalsIgnoreCase(bean.getFlagBayarResep())) {
+            where += "AND at.flag_bayar_resep = '"+bean.getFlagBayarResep()+"' \n";
+        }
+        if (bean.getFlagEresep() != null && !"".equalsIgnoreCase(bean.getFlagEresep())) {
+            where += "AND at.flag_eresep = '"+bean.getFlagEresep()+"' \n";
+        }
+        if (bean.getIdPasien() == null || "".equalsIgnoreCase(bean.getIdPasien()))
+            bean.setIdPasien("%");
+        if (bean.getId() == null || "".equalsIgnoreCase(bean.getId()))
+            bean.setId("%");
+
+        String SQL = "SELECT \n" +
+                "a.id,\n" +
+                "a.last_update,\n" +
+                "b.tanggal_upload\n" +
+                "FROM\n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\ta.*\n" +
+                "\tFROM (\n" +
+                "\t\tSELECT \n" +
+                "\t\tat.id, \n" +
+                "\t\tMAX(po.last_update) as last_update\n" +
+                "\t\tFROM it_simrs_antrian_telemedic at\n" +
+                "\t\tLEFT JOIN (\n" +
+                "\t\t\tSELECT \n" +
+                "\t\t\t* \n" +
+                "\t\t\tFROM it_simrs_pembayaran_online \n" +
+                "\t\t\tWHERE last_update IS NOT NULL\n" +
+                "\t\t) po ON po.id_antrian_telemedic = at.id\n" +
+                "\t\tWHERE DATE(at.created_date) >= '"+bean.getStDateFrom()+"' \n" +
+                "\t\tAND DATE(at.created_date) <= '"+bean.getStDateTo()+"' \n" +
+                "\t\tAND at.id_pasien ILIKE '"+bean.getIdPasien()+"' \n" +
+                "\t\tAND at.id ILIKE '"+bean.getId()+"' \n" + where +
+                "\t\tGROUP BY at.id\n" +
+                "\t) a \n" +
+                "\tWHERE a.last_update IS NOT NULL\n" +
+                ") a \n" +
+                "INNER JOIN it_simrs_pembayaran_online b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update\n" +
+                "ORDER BY tanggal_upload";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                AntrianTelemedic telemedic = new AntrianTelemedic();
+                telemedic.setId(obj[0].toString());
+                telemedic.setLastUpdate((Timestamp) obj[1]);
+                telemedic.setTanggalUpload(obj[2] == null ? null : (Timestamp) obj[2]);
+                telemedic.setStTangalUpload(telemedic.getTanggalUpload() == null ? "" : telemedic.getTanggalUpload().toString());
+
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("id", telemedic.getId());
+
+                List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = getByCriteria(hsCriteria);
+                if (antrianTelemedicEntities != null && antrianTelemedicEntities.size() > 0){
+                    ItSimrsAntrianTelemedicEntity entity = antrianTelemedicEntities.get(0);
+
+                    telemedic.setIdDokter(entity.getIdDokter());
+                    telemedic.setIdPelayanan(entity.getIdPelayanan());
+                    telemedic.setFlagResep(entity.getFlagResep());
+                    telemedic.setStatus(entity.getStatus());
+                    telemedic.setFlagBayarKonsultasi(entity.getFlagBayarKonsultasi());
+                    telemedic.setFlagResep(entity.getFlagResep());
+                    telemedic.setCreatedDate(entity.getCreatedDate());
+                    telemedic.setCreatedWho(entity.getCreatedWho());
+                    telemedic.setLastUpdate(entity.getLastUpdate());
+                    telemedic.setLastUpdateWho(entity.getLastUpdateWho());
+                    telemedic.setFlag(entity.getFlag());
+                    telemedic.setAction(entity.getAction());
+                    telemedic.setNoKartu(entity.getNoKartu());
+                    telemedic.setIdJenisPeriksaPasien(entity.getIdJenisPeriksaPasien());
+                    telemedic.setIdAsuransi(entity.getIdAsuransi());
+                    telemedic.setKodeBank(entity.getKodeBank());
+                    telemedic.setBranchId(entity.getBranchId());
+                    telemedic.setKeluhan(entity.getKeluhan());
+                    telemedic.setFlagEresep(entity.getFlagEresep());
+                    telemedic.setUrlResep(entity.getUrlFotoResep());
+                    telemedic.setJenisPengambilan(entity.getJenisPengambilan());
+                    telemedic.setNoJurnal(entity.getNoJurnal());
+                    telemedic.setNoRujukan(entity.getNoRujukan());
+                    telemedic.setJenisRujukan(entity.getJenisRujukan());
+                    telemedic.setNoSep(entity.getNoSep());
+                    telemedic.setIdDiagnosa(entity.getIdDiagnosa());
+                    telemedic.setKetDiagnosa(entity.getKetDiagnosa());
+                    telemedic.setIdRekening(entity.getIdRekening());
+                    antrianTelemedicList.add(telemedic);
+                }
+
+            }
+        }
+        return antrianTelemedicList;
     }
 }
