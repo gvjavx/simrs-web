@@ -222,7 +222,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                                 "    \"branchName\":\""+CommonUtil.userBranchNameLogin()+"\",\n" +
                                 "    \"createdWho\": \""+CommonUtil.userLogin()+"\"\n" +
                                 "}";
-                        String requestUrl=CommonConstant.LICENSE_API+"save";
+                        String requestUrl=CommonConstant.LICENSE_API+"api/license/save";
                         sendPostRequest(requestUrl, jsonString);
 
                         //send email license
@@ -256,7 +256,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                                 "<br> \n" +
                                 "<br>\n" +
                                 "<span style=\"color: blue\">click this button for activation!</span>\n" +
-                                "<a href=\"http://localhost:9090/license/auth?id="+imLicenseZebraEntity.getLicenseId()+"\" target=\"__blank\"><button style=\"cursor: pointer\">Activation</button></a>");
+                                "<a href=\""+CommonConstant.LICENSE_API+"license/auth?id="+imLicenseZebraEntity.getLicenseId()+"\" target=\"__blank\"><button style=\"cursor: pointer\">Activation</button></a>");
                         CommonUtil.sendEmail(email);
                     } catch (GeneralBOException e){
                         logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
