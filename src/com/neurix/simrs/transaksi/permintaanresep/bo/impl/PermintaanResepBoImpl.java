@@ -316,8 +316,8 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
     }
 
     @Override
-    public List<PermintaanResep> getListResepPasien(String noCheckup) throws GeneralBOException {
-        return permintaanResepDao.getListResepPasien(noCheckup);
+    public List<PermintaanResep> getListResepPasien(String noCheckup, String jenis) throws GeneralBOException {
+        return permintaanResepDao.getListResepPasien(noCheckup, jenis);
     }
 
     private String getNextPermintaanResepId() throws GeneralBOException {

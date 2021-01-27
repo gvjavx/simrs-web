@@ -218,7 +218,7 @@ public class KurirBoImpl implements KurirBo {
 
         Boolean isFound = false;
         Map hsCriteria = new HashMap();
-        hsCriteria.put("id_pasien", userId);
+        hsCriteria.put("id_kurir", userId);
         hsCriteria.put("password", password);
 
         List<ImSimrsKurirEntity> kurirEntities = null;

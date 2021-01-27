@@ -173,6 +173,57 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         return antrianTelemedicList;
     }
 
+    public List<AntrianTelemedic> getHistoryByIdDokter(String idDokter) {
+
+        String sql = "SELECT tele.id AS id_antrian_telemedic, tele.flag_resep, tele.flag_eresep, tele.id_pasien, dokter.nama_dokter, tele.id_dokter, pelayanan.nama_pelayanan, tele.id_pelayanan, tele.status, tele.flag_bayar_konsultasi, tele.flag_bayar_resep, pembayaran.id AS id_pembayaran, pembayaran.keterangan, pembayaran.nominal, tele.no_kartu, tele.id_jenis_periksa_pasien, tele.id_asuransi, tele.kode_bank, tele.jenis_pembayaran, tele.created_date, tele.flag, pembayaran.approved_flag\n" +
+                "FROM it_simrs_antrian_telemedic tele \n" +
+                "INNER JOIN im_simrs_dokter dokter ON dokter.id_dokter = tele.id_dokter\n" +
+                "INNER JOIN im_simrs_pelayanan pelayanan ON pelayanan.id_pelayanan = tele.id_pelayanan\n" +
+                "INNER JOIN it_simrs_pembayaran_online pembayaran ON pembayaran.id_antrian_telemedic = tele.id\n" +
+                "WHERE tele.id_dokter = :idDokter\n" +
+                "ORDER BY tele.created_date DESC";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("idDokter", idDokter)
+                .list();
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        if (result.size() > 0){
+            AntrianTelemedic antrianTelemedic;
+            for (Object[] obj: result){
+                antrianTelemedic = new AntrianTelemedic();
+                antrianTelemedic.setId(obj[0] != null ? obj[0].toString() : null);
+                antrianTelemedic.setFlagResep(obj[1] != null ? obj[1].toString() : null);
+                antrianTelemedic.setFlagEresep( obj[2] != null ? obj[2].toString() : null);
+                antrianTelemedic.setIdPasien(obj[3] != null ? obj[3].toString() : null);
+                antrianTelemedic.setNamaDokter(obj[4] != null ? obj[4].toString() : null);
+                antrianTelemedic.setIdDokter( obj[5] != null ? obj[5].toString() : null);
+                antrianTelemedic.setNamaPelayanan( obj[6] != null ? obj[6].toString() : null);
+                antrianTelemedic.setIdPelayanan( obj[7] != null ? obj[7].toString() : null);
+                antrianTelemedic.setStatus( obj[8] != null ? obj[8].toString() : null);
+                antrianTelemedic.setFlagBayarKonsultasi( obj[9] != null ? obj[9].toString() : null);
+                antrianTelemedic.setFlagBayarResep( obj[10] != null ? obj[10].toString() : null);
+                antrianTelemedic.setIdPembayaran( obj[11] != null ? obj[11].toString() : null);
+                antrianTelemedic.setKeterangan(obj[12] != null ? obj[12].toString() : null);
+                antrianTelemedic.setNominal(obj[13] != null ? new BigDecimal(Float.valueOf(obj[13].toString())) : new BigDecimal(0));
+                antrianTelemedic.setNoKartu( obj[14] != null ? obj[14].toString() : null);
+                antrianTelemedic.setIdJenisPeriksaPasien( obj[15] != null ? obj[15].toString() : null);
+                antrianTelemedic.setIdAsuransi( obj[16] != null ? obj[16].toString() : null);
+                antrianTelemedic.setKodeBank( obj[17] != null ? obj[17].toString() : null);
+                antrianTelemedic.setJenisPembayaran( obj[18] != null ? obj[18].toString() : null);
+                try{
+                    antrianTelemedic.setCreatedDate(obj[19] != null ? new Timestamp(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").parse(obj[19].toString()).getTime()) : null);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                antrianTelemedic.setFlag(obj[20].toString());
+                antrianTelemedic.setApprovedFlag(obj[21] != null ? obj[21].toString() : null);
+                antrianTelemedicList.add(antrianTelemedic);
+            }
+        }
+        return antrianTelemedicList;
+    }
+
     public boolean foundIfAllFlagNotActive(String id){
 
         String SQL = "SELECT a.*\n" +

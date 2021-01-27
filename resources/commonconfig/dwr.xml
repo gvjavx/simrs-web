@@ -954,5 +954,11 @@
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.MasterPK"/>
         <!--END-->
 
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.license.action.LicenseAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.LicenseZebra"/>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.VersionZebra"/>
+
     </allow>
 </dwr>

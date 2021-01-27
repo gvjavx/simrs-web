@@ -52,6 +52,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_IMG_RM = "/upload/img_rm/";
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
     public static final String RESOURCE_PATH_FOTO_KIRIM = "/upload/foto_kirim/";
+    public static final String RESOURCE_PATH_APK_ZEBRA = "/upload/apk_zebra";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -81,7 +82,6 @@ public class CommonConstant {
     public final static String NOTIFICATION_URL = "/notificationlahan/initForm_notificationlahan.action";
 
     public final static String EXCEL = "xls";
-
     public final static String RESOURCE_PATH_USER_UPLOAD_DOC = "/pages/upload/doc/";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
@@ -205,7 +205,7 @@ public class CommonConstant {
     public final static String CUTI_ID_DILUAR_TANGGUNJAWAB = CommonUtil.getPropertyParams("cuti.id.diluar.tanggungjawab");
 
     //TELEMEDICINE
-    public static final int ADD_JAM_BAYAR = 5; //MENIT
+    public static final int ADD_JAM_BAYAR = 30; //MENIT
 
     public final static String posisiKabidKeuanganKp = CommonUtil.getPropertyParams("posisi.kabid.keuangan.kp");
     public final static String posisiKasubbidKeuanganKp = CommonUtil.getPropertyParams("posisi.kasubbid.keuangan.kp");
@@ -258,5 +258,12 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM ="88";
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
     public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
+
+    //EMAIL
+    public final static String EMAIL_USERNAME = CommonUtil.getPropertyParams("email.username");
+    public final static String EMAIL_PASSWORD = CommonUtil.getPropertyParams("email.pasword");
+
+    //API LICENSE
+    public final static String LICENSE_API = CommonUtil.getPropertyParams("license.api");
 
 }

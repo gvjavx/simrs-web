@@ -73,6 +73,16 @@ public class TelemedicineMobile {
     private String alasan;
     private String idRekening;
 
+    private String branchName;
+
+    public String getBranchName() {
+        return branchName;
+    }
+
+    public void setBranchName(String branchName) {
+        this.branchName = branchName;
+    }
+
     public String getIdRekening() {
         return idRekening;
     }

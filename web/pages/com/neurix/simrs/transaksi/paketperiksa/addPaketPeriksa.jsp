@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="col-md-2">
                                     <input style="margin-left: -55px; width: 75%" class="form-control" id="jml_persen"
-                                           type="number" disabled>
+                                           type="number" disabled oninput="setTarifTinLab(this.value)">
                                 </div>
                             </div>
                         </div>
@@ -439,7 +439,7 @@
                                     <tr bgcolor="#90ee90">
                                         <td>Pelayanan</td>
                                         <td width="20%" align="center">Urutan</td>
-                                        <td width="20%" align="center">Action</td>
+                                        <%--<td width="20%" align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body_pelayanan">
@@ -770,7 +770,15 @@
                                 $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
                             } else {
                                 $.each(response, function (i, item) {
-                                    row = row + i;
+                                    if(data.length == 0){
+                                        row = i;
+                                    }else{
+                                        if(i == 0){
+                                            row = row;
+                                        }else{
+                                            row = row + 1;
+                                        }
+                                    }
                                     var tarif = item.tarif;
                                     if (isPersen) {
                                         var persen = 100 - parseInt(jmlPersen);
@@ -786,9 +794,12 @@
                                         '</tr>';
 
                                 });
+                                $('#body_tindakan').append(table);
+                                $('#tin_id_tindakan').val('').trigger('change');
+                                hitungTotal();
+                                tempSelectPoli();
+                                disabledDiskon();
                             }
-                            $('#body_tindakan').append(table);
-                            $('#tin_id_tindakan').val('').trigger('change');
                         }
                     }
                 });
@@ -803,18 +814,34 @@
                     $('#warning_tindakan').show().fadeOut(5000);
                     $('#msg_tin').text("Data tindakan sudah ada dalam list...!");
                 } else {
-                    var table = '<tr id="row' + id + '">' +
-                        '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
-                        '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
-                        '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
-                        '<td align="center">' + formatRupiahAtas(tarifPaket) + '<input type="hidden" value="' + tarifPaket + '" id="tin_tarif_id' + row + '">' + '</td>' +
-                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + id + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
-                        '</tr>';
+                    var setAppend = false;
+                    var isPersen = false;
+                    if (cekPersen) {
+                        if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                            setAppend = false;
+                            isPersen = true;
+                        } else {
+                            setAppend = true;
+                        }
+                    }
+                    if (setAppend) {
+                        $('#warning_tindakan').show().fadeOut(5000);
+                        $('#msg_tin').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                    }else{
+                        var table = '<tr id="row' + id + '">' +
+                            '<td>' + namaPoli + '<input type="hidden" value="' + idPoli + '" id="poli_id' + row + '">' + '</td>' +
+                            '<td>' + tin + '<input type="hidden" value="' + id + '" id="tindakan_id' + row + '">' + '</td>' +
+                            '<td align="center">' + qty + '<input type="hidden" value="' + idKategori + '" id="kategori_id' + row + '">' + '</td>' +
+                            '<td align="center">' + formatRupiahAtas(tarifPaket) + '<input type="hidden" value="' + tarifPaket + '" id="tin_tarif_id' + row + '">' + '</td>' +
+                            '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + id + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                            '</tr>';
 
-                    $('#body_tindakan').append(table);
-                    // $('#modal-tindakan').modal('hide');
-                    // $('#poli').attr('disabled','');
-                    $('#tin_id_tindakan').val('').trigger('change');
+                        $('#body_tindakan').append(table);
+                        $('#tin_id_tindakan').val('').trigger('change');
+                        hitungTotal();
+                        tempSelectPoli();
+                        disabledDiskon();
+                    }
                 }
             }
 
@@ -831,10 +858,6 @@
                 $('#tin_qty').css('border', 'red solid 1px');
             }
         }
-
-        hitungTotal();
-        // tempSelectPoli();
-        tempSelectPoli();
     }
 
     function tempSelectPoli() {
@@ -879,8 +902,8 @@
                     '<td>' + item.pelayanan + '<input type="hidden" id="poli_id_' + urut + '" value="' + item.id_pelayanan + '">' + '</td>' +
                     '<td align="center">' + '<input id="urut_val_' + urut + '" onchange="setUrut(this.value, \'' + urut + '\')" class="form-control" type="number" min="1" max="' + long + '" value="' + urut + '" disabled>' +
                     '<input type="hidden" id="urut_' + urut + '">' + '</td>' +
-                    '<td align="center">' +
-                    '<img id="btn_urut' + urut + '" onclick="setUrutanPelayanan(\'' + urut + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                    <%--'<td align="center">' +--%>
+                    <%--'<img id="btn_urut' + urut + '" onclick="setUrutanPelayanan(\'' + urut + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">' + '</td>' +--%>
                     '</tr>';
             });
         }
@@ -1037,7 +1060,15 @@
                                 $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
                             } else {
                                 $.each(response, function (i, item) {
-                                    row = row + i;
+                                    if(data.length == 0){
+                                        row = i;
+                                    }else{
+                                        if(i == 0){
+                                            row = row;
+                                        }else{
+                                            row = row + 1;
+                                        }
+                                    }
                                     var tarif = item.tarif;
                                     if (isPersen) {
                                         var persen = 100 - parseInt(jmlPersen);
@@ -1058,6 +1089,8 @@
                                 });
                                 $('#body_lab').append(table);
                                 $('#lab_parameter').val('').trigger('change');
+                                hitungTotal();
+                                disabledDiskon();
                             }
                         }
                     }
@@ -1067,20 +1100,38 @@
                     $('#warning_lab').show().fadeOut(5000);
                     $('#msg_lab').text("Data sudah ada di dalam list...!");
                 } else {
-                    var table = '<tr id="row' + idl + '">' +
-                        '<td>' + idKategori.split("|")[1] +
-                        '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' +
-                        '<input type="hidden" id="poli_id' + row + '" value="' + poli + '">' +
-                        '</td>' +
-                        '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
-                        '<td>' + namaParameter + '<input type="hidden" id="parameter_id' + row + '" value="' + idParameter + '"></td>' +
-                        '<td>' + formatRupiahAtas(tarifAsli) + '</td>' +
-                        '<td>' + formatRupiahAtas(tarifPaket) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarifPaket + '"></td>' +
-                        '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + idl + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
-                        '</tr>';
-                    $('#body_lab').append(table);
-                    $('#lab_parameter').val('').trigger('change')
+                    var setAppend = false;
+                    var isPersen = false;
+                    if (cekPersen) {
+                        if (jmlPersen != '' && parseInt(jmlPersen) > 0) {
+                            setAppend = false;
+                            isPersen = true;
+                        } else {
+                            setAppend = true;
+                        }
+                    }
+                    if (setAppend) {
+                        $('#warning_lab').show().fadeOut(5000);
+                        $('#msg_lab').text("Diskon Tarif tidak boleh kosong dan 0...!");
+                    } else {
+                        var table = '<tr id="row' + idl + '">' +
+                            '<td>' + idKategori.split("|")[1] +
+                            '<input type="hidden" id="kategori_lab' + row + '" value="' + idk + '">' +
+                            '<input type="hidden" id="poli_id' + row + '" value="' + poli + '">' +
+                            '</td>' +
+                            '<td>' + idLab.split("|")[1] + '<input type="hidden" id="lab_id' + row + '" value="' + idl + '">' + '</td>' +
+                            '<td>' + namaParameter + '<input type="hidden" id="parameter_id' + row + '" value="' + idParameter + '"></td>' +
+                            '<td>' + formatRupiahAtas(tarifAsli) + '</td>' +
+                            '<td>' + formatRupiahAtas(tarifPaket) + '<input type="hidden" id="lab_tarif_id' + row + '" value="' + tarifPaket + '"></td>' +
+                            '<td align="center">' + '<img border="0" class="hvr-grow" onclick="delRow(\'' + idl + '\')" src="<s:url value="/pages/images/icons8-cancel-25.png"/>" style="cursor: pointer;">' + '</td>' +
+                            '</tr>';
+                        $('#body_lab').append(table);
+                        $('#lab_parameter').val('').trigger('change');
+                        hitungTotal();
+                        disabledDiskon();
+                    }
                 }
+
             }
 
         } else {
@@ -1096,8 +1147,6 @@
                 $('#war_parameter').show();
             }
         }
-
-        hitungTotal();
     }
 
     function hitungTotal() {
@@ -1222,6 +1271,37 @@
         } else {
             $('#' + idTujuan).attr('disabled', true);
             $('#tin_tarif_paket, #lab_tarif_paket').removeAttr('disabled', false);
+        }
+    }
+
+    function disabledDiskon(){
+        $('#persen').attr('disabled', true);
+        $('#persen').attr('style', 'cursor:no-drop');
+        $('#jml_persen').attr('disabled', true);
+    }
+
+    function setTarifTinLab(diskon){
+        if(diskon != ''){
+            var tindakan = $('#h_tin_tarif').val();
+            var lab = $('#h_lab_tarif').val();
+            if(tindakan != ''){
+                var persen = 100 - parseInt(diskon);
+                var hasil = persen / 100;
+                var tarif = hasil * tindakan;
+                $('#tin_tarif_paket').val(formatRupiahAtas(tarif));
+                $('#h_tin_tarif_paket').val(tarif);
+            }
+
+            if(lab != ''){
+                var persen = 100 - parseInt(diskon);
+                var hasil = persen / 100;
+                var tarif = hasil * lab;
+                $('#lab_tarif_paket').val(formatRupiahAtas(tarif));
+                $('#h_lab_tarif_paket').val(tarif);
+            }
+        }else{
+            $('#tin_tarif_paket, #lab_tarif_paket').val('0');
+            $('#h_tin_tarif_paket, #h_lab_tarif_paket').val('0');
         }
     }
 

@@ -39,6 +39,15 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
     String tanggal;
     String action;
     String username;
+    String branchId;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
 
     public Collection<MesinAbsensiMobile> getListOfMesinAbsensi() {
         return listOfMesinAbsensi;
@@ -144,6 +153,7 @@ public class AbsensiOnlineController implements ModelDriven<Object> {
             bean.setLastUpdate(now);
             bean.setCreatedWho(username);
             bean.setLastUpdateWho(username);
+            bean.setBranchId(branchId);
 
             try {
                 mesinAbsensiDetailBoProxy.saveAdd(bean);

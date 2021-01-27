@@ -564,6 +564,7 @@
                                 metode = "bpjs";
                             }
                         }
+
                         $('#fin_no_rm').html(response.idPasien);
                         $('#fin_poli').html(response.namaPelayanan);
                         $("#fin_id_pasien").val(response.idPasien);
@@ -876,7 +877,8 @@
                 'jenis': metodeBayarDiAwal,
                 'no_rekening': noRekening,
                 'no_checkup': noCheckup,
-                'lebih_biaya': lebihBiaya
+                'lebih_biaya': lebihBiaya,
+                'jenis_pasien': jenisPasien
             }
 
             dwr.engine.setAsync(true);
