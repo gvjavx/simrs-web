@@ -673,47 +673,4 @@ public class AntrianTelemedic {
         this.noTelp = noTelp;
     }
 
-    public static Comparator<AntrianTelemedic> urutanPembayaranSorting = new Comparator<AntrianTelemedic>() {
-
-        public int compare(AntrianTelemedic s1, AntrianTelemedic s2) {
-            Integer urutan1 = s1.getUrutan();
-            Integer urutan2 = s2.getUrutan();
-
-            //ascending order
-            return urutan1.compareTo(urutan2);
-
-            //descending order
-            //return kdRekening2.compareTo(kdRekening1);
-        }
-    };
-
-    public static Comparator<AntrianTelemedic> tanggalUploadSorting = new Comparator<AntrianTelemedic>() {
-
-        public int compare(AntrianTelemedic s1, AntrianTelemedic s2) {
-            Timestamp urutan1 = s1.getTanggalUpload() == null ? s1.getCreatedDate() : s1.getTanggalUpload();
-            Timestamp urutan2 = s2.getTanggalUpload() == null ? s2.getCreatedDate() : s2.getTanggalUpload();
-
-            //ascending order
-            return urutan1.compareTo(urutan2);
-
-            //descending order
-//            return urutan2.compareTo(urutan1);
-        }
-    };
-
-    public static Comparator<AntrianTelemedic> getUrutanPembayaranSorting() {
-        return urutanPembayaranSorting;
-    }
-
-    public static void setUrutanPembayaranSorting(Comparator<AntrianTelemedic> urutanPembayaranSorting) {
-        AntrianTelemedic.urutanPembayaranSorting = urutanPembayaranSorting;
-    }
-
-    public static Comparator<AntrianTelemedic> getTanggalUploadSorting() {
-        return tanggalUploadSorting;
-    }
-
-    public static void setTanggalUploadSorting(Comparator<AntrianTelemedic> tanggalUploadSorting) {
-        AntrianTelemedic.tanggalUploadSorting = tanggalUploadSorting;
-    }
 }
