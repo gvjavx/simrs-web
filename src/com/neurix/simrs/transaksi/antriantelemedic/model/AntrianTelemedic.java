@@ -1,8 +1,11 @@
 package com.neurix.simrs.transaksi.antriantelemedic.model;
 
+import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Comparator;
 
 /**
  * Created by reza on 08/06/20.
@@ -74,6 +77,33 @@ public class AntrianTelemedic {
     private String flagDateNow;
     private String stDateFrom;
     private String stDateTo;
+    private String stTangalUpload;
+    private Timestamp tanggalUpload;
+    private Integer urutan;
+
+    public String getStTangalUpload() {
+        return stTangalUpload;
+    }
+
+    public void setStTangalUpload(String stTangalUpload) {
+        this.stTangalUpload = stTangalUpload;
+    }
+
+    public Timestamp getTanggalUpload() {
+        return tanggalUpload;
+    }
+
+    public void setTanggalUpload(Timestamp tanggalUpload) {
+        this.tanggalUpload = tanggalUpload;
+    }
+
+    public Integer getUrutan() {
+        return urutan;
+    }
+
+    public void setUrutan(Integer urutan) {
+        this.urutan = urutan;
+    }
 
     public String getStDateFrom() {
         return stDateFrom;
@@ -642,4 +672,5 @@ public class AntrianTelemedic {
     public void setNoTelp(String noTelp) {
         this.noTelp = noTelp;
     }
+
 }

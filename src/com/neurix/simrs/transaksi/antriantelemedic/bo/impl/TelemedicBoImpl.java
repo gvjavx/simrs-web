@@ -213,12 +213,12 @@ public class TelemedicBoImpl implements TelemedicBo {
         logger.info("[TelemedicBoImpl.getSearchByCriteria] START >>>");
 
         // untuk pencarian berdasarkan id transaksi
-        if (bean.getIdTransaksi() != null && !"".equalsIgnoreCase(bean.getIdTransaksi())){
-            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranDao.getById("id", bean.getIdTransaksi());
-            if (pembayaranOnlineEntity != null){
-                bean.setIdTransaksi(bean.getIdTransaksi());
-            }
-        }
+//        if (bean.getIdTransaksi() != null && !"".equalsIgnoreCase(bean.getIdTransaksi())){
+//            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranDao.getById("id", bean.getIdTransaksi());
+//            if (pembayaranOnlineEntity != null){
+//                bean.setIdTransaksi(bean.getIdTransaksi());
+//            }
+//        }
 
         List<AntrianTelemedic> results = new ArrayList<>();
         List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = getListEntityByCriteria(bean);
@@ -287,6 +287,11 @@ public class TelemedicBoImpl implements TelemedicBo {
                 if (listKonsultasi.size() > 0) {
                     for (PembayaranOnline konsultasi : listKonsultasi) {
                         antrianTelemedic.setApproveKonsultasi(konsultasi.getApprovedFlag());
+
+                        // untuk sorting tangga upload
+                        antrianTelemedic.setTanggalUpload(konsultasi.getTanggalUpload() == null ? null : konsultasi.getTanggalUpload());
+                        antrianTelemedic.setUrutan(konsultasi.getUrutan());
+                        antrianTelemedic.setStTangalUpload(konsultasi.getTanggalUpload() == null ? "" : konsultasi.getTanggalUpload().toString());
                     }
                 }
                 // end;
@@ -299,6 +304,11 @@ public class TelemedicBoImpl implements TelemedicBo {
                 if (listResep.size() > 0) {
                     for (PembayaranOnline resep : listResep) {
                         antrianTelemedic.setApproveResep(resep.getApprovedFlag());
+
+                        // untuk sorting tangga upload
+                        antrianTelemedic.setTanggalUpload(resep.getTanggalUpload() == null ? null : resep.getTanggalUpload());
+                        antrianTelemedic.setUrutan(resep.getUrutan());
+                        antrianTelemedic.setStTangalUpload(resep.getTanggalUpload() == null ? "" : resep.getTanggalUpload().toString());
                     }
                 }
                 // end;
@@ -363,6 +373,10 @@ public class TelemedicBoImpl implements TelemedicBo {
             }
         }
 
+        // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
+        Collections.sort(results, new SortingByTanggalAntrian());
+        Collections.sort(results, new SortingByUrutanUpload());
+
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
         if (bean.getStatusTransaksi() == null) {
             return results;
@@ -370,12 +384,32 @@ public class TelemedicBoImpl implements TelemedicBo {
             final String statusTransaksi = bean.getStatusTransaksi();
             return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
         }
+    }
 
-//        if ("finish".equalsIgnoreCase(statusTransaksi) || "exist".equalsIgnoreCase(statusTransaksi) || "confirmation".equalsIgnoreCase(statusTransaksi)){
-//            return results.stream().filter(p->p.getStatusTransaksi().equalsIgnoreCase(statusTransaksi)).collect(Collectors.toList());
-//        }
+    private class SortingByTanggalAntrian implements Comparator<AntrianTelemedic> {
 
-//        return results;
+        @Override
+        public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
+
+            Timestamp tanggal1 = antrianTelemedic.getTanggalUpload();
+            Timestamp tanggal2 = t1.getTanggalUpload();
+
+            // SORTING ASC
+            return tanggal1.compareTo(tanggal2);
+        }
+    }
+
+    private class SortingByUrutanUpload implements Comparator<AntrianTelemedic> {
+
+        @Override
+        public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
+
+            Integer tanggal1 = antrianTelemedic.getUrutan();
+            Integer tanggal2 = t1.getUrutan();
+
+            // SORTING ASC
+            return tanggal1.compareTo(tanggal2);
+        }
     }
 
     private BatalTelemedic getBatalTemedicByIdAntrian(String idAntrian, String idDokter, String idPelayanan, Timestamp createdDate){
@@ -904,6 +938,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                 pembayaranOnline.setFlag(pembayaranOnlineEntity.getFlag());
                 pembayaranOnline.setAction(pembayaranOnlineEntity.getAction());
                 pembayaranOnline.setUrlFotoBukti(pembayaranOnlineEntity.getUrlFotoBukti());
+                pembayaranOnline.setTanggalUpload(pembayaranOnlineEntity.getTanggalUpload());
 
                 // mencari apakah sudah di bayar melalui bank
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
@@ -911,10 +946,16 @@ public class TelemedicBoImpl implements TelemedicBo {
                     if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                         if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
                             pembayaranOnline.setFlagBayar("Y");
+                            pembayaranOnline.setUrutan(2);
+                        } else {
+                            pembayaranOnline.setUrutan(1);
                         }
                     } else if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                         if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
                             pembayaranOnline.setFlagBayar("Y");
+                            pembayaranOnline.setUrutan(2);
+                        } else {
+                            pembayaranOnline.setUrutan(1);
                         }
                     }
                 }
