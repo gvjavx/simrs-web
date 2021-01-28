@@ -74,7 +74,7 @@
 
                 if (tipe == "umum") {
                     if($('#is_uang_muka').is(':checked')){
-                        if (pembayaran != '' && uangMuka != '') {
+                        if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
                             $('#confirm_dialog').dialog('open');
                         } else {
                             $("html, body").animate({scrollTop: 0}, 600);
@@ -83,7 +83,7 @@
                             if (pembayaran == '') {
                                 $('#war_pembayaran').show();
                             }
-                            if (uangMuka == '') {
+                            if (uangMuka == '' || parseInt(uangMuka) == 0) {
                                 $('#war_uang_muka').show();
                             }
                         }

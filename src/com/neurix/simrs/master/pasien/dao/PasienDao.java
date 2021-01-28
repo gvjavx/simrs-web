@@ -255,19 +255,14 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                     "b.created_date\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "WHERE a.id_pasien = :id\n" +
+                    "WHERE a.id_pasien = :id AND b.status_periksa NOT IN ('3', '5')\n" +
                     "ORDER BY b.created_date DESC LIMIT 1";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPasien)
                     .list();
             if(result.size() > 0){
-                Object[] objects = result.get(0);
-                if(objects[2] != null){
-                    if(!"3".equalsIgnoreCase(objects[2].toString())){
-                        res = true;
-                    }
-                }
+                res = true;
             }
         }
         return res;

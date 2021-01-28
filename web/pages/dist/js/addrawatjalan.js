@@ -287,11 +287,12 @@ function selectKeterangan(idKtg) {
             $('#poli_lain').attr('disabled', false);
             $('#form-pindah_poli').show();
             $('#form-catatan').show();
-            if (jenisPasien == 'umum') {
-                $('#form-metode_pembayaran').show();
-            } else {
-                $('#form-metode_pembayaran').hide();
-            }
+            // if (jenisPasien == 'umum') {
+            //     $('#form-metode_pembayaran').show();
+            // } else {
+            //     $('#form-metode_pembayaran').hide();
+            // }
+            $('#form-metode_pembayaran').hide();
             $('#form-selesai').hide();
             $('#form-dpjp').hide();
             $('#form-ket-rawat_inap').hide();
@@ -887,8 +888,6 @@ function showModal(select) {
     if (select == 1) {
         $('#dok_id_dokter').val('').trigger('change');
         var data = $('#tabel_dokter').tableToJSON();
-        var aw = "(";
-        var ah = ")";
         var idDokter = "";
         var temp = "";
         $.each(data, function (i, item) {
@@ -900,8 +899,9 @@ function showModal(select) {
         });
 
         if (idDokter != '') {
-            temp = aw + idDokter + ah;
+            temp = idDokter;
         }
+
         $('#t_dokter').html("Tambah Dokter");
         listSelectDokter(temp);
         $('#load_dokter, #warning_dokter, #war_dok, #war_dpjp').hide();
@@ -1073,17 +1073,18 @@ function listDokter() {
 }
 
 function listDokterKeterangan(idPelayanan) {
-    var option = "<option value=''>[Select One]</option>";
-    CheckupAction.listOfDokter(idPelayanan, function (response) {
-        if (response.length > 0) {
-            $.each(response, function (i, item) {
-                option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
-            });
-            $('#list_dokter').html(option);
-        } else {
-            $('#list_dokter').html(option);
-        }
-    });
+    $('#list_dokter').val('');
+    // var option = "<option value=''>[Select One]</option>";
+    // CheckupAction.listOfDokter(idPelayanan, function (response) {
+    //     if (response.length > 0) {
+    //         $.each(response, function (i, item) {
+    //             option += "<option value='" + item.idDokter + "'>" + item.namaDokter + "</option>";
+    //         });
+    //         $('#list_dokter').html(option);
+    //     } else {
+    //         $('#list_dokter').html(option);
+    //     }
+    // });
 }
 
 function saveTindakan(id) {
@@ -1790,8 +1791,26 @@ function setStokObat(select) {
 }
 
 function editDokter(id, idDokter) {
+    var data = $('#tabel_dokter').tableToJSON();
+    var tempDokter = "";
+    var temp = "";
+    $.each(data, function (i, item) {
+        if (tempDokter != '') {
+            if(data[i]["ID Dokter"] != idDokter){
+                tempDokter = tempDokter + ', ' + "'" + data[i]["ID Dokter"] + "'";
+            }
+        } else {
+            if(data[i]["ID Dokter"] != idDokter){
+                tempDokter = "'" + data[i]["ID Dokter"] + "'";
+            }
+        }
+    });
+
+    if (tempDokter != '') {
+        temp = tempDokter;
+    }
     $('#t_dokter').html("Edit Dokter");
-    listSelectDokter(null);
+    listSelectDokter(temp);
     $('#load_dokter, #war_dok').hide();
     $('#save_dokter').attr('onclick', 'saveDokter(\'' + id + '\')').show();
     $('#dok_id_dokter').val(idDokter).trigger('change');
@@ -3048,13 +3067,14 @@ function confirmPemeriksaanPasien() {
                     }
                 } else if (tindakLanjut == "pindah_poli") {
                     if (poliLain != '' && listDokter != '') {
-                        if (jenisPasien == 'umum') {
-                            if (metodeBayar != '' && valUangMuka != '') {
-                                cek = true;
-                            }
-                        } else {
-                            cek = true;
-                        }
+                        cek = true;
+                        // if (jenisPasien == 'umum') {
+                        //     if (metodeBayar != '' && valUangMuka != '') {
+                        //         cek = true;
+                        //     }
+                        // } else {
+                        //     cek = true;
+                        // }
                     }
                 } else if (tindakLanjut == "kontrol_ulang") {
                     if (tglKontrol != '') {
@@ -3587,4 +3607,123 @@ function getComboKeteranganObat(idParam){
 
 function delKet(param){
     $('#'+param).remove();
+}
+
+function showJadwalDokter() {
+    var pel = $('#poli_lain option:selected').text();
+    var jenisPasien = jenisPeriksaPasien;
+    var id = $('#poli_lain').val();
+    var table = "";
+    if (id != null && id != '' && jenisPasien != null && jenisPasien != '') {
+        CheckupAction.listOfDokter(id, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var kuota = 0;
+                    var sisa = 0;
+                    var kuotaBpjs = 0;
+                    var sisKuotaBpjs = 0;
+                    var namaDokter = "";
+                    var sip = "";
+                    var label = "";
+                    var label2 = "";
+                    var jamkerja = "";
+                    if (item.jamAwal != null && item.jamAkhir != null) {
+                        jamkerja = item.jamAwal + " s/d " + item.jamAkhir;
+                    }
+                    if (item.kuotaOnSite != null && item.kuotaOnSite != '') {
+                        kuota = item.kuotaOnSite;
+                    }
+                    if (item.kuotaBpjs != null && item.kuotaBpjs != '') {
+                        kuotaBpjs = item.kuotaBpjs;
+                    }
+                    if (item.kuotaTerpakaiNonBpjs != null && item.kuotaTerpakaiNonBpjs != '') {
+                        sisa = item.kuotaTerpakaiNonBpjs;
+                    }
+                    if (item.kuotaTerpakaiBpjs != null && item.kuotaTerpakaiBpjs != '') {
+                        sisKuotaBpjs = item.kuotaTerpakaiBpjs;
+                    }
+
+                    label = sisa + "/" + kuota;
+                    label2 = sisKuotaBpjs + "/" +kuotaBpjs;
+
+                    if (item.namaDokter != '') {
+                        namaDokter = item.namaDokter;
+                    }
+                    if (item.idDokter != '') {
+                        sip = item.idDokter;
+                    }
+
+                    var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
+                    if(item.urlImg != null && item.urlImg != ''){
+                        foto = contextPathHeader+item.urlImg;
+                    }
+
+                    var clasBox = 'btn-trans';
+                    var btnSet = 'onclick="setDokter(\'' + item.idDokter + '\', \'' + item.namaDokter + '\')"';
+                    var noDrop = 'cursor: pointer';
+
+                    if (item.flagLibur == "Y") {
+                        clasBox = 'btn-trans-02';
+                        btnSet = 'style="cursor: no-drop"';
+                        noDrop = 'cursor: no-drop';
+                    }else{
+                        var cekSisa = 0;
+                        var cekKuota = 0;
+                        if(jenisPasien == 'bpjs'){
+                            cekSisa = sisKuotaBpjs;
+                            cekKuota = kuotaBpjs;
+                        }else{
+                            cekSisa = sisa;
+                            cekKuota = kuota;
+                        }
+
+                        if(cekSisa == cekKuota){
+                            clasBox = 'btn-trans-02';
+                            btnSet = 'style="cursor: no-drop"';
+                            noDrop = 'cursor: no-drop';
+                        }
+                    }
+                    table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +
+                        '<div style="text-align:left; font-size:11px;">\n' +
+                        '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px; '+noDrop+'">\n' +
+                        '        <tr>\n' +
+                        '            <td align="left" colspan="2">\n' +
+                        '                <span style="color: white; background-color: #337ab7; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
+                        '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label2 + '</span>\n' +
+                        '                <span class="pull-right" style="margin-top: -6px; margin-left: 5px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
+                        '            </td>\n' +
+                        '        </tr>\n' +
+                        '        <tr>\n' +
+                        '            <td align="center" colspan="2">\n' +
+                        '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px; width: 55%;" src="'+foto+'">\n' +
+                        '            </td>\n' +
+                        '        </tr>\n' +
+                        '        <tr>\n' +
+                        '            <td align="left" colspan="2" style="color: black; font-size: 11px; padding-top: 3px; border-bottom: black solid 1px; padding-bottom: 3px">\n' +
+                        '                <i class="fa fa-user"></i> ' + namaDokter + '\n' +
+                        '            </td>\n' +
+                        '        </tr>\n' +
+                        '        <tr>\n' +
+                        '            <td align="left" colspan="2" style="color: black; font-size: 11px; padding-top: 5px">\n' +
+                        '                <i class="fa fa-square" style="font-size: 10px"></i> ' + sip + '\n' +
+                        '            </td>\n' +
+                        '        </tr>\n' +
+                        '    </table>\n' +
+                        '</div>\n' +
+                        '</div>';
+                });
+            } else {
+                table = '<span class="text-center">Jadwal Dokter Tidak Ditemukan...!</span>'
+            }
+            $('#dokter_pelayanan').text(pel);
+            $('#jadwal_dokter').html(table);
+            $('#modal-jadwal-dokter').modal({show: true, backdrop: 'static'});
+        });
+    }
+}
+
+function setDokter(idDokter, namaDokter) {
+    $('#nama_dokter').val(namaDokter);
+    $('#list_dokter').val(idDokter);
+    $('#modal-jadwal-dokter').modal('hide');
 }

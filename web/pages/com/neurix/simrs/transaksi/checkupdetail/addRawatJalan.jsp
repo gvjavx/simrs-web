@@ -1023,7 +1023,7 @@
                                                 list="#initComboPoli.listOfPelayanan" id="poli_lain"
                                                 name="headerCheckup.idPelayanan" listKey="idPelayanan"
                                                 listValue="namaPelayanan" cssStyle="width: 100%"
-                                                onchange="listDokterKeterangan(this.value)"
+                                                onchange="listDokterKeterangan(this.value);"
                                                 headerKey="" headerValue="[Select one]"
                                                 cssClass="form-control select2"/>
                                     </div>
@@ -1031,9 +1031,19 @@
                                     <div class="form-group">
                                         <label class="col-md-4" style="margin-top: 10px">Dokter</label>
                                         <div class="col-md-8">
-                                            <select id="list_dokter" class="form-control select2" style="width: 100%">
-                                                <option value=''>[Select One]</option>
-                                            </select>
+                                            <div class="input-group">
+                                                <input readonly class="form-control" id="nama_dokter"
+                                                       style="cursor: pointer; margin-top: 7px" onclick="showJadwalDokter()"
+                                                       placeholder="*klik untuk jadwal dokter">
+                                                <div class="input-group-btn">
+                                                    <a class="btn btn-success" onclick="showJadwalDokter()" style="margin-left: -3px">
+                                                        <span id="btn-dokter"><i class="fa fa-search" ></i> Dokter</span></a>
+                                                </div>
+                                                <input type="hidden" id="list_dokter">
+                                            </div>
+                                            <%--<select id="list_dokter" class="form-control select2" style="width: 100%">--%>
+                                                <%--<option value=''>[Select One]</option>--%>
+                                            <%--</select>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -2276,6 +2286,45 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-jadwal-dokter">
+    <div class="modal-dialog" style="width: 57%">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Jadwal Dokter <span
+                        id="dokter_pelayanan"></span> Hari Ini</h4>
+            </div>
+            <div class="modal-body" id="temp_jd">
+                <div class="box-body">
+                    <div class="col-md-12 text-center" style="display:inline; padding-left: 6%">
+                        <div class="btn-wrapper">
+                            <div id="jadwal_dokter"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-offset-9 col-md-3">
+                        <ul style="list-style-type: none">
+                            <li>
+                                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota Non BPJS</span>
+                            </li>
+                            <li>
+                                <span style="margin-left: 5px;color: white; background-color: #00a65a; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota BPJS</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_temp_jd', 'temp_jd')" class="pull-left hvr-grow" style="color: black; margin-top: 11px; cursor: pointer">
+                    <i id="fa_temp_jd" class="fa fa-unlock"></i>
+                </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>

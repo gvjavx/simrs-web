@@ -423,7 +423,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         String notLikeDokter = "";
 
         if(noteLike != null && !"".equalsIgnoreCase(noteLike)){
-            notLikeDokter = "AND a.id_dokter IN ("+noteLike+") \n";
+            notLikeDokter = "AND a.id_dokter NOT IN ("+noteLike+") \n";
         }
 
         String SQL = "SELECT\n" +
