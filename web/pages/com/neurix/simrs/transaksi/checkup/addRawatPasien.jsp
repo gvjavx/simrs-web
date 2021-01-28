@@ -1793,7 +1793,7 @@
                             <div id="jadwal_dokter"></div>
                         </div>
                     </div>
-                    <div class="col-md-offset-10 col-md-2">
+                    <div class="col-md-offset-9 col-md-3">
                         <ul style="list-style-type: none">
                             <li>
                                 <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota Non BPJS</span>

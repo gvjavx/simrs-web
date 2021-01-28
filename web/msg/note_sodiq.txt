@@ -1625,6 +1625,15 @@ INSERT INTO im_func_roles VALUES
 (2362, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
 (2363, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra');
 
+--UPDATE MENU KASIR JALAN
+SELECT * FROM im_func_roles
+WHERE role_id = 41
+AND func_id = 2
+
+DELETE FROM im_func_roles
+WHERE role_id = 41
+AND func_id = 2
+
 
 
 
