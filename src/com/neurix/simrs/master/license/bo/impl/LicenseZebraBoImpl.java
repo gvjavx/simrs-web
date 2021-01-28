@@ -230,7 +230,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                         Email email = new Email();
                         email.setFrom(CommonConstant.EMAIL_USERNAME);
                         email.setPassword(CommonConstant.EMAIL_PASSWORD);
-                        email.setTo("muhmmdsodiq@gmail.com");
+                        email.setTo("ardhymcs@gmail.com");
                         email.setSubject("License Key Verification");
                         email.setMsg("<h2>License Key Verification</h2>\n" +
                                 "=========================================\n" +
