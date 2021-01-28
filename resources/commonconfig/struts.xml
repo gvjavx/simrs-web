@@ -302,5 +302,7 @@
     <include file="sshconfig/com/neurix/simrs/master/parameterketeranganobat/struts/ParameterKeteranganObatAction.xml"/>
 
     <include file="sshconfig/com/neurix/simrs/master/kategoripersediaan/struts/KategoriPersediaanAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/license/struts/LicenseAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/master/license/struts/VersionAction.xml"/>
 
 </struts>

@@ -1,6 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
 import com.neurix.simrs.master.license.model.LicenseZebra;
 import com.neurix.simrs.mobileapi.model.LicenseZebraMobile;
@@ -27,6 +28,26 @@ public class LicenseController implements ModelDriven<Object> {
     private String licenseKey;
     private String deviceId;
     private String flag;
+
+    //sodiq, 25-01-2021
+    private String status;
+    private String lastUpdateWho;
+
+    public String getLastUpdateWho() {
+        return lastUpdateWho;
+    }
+
+    public void setLastUpdateWho(String lastUpdateWho) {
+        this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public void setLicenseZebraBoProxy(LicenseZebraBo licenseZebraBoProxy) {
         this.licenseZebraBoProxy = licenseZebraBoProxy;
@@ -101,12 +122,11 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("getZebraKey")) {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
-//            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-//            String encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
 
             LicenseZebra bean = new LicenseZebra();
             bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
+            bean.setFlag(flag);
 
             try {
               result = licenseZebraBoProxy.getByCriteria(bean);
@@ -131,10 +151,9 @@ public class LicenseController implements ModelDriven<Object> {
             boolean isAvailable = false;
 
             ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String encodedlicenseKey = passwordEncoder.encodePassword(licenseKey, null);
 
             try {
-               isAvailable = licenseZebraBoProxy.isKeyAvailable(encodedlicenseKey, deviceId);
+               isAvailable = licenseZebraBoProxy.isKeyAvailable(licenseKey, deviceId);
             } catch (GeneralBOException e) {
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }
@@ -150,6 +169,7 @@ public class LicenseController implements ModelDriven<Object> {
             bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
             bean.setFlag(flag);
+            bean.setAction("U");
             bean.setLastUpdate(now);
             bean.setLastUpdateWho("admin");
 
@@ -164,17 +184,42 @@ public class LicenseController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("saveAdd")) {
 
             LicenseZebra bean = new LicenseZebra();
+
+            String key = CommonUtil.getRandomString(8);
+
             bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
             bean.setCreatedWho("admin");
             bean.setCreatedDate(now);
             bean.setLastUpdate(now);
             bean.setLastUpdateWho("admin");
-            bean.setFlag("C");
-            bean.setAction("Y");
+            bean.setFlag("Y");
+            bean.setAction("C");
 
             try {
+                licenseZebraBoProxy.saveAdd(bean);
+                model.setMessage(key);
+            } catch (GeneralBOException e){
+                logger.error("LicenseController.create] Error, " + e.getMessage());
+            }
+        }
 
+        if (action.equalsIgnoreCase("securityCode")) {
+            model.setMessage(CommonUtil.getSecurityCode());
+        }
+        //sodiq, 25-01-2021 --update license
+        if (action.equalsIgnoreCase("saveEdit")) {
+
+            LicenseZebra licenseZebra = new LicenseZebra();
+            licenseZebra.setLicenseId(licenseId);
+            licenseZebra.setLastUpdate(now);
+            licenseZebra.setLastUpdateWho(lastUpdateWho);
+            licenseZebra.setStatus(status);
+            licenseZebra.setFlag("Y");
+            licenseZebra.setAction("U");
+
+            try {
+                licenseZebraBoProxy.saveEdit(licenseZebra);
             } catch (GeneralBOException e){
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }

@@ -188,6 +188,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 pembayaranOnline.setUrlFotoBukti(pembayaranOnlineEntity.getUrlFotoBukti());
                 pembayaranOnline.setIdRekening(pembayaranOnlineEntity.getIdRekening());
                 pembayaranOnline.setFlagUploadUlang(pembayaranOnlineEntity.getFlagUploadUlang());
+                pembayaranOnline.setWaktuBayar(pembayaranOnlineEntity.getWaktuBayar());
 
                 // mencari data pada antrian telemedic untuk mengetahui status pembayaran
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
@@ -323,6 +324,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         Timestamp nowTime = new Timestamp(System.currentTimeMillis());
         for (ItSimrsPembayaranOnlineEntity item : resultPembayaran) {
             item.setUrlFotoBukti(pathBukti);
+            item.setLastUpdate(nowTime);
             item.setTanggalUpload(nowTime);
 
             try {

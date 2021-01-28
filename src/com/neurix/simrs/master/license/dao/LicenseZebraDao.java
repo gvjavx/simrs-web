@@ -41,7 +41,6 @@ public class LicenseZebraDao extends GenericDao<ImLicenseZebraEntity, String> {
             }
         }
 
-//        criteria.addOrder(Order.asc("license_id"));
         List<ImLicenseZebraEntity> results = criteria.list();
         return results;
     }
@@ -51,6 +50,14 @@ public class LicenseZebraDao extends GenericDao<ImLicenseZebraEntity, String> {
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
 
-        return "LKZ" + sId;
+        return "LCZ" + sId;
+    }
+
+    public List<ImLicenseZebraEntity> getDeviceId(String deviceId) {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImLicenseZebraEntity.class);
+        criteria.add(Restrictions.ilike("deviceId", deviceId));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ImLicenseZebraEntity> listOfResult = criteria.list();
+        return listOfResult;
     }
 }
