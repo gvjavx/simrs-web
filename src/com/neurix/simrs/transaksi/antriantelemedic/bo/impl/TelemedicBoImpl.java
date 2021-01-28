@@ -324,17 +324,6 @@ public class TelemedicBoImpl implements TelemedicBo {
             results.add(antritanTelemedicData);
         }
 
-
-        List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = getListEntityByCriteria(bean);
-        if (antrianTelemedicEntities.size() > 0){
-
-
-        }
-
-        // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
-        Collections.sort(results, getSortingByTanggalAntrian());
-//        Collections.sort(results, new SortingByUrutanUpload());
-
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
         if (bean.getStatusTransaksi() == null) {
             return results;

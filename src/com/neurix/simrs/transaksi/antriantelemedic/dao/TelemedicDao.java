@@ -250,6 +250,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
     public List<AntrianTelemedic> getListAntrianTelemedicSearch(AntrianTelemedic bean){
 
         String where = "";
+        String idPasien = bean.getIdPasien();
+        String id = bean.getId();
 
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
             where += "AND at.id_dokter = '"+bean.getIdDokter()+"' \n";
@@ -275,10 +277,13 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         if (bean.getFlagEresep() != null && !"".equalsIgnoreCase(bean.getFlagEresep())) {
             where += "AND at.flag_eresep = '"+bean.getFlagEresep()+"' \n";
         }
-        if (bean.getIdPasien() == null || "".equalsIgnoreCase(bean.getIdPasien()))
-            bean.setIdPasien("%");
-        if (bean.getId() == null || "".equalsIgnoreCase(bean.getId()))
-            bean.setId("%");
+        if (bean.getIdTransaksi() != null && !"".equalsIgnoreCase(bean.getIdTransaksi())) {
+            where += "AND po.id = '"+bean.getIdTransaksi()+"' \n";
+        }
+        if (idPasien == null || "".equalsIgnoreCase(idPasien))
+            idPasien = "%";
+        if (id == null || "".equalsIgnoreCase(id))
+            id = "%";
 
         String SQL = "SELECT \n" +
                 "a.id,\n" +
@@ -301,8 +306,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 "\t\t) po ON po.id_antrian_telemedic = at.id\n" +
                 "\t\tWHERE DATE(at.created_date) >= '"+bean.getStDateFrom()+"' \n" +
                 "\t\tAND DATE(at.created_date) <= '"+bean.getStDateTo()+"' \n" +
-                "\t\tAND at.id_pasien ILIKE '"+bean.getIdPasien()+"' \n" +
-                "\t\tAND at.id ILIKE '"+bean.getId()+"' \n" + where +
+                "\t\tAND at.id_pasien ILIKE '"+ idPasien +"' \n" +
+                "\t\tAND at.id ILIKE '"+ id +"' \n" + where +
                 "\t\tGROUP BY at.id\n" +
                 "\t) a \n" +
                 "\tWHERE a.last_update IS NOT NULL\n" +
@@ -328,21 +333,22 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 if (antrianTelemedicEntities != null && antrianTelemedicEntities.size() > 0){
                     ItSimrsAntrianTelemedicEntity entity = antrianTelemedicEntities.get(0);
 
+                    telemedic.setIdPasien(entity.getIdPasien());
                     telemedic.setIdDokter(entity.getIdDokter());
                     telemedic.setIdPelayanan(entity.getIdPelayanan());
                     telemedic.setFlagResep(entity.getFlagResep());
                     telemedic.setStatus(entity.getStatus());
                     telemedic.setFlagBayarKonsultasi(entity.getFlagBayarKonsultasi());
-                    telemedic.setFlagResep(entity.getFlagResep());
+                    telemedic.setFlagBayarResep(entity.getFlagBayarResep());
                     telemedic.setCreatedDate(entity.getCreatedDate());
                     telemedic.setCreatedWho(entity.getCreatedWho());
-                    telemedic.setLastUpdate(entity.getLastUpdate());
                     telemedic.setLastUpdateWho(entity.getLastUpdateWho());
                     telemedic.setFlag(entity.getFlag());
                     telemedic.setAction(entity.getAction());
                     telemedic.setNoKartu(entity.getNoKartu());
                     telemedic.setIdJenisPeriksaPasien(entity.getIdJenisPeriksaPasien());
                     telemedic.setIdAsuransi(entity.getIdAsuransi());
+                    telemedic.setAsuransi(entity.getIdAsuransi());
                     telemedic.setKodeBank(entity.getKodeBank());
                     telemedic.setBranchId(entity.getBranchId());
                     telemedic.setKeluhan(entity.getKeluhan());
@@ -356,6 +362,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                     telemedic.setIdDiagnosa(entity.getIdDiagnosa());
                     telemedic.setKetDiagnosa(entity.getKetDiagnosa());
                     telemedic.setIdRekening(entity.getIdRekening());
+                    telemedic.setJumlahCover(entity.getJumlahCover());
+                    telemedic.setStCreatedDate(entity.getCreatedDate() == null ? "" : entity.getCreatedDate().toString());
                     antrianTelemedicList.add(telemedic);
                 }
 
