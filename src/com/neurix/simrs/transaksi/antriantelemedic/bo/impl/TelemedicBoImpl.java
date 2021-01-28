@@ -249,6 +249,11 @@ public class TelemedicBoImpl implements TelemedicBo {
             if (listKonsultasi.size() > 0) {
                 for (PembayaranOnline konsultasi : listKonsultasi) {
                     antritanTelemedicData.setApproveKonsultasi(konsultasi.getApprovedFlag());
+                    if ("Y".equalsIgnoreCase(konsultasi.getApprovedFlag())){
+                        antritanTelemedicData.setUrutan(1);
+                    } else {
+                        antritanTelemedicData.setUrutan(2);
+                    }
                 }
             }
             // end;
@@ -261,6 +266,11 @@ public class TelemedicBoImpl implements TelemedicBo {
             if (listResep.size() > 0) {
                 for (PembayaranOnline resep : listResep) {
                     antritanTelemedicData.setApproveResep(resep.getApprovedFlag());
+                    if ("Y".equalsIgnoreCase(resep.getApprovedFlag())){
+                        antritanTelemedicData.setUrutan(2);
+                    } else {
+                        antritanTelemedicData.setUrutan(1);
+                    }
                 }
             }
             // end;
@@ -324,6 +334,8 @@ public class TelemedicBoImpl implements TelemedicBo {
             results.add(antritanTelemedicData);
         }
 
+        Collections.sort(results, new SortingByUrutanUpload());
+
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
         if (bean.getStatusTransaksi() == null) {
             return results;
@@ -333,21 +345,6 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
     }
 
-    public Comparator<AntrianTelemedic> sortingByTanggalAntrian = new Comparator<AntrianTelemedic>(){
-
-        @Override
-        public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
-
-            Timestamp tanggal1 = antrianTelemedic.getTanggalUpload() == null ? antrianTelemedic.getCreatedDate() : antrianTelemedic.getTanggalUpload();
-            Timestamp tanggal2 = t1.getTanggalUpload() == null ? t1.getCreatedDate() : t1.getTanggalUpload();
-
-            return tanggal1.compareTo(tanggal2);
-        }
-    };
-
-    public Comparator<AntrianTelemedic> getSortingByTanggalAntrian() {
-        return sortingByTanggalAntrian;
-    }
 
     public class SortingByUrutanUpload implements Comparator<AntrianTelemedic> {
 
