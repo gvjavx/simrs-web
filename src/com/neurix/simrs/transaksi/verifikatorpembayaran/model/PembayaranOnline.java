@@ -1,8 +1,11 @@
 package com.neurix.simrs.transaksi.verifikatorpembayaran.model;
 
+import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
+
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Comparator;
 
 /**
  * Created by reza on 10/06/20.
@@ -38,6 +41,24 @@ public class PembayaranOnline {
     private String idRekening;
     private Timestamp waktuBayar;
     private String flagUploadUlang;
+    private Integer urutan;
+    private Timestamp tanggalUpload;
+
+    public Integer getUrutan() {
+        return urutan;
+    }
+
+    public void setUrutan(Integer urutan) {
+        this.urutan = urutan;
+    }
+
+    public Timestamp getTanggalUpload() {
+        return tanggalUpload;
+    }
+
+    public void setTanggalUpload(Timestamp tanggalUpload) {
+        this.tanggalUpload = tanggalUpload;
+    }
 
     public String getFlagUploadUlang() {
         return flagUploadUlang;

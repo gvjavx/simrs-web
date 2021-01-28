@@ -162,6 +162,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
     @Override
     public List<PembayaranOnline> getSearchByCriteria(PembayaranOnline bean) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.getSearchByCriteria] START >>>");
 
         List<PembayaranOnline> pembayaranOnlines = new ArrayList<>();
         List<ItSimrsPembayaranOnlineEntity> pembayaranOnlineEntities = getSearchEntityByCriteria(bean);
@@ -217,10 +218,16 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                         if ("konsultasi".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                             if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarKonsultasi())){
                                 pembayaranOnline.setFlagBayar("Y");
+                                pembayaranOnline.setUrutan(2);
+                            } else {
+                                pembayaranOnline.setUrutan(1);
                             }
                         } else if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                             if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagBayarResep())){
                                 pembayaranOnline.setFlagBayar("Y");
+                                pembayaranOnline.setUrutan(2);
+                            } else {
+                                pembayaranOnline.setUrutan(1);
                             }
                         }
                         pembayaranOnline.setNoKartu(antrianTelemedicEntity.getNoKartu());
@@ -234,10 +241,16 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                     }
                 }
 
+
                 pembayaranOnlines.add(pembayaranOnline);
             }
         }
 
+        // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
+//        Collections.sort(pembayaranOnlines, PembayaranOnline.getUrutanPembayaranSorting());
+//        Collections.sort(pembayaranOnlines, PembayaranOnline.getTanggalUploadSorting());
+
+        logger.info("[VerifikatorPembayaranBoImpl.getSearchByCriteria] END <<<");
         return pembayaranOnlines;
     }
 
@@ -307,8 +320,10 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
         }
 
+        Timestamp nowTime = new Timestamp(System.currentTimeMillis());
         for (ItSimrsPembayaranOnlineEntity item : resultPembayaran) {
             item.setUrlFotoBukti(pathBukti);
+            item.setTanggalUpload(nowTime);
 
             try {
                 verifikatorPembayaranDao.updateAndSave(item);
@@ -317,8 +332,6 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
             }
         }
-
-//        resultPembayaran.get(0).setUrlFotoBukti(pathBukti);
 
         Map hsCriteria2 = new HashMap();
         hsCriteria2.put("id", idTele);
@@ -331,27 +344,6 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             logger.error("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
             throw new GeneralBOException("[VerifikatorPembayaranBoImpl.updateBuktiTransfer] ERROR. ", e);
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         if(keterangan.equalsIgnoreCase("konsultasi")) {
             resultTelemedic.get(0).setFlagBayarKonsultasi("Y");
@@ -723,18 +715,16 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
     @Override
     public void saveAdd(ItSimrsPembayaranOnlineEntity bean) throws GeneralBOException {
-        logger.info("[VerifikatorPembayaranBoImpl.saveEdit] Start >>>>>>>>");
-
-
+        logger.info("[VerifikatorPembayaranBoImpl.saveAdd] Start >>>>>>>>");
 
         try {
             verifikatorPembayaranDao.addAndSave(bean);
         } catch (GeneralBOException e){
-            logger.error("[VerifikatorPembayaranBoImpl.saveEdit] Error when update ", e);
-            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.saveEdit] Error when update " + e.getMessage());
+            logger.error("[VerifikatorPembayaranBoImpl.saveAdd] Error when update ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.saveAdd] Error when update " + e.getMessage());
         }
 
-        logger.info("[VerifikatorPembayaranBoImpl.saveEdit] End <<<<<<<<");
+        logger.info("[VerifikatorPembayaranBoImpl.saveAdd] End <<<<<<<<");
     }
 
     @Override
