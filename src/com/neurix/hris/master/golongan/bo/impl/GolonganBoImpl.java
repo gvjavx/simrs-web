@@ -387,7 +387,7 @@ public class GolonganBoImpl implements GolonganBo {
 
         List<ImGolonganEntity> listGolonganEntities = null;
         try {
-            listGolonganEntities = golonganDao.getListGolongan(criteria);
+            listGolonganEntities = golonganDao.getListGolDapen(criteria);
         } catch (HibernateException e) {
             logger.error("[GolonganBoImpl.getRangeMasaGol] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list range masa golongan with criteria, please info to your admin..." + e.getMessage());
