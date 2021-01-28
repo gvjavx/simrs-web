@@ -1493,6 +1493,18 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
         }
 
+        if (action.equalsIgnoreCase("getVideoRm")) {
+
+            List<ItSimrsVideoRmEntity> list = new ArrayList<>();
+            try {
+                list = telemedicBoProxy.getVideoRm(idDetailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+            }
+
+            model.setMessage(String.valueOf(list.size()));
+        }
+
         logger.info("[TelemedicineController.create] end process POST / <<<");
         return new DefaultHttpHeaders("create").disableCaching();
 
