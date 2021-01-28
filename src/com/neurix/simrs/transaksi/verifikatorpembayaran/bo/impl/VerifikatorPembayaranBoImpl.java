@@ -324,6 +324,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         Timestamp nowTime = new Timestamp(System.currentTimeMillis());
         for (ItSimrsPembayaranOnlineEntity item : resultPembayaran) {
             item.setUrlFotoBukti(pathBukti);
+            item.setLastUpdate(nowTime);
             item.setTanggalUpload(nowTime);
 
             try {
