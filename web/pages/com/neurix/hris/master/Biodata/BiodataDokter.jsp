@@ -899,6 +899,30 @@
                                             </tr>
                                             <tr>
                                                 <td>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                        </s:if>
+                                                        <s:elseif test="isDelete()">
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
+                                                            <s:hidden id="tanggalAktifTmp"/>
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
                                                     <label><small>Shift <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
