@@ -290,7 +290,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     antritanTelemedicData.setLabelStatusAsuransi(labelStatusAsuransi(antritanTelemedicData.getId()));
                 }
             } else {
-                if (antritanTelemedicData.getFlagResep() == null && antritanTelemedicData.getApproveKonsultasi() != null) {
+                if (!"Y".equalsIgnoreCase(antritanTelemedicData.getFlagResep()) && antritanTelemedicData.getApproveKonsultasi() != null) {
                     antritanTelemedicData.setStatusTransaksi("finish");
                 } else if ("Y".equalsIgnoreCase(antritanTelemedicData.getFlagResep()) && antritanTelemedicData.getApproveKonsultasi() != null && antritanTelemedicData.getApproveResep() != null) {
                     antritanTelemedicData.setStatusTransaksi("finish");
