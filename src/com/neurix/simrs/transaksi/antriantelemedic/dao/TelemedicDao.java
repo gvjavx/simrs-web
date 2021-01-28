@@ -311,7 +311,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 "\t) a \n" +
                 "\tWHERE a.last_update IS NOT NULL\n" +
                 ") a \n" +
-                "INNER JOIN it_simrs_pembayaran_online b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update\n" +
+                "LEFT JOIN (SELECT * FROM it_simrs_pembayaran_online WHERE tanggal_upload IS NOT NULL) b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update\n" +
                 "ORDER BY tanggal_upload";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
