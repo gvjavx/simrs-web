@@ -54,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -960,7 +961,8 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlagEresep(flagEresep);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
-            bean.setFlagDateNow(CommonUtil.convertTimestampToString2(now));
+            Date date = new Date(System.currentTimeMillis());
+            bean.setFlagDateNow(CommonUtil.convertDateToString2(date));
 
             try {
                 result = telemedicBoProxy.getSearchByCriteria(bean);

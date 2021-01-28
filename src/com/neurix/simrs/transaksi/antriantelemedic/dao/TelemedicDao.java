@@ -304,8 +304,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 "\t\t\tFROM it_simrs_pembayaran_online \n" +
                 "\t\t\tWHERE last_update IS NOT NULL\n" +
                 "\t\t) po ON po.id_antrian_telemedic = at.id\n" +
-                "\t\tWHERE DATE(at.created_date) >= '"+bean.getStDateFrom()+"' \n" +
-                "\t\tAND DATE(at.created_date) <= '"+bean.getStDateTo()+"' \n" +
+                "\t\tWHERE DATE(at.created_date) = '"+bean.getFlagDateNow()+"' \n" +
                 "\t\tAND at.id_pasien ILIKE '"+ idPasien +"' \n" +
                 "\t\tAND at.id ILIKE '"+ id +"' \n" + where +
                 "\t\tGROUP BY at.id\n" +
