@@ -2225,6 +2225,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
             String tipePelayanan = "";
             String isNull = "";
             String idJenisPeriksaPasien = "";
+            String tanggal = "";
 
             if (detailCheckup.getIdPasien() != null && !"".equalsIgnoreCase(detailCheckup.getIdPasien())) {
                 idPasien = "AND a.id_pasien LIKE '%" + detailCheckup.getIdPasien() + "%' \n";
@@ -2272,6 +2273,15 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 branchId = "AND a.branch_id LIKE '%'";
             }
 
+            if(detailCheckup.getStDateFrom() != null && !"".equalsIgnoreCase(detailCheckup.getStDateFrom()) &&
+                    detailCheckup.getStDateTo() != null && !"".equalsIgnoreCase(detailCheckup.getStDateTo())){
+                tanggal = "AND CAST(b.created_date AS DATE) >= to_date('"+detailCheckup.getStDateFrom()+"','dd-MM-yyyy') AND CAST(b.created_date AS DATE) <= to_date('"+detailCheckup.getStDateTo()+"','dd-MM-yyyy') \n";
+            }else if(detailCheckup.getStDateFrom() != null && !"".equalsIgnoreCase(detailCheckup.getStDateFrom())){
+                tanggal = "AND CAST(b.created_date AS DATE) >= to_date('"+detailCheckup.getStDateFrom()+"','dd-MM-yyyy') \n";
+            }else if(detailCheckup.getStDateTo() != null && !"".equalsIgnoreCase(detailCheckup.getStDateTo())){
+                tanggal = "AND CAST(b.created_date AS DATE) <= to_date('"+detailCheckup.getStDateTo()+"','dd-MM-yyyy') \n";
+            }
+
             String SQL = "SELECT\n" +
                     "a.no_checkup,\n" +
                     "a.id_pasien,\n" +
@@ -2298,7 +2308,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "WHERE b.status_periksa = '3' \n" + idJenisPeriksaPasien
                     + isNull + idPasien + idPelayanan +
                     nama + idDetailCheckup +
-                    flagCloseTransaksi + branchId;
+                    flagCloseTransaksi + branchId + tanggal;
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .list();

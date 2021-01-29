@@ -2831,10 +2831,8 @@ function setStokObatApotek(select, tipe) {
                 flagKronis = idObat.split('|')[7];
             }
             if (idObat.split('|')[9] != 'null' && idObat.split('|')[9] != '') {
-                if($('#resep_jenis_obat').val() == '' || $('#resep_jenis_obat').val() == null){
-                    $('#resep_jenis_obat').select2('destroy');
-                    $('#resep_jenis_obat').val(idObat.split('|')[9]).select2();
-                }
+                $('#resep_jenis_obat').select2('destroy');
+                $('#resep_jenis_obat').val(idObat.split('|')[9]).select2();
             }
 
             var total = parseInt(qtyBiji) + (parseInt(qtyBox) * parseInt(lembarPerBox)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));

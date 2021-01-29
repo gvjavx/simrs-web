@@ -2491,8 +2491,18 @@ public class VerifikatorAction extends BaseMasterAction {
     }
 
     public String initVerif() {
-        RawatInap rawatInap = new RawatInap();
+        long millis = System.currentTimeMillis();
+        java.util.Date date = new java.util.Date(millis);
+        String tglToday = new SimpleDateFormat("dd-MM-yyyy").format(date);
+
         HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+        detailCheckup.setStDateFrom(tglToday);
+        detailCheckup.setStDateTo(tglToday);
+
+        RawatInap rawatInap = new RawatInap();
+        rawatInap.setStTglFrom(tglToday);
+        rawatInap.setStTglTo(tglToday);
+
         setHeaderDetailCheckup(detailCheckup);
         setRawatInap(rawatInap);
         HttpSession session = ServletActionContext.getRequest().getSession();
