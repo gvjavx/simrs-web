@@ -75,8 +75,10 @@
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
+            var tglMasuk            = document.getElementById("tanggalMasuk").value;
+            var tglAktif            = document.getElementById("tanggalAktif").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='' && tglAktif !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -118,6 +120,12 @@
                 }
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
+                }
+                if (tglMasuk == '') {
+                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
+                }
+                if (tglAktif == '') {
+                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
