@@ -356,7 +356,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
         String SQL = "SELECT history_jabatan_pegawai_id FROM imt_hris_history_jabatan_pegawai \n" +
                 "WHERE \n" +
                 "nip = :nip \n" +
-                "AND position_id = position \n" +
+                "AND position_id = :position \n" +
                 "AND jabatan_flag = 'Y'\n" +
                 "ORDER BY created_date DESC \n" +
                 "LIMIT 1";

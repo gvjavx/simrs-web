@@ -347,16 +347,16 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir--%>
-                                                            <%--<s:if test="isAdd()">--%>
-                                                        <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control" readonly="true" />
-                                                            <%--</s:if>--%>
-                                                            <%--<s:elseif test="isDelete()">--%>
-                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
-                                                            <%--</s:elseif>--%>
-                                                            <%--<s:else>--%>
-                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
-                                                            <%--</s:else>--%>
+                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir (SEMENTARA TIDAK DIGUNAKAN)--%>
+                                                            <s:if test="isAdd()">
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:elseif test="isDelete()">
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                            </s:elseif>
+                                                            <s:else>
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                            </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -488,7 +488,7 @@
                                                                          <%--cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />--%>
                                                         <%--</s:elseif>--%>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>

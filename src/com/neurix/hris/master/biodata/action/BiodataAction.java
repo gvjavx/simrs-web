@@ -3747,11 +3747,11 @@ public class BiodataAction extends BaseMasterAction{
         String itemId = getId();
         String itemFlag = getFlag();
 
-        Biodata editBiodata = new Biodata();
+        Biodata transBiodata = new Biodata();
 
         if(itemFlag != null){
             try {
-                editBiodata = init(itemId, itemFlag);
+                transBiodata = init(itemId, itemFlag);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -3764,20 +3764,20 @@ public class BiodataAction extends BaseMasterAction{
                 return "failure";
             }
 
-            if(editBiodata != null) {
-                editBiodata.setFlagDokterKso("N");
-                setBiodata(editBiodata);
+            if(transBiodata != null) {
+                transBiodata.setFlagDokterKso("N");
+                setBiodata(transBiodata);
             } else {
-                editBiodata.setFlag(itemFlag);
-                editBiodata.setNip(itemId);
-                setBiodata(editBiodata);
+                transBiodata.setFlag(itemFlag);
+                transBiodata.setNip(itemId);
+                setBiodata(transBiodata);
                 addActionError("Error, Unable to find data with id = " + itemId);
                 return "failure";
             }
         } else {
-            editBiodata.setNip(itemId);
-            editBiodata.setFlag(getFlag());
-            setBiodata(editBiodata);
+            transBiodata.setNip(itemId);
+            transBiodata.setFlag(getFlag());
+            setBiodata(transBiodata);
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }

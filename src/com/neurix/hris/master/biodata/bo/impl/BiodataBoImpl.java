@@ -1019,7 +1019,7 @@ public class BiodataBoImpl implements BiodataBo {
                         if (imBiodataEntity != null) {
 
                             //menciptakan history baru apabila karyawan diangkat menjadi karyawan tetap
-                            if (!imBiodataEntity.getTipePegawai().equalsIgnoreCase(bean.getTipePegawai())){
+                            if (!bean.getTipePegawai().equalsIgnoreCase(imBiodataEntity.getTipePegawai())){
                                 //update tanggal akhir jabatan lama di history jabatan pegawai
                                 String HistoryJabatanId;
                                 ImtHrisHistoryJabatanPegawaiEntity pengalamanLama = null;
@@ -5697,21 +5697,46 @@ public class BiodataBoImpl implements BiodataBo {
     }
 
     public String cekJabatan(String nip){
-        String status = "true";
+        //RAKA-01FEB2021 ==> Merubah cara Validasi Jabatan Aktif
+        String status = "false";
 
-        List<ImtHrisHistoryJabatanPegawaiEntity> imtHrisHistoryJabatanPegawaiEntity = new ArrayList<>();
+        List<PersonilPosition> personilPositionList = new ArrayList<>();
 
         try{
-            imtHrisHistoryJabatanPegawaiEntity = historyJabatanPegawaiDao.getDataJabatan(nip);
+            personilPositionList = biodataDao.getListPersonilPositionByNip(nip);
         }catch (HibernateException e){
             logger.error("[BiodataBoImpl.cekJabatan] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
-        if (imtHrisHistoryJabatanPegawaiEntity == null){
+
+        if (personilPositionList == null){
             status = "false";
-        }else if (imtHrisHistoryJabatanPegawaiEntity.size() == 0){
+        }else if (personilPositionList.size() == 0){
             status = "false";
+        }else {
+            for(PersonilPosition personilPosition : personilPositionList){
+                if("JP05".equalsIgnoreCase(personilPosition.getJenisPegawai())){
+                    status = "true";
+                }
+            }
         }
+        //RAKA-end
+
+//        String status = "true";
+
+//        List<ImtHrisHistoryJabatanPegawaiEntity> imtHrisHistoryJabatanPegawaiEntity = new ArrayList<>();
+//
+//        try{
+//            imtHrisHistoryJabatanPegawaiEntity = historyJabatanPegawaiDao.getDataJabatan(nip);
+//        }catch (HibernateException e){
+//            logger.error("[BiodataBoImpl.cekJabatan] Error, " + e.getMessage());
+//            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//        }
+//        if (imtHrisHistoryJabatanPegawaiEntity == null){
+//            status = "false";
+//        }else if (imtHrisHistoryJabatanPegawaiEntity.size() == 0){
+//            status = "false";
+//        }
 
         return status;
     }
