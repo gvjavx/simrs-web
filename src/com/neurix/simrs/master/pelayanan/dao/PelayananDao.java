@@ -318,6 +318,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         List<Pelayanan> pelayananList = new ArrayList<>();
         if(bean != null){
             String condition = "";
+            String flag = "Y";
             if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
                 condition += "AND a.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
             }
@@ -330,19 +331,28 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
             if(bean.getKategoriPelayanan() != null && !"".equalsIgnoreCase(bean.getKategoriPelayanan())){
                 condition += "AND b.kategori_pelayanan = '"+bean.getKategoriPelayanan()+"' \n";
             }
+            if(bean.getNamaPelayanan() != null && !"".equalsIgnoreCase(bean.getNamaPelayanan())){
+                condition += "AND b.nama_pelayanan ILIKE '%"+bean.getNamaPelayanan()+"%' \n";
+            }
+            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+                flag = bean.getFlag();
+            }
             String SQL = "SELECT\n" +
                     "a.id_pelayanan,\n" +
                     "b.nama_pelayanan,\n" +
                     "b.tipe_pelayanan,\n" +
                     "b.kategori_pelayanan,\n" +
                     "b.divisi_id,\n" +
-                    "b.kode_vclaim\n" +
+                    "b.kode_vclaim,\n" +
+                    "c.position_name\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
-                    "WHERE a.flag = 'Y'\n" + condition +
+                    "LEFT JOIN im_position c ON b.divisi_id = c.position_id\n" +
+                    "WHERE a.flag = :flag \n" + condition +
                     "ORDER BY b.nama_pelayanan ASC";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("flag", flag)
                     .list();
 
             if (results.size() > 0) {
@@ -354,12 +364,14 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                     pelayanan.setKategoriPelayanan(obj[3] != null ? obj[3].toString() : "");
                     pelayanan.setDivisiId(obj[4] != null ? obj[4].toString() : "");
                     pelayanan.setKodePoliVclaim(obj[5] != null ? obj[5].toString() : "");
+                    pelayanan.setDivisiName(obj[6] != null ? obj[6].toString() : "");
                     pelayananList.add(pelayanan);
                 }
             }
         }
         return pelayananList;
     }
+
     public Pelayanan getPelayananById(String column, String value){
         Pelayanan pelayanan = new Pelayanan();
         if(column != null && value != null){
