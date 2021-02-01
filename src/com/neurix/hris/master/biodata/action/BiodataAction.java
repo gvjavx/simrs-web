@@ -3742,6 +3742,58 @@ public class BiodataAction extends BaseMasterAction{
         return seq;
     }
 
+    public String ksoToKaryawan() {
+        logger.info("[BiodataAction.ksoToKaryawan] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
+
+        Biodata editBiodata = new Biodata();
+
+        if(itemFlag != null){
+            try {
+                editBiodata = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getPersonalByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[BiodataAction.ksoToKaryawan] Error when retrieving edit data,", e1);
+                }
+                logger.error("[BiodataAction.ksoToKaryawan] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
+                return "failure";
+            }
+
+            if(editBiodata != null) {
+                editBiodata.setFlagDokterKso("N");
+                setBiodata(editBiodata);
+            } else {
+                editBiodata.setFlag(itemFlag);
+                editBiodata.setNip(itemId);
+                setBiodata(editBiodata);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            editBiodata.setNip(itemId);
+            editBiodata.setFlag(getFlag());
+            setBiodata(editBiodata);
+            addActionError("Error, Unable to edit again with flag = N.");
+            return "failure";
+        }
+
+        setAddOrEdit(true);
+
+        //remove session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listSertifikat");
+        session.removeAttribute("listOfPersonilPosition");
+
+        logger.info("[BiodataAction.ksoToKaryawan] end process >>>");
+
+        return "init_add_user";
+    }
+
     public String paging(){
         return SUCCESS;
     }

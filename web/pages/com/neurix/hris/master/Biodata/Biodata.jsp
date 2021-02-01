@@ -317,7 +317,7 @@
 
                     <div class="tab-content well box-shadowed" >
                         <div id="biodata" class="tab-pane fade in active">
-                            <h3>Biodata</h3>
+                            <h3>Biodata Karyawan Kantor</h3>
                             <br>
                             <div class="row">
                                 <div class="col-md-12" style="text-align: center;">

@@ -291,7 +291,7 @@
 
                     <div class="tab-content well box-shadowed">
                         <div id="biodata" class="tab-pane fade in active">
-                            <h3>Biodata</h3>
+                            <h3>Biodata Dokter KSO</h3>
                             <br>
                             <div class="row">
                                 <div class="col-md-12" style="text-align: center">
@@ -1138,6 +1138,14 @@
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
+
+                        <s:if test='!isAdd()'>
+                            <s:a action="ksoToKaryawan_biodata.action" cssClass="btn btn-info" id="kso2karyawan">
+                                <s:param name="id"><s:property value="biodata.nip" /></s:param>
+                                <s:param name="flag"><s:property value="biodata.flag" /></s:param>
+                                <i class="fa fa-user"></i>  Jadikan Karyawan Tetap
+                            </s:a>
+                        </s:if>
                     </s:if>
 
                     <%--<sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"--%>
@@ -3490,6 +3498,13 @@
             });
 
         }
+
+        $('#kso2karyawan').click(function(event) {
+                if (!confirm('Apakah anda akan menjadikannya Karyawan Tetap?\nMohon lengkapi informasi yang diperlukan setelah ini.')) {
+                    event.preventDefault()
+                }
+            }
+        )
 
         $('#btnSave').click(function () {
             var url = $('#myForm').attr('action');
