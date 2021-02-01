@@ -48,6 +48,15 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private String flagFingerMoblie;
     private String bagianId;
     private String bagianName;
+    private String shiftId;
+
+    public String getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
 
     public String getBagianId() {
         return bagianId;

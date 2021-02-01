@@ -1545,3 +1545,17 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN id_ket VARCHAR(100);
 
 --
+
+-- 2021-01-28
+
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN tanggal_upload TIMESTAMP WITHOUT TIME ZONE;
+
+--
+
+-- 2021-02-01
+
+    ALTER TABLE it_simrs_pembayaran_online
+    ADD COLUMN shift_id VARCHAR(5);
+
+--

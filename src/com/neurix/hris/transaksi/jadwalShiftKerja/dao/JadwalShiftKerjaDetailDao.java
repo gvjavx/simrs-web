@@ -112,4 +112,30 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
         return listOfResult;
     }
 
+    public Boolean foundShiftKerjaByNipAndTime(String nip, String stTanggal, String stTime){
+        String SQL = "SELECT \n" +
+                "skd.jadwal_shift_kerja_detail_id, \n" +
+                "sk.jadwal_shift_kerja_id, \n" +
+                "ms.shift_id, \n" +
+                "sk.tanggal, \n" +
+                "skd.nip,\n" +
+                "ms.jam_awal,\n" +
+                "ms.jam_akhir\n" +
+                "FROM (SELECT * FROM it_hris_jadwal_shift_kerja_detail WHERE flag = 'Y') skd\n" +
+                "INNER JOIN (SELECT * FROM it_hris_jadwal_shift_kerja WHERE flag = 'Y') sk ON sk.jadwal_shift_kerja_id = skd.jadwal_shift_kerja_id\n" +
+                "INNER JOIN im_hris_shift ms ON ms.shift_id = skd.shift_id\n" +
+                "WHERE sk.tanggal = '"+stTanggal+" '\n" +
+                "AND skd.nip = '"+nip+"' \n" +
+                "AND ms.jam_awal <= '"+stTime+"' \n" +
+                "AND ms.jam_akhir >= '"+stTime+"' ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results != null && results.size() > 0)
+            return true;
+        else
+            return false;
+
+    }
+
 }
