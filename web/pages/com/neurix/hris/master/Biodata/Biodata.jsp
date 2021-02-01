@@ -483,12 +483,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
-                                                        <s:elseif test="isAdd()">
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
-                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
-                                                        </s:elseif>
+                                                        <%--<s:elseif test="isAdd()">--%>
+                                                            <%--<s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"--%>
+                                                                         <%--cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />--%>
+                                                        <%--</s:elseif>--%>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value);"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -6401,7 +6401,7 @@
                 $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
             })
         } else {
-            var seq = nip.substr(8, 4);
+            var seq = nip.slice(nip.length - 4);
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
     }
