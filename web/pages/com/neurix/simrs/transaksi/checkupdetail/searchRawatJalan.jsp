@@ -232,6 +232,9 @@
                                                     <s:a href="%{add_rawat_jalan}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                     </s:a>
+                                                    <s:if test='#row.statusPeriksa == "0"'>
+                                                        <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
+                                                    </s:if>
                                                 </s:if>
                                                 <s:else>
                                                     <span class="span-warning">Uang muka belum bayar</span>
@@ -244,6 +247,9 @@
                                                 <s:a href="%{add_rawat_jalan}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
+                                                <s:if test='#row.statusPeriksa == "0"'>
+                                                    <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
+                                                </s:if>
                                             </s:else>
                                         </s:if>
                                         <s:if test='#row.tglCekup == null'>
@@ -258,10 +264,6 @@
                                             <a target="_blank" href="printFormulirPindahRS_checkupdetail.action?id=<s:property value="idDetailCheckup"/>">
                                                 <img src="<s:url value="/pages/images/icons8-print-25.png"/>">
                                             </a>
-                                        </s:if>
-
-                                        <s:if test='#row.statusPeriksa == "0"'>
-                                            <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
                                         </s:if>
                                     </td>
                                 </tr>

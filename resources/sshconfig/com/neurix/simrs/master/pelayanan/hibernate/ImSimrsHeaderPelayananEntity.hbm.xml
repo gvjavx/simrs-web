@@ -41,6 +41,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="isVaksin">
+                <column name="is_vaksin"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -1648,7 +1648,8 @@ action VARCHAR(1),
 created_date TIMESTAMP WITHOUT TIME ZONE,
 created_who VARCHAR(100),
 last_update TIMESTAMP WITHOUT TIME ZONE,
-last_update_who VARCHAR(100)
+last_update_who VARCHAR(100),
+is_vaksin VARCHAR(1)
 );
 
 CREATE SEQUENCE seq_header_pelayanan;
@@ -1665,6 +1666,10 @@ DROP COLUMN tipe_pelayanan,
 DROP COLUMN divisi_id,
 DROP COLUMN kategori_pelayanan,
 DROP COLUMN kode_poli_vclaim;
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN is_eksekutif VARCHAR(1),
+ADD COLUMN is_vaksin VARCHAR(1);
 
 
 

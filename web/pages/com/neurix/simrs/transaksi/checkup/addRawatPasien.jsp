@@ -75,23 +75,7 @@
 
                 if (tipe == "umum") {
                     if(cekEksekutif == 'Y'){
-                        if($('#is_uang_muka').is(':checked')){
-                            if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
-                                $('#confirm_dialog').dialog('open');
-                            } else {
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                                if (pembayaran == '') {
-                                    $('#war_pembayaran').show();
-                                }
-                                if (uangMuka == '' || parseInt(uangMuka) == 0) {
-                                    $('#war_uang_muka').show();
-                                }
-                            }
-                        }else{
-                            $('#confirm_dialog').dialog('open');
-                        }
+                        $('#confirm_dialog').dialog('open');
                     }else{
                         if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
                             $('#confirm_dialog').dialog('open');
@@ -452,6 +436,7 @@
                 $('#url_do').val(null);
                 $('#surat_polisi, #surat_rujuk').val(null);
                 $('#warning_pasien').hide();
+                $('#form_vaksin').hide();
             }
 
             var url_string = window.location.href;
@@ -562,6 +547,7 @@
             $('#url_do').val(null);
             $('#surat_polisi, #surat_rujuk').val(null);
             $('#warning_pasien').hide();
+            $('#form_vaksin').hide();
         }
 
         function formatRupiah2(angka) {
@@ -1253,9 +1239,9 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="display: none" id="form_eksekutif">
                                             <div class="form-group">
-                                                <label class="col-md-4" style="margin-top: 10px">Eksetif ?</label>
+                                                <label class="col-md-4" style="margin-top: 10px">Eksekutif ?</label>
                                                 <div class="col-md-8">
                                                     <div class="form-check" style="margin-top: 10px">
                                                         <input onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
@@ -1313,12 +1299,12 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="row">
+                                        <div class="row" style="display: none" id="form_vaksin">
                                             <div class="form-group">
                                                 <label class="col-md-4" style="margin-top: 10px">Vaksin ?</label>
                                                 <div class="col-md-8">
                                                     <div class="form-check" style="margin-top: 10px">
-                                                        <input type="checkbox" id="is_vaksin" value="yes">
+                                                        <input onclick="isVaksin(this.id)" type="checkbox" id="is_vaksin" value="yes">
                                                         <label for="is_vaksin"></label>
                                                     </div>
                                                 </div>
@@ -1507,7 +1493,8 @@
                             <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
-                            <s:hidden id="cek_poli_eksekutif"></s:hidden>
+                            <s:hidden id="cek_poli_eksekutif" name="headerCheckup.isEksekutif"></s:hidden>
+                            <s:hidden id="cek_is_vaksin" name="headerCheckup.isVaksin"></s:hidden>
 
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
@@ -1515,7 +1502,7 @@
                                     <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
                                     </h3>
                                 </div>
-                                <div class="box-body" id="form-um-ex">
+                                <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
@@ -2524,17 +2511,10 @@
                         $('#form-lab').hide();
                     }
 
-                    if(res.isEksekutif == 'Y'){
-                        $('#centang').show();
-                        $('#text_centang').text("Uang Muka ? ");
-                        $('#cek_poli_eksekutif').val('Y');
-                        $('#form-um-ex').show();
-                        $('#is_uang_muka').prop('checked', true);
+                    if(res.isVaksin == "Y"){
+                        $('#form_vaksin').show();
                     }else{
-                        $('#centang').hide();
-                        $('#text_centang').text("Pembayaran");
-                        $('#cek_poli_eksekutif').val('N');
-                        $('#form-um-ex').show();
+                        $('#form_vaksin').hide();
                     }
                 }
             });
@@ -3234,6 +3214,7 @@
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
             $('#poli').attr('disabled', false);
+            $('#form_eksekutif').show();
         } else if (jenis == "bpjs" || jenis == "rekanan") {
             if (jenis == "rekanan") {
                 listSelectRekanan();
@@ -3249,6 +3230,7 @@
             $('#form-paket').hide();
             $('#form-asuransi').hide();
             $('#poli').attr('disabled', false);
+            $('#form_eksekutif').hide();
         } else if (jenis == "paket_perusahaan") {
             listSelectPaket();
             $('#form-paket-perusahaan').show();
@@ -3259,6 +3241,7 @@
             $('#form-rekanan').hide();
             $('#form-paket').hide();
             $('#poli').attr('disabled', true);
+            $('#form_eksekutif').hide();
         } else if (jenis == "paket_individu") {
             listSelectPaket();
             $('#form-paket').show();
@@ -3269,6 +3252,7 @@
             $('#form-rekanan').hide();
             $('#form-uang-muka').hide();
             $('#poli').attr('disabled', true);
+            $('#form_eksekutif').hide();
         } else if (jenis == "asuransi") {
             listSelectAsuransi();
             $('#form-asuransi').show();
@@ -3279,6 +3263,7 @@
             $('#form-uang-muka').hide();
             $('#form-rekanan').hide();
             $('#poli').attr('disabled', false);
+            $('#form_eksekutif').hide();
         }
 
         if (online == "Y") {
@@ -3287,7 +3272,6 @@
             $('#jenis_pasien').attr('disabled', true);
             $('#id_pasien').attr('readonly', true);
             $('#no_bpjs').attr('readonly', true);
-            $('#')
         } else {
             var url_string = window.location.href;
             var url = new URL(url_string);
@@ -3856,9 +3840,19 @@
 
     function isUangMuka(id){
         if($('#'+id).is(':checked')){
-            $('#form-um-ex').show();
+            $('#form-uang-muka').hide();
+            $('#cek_poli_eksekutif').val('Y');
         }else{
-            $('#form-um-ex').hide();
+            $('#form-uang-muka').show();
+            $('#cek_poli_eksekutif').val('N');
+        }
+    }
+
+    function isVaksin(id){
+        if($('#'+id).is(':checked')){
+            $('#cek_is_vaksin').val('Y');
+        }else{
+            $('#cek_is_vaksin').val('N');
         }
     }
 

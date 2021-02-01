@@ -341,6 +341,7 @@ public class PelayananBoImpl implements PelayananBo{
                         pelayanan.setKategoriPelayanan(headerPelayananEntity.getKategoriPelayanan());
                         pelayanan.setDivisiId(headerPelayananEntity.getDivisiId());
                         pelayanan.setKodePoliVclaim(headerPelayananEntity.getKodeVclaim());
+                        pelayanan.setIsVaksin(headerPelayananEntity.getIsVaksin());
                     }
 
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -480,5 +481,10 @@ public class PelayananBoImpl implements PelayananBo{
     @Override
     public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException {
         return pelayananDao.getJutsPelayananAndLab(branchId);
+    }
+
+    @Override
+    public Pelayanan getObjectPelayanan(Pelayanan bean) throws GeneralBOException {
+        return pelayananDao.getObjectPelayanan(bean);
     }
 }

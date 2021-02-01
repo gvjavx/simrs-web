@@ -15,6 +15,15 @@ public class ImSimrsHeaderPelayananEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isVaksin;
+
+    public String getIsVaksin() {
+        return isVaksin;
+    }
+
+    public void setIsVaksin(String isVaksin) {
+        this.isVaksin = isVaksin;
+    }
 
     public String getIdHeaderPelayanan() {
         return idHeaderPelayanan;

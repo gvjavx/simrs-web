@@ -602,6 +602,8 @@ public class CheckupDetailAction extends BaseMasterAction {
             String label = checkup.getNamaPelayanan().replace("Poli Spesialis", "");
             detailCheckup.setAsesmenLabel("Asesmen " + label);
             detailCheckup.setTipePelayanan(checkup.getTipePelayanan());
+            detailCheckup.setIsEksekutif(checkup.getIsEksekutif());
+            detailCheckup.setIsVaksin(checkup.getIsVaksin());
 
             if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
@@ -2749,13 +2751,13 @@ public class CheckupDetailAction extends BaseMasterAction {
                             headerDetailCheckup.setNamaDiagnosa(diagnosaRawat.getKeteranganDiagnosa());
                         }
 
-                        List<Pelayanan> pelayananList = new ArrayList<>();
+                        Pelayanan pelayananResult = new Pelayanan();
                         Pelayanan pelayanan = new Pelayanan();
                         pelayanan.setTipePelayanan("rawat_inap");
                         pelayanan.setBranchId(CommonUtil.userBranchLogin());
 
                         try {
-                            pelayananList = pelayananBo.getByCriteria(pelayanan);
+                            pelayananResult = pelayananBo.getObjectPelayanan(pelayanan);
                         } catch (GeneralBOException e) {
                             logger.error("[Found Error] when search pelayanan " + e.getMessage());
                             finalResponse.setStatus("error");
@@ -2763,8 +2765,10 @@ public class CheckupDetailAction extends BaseMasterAction {
                             return finalResponse;
                         }
 
-                        if (pelayananList.size() > 0) {
-                            pelayanan = pelayananList.get(0);
+                        if(pelayananResult.getIdPelayanan() == null || "".equalsIgnoreCase(pelayananResult.getIdPelayanan())){
+                            finalResponse.setStatus("error");
+                            finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
+                            return finalResponse;
                         }
 
                         if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
@@ -3197,7 +3201,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                         headerDetailCheckup.setNoCheckup(noCheckup);
-                        headerDetailCheckup.setIdPelayanan(pelayanan.getIdPelayanan());
+                        headerDetailCheckup.setIdPelayanan(pelayananResult.getIdPelayanan());
                         headerDetailCheckup.setIdRuangan(kamar);
                         headerDetailCheckup.setStatusPeriksa("1");
                         headerDetailCheckup.setCreatedDate(now);

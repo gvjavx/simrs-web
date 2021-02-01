@@ -35,6 +35,16 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String kodePoliVclaim;
     private String idHeaderPelayanan;
 
+    private String isVaksin;
+
+    public String getIsVaksin() {
+        return isVaksin;
+    }
+
+    public void setIsVaksin(String isVaksin) {
+        this.isVaksin = isVaksin;
+    }
+
     public String getIdHeaderPelayanan() {
         return idHeaderPelayanan;
     }

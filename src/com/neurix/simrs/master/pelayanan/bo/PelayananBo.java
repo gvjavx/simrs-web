@@ -28,4 +28,6 @@ public interface PelayananBo extends BaseMasterBo<Pelayanan> {
     public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException;
     public List<Pelayanan> getJustPelayananByBranch(String branchId) throws GeneralBOException;
     public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException;
+
+    public Pelayanan getObjectPelayanan(Pelayanan bean) throws GeneralBOException;
 }
