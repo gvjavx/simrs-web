@@ -5,9 +5,6 @@ import com.neurix.common.model.BaseModel;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by Toshiba on 07/11/2019.
- */
 public class Pelayanan extends BaseModel implements Serializable {
 
     private String idPelayanan;
@@ -36,6 +33,15 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String notOwnBranch;
 
     private String kodePoliVclaim;
+    private String idHeaderPelayanan;
+
+    public String getIdHeaderPelayanan() {
+        return idHeaderPelayanan;
+    }
+
+    public void setIdHeaderPelayanan(String idHeaderPelayanan) {
+        this.idHeaderPelayanan = idHeaderPelayanan;
+    }
 
     public String getKodePoliVclaim() {
         return kodePoliVclaim;

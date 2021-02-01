@@ -439,11 +439,11 @@ public class DokterAction extends BaseMasterAction {
         return dokterList;
     }
 
-    public List<ImSimrsPelayananEntity> getComboPelayanan() {
+    public List<Pelayanan> getComboPelayanan() {
         logger.info("[DokterAction.initDokter] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
-        List<ImSimrsPelayananEntity> pelayanans = new ArrayList();
+        List<Pelayanan> pelayanans = new ArrayList();
         String branchId = CommonUtil.userBranchLogin();
         if("ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
             branchId = null;

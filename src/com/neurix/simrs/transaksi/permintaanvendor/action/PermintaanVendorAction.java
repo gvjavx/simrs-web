@@ -19,6 +19,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.master.vendor.model.Vendor;
@@ -872,7 +873,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             Map jurnalMap = new HashMap();
             if ("reture".equalsIgnoreCase(jenis)){
 
-                ImSimrsPelayananEntity pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(pelayananId);
+                Pelayanan pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(pelayananId);
                 if (pelayananEntity != null){
 
                     ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());

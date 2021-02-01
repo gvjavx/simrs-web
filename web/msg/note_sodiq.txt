@@ -1628,11 +1628,46 @@ INSERT INTO im_func_roles VALUES
 --UPDATE MENU KASIR JALAN
 SELECT * FROM im_func_roles
 WHERE role_id = 41
-AND func_id = 2
+AND func_id = 2;
 
 DELETE FROM im_func_roles
 WHERE role_id = 41
-AND func_id = 2
+AND func_id = 2;
+
+
+--01-02-2021 07:18 WIS (waktu indonesia sumenep)
+CREATE TABLE im_simrs_header_pelayanan(
+id_header_pelayanan VARCHAR(30) PRIMARY KEY NOT NULL,
+nama_pelayanan VARCHAR(500),
+tipe_pelayanan VARCHAR(100),
+kategori_pelayanan VARCHAR(100),
+kode_vclaim VARCHAR(100),
+divisi_id VARCHAR(100),
+flag VARCHAR(1),
+action VARCHAR(1),
+created_date TIMESTAMP WITHOUT TIME ZONE,
+created_who VARCHAR(100),
+last_update TIMESTAMP WITHOUT TIME ZONE,
+last_update_who VARCHAR(100)
+);
+
+CREATE SEQUENCE seq_header_pelayanan;
+
+--drop column2 di im_simrs_pelayanan
+ALTER TABLE im_simrs_pelayanan
+ADD COLUMN id_header_pelayanan VARCHAR(100);
+
+ALTER TABLE im_simrs_pelayanan
+DROP COLUMN nama_pelayanan,
+DROP COLUMN is_poli,
+DROP COLUMN is_eksekutif,
+DROP COLUMN tipe_pelayanan,
+DROP COLUMN divisi_id,
+DROP COLUMN kategori_pelayanan,
+DROP COLUMN kode_poli_vclaim;
+
+
+
 
 
 

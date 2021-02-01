@@ -50,7 +50,16 @@ public class PelayananPaketDao extends GenericDao<ItSimrsPelayananPaketEntity, S
                 "b.nama_pelayanan,\n" +
                 "a.id_paket\n" +
                 "FROM it_simrs_pelayanan_paket a\n" +
-                "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON a.id_pelayanan = b.id_pelayanan\n" +
                 "WHERE a.no_checkup = :id \n" +
                 "ORDER BY a.urutan ASC";
         List<Object[]> result = new ArrayList<>();

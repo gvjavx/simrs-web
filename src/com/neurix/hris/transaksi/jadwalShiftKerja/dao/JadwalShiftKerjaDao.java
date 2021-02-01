@@ -264,7 +264,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "FROM \n" +
                 "\tim_simrs_dokter dk\n" +
                 "\tINNER JOIN im_simrs_dokter_pelayanan dpl ON dk.id_dokter = dpl.id_dokter\n" +
-                "\tINNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
                 "\tINNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
                 "\tINNER JOIN it_hris_jadwal_shift_kerja_detail jdd ON jdd.nip=pg.nip\n" +
                 "\tINNER JOIN it_hris_jadwal_shift_kerja jd ON jd.jadwal_shift_kerja_id=jdd.jadwal_shift_kerja_id\n" +
@@ -456,7 +465,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "FROM it_simrs_header_checkup a \n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                 "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
                 "AND d.tipe_pelayanan IN ('rawat_jalan')\n" +
                 "AND b.id_jenis_periksa_pasien NOT LIKE 'bpjs'\n" +
@@ -469,7 +487,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "FROM it_simrs_header_checkup a \n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                 "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
                 "AND d.tipe_pelayanan IN ('rawat_jalan')\n" +
                 "AND b.id_jenis_periksa_pasien LIKE 'bpjs'\n" +

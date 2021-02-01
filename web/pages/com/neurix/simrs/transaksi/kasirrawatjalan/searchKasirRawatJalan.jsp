@@ -824,7 +824,7 @@
     function confirmSavePembayaranTagihan(){
         var metodeBayarDiAkhir = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
-        if($('#kelebihan_biaya').val() != ''){
+        if($('#kelebihan_biaya').val() != undefined){
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick','savePembayaranTagihan()');
         }else{

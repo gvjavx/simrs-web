@@ -1467,7 +1467,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     RujukanResponse rujukanResponse = new RujukanResponse();
                     String noSEP = detailCheckup.getNoSep();
                     String noPPK = noSEP.substring(0, 8);
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPoliRujukan);
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(idPoliRujukan);
                     if (pelayananEntity.getKodePoliVclaim() != null) {
                         request.setNoSep(noSEP);
                         request.setTglRujukan(tglToday);
@@ -1747,7 +1747,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
                 }
 
-                ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+                Pelayanan pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
                 if (pelayananEntity != null) {
 
 
@@ -5389,7 +5389,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             if (riwayatTindakanEntity != null) {
                 ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(riwayatTindakanEntity.getIdTindakan());
                 if (permintaanResepEntity != null) {
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
                     if (pelayananEntity != null) {
                         ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
                         if (position != null) {
@@ -5424,7 +5424,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null) {
                 try {
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
 
                     // jika poli selain rawat inap maka mengambil kodering dari pelayanan
                     // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit

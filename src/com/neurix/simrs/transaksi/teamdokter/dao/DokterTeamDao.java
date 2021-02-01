@@ -58,13 +58,18 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
 
     public String namaPelayanan(String idPelayanan) {
         String res = "";
-
-        if(!"".equalsIgnoreCase(idPelayanan) && idPelayanan != null){
-            String SQL = "SELECT \n" +
-                    "id_pelayanan,\n" +
-                    "nama_pelayanan\n" +
-                    "FROM im_simrs_pelayanan \n" +
-                    "WHERE id_pelayanan = :idPelayanan";
+        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) ){
+            String SQL = "SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "a.branch_id,"+
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan \n"+
+                    "WHERE a.id_pelayanan = :idPelayanan";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -125,7 +130,16 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
         String sql = "SELECT dt.id_team_dokter, dk.nama_dokter, dt.id_dokter, dt.id_detail_checkup, dt.jenis_dpjp, dt.flag_approve, dt.keterangan, pl.nama_pelayanan \n" +
                 "FROM it_simrs_dokter_team dt\n" +
                 "JOIN im_simrs_dokter dk ON dk.id_dokter = dt.id_dokter\n" +
-                "JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
+                "JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "a.branch_id,"+
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
                 "WHERE dt.id_dokter = :id" + query;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)

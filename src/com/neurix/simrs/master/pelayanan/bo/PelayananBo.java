@@ -19,13 +19,13 @@ public interface PelayananBo extends BaseMasterBo<Pelayanan> {
     ImSimrsPelayananEntity getPelayananByDivisiId(String id,String branchId) throws GeneralBOException;
 
     public List<Pelayanan> getListPelayananPaketPeriksa(String branch) throws GeneralBOException;
-    public ImSimrsPelayananEntity getPelayananById(String id) throws GeneralBOException;
+    public Pelayanan getPelayananById(String id) throws GeneralBOException;
     public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException;
 
     public List<Pelayanan> getListPelayananWithLab(String tipe) throws GeneralBOException;
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException;
 
     public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException;
-    public List<ImSimrsPelayananEntity> getJustPelayananByBranch(String branchId) throws GeneralBOException;
-    public List<ImSimrsPelayananEntity> getJustPelayananAndLab(String branchId) throws GeneralBOException;
+    public List<Pelayanan> getJustPelayananByBranch(String branchId) throws GeneralBOException;
+    public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException;
 }

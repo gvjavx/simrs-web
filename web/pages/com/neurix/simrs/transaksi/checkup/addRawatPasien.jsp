@@ -1253,6 +1253,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Eksetif ?</label>
+                                                <div class="col-md-8">
+                                                    <div class="form-check" style="margin-top: 10px">
+                                                        <input onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
+                                                        <label for="is_uang_muka"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="row">
@@ -1299,6 +1310,17 @@
                                                     <s:textfield id="kunjungan_poli" name="headerCheckup.kunjunganPoli"
                                                                  readonly="true" cssStyle="margin-top: 7px"
                                                                  cssClass="form-control"></s:textfield>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Vaksin ?</label>
+                                                <div class="col-md-8">
+                                                    <div class="form-check" style="margin-top: 10px">
+                                                        <input type="checkbox" id="is_vaksin" value="yes">
+                                                        <label for="is_vaksin"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1491,10 +1513,6 @@
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
                                     <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
-                                        <div class="form-check" id="centang" style="display: none">
-                                            <input checked onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
-                                            <label for="is_uang_muka"></label>
-                                        </div>
                                     </h3>
                                 </div>
                                 <div class="box-body" id="form-um-ex">

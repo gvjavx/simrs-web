@@ -14,7 +14,7 @@
 	<parameter name="reportParams.unit" class="java.lang.String"/>
 	<parameter name="reportParams.title" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT a.* FROM (SELECT
+		<![CDATA[SELECT
 a.id_pasien,
 a.nama,
 b.id_detail_checkup,
@@ -24,33 +24,23 @@ c.nama_pelayanan,
 e.nama_dokter
 FROM it_simrs_header_checkup a
 INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup
-INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan
+INNER JOIN (
+SELECT
+a.id_pelayanan,
+b.nama_pelayanan,
+b.tipe_pelayanan,
+b.kategori_pelayanan,
+b.divisi_id,
+b.kode_vclaim
+FROM im_simrs_pelayanan a
+INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan
+) c ON b.id_pelayanan = c.id_pelayanan
 INNER JOIN it_simrs_dokter_team d ON b.id_detail_checkup = d.id_detail_checkup
 INNER JOIN im_simrs_dokter e ON d.id_dokter = e.id_dokter
 WHERE a.id_pasien = $P{reportParams.idPasien}
 AND b.id_pelayanan = $P{reportParams.idPelayanan}
 AND CAST(a.created_date AS DATE) = CURRENT_DATE
-ORDER BY a.created_date DESC LIMIT 1
-) a
-UNION ALL
-SELECT a.* FROM (SELECT
-a.id_pasien,
-a.nama,
-b.id_detail_checkup,
-b.no_antrian,
-b.id_pelayanan,
-c.nama_pelayanan,
-e.nama_dokter
-FROM it_simrs_header_checkup a
-INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup
-INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan
-INNER JOIN it_simrs_dokter_team d ON b.id_detail_checkup = d.id_detail_checkup
-INNER JOIN im_simrs_dokter e ON d.id_dokter = e.id_dokter
-WHERE a.id_pasien = $P{reportParams.idPasien}
-AND b.id_pelayanan = $P{reportParams.idPelayanan}
-AND CAST(a.created_date AS DATE) = CURRENT_DATE
-ORDER BY a.created_date DESC LIMIT 1
-) a]]>
+ORDER BY a.created_date DESC LIMIT 1]]>
 	</queryString>
 	<field name="id_pasien" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">

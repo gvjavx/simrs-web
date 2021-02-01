@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -90,6 +91,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private DiagnosaRawatDao diagnosaRawatDao;
     private PaketPasienDao paketPasienDao;
     private TempatTidurDao tempatTidurDao;
+    private PelayananDao pelayananDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -545,15 +547,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             Pelayanan pelayanan = new Pelayanan();
             pelayanan.setIdPelayanan(detailCheckup.getIdPelayanan());
-            List<ImSimrsPelayananEntity> pelayananEntityList = getListEntityPelayanan(pelayanan);
-
-            ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
-            if (!pelayananEntityList.isEmpty()) {
-                pelayananEntity = pelayananEntityList.get(0);
-            }
-            if (pelayananEntity != null) {
-                detailCheckup.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
-                detailCheckup.setTipePelayanan(pelayananEntity.getTipePelayanan());
+            Pelayanan resultPelayanan = pelayananDao.getObjectPelayanan(pelayanan);
+            if(resultPelayanan != null){
+                detailCheckup.setNamaPelayanan(resultPelayanan.getNamaPelayanan());
+                detailCheckup.setTipePelayanan(resultPelayanan.getTipePelayanan());
             }
             results.add(detailCheckup);
         }
@@ -1703,5 +1700,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setTempatTidurDao(TempatTidurDao tempatTidurDao) {
         this.tempatTidurDao = tempatTidurDao;
+    }
+
+    @Override
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
     }
 }
