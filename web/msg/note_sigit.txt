@@ -1558,4 +1558,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE it_simrs_pembayaran_online
     ADD COLUMN shift_id VARCHAR(5);
 
+    ALTER TABLE im_hris_shift
+    ADD COLUMN tipe_shift_kasir VARCHAR(100);
+
 --
