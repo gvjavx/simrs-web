@@ -175,8 +175,8 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Lisence ID</td>
-                                <td>Lisence Key</td>
                                 <td>Device ID</td>
+                                <td align="center">Status</td>
                                 <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
@@ -184,17 +184,30 @@
                             <s:iterator value="#session.listOfLicense" var="row">
                                 <tr>
                                     <td><s:property value="licenseId"/></td>
-                                    <td><s:property value="licenseKey"/></td>
                                     <td><s:property value="deviceId"/></td>
+                                    <td align="center">
+                                        <s:if test='#row.status == "0"'>
+                                            <span class="span-warning">menunggu aktivasi</span>
+                                        </s:if>
+                                        <s:elseif test='#row.status == "1"'>
+                                            <span class="span-success">aktif</span>
+                                        </s:elseif>
+                                        <s:elseif test='#row.status == "2'>
+                                            <span class="span-danger">ditolak</span>
+                                        </s:elseif>
+                                        <s:else>
+                                            <span class="span-kuning">tidak ditemukan</span>
+                                        </s:else>
+                                    </td>
                                     <td align="center">
                                         <img class="hvr-grow"
                                              onclick="showModal('detail', '<s:property value="licenseId"/>')"
                                              style="cursor: pointer"
                                              src="<s:url value="/pages/images/icons8-view-25.png"/>">
-                                        <img class="hvr-grow"
-                                             onclick="showModal('edit', '<s:property value="licenseId"/>')"
-                                             style="cursor: pointer"
-                                             src="<s:url value="/pages/images/icons8-create-25.png"/>">
+                                        <%--<img class="hvr-grow"--%>
+                                             <%--onclick="showModal('edit', '<s:property value="licenseId"/>')"--%>
+                                             <%--style="cursor: pointer"--%>
+                                             <%--src="<s:url value="/pages/images/icons8-create-25.png"/>">--%>
                                         <%--<img class="hvr-grow"--%>
                                              <%--onclick="showModal('delete', '<s:property value="idHeaderTindakan"/>')"--%>
                                              <%--style="cursor: pointer"--%>
@@ -235,14 +248,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak_atas">
-                        <div class="form-group">
-                            <label class="col-md-3">Lisence Key</label>
-                            <div class="col-md-7">
-                                <input class="form-control" id="set_license_key" disabled>
-                            </div>
-                        </div>
-                    </div>
+                    <%--<div class="row jarak_atas">--%>
+                        <%--<div class="form-group">--%>
+                            <%--<label class="col-md-3">Lisence Key</label>--%>
+                            <%--<div class="col-md-7">--%>
+                                <%--<input class="form-control" id="set_license_key" disabled>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                 </div>
                 <div class="row jarak_atas">
                     <div class="form-group">
@@ -292,13 +305,17 @@
                                     <td><b>Lisence ID</b></td>
                                     <td><span id="v_license_id"></span></td>
                                 </tr>
-                                <tr>
-                                    <td><b>Lisence Key</b></td>
-                                    <td><span id="v_license_key"></span></td>
-                                </tr>
+                                <%--<tr>--%>
+                                    <%--<td><b>Lisence Key</b></td>--%>
+                                    <%--<td><span id="v_license_key"></span></td>--%>
+                                <%--</tr>--%>
                                 <tr>
                                     <td><b>Device ID</b></td>
                                     <td><span id="v_device_id"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Status</b></td>
+                                    <td><span id="v_status"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Created Who</b></td>
@@ -419,7 +436,7 @@
 
     function getDataLicense(id) {
         LicenseAction.getDataLicense(id, function (res) {
-            if (res.licenseKey != null) {
+            if (res.deviceId != null) {
                 $('#v_license_id').text(res.licenseId);
                 $('#v_license_key').text(res.licenseKey);
                 $('#v_device_id').text(res.deviceId);
@@ -427,11 +444,30 @@
                 $('#v_created_date').text(converterDateYmdHms(res.createdDate));
                 $('#v_last_update').text(converterDateYmdHms(res.lastUpdate));
                 $('#v_last_update_who').text(res.lastUpdateWho);
+                var sts = '';
+                if(res.status == "0"){
+                    sts = '<span class="span-warning">menunggu aktivasi</span>';
+                }else if(res.status == "1"){
+                    sts = '<span class="span-success">aktif</span>';
+                }else if(res.status == "2"){
+                    sts = '<span class="span-danger">ditolak</span>';
+                }else{
+                    sts = '<span class="span-kuning">tidak ditemukan</span>';
+                }
+                $('#v_status').html(sts);
 
                 $('#for_edit').show();
                 $('#set_license_id').val(res.licenseId);
                 $('#set_license_key').val(res.licenseKey);
                 $('#set_device_id').val(res.deviceId);
+            }else{
+                $('#v_license_id, #v_license_key, #v_device_id, #v_created_who').text('');
+                $('#v_created_date, #v_last_update, #v_last_update_who').text('');
+                $('#v_status').html('');
+
+                $('#set_license_id').val('');
+                $('#set_license_key').val('');
+                $('#set_device_id').val('');
             }
         });
     }

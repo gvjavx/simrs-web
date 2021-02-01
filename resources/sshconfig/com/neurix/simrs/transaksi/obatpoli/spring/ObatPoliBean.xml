@@ -8,10 +8,12 @@
     <bean id="permintaanObatPoliAction" class="com.neurix.simrs.transaksi.obatpoli.action.PermintaanObatPoliAction"
           p:obatPoliBoProxy-ref="obatPoliBo"
           p:obatBoProxy-ref="obatBo"
+          p:branchBoProxy-ref="branchBo"
     />
 
     <bean id="obatPoliAction" class="com.neurix.simrs.transaksi.obatpoli.action.ObatPoliAction"
           p:obatPoliBoProxy-ref="obatPoliBo"
+          p:branchBoProxy-ref="branchBo"
     />
 
     <bean id="permintaanObatController" class="com.neurix.simrs.mobileapi.PermintaanObatController"

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.antriantelemedic.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsVideoRmEntity;
 import org.hibernate.Criteria;
@@ -28,6 +29,12 @@ public class VideoRmDao extends GenericDao<ItSimrsVideoRmEntity, String> {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsVideoRmEntity.class);
         if (mapCriteria.get("id_detail_checkup") != null) {
             criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+        }
+        if (mapCriteria.get("created_date_to_date") != null) {
+            criteria.add(Restrictions.sqlRestriction("DATE(created_date) = '" + mapCriteria.get("created_date_to_date") + "'"));
+        }
+        if (mapCriteria.get("tipe") != null) {
+            criteria.add(Restrictions.eq("tipeVideo", mapCriteria.get("tipe").toString()));
         }
         criteria.add(Restrictions.eq("flag", "Y"));
         return criteria.list();

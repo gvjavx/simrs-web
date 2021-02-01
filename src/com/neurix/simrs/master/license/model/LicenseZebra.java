@@ -15,6 +15,15 @@ public class LicenseZebra {
     private Timestamp lastUpdate;
     private String flag;
     private String action;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getLicenseLogId() {
         return licenseLogId;

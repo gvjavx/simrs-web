@@ -1,5 +1,7 @@
 package com.neurix.simrs.mobileapi;
 
+import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -52,6 +54,7 @@ import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -73,6 +76,7 @@ public class TelemedicineController implements ModelDriven<Object> {
     private VerifikatorPembayaranBo verifikatorPembayaranBoProxy;
     private BpjsBo bpjsBoProxy;
     private NotifikasiBo notifikasiBoProxy;
+    private BranchBo branchBoProxy;
 
     private String action;
 
@@ -120,6 +124,10 @@ public class TelemedicineController implements ModelDriven<Object> {
 
     private String path1;
     private String path2;
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public String getPath1() {
         return path1;
@@ -496,7 +504,6 @@ public class TelemedicineController implements ModelDriven<Object> {
         }
 
         if (action.equalsIgnoreCase("editStatus")) {
-
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setId(idTele);
             bean.setStatus(this.status);
@@ -951,9 +958,11 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlagResep(flagResep);
             bean.setStatus(this.status);
             bean.setIdPasien(idPasien);
+            bean.setFlagEresep(flagEresep);
             bean.setFlag("Y");
             bean.setIsMobile("Y");
-            bean.setFlagDateNow(CommonUtil.convertTimestampToString2(now));
+            Date date = new Date(System.currentTimeMillis());
+            bean.setFlagDateNow(CommonUtil.convertDateToString2(date));
 
             try {
                 result = telemedicBoProxy.getSearchByCriteria(bean);
@@ -982,6 +991,14 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setJenisPengambilan(item.getJenisPengambilan());
                 telemedicineMobile.setUrlResep(item.getUrlResep());
                 telemedicineMobile.setJenisPembayaran(item.getJenisPembayaran());
+                telemedicineMobile.setBranchId(item.getBranchId());
+
+                try {
+                   Branch branch = branchBoProxy.getBranchById(item.getBranchId(), "Y");
+                   telemedicineMobile.setBranchName(branch.getBranchName());
+                } catch (GeneralBOException e) {
+                    logger.error("[TelemedicineController.checkTele] Error, " + e.getMessage());
+                }
 
                 if (flagResep != null && flagResep.equalsIgnoreCase("Y")) {
 
@@ -1476,6 +1493,18 @@ public class TelemedicineController implements ModelDriven<Object> {
             } catch (GeneralBOException e){
                 logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
             }
+        }
+
+        if (action.equalsIgnoreCase("getVideoRm")) {
+
+            List<ItSimrsVideoRmEntity> list = new ArrayList<>();
+            try {
+                list = telemedicBoProxy.getVideoRm(idDetailCheckup);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+            }
+
+            model.setMessage(String.valueOf(list.size()));
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");

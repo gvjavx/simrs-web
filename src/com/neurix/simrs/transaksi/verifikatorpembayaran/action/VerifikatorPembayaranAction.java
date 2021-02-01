@@ -304,6 +304,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         // Sigit 2021-01-26, Pencarian Untuk Hari Ini
         searchAntrian.setStDateFrom(getStCurrentDate());
         searchAntrian.setStDateTo(getStCurrentDate());
+        searchAntrian.setFlagDateNow(getStCurrentDate());
 
 
         List<AntrianTelemedic> listResults = new ArrayList<>();

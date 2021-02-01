@@ -183,7 +183,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 11px">
+                        <table id="" class="table table-bordered table-striped" style="font-size: 11px">
                             <thead >
                                 <tr bgcolor="#90ee90">
                                     <td>Id Telemedic</td>
@@ -287,7 +287,7 @@
                                         </s:if>
                                     </td>
                                     <td><s:property value="stCreatedDate"/></td>
-                                    <td><s:property value="stTanggalUpload"/></td>
+                                    <td><s:property value="stTangalUpload"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagBatalDokter == "Y"'>
                                             <s:if test='#row.idJenisPeriksaPasien == "umum"'>

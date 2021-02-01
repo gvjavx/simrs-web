@@ -44,7 +44,41 @@
         ADD tanggal_cuti_diluar_akhir DATE;
 
 
+------ 2021-01-24 ===> Golongan & Golongan Dapen
+-- di table im_hris_golongan, ditambahkan field golongan_pensiun (varchar5), masa_kerja_gol_awal (varchar2), masa_kerja_gol_akhir(varchar2)
+    ALTER TABLE im_hris_golongan
+        ADD COLUMN golongan_pensiun varchar(5),
+        ADD COLUMN masa_kerja_gol_awal varchar(2),
+        ADD COLUMN masa_kerja_gol_akhir varchar(2);
 
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IVB',	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6		WHERE grade_level = 1;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IVA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =10 	WHERE grade_level = 2;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11 	WHERE grade_level = 3;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =7 	WHERE grade_level = 4;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIB',	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =10	WHERE grade_level = 5;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11	WHERE grade_level = 6;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =14 	WHERE grade_level = 7;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6 	WHERE grade_level = 8;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIB', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6 	WHERE grade_level = 9;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =8 	WHERE grade_level = 10;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='ID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =7		WHERE grade_level = 11;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =9		WHERE grade_level = 12;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IB', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11	WHERE grade_level = 13;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =15	WHERE grade_level = 14;
 
 
 

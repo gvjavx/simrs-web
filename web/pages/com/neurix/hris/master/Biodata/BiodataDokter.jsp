@@ -503,12 +503,14 @@
                                             <s:else>
                                                 <tr>
                                                     <td>
-                                                        <label><small>Jabatan :</small></label>
+                                                        <label><small>Jabatan <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
                                                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                            <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                                            <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId"
+                                                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                <%--<select id="positionId1" name="biodata.positionId" class="form-control"></select>--%>
                                                         </table>
                                                     </td>
                                                 </tr>
@@ -890,6 +892,30 @@
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
                                                                          cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                        </s:if>
+                                                        <s:elseif test="isDelete()">
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
+                                                            <s:hidden id="tanggalAktifTmp"/>
                                                         </s:else>
 
                                                     </table>
