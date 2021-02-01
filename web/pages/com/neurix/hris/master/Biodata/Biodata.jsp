@@ -982,7 +982,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1007,7 +1007,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
