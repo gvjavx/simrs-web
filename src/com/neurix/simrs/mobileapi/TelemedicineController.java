@@ -125,6 +125,16 @@ public class TelemedicineController implements ModelDriven<Object> {
     private String path1;
     private String path2;
 
+    private String flag;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
     public void setBranchBoProxy(BranchBo branchBoProxy) {
         this.branchBoProxy = branchBoProxy;
     }
@@ -959,7 +969,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setStatus(this.status);
             bean.setIdPasien(idPasien);
             bean.setFlagEresep(flagEresep);
-            bean.setFlag("Y");
+            bean.setFlag(flag);
             bean.setIsMobile("Y");
             Date date = new Date(System.currentTimeMillis());
             bean.setFlagDateNow(CommonUtil.convertDateToString2(date));
