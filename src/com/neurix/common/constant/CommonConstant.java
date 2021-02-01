@@ -265,5 +265,6 @@ public class CommonConstant {
 
     //API LICENSE
     public final static String LICENSE_API = CommonUtil.getPropertyParams("license.api");
+    public static final String LICENSE_EMAIL_TO = CommonUtil.getPropertyParams("license.email.to");
 
 }
