@@ -138,4 +138,31 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
 
     }
 
+    public String getShifIdByNipAndTanggal(String nip, String tanggal, String tipeRole, String branchId){
+
+        String SQL = "SELECT \n" +
+                    "ms.shift_id, \n" +
+                    "skd.jadwal_shift_kerja_detail_id\n" +
+                    "FROM (SELECT * FROM it_hris_jadwal_shift_kerja_detail WHERE flag = 'Y') skd\n" +
+                    "INNER JOIN (SELECT * FROM it_hris_jadwal_shift_kerja WHERE flag = 'Y') sk ON sk.jadwal_shift_kerja_id = skd.jadwal_shift_kerja_id\n" +
+                    "INNER JOIN (\n" +
+                    "\tSELECT \n" +
+                    "\t* \n" +
+                    "\tFROM im_hris_shift \n" +
+                    "\tWHERE branch_id = '"+branchId+"' \n" +
+                    "\tAND tipe_shift_kasir = '"+tipeRole+"' \n" +
+                    "\tAND flag = 'Y' \n" +
+                    ") ms ON ms.shift_id = skd.shift_id\n" +
+                    "WHERE sk.tanggal = '"+tanggal+"'\n" +
+                    "AND skd.nip = '"+nip+"'";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        String id = "";
+        if (objects.size() > 0){
+            Object[] obj = objects.get(0);
+            id =  obj[0].toString();
+        }
+        return id;
+    }
+
 }

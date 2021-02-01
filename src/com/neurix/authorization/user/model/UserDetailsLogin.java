@@ -49,6 +49,15 @@ public class UserDetailsLogin implements UserDetails, Serializable {
     private String bagianId;
     private String bagianName;
     private String shiftId;
+    private String tipeRole;
+
+    public String getTipeRole() {
+        return tipeRole;
+    }
+
+    public void setTipeRole(String tipeRole) {
+        this.tipeRole = tipeRole;
+    }
 
     public String getShiftId() {
         return shiftId;

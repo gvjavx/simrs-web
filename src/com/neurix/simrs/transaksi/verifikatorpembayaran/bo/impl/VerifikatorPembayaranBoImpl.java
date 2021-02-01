@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
@@ -87,6 +88,11 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private TransaksiStokDao transaksiStokDao;
     private StrukAsuransiDao strukAsuransiDao;
     private HeaderTindakanDao headerTindakanDao;
+    private JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao;
+
+    public void setJadwalShiftKerjaDetailDao(JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao) {
+        this.jadwalShiftKerjaDetailDao = jadwalShiftKerjaDetailDao;
+    }
 
     public void setHeaderTindakanDao(HeaderTindakanDao headerTindakanDao) {
         this.headerTindakanDao = headerTindakanDao;
@@ -1138,6 +1144,40 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             return pembayaranOnlineEntities.get(0);
         }
         return null;
+    }
+
+    @Override
+    public String getShifIdByNipAndTanggal(String nip, String tanggal, String tipeRole, String branchId) {
+        logger.info("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal] START >>>>>>>");
+
+        String id = "";
+
+        try {
+            id = jadwalShiftKerjaDetailDao.getShifIdByNipAndTanggal(nip, tanggal, tipeRole, branchId);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal] END <<<<<<<");
+        return id;
+    }
+
+    @Override
+    public Boolean checkIfAvailableShiftOfKasir(String nip, String stTanggal, String stJam) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir] START >>>>>>>");
+
+        Boolean found = false;
+
+        try {
+            found = jadwalShiftKerjaDetailDao.foundShiftKerjaByNipAndTime(nip, stTanggal, stJam);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir] END <<<<<<<");
+        return found;
     }
 
     private String getNextIdDiagnosa() {

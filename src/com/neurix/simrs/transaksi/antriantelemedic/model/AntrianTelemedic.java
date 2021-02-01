@@ -80,6 +80,15 @@ public class AntrianTelemedic {
     private String stTangalUpload;
     private Timestamp tanggalUpload;
     private Integer urutan;
+    private String flagKasir;
+
+    public String getFlagKasir() {
+        return flagKasir;
+    }
+
+    public void setFlagKasir(String flagKasir) {
+        this.flagKasir = flagKasir;
+    }
 
     public String getStTangalUpload() {
         return stTangalUpload;

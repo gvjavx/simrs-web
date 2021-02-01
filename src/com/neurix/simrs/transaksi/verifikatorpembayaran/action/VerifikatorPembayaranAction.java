@@ -102,6 +102,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
+import org.joda.time.DateTime;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -305,6 +306,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         searchAntrian.setStDateFrom(getStCurrentDate());
         searchAntrian.setStDateTo(getStCurrentDate());
         searchAntrian.setFlagDateNow(getStCurrentDate());
+
+        searchAntrian.setFlagKasir(checkKasirIfAvailableShift() == true ? "Y" : "N");
 
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
@@ -561,6 +564,12 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
         CheckResponse response = new CheckResponse();
 
+        // Sigit 2021-02-02, Penambahan Pencarian Shift kasir telemedicine
+        String idUser       = user == null ? CommonUtil.userIdLogin() : user;
+        String unitLogin    = branch == null ? CommonUtil.userBranchLogin() : branch;
+        String shiftId      = getShiftIdByNip(idUser, unitLogin);
+        // END
+
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
         if (pembayaranOnlineEntity != null){
 
@@ -651,6 +660,10 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         pembayaranOnlineEntity.setApprovedWho(userLogin);
                         pembayaranOnlineEntity.setLastUpdate(time);
                         pembayaranOnlineEntity.setLastUpdateWho(userLogin);
+
+                        if (!"".equalsIgnoreCase(shiftId)){
+                            pembayaranOnlineEntity.setShiftId(shiftId);
+                        }
 
                         try {
                             verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
@@ -857,6 +870,9 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                     pembayaranOnlineEntity.setLastUpdate(time);
                     pembayaranOnlineEntity.setLastUpdateWho(userLogin);
                     pembayaranOnlineEntity.setAction("U");
+                    if (!"".equalsIgnoreCase(shiftId)){
+                        pembayaranOnlineEntity.setShiftId(shiftId);
+                    }
 
                     try {
                         verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
@@ -3443,6 +3459,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     }
 
     public CrudResponse kembalikanBukti(String idTransaksi){
+        logger.info("[VerifikatorPembayaranAction.kembalikanBukti] START >>>");
 
         CrudResponse response = new CrudResponse();
 
@@ -3491,7 +3508,84 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             }
         }
 
+        logger.info("[VerifikatorPembayaranAction.kembalikanBukti] END <<<");
         return response;
+    }
+
+    // Sigit 2021-01-02, Check Ijin Edit Jika dia admin tele dan staff tele yg punya shift
+    public Boolean checkKasirIfAvailableShift(){
+        logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] START >>>");
+
+        String tipeRole = CommonUtil.getRoleTipePelayanan();
+        Boolean found   = false;
+
+        // jika admin tele langsung return true
+        if (CommonConstant.TIPE_PELAYANAN_ADMIN_TELE.equalsIgnoreCase(tipeRole)){
+            logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END <<<");
+            return true;
+        }
+
+        // jika bukan admin tele check tipe role
+        // jika bukan staf kasir tele return false / tidak boleh edit
+        if (!CommonConstant.TIPE_PELAYANAN_KASIR_TELE.equalsIgnoreCase(tipeRole)){
+            logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END <<<");
+            return false;
+        }
+
+        // jika staf kasir tele check apakah ada shift;
+        String userId   = CommonUtil.userIdLogin();
+        String stDate   = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
+        String stTime   = getStHoursAndMinutes();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            found = verifikatorPembayaranBo.checkIfAvailableShiftOfKasir(userId, stDate, stTime);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] Error", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END <<<");
+        return found;
+    }
+
+    private String getStHoursAndMinutes(){
+        logger.info("[VerifikatorPembayaranAction.getStHoursAndMinutes] START >>>");
+
+        DateTime dateTime = new DateTime(System.currentTimeMillis());
+        String hours   = dateTime.getHourOfDay() + "";
+        String minutes = dateTime.getMinuteOfHour() + "";
+
+        if (hours.length() == 1)
+            hours = "0" + hours;
+
+        if (minutes.length() == 1)
+            minutes = "0" + minutes;
+
+
+        logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END >>>");
+        return hours + ":" + minutes;
+    }
+
+    private String getShiftIdByNip(String nip, String branch){
+        logger.info("[VerifikatorPembayaranAction.getShiftIdByNip] START >>>");
+
+        String tanggal  = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
+        String tipeRole = CommonConstant.TIPE_PELAYANAN_KASIR_TELE;
+        String shiftId  = "";
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            shiftId = verifikatorPembayaranBo.getShifIdByNipAndTanggal(nip, tanggal, tipeRole, branch);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getShiftIdByNip] Error", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.getShiftIdByNip] START >>>");
+        return shiftId;
     }
 
 }

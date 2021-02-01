@@ -29,5 +29,7 @@ public interface VerifikatorPembayaranBo {
     public String saveAddResep(PermintaanResep bean, List<TransaksiObatDetail> detailList) throws GeneralBOException;
     public String generateIdSementara();
     public ItSimrsPembayaranOnlineEntity getPembayaranOnlineEntityByIdAntrianAndJenis(String idAntrian, String jenis) throws GeneralBOException;
+    public Boolean checkIfAvailableShiftOfKasir(String nip, String stTanggal, String stJam) throws GeneralBOException;
+    public String getShifIdByNipAndTanggal(String nip, String tanggal, String tipeRole, String branchId);
 
 }
