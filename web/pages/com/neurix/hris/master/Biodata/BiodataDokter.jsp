@@ -65,8 +65,10 @@
             var divisi              = document.getElementById("divisi1").value;
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
+            var tglMasuk            = document.getElementById("tanggalMasuk").value;
+            var tglAktif            = document.getElementById("tanggalAktif").value;
 
-            if ( namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' ) {
+            if ( namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -99,6 +101,12 @@
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (tglMasuk == '') {
+                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
+                }
+                if (tglAktif == '') {
+                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -881,7 +889,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                    <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -899,7 +907,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -2488,8 +2496,8 @@
         } else{
             $('.label-prapensiun').html("<small>Tanggal Pra Pensiun</small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun</small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Masuk</small>");
-            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan</small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk <span style=\"color:red;\">*</span> :</small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan <span style=\"color:red;\">*</span> :</small>");
         }
     }
 

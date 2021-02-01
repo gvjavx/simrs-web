@@ -475,8 +475,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
-                                                        <s:else>
+                                                        <s:elseif test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -1075,7 +1079,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1093,7 +1097,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -3316,8 +3320,8 @@
         } else{
             $('.label-prapensiun').html("<small>Tanggal MBT : </small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun : </small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Masuk : </small>");
-            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan : </small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk <span style=\"color:red;\">*</span> : </small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan <span style=\"color:red;\">*</span> : </small>");
         }
     }
 
