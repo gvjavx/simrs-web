@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.antriantelemedic.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.master.shift.model.Shift;
 import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import org.hibernate.Criteria;
@@ -369,5 +370,36 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             }
         }
         return antrianTelemedicList;
+    }
+
+    public List<Shift> getJadwalShiftKasirTelemedicineByDate(String branchId, String stDate, String shiftId){
+
+        String whereShiftId = "";
+        if (shiftId != null && !"".equalsIgnoreCase(shiftId)){
+            whereShiftId = "AND po.shift_id = '"+shiftId+"' \n";
+        }
+
+        String SQL = "SELECT po.shift_id, sft.shift_name, at.branch_id\n" +
+                "FROM \n" +
+                "it_simrs_pembayaran_online po\n" +
+                "INNER JOIN it_simrs_antrian_telemedic at ON at.id = po.id_antrian_telemedic\n" +
+                "INNER JOIN im_hris_shift sft ON sft.shift_id = po.shift_id\n" +
+                "WHERE DATE(po.last_update) = '"+stDate+"'\n" +
+                "AND at.branch_id = '"+branchId+"'\n" + whereShiftId +
+                "GROUP BY po.shift_id, sft.shift_name, at.branch_id";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Shift> shifts = new ArrayList<>();
+        if (objects != null && objects.size() > 0){
+            for (Object[] obj : objects){
+                Shift shift = new Shift();
+                shift.setShiftId(obj[0].toString());
+                shift.setShiftName(obj[1].toString());
+                shifts.add(shift);
+            }
+        }
+
+        return shifts;
     }
 }
