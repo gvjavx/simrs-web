@@ -1573,6 +1573,7 @@ public class BiodataBoImpl implements BiodataBo {
                     itPersonilPositionEntity.setBranchId(bean.getBranch());
                     itPersonilPositionEntity.setPositionId(bean.getPositionId());
                     itPersonilPositionEntity.setProfesiId(bean.getProfesiId());
+                    itPersonilPositionEntity.setJenisPegawai("JP05");
                     itPersonilPositionEntity.setPjs("N");
                     itPersonilPositionEntity.setFlag(bean.getFlag());
                     itPersonilPositionEntity.setAction(bean.getAction());
