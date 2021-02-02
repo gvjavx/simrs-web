@@ -2,6 +2,7 @@ package com.neurix.simrs.master.pelayanan.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsHeaderPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -47,6 +48,22 @@ public class HeaderPelayananDao extends GenericDao<ImSimrsHeaderPelayananEntity,
 
         List<ImSimrsHeaderPelayananEntity> result = criteria.list();
         return result;
+    }
+
+    public List<ImSimrsHeaderPelayananEntity> getData(String namaPelayanan) throws HibernateException {
+        List<ImSimrsHeaderPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsHeaderPelayananEntity.class)
+                .add(Restrictions.ilike("namaPelayanan", namaPelayanan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
+    public List<ImSimrsPelayananEntity> getDataPelayanan(String idHeaderPelayanan) throws HibernateException {
+        List<ImSimrsPelayananEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPelayananEntity.class)
+                .add(Restrictions.eq("idHeaderPelayanan", idHeaderPelayanan))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
     }
 
     public String getNextId() throws HibernateException {

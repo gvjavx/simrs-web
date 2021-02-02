@@ -344,10 +344,14 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                     "b.kategori_pelayanan,\n" +
                     "b.divisi_id,\n" +
                     "b.kode_vclaim,\n" +
-                    "c.position_name\n" +
+                    "d.position_name, \n" +
+                    "b.id_header_pelayanan,\n" +
+                    "c.branch_name,\n" +
+                    "a.branch_id\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
-                    "LEFT JOIN im_position c ON b.divisi_id = c.position_id\n" +
+                    "INNER JOIN im_branches c ON a.branch_id = c.branch_id \n" +
+                    "LEFT JOIN im_position d ON b.divisi_id = d.position_id\n" +
                     "WHERE a.flag = :flag \n" + condition +
                     "ORDER BY b.nama_pelayanan ASC";
 
@@ -365,6 +369,9 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                     pelayanan.setDivisiId(obj[4] != null ? obj[4].toString() : "");
                     pelayanan.setKodePoliVclaim(obj[5] != null ? obj[5].toString() : "");
                     pelayanan.setDivisiName(obj[6] != null ? obj[6].toString() : "");
+                    pelayanan.setIdHeaderPelayanan(obj[7] != null ? obj[7].toString() : "");
+                    pelayanan.setBranchName(obj[8] != null ? obj[8].toString() : "");
+                    pelayanan.setBranchId(obj[9] != null ? obj[9].toString() : "");
                     pelayananList.add(pelayanan);
                 }
             }

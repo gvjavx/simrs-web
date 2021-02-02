@@ -1674,6 +1674,18 @@ ALTER TABLE it_simrs_header_detail_checkup
 ADD COLUMN is_eksekutif VARCHAR(1),
 ADD COLUMN is_vaksin VARCHAR(1);
 
+--02-02-2021
+--function header pelayanan
+INSERT INTO im_functions VALUES
+(2365, 'Header Pelayanan', '/headerpelayanan/initForm_headerpelayanan.action', 6000, 2, now(), 'admin', now(), 'admin', 'Y','C', 2365),
+(2366, 'init', '/headerpelayanan/initForm_headerpelayanan.action', 2365, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2367, 'search', '/headerpelayanan/search_headerpelayanan.action', 2365, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2365, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2366, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2367, 32, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 

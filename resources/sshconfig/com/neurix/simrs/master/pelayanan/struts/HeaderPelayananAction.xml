@@ -68,7 +68,7 @@
         <action name="*_headerpelayanan"
                 class="com.neurix.simrs.master.pelayanan.action.HeaderPelayananAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="search">/pages/com/neurix/simrs/master/pelayanan/SearchPelayanan.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/master/pelayanan/searchHeaderPelayanan.jsp</result>
         </action>
     </package>
 </struts>

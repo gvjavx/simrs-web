@@ -276,15 +276,7 @@ public class DokterAction extends BaseMasterAction {
         try {
             listOfPelayanan = pelayananBoProxy.getByCriteria(pelayanan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PelayananBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[PelayananAction.initComboRole] Error when saving error,", e1);
-            }
-            logger.error("[PelayananAction.initComboRole] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return "failure";
+            logger.error("[PelayananAction.initComboRole] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         listOfComboPelayanan.addAll(listOfPelayanan);

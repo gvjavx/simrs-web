@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 12/11/2019.
  */
-public interface PelayananBo extends BaseMasterBo<Pelayanan> {
+public interface PelayananBo {
     public List<Pelayanan> getListAllPelayanan() throws GeneralBOException;
     public List<Pelayanan> getListApotek(String branch, String tipeApotek) throws GeneralBOException;
     public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException;
@@ -30,4 +30,8 @@ public interface PelayananBo extends BaseMasterBo<Pelayanan> {
     public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException;
 
     public Pelayanan getObjectPelayanan(Pelayanan bean) throws GeneralBOException;
+    public List<Pelayanan> getListObjectPelayanan(Pelayanan bean) throws GeneralBOException;
+    public void saveAdd(Pelayanan bean) throws GeneralBOException;
+    public void saveEdit(Pelayanan bean) throws GeneralBOException;
+    public void saveDelete(Pelayanan bean) throws GeneralBOException;
 }
