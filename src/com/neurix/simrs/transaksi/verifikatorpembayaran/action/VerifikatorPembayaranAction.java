@@ -3734,7 +3734,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         try {
             wb.write(baos);
         } catch (IOException e) {
-            logger.error("[FunctionAction.downloadXls] Error when downloading data of telemedicine, Found problem when downloading data, please inform to your admin.", e);
+            logger.error("[VerifikatorPembayaranAction.downloadXls] Error when downloading data of telemedicine, Found problem when downloading data, please inform to your admin.", e);
             addActionError("Error, " + "Found problem when downloding data, please inform to your admin.");
             return ERROR;
         }
