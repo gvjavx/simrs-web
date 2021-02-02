@@ -1060,7 +1060,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
 
             if ("pindah".equalsIgnoreCase(idKtg)) {
-                response = pindahPoli(idDetailCheckup, poli, idDokter, metodeBayar, uangMuka);
+                response = pindahPoli(idDetailCheckup, poli, idDokter, metodeBayar, uangMuka, null, null);
             }
 
             if ("rujuk".equalsIgnoreCase(idKtg)) {
@@ -1226,6 +1226,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String idPaket = null;
                 String idPelayananPaket = null;
                 String idPoliInternal = null;
+                String eksekutif = null;
+                String vaksin = null;
 
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
@@ -1268,6 +1270,12 @@ public class CheckupDetailAction extends BaseMasterAction {
                 }
                 if (object.has("id_poli_internal")) {
                     idPoliInternal = object.getString("id_poli_internal");
+                }
+                if (object.has("is_eksekutif")) {
+                    eksekutif = object.getString("is_eksekutif");
+                }
+                if (object.has("is_vaksin")) {
+                    vaksin = object.getString("is_vaksin");
                 }
 
                 List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
@@ -1356,7 +1364,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     }
 
                     if ("pindah_poli".equalsIgnoreCase(tindakLanjut)) {
-                        response = pindahPoli(idDetailCheckup, poliLain, idDokter, metodeBayar, uangMuka);
+                        response = pindahPoli(idDetailCheckup, poliLain, idDokter, metodeBayar, uangMuka, eksekutif, vaksin);
                     } else if ("lanjut_paket".equalsIgnoreCase(tindakLanjut)) {
                         response = nextPaket(noCheckup, idDetailCheckup, urutan, idPaket, idDokter, idPelayananPaket, poliLain);
                     } else if ("rujuk_internal".equalsIgnoreCase(tindakLanjut)) {
@@ -2134,7 +2142,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return jumlah;
     }
 
-    private CrudResponse pindahPoli(String idDetailCheckup, String idPoli, String idDokter, String metodeBayar, String uangMuka) {
+    private CrudResponse pindahPoli(String idDetailCheckup, String idPoli, String idDokter, String metodeBayar, String uangMuka, String eksekutif, String vaksin) {
         logger.info("[CheckupDetailAction.pindahPoli] start process >>>");
 
         CrudResponse finalResponse = new CrudResponse();
@@ -2646,6 +2654,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setCreatedWho(user);
                         headerDetailCheckup.setLastUpdate(now);
                         headerDetailCheckup.setLastUpdateWho(user);
+                        headerDetailCheckup.setIsEksekutif(eksekutif);
+                        headerDetailCheckup.setIsVaksin(vaksin);
 
                         List<DokterTeam> dokterTeams = new ArrayList<>();
                         DokterTeam dokterTeam = new DokterTeam();
@@ -2656,6 +2666,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         headerDetailCheckup.setIdJenisPeriksaPasien(detailCheckup.getIdJenisPeriksaPasien());
                         headerDetailCheckup.setBranchId(branchId);
+                        headerDetailCheckup.setTypeTransaction("pindah_poli");
 
                         try {
                             finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
@@ -5661,6 +5672,39 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
         }
         return idDokter;
+    }
+
+    public String printNoAntrian() {
+        String id = getId();
+        String tipe = getTipe();
+        String branch = CommonUtil.userBranchLogin();
+        String logo = "";
+        Branch branches = new Branch();
+
+        try {
+            branches = branchBoProxy.getBranchById(branch, "Y");
+        } catch (GeneralBOException e) {
+            logger.error("Found Error when searhc branch logo");
+        }
+
+        if (branches != null) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+        }
+
+        reportParams.put("area", CommonUtil.userAreaName());
+        reportParams.put("unit", CommonUtil.userBranchNameLogin());
+        reportParams.put("logo", logo);
+        reportParams.put("idPasien", id);
+        reportParams.put("idPelayanan", tipe);
+
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[ReportAction.printCard] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            return "search";
+        }
+
+        return "print_no_antrian";
     }
 
 

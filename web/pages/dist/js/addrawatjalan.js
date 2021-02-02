@@ -287,11 +287,11 @@ function selectKeterangan(idKtg) {
             $('#poli_lain').attr('disabled', false);
             $('#form-pindah_poli').show();
             $('#form-catatan').show();
-            // if (jenisPasien == 'umum') {
-            //     $('#form-metode_pembayaran').show();
-            // } else {
-            //     $('#form-metode_pembayaran').hide();
-            // }
+            if (jenisPasien == 'umum') {
+                $('#form_eksekutif').show();
+            } else {
+                $('#form_eksekutif').hide();
+            }
             $('#form-metode_pembayaran').hide();
             $('#form-selesai').hide();
             $('#form-dpjp').hide();
@@ -1074,6 +1074,16 @@ function listDokter() {
 
 function listDokterKeterangan(idPelayanan) {
     $('#list_dokter').val('');
+    PelayananAction.getDataPelayanan(idPelayanan, function (res) {
+        var option2 = "<option value=''>[Select One]</option>";
+        if (res.idPelayanan != null) {
+            if(res.isVaksin == "Y"){
+                $('#form_vaksin').show();
+            }else{
+                $('#form_vaksin').hide();
+            }
+        }
+    });
     // var option = "<option value=''>[Select One]</option>";
     // CheckupAction.listOfDokter(idPelayanan, function (response) {
     //     if (response.length > 0) {
@@ -3154,6 +3164,16 @@ function savePemeriksaanPasien() {
         dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     var cek = false;
 
+    var eksekutif = "N";
+    if($('#is_eksekutif').is(':checked')){
+        eksekutif = "Y";
+    }
+
+    var vaksin = "N";
+    if($('#is_vaksin').is(':checked')){
+        vaksin = "Y";
+    }
+
     if (tindakLanjut != '') {
 
         if(jenisPeriksaPasien == 'asuransi' && isLaka == 'Y'){
@@ -3192,7 +3212,9 @@ function savePemeriksaanPasien() {
                     'poli_lain': poliLain,
                     'id_dokter': listDokter,
                     'metode_bayar': metodeBayar,
-                    'uang_muka': uangMuka
+                    'uang_muka': uangMuka,
+                    'is_eksekutif': eksekutif,
+                    'is_vaksin': vaksin
                 }
                 cek = true;
             }
@@ -3298,6 +3320,9 @@ function savePemeriksaanPasien() {
                         $('#close_pos').val(6);
                         if('rujuk_internal' == tindakLanjut){
                             window.open('printNoRujukan_checkupdetail.action?id='+idDetailCheckup, '_blank');
+                        }
+                        if('pindah_poli' == tindakLanjut){
+                            window.open('printNoAntrian_checkupdetail.action?id='+idPasien+'&tipe='+poliLain, '_blank');
                         }
                     } else {
                         $('#waiting_dialog').dialog('close');

@@ -48,6 +48,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanResepAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -299,7 +300,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr id="row_jenis_pasien">
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td width="30%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>
@@ -338,7 +339,14 @@
                                         <td><b>Poli</b></td>
                                         <td>
                                             <table>
-                                                <s:label name="headerDetailCheckup.namaPelayanan"></s:label></table>
+                                                <s:property value="headerDetailCheckup.namaPelayanan"/>
+                                                <s:if test='headerDetailCheckup.isEksekutif == "Y"'>
+                                                    <span style="margin-left: 5px" class="span-success">Eksekutif</span>
+                                                </s:if>
+                                                <s:if test='headerDetailCheckup.isVaksin == "Y"'>
+                                                    <span style="margin-left: 5px" class="span-warning">Vaksin</span>
+                                                </s:if>
+                                            </table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -901,31 +909,6 @@
                             </tbody>
                         </table>
                     </div>
-                    <%--<div class="box-header with-border">--%>
-                    <%--</div>--%>
-                    <%--<div class="box-header with-border">--%>
-                        <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_all">--%>
-                            <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                            <%--<p id="msg_all_war"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="alert alert-success alert-dismissible" style="display: none" id="success_all">--%>
-                            <%--<h4><i class="icon fa fa-info"></i> Info!</h4>--%>
-                            <%--<p id="msg_all_suc"></p>--%>
-                        <%--</div>--%>
-                        <%--<div class="row">--%>
-                            <%--<div class="col-md-12">--%>
-                                <%--<div class="form-group">--%>
-                                    <%--<div class="col-md-offset-4 col-md-4 text-center">--%>
-                                        <%--<a class="btn btn-success" id="save_all" onclick="confirmSaveAllTindakan()"><i class="fa fa-check"></i> Save All Tindakan</a>--%>
-                                        <%--<button style="display: none; cursor: no-drop;" type="button"--%>
-                                                <%--class="btn btn-success" id="load_all"><i class="fa fa-spinner fa-spin"></i>--%>
-                                            <%--Sedang Menyimpan...--%>
-                                        <%--</button>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
                     </div>
@@ -952,33 +935,6 @@
                                             <select class="form-control select2" id="keterangan" style="width: 100%"
                                                     onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()}; selectKeterangan(this.value)">
                                                 <option value="">[Select One]</option>
-                                                <%--<s:if test='headerDetailCheckup.idJenisPeriksaPasien == "umum" || headerDetailCheckup.idJenisPeriksaPasien == "rekanan"'>--%>
-                                                    <%--<option value="selesai">Selesai</option>--%>
-                                                    <%--<option value="pindah_poli">Pindah Poli</option>--%>
-                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
-                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
-                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
-                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
-                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                <%--</s:if>--%>
-                                                <%--<s:elseif test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "asuransi"'>--%>
-                                                    <%--<option value="selesai">Selesai</option>--%>
-                                                    <%--<option value="pindah_poli">Pindah Poli</option>--%>
-                                                    <%--<option value="rawat_inap">Rawat Inap</option>--%>
-                                                    <%--<option value="rawat_intensif">Rawat Intensif</option>--%>
-                                                    <%--<option value="rawat_isolasi">Rawat Isolasi</option>--%>
-                                                    <%--<option value="kamar_operasi">Kamar Operasi</option>--%>
-                                                    <%--<option value="ruang_bersalin">Ruang Bersalin</option>--%>
-                                                    <%--<option value="rujuk_rs_lain">Dirujuk</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                    <%--<option value="lanjut_biaya">Lanjut Biaya</option>--%>
-                                                <%--</s:elseif>--%>
-                                                <%--<s:else>--%>
-                                                    <%--<option value="selesai">Selesai</option>--%>
-                                                    <%--<option value="kontrol_ulang">Kontrol Ulang</option>--%>
-                                                <%--</s:else>--%>
                                             </select>
                                         </div>
                                     </div>
@@ -1041,9 +997,6 @@
                                                 </div>
                                                 <input type="hidden" id="list_dokter">
                                             </div>
-                                            <%--<select id="list_dokter" class="form-control select2" style="width: 100%">--%>
-                                                <%--<option value=''>[Select One]</option>--%>
-                                            <%--</select>--%>
                                         </div>
                                     </div>
                                 </div>
@@ -1156,6 +1109,17 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="row" style="display: none" id="form_eksekutif">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Eksekutif ?</label>
+                                        <div class="col-md-8">
+                                            <div class="form-check" style="margin-top: 10px">
+                                                <input type="checkbox" id="is_eksekutif" value="yes">
+                                                <label for="is_eksekutif"></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="row" id="form-catatan" style="display: none">
@@ -1163,6 +1127,17 @@
                                         <label class="col-md-4" style="margin-top: 10px">Catatan</label>
                                         <div class="col-md-8">
                                             <s:textarea cssClass="form-control jarak" id="pesan_dokter" rows="3" placeholder="Pesan untuk pasien"></s:textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="display: none" id="form_vaksin">
+                                    <div class="form-group">
+                                        <label class="col-md-4" style="margin-top: 10px">Vaksin ?</label>
+                                        <div class="col-md-8">
+                                            <div class="form-check" style="margin-top: 10px">
+                                                <input type="checkbox" id="is_vaksin" value="yes">
+                                                <label for="is_vaksin"></label>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2456,7 +2431,9 @@
     var tglRujukan = '<s:property value="headerDetailCheckup.tglRujukan"/>';
     var suratRujukan = '<s:property value="headerDetailCheckup.suratRujukan"/>';
     var idKelasRuangan = "";
-    var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';;
+    var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';
+    var isEksekutif = '<s:property value="headerDetailCheckup.isEksekutif"/>';
+    var isVaksin = '<s:property value="headerDetailCheckup.isVaksin"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

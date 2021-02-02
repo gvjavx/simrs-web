@@ -787,6 +787,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setKelasPasien(bean.getIdKelas());
         detailCheckupEntity.setBerkas(bean.getBerkas());
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
+        detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
+        detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
 
         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setRujuk(bean.getPerujuk() != null ? bean.getPerujuk() : null);
@@ -797,6 +799,33 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckupEntity.setNoRujukan(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan()) ? bean.getNoRujukan() : null);
             detailCheckupEntity.setTglRujukan(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan()) ? java.sql.Date.valueOf(bean.getTglRujukan()) : null);
             detailCheckupEntity.setUrlDocRujuk(bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan()) ? bean.getSuratRujukan() : null);
+        }
+
+        if("pindah_poli".equalsIgnoreCase(bean.getTypeTransaction())){
+            if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                String noAntrian = "";
+                HeaderCheckup lastAntrian = new HeaderCheckup();
+                String idDokter = null;
+                if(bean.getDokterTeamList().size() > 0){
+                    idDokter = bean.getDokterTeamList().get(0).getIdDokter();
+                }
+                try {
+                    lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
+                }catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                }
+                if(lastAntrian.getStNoAntrian() != null){
+                    int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
+                    noAntrian = String.valueOf(jumlah);
+                }else{
+                    noAntrian = "1";
+                }
+
+                if(!"".equalsIgnoreCase(noAntrian)){
+                    detailCheckupEntity.setNoAntrian(noAntrian);
+                }
+            }
         }
 
         try {

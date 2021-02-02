@@ -1686,6 +1686,12 @@ INSERT INTO im_func_roles VALUES
 (2366, 32, 'Y', now(), now(), 'admin', 'admin'),
 (2367, 32, 'Y', now(), now(), 'admin', 'admin');
 
+--print rawat jalan
+INSERT INTO im_functions VALUES
+(2368, 'print antrian', '/checkupdetail/printNoAntrian_checkupdetail.action', 1481, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2368, 32, 'Y', now(), now(), 'admin', 'admin');
 
 
 
