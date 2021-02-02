@@ -824,6 +824,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     pembayaranOnlineEntity.setKeterangan(tipe);
                     pembayaranOnlineEntity.setKodeBank(kodeBank);
                     pembayaranOnlineEntity.setIdRekening(bean.getIdRekening());
+                    pembayaranOnlineEntity.setWaktuBayar(bean.getLastUpdate());
 
                     try {
                         verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
@@ -852,6 +853,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
             pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
             pembayaranOnlineEntity.setKeterangan("resep");
+            pembayaranOnlineEntity.setWaktuBayar(bean.getLastUpdate());
 
             try {
                 verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);

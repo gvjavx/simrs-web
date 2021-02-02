@@ -3,6 +3,8 @@ package com.neurix.simrs.master.license.bo.impl;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
 import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
 import com.neurix.simrs.master.license.dao.LicenseLogZebraDao;
@@ -230,7 +232,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                         Email email = new Email();
                         email.setFrom(CommonConstant.EMAIL_USERNAME);
                         email.setPassword(CommonConstant.EMAIL_PASSWORD);
-                        email.setTo("ardhymcs@gmail.com");
+                        email.setTo(CommonConstant.LICENSE_EMAIL_TO);
                         email.setSubject("License Key Verification");
                         email.setMsg("<h2>License Key Verification</h2>\n" +
                                 "=========================================\n" +
