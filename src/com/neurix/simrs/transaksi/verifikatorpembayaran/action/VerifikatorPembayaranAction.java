@@ -3654,6 +3654,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         listOfColumn.add("Nama Bank");
         listOfColumn.add("No. RM");
         listOfColumn.add("Nama Pasien");
+        listOfColumn.add("Pelayanan");
+        listOfColumn.add("Dokter");
         listOfColumn.add("Nominal");
         listOfColumn.add("Last Update");
         listOfColumn.add("Last Update Who");
@@ -3704,23 +3706,37 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
-            //Nominal
+            //Pelayanan
             cellDetail = new CellDetail();
             cellDetail.setCellID(6);
+            cellDetail.setValueCell(data.getNamaPelayanan());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Dokter
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(7);
+            cellDetail.setValueCell(data.getNamaDokter());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nominal
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
             cellDetail.setValueCell(data.getNominal().toString());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
             listOfCell.add(cellDetail);
 
             //Last Update
             cellDetail = new CellDetail();
-            cellDetail.setCellID(7);
+            cellDetail.setCellID(9);
             cellDetail.setValueCell(data.getLastUpdate().toString());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
             //Last Update Who
             cellDetail = new CellDetail();
-            cellDetail.setCellID(8);
+            cellDetail.setCellID(10);
             cellDetail.setValueCell(data.getLastUpdateWho());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
