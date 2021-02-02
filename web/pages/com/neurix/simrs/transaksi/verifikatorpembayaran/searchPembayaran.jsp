@@ -133,7 +133,7 @@
                                             Search
                                         </sj:submit>
                                         <a type="button" class="btn btn-primary" href="initForm_onlinepaymentverif.action?tipe=print">
-                                            <i class="fa fa-print"></i> Print Kas Masuk
+                                            <i class="fa fa-print"></i> Print List Transaksi
                                         </a>
                                         <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
                                             <i class="fa fa-refresh"></i> Reset

@@ -1568,7 +1568,7 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 -- 2021-02-02
 
     -- tambahkan function
-    funcid = 3319; func_name = print laporan kas masuk;  url = /onlinepaymentverif/print_onlinepaymentverif.action; parent = 2252;
+    funcid = 3320; func_name = print laporan kas masuk;  url = /onlinepaymentverif/print_onlinepaymentverif.action; parent = 2252;
 
     -- setting pada role 47
 

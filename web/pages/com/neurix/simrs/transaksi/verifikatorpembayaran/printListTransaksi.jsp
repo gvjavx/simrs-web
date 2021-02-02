@@ -62,11 +62,7 @@
                                         <div class="form-group">
                                             <label class="control-label col-sm-2">Tanggal </label>
                                             <div class="col-sm-4">
-                                                <div class="row">
-                                                    <div class="col-md-5">
-                                                        <input type="text" class="form-control datepicker" id="tanggal">
-                                                    </div>
-                                                </div>
+                                                <input type="text" class="form-control datepicker" id="tanggal">
                                             </div>
                                         </div>
                                     </div>
