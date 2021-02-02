@@ -691,7 +691,7 @@
                                                 <div class="col-md-8">
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
-                                                                     cssClass="form-control"
+                                                                     cssClass="form-control" placeholder="input 5 karakter no bpjs"
                                                                      oninput="searchNoBpjs(this.id)"/>
                                                         <div class="input-group-btn" onclick="checkBpjs()">
                                                             <a class="btn btn-success">
@@ -709,7 +709,7 @@
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <s:textfield id="id_pasien" name="headerCheckup.idPasien"
                                                                      oninput="searchNoRM(this.id, this.value)"
-                                                                     onkeypress="$(this).css('border','');"
+                                                                     onkeypress="$(this).css('border','');" placeholder="input 5 karakter no rm/nama"
                                                                      cssClass="form-control"/>
                                                         <div class="input-group-btn">
                                                             <a class="btn btn-warning" onclick="resetAllField()"><i class="fa fa-refresh"></i> Reset</a>
@@ -2840,7 +2840,7 @@
     function searchNoBpjs(id) {
         var functions, mapped;
         $('#' + id).typeahead({
-            minLength: 1,
+            minLength: 5,
             source: function (query, process) {
                 functions = [];
                 mapped = {};
@@ -2946,7 +2946,7 @@
         var functions, mapped;
         if (value != '') {
             $('#' + id).typeahead({
-                minLength: 1,
+                minLength: 5,
                 source: function (query, process) {
                     var jenisPasien = $('#jenis_pasien').val();
                     functions = [];
