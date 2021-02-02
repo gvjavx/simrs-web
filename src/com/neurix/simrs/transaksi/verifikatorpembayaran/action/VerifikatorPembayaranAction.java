@@ -3741,9 +3741,10 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         branchName = branchName.replaceAll(" ", "_").toLowerCase();
         shiftName = shiftName.replaceAll(" ", "_").toLowerCase();
+        jenis = jenis.replaceAll(" ", "_").toLowerCase();
 
         setExcelStream(new ByteArrayInputStream(baos.toByteArray()));
-        setContentDisposition("filename=\"LaporanTransTeleKasir_"+branchName+"_"+shiftName+".${documentFormat}\"");
+        setContentDisposition("filename=\"LaporanTransTeleKasir_"+branchName+"_"+shiftName+"_"+jenis+".${documentFormat}\"");
 
         logger.info("[VerifikatorPembayaranAction.print] END <<<");
         return "downloadXls";
