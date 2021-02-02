@@ -73,11 +73,16 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
                 "at.flag_resep,\n" +
                 "at.flag_bayar_konsultasi,\n" +
                 "at.flag_bayar_resep,\n" +
-                "po.approved_flag\n" +
+                "po.approved_flag,\n" +
+                "hpl.nama_pelayanan,\n" +
+                "dk.nama_dokter\n" +
                 "FROM (SELECT * FROM it_simrs_pembayaran_online WHERE approved_flag = 'Y') po\n" +
-                "INNER JOIN (SELECT id, branch_id, id_pasien , id_jenis_periksa_pasien, flag_bayar_konsultasi, flag_bayar_resep, flag_resep FROM it_simrs_antrian_telemedic WHERE status = 'SK')at ON at.id = po.id_antrian_telemedic\n" +
+                "INNER JOIN (SELECT id, branch_id, id_pasien , id_jenis_periksa_pasien, flag_bayar_konsultasi, flag_bayar_resep, flag_resep, id_pelayanan, id_dokter FROM it_simrs_antrian_telemedic WHERE status = 'SK')at ON at.id = po.id_antrian_telemedic\n" +
                 "INNER JOIN (SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening) kr ON kr.kode_rekening = po.kode_bank\n" +
                 "INNER JOIN (SELECT id_pasien, nama FROM im_simrs_pasien) ps ON ps.id_pasien = at.id_pasien\n" +
+                "INNER JOIN (SELECT id_pelayanan, id_header_pelayanan FROM im_simrs_pelayanan) pl ON pl.id_pelayanan = at.id_pelayanan\n" +
+                "INNER JOIN (SELECT id_header_pelayanan, nama_pelayanan FROM im_simrs_header_pelayanan) hpl ON hpl.id_header_pelayanan = pl.id_header_pelayanan\n" +
+                "INNER JOIN (SELECT id_dokter, nama_dokter FROM im_simrs_dokter) dk ON dk.id_dokter = at.id_dokter\n" +
                 "WHERE DATE(po.last_update) = '"+stDate+"'\n" +
                 "AND at.branch_id = '"+branchId+"' \n" +
                 "AND po.shift_id = '"+shiftId+"' \n" +
@@ -102,6 +107,8 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
                 antritanTelemedicData.setFlagBayarKonsultasi(obj[10] == null ? null : obj[10].toString());
                 antritanTelemedicData.setFlagBayarResep(obj[11] == null ? null : obj[11].toString());
                 antritanTelemedicData.setApprovedFlag(obj[12] == null ? null : obj[12].toString());
+                antritanTelemedicData.setNamaPelayanan(obj[13] == null ? null : obj[13].toString());
+                antritanTelemedicData.setNamaDokter(obj[14] == null ? null : obj[14].toString());
 
                 // filter status transaksi
                 if ("asuransi".equalsIgnoreCase(antritanTelemedicData.getIdJenisPeriksaPasien())){
