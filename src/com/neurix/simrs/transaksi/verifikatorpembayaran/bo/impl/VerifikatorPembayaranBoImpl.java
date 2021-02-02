@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.shift.model.Shift;
 import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
@@ -13,6 +14,7 @@ import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
+import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.Asesmen;
@@ -1178,6 +1180,39 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
 
         logger.info("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir] END <<<<<<<");
         return found;
+    }
+
+    @Override
+    public List<Shift> getListShiftByIdTanggal(String branchId, String stDate, String shiftId) {
+        logger.info("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal] START >>>>>>>");
+
+        List<Shift> results = new ArrayList<>();
+
+        try {
+            results = telemedicDao.getJadwalShiftKasirTelemedicineByDate(branchId, stDate, shiftId);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal] END <<<<<<<");
+        return results;
+    }
+
+    @Override
+    public List<AntrianTelemedic> getListKasMasukByShift(String shiftId, String stDate, String branchId, String status, String jenisPasien) {
+        logger.info("[VerifikatorPembayaranBoImpl.getListKasMasukByShift] START >>>>>>>");
+
+        List<AntrianTelemedic> results = new ArrayList<>();
+        try {
+            results = verifikatorPembayaranDao.getListLaporanKasMasukTelemedic(shiftId, stDate, branchId, status, jenisPasien);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getListKasMasukByShift] START >>>>>>>");
+        return results;
     }
 
     private String getNextIdDiagnosa() {

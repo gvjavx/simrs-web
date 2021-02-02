@@ -81,6 +81,24 @@ public class AntrianTelemedic {
     private Timestamp tanggalUpload;
     private Integer urutan;
     private String flagKasir;
+    private String shiftId;
+    private String namaBank;
+
+    public String getNamaBank() {
+        return namaBank;
+    }
+
+    public void setNamaBank(String namaBank) {
+        this.namaBank = namaBank;
+    }
+
+    public String getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
 
     public String getFlagKasir() {
         return flagKasir;
