@@ -3343,6 +3343,10 @@
         getAllDepartment();
         getAllJenisPegawai();
 
+        var tglLahir = $('#tanggalLahir1').val();
+        var tglPensiun = $('#tanggalPensiun').val();
+        if(tglLahir != "" && tglPensiun == "") getTanggalPensiun(tglLahir);
+
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
             if(ex.test(el.value)==false){
