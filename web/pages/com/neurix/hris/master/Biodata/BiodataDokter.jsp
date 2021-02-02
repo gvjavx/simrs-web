@@ -57,6 +57,7 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
+            var nip                 = document.getElementById("nip1").value;
             var namaPegawai         = document.getElementById("namaPegawai1").value;
             var noKtp               = document.getElementById("noKtp1").value;
             var tempatLahir         = document.getElementById("tempatLahir1").value;
@@ -68,7 +69,7 @@
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
             var tglAktif            = document.getElementById("tanggalAktif").value;
 
-            if ( namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
+            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -87,6 +88,9 @@
 
                 var msg = "";
 
+                if (nip == '') {
+                    msg += 'Field <strong>NIP </strong> is required.' + '<br/>';
+                }
                 if (namaPegawai == '') {
                     msg += 'Field <strong>Nama </strong> is required.' + '<br/>';
                 }
@@ -315,6 +319,22 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <table style="width:100%;">
+                                            <tr>
+                                                <td>
+                                                    <label><small>NIP <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
                                             <tr>
                                                 <td>
                                                     <label><small>Nama <span style="color:red;">*</span> :</small></label>
