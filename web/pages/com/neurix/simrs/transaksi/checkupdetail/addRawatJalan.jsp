@@ -2433,7 +2433,7 @@
     var idKelasRuangan = "";
     var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';
     var isEksekutif = '<s:property value="headerDetailCheckup.isEksekutif"/>';
-    var isVaksin = '<s:property value="headerDetailCheckup.isVaksin"/>';
+    var flagVaksin = '<s:property value="headerDetailCheckup.isVaksin"/>';
 
     $(document).ready(function () {
         $('#rawat_jalan').addClass('active');

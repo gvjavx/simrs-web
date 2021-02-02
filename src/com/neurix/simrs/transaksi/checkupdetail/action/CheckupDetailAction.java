@@ -903,12 +903,13 @@ public class CheckupDetailAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan) {
+    public List<Tindakan> getListComboTindakan(String idKategoriTindakan, String idKelasRuangan, String vaksin) {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
         List<Tindakan> tindakanList = new ArrayList<>();
         Tindakan tindakan = new Tindakan();
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
         tindakan.setIdKelasRuangan(idKelasRuangan);
+        tindakan.setIsVaksin(vaksin);
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
         try {

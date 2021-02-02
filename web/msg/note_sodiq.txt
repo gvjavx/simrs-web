@@ -1601,7 +1601,6 @@ INSERT INTO it_hris_pegawai_position VALUES
 ('PP000726','DKR00000027','RS01','Y','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','C','P009','N','PR001','JP05','Y'),
 ('PP000727','DKR00000028','RS01','Y','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','C','P009','N','PR001','JP05','Y');
 
-
 INSERT INTO im_roles VALUES
 (86,'ADMIN ZEBRA',now(),'adminzebra',now(),'adminzebra','Y','C',null);
 
@@ -1633,7 +1632,6 @@ AND func_id = 2;
 DELETE FROM im_func_roles
 WHERE role_id = 41
 AND func_id = 2;
-
 
 --UPDATE FOR PELAYANAN
 --01-02-2021 07:18 WIS (waktu indonesia sumenep)
@@ -1692,6 +1690,13 @@ INSERT INTO im_functions VALUES
 
 INSERT INTO im_func_roles VALUES
 (2368, 32, 'Y', now(), now(), 'admin', 'admin');
+
+--VAKSIN ADALAH CAIRAN YANG CAIR
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN flag_vaksin VARCHAR(1);
+
+
+
 
 
 
