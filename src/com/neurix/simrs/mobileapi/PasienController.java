@@ -151,6 +151,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                                 throw new GeneralBOException(e);
                             }
                         pasienData.setFlagLogin("Y");
+                        pasienData.setUrlKtp(null);
 
                         try {
                             pasienBoProxy.saveEdit(pasienData);
