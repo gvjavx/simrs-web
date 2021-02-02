@@ -310,6 +310,23 @@ public class ShiftBoImpl implements ShiftBo {
     }
 
     @Override
+    public ImHrisShiftEntity getById(String id) {
+        logger.info("[ShiftBoImpl.getById] start process >>>");
+
+        ImHrisShiftEntity shiftEntity = new ImHrisShiftEntity();
+
+        try {
+            shiftEntity = shiftDao.getById("shiftId", id);
+        } catch (HibernateException e){
+            logger.error("[ShiftBoImpl.getByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[ShiftBoImpl.getById] end process <<<");
+        return shiftEntity;
+    }
+
+    @Override
     public List<Shift> getAll() throws GeneralBOException {
         return null;
     }

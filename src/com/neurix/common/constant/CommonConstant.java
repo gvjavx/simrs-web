@@ -267,4 +267,12 @@ public class CommonConstant {
     public final static String LICENSE_API = CommonUtil.getPropertyParams("license.api");
     public static final String LICENSE_EMAIL_TO = CommonUtil.getPropertyParams("license.email.to");
 
+
+    //Sigit 2021-01-02, tipe pelayanan pada role khusus kasir
+    public final static String TIPE_PELAYANAN_KASIR_TELE = CommonUtil.getPropertyParams("kasir.telemedicine");
+    public final static String TIPE_PELAYANAN_KASIR_OPS = CommonUtil.getPropertyParams("kasir.operasional");
+    public final static String TIPE_PELAYANAN_ADMIN_TELE = CommonUtil.getPropertyParams("admin.telemedicine");
+
+
+
 }

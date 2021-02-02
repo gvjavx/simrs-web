@@ -30,6 +30,15 @@ public class ItSimrsPembayaranOnlineEntity {
     private Timestamp waktuBayar;
     private String flagUploadUlang;
     private Timestamp tanggalUpload;
+    private String shiftId;
+
+    public String getShiftId() {
+        return shiftId;
+    }
+
+    public void setShiftId(String shiftId) {
+        this.shiftId = shiftId;
+    }
 
     public Timestamp getTanggalUpload() {
         return tanggalUpload;
