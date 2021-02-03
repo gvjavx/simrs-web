@@ -6381,21 +6381,21 @@
         });
     }
 
-    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
-        dwr.engine.setAsync(false);
-        dwr.engine.beginBatch();
-        BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
-            alert('Data Berhasil Disimpan');
-            $('#modal-pengalamanKerja').modal('hide');
-            $('#myFormPengalaman')[0].reset();
-            loadSessionPengalamanKerja();
-        });
-        dwr.engine.endBatch({
-            errorHandler:function(errorString, exception){
-                alert('Jabatan aktif sudah ada');
-            }
-        });
-    }
+    // function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
+    //     dwr.engine.setAsync(false);
+    //     dwr.engine.beginBatch();
+    //     BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+    //         alert('Data Berhasil Disimpan');
+    //         $('#modal-pengalamanKerja').modal('hide');
+    //         $('#myFormPengalaman')[0].reset();
+    //         loadSessionPengalamanKerja();
+    //     });
+    //     dwr.engine.endBatch({
+    //         errorHandler:function(errorString, exception){
+    //             alert('Jabatan aktif sudah ada');
+    //         }
+    //     });
+    // }
 
     function getNip(birthDate){
         var nip = $("#nip1").val();

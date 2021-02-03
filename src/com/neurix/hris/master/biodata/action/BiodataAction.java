@@ -790,7 +790,7 @@ public class BiodataAction extends BaseMasterAction{
                     Biodata biodata = getBiodata();
                     String golonganId ="";
                     if ("N".equalsIgnoreCase(biodata.getFlagDokterKso())){
-                        golonganId = biodata.getGolongan().replace(",","");
+                        golonganId = biodata.getGolongan().replace(", ","");
                     }
 
                     biodata.setGolongan(golonganId);
