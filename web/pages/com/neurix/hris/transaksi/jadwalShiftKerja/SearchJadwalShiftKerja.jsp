@@ -205,13 +205,13 @@
                                                             autoclose: true,
                                                             changeMonth: true,
                                                             changeYear:true,
-                                                            dateFormat:'dd-MM-yy'
+                                                            dateFormat:'dd-mm-yy'
                                                         });
                                                         $("#loginTimestampTo").datepicker({
                                                             autoclose: true,
                                                             changeMonth: true,
                                                             changeYear:true,
-                                                            dateFormat:'dd-MM-yy'
+                                                            dateFormat:'dd-mm-yy'
                                                         });
                                                     </script>
                                                 </td>

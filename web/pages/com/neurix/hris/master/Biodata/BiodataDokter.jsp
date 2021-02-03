@@ -57,6 +57,7 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
+            var nip                 = document.getElementById("nip1").value;
             var namaPegawai         = document.getElementById("namaPegawai1").value;
             var noKtp               = document.getElementById("noKtp1").value;
             var tempatLahir         = document.getElementById("tempatLahir1").value;
@@ -65,8 +66,10 @@
             var divisi              = document.getElementById("divisi1").value;
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
+            var tglMasuk            = document.getElementById("tanggalMasuk").value;
+            var tglAktif            = document.getElementById("tanggalAktif").value;
 
-            if ( namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' ) {
+            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -85,6 +88,9 @@
 
                 var msg = "";
 
+                if (nip == '') {
+                    msg += 'Field <strong>NIP </strong> is required.' + '<br/>';
+                }
                 if (namaPegawai == '') {
                     msg += 'Field <strong>Nama </strong> is required.' + '<br/>';
                 }
@@ -99,6 +105,12 @@
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (tglMasuk == '') {
+                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
+                }
+                if (tglAktif == '') {
+                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -291,7 +303,7 @@
 
                     <div class="tab-content well box-shadowed">
                         <div id="biodata" class="tab-pane fade in active">
-                            <h3>Biodata</h3>
+                            <h3>Biodata Dokter KSO</h3>
                             <br>
                             <div class="row">
                                 <div class="col-md-12" style="text-align: center">
@@ -309,6 +321,22 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
+                                                    <label><small>NIP <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
                                                     <label><small>Nama <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
@@ -319,7 +347,7 @@
                                                         <s:else>
                                                             <s:textfield id="namaPegawai1" name="biodata.namaPegawai" required="true" disabled="false" cssClass="form-control"/>
                                                         </s:else>
-                                                        <s:hidden name="biodata.nip"></s:hidden>
+                                                        <%--<s:hidden name="biodata.nip"></s:hidden>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -503,12 +531,14 @@
                                             <s:else>
                                                 <tr>
                                                     <td>
-                                                        <label><small>Jabatan :</small></label>
+                                                        <label><small>Jabatan <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
                                                             <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                            <select id="positionId1" name="biodata.positionId" class="form-control"></select>
+                                                            <s:select list="#comboPosition.listOfComboPosition" id="positionId1" name="biodata.positionId"
+                                                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                <%--<select id="positionId1" name="biodata.positionId" class="form-control"></select>--%>
                                                         </table>
                                                     </td>
                                                 </tr>
@@ -879,7 +909,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                    <label class="control-label label-tanggal-masuk"><small>Tanggal Masuk <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -890,6 +920,30 @@
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
                                                                          cssClass="form-control" id="tanggalMasuk" name="biodata.stTanggalMasuk" />
+                                                        </s:else>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                        </s:if>
+                                                        <s:elseif test="isDelete()">
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                                        </s:elseif>
+                                                        <s:else>
+                                                            <s:textfield cssStyle="text-align: left;"
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
+                                                            <s:hidden id="tanggalAktifTmp"/>
                                                         </s:else>
 
                                                     </table>
@@ -1112,6 +1166,14 @@
                             <i class="fa fa-check"></i>
                             Save
                         </sj:submit>
+
+                        <s:if test='!isAdd()'>
+                            <s:a action="ksoToKaryawan_biodata.action" cssClass="btn btn-info" id="kso2karyawan">
+                                <s:param name="id"><s:property value="biodata.nip" /></s:param>
+                                <s:param name="flag"><s:property value="biodata.flag" /></s:param>
+                                <i class="fa fa-user"></i>  Jadikan Karyawan Tetap
+                            </s:a>
+                        </s:if>
                     </s:if>
 
                     <%--<sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"--%>
@@ -2454,8 +2516,8 @@
         } else{
             $('.label-prapensiun').html("<small>Tanggal Pra Pensiun</small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun</small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Masuk</small>");
-            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan</small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk <span style=\"color:red;\">*</span> :</small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan <span style=\"color:red;\">*</span> :</small>");
         }
     }
 
@@ -3464,6 +3526,13 @@
             });
 
         }
+
+        $('#kso2karyawan').click(function(event) {
+                if (!confirm('Apakah anda akan menjadikannya Karyawan Tetap?\nMohon lengkapi informasi yang diperlukan setelah ini.')) {
+                    event.preventDefault()
+                }
+            }
+        )
 
         $('#btnSave').click(function () {
             var url = $('#myForm').attr('action');

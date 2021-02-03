@@ -194,7 +194,7 @@
                                 <tr>
                                     <td>
                                         <sj:submit type="button" cssClass="btn btn-primary" formIds="cutiForm" id="search" name="search"
-                                                   onClickTopics="showDialog" onCompleteTopics="closeDialog" >
+                                                 onClickTopics="beforeProcessSearch" onCompleteTopics="closeDialog" >
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
@@ -307,6 +307,23 @@
 
 <script>
     $(document).ready(function() {
+
+        //RAKA-28JAN2021 ==> validasi blm bisa
+        $.subscribe('beforeProcessSearch', function (event, data) {
+            var tglAwal  = document.getElementById("tglFrom").value;
+            var tglAkhir = document.getElementById("tglTo").value;
+            if (tglAwal == '' || tglAkhir == '' ) {
+                alert("Tanggal Awal dan Akhir harus diisi.");
+                // event.originalEvent.options.submit = false;
+            } else {
+                if(tglAwal > tglAkhir){
+                    alert("Tanggal Awal tidak boleh lebih esok dari Tanggal Akhir");
+                } else {
+                    $.publish('showDialog');
+                }
+            }
+        });
+
         $('#tglFrom').datepicker({
             dateFormat: 'dd-mm-yy'
         });

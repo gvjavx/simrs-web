@@ -545,7 +545,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tbagian.bagian_id,\n" +
                 "\tbagian.nama_bagian,\n" +
                 "\titPosisi.profesi_id,\n" +
-                "\tpegawai.*\n" +
+                "\tpegawai.nip\n" +
                 "from\n" +
                 "\tim_hris_pegawai pegawai \n" +
                 "\tleft join it_hris_pegawai_position itPosisi on itPosisi.nip = pegawai.nip \n" +
@@ -605,8 +605,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         List<String> bioNIP = new ArrayList<>();
 
         for (Object[] row : results) {
-            if(!bioNIP.contains((String) row[11])) {
-                bioNIP.add((String) row[11]);
+            if(!bioNIP.contains((String) row[14])) {
+                bioNIP.add((String) row[14]);
 
                 ImBiodataEntity result = new ImBiodataEntity();
                 result.setBranchId((String) row[0]);
@@ -653,7 +653,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setLastUpdateWho(person.getLastUpdateWho());
                 result.setTanggalAktif(person.getTanggalAktif());
                 result.setGolongan(person.getGolongan());
-                result.setStatusPegawai(person.getStatusPegawaiName());
+                result.setStatusPegawai(person.getStatusPegawai());
                 result.setStatusKeluarga(person.getStatusKeluarga());
                 result.setJumlahAnak(person.getJumlahAnak());
                 result.setGender(person.getGender());
