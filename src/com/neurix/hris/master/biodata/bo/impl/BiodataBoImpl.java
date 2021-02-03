@@ -1576,6 +1576,7 @@ public class BiodataBoImpl implements BiodataBo {
                     pengalaman.setJabatan(position.getPositionId());
                     pengalaman.setPosisiId(position.getPositionId());
                     pengalaman.setJabatanName(position.getPositionName());
+                    pengalaman.setPositionName(position.getPositionName());
                     pengalaman.setTipePegawaiId(bean.getTipePegawai());
                     pengalaman.setGolonganId(bean.getGolongan());
                     pengalaman.setStTtahunMasuk(bean.getStTanggalMasuk());
@@ -1583,13 +1584,13 @@ public class BiodataBoImpl implements BiodataBo {
                     pengalaman.setProfesiId(position.getProfesiId());
                     pengalaman.setProfesiName(position.getProfesiName());
 
-                    pengalaman.setFlag(position.getFlag());
-                    pengalaman.setAction(position.getAction());
-                    pengalaman.setCreatedWho(position.getCreatedWho());
-                    pengalaman.setLastUpdateWho(position.getLastUpdateWho());
-                    pengalaman.setCreatedDate(position.getCreatedDate());
-                    pengalaman.setLastUpdate(position.getLastUpdate());
-                    //pengalaman.setPjsFlag(position.getPjsFlag());
+                    pengalaman.setFlag("Y");
+                    pengalaman.setAction("C");
+                    pengalaman.setCreatedWho(bean.getCreatedWho());
+                    pengalaman.setLastUpdateWho(bean.getLastUpdateWho());
+                    pengalaman.setCreatedDate(bean.getCreatedDate());
+                    pengalaman.setLastUpdate(bean.getLastUpdate());
+                    pengalaman.setPjsFlag("N");
                     pengalaman.setFlagJabatanAktif("Y");
 
                     listPengalamanKerja.add(pengalaman);
