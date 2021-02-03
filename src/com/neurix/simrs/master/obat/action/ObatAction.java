@@ -22,6 +22,7 @@ import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganOba
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -567,7 +568,7 @@ public class ObatAction extends BaseMasterAction {
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
-        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+        Pelayanan pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
 
         String branchId = "";
         if (pelayananEntity != null){
@@ -805,7 +806,7 @@ public class ObatAction extends BaseMasterAction {
 
             String divisiId = "";
             String pelayananName = "";
-            ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
+            Pelayanan pelayananEntity = pelayananBo.getPelayananById(CommonUtil.userPelayananIdLogin());
             if (pelayananEntity != null){
 
                 ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
@@ -993,7 +994,7 @@ public class ObatAction extends BaseMasterAction {
         }
 
         String namaPelayanan = "";
-        ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
+        Pelayanan pelayananEntity = new Pelayanan();
         try {
             pelayananEntity = pelayananBoProxy.getPelayananById(obat.getIdPelayanan());
         } catch (GeneralBOException e){

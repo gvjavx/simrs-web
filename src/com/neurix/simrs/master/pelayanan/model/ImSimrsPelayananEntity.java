@@ -3,83 +3,17 @@ package com.neurix.simrs.master.pelayanan.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/**
- * Created by Toshiba on 07/11/2019.
- */
+
 public class ImSimrsPelayananEntity implements Serializable {
     private String idPelayanan;
-    private String namaPelayanan;
     private String flag;
     private String action;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
-    private String isPoli;
-    private String isEksekutif;
-
-    private String tipePelayanan;
     private String branchId;
-    private String kodering;
-    private String divisiId;
-    private String kategoriPelayanan;
-    private String kodePoliVclaim;
-
-    public String getKodePoliVclaim() {
-        return kodePoliVclaim;
-    }
-
-    public void setKodePoliVclaim(String kodePoliVclaim) {
-        this.kodePoliVclaim = kodePoliVclaim;
-    }
-
-    public String getKategoriPelayanan() {
-        return kategoriPelayanan;
-    }
-
-    public void setKategoriPelayanan(String kategoriPelayanan) {
-        this.kategoriPelayanan = kategoriPelayanan;
-    }
-
-    public String getDivisiId() {
-        return divisiId;
-    }
-
-    public void setDivisiId(String divisiId) {
-        this.divisiId = divisiId;
-    }
-
-    public String getTipePelayanan() {
-        return tipePelayanan;
-    }
-
-    public void setTipePelayanan(String tipePelayanan) {
-        this.tipePelayanan = tipePelayanan;
-    }
-
-    public String getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(String branchId) {
-        this.branchId = branchId;
-    }
-
-    public String getIsPoli() {
-        return isPoli;
-    }
-
-    public void setIsPoli(String isPoli) {
-        this.isPoli = isPoli;
-    }
-
-    public String getIsEksekutif() {
-        return isEksekutif;
-    }
-
-    public void setIsEksekutif(String isEksekutif) {
-        this.isEksekutif = isEksekutif;
-    }
+    private String idHeaderPelayanan;
 
     public String getIdPelayanan() {
         return idPelayanan;
@@ -87,14 +21,6 @@ public class ImSimrsPelayananEntity implements Serializable {
 
     public void setIdPelayanan(String idPelayanan) {
         this.idPelayanan = idPelayanan;
-    }
-
-    public String getNamaPelayanan() {
-        return namaPelayanan;
-    }
-
-    public void setNamaPelayanan(String namaPelayanan) {
-        this.namaPelayanan = namaPelayanan;
     }
 
     public String getFlag() {
@@ -145,30 +71,19 @@ public class ImSimrsPelayananEntity implements Serializable {
         this.lastUpdateWho = lastUpdateWho;
     }
 
-    public String getKodering() {
-        return kodering;
+    public String getBranchId() {
+        return branchId;
     }
 
-    public void setKodering(String kodering) {
-        this.kodering = kodering;
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
-    @Override
-    public String toString() {
-        return "ImSimrsPelayananEntity{" +
-                "idPelayanan='" + idPelayanan + '\'' +
-                ", namaPelayanan='" + namaPelayanan + '\'' +
-                ", flag='" + flag + '\'' +
-                ", action='" + action + '\'' +
-                ", createdDate=" + createdDate +
-                ", createdWho='" + createdWho + '\'' +
-                ", lastUpdate=" + lastUpdate +
-                ", lastUpdateWho='" + lastUpdateWho + '\'' +
-                ", isPoli='" + isPoli + '\'' +
-                ", isEksekutif='" + isEksekutif + '\'' +
-                ", tipePelayanan='" + tipePelayanan + '\'' +
-                ", branchId='" + branchId + '\'' +
-                ", kodering='" + kodering + '\'' +
-                '}';
+    public String getIdHeaderPelayanan() {
+        return idHeaderPelayanan;
+    }
+
+    public void setIdHeaderPelayanan(String idHeaderPelayanan) {
+        this.idHeaderPelayanan = idHeaderPelayanan;
     }
 }

@@ -308,4 +308,7 @@
     <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/ParameterBudgetingRekeningAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/KategoriParameterBudgetingAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/pelayanan/struts/HeaderPelayananAction.xml"/>
+
+
 </struts>

@@ -124,15 +124,7 @@ public class KategoriTindakanPelayananAction extends BaseMasterAction {
             try {
                 editKategoriTindakanPelayanan = init(itemId, itemFlag);
             } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "KategoriTindakanPelayananBO.edit");
-                } catch (GeneralBOException e1) {
-                    logger.error("[KategoriTindakanPelayananAction.edit] Error when retrieving edit data,", e1);
-                }
-                logger.error("[KategoriTindakanPelayananAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
-                return "failure";
+                logger.error("[KategoriTindakanPelayananAction.edit] Error when retrieving item, Found problem when retrieving data, please inform to your admin.", e);
             }
 
             if(editKategoriTindakanPelayanan != null) {
@@ -309,16 +301,7 @@ public class KategoriTindakanPelayananAction extends BaseMasterAction {
 
             kategoriTindakanPelayananBoProxy.saveEdit(editKategoriTindakanPelayanan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "KategoriTindakanPelayananBo.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[KategoriTindakanPelayananAction.saveEdit] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[KategoriTindakanPelayananAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+            logger.error("[KategoriTindakanPelayananAction.saveEdit] Error when editing item alat, Found problem when saving edit data, please inform to your admin.", e);
         }
 
         logger.info("[KategoriTindakanPelayananAction.saveEdit] end process <<<");
@@ -378,15 +361,7 @@ public class KategoriTindakanPelayananAction extends BaseMasterAction {
         try {
             listOfPelayanan = pelayananBoProxy.getByCriteria(pelayanan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PelayananBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[PelayananAction.initComboRole] Error when saving error,", e1);
-            }
-            logger.error("[PelayananAction.initComboRole] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return "failure";
+            logger.error("[PelayananAction.initComboRole] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         listOfComboPelayanan.addAll(listOfPelayanan);

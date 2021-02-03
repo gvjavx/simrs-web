@@ -31,6 +31,7 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
@@ -553,8 +554,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         return "";
     }
 
-    private ImSimrsPelayananEntity getPelayananById(String idPelayanan) throws GeneralBOException{
-        return pelayananDao.getById("idPelayanan", idPelayanan);
+    private Pelayanan getPelayananById(String idPelayanan) throws GeneralBOException{
+        return pelayananDao.getPelayananById("idPelayanan", idPelayanan);
     }
 
     private ImSimrsDokterEntity getDokterById(String idDokter) throws GeneralBOException{

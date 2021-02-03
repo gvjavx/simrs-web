@@ -295,6 +295,28 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Is Vaksin</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'Y':'Ya'}" id="set_vaksin"
+                                      headerKey="N" headerValue="Tidak" cssClass="form-control select2"
+                                      cssStyle="width: 100%" onchange="
+                                  var warn =$('#war_set_vaksin').is(':visible');
+                                    if (warn){
+                                    $('#cor_set_vaksin').show().fadeOut(3000);
+                                    $('#war_set_vaksin').hide()
+                                    }"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_vaksin">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_vaksin"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Standart Cost</label>
                         <div class="col-md-7">
                             <div class="input-group" style="margin-top: 7px">
@@ -356,6 +378,14 @@
                                     <td><span id="v_kategori_tindakan"></span></td>
                                 </tr>
                                 <tr>
+                                    <td><b>Flag Konsultasi</b></td>
+                                    <td><span id="v_konsul"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Vaksin</b></td>
+                                    <td><span id="v_vaksin"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>Standart Cost</b></td>
                                     <td><span id="v_tarif"></span></td>
                                 </tr>
@@ -399,8 +429,9 @@
     function showModal(tipe, id) {
         if ('add' == tipe) {
             getKategoriIna();
-            $('.form-control').val('');
-            $('#flagKonsulTele').val('Y');
+            $('#set_nama_tindakan, #h_tarif, #set_tarif').val('');
+            $('#set_kategori_ina_bpjs').val('').trigger('change');
+            $('#flagKonsulTele, #set_vaksin').val('N').trigger('change');
             $('#save_add').attr('onclick', 'saveTindakan("")');
             $('#set_judul').text("Tambah Tindakan");
             $('#modal-add').modal({show: true, backdrop: 'static'});
@@ -411,7 +442,6 @@
         }
         if ('edit' == tipe) {
             getKategoriIna();
-            $('.form-control').val('');
             $('#save_add').attr('onclick', 'saveTindakan(\'' + id + '\')');
             $('#set_judul').text("Edit Tindakan");
             $('#modal-add').modal({show: true, backdrop: 'static'});
@@ -431,8 +461,8 @@
             var idKategori = $('#set_kategori_ina_bpjs').val();
             var tarif = $('#h_tarif').val();
             var flagTele = $('#flagKonsulTele').val();
-
-            if (nama != '' && idKategori != '' && tarif != '' && flagTele != '') {
+            var flagVaksin = $('#set_vaksin').val();
+            if (nama != '' && idKategori != '' && tarif != '' && flagTele && flagVaksin != '') {
                 $('#save_add').hide();
                 $('#load_add').show();
                 if (id != '') {
@@ -441,7 +471,8 @@
                         'nama_tindakan': nama,
                         'kategori_ina_bpjs': idKategori,
                         'tarif': tarif,
-                        'flag_tele': flagTele
+                        'flag_tele': flagTele,
+                        'flag_vaksin': flagVaksin
                     };
                     var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
@@ -467,7 +498,8 @@
                         'nama_tindakan': nama,
                         'kategori_ina_bpjs': idKategori,
                         'tarif': tarif,
-                        'flag_tele': flagTele
+                        'flag_tele': flagTele,
+                        'flag_vaksin': flagVaksin
                     };
                     var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
@@ -505,6 +537,9 @@
                 if (flagTele == '') {
                     $('#war_konsul_tele').show();
                 }
+                if (flagVaksin == '') {
+                    $('#war_set_vaksin').show();
+                }
             }
         }
     }
@@ -527,12 +562,15 @@
                 $('#v_id_tindakan').text(res.idHeaderTindakan);
                 $('#v_nama_tindakan').text(res.namaTindakan);
                 $('#v_kategori_tindakan').text(res.namaKategoriBpjs);
+                $('#v_konsul').text(res.flagKonsulTele);
+                $('#v_vaksin').text(res.flagVaksin);
                 $('#v_tarif').text("Rp. " + formatRupiahAtas(res.standardCost));
 
                 $('#set_nama_tindakan').val(res.namaTindakan);
                 $('#set_kategori_ina_bpjs').val(res.kategoriInaBpjs).trigger('change');
                 $('#set_tarif').val(formatRupiahAtas(res.standardCost));
                 $('#flagKonsulTele').val(res.flagKonsulTele).trigger('change');
+                $('#set_vaksin').val(res.flagVaksin).trigger('change');
                 $('#h_tarif').val(res.standardCost);
             }
         });

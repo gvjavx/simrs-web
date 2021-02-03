@@ -959,5 +959,10 @@
         <convert converter="bean" match="com.neurix.simrs.master.license.model.LicenseZebra"/>
         <convert converter="bean" match="com.neurix.simrs.master.license.model.VersionZebra"/>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.pelayanan.action.HeaderPelayananAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.HeaderPelayanan"/>
+
     </allow>
 </dwr>

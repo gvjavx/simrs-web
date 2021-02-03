@@ -136,7 +136,6 @@ public class PasienBoImpl implements PasienBo {
             pasien.setNoBpjs(data.getNoBpjs());
             pasien.setTempatLahir(data.getTempatLahir());
 
-
             String strDate = formatter.format(data.getTglLahir());
             pasien.setTglLahir(strDate);
 
