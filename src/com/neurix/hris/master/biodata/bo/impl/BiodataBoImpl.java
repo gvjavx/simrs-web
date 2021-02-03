@@ -2029,6 +2029,9 @@ public class BiodataBoImpl implements BiodataBo {
                                     historyJabatan.setBidangName(pengalamanKerja.getDivisiName());
                                     historyJabatan.setProfesiId(pengalamanKerja.getProfesiId());
 
+                                    historyJabatan.setBagianId(bean.getBagianId());
+                                    historyJabatan.setBagianName(bean.getBagianName());
+
                                     historyJabatan.setFlag(pengalamanKerja.getFlag());
                                     historyJabatan.setAction(pengalamanKerja.getAction());
                                     historyJabatan.setCreatedWho(pengalamanKerja.getCreatedWho());
