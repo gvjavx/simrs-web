@@ -1560,7 +1560,41 @@ public class BiodataBoImpl implements BiodataBo {
                 HttpSession session = ServletActionContext.getRequest().getSession();
                 List<Keluarga> listKeluarga = (List<Keluarga>) session.getAttribute("listKeluarga");
                 //get session riwayat kerja
-                List<PengalamanKerja> listPengalamanKerja = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
+                List<PersonilPosition> listPersonilPosition = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+                List<PengalamanKerja> listPengalamanKerja = new ArrayList<>();
+//                List<PengalamanKerja> listPengalamanKerja = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
+
+                String stTglMasuk = "";
+                for(PersonilPosition position : listPersonilPosition){
+                    PengalamanKerja pengalaman = new PengalamanKerja();
+
+                    pengalaman.setNip(position.getNip());
+                    pengalaman.setBranchId(position.getBranchId());
+                    pengalaman.setBranchName(position.getBranchName());
+                    pengalaman.setDivisiId(position.getDivisiId());
+                    pengalaman.setDivisiName(position.getDivisiName());
+                    pengalaman.setJabatan(position.getPositionId());
+                    pengalaman.setPosisiId(position.getPositionId());
+                    pengalaman.setJabatanName(position.getPositionName());
+                    pengalaman.setPositionName(position.getPositionName());
+                    pengalaman.setTipePegawaiId(bean.getTipePegawai());
+                    pengalaman.setGolonganId(bean.getGolongan());
+                    pengalaman.setStTtahunMasuk(bean.getStTanggalMasuk());
+                    pengalaman.setStTahunKeluar("");
+                    pengalaman.setProfesiId(position.getProfesiId());
+                    pengalaman.setProfesiName(position.getProfesiName());
+
+                    pengalaman.setFlag("Y");
+                    pengalaman.setAction("C");
+                    pengalaman.setCreatedWho(bean.getCreatedWho());
+                    pengalaman.setLastUpdateWho(bean.getLastUpdateWho());
+                    pengalaman.setCreatedDate(bean.getCreatedDate());
+                    pengalaman.setLastUpdate(bean.getLastUpdate());
+                    pengalaman.setPjsFlag("N");
+                    pengalaman.setFlagJabatanAktif("Y");
+
+                    listPengalamanKerja.add(pengalaman);
+                }
 
                 personPosition =  personilPositionDao.getNextPersonilPositionId();
                 // creating object entity serializable
@@ -1573,6 +1607,7 @@ public class BiodataBoImpl implements BiodataBo {
                     itPersonilPositionEntity.setBranchId(bean.getBranch());
                     itPersonilPositionEntity.setPositionId(bean.getPositionId());
                     itPersonilPositionEntity.setProfesiId(bean.getProfesiId());
+                    itPersonilPositionEntity.setJenisPegawai("JP05");
                     itPersonilPositionEntity.setPjs("N");
                     itPersonilPositionEntity.setFlag(bean.getFlag());
                     itPersonilPositionEntity.setAction(bean.getAction());
@@ -1675,7 +1710,7 @@ public class BiodataBoImpl implements BiodataBo {
                 }
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
-                imBiodataEntity.setFlagDokterKso(bean.getFlag());
+                imBiodataEntity.setFlagDokterKso(bean.getFlagDokterKso());
 
                 imBiodataEntity.setGender(bean.getGender());
 
@@ -1925,22 +1960,22 @@ public class BiodataBoImpl implements BiodataBo {
                                         pengalamanId = historyJabatanPegawaiDao.getNextPersonilPositionId();
 
                                         //mengambil branch name, position name, divisi name, golongan name, tipe pegawai name
-                                        if (!pengalamanKerja.getBranchId().equalsIgnoreCase("0")){
-                                            branchName = historyJabatanPegawaiDao.getBranchById(pengalamanKerja.getBranchId());
-
-                                        }else {
-                                            branchName = pengalamanKerja.getBranchName();
-                                        }
-                                        if (!pengalamanKerja.getDivisiId().equalsIgnoreCase("0")){
-                                            divisiName = historyJabatanPegawaiDao.getDivisiById(pengalamanKerja.getDivisiId());
-                                        }else {
-                                            divisiName = pengalamanKerja.getDivisiName();
-                                        }
-                                        if (!pengalamanKerja.getJabatan().equalsIgnoreCase("0")){
-                                            positionname = historyJabatanPegawaiDao.getPositionById(pengalamanKerja.getJabatan());
-                                        }else {
-                                            positionname = pengalamanKerja.getPositionName();
-                                        }
+//                                        if (!pengalamanKerja.getBranchId().equalsIgnoreCase("0")){
+//                                            branchName = historyJabatanPegawaiDao.getBranchById(pengalamanKerja.getBranchId());
+//
+//                                        }else {
+//                                            branchName = pengalamanKerja.getBranchName();
+//                                        }
+//                                        if (!pengalamanKerja.getDivisiId().equalsIgnoreCase("0")){
+//                                            divisiName = historyJabatanPegawaiDao.getDivisiById(pengalamanKerja.getDivisiId());
+//                                        }else {
+//                                            divisiName = pengalamanKerja.getDivisiName();
+//                                        }
+//                                        if (!pengalamanKerja.getJabatan().equalsIgnoreCase("0")){
+//                                            positionname = historyJabatanPegawaiDao.getPositionById(pengalamanKerja.getJabatan());
+//                                        }else {
+//                                            positionname = pengalamanKerja.getPositionName();
+//                                        }
                                         if(pengalamanKerja.getGolonganId()!= null){
                                             if (!pengalamanKerja.getGolonganId().equalsIgnoreCase("")){
                                                 if (pengalamanKerja.getTipePegawaiId().equalsIgnoreCase("TP01")){
@@ -1979,11 +2014,11 @@ public class BiodataBoImpl implements BiodataBo {
                                     historyJabatan.setHistoryJabatanId(pengalamanId);
                                     historyJabatan.setNip(pengalamanKerja.getNip());
                                     historyJabatan.setBranchId(pengalamanKerja.getBranchId());
-                                    historyJabatan.setBranchName(branchName);
+                                    historyJabatan.setBranchName(pengalamanKerja.getBranchName());
                                     historyJabatan.setDivisiId(pengalamanKerja.getDivisiId());
-                                    historyJabatan.setDivisiName(divisiName);
+                                    historyJabatan.setDivisiName(pengalamanKerja.getDivisiName());
                                     historyJabatan.setPositionId(pengalamanKerja.getJabatan());
-                                    historyJabatan.setPositionName(positionname);
+                                    historyJabatan.setPositionName(pengalamanKerja.getPositionName());
                                     historyJabatan.setTipePegawaiId(pengalamanKerja.getTipePegawaiId());
                                     historyJabatan.setTipePegawaiName(tipePegawaiName);
                                     historyJabatan.setGolonganId(pengalamanKerja.getGolonganId());
@@ -1991,8 +2026,11 @@ public class BiodataBoImpl implements BiodataBo {
                                     historyJabatan.setTanggal(pengalamanKerja.getStTtahunMasuk());
                                     historyJabatan.setTanggalKeluar(pengalamanKerja.getStTahunKeluar());
                                     historyJabatan.setBidangId(pengalamanKerja.getDivisiId());
-                                    historyJabatan.setBidangName(divisiName);
+                                    historyJabatan.setBidangName(pengalamanKerja.getDivisiName());
                                     historyJabatan.setProfesiId(pengalamanKerja.getProfesiId());
+
+                                    historyJabatan.setBagianId(bean.getBagianId());
+                                    historyJabatan.setBagianName(bean.getBagianName());
 
                                     historyJabatan.setFlag(pengalamanKerja.getFlag());
                                     historyJabatan.setAction(pengalamanKerja.getAction());

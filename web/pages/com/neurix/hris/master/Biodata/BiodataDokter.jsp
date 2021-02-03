@@ -347,7 +347,7 @@
                                                         <s:else>
                                                             <s:textfield id="namaPegawai1" name="biodata.namaPegawai" required="true" disabled="false" cssClass="form-control"/>
                                                         </s:else>
-                                                        <s:hidden name="biodata.nip"></s:hidden>
+                                                        <%--<s:hidden name="biodata.nip"></s:hidden>--%>
                                                     </table>
                                                 </td>
                                             </tr>

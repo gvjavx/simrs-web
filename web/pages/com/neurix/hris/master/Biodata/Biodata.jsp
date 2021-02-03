@@ -76,9 +76,8 @@
             var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
-            var tglAktif            = document.getElementById("tanggalAktif").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='' && tglAktif !='') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -123,9 +122,6 @@
                 }
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
-                }
-                if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -3329,7 +3325,7 @@
             $('.label-prapensiun').html("<small>Tanggal MBT : </small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun : </small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Masuk <span style=\"color:red;\">*</span> : </small>");
-            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan <span style=\"color:red;\">*</span> : </small>");
+            $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan : </small>");
         }
     }
 
@@ -6381,21 +6377,21 @@
         });
     }
 
-    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
-        dwr.engine.setAsync(false);
-        dwr.engine.beginBatch();
-        BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
-            alert('Data Berhasil Disimpan');
-            $('#modal-pengalamanKerja').modal('hide');
-            $('#myFormPengalaman')[0].reset();
-            loadSessionPengalamanKerja();
-        });
-        dwr.engine.endBatch({
-            errorHandler:function(errorString, exception){
-                alert('Jabatan aktif sudah ada');
-            }
-        });
-    }
+    // function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
+    //     dwr.engine.setAsync(false);
+    //     dwr.engine.beginBatch();
+    //     BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+    //         alert('Data Berhasil Disimpan');
+    //         $('#modal-pengalamanKerja').modal('hide');
+    //         $('#myFormPengalaman')[0].reset();
+    //         loadSessionPengalamanKerja();
+    //     });
+    //     dwr.engine.endBatch({
+    //         errorHandler:function(errorString, exception){
+    //             alert('Jabatan aktif sudah ada');
+    //         }
+    //     });
+    // }
 
     function getNip(birthDate){
         var nip = $("#nip1").val();
