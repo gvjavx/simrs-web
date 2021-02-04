@@ -74,6 +74,7 @@
             <interceptor-ref name="ivelinStack" />
 
             <result name="search">/pages/com/neurix/simrs/transaksi/verifikatorpembayaran/searchPembayaran.jsp</result>
+            <result name="init_print">/pages/com/neurix/simrs/transaksi/verifikatorpembayaran/printListTransaksi.jsp</result>
 
             <result name="print_final_claim" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printFinalClaim.jasper</param>
@@ -87,6 +88,13 @@
                 <param name="connection">connection</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
+            </result>
+
+            <result name="downloadXls" type="stream">
+                <param name="contentType">${excelContentType}</param>
+                <param name="inputName">excelStream</param>
+                <param name="contentDisposition">contentDisposition</param>
+                <param name="bufferSize">1024</param>
             </result>
 
         </action>
