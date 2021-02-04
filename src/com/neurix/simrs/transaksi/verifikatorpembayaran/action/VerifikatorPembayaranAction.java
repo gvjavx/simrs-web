@@ -111,6 +111,8 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -3619,6 +3621,31 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         return shiftList;
     }
 
+    public List<AntrianTelemedic> getSearchListTransByShift(String stJson) throws JSONException{
+        logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] START >>>");
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(stJson);
+
+        String stDate   = jsonObject.getString("date");
+        String shiftId  = jsonObject.getString("shift");
+        String status   = jsonObject.getString("status");
+        String jenis    = jsonObject.getString("jenis");
+        String branchId = CommonUtil.userBranchLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            antrianTelemedicList = verifikatorPembayaranBo.getListKasMasukByShift(shiftId, stDate, branchId, status, jenis);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getSearchListTransByShift] Error", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] END <<<");
+        return antrianTelemedicList;
+    }
+
     public String print(){
         logger.info("[VerifikatorPembayaranAction.print] START >>>");
 
@@ -3681,7 +3708,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             //Keterangan
             cellDetail = new CellDetail();
             cellDetail.setCellID(2);
-            cellDetail.setValueCell(data.getKeterangan().toUpperCase());
+            cellDetail.setValueCell(data.getKeterangan());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
@@ -3730,7 +3757,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             //Last Update
             cellDetail = new CellDetail();
             cellDetail.setCellID(9);
-            cellDetail.setValueCell(data.getLastUpdate().toString());
+            cellDetail.setValueCell(data.getStLastUpdate());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 

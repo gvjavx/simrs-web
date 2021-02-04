@@ -95,7 +95,7 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
             for (Object[] obj : objects){
                 AntrianTelemedic antritanTelemedicData = new AntrianTelemedic();
                 antritanTelemedicData.setId(obj[0].toString());
-                antritanTelemedicData.setKeterangan(obj[1].toString());
+                antritanTelemedicData.setKeterangan(obj[1].toString().toUpperCase());
                 antritanTelemedicData.setIdJenisPeriksaPasien(obj[2].toString());
                 antritanTelemedicData.setNamaBank(obj[3].toString());
                 antritanTelemedicData.setIdPasien(obj[4].toString());
@@ -109,6 +109,7 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
                 antritanTelemedicData.setApprovedFlag(obj[12] == null ? null : obj[12].toString());
                 antritanTelemedicData.setNamaPelayanan(obj[13] == null ? null : obj[13].toString());
                 antritanTelemedicData.setNamaDokter(obj[14] == null ? null : obj[14].toString());
+                antritanTelemedicData.setStLastUpdate(antritanTelemedicData.getLastUpdate().toString());
 
                 // filter status transaksi
                 if ("asuransi".equalsIgnoreCase(antritanTelemedicData.getIdJenisPeriksaPasien())){
