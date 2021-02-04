@@ -1561,6 +1561,7 @@ public class UserBoImpl implements UserBo {
         if (loginUser == null) {
             loginUser = getUserByEmailId(username);
         }
+
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
             String namaPosisi = "";

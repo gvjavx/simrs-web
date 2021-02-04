@@ -478,6 +478,21 @@ public class PelayananBoImpl implements PelayananBo{
     }
 
     @Override
+    public List<Pelayanan> getListPelayananTelemedic(String branchId) {
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+           pelayananList = pelayananDao.getListPelayananTelemedic(branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[PelayananBoImpl.getListPelayananTelemedic] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        return pelayananList;
+    }
+
+    @Override
     public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException {
         return pelayananDao.getListPelayananFarmasi(branchId);
     }

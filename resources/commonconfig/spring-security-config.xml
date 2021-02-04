@@ -231,8 +231,7 @@
             <filter-chain pattern="/mobileapi/license/*/**" filters="none" />
 
             <filter-chain pattern="/mobileapi/version" filters="none" />
-
-
+            <filter-chain pattern="/mobileapi/versionmobile" filters="none" />
 
             <filter-chain pattern="/**/*"
                           filters="

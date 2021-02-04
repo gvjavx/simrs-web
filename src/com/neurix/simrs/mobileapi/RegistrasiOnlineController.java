@@ -317,8 +317,15 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             registrasiOnline.setProfesi(profesi);
             registrasiOnline.setJenisKelamin(jenisKelamin);
             registrasiOnline.setIdJenisPeriksaPasien(idJenisPeriksaPasien);
-            BigInteger bigInteger = new BigInteger(desaId);
-            registrasiOnline.setDesaId(bigInteger);
+
+            if (desaId != null && !"".equalsIgnoreCase(desaId)) {
+                BigInteger bigInteger = new BigInteger(desaId);
+                registrasiOnline.setDesaId(bigInteger);
+            } else {
+                BigInteger bigInteger = new BigInteger("0");
+                registrasiOnline.setDesaId(bigInteger);
+            }
+
             registrasiOnline.setSuku(suku);
             registrasiOnline.setAgama(agama);
             registrasiOnline.setNoTelp(noTelp);
@@ -328,11 +335,19 @@ public class RegistrasiOnlineController extends ValidationAwareSupport implement
             registrasiOnline.setStTglCheckup(tglCheckup);
             registrasiOnline.setUrlKtp(urlKtp);
 
-            Date tempTglCheckup = CommonUtil.convertStringToDate(tglCheckup);
-            registrasiOnline.setTglCheckup(tempTglCheckup);
+            if (tglCheckup != null && !"".equalsIgnoreCase(tglCheckup)) {
+                Date tempTglCheckup = CommonUtil.convertStringToDate(tglCheckup);
+                registrasiOnline.setTglCheckup(tempTglCheckup);
+            } else {
+                registrasiOnline.setTglCheckup(null);
+            }
 
-            Date tempDate = Date.valueOf(tglLahir);
-            registrasiOnline.setTglLahir(tempDate);
+            if (tglLahir != null && !"".equalsIgnoreCase(tglLahir)) {
+                Date tempDate = Date.valueOf(tglLahir);
+                registrasiOnline.setTglLahir(tempDate);
+            } else {
+                registrasiOnline.setTglLahir(null);
+            }
 
             RegistrasiOnline result = new RegistrasiOnline();
             try {
