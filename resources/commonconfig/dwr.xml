@@ -964,5 +964,10 @@
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.HeaderPelayanan"/>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.transaksi.laporan.action.LaporanOpsAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.laporan.model.LaporanOps"/>
+
     </allow>
 </dwr>

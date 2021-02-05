@@ -1695,6 +1695,28 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE im_simrs_header_tindakan
 ADD COLUMN flag_vaksin VARCHAR(1);
 
+--Laporan
+INSERT INTO im_functions VALUES
+(6900, 'Laporan', '/laporanops/initForm_laporanops.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6900),
+(6901, 'Init Laporan', '/laporanops/initForm_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6902, 'Search', '/laporanops/search_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6900, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6901, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6902, 32, 'Y', now(), now(), 'admin', 'admin');
+
+CREATE TABLE im_simrs_laporan_ops(
+  id_laporan_ops VARCHAR(100) NOT NULL PRIMARY KEY,
+  nama_laporan VARCHAR(500),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100)
+)
+
 
 
 

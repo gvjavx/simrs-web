@@ -220,23 +220,31 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
     public List<Pelayanan> getJutsPelayananByBranch(String branchId) throws HibernateException {
         String notLike = "('radiologi','lab','gudang_obat','gizi')";
-        return getListPelayanan(branchId, notLike);
+        return getListPelayanan(branchId, notLike, null);
     }
 
     public List<Pelayanan> getJutsPelayananAndLab(String branchId) throws HibernateException {
         String notLike = "('gudang_obat','gizi','apotek','apotek_ri')";
-        return getListPelayanan(branchId, notLike);
+        return getListPelayanan(branchId, notLike, null);
     }
 
-    public List<Pelayanan> getListPelayanan(String branchId, String notLike){
+    public List<Pelayanan> getJutsPelayananOnly(String branchId) throws HibernateException {
+        String like = "('rawat_jalan', 'igd')";
+        return getListPelayanan(branchId, null, like);
+    }
+
+    public List<Pelayanan> getListPelayanan(String branchId, String notLike, String like){
         String br = "%";
-        String wherenot = "";
+        String where = "";
         List<Pelayanan> pelayananList = new ArrayList<>();
         if(branchId != null && !"".equalsIgnoreCase(branchId)){
             br = branchId;
         }
         if(notLike != null && !"".equalsIgnoreCase(notLike)){
-            wherenot = "AND b.tipe_pelayanan NOT IN "+notLike+" \n";
+            where = "AND b.tipe_pelayanan NOT IN "+notLike+" \n";
+        }
+        if(like != null && !"".equalsIgnoreCase(like)){
+            where = "AND b.tipe_pelayanan IN "+like+" \n";
         }
         String SQL = "SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -247,7 +255,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
-                "WHERE a.flag = 'Y'\n" + wherenot +
+                "WHERE a.flag = 'Y'\n" + where +
                 "AND a.branch_id LIKE :branchId\n" +
                 "ORDER BY b.nama_pelayanan ASC";
 

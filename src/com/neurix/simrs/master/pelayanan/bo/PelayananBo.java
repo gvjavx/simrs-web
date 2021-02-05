@@ -34,4 +34,6 @@ public interface PelayananBo {
     public void saveAdd(Pelayanan bean) throws GeneralBOException;
     public void saveEdit(Pelayanan bean) throws GeneralBOException;
     public void saveDelete(Pelayanan bean) throws GeneralBOException;
+
+    public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException;
 }

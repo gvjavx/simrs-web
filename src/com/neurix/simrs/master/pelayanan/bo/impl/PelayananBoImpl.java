@@ -260,6 +260,11 @@ public class PelayananBoImpl implements PelayananBo {
     }
 
     @Override
+    public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException {
+        return pelayananDao.getJutsPelayananOnly(branchId);
+    }
+
+    @Override
     public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException {
         logger.info("[PelayananBoImpl.getByCriteria] Start >>>>>>");
         List<Pelayanan> result = new ArrayList<>();
