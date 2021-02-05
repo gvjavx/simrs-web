@@ -17,5 +17,6 @@ public interface GolonganBo extends BaseMasterBo<Golongan>{
     public void saveDelete(Golongan bean) throws GeneralBOException;
 
     public List<Golongan> getComboGolonganWithCriteria(String query) throws GeneralBOException;
+    public List<Golongan> getRangeMasaGol(String golPen) throws GeneralBOException;
 
 }

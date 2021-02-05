@@ -123,15 +123,8 @@ public class LicenseController implements ModelDriven<Object> {
             List<LicenseZebra> result = new ArrayList();
             listOfLicenseMZebraobile = new ArrayList<>();
 
-            String encodedLicenseKey = null;
-            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            if(licenseKey != null && !"".equalsIgnoreCase(licenseKey)) {
-                encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
-            }
-
-
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(encodedLicenseKey);
+            bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
             bean.setFlag(flag);
 
@@ -158,10 +151,9 @@ public class LicenseController implements ModelDriven<Object> {
             boolean isAvailable = false;
 
             ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String encodedlicenseKey = passwordEncoder.encodePassword(licenseKey, null);
 
             try {
-               isAvailable = licenseZebraBoProxy.isKeyAvailable(encodedlicenseKey, deviceId);
+               isAvailable = licenseZebraBoProxy.isKeyAvailable(licenseKey, deviceId);
             } catch (GeneralBOException e) {
                 logger.error("LicenseController.create] Error, " + e.getMessage());
             }
@@ -173,14 +165,8 @@ public class LicenseController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("updateFlag")) {
 
-            String encodedLicenseKey = null;
-            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            if(licenseKey != null && !"".equalsIgnoreCase(licenseKey)) {
-                encodedLicenseKey = passwordEncoder.encodePassword(licenseKey, null);
-            }
-
             LicenseZebra bean = new LicenseZebra();
-            bean.setLicenseKey(encodedLicenseKey);
+            bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
             bean.setFlag(flag);
             bean.setAction("U");
@@ -200,10 +186,8 @@ public class LicenseController implements ModelDriven<Object> {
             LicenseZebra bean = new LicenseZebra();
 
             String key = CommonUtil.getRandomString(8);
-            ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
-            String hashedKey = passwordEncoder.encodePassword(key,null);
 
-            bean.setLicenseKey(hashedKey);
+            bean.setLicenseKey(licenseKey);
             bean.setDeviceId(deviceId);
             bean.setCreatedWho("admin");
             bean.setCreatedDate(now);
@@ -220,6 +204,9 @@ public class LicenseController implements ModelDriven<Object> {
             }
         }
 
+        if (action.equalsIgnoreCase("securityCode")) {
+            model.setMessage(CommonUtil.getSecurityCode());
+        }
         //sodiq, 25-01-2021 --update license
         if (action.equalsIgnoreCase("saveEdit")) {
 

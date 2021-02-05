@@ -29,6 +29,7 @@ import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
+import com.neurix.hris.transaksi.mutasi.bo.MutasiBo;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
@@ -46,9 +47,13 @@ import com.neurix.hris.transaksi.training.model.TrainingPerson;
 import com.neurix.hris.transaksi.sppd.model.SppdReroute;
 import com.neurix.simrs.transaksi.CrudResponse;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.json.JSON;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.apache.taglibs.standard.lang.jpath.example.Person;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -66,6 +71,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Ferdi on 05/02/2015.
@@ -330,9 +336,11 @@ public class BiodataAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
 //        session.removeAttribute("listOfResult");
 
-        session.removeAttribute("historyJabatanForSmk");
-        session.removeAttribute("branchForSmk");
-        session.removeAttribute("positionIdForSmk");
+//        session.removeAttribute("historyJabatanForSmk");
+//        session.removeAttribute("branchForSmk");
+//        session.removeAttribute("positionIdForSmk");
+
+        clearAllSession();
 
         logger.info("[BiodataAction.add] stop process >>>");
         if ("dokter".equalsIgnoreCase(getTipe())){
@@ -387,6 +395,7 @@ public class BiodataAction extends BaseMasterAction{
         //remove session
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listSertifikat");
+        session.removeAttribute("listOfPersonilPosition");
 
         logger.info("[BiodataAction.edit] end process >>>");
 
@@ -659,6 +668,11 @@ public class BiodataAction extends BaseMasterAction{
 
     @Override
     public String save() {
+
+        // Sigit 2021-01-18, Mengambil Session ListOfPersonilPosition
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
         if (isAddOrEdit()) {
             if (!isAdd()) {
                 logger.info("[BiodataAction.saveEdit] start process >>>");
@@ -744,6 +758,10 @@ public class BiodataAction extends BaseMasterAction{
                     editBiodata.setAction("U");
                     editBiodata.setFlag(editBiodata.getFlag());
 
+                    // Sigit 2021-01-18, Set PersonilPosition pada object editBiodata
+                    editBiodata.setListOfPersonilPosition(listOfResultPersonil);
+                    // END
+
                     if ("Y".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
                         biodataBoProxy.saveEditDokterKso(editBiodata);
                     } else {
@@ -763,8 +781,8 @@ public class BiodataAction extends BaseMasterAction{
                     throw new GeneralBOException(e.getMessage());
                 }
 
+                clearAllSession();
                 logger.info("[BiodataAction.saveEdit] end process <<<");
-
                 return "success_save_edit";
             } else {
                 //add
@@ -833,6 +851,8 @@ public class BiodataAction extends BaseMasterAction{
                     biodata.setStatusCaption("Online");
                     biodata.setFlag("Y");
 
+                    biodata.setListOfPersonilPosition(listOfResultPersonil);
+
                     biodataBoProxy.saveAdd(biodata);
                 }catch (GeneralBOException e) {
                     Long logId = null;
@@ -848,14 +868,7 @@ public class BiodataAction extends BaseMasterAction{
                 }
 
 
-                HttpSession session = ServletActionContext.getRequest().getSession();
-                session.removeAttribute("listOfResultBiodata");
-                session.removeAttribute("listKeluarga");
-                session.removeAttribute("listStudy");
-                session.removeAttribute("listPengalamanKerja");
-                session.removeAttribute("listReward");
-                session.removeAttribute("listSertifikat");
-
+                clearAllSession();
                 logger.info("[pengalamanKerjaAction.saveAdd] end process >>>");
                 return "success_save_add";
             }
@@ -896,6 +909,20 @@ public class BiodataAction extends BaseMasterAction{
         }
 
         return null;
+    }
+
+    private void clearAllSession(){
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResultBiodata");
+        session.removeAttribute("historyJabatanForSmk");
+        session.removeAttribute("branchForSmk");
+        session.removeAttribute("positionIdForSmk");
+        session.removeAttribute("listKeluarga");
+        session.removeAttribute("listStudy");
+        session.removeAttribute("listPengalamanKerja");
+        session.removeAttribute("listReward");
+        session.removeAttribute("listSertifikat");
+        session.removeAttribute("listOfPersonilPosition");
     }
 
     public String saveEdit(){
@@ -3288,7 +3315,7 @@ public class BiodataAction extends BaseMasterAction{
         try {
             jenisPegawais = biodataBoProxy.getAllJenisPegawai();
         } catch (GeneralBOException e){
-            logger.error("[BiodataAction.initComboJenisPegawai] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[BiodataAction.initComboJenisPegawai] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, Found problem when searching data by criteria, please inform to your admin" );
         }
 
@@ -3297,7 +3324,423 @@ public class BiodataAction extends BaseMasterAction{
         return SUCCESS;
     }
 
+    public List<PersonilPosition> listPersonilPosition(String nip){
+        logger.info("[BiodataAction.listPersonilPosition] START >>>");
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+        if (listOfResultPersonil == null)
+        {
+            try {
+                listOfResultPersonil = biodataBo.getListPesonilPosition(nip);
+            } catch (GeneralBOException e){
+                logger.error("[BiodataAction.listPersonilPosition] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+                addActionError("Error, Found problem when searching data by criteria, please inform to your admin" );
+            }
+        }
+
+        session.removeAttribute("listOfPersonilPosition");
+        session.setAttribute("listOfPersonilPosition", listOfResultPersonil);
+
+        logger.info("[BiodataAction.listPersonilPosition] END <<<");
+        return listOfResultPersonil;
+    }
+
+    public CrudResponse saveAddToPersonilPositionSession(String stJson) throws JSONException{
+        logger.info("[BiodataAction.saveAddToPersonilPositionSession] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        CrudResponse response = new CrudResponse();
+        if (stJson == null || "".equalsIgnoreCase(stJson))
+        {
+            response.setStatus("error");
+            response.setMsg("Tidak dapat mendapatkan JSON");
+            return response;
+        }
+
+        // kasus - kasus validasi
+        response = validationPersonilPosition(stJson);
+        if ("error".equalsIgnoreCase(response.getStatus())){
+            return response;
+        }
+        // END
+
+        JSONObject jsonObject = new JSONObject(stJson);
+        PersonilPosition personilPosition = new PersonilPosition();
+        personilPosition.setNip(jsonObject.getString("nip")); // nip sementara default 1;
+        personilPosition.setPositionId(jsonObject.getString("positionid"));
+
+        if (listOfResultPersonil != null)
+        {
+            List<PersonilPosition> filteredPersonil = listOfResultPersonil.stream().filter(
+                    p-> p.getPositionId().equalsIgnoreCase(personilPosition.getPositionId())
+                    && p.getFlag().equalsIgnoreCase("Y")
+            ).collect(Collectors.toList());
+
+            if (filteredPersonil != null && filteredPersonil.size() > 0)
+            {
+                response.setStatus("error");
+                response.setMsg("Data Sudah Ada Pada List");
+                return response;
+            }
+        }
+
+        if (listOfResultPersonil == null)
+            listOfResultPersonil = new ArrayList<>();
+
+        // add to session list of Personil Position;
+        personilPosition.setPositionName(jsonObject.getString("positionname"));
+        personilPosition.setProfesiId(jsonObject.getString("profesiid"));
+        personilPosition.setProfesiName(jsonObject.getString("profesiname"));
+        personilPosition.setBranchId(jsonObject.getString("branchid"));
+        personilPosition.setBranchName(jsonObject.getString("branchname"));
+        personilPosition.setJenisPegawai(jsonObject.getString("jenispegawai"));
+        personilPosition.setJenisPegawaiName(jsonObject.getString("jenispegawainame"));
+        personilPosition.setFlagDigaji(jsonObject.getString("flagdigaji"));
+        personilPosition.setDivisiId(jsonObject.getString("divisiid"));
+        personilPosition.setDivisiName(jsonObject.getString("divisiname"));
+        personilPosition.setFlag(jsonObject.getString("flag"));
+        listOfResultPersonil.add(personilPosition);
+
+        session.removeAttribute("listOfPersonilPosition");
+        session.setAttribute("listOfPersonilPosition", listOfResultPersonil);
+        // END
+
+        logger.info("[BiodataAction.saveAddToPersonilPositionSession] END <<<");
+        return response;
+    }
+
+    public CrudResponse saveEditToPersonilPositionSession(String stJson) throws JSONException{
+        logger.info("[BiodataAction.saveEditToPersonilPositionSession] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        CrudResponse response = new CrudResponse();
+        if (stJson == null || "".equalsIgnoreCase(stJson))
+        {
+            response.setStatus("error");
+            response.setMsg("Tidak dapat mendapatkan JSON");
+            return response;
+        }
+
+        // kasus - kasus validasi
+        response = validationPersonilPosition(stJson);
+        if ("error".equalsIgnoreCase(response.getStatus())){
+            return response;
+        }
+        // END
+
+        JSONObject jsonObject = new JSONObject(stJson);
+
+        String nip                  = jsonObject.getString("nip");
+        String positionId           = jsonObject.getString("positionid");
+        String idPersonilPosition   = jsonObject.getString("idpersonilposition");
+        String positionIdLama       = jsonObject.getString("positionidlama");
+        String flagEdited           = "";
+
+        // jika yg diedit adalah position yg sudah tersimpan
+        if (idPersonilPosition != null && !"".equalsIgnoreCase(idPersonilPosition))
+            flagEdited = "Y";
+        // END
+
+        List<PersonilPosition> personilPositoinNew = listOfResultPersonil;
+        for (PersonilPosition editPersonilPosition : personilPositoinNew)
+        {
+
+            // jika ditemukan position nip dan position id lama; maka input nilai-nilai nya
+            if (editPersonilPosition.getNip().equalsIgnoreCase(nip) &&
+                    editPersonilPosition.getPositionId().equalsIgnoreCase(positionIdLama))
+            {
+                editPersonilPosition.setNip(nip);
+                editPersonilPosition.setPositionId(positionId);
+                editPersonilPosition.setPersonilPositionId(idPersonilPosition);
+                editPersonilPosition.setFlagEdited(flagEdited);
+                editPersonilPosition.setPositionIdLama(positionIdLama);
+                editPersonilPosition.setPositionName(jsonObject.getString("positionname"));
+                editPersonilPosition.setProfesiId(jsonObject.getString("profesiid"));
+                editPersonilPosition.setProfesiName(jsonObject.getString("profesiname"));
+                editPersonilPosition.setBranchId(jsonObject.getString("branchid"));
+                editPersonilPosition.setBranchName(jsonObject.getString("branchname"));
+                editPersonilPosition.setJenisPegawai(jsonObject.getString("jenispegawai"));
+                editPersonilPosition.setJenisPegawaiName(jsonObject.getString("jenispegawainame"));
+                editPersonilPosition.setFlagDigaji(jsonObject.getString("flagdigaji"));
+                editPersonilPosition.setFlag(jsonObject.getString("flag"));
+                editPersonilPosition.setDivisiId(jsonObject.getString("divisiid"));
+                editPersonilPosition.setDivisiName(jsonObject.getString("divisiname"));
+            }
+            // END
+        }
+
+        // validasi jika ditemukan nip dan position baru yang sama
+        List<PersonilPosition> filterdPersonilPosition = personilPositoinNew.stream().filter(
+                p -> p.getNip().equalsIgnoreCase(nip) &&
+                        p.getPositionId().equalsIgnoreCase(positionId)
+        ).collect(Collectors.toList());
+
+        if (filterdPersonilPosition.size() > 1){
+            response.setStatus("error");
+            response.setMsg("Data Nip dan Position Tersebut Sudah ada.");
+            return response;
+        }
+        // END;
+
+        session.removeAttribute("listOfPersonilPosition");
+        session.setAttribute("listOfPersonilPosition", personilPositoinNew);
+
+        logger.info("[BiodataAction.saveEditToPersonilPositionSession] END <<<");
+        return response;
+    }
+
+    public PersonilPosition initEditSessionPosition(String nip, String positionId){
+        logger.info("[BiodataAction.initEditSessionPosition] START >>>");
+
+        PersonilPosition personilPosition = new PersonilPosition();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        if (listOfResultPersonil == null || listOfResultPersonil.size() == 0)
+            logger.error("[BiodataAction.initEditSessionPosition] ERROR Session tidak ditemukan");
+        else
+        {
+            // mencari pada session list berdasarkan nip dan position id
+            List<PersonilPosition> filteredPosition = listOfResultPersonil.stream().filter(
+                    p-> p.getNip().equalsIgnoreCase(nip) &&
+                            p.getPositionId().equalsIgnoreCase(positionId)
+            ).collect(Collectors.toList());
+            // END
+
+            // set ke object personilPosition untuk direturn dan print log error bila tidak ditemukan;
+            if (filteredPosition == null || filteredPosition.size() == 0)
+                logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan pada session");
+            else
+                personilPosition = filteredPosition.get(0);
+        }
+
+        return personilPosition;
+    }
+
+    private CrudResponse validationPersonilPosition(String stJson) throws JSONException{
+        logger.info("[BiodataAction.validationPersonilPosition] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
+
+        // membuat object baru Crudesponses dan men-set nilai status default = "error"
+        CrudResponse response = new CrudResponse();
+        response.setStatus("error");
+        // END
+
+        JSONObject jsonObject = new JSONObject(stJson);
+
+        String nip                  = jsonObject.getString("nip");
+        String positionId           = jsonObject.getString("positionid");
+        String branchId             = jsonObject.getString("branchid");
+        String flag                 = jsonObject.getString("flag");
+        String jenisPegawaiId       = jsonObject.getString("jenispegawai");
+
+        ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo   = (PositionBo) ctx.getBean("positionBoProxy");
+
+        Boolean isJenisPegawaiDefault   = checkIsJenisPegawaiDefault(jenisPegawaiId);
+        boolean isDelete                = "N".equalsIgnoreCase(flag);
+        String jenisPegawaiIdDefault    = getJenisPegawaiDefault().getJenisPegawaiId();
+
+        // jika delete
+        if (isDelete)
+        {
+            if (isJenisPegawaiDefault)
+            {
+                List<PersonilPosition> filteredPersonilPosition = listOfResultPersonil.stream().filter(
+                        p->p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiIdDefault)
+                                && p.getNip().equalsIgnoreCase(nip)
+                                && p.getFlag().equalsIgnoreCase("Y")
+                                && !p.getPositionId().equalsIgnoreCase(positionId)
+                ).collect(Collectors.toList());
+
+                if (filteredPersonilPosition == null || filteredPersonilPosition.size() == 0)
+                {
+                    response.setMsg("Tidak ditemukan posisi utama lain pada list posisi jika di hapus. ");
+                    return response;
+                }
+            }
+        }
+
+        else // bukan delete
+        {
+            // check jika sudah ada pada session
+            List<PersonilPosition> filteredPersonilPosition = listOfResultPersonil.stream().filter(
+                    p->p.getPositionId().equalsIgnoreCase(positionId)
+                            && p.getNip().equalsIgnoreCase(nip)
+                            && p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiId)
+                            && p.getFlag().equalsIgnoreCase("Y")
+            ).collect(Collectors.toList());
+
+            if (filteredPersonilPosition != null && filteredPersonilPosition.size() > 0)
+            {
+                response.setMsg("Data Sudah Terlist. Silahkan Check List Jabatan. ");
+                return response;
+            }
+            // END
+
+            // check jika jabatan sudah terpakai dan tidak boleh rangkap pada position tersebut
+            try {
+                PersonilPosition personilPosition = positionBo.getAndCheckJabatanTerpakai(positionId, branchId);
+                if (personilPosition != null){
+                    response.setMsg("ditemukan pegawai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
+                    return response;
+                }
+            } catch (GeneralBOException e){
+                logger.info("[BiodataAction.validationPersonilPosition] ERROR. ", e);
+                response.setMsg("[BiodataAction.validationPersonilPosition] ERROR. " + e);
+                return response;
+            }
+            // END
+
+            List<PersonilPosition> filteredForJenisPegawaiDefaultAktif = listOfResultPersonil.stream().filter(
+                    p->p.getJenisPegawai().equalsIgnoreCase(jenisPegawaiIdDefault)
+                            && p.getNip().equalsIgnoreCase(nip)
+                            && p.getFlag().equalsIgnoreCase("Y")
+            ).collect(Collectors.toList());
+
+            if (!isJenisPegawaiDefault)
+            {
+                // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
+                if (filteredForJenisPegawaiDefaultAktif == null || filteredForJenisPegawaiDefaultAktif.size() == 0)
+                {
+                    response.setMsg("Tidak Ada Jabatan Utama Aktif Pada List. Tambahkan / Edit Terlebih Dahulu.");
+                    return response;
+                } //END
+            }
+            else
+            {
+                // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
+                if (filteredForJenisPegawaiDefaultAktif != null && filteredForJenisPegawaiDefaultAktif.size() > 0)
+                {
+                    response.setMsg("Sudah Ada Jabatan Utama Aktif.");
+                    return response;
+                } //END
+            }
+        }
+
+
+
+        response.setStatus("success");
+        logger.info("[BiodataAction.validationPersonilPosition] END <<<");
+        return response;
+    }
+
+    private Boolean checkIsJenisPegawaiDefault(String jenisPegawai){
+        logger.info("[BiodataAction.checkIsJenisPegawaiDefault] START >>>");
+
+        ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo     = (BiodataBo) ctx.getBean("biodataBoProxy");
+        Boolean isDefault       = false;
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+
+        try {
+            jenisPegawais = biodataBo.getAllJenisPegawai();
+        } catch (GeneralBOException e){
+            logger.info("[BiodataAction.checkIsJenisPegawaiDefault] ERROR. ",e);
+        }
+
+        if (jenisPegawais != null && jenisPegawais.size() > 0)
+        {
+            List<JenisPegawai> filteredJenisPegawai = jenisPegawais.stream().filter(
+                    p->p.getJenisPegawaiId().equalsIgnoreCase(jenisPegawai)
+                    && p.getFlagDefault().equalsIgnoreCase("Y")
+            ).collect(Collectors.toList());
+
+            if (filteredJenisPegawai != null && filteredJenisPegawai.size() > 0)
+                isDefault = true;
+        }
+
+
+        logger.info("[BiodataAction.checkIsJenisPegawaiDefault] END <<<");
+        return isDefault;
+    }
+
+    private JenisPegawai getJenisPegawaiDefault(){
+        logger.info("[BiodataAction.getJenisPegawaiDefault] START >>>");
+
+        ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo     = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+
+        try {
+            jenisPegawais = biodataBo.getAllJenisPegawai();
+        } catch (GeneralBOException e){
+            logger.info("[BiodataAction.getJenisPegawaiDefault] ERROR. ",e);
+        }
+
+        JenisPegawai jenisPegawai = new JenisPegawai();
+
+        if (jenisPegawais != null && jenisPegawais.size() > 0)
+        {
+            List<JenisPegawai> filteredJenisPegawai = jenisPegawais.stream().filter(
+                    p->p.getFlagDefault().equalsIgnoreCase("Y")
+            ).collect(Collectors.toList());
+
+            if (filteredJenisPegawai != null && filteredJenisPegawai.size() > 0)
+                jenisPegawai = filteredJenisPegawai.get(0);
+        }
+
+        logger.info("[BiodataAction.getJenisPegawaiDefault] END <<<");
+        return jenisPegawai;
+    }
+
+    public List<JenisPegawai> getAllJenisPegawai(){
+        logger.info("[BiodataAction.getJenisPegawaiDefault] START >>>");
+
+        ApplicationContext ctx  = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo     = (BiodataBo) ctx.getBean("biodataBoProxy");
+
+        List<JenisPegawai> jenisPegawais = new ArrayList<>();
+
+        try {
+            jenisPegawais = biodataBo.getAllJenisPegawai();
+        } catch (GeneralBOException e){
+            logger.info("[BiodataAction.checkIsJenisPegawaiDefault] ERROR. ",e);
+        }
+
+
+        logger.info("[BiodataAction.getJenisPegawaiDefault] END <<<");
+        return jenisPegawais;
+    }
+
+    public void clearSessionJabatan(){
+        logger.info("[BiodataAction.clearSessionJabatan] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfPersonilPosition");
+
+        logger.info("[BiodataAction.clearSessionJabatan] END <<<");
+    }
+
+    //RAKA-09JAN2021 ==> Mendapatkan Seq untuk NIP
+    public String getSeqNip() {
+        logger.info("[BiodataAction.getSeqNip] START >>>>>>");
+        String seq = "";
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        try {
+            seq = biodataBo.getSeqNip();
+        } catch (GeneralBOException e) {
+            logger.error("[BiodataAction.getSeqNip] Failed to get Sequence.");
+        }
+
+        logger.info("[BiodataAction.getSeqNip] END >>>>>>");
+        return seq;
+    }
 
     public String paging(){
         return SUCCESS;

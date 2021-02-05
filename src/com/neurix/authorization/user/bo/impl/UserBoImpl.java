@@ -152,6 +152,7 @@ public class UserBoImpl implements UserBo {
 
             //get roles
             Collection<ImRoles> listUserRoles = loginUser.getImRoles();
+            String tipeRole = "";
             List<Roles> listRoles = new ArrayList();
             for (ImRoles imRoles : listUserRoles) {
                 Roles roles = new Roles(imRoles.getRoleId(), imRoles.getRoleName());
@@ -168,8 +169,8 @@ public class UserBoImpl implements UserBo {
                 }
 
                 roles.setListFunctions(listOfFunction);
-
                 listRoles.add(roles);
+                tipeRole = imRoles.getTipePelayanan();
             }
             String photoUrl = "";
             String statusCaption = "";
@@ -179,11 +180,6 @@ public class UserBoImpl implements UserBo {
             String divisiName = loginUser.getImPosition().getDepartmentName();
             String bagianId = loginUser.getImPosition().getBagianId();
             String bagianName = loginUser.getImPosition().getBagianName();
-
-//            if (loginUser.getImDepartmentEntity()!=null){
-//                divisiId = loginUser.getImDepartmentEntity().getDepartmentId();
-//                divisiName = loginUser.getImDepartmentEntity().getDepartmentName();
-//            }
 
             try {
                 if (loginUser.getImBiodataEntity().getStatusCaption() != null) {
@@ -200,7 +196,6 @@ public class UserBoImpl implements UserBo {
             ImCompany imCompany = companyDao.getCompanyInfo("Y");
             String companyId = imCompany.getCompanyId();
             String companyName = imCompany.getCompanyName();
-//            ImBiodataEntity imBiodataEntity = null;
             ImAreasBranchesUsers imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId, "Y");
 
             String areaId = imAreasBranchesUsers.getImArea().getPrimaryKey().getId();
@@ -219,9 +214,8 @@ public class UserBoImpl implements UserBo {
             userDetailsLogin.setNonBlocked(true);
             userDetailsLogin.setNonExpired(true);
             userDetailsLogin.setUserCredentialsNonExpired(true);
-            //userDetailsLogin.setPositionId(positionId.toString());
-            //userDetailsLogin.setPositionName(positionName);
             userDetailsLogin.setIdPleyanan(loginUser.getIdPelayanan());
+            userDetailsLogin.setTipeRole(tipeRole);
 
             /*ItPersonilPositionEntity itPersonilPositionEntity = null ;
             itPersonilPositionEntity = personilPositionDao.getById("nip", userId, "Y");
@@ -1567,6 +1561,7 @@ public class UserBoImpl implements UserBo {
         if (loginUser == null) {
             loginUser = getUserByEmailId(username);
         }
+
         UserDetailsLogin userDetailsLogin = null;
         if (loginUser != null) {
             String namaPosisi = "";

@@ -136,11 +136,14 @@ public class PasienBoImpl implements PasienBo {
             pasien.setNoBpjs(data.getNoBpjs());
             pasien.setTempatLahir(data.getTempatLahir());
 
+            if (data.getTglLahir() != null) {
+                String strDate = formatter.format(data.getTglLahir());
+                pasien.setTglLahir(strDate);
+            }
 
-            String strDate = formatter.format(data.getTglLahir());
-            pasien.setTglLahir(strDate);
-
-            pasien.setDesaId(data.getDesaId().toString());
+            if(data.getDesaId() != null ) {
+                pasien.setDesaId(data.getDesaId().toString());
+            }
             pasien.setJalan(data.getJalan());
             pasien.setSuku(data.getSuku());
             pasien.setAgama(data.getAgama());
@@ -158,6 +161,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setPassword(data.getPassword());
             pasien.setPendidikan(data.getPendidikan());
             pasien.setStatusPerkawinan(data.getStatusPerkawinan());
+            pasien.setFlagLogin(data.getFlagLogin());
 
             if (pasien.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());
@@ -275,18 +279,34 @@ public class PasienBoImpl implements PasienBo {
 
                 pasienEntity.setNama(pasien.getNama());
                 pasienEntity.setJenisKelamin(pasien.getJenisKelamin());
-                pasienEntity.setNoKtp(pasien.getNoKtp().replace("-","").replace("_",""));
+
+                if (pasien.getNoKtp() != null && !"".equalsIgnoreCase(pasien.getNoKtp())) {
+                    pasienEntity.setNoKtp(pasien.getNoKtp().replace("-","").replace("_",""));
+                }
+
                 if (pasien.getNoBpjs() != null && !"".equalsIgnoreCase(pasien.getNoBpjs())) {
                     pasienEntity.setNoBpjs(pasien.getNoBpjs());
                 }
+
                 pasienEntity.setTempatLahir(pasien.getTempatLahir());
-                pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
-                pasienEntity.setDesaId(new BigInteger(pasien.getDesaId()));
+
+                if(pasien.getTglLahir()!= null && !"".equalsIgnoreCase(pasien.getTglLahir())) {
+                    pasienEntity.setTglLahir(java.sql.Date.valueOf(pasien.getTglLahir()));
+                }
+
+                if (pasien.getDesaId() != null && !"".equalsIgnoreCase(pasien.getDesaId())) {
+                    pasienEntity.setDesaId(new BigInteger(pasien.getDesaId()));
+                }
+
                 pasienEntity.setJalan(pasien.getJalan());
                 pasienEntity.setSuku(pasien.getSuku());
                 pasienEntity.setAgama(pasien.getAgama());
                 pasienEntity.setProfesi(pasien.getProfesi());
-                pasienEntity.setNoTelp(pasien.getNoTelp().replace("-", "").replace("_",""));
+
+                if (pasien.getNoTelp() !=null && !"".equalsIgnoreCase(pasien.getNoTelp())) {
+                    pasienEntity.setNoTelp(pasien.getNoTelp().replace("-", "").replace("_",""));
+                }
+
                 pasienEntity.setPendidikan(pasien.getPendidikan());
                 pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
 
@@ -301,6 +321,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setFlag(pasien.getFlag());
                 pasienEntity.setLastUpdate(pasien.getLastUpdate());
                 pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
+                pasienEntity.setFlagLogin(pasien.getFlagLogin());
 
                 try {
                     pasienDao.updateAndSave(pasienEntity);

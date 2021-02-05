@@ -49,6 +49,7 @@
           p:mesinAbsensiDetailOnCallDao-ref="mesinAbsensiDetailOnCallDao"
           p:absensiOnCallDao-ref="absensiOnCallDao"
           p:mappingPersenGajiDao-ref="mappingPersenGajiDao"
+          p:jenisPegawaiDao-ref="jenisPegawaiDao"
     />
 
     <bean id="absensiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

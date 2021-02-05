@@ -199,7 +199,7 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
 
         query = "SELECT jam_awal,jam_akhir FROM\n" +
                 "\t(SELECT * FROM it_hris_jadwal_shift_kerja) kerja LEFT JOIN\n" +
-                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail where on_call='N') kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
+                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail where on_call='N' and flag='Y') kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
                 "\t(SELECT * FROM im_hris_shift) shift ON kerjadetail.shift_id = shift.shift_id\n" +
                 "WHERE kerjadetail.nip =:nip AND kerja.tanggal= :tanggal and flag_libur='N' ORDER BY jam_awal";
 
@@ -227,7 +227,7 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
 
         query = "SELECT jam_awal,jam_akhir,flag_panggil FROM\n" +
                 "\t(SELECT * FROM it_hris_jadwal_shift_kerja) kerja LEFT JOIN\n" +
-                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail where on_call='Y') kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
+                "\t(SELECT * FROM it_hris_jadwal_shift_kerja_detail where on_call='Y' and flag='Y') kerjadetail ON kerja.jadwal_shift_kerja_id = kerjadetail.jadwal_shift_kerja_id LEFT JOIN\n" +
                 "\t(SELECT * FROM im_hris_shift) shift ON kerjadetail.shift_id = shift.shift_id\n" +
                 "WHERE kerjadetail.nip =:nip AND kerja.tanggal= :tanggal and flag_libur='N' ORDER BY jam_awal";
 

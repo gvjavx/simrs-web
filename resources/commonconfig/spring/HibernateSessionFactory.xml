@@ -55,7 +55,8 @@
                 <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">123456</prop>
+                <prop key="hibernate.connection.password">postgres</prop>
+
 
             </props>
         </property>
@@ -495,6 +496,7 @@
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebra.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebraLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImVersionZebra.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImVersionMobile.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/master/hargaterakhir/hibernate/MtSimrsHargaTerakhirEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/jenispersediaanobat/hibernate/ImSimrsJenisPersediaanObatEntity.xml</value>
