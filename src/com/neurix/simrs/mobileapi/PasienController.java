@@ -216,6 +216,7 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
             if (result.size() == 1){
                 com.neurix.simrs.master.pasien.model.Pasien newPasien = result.get(0);
                 newPasien.setFlagLogin("N");
+                newPasien.setUrlKtp(null);
                 try {
                     pasienBoProxy.saveEdit(newPasien);
                 } catch (GeneralBOException e){
