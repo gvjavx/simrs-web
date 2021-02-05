@@ -2,10 +2,12 @@ package com.neurix.simrs.master.license.model;
 
 import java.sql.Timestamp;
 
-public class ImVersionMobileEntity {
-    private String idVersionMobile;
-    private String namaVersion;
+public class Version {
+    private String idVersion;
+    private String versionName;
+    private String tipe;
     private String os;
+    private String description;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -13,20 +15,28 @@ public class ImVersionMobileEntity {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getIdVersionMobile() {
-        return idVersionMobile;
+    public String getIdVersion() {
+        return idVersion;
     }
 
-    public void setIdVersionMobile(String idVersionMobile) {
-        this.idVersionMobile = idVersionMobile;
+    public void setIdVersion(String idVersion) {
+        this.idVersion = idVersion;
     }
 
-    public String getNamaVersion() {
-        return namaVersion;
+    public String getVersionName() {
+        return versionName;
     }
 
-    public void setNamaVersion(String namaVersion) {
-        this.namaVersion = namaVersion;
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
     }
 
     public String getOs() {
@@ -35,6 +45,14 @@ public class ImVersionMobileEntity {
 
     public void setOs(String os) {
         this.os = os;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getFlag() {

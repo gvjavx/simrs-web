@@ -3,24 +3,19 @@ package com.neurix.simrs.master.license.bo.impl;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.common.util.FirebasePushNotif;
-import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
-import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
 import com.neurix.simrs.master.license.dao.LicenseLogZebraDao;
 import com.neurix.simrs.master.license.dao.LicenseZebraDao;
-import com.neurix.simrs.master.license.dao.VersionZebraDao;
+import com.neurix.simrs.master.license.dao.VersionDao;
 import com.neurix.simrs.master.license.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.springframework.security.access.method.P;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,9 +27,9 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     protected static transient Logger logger = Logger.getLogger(com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl.class);
     private LicenseZebraDao licenseZebraDao;
     private LicenseLogZebraDao licenseLogZebraDao;
-    private VersionZebraDao versionZebraDao;
+    private VersionDao versionZebraDao;
 
-    public void setVersionZebraDao(VersionZebraDao versionZebraDao) {
+    public void setVersionZebraDao(VersionDao versionZebraDao) {
         this.versionZebraDao = versionZebraDao;
     }
 
@@ -293,13 +288,13 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         }
     }
 
-    public void saveAddVersion(VersionZebra bean) throws GeneralBOException {
+    public void saveAddVersion(Version bean) throws GeneralBOException {
         String id = getNextVersionId();
         if(bean != null) {
 
             //Ubah flag versi sebelumnya menjadi N
-            List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
-            VersionZebra versionZebra = new VersionZebra();
+            List<ImVersionEntity> imVersionZebraEntities = new ArrayList<>();
+            Version versionZebra = new Version();
             versionZebra.setFlag(bean.getFlag());
 
             try {
@@ -309,7 +304,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             }
 
             if (imVersionZebraEntities.size() > 0) {
-                for (ImVersionZebraEntity entity: imVersionZebraEntities){
+                for (ImVersionEntity entity: imVersionZebraEntities){
                     entity.setFlag("N");
                     entity.setAction("D");
                     entity.setLastUpdate(bean.getLastUpdate());
@@ -324,7 +319,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             }
 
             //Add versi baru
-            ImVersionZebraEntity imVersionZebraEntity = new ImVersionZebraEntity();
+            ImVersionEntity imVersionZebraEntity = new ImVersionEntity();
             imVersionZebraEntity.setIdVersion(id);
             imVersionZebraEntity.setVersionName(bean.getVersionName());
             imVersionZebraEntity.setDescription(bean.getDescription());
@@ -343,10 +338,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         }
     }
 
-    public List<VersionZebra> getVersionByCriteria(VersionZebra bean) throws GeneralBOException {
+    public List<Version> getVersionByCriteria(Version bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.getByCriteria] Start >>>>>>>");
-        List<VersionZebra> result = new ArrayList<>();
-        List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
+        List<Version> result = new ArrayList<>();
+        List<ImVersionEntity> imVersionZebraEntities = new ArrayList<>();
 
         if (bean != null) {
             Map hsCriteria = new HashMap();
@@ -368,9 +363,9 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             }
 
             if (imVersionZebraEntities.size() > 0) {
-                VersionZebra versionZebra;
-                for (ImVersionZebraEntity item : imVersionZebraEntities) {
-                    versionZebra = new VersionZebra();
+                Version versionZebra;
+                for (ImVersionEntity item : imVersionZebraEntities) {
+                    versionZebra = new Version();
                     versionZebra.setIdVersion(item.getIdVersion());
                     versionZebra.setVersionName(item.getVersionName());
                     versionZebra.setCreatedDate(item.getCreatedDate());
@@ -380,7 +375,6 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                     versionZebra.setDescription(item.getDescription());
                     versionZebra.setFlag(item.getFlag());
                     versionZebra.setAction(item.getAction());
-
                     result.add(versionZebra);
                 }
 
@@ -391,9 +385,9 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         return result;
     }
 
-    public List<ImVersionZebraEntity> getListEntityVersionByCriteria(VersionZebra bean) throws GeneralBOException {
+    public List<ImVersionEntity> getListEntityVersionByCriteria(Version bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.getByCriteria] Start >>>>>>>");
-        List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
+        List<ImVersionEntity> imVersionZebraEntities = new ArrayList<>();
 
         if (bean != null) {
             Map hsCriteria = new HashMap();

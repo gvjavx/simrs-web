@@ -4,9 +4,8 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
-import com.neurix.simrs.master.license.model.Email;
 import com.neurix.simrs.master.license.model.LicenseZebra;
-import com.neurix.simrs.master.license.model.VersionZebra;
+import com.neurix.simrs.master.license.model.Version;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
@@ -15,21 +14,18 @@ import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
-import javax.mail.PasswordAuthentication;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 
 import java.util.*;
-import javax.mail.*;
-import javax.mail.internet.*;
 
 public class LicenseAction {
 
     protected static transient Logger logger = Logger.getLogger(LicenseAction.class);
     private LicenseZebra licenseZebra;
-    private VersionZebra versionZebra;
+    private Version versionZebra;
     private LicenseZebraBo licenseZebraBoProxy;
 
     private File fileUpload;
@@ -116,8 +112,8 @@ public class LicenseAction {
     }
 
     public String searchVersion() {
-        List<VersionZebra> versionZebraList = new ArrayList<>();
-        VersionZebra versionZebra = getVersionZebra();
+        List<Version> versionZebraList = new ArrayList<>();
+        Version versionZebra = getVersionZebra();
         try {
             versionZebraList = licenseZebraBoProxy.getVersionByCriteria(versionZebra);
         } catch (Exception e) {
@@ -131,7 +127,7 @@ public class LicenseAction {
     }
 
     public String initVersion() {
-        setVersionZebra(new VersionZebra());
+        setVersionZebra(new Version());
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfVersion");
         return "search";
@@ -147,7 +143,7 @@ public class LicenseAction {
             try {
                 JSONObject obj = new JSONObject(data);
                 if (obj != null) {
-                    VersionZebra versionZebra = new VersionZebra();
+                    Version versionZebra = new Version();
                     String type = obj.getString("tipe");
                     versionZebra.setVersionName(obj.getString("version_name"));
                     versionZebra.setCreatedDate(now);
@@ -191,7 +187,7 @@ public class LicenseAction {
     public String saveVersion() {
         String userLogin = CommonUtil.userLogin();
         Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        VersionZebra versionZebra = getVersionZebra();
+        Version versionZebra = getVersionZebra();
         if (versionZebra != null) {
             try {
                 if (this.fileUpload != null) {
@@ -255,11 +251,11 @@ public class LicenseAction {
         return licenseZebra;
     }
 
-    public VersionZebra getDataVersion(String id) {
+    public Version getDataVersion(String id) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LicenseZebraBo licenseZebraBo = (LicenseZebraBo) ctx.getBean("licenseZebraBoProxy");
-        VersionZebra versionZebra = new VersionZebra();
-        List<VersionZebra> versionZebraList = new ArrayList<>();
+        Version versionZebra = new Version();
+        List<Version> versionZebraList = new ArrayList<>();
         versionZebra.setIdVersion(id);
         try {
             versionZebraList = licenseZebraBo.getVersionByCriteria(versionZebra);
@@ -284,11 +280,11 @@ public class LicenseAction {
         this.licenseZebra = licenseZebra;
     }
 
-    public VersionZebra getVersionZebra() {
+    public Version getVersionZebra() {
         return versionZebra;
     }
 
-    public void setVersionZebra(VersionZebra versionZebra) {
+    public void setVersionZebra(Version versionZebra) {
         this.versionZebra = versionZebra;
     }
 

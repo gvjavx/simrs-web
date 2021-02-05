@@ -2,9 +2,6 @@ package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.master.license.bo.VersionMobileBo;
-import com.neurix.simrs.master.license.dao.VersionMobileDao;
-import com.neurix.simrs.master.license.model.VersionMobile;
 import com.neurix.simrs.mobileapi.model.VersionMobileObj;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
