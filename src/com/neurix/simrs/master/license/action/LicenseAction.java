@@ -25,7 +25,7 @@ public class LicenseAction {
 
     protected static transient Logger logger = Logger.getLogger(LicenseAction.class);
     private LicenseZebra licenseZebra;
-    private Version versionZebra;
+    private Version version;
     private LicenseZebraBo licenseZebraBoProxy;
 
     private File fileUpload;
@@ -113,9 +113,9 @@ public class LicenseAction {
 
     public String searchVersion() {
         List<Version> versionZebraList = new ArrayList<>();
-        Version versionZebra = getVersionZebra();
+        Version version = getVersion();
         try {
-            versionZebraList = licenseZebraBoProxy.getVersionByCriteria(versionZebra);
+            versionZebraList = licenseZebraBoProxy.getVersionByCriteria(version);
         } catch (Exception e) {
             logger.error("[LicenseAction.searchVersion] Error when search version, " + e.getMessage());
             throw new GeneralBOException("[LicenseAction.searchVersion] Error when search version, " + e.getMessage());
@@ -127,101 +127,55 @@ public class LicenseAction {
     }
 
     public String initVersion() {
-        setVersionZebra(new Version());
+        setVersion(new Version());
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfVersion");
         return "search";
     }
 
-    public CrudResponse saveVersion(String data) {
-        CrudResponse response = new CrudResponse();
-        String userLogin = CommonUtil.userLogin();
-        Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        LicenseZebraBo licenseZebraBo = (LicenseZebraBo) ctx.getBean("licenseZebraBoProxy");
-        if (data != null && !"".equalsIgnoreCase(data)) {
-            try {
-                JSONObject obj = new JSONObject(data);
-                if (obj != null) {
-                    Version versionZebra = new Version();
-                    String type = obj.getString("tipe");
-                    versionZebra.setVersionName(obj.getString("version_name"));
-                    versionZebra.setCreatedDate(now);
-                    versionZebra.setCreatedWho(userLogin);
-                    versionZebra.setLastUpdate(now);
-                    versionZebra.setLastUpdateWho(userLogin);
-                    versionZebra.setAction("C");
-                    versionZebra.setFlag("Y");
-                    try {
-                        if ("add".equalsIgnoreCase(type)) {
-                            licenseZebraBo.saveAddVersion(versionZebra);
-                            response.setStatus("success");
-                            response.setMsg("OK");
-                        } else {
-                            response.setStatus("error");
-                            response.setMsg("Error when save version...!, Tipe transaksi tidak ada..@-@");
-                        }
-                    } catch (Exception e) {
-                        logger.error("[LicenseAction.saveVersion] Error, " + e.getMessage());
-                        response.setStatus("error");
-                        response.setMsg("Error when save version...!, " + e.getMessage());
-                    }
-                } else {
-                    logger.error("[LicenseAction.saveVersion] Data object tidak ada");
-                    response.setStatus("error");
-                    response.setMsg("Data object tidak ada...!");
-                }
-            } catch (Exception e) {
-                logger.error("[LicenseAction.saveVersion] Error, " + e.getMessage());
-                response.setStatus("error");
-                response.setMsg("Parse JSON error...!, " + e.getMessage());
-            }
-        } else {
-            logger.error("[LicenseAction.saveVersion] Data object tidak ada");
-            response.setStatus("error");
-            response.setMsg("Data object tidak ada...!");
-        }
-        return response;
-    }
-
     public String saveVersion() {
         String userLogin = CommonUtil.userLogin();
         Timestamp now = new Timestamp(Calendar.getInstance().getTimeInMillis());
-        Version versionZebra = getVersionZebra();
-        if (versionZebra != null) {
+        Version version = getVersion();
+        if (version != null) {
             try {
-                if (this.fileUpload != null) {
-                    if ("application/vnd.android.package-archive".equalsIgnoreCase(this.fileUploadContentType)) {
-                        String fileName = this.fileUploadFileName;
-                        String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_APK_ZEBRA;
-                        File fileToCreate = new File(filePath, fileName);
-                        try {
-                            FileUtils.copyFile(this.fileUpload, fileToCreate);
-                            versionZebra.setVersionName(fileName.replace(".apk", ""));
-                            versionZebra.setCreatedDate(now);
-                            versionZebra.setCreatedWho(userLogin);
-                            versionZebra.setCreatedDate(now);
-                            versionZebra.setLastUpdate(now);
-                            versionZebra.setLastUpdateWho(userLogin);
-                            versionZebra.setAction("C");
-                            versionZebra.setFlag("Y");
+                if("zebra".equalsIgnoreCase(version.getTipe())){
+                    if (this.fileUpload != null) {
+                        if ("application/vnd.android.package-archive".equalsIgnoreCase(this.fileUploadContentType)) {
+                            String fileName = this.fileUploadFileName;
+                            String filePath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_APK_ZEBRA;
+                            File fileToCreate = new File(filePath, fileName);
                             try {
-                                licenseZebraBoProxy.saveAddVersion(versionZebra);
-                            } catch (Exception e) {
-                                logger.error("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
-                                throw new GeneralBOException("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
+                                FileUtils.copyFile(this.fileUpload, fileToCreate);
+                                version.setVersionName(fileName.replace(".apk", ""));
+                            } catch (IOException e) {
+                                logger.error("[LicenseAction.saveVersion] error, " + e.getMessage());
+                                throw new GeneralBOException("[LicenseAction.saveVersion] error, " + e.getMessage());
                             }
-                        } catch (IOException e) {
-                            logger.error("[LicenseAction.saveVersion] error, " + e.getMessage());
-                            throw new GeneralBOException("[LicenseAction.saveVersion] error, " + e.getMessage());
+                        } else {
+                            logger.error("[LicenseAction.saveVersion] Detected virus application, @_@");
+                            throw new GeneralBOException("[LicenseAction.saveVersion] Detected virus application, @_@");
                         }
                     } else {
-                        logger.error("[LicenseAction.saveVersion] Detected virus application, @_@");
-                        throw new GeneralBOException("[LicenseAction.saveVersion] Detected virus application, @_@");
+                        logger.error("[LicenseAction.saveVersion] File not found, @_@");
+                        throw new GeneralBOException("[LicenseAction.saveVersion] File not found, @_@");
                     }
-                } else {
-                    logger.error("[LicenseAction.saveVersion] File not found, @_@");
-                    throw new GeneralBOException("[LicenseAction.saveVersion] File not found, @_@");
+                }else{
+                    version.setVersionName(version.getVersionName());
+                }
+
+                version.setAction("C");
+                version.setFlag("Y");
+                version.setCreatedDate(now);
+                version.setCreatedWho(userLogin);
+                version.setCreatedDate(now);
+                version.setLastUpdate(now);
+                version.setLastUpdateWho(userLogin);
+                try {
+                    licenseZebraBoProxy.saveAddVersion(version);
+                } catch (Exception e) {
+                    logger.error("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
+                    throw new GeneralBOException("[LicenseAction.saveVersion] error when save version @_@" + e.getMessage());
                 }
             } catch (Exception e) {
                 logger.error("Error...!@_@" + e.getMessage());
@@ -254,18 +208,18 @@ public class LicenseAction {
     public Version getDataVersion(String id) {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LicenseZebraBo licenseZebraBo = (LicenseZebraBo) ctx.getBean("licenseZebraBoProxy");
-        Version versionZebra = new Version();
+        Version version = new Version();
         List<Version> versionZebraList = new ArrayList<>();
-        versionZebra.setIdVersion(id);
+        version.setIdVersion(id);
         try {
-            versionZebraList = licenseZebraBo.getVersionByCriteria(versionZebra);
+            versionZebraList = licenseZebraBo.getVersionByCriteria(version);
         } catch (Exception e) {
             logger.error("[LicenseAction.searchVersion] Erro when get data license, " + e.getMessage());
         }
         if (versionZebraList.size() > 0) {
-            versionZebra = versionZebraList.get(0);
+            version = versionZebraList.get(0);
         }
-        return versionZebra;
+        return version;
     }
 
     public static Logger getLogger() {
@@ -280,12 +234,12 @@ public class LicenseAction {
         this.licenseZebra = licenseZebra;
     }
 
-    public Version getVersionZebra() {
-        return versionZebra;
+    public Version getVersion() {
+        return version;
     }
 
-    public void setVersionZebra(Version versionZebra) {
-        this.versionZebra = versionZebra;
+    public void setVersion(Version version) {
+        this.version = version;
     }
 
     public void setLicenseZebraBoProxy(LicenseZebraBo licenseZebraBoProxy) {

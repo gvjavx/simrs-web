@@ -27,10 +27,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     protected static transient Logger logger = Logger.getLogger(com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl.class);
     private LicenseZebraDao licenseZebraDao;
     private LicenseLogZebraDao licenseLogZebraDao;
-    private VersionDao versionZebraDao;
+    private VersionDao versionDao;
 
-    public void setVersionZebraDao(VersionDao versionZebraDao) {
-        this.versionZebraDao = versionZebraDao;
+    public void setVersionDao(VersionDao versionDao) {
+        this.versionDao = versionDao;
     }
 
     public void setLicenseLogZebraDao(LicenseLogZebraDao licenseLogZebraDao) {
@@ -293,25 +293,26 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         if(bean != null) {
 
             //Ubah flag versi sebelumnya menjadi N
-            List<ImVersionEntity> imVersionZebraEntities = new ArrayList<>();
-            Version versionZebra = new Version();
-            versionZebra.setFlag(bean.getFlag());
+            List<ImVersionEntity> imVersionEntities = new ArrayList<>();
+            Version version = new Version();
+            version.setFlag(bean.getFlag());
+            version.setTipe(bean.getTipe());
 
             try {
-                imVersionZebraEntities = getListEntityVersionByCriteria(versionZebra);
+                imVersionEntities = getListEntityVersionByCriteria(version);
             } catch (GeneralBOException e){
                 logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
             }
 
-            if (imVersionZebraEntities.size() > 0) {
-                for (ImVersionEntity entity: imVersionZebraEntities){
+            if (imVersionEntities.size() > 0) {
+                for (ImVersionEntity entity: imVersionEntities){
                     entity.setFlag("N");
                     entity.setAction("D");
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
 
                     try {
-                        versionZebraDao.updateAndSave(entity);
+                        versionDao.updateAndSave(entity);
                     } catch (GeneralBOException e) {
                         logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
                     }
@@ -319,19 +320,21 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             }
 
             //Add versi baru
-            ImVersionEntity imVersionZebraEntity = new ImVersionEntity();
-            imVersionZebraEntity.setIdVersion(id);
-            imVersionZebraEntity.setVersionName(bean.getVersionName());
-            imVersionZebraEntity.setDescription(bean.getDescription());
-            imVersionZebraEntity.setFlag(bean.getFlag());
-            imVersionZebraEntity.setAction(bean.getAction());
-            imVersionZebraEntity.setCreatedDate(bean.getCreatedDate());
-            imVersionZebraEntity.setLastUpdate(bean.getLastUpdate());
-            imVersionZebraEntity.setCreatedWho(bean.getCreatedWho());
-            imVersionZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            ImVersionEntity imVersionEntity = new ImVersionEntity();
+            imVersionEntity.setIdVersion(id);
+            imVersionEntity.setVersionName(bean.getVersionName());
+            imVersionEntity.setTipe(bean.getTipe());
+            imVersionEntity.setOs(bean.getOs());
+            imVersionEntity.setDescription(bean.getDescription());
+            imVersionEntity.setFlag(bean.getFlag());
+            imVersionEntity.setAction(bean.getAction());
+            imVersionEntity.setCreatedDate(bean.getCreatedDate());
+            imVersionEntity.setLastUpdate(bean.getLastUpdate());
+            imVersionEntity.setCreatedWho(bean.getCreatedWho());
+            imVersionEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
             try {
-                versionZebraDao.addAndSave(imVersionZebraEntity);
+                versionDao.addAndSave(imVersionEntity);
             } catch (GeneralBOException e) {
                 logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
             }
@@ -341,45 +344,25 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     public List<Version> getVersionByCriteria(Version bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.getByCriteria] Start >>>>>>>");
         List<Version> result = new ArrayList<>();
-        List<ImVersionEntity> imVersionZebraEntities = new ArrayList<>();
-
         if (bean != null) {
-            Map hsCriteria = new HashMap();
-
-            if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
-                hsCriteria.put("id_version", bean.getIdVersion());
-            }
-            if (bean.getVersionName() != null && !"".equalsIgnoreCase(bean.getVersionName())) {
-                hsCriteria.put("version_name", bean.getVersionName());
-            }
-            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-                hsCriteria.put("flag", bean.getFlag());
-            }
-
-            try {
-                imVersionZebraEntities = versionZebraDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e) {
-                logger.error("[LicenseZebraBoImpl.getByCriteria] error when get data lab detailt by get by criteria " + e.getMessage());
-            }
-
-            if (imVersionZebraEntities.size() > 0) {
-                Version versionZebra;
-                for (ImVersionEntity item : imVersionZebraEntities) {
-                    versionZebra = new Version();
-                    versionZebra.setIdVersion(item.getIdVersion());
-                    versionZebra.setVersionName(item.getVersionName());
-                    versionZebra.setCreatedDate(item.getCreatedDate());
-                    versionZebra.setLastUpdate(item.getLastUpdate());
-                    versionZebra.setCreatedWho(item.getCreatedWho());
-                    versionZebra.setLastUpdateWho(item.getLastUpdateWho());
-                    versionZebra.setDescription(item.getDescription());
-                    versionZebra.setFlag(item.getFlag());
-                    versionZebra.setAction(item.getAction());
-                    result.add(versionZebra);
+        List<ImVersionEntity> imVersionEntities = getListEntityVersionByCriteria(bean);
+            if (imVersionEntities.size() > 0) {
+                for (ImVersionEntity item : imVersionEntities) {
+                    Version version = new Version();
+                    version.setIdVersion(item.getIdVersion());
+                    version.setVersionName(item.getVersionName());
+                    version.setTipe(item.getTipe());
+                    version.setOs(item.getOs());
+                    version.setDescription(item.getDescription());
+                    version.setFlag(item.getFlag());
+                    version.setAction(item.getAction());
+                    version.setCreatedDate(item.getCreatedDate());
+                    version.setLastUpdate(item.getLastUpdate());
+                    version.setCreatedWho(item.getCreatedWho());
+                    version.setLastUpdateWho(item.getLastUpdateWho());
+                    result.add(version);
                 }
-
             }
-
         }
         logger.info("[LicenseZebraBoImpl.getByCriteria] End >>>>>>>");
         return result;
@@ -387,11 +370,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
     public List<ImVersionEntity> getListEntityVersionByCriteria(Version bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.getByCriteria] Start >>>>>>>");
-        List<ImVersionEntity> imVersionZebraEntities = new ArrayList<>();
+        List<ImVersionEntity> imVersionEntities = new ArrayList<>();
 
         if (bean != null) {
             Map hsCriteria = new HashMap();
-
             if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
                 hsCriteria.put("id_version", bean.getIdVersion());
             }
@@ -401,15 +383,17 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
+            if (bean.getTipe() != null && !"".equalsIgnoreCase(bean.getTipe())) {
+                hsCriteria.put("tipe", bean.getTipe());
+            }
 
             try {
-                imVersionZebraEntities = versionZebraDao.getByCriteria(hsCriteria);
+                imVersionEntities = versionDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[LicenseZebraBoImpl.getByCriteria] error when get data lab detailt by get by criteria " + e.getMessage());
             }
         }
-
-        return imVersionZebraEntities;
+        return imVersionEntities;
     }
 
     private String getNextLicenseId() {
@@ -445,7 +429,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         String id="";
 
         try {
-            id = versionZebraDao.getNextId();
+            id = versionDao.getNextId();
         } catch (HibernateException e){
             logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
         }

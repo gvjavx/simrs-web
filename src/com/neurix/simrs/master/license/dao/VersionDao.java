@@ -35,8 +35,6 @@ public class VersionDao extends GenericDao<ImVersionEntity, String> {
             }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-            } else {
-                criteria.add(Restrictions.eq("flag", "Y"));
             }
         }
 
