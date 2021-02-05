@@ -3861,42 +3861,49 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         cellDetail = new CellDetail();
         cellDetail.setCellID(0);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
         //jenis Trans
         cellDetail = new CellDetail();
         cellDetail.setCellID(1);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
         //Keterangan
         cellDetail = new CellDetail();
         cellDetail.setCellID(2);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
         //Nama Bank
         cellDetail = new CellDetail();
         cellDetail.setCellID(3);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
         //No. RM
         cellDetail = new CellDetail();
         cellDetail.setCellID(4);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
         //Nama Pasien
         cellDetail = new CellDetail();
         cellDetail.setCellID(5);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
         //Pelayanan
         cellDetail = new CellDetail();
         cellDetail.setCellID(6);
+        cellDetail.setValueCell("");
         cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
         listOfCell.add(cellDetail);
 
