@@ -49,6 +49,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DepartmentAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/GolonganAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 
 
@@ -1193,8 +1194,8 @@
                                                             <s:hidden name="biodata.golonganDapenId"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
-                                                                      listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId" listKey="golonganDapenId"
+                                                                      listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="getRangeMsKerja(this.value)"/>
                                                         </s:else>
 
                                                     </table>
@@ -6404,6 +6405,17 @@
             var seq = nip.slice(nip.length - 4);
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
+    }
+
+    function getRangeMsKerja(gol){
+        console.log(gol);
+        GolonganAction.getRangeMasaGol(gol, function(listData){
+            $.each(listData, function (i, item) {
+                console.log(item.msKerjaAwal);
+                console.log(item.msKerjaAkhir);
+                $("#poinLebih").attr({"min":item.msKerjaAwal, "max":item.msKerjaAkhir});
+            })
+        })
     }
 
 </script>
