@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.7715610000000093"/>
+	<property name="ireport.zoom" value="1.3310000000000073"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="240"/>
+	<property name="ireport.y" value="48"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -92,7 +92,7 @@
 	<parameter name="ppnObat" class="java.lang.Integer"/>
 	<parameter name="reportParams.keterangan" class="java.lang.String"/>
 	<parameter name="reportParams.bank" class="java.lang.String"/>
-	<parameter name="reportParams.nominal" class="java.lang.String"/>
+	<parameter name="reportParams.nominal" class="java.math.BigDecimal"/>
 	<parameter name="reportParams.lastUpdateWho" class="java.lang.String"/>
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<parameter name="reportParams.urlFoto" class="java.lang.String"/>
@@ -126,21 +126,7 @@
 				<text><![CDATA[Nama]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="75" width="60" height="15" uuid="965ee103-5b85-4b9c-9f39-4912ae949d04"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[Jenis Pasien]]></text>
-			</staticText>
-			<staticText>
 				<reportElement x="91" y="104" width="5" height="15" uuid="c68a50c7-f5e0-4775-aaff-1bfefa19e52d"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<text><![CDATA[:]]></text>
-			</staticText>
-			<staticText>
-				<reportElement x="274" y="75" width="5" height="15" uuid="90a2f6a7-3ca2-4703-b1fb-c39413a844c3"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -155,7 +141,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="279" y="75" width="102" height="15" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
+				<reportElement x="96" y="120" width="98" height="15" uuid="b26a9b04-6ba9-4730-bd24-ae3f8668c18e"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -185,7 +171,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="96" y="74" width="98" height="15" uuid="82e85134-9b7e-4742-a76e-1e742cb18676"/>
+				<reportElement x="96" y="74" width="178" height="15" uuid="82e85134-9b7e-4742-a76e-1e742cb18676"/>
 				<box leftPadding="1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -287,6 +273,20 @@
 				<reportElement x="2" y="0" width="94" height="39" uuid="86c7881f-539e-4f8e-a905-c6b5fd59ce9e"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
+			<staticText>
+				<reportElement x="1" y="120" width="89" height="15" uuid="1ce6f164-bf61-4d6f-a1dd-8bdb3184f449"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Jenis Pasien]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="91" y="120" width="5" height="15" uuid="267d1eb1-0c75-4cc8-b666-cccd1153835f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
 		</band>
 	</title>
 	<columnHeader>
@@ -333,9 +333,9 @@
 		</band>
 	</columnHeader>
 	<detail>
-		<band height="371">
+		<band height="358">
 			<textField>
-				<reportElement x="1" y="-1" width="100" height="15" uuid="cff3eb63-33ef-4dc8-b027-b16741cac112"/>
+				<reportElement x="1" y="0" width="100" height="14" uuid="cff3eb63-33ef-4dc8-b027-b16741cac112"/>
 				<box leftPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
@@ -362,7 +362,7 @@
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="223" y="0" width="157" height="14" uuid="a76a58ea-2d71-4c70-9c85-491d2448377a"/>
-				<box leftPadding="3">
+				<box leftPadding="3" rightPadding="3">
 					<topPen lineWidth="1.0"/>
 					<leftPen lineWidth="1.0"/>
 					<bottomPen lineWidth="1.0"/>
@@ -378,7 +378,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Admin]]></text>
+				<text><![CDATA[Petugas]]></text>
 			</staticText>
 			<textField>
 				<reportElement x="263" y="82" width="102" height="15" uuid="7397317c-1fc1-4144-9be7-9786a9975178"/>
@@ -424,7 +424,7 @@
 				<textFieldExpression><![CDATA[$P{reportParams.invoice} == null ? "" : $P{reportParams.invoice}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="96" y="146" width="183" height="225" uuid="ed6fd27f-9e8e-42b1-9c43-a990ea0384f5"/>
+				<reportElement x="22" y="157" width="343" height="186" uuid="ed6fd27f-9e8e-42b1-9c43-a990ea0384f5"/>
 				<imageExpression><![CDATA[$P{reportParams.urlFoto}]]></imageExpression>
 			</image>
 			<staticText>

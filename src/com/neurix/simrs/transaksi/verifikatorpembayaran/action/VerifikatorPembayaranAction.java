@@ -3703,7 +3703,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             reportParams.put("lastUpdateWho", userName);
             reportParams.put("keterangan", antrianTelemedic.getKeterangan());
 
-            String imgPath = CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+antrianTelemedic.getUrlFotoStruk();
+            String imgPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+antrianTelemedic.getUrlFotoStruk();
             reportParams.put("urlFoto", imgPath);
 
             try {
@@ -3764,6 +3764,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         listOfColumn.add("Nominal");
         listOfColumn.add("Last Update");
         listOfColumn.add("Last Update Who");
+
+        String userName = CommonUtil.userLogin();
 
         for (AntrianTelemedic data : antrianTelemedicList){
             rowData = new RowData();
@@ -3842,7 +3844,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             //Last Update Who
             cellDetail = new CellDetail();
             cellDetail.setCellID(10);
-            cellDetail.setValueCell(data.getLastUpdateWho());
+            cellDetail.setValueCell(userName);
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
@@ -3856,6 +3858,48 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         // Tambahkan Kolom SUM, START
         rowData = new RowData();
         listOfCell = new ArrayList();
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(0);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //jenis Trans
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(1);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Keterangan
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(2);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nama Bank
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(3);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //No. RM
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(4);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nama Pasien
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(5);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Pelayanan
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(6);
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
 
         cellDetail = new CellDetail();
         cellDetail.setCellID(7);

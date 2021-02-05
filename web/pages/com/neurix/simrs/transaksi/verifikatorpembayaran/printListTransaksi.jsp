@@ -338,7 +338,7 @@
                             '<td style="text-align: right;">'+formatRupiah(item.nominal)+'</td>'+
                             '<td>'+item.stLastUpdate+'</td>'+
                             '<td>'+item.lastUpdateWho+'</td>'+
-                            '<td><button class="btn btn-primary" onclick="printInvoice(\''+item.id+'\');"><i class="fa fa-print"></i></button></td>'+
+                            '<td><button class="btn btn-primary" onclick="printInvoice(\''+item.id+'\');" target="_blank"><i class="fa fa-print"></i></button></td>'+
                         '</tr>';
                 });
 
