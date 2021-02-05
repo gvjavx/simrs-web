@@ -362,3 +362,41 @@ ALTER SEQUENCE public.seq_version_zebra
 
 --2021-01-26
 ALTER TABLE im_simrs_pasien ADD flag_login character varying(1)
+
+--2021-02-04
+-- Table: public.im_version_mobile
+
+-- DROP TABLE public.im_version_mobile;
+
+CREATE TABLE public.im_version_mobile
+(
+    id_version_mobile character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    nama_version character varying(50) COLLATE pg_catalog."default",
+    os character varying(50) COLLATE pg_catalog."default",
+    flag character varying(1) COLLATE pg_catalog."default",
+    action character varying(1) COLLATE pg_catalog."default",
+    created_date timestamp with time zone,
+    last_update timestamp without time zone,
+    created_who character varying(50) COLLATE pg_catalog."default",
+    last_update_who character varying(50) COLLATE pg_catalog."default",
+    CONSTRAINT im_version_mobile_pkey PRIMARY KEY (id_version_mobile)
+)
+
+TABLESPACE pg_default;
+
+ALTER TABLE public.im_version_mobile
+    OWNER to postgres;
+
+-- SEQUENCE: public.seq_version_mobile
+
+-- DROP SEQUENCE public.seq_version_mobile;
+
+CREATE SEQUENCE public.seq_version_mobile
+    INCREMENT 1
+    START 1
+    MINVALUE 1
+    MAXVALUE 9223372036854775807
+    CACHE 1;
+
+ALTER SEQUENCE public.seq_version_mobile
+    OWNER TO postgres;

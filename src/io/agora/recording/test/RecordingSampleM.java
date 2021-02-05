@@ -19,6 +19,7 @@ import java.util.TimerTask;
 import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.neurix.simrs.mobileapi.model.UserInfo;
 import io.agora.recording.common.Common;
 import io.agora.recording.common.Common.AUDIO_FORMAT_TYPE;
 import io.agora.recording.common.Common.AUDIO_FRAME_TYPE;

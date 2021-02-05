@@ -174,6 +174,8 @@ public class ExceptionHandlerInterceptor extends MethodFilterInterceptor {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             } else if ("/mobileapi/version".equalsIgnoreCase(namespace)) {
                 logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
+            } else if ("/mobileapi/versionmobile".equalsIgnoreCase(namespace)) {
+                logger.info("[ExceptionHandlerInterceptor.pengiriman] skiping token");
             }
 
             else {

@@ -52,7 +52,6 @@
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
-
             </props>
         </property>
         <property name="mappingResources">
@@ -491,6 +490,7 @@
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebra.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImLicenseZebraLog.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImVersionZebra.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/license/hibernate/ImVersionMobile.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/simrs/master/hargaterakhir/hibernate/MtSimrsHargaTerakhirEntity.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/jenispersediaanobat/hibernate/ImSimrsJenisPersediaanObatEntity.xml</value>

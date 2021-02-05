@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -267,5 +268,37 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
         return results;
+    }
+
+    public List <Pelayanan> getListPelayananTelemedic(String branchId) {
+        String sql = "SELECT ply.id_pelayanan, hply.nama_pelayanan \n" +
+                "FROM im_simrs_header_pelayanan hply\n" +
+                "INNER JOIN im_simrs_pelayanan ply ON ply.id_header_pelayanan = hply.id_header_pelayanan\n" +
+                "INNER JOIN im_simrs_tindakan tdk ON ply.id_pelayanan = tdk.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_tindakan htdk ON tdk.id_header_tindakan = htdk.id_header_tindakan\n" +
+                "WHERE htdk.flag_konsul_tele = 'Y'\n" +
+                "AND hply.flag = 'Y' \n" +
+                "AND ply.branch_id = :branchId\n" +
+                "ORDER BY nama_pelayanan DESC\n";
+
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("branchId", branchId)
+                .list();
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+
+                pelayananList.add(pelayanan);
+            }
+        }
+
+        return pelayananList;
+
     }
 }

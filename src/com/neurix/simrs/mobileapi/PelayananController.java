@@ -334,12 +334,12 @@ public class PelayananController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("getListPelayanan")){
             List<Pelayanan> result = new ArrayList<>();
 
-            Pelayanan bean = new Pelayanan();
-            bean.setTipePelayanan(tipePelayanan);
-            bean.setBranchId(branchId);
+//            Pelayanan bean = new Pelayanan();
+//            bean.setTipePelayanan(tipePelayanan);
+//            bean.setBranchId(branchId);
 
             try {
-                result = pelayananBoProxy.getByCriteria(bean);
+                result = pelayananBoProxy.getListPelayananTelemedic(branchId);
 
             } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list pelayanan",e);
