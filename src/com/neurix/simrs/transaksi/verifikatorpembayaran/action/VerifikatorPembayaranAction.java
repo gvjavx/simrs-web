@@ -238,10 +238,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         antrianTelemedic.setStDateTo(dateNow);
         setAntrianTelemedic(antrianTelemedic);
 
-        logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
-        if ("print".equalsIgnoreCase(tipe))
-            return "init_print";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResults");
+        session.removeAttribute("listOfTransaksi");
 
+
+        logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
+        if ("print".equalsIgnoreCase(this.tipe))
+            return "init_print";
         return "search";
     }
 
@@ -3642,12 +3646,81 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             logger.error("[VerifikatorPembayaranAction.getSearchListTransByShift] Error", e);
         }
 
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfTransaksi");
+        session.setAttribute("listOfTransaksi", antrianTelemedicList);
+
         logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] END <<<");
         return antrianTelemedicList;
     }
 
+    private String printInvoice(){
+        logger.info("[VerifikatorPembayaranAction.printInvoice] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AntrianTelemedic> listOfTransaksi = (List<AntrianTelemedic>) session.getAttribute("listOfTransaksi");
+
+        List<AntrianTelemedic> filteredData = listOfTransaksi.stream().filter(p->p.getId().equalsIgnoreCase(this.id)).collect(Collectors.toList());
+        if (filteredData != null && filteredData.size() > 0){
+
+            AntrianTelemedic antrianTelemedic = filteredData.get(0);
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+            String logo     = "";
+            Branch branches = new Branch();
+            String branchId = CommonUtil.userBranchLogin();
+            String unit     = CommonUtil.userBranchNameLogin();
+            String area     = CommonUtil.userAreaName();
+
+            try {
+                branches = branchBo.getBranchById(branchId, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search branch logo");
+            }
+
+            if (branches != null) {
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+            }
+
+            String userName = CommonUtil.userLogin();
+
+            reportParams.put("invoice", antrianTelemedic.getId());
+            reportParams.put("idPasien", antrianTelemedic.getIdPasien());
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("title", "Invoice Telemedic");
+            reportParams.put("unit", unit);
+            reportParams.put("area", area);
+            reportParams.put("logo", logo);
+            reportParams.put("nama", antrianTelemedic.getNamaPasien());
+            reportParams.put("poli", antrianTelemedic.getNamaPelayanan());
+            reportParams.put("dokter", antrianTelemedic.getNamaDokter());
+            reportParams.put("bank", antrianTelemedic.getNamaBank());
+            reportParams.put("nominal", antrianTelemedic.getNominal());
+            reportParams.put("jenisPasien", antrianTelemedic.getIdJenisPeriksaPasien().toUpperCase());
+            reportParams.put("lastUpdate", antrianTelemedic.getLastUpdate().toString());
+            reportParams.put("lastUpdateWho", userName);
+            reportParams.put("keterangan", antrianTelemedic.getKeterangan());
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printInvoice] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "init_print";
+            }
+        }
+
+        logger.info("[VerifikatorPembayaranAction.printInvoice] END <<<");
+        return "print_invoice";
+    }
+
     public String print(){
         logger.info("[VerifikatorPembayaranAction.print] START >>>");
+
+        if ("invoice".equalsIgnoreCase(this.tipe) && this.id != null){
+            return printInvoice();
+        }
 
         AntrianTelemedic antrianTelemedic = getAntrianTelemedic();
         String stDate   = antrianTelemedic.getStDateFrom();

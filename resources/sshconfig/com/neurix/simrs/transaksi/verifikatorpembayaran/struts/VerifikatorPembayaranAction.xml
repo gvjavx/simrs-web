@@ -90,6 +90,13 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_invoice" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printInvoiceTelemedic.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
             <result name="downloadXls" type="stream">
                 <param name="contentType">${excelContentType}</param>
                 <param name="inputName">excelStream</param>

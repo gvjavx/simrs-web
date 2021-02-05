@@ -338,7 +338,7 @@
                             '<td style="text-align: right;">'+formatRupiah(item.nominal)+'</td>'+
                             '<td>'+item.stLastUpdate+'</td>'+
                             '<td>'+item.lastUpdateWho+'</td>'+
-                            '<td><button class="btn btn-primary" onclick="printStruk(\''+item.id+'\');"><i class="fa fa-print"></i></button></td>'+
+                            '<td><button class="btn btn-primary" onclick="printInvoice(\''+item.id+'\');"><i class="fa fa-print"></i></button></td>'+
                         '</tr>';
                 });
 
@@ -349,6 +349,11 @@
             $("#alert-shift").show().fadeOut(5000);
         }
     });
+
+    function printInvoice(id) {
+        var host = firstpath()+"/onlinepaymentverif/print_onlinepaymentverif.action?id="+id+"&tipe=invoice";
+        post(host);
+    }
 
     function formatRupiah(angka) {
         if(angka != "" && angka != null && parseInt(angka) > 0){

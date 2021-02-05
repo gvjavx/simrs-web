@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.331000000000006"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="23"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -96,7 +96,7 @@
 	<parameter name="reportParams.lastUpdateWho" class="java.lang.String"/>
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[]]>
+		<![CDATA[SELECT id FROM it_simrs_pembayaran_online LIMIT 1]]>
 	</queryString>
 	<field name="id_pasien" class="java.lang.String"/>
 	<field name="nama" class="java.lang.String">
@@ -141,10 +141,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
-			<image>
-				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
-				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
-			</image>
 			<staticText>
 				<reportElement x="0" y="104" width="90" height="15" uuid="6c44ef7d-db93-4127-8056-c6e5dc48fb34"/>
 				<textElement verticalAlignment="Middle">
