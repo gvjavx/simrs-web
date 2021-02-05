@@ -131,7 +131,9 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "c.approve_bpjs_flag,\n" +
                     "c.tanggal_tindakan,\n" +
                     "d.kategori_ina_bpjs,\n" +
-                    "c.flag_update_klaim \n" +
+                    "c.flag_update_klaim, \n" +
+                    "e.nama_pelayanan, \n" +
+                    "e.tipe_pelayanan \n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -144,6 +146,16 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     "INNER JOIN im_simrs_tindakan b ON a.id_tindakan = b.id_tindakan\n" +
                     "INNER JOIN im_simrs_header_tindakan c ON b.id_header_tindakan = c.id_header_tindakan\n" +
                     ") d ON c.id_tindakan = d.id_tindakan_rawat\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.nama_pelayanan,\n" +
+                    "a.tipe_pelayanan,\n" +
+                    "a.divisi_id,\n" +
+                    "a.kode_vclaim,\n" +
+                    "b.id_pelayanan,\n" +
+                    "b.branch_id\n" +
+                    "FROM im_simrs_header_pelayanan a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan \n" +
+                    ") e ON b.id_pelayanan = e.id_pelayanan \n"+
                     "WHERE a.branch_id LIKE :branchId \n" +
                     "AND a.no_checkup LIKE :noCheckup \n" +
                     "AND b.id_detail_checkup LIKE :idDetail \n" + jenis +
@@ -181,6 +193,19 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
                     }
                     tindakan.setKategoriInaBpjs(obj[11] == null ? "" : obj[11].toString());
                     tindakan.setFlagUpdateKlaim((obj[12] == null ? "" : obj[12].toString()));
+                    tindakan.setNamaPelayanan((obj[13] == null ? "" : obj[13].toString()));
+                    tindakan.setTipePelayanan((obj[14] == null ? "" : obj[14].toString()));
+                    if(obj[14] == null){
+                        if("rawat_jalan".equalsIgnoreCase(obj[14].toString())){
+                            tindakan.setJenisPelayanan("RJ");
+                        }
+                        if("rawat_inap".equalsIgnoreCase(obj[14].toString())){
+                            tindakan.setJenisPelayanan("RI");
+                        }
+                        if("igd".equalsIgnoreCase(obj[14].toString()) || "ugd".equalsIgnoreCase(obj[14].toString())){
+                            tindakan.setJenisPelayanan("IGD");
+                        }
+                    }
                     riwayatTindakanList.add(tindakan);
                 }
             }

@@ -338,11 +338,10 @@ public class KasirRawatJalanAction extends BaseMasterAction {
         HeaderCheckup checkup = new HeaderCheckup();
         String id = getId();
         String jk = "";
+        String logo = "";
         String jenisPasien = getJenis();
 
-        String logo = "";
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         List<UangMuka> uangMukaList = new ArrayList<>();
 
         if (id != null && !"".equalsIgnoreCase(id)) {
@@ -358,9 +357,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
             }
 
             if (checkup != null) {
-
                 Branch branches = new Branch();
-
                 try {
                     branches = branchBoProxy.getBranchById(branch, "Y");
                 } catch (GeneralBOException e) {
@@ -370,7 +367,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 if (branches != null) {
                     logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
                 }
-
 
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                 riwayatTindakan.setNoCheckup(checkup.getNoCheckup());
@@ -383,23 +379,25 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
 
                 RiwayatTindakan result = new RiwayatTindakan();
-                List<TransaksiObatDetail> resultListObat = new ArrayList<>();
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                BigInteger totalResepObat = new BigInteger(String.valueOf("0"));
 
                 if (riwayatTindakanList.size() > 0) {
-                    result = riwayatTindakanList.get(0);
-
                     for (RiwayatTindakan riwayat : riwayatTindakanList) {
                         if ("resep".equalsIgnoreCase(riwayat.getKeterangan())) {
-                            TransaksiObatDetail detail = new TransaksiObatDetail();
-                            detail.setIdPermintaanResep(riwayat.getIdTindakan());
-
                             try {
-                                obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(detail);
-                            } catch (GeneralBOException e) {
+                                obatDetail = transaksiObatBoProxy.getTotalHargaResep(riwayat.getIdTindakan());
+                            } catch (HibernateException e) {
                                 logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
+                                throw new GeneralBOException("errro"+e.getMessage());
                             }
-
-                            resultListObat.addAll(obatDetailList);
+                            if(obatDetail.getTotalHarga() != null && !"".equalsIgnoreCase(obatDetail.getTotalHarga().toString())){
+                                if(totalResepObat != null && totalResepObat.intValue() > 0){
+                                    totalResepObat = totalResepObat.add(obatDetail.getTotalHarga());
+                                }else{
+                                    totalResepObat = obatDetail.getTotalHarga();
+                                }
+                            }
                         }
                     }
                 }
@@ -422,14 +420,11 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 }
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
-                JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
                 JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(mukaList);
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
                 BigInteger tarifUangMuka = hitungTotalUangMuka(mukaList);
-                BigInteger tarifObat = hitungTotalObat(obatDetailList);
-                BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
-                ppnObat = new BigDecimal(tarifObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
+                BigDecimal ppnObat = ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
                 totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
@@ -440,7 +435,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 reportParams.put("petugas", CommonUtil.userLogin());
                 reportParams.put("title", "Invoice Rawat Jalan Pasien");
                 reportParams.put("itemDataSource", itemData);
-                reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);
                 reportParams.put("totalJasa", totalJasa);
                 reportParams.put("terbilang", terbilang);
@@ -459,6 +453,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 } else {
                     jk = "Perempuan";
                 }
+
                 reportParams.put("jenisKelamin", jk);
                 reportParams.put("jenisPasien", checkup.getStatusPeriksaName());
                 reportParams.put("poli", checkup.getNamaPelayanan());
@@ -472,7 +467,6 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 } else {
                     reportParams.put("ppnObat", 0);
                 }
-
 
                 try {
                     preDownload();
