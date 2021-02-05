@@ -806,12 +806,12 @@ public class NotifikasiAction extends BaseMasterAction{
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = notifikasiBo.saveErrorMessage(e.getMessage(), "GroupShift.getByCriteria");
+                logId = notifikasiBo.saveErrorMessage(e.getMessage(), "NotifikasiAction.searchNotif");
             } catch (GeneralBOException e1) {
-                logger.error("[GroupShiftAction.search] Error when saving error,", e1);
+                logger.error("[NotifikasiAction.search] Error when saving error,", e1);
 //                return ERROR;
             }
-            logger.error("[GroupShiftAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[NotifikasiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
 //            return ERROR;
         }

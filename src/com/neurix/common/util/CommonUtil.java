@@ -4,6 +4,7 @@ import com.neurix.authorization.role.model.Roles;
 import com.neurix.authorization.user.model.UserDetailsLogin;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
+import com.neurix.simrs.master.license.model.Email;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.commons.lang.time.FastDateFormat;
@@ -15,6 +16,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import javax.imageio.*;
 import javax.imageio.stream.ImageInputStream;
 import javax.imageio.stream.ImageOutputStream;
+import javax.mail.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.http.HttpSession;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -145,6 +151,24 @@ public class  CommonUtil {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
     }
+
+    // Sigit 2021-02-01, Get Tipe Pelayanan Of ROLE
+    public static String getRoleTipePelayanan() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+                return userDetailsLogin.getTipeRole();
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
     public static String userAreaId() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
@@ -589,11 +613,13 @@ public class  CommonUtil {
     }
 
     public static String addJamBayar(Timestamp date) {
-        String jam = "null";
-        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
-        java.util.Date createdDate = date;
-        java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
-        jam = dateFormat.format(newJam);
+        String jam = "";
+        if(date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm");
+            java.util.Date createdDate = date;
+            java.util.Date newJam = DateUtils.addMinutes(createdDate, CommonConstant.ADD_JAM_BAYAR);
+            jam = dateFormat.format(newJam);
+        }
 
         return jam;
     }
@@ -1376,6 +1402,26 @@ public class  CommonUtil {
         return random.ints(min,(max+1)).findFirst().getAsInt();
     }
 
+    public static String getRandomString(int length) {
+        int leftLimit = 48;
+        int rightLimit = 122;
+
+        return new Random().ints(leftLimit, rightLimit + 1)
+                .filter(i -> (i <= 57 || i >= 65) && (i <= 90 || i >= 97))
+                .limit(length)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
+
+    public static String getSecurityCode() {
+        String prefix = "00";
+        String suffix = "09";
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+        java.util.Date date = new java.util.Date();
+
+        return prefix + format.format(date) + suffix;
+    }
+
     //Convert Date to Calendar
     public static Calendar dateToCalendar(java.util.Date date) {
 
@@ -1526,5 +1572,49 @@ public class  CommonUtil {
         return result;
     }
 
+    public static void sendEmail(Email email){
+        try {
+            String to = email.getTo();
+            String subject = email.getSubject();
+            String msg = email.getMsg();
+            final String password = email.getPassword();
+            final String username = email.getFrom();
 
+            Properties props = System.getProperties();
+            props.put("mail.smtp.starttls.enable", "true"); // added this line
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.user", username);
+            props.put("mail.smtp.password", password);
+            props.put("mail.smtp.port", "587");
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.debug", "true");
+
+            Session session = Session.getInstance(props,null);
+            MimeMessage message = new MimeMessage(session);
+            InternetAddress from = new InternetAddress(username);
+            message.setSubject(subject);
+            message.setFrom(from);
+            message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+
+            Multipart multipart = new MimeMultipart("alternative");
+            BodyPart messageBodyPart = new MimeBodyPart();
+            String htmlMessage = msg;
+            messageBodyPart.setContent(htmlMessage, "text/html");
+            multipart.addBodyPart(messageBodyPart);
+            message.setContent(multipart);
+            try {
+                Transport transport = session.getTransport("smtp");
+                transport.connect("smtp.gmail.com", username, password);
+                System.out.println("Transport: "+transport.toString());
+                transport.sendMessage(message, message.getAllRecipients());
+
+            } catch (MessagingException e) {
+                System.out.println("error mail,"+e.getMessage());
+                throw new GeneralBOException("Error send email...!"+e.getMessage());
+            }
+        }catch (Exception e){
+            System.out.println("error mail,"+e.getMessage());
+            throw new GeneralBOException("Error send email...!"+e.getMessage());
+        }
+    }
 }

@@ -73,18 +73,22 @@
 
 
                 if (tipe == "umum") {
-                    if (pembayaran != '' && uangMuka != '') {
+                    if($('#is_uang_muka').is(':checked')){
+                        if (pembayaran != '' && uangMuka != '') {
+                            $('#confirm_dialog').dialog('open');
+                        } else {
+                            $("html, body").animate({scrollTop: 0}, 600);
+                            $('#warning_pasien').show().fadeOut(10000);
+                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                            if (pembayaran == '') {
+                                $('#war_pembayaran').show();
+                            }
+                            if (uangMuka == '') {
+                                $('#war_uang_muka').show();
+                            }
+                        }
+                    }else{
                         $('#confirm_dialog').dialog('open');
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                        if (pembayaran == '') {
-                            $('#war_pembayaran').show();
-                        }
-                        if (uangMuka == '') {
-                            $('#war_uang_muka').show();
-                        }
                     }
                 }
 
@@ -119,24 +123,24 @@
                         if (diagnosaBpjs == '') {
                             $('#diagnosa_awal').css('border', 'solid 1px red');
                         }
-                        if (perujuk == '') {
-                            $('#war_perujuk').show();
-                        }
-                        if (ketPerujuk == '') {
-                            $('#war_ket_perujuk').show();
-                        }
-                        if (noRujukan == '') {
-                            $('#war_no_rujukan').show();
-                        }
-                        if (ppkRujukan == '') {
-                            $('#war_ppk_rujukan').show();
-                        }
-                        if (tglRujukan == '') {
-                            $('#war_tgl_rujukan').show();
-                        }
-                        if (fotoRujukan == '') {
-                            $('#war_foto_rujukan').show();
-                        }
+                        // if (perujuk == '') {
+                        //     $('#war_perujuk').show();
+                        // }
+                        // if (ketPerujuk == '') {
+                        //     $('#war_ket_perujuk').show();
+                        // }
+                        // if (noRujukan == '') {
+                        //     $('#war_no_rujukan').show();
+                        // }
+                        // if (ppkRujukan == '') {
+                        //     $('#war_ppk_rujukan').show();
+                        // }
+                        // if (tglRujukan == '') {
+                        //     $('#war_tgl_rujukan').show();
+                        // }
+                        // if (fotoRujukan == '') {
+                        //     $('#war_foto_rujukan').show();
+                        // }
                     }
                 }
 
@@ -2197,19 +2201,45 @@
                     var icon = "";
                     var val = "";
                     if (response.status == "200") {
-                        val = "aktif";
-                        icon = "fa-info";
-                        title = "Info!";
-                        warnClass = "alert-success";
-                        msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
-                            '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
-                            '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
                         $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglKunjungan);
                         $('#diagnosa_awal').val(response.kodeDiagnosa);
                         $('#diagnosa_ket').val(response.namaDiagnosa);
+
+                        const oneDay = 24 * 60 * 60 * 1000;
+                        const firstDate = new Date(response.tglKunjungan);
+                        const secondDate = new Date(2020, 9, 21);
+                        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+
+                        if(diffDays == 0){
+                            val = "aktif";
+                            icon = "fa-info";
+                            title = "Info!";
+                            warnClass = "alert-success";
+                            msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
+                                '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                        }else{
+                            if(diffDays <= 90){
+                                val = "aktif";
+                                icon = "fa-warning";
+                                title = "Info!";
+                                warnClass = "alert-warning";
+                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan masih kurang 90 hari. Silahkan dilanjutkan...!</p>' +
+                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                            }else{
+                                val = "tidak ditemukan";
+                                icon = "fa-warning";
+                                title = "Warning!";
+                                warnClass = "alert-danger";
+                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan sudah melebihi 90 hari. Silahkan urus kembali surat rujukan...!</p>' +
+                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                            }
+                        }
                     } else {
                         val = "tidak ditemukan";
                         icon = "fa-warning";
@@ -2264,7 +2294,7 @@
 
     function listSelectPaket() {
         var option = "<option value=''>[Select One]</option>";
-        PaketPeriksaAction.getListPaketPeriksaByTipe("rawat_jalan", function (response) {
+        PaketPeriksaAction.getListPaketPeriksaByTipe("igd", function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
@@ -2727,6 +2757,12 @@
                             clasBox = 'btn-trans-02';
                             btnSet = 'style="cursor: no-drop"';
                         }
+
+                        var foto = contextPathHeader+'/pages/images/unknown-person2.jpg';
+                        if(item.urlImg != null && item.urlImg != ''){
+                            foto = contextPathHeader+item.urlImg;
+                        }
+
                         table += '<div id="id_box_' + i + '" class="' + clasBox + '" ' + btnSet + '>\n' +
                             '<div style="text-align:left; cursor:pointer; font-size:11px;">\n' +
                             '    <table align="center" style="width:100%; border-radius:5px; margin-top:2px;">\n' +
@@ -2734,12 +2770,11 @@
                             '            <td align="left" colspan="2">\n' +
                             '                <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + jamkerja + '</span>\n' +
                             '                <span class="pull-right" style="margin-top: -6px; color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">' + label + '</span>\n' +
-                            '                <%--<img style="margin-top: -6px" class="pull-right" src="<s:url value="/pages/images/icon_failure.ico"/>">--%>\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +
                             '            <td align="center" colspan="2">\n' +
-                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px" src="<s:url value="/pages/images/guy-5.jpg"/>">\n' +
+                            '                <img class="img-circle" style="background-color:transparent; height:100px; padding-bottom: 2px; padding-top: 8px; width: 55%;" src="'+foto+'">\n' +
                             '            </td>\n' +
                             '        </tr>\n' +
                             '        <tr>\n' +

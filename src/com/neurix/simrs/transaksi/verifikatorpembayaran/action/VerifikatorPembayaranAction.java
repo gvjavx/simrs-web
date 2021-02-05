@@ -12,9 +12,15 @@ import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.download.excel.CellDetail;
+import com.neurix.common.download.excel.DownloadUtil;
+import com.neurix.common.download.excel.RowData;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.FirebasePushNotif;
+import com.neurix.hris.master.shift.bo.ShiftBo;
+import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
+import com.neurix.hris.master.shift.model.Shift;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiFcmBo;
 import com.neurix.hris.transaksi.notifikasi.model.ItNotifikasiFcmEntity;
@@ -98,10 +104,15 @@ import com.neurix.simrs.transaksi.verifikatorpembayaran.model.ItSimrsPembayaranO
 import com.neurix.simrs.transaksi.verifikatorpembayaran.model.PembayaranOnline;
 import io.agora.recording.common.Common;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
+import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -226,7 +237,15 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         antrianTelemedic.setStDateFrom(dateNow);
         antrianTelemedic.setStDateTo(dateNow);
         setAntrianTelemedic(antrianTelemedic);
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResults");
+        session.removeAttribute("listOfTransaksi");
+
+
         logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
+        if ("print".equalsIgnoreCase(this.tipe))
+            return "init_print";
         return "search";
     }
 
@@ -298,18 +317,16 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 searchAntrian.setIdPelayanan(antrianTelemedic.getIdPelayanan());
                 searchAntrian.setId(antrianTelemedic.getId());
                 searchAntrian.setIdTransaksi(antrianTelemedic.getIdTransaksi());
-                searchAntrian.setStDateFrom(antrianTelemedic.getStDateFrom());
-                searchAntrian.setStDateTo(antrianTelemedic.getStDateTo());
             }
         }
 
-        // jika pencarian hari ini true, START
-//        String stCurDate = "";
-//        if ("true".equals(antrianTelemedic.getFlagDateNow())){
-//            stCurDate = getStCurrentDate();
-//        }
-//        searchAntrian.setFlagDateNow(stCurDate);
-        // END
+        // Sigit 2021-01-26, Pencarian Untuk Hari Ini
+        searchAntrian.setStDateFrom(getStCurrentDate());
+        searchAntrian.setStDateTo(getStCurrentDate());
+        searchAntrian.setFlagDateNow(getStCurrentDate());
+
+        searchAntrian.setFlagKasir(checkKasirIfAvailableShift() == true ? "Y" : "N");
+
 
         List<AntrianTelemedic> listResults = new ArrayList<>();
         try {
@@ -565,6 +582,12 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
         CheckResponse response = new CheckResponse();
 
+        // Sigit 2021-02-02, Penambahan Pencarian Shift kasir telemedicine
+        String idUser       = user == null ? CommonUtil.userIdLogin() : user;
+        String unitLogin    = branch == null ? CommonUtil.userBranchLogin() : branch;
+        String shiftId      = getShiftIdByNip(idUser, unitLogin);
+        // END
+
         ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksi);
         if (pembayaranOnlineEntity != null){
 
@@ -655,6 +678,10 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                         pembayaranOnlineEntity.setApprovedWho(userLogin);
                         pembayaranOnlineEntity.setLastUpdate(time);
                         pembayaranOnlineEntity.setLastUpdateWho(userLogin);
+
+                        if (!"".equalsIgnoreCase(shiftId)){
+                            pembayaranOnlineEntity.setShiftId(shiftId);
+                        }
 
                         try {
                             verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
@@ -861,6 +888,9 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                     pembayaranOnlineEntity.setLastUpdate(time);
                     pembayaranOnlineEntity.setLastUpdateWho(userLogin);
                     pembayaranOnlineEntity.setAction("U");
+                    if (!"".equalsIgnoreCase(shiftId)){
+                        pembayaranOnlineEntity.setShiftId(shiftId);
+                    }
 
                     try {
                         verifikatorPembayaranBo.saveEdit(pembayaranOnlineEntity);
@@ -3447,6 +3477,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
     }
 
     public CrudResponse kembalikanBukti(String idTransaksi){
+        logger.info("[VerifikatorPembayaranAction.kembalikanBukti] START >>>");
 
         CrudResponse response = new CrudResponse();
 
@@ -3495,7 +3526,393 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             }
         }
 
+        logger.info("[VerifikatorPembayaranAction.kembalikanBukti] END <<<");
         return response;
+    }
+
+    // Sigit 2021-01-02, Check Ijin Edit Jika dia admin tele dan staff tele yg punya shift
+    public Boolean checkKasirIfAvailableShift(){
+        logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] START >>>");
+
+        String tipeRole = CommonUtil.getRoleTipePelayanan();
+        Boolean found   = false;
+
+        // jika admin tele langsung return true
+        if (CommonConstant.TIPE_PELAYANAN_ADMIN_TELE.equalsIgnoreCase(tipeRole)){
+            logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END <<<");
+            return true;
+        }
+
+        // jika bukan admin tele check tipe role
+        // jika bukan staf kasir tele return false / tidak boleh edit
+        if (!CommonConstant.TIPE_PELAYANAN_KASIR_TELE.equalsIgnoreCase(tipeRole)){
+            logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END <<<");
+            return false;
+        }
+
+        // jika staf kasir tele check apakah ada shift;
+        String userId   = CommonUtil.userIdLogin();
+        String stDate   = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
+        String stTime   = getStHoursAndMinutes();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            found = verifikatorPembayaranBo.checkIfAvailableShiftOfKasir(userId, stDate, stTime);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] Error", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END <<<");
+        return found;
+    }
+
+    private String getStHoursAndMinutes(){
+        logger.info("[VerifikatorPembayaranAction.getStHoursAndMinutes] START >>>");
+
+        DateTime dateTime = new DateTime(System.currentTimeMillis());
+        String hours   = dateTime.getHourOfDay() + "";
+        String minutes = dateTime.getMinuteOfHour() + "";
+
+        if (hours.length() == 1)
+            hours = "0" + hours;
+
+        if (minutes.length() == 1)
+            minutes = "0" + minutes;
+
+
+        logger.info("[VerifikatorPembayaranAction.checkKasirIfAvailableShift] END >>>");
+        return hours + ":" + minutes;
+    }
+
+    private String getShiftIdByNip(String nip, String branch){
+        logger.info("[VerifikatorPembayaranAction.getShiftIdByNip] START >>>");
+
+        String tanggal  = CommonUtil.convertDateToString2(new Date(System.currentTimeMillis()));
+        String tipeRole = CommonConstant.TIPE_PELAYANAN_KASIR_TELE;
+        String shiftId  = "";
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            shiftId = verifikatorPembayaranBo.getShifIdByNipAndTanggal(nip, tanggal, tipeRole, branch);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getShiftIdByNip] Error", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.getShiftIdByNip] START >>>");
+        return shiftId;
+    }
+
+    public List<Shift> getListShiftByTanggalShift(String stDate){
+        logger.info("[VerifikatorPembayaranAction.getListShiftByTanggalShift] START >>>");
+
+        String branchId = CommonUtil.userBranchLogin();
+        List<Shift> shiftList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            shiftList = verifikatorPembayaranBo.getListShiftByIdTanggal(branchId, stDate, "");
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getListShiftByTanggalShift] Error", e);
+        }
+
+        logger.info("[VerifikatorPembayaranAction.getListShiftByTanggalShift] END <<<");
+        return shiftList;
+    }
+
+    public List<AntrianTelemedic> getSearchListTransByShift(String stJson) throws JSONException{
+        logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] START >>>");
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(stJson);
+
+        String stDate   = jsonObject.getString("date");
+        String shiftId  = jsonObject.getString("shift");
+        String status   = jsonObject.getString("status");
+        String jenis    = jsonObject.getString("jenis");
+        String branchId = CommonUtil.userBranchLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            antrianTelemedicList = verifikatorPembayaranBo.getListKasMasukByShift(shiftId, stDate, branchId, status, jenis);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getSearchListTransByShift] Error", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfTransaksi");
+        session.setAttribute("listOfTransaksi", antrianTelemedicList);
+
+        logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] END <<<");
+        return antrianTelemedicList;
+    }
+
+    private String printInvoice(){
+        logger.info("[VerifikatorPembayaranAction.printInvoice] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AntrianTelemedic> listOfTransaksi = (List<AntrianTelemedic>) session.getAttribute("listOfTransaksi");
+
+        List<AntrianTelemedic> filteredData = listOfTransaksi.stream().filter(p->p.getId().equalsIgnoreCase(this.id)).collect(Collectors.toList());
+        if (filteredData != null && filteredData.size() > 0){
+
+            AntrianTelemedic antrianTelemedic = filteredData.get(0);
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+            String logo     = "";
+            Branch branches = new Branch();
+            String branchId = CommonUtil.userBranchLogin();
+            String unit     = CommonUtil.userBranchNameLogin();
+            String area     = CommonUtil.userAreaName();
+
+            try {
+                branches = branchBo.getBranchById(branchId, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search branch logo");
+            }
+
+            if (branches != null) {
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+            }
+
+            String userName = CommonUtil.userLogin();
+            String stLastUpdate = antrianTelemedic.getLastUpdate().toString();
+
+            reportParams.put("invoice", antrianTelemedic.getId());
+            reportParams.put("idPasien", antrianTelemedic.getIdPasien());
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("title", "Invoice Telemedic");
+            reportParams.put("unit", unit);
+            reportParams.put("area", area);
+            reportParams.put("logo", logo);
+            reportParams.put("nama", antrianTelemedic.getNamaPasien());
+            reportParams.put("poli", antrianTelemedic.getNamaPelayanan());
+            reportParams.put("dokter", antrianTelemedic.getNamaDokter());
+            reportParams.put("bank", antrianTelemedic.getNamaBank());
+            reportParams.put("nominal", antrianTelemedic.getNominal());
+            reportParams.put("jenisPasien", antrianTelemedic.getIdJenisPeriksaPasien().toUpperCase());
+            reportParams.put("tanggalTrans", stLastUpdate);
+            reportParams.put("lastUpdateWho", userName);
+            reportParams.put("keterangan", antrianTelemedic.getKeterangan());
+
+            String imgPath = CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+antrianTelemedic.getUrlFotoStruk();
+            reportParams.put("urlFoto", imgPath);
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printInvoice] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "init_print";
+            }
+        }
+
+        logger.info("[VerifikatorPembayaranAction.printInvoice] END <<<");
+        return "print_invoice";
+    }
+
+    public String print(){
+        logger.info("[VerifikatorPembayaranAction.print] START >>>");
+
+        if ("invoice".equalsIgnoreCase(this.tipe) && this.id != null){
+            return printInvoice();
+        }
+
+        AntrianTelemedic antrianTelemedic = getAntrianTelemedic();
+        String stDate   = antrianTelemedic.getStDateFrom();
+        String shiftId  = antrianTelemedic.getShiftId();
+        String branchId = CommonUtil.userBranchLogin();
+        String status   = antrianTelemedic.getStatusTransaksi();
+        String currTime = new Timestamp(System.currentTimeMillis()).toString();
+        String jenis    = antrianTelemedic.getIdJenisPeriksaPasien();
+
+        String branchName = CommonUtil.userBranchNameLogin();
+        String shiftName  = getShiftName(shiftId);
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        try {
+            antrianTelemedicList = verifikatorPembayaranBoProxy.getListKasMasukByShift(shiftId, stDate, branchId, status, jenis);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.print] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+        }
+
+        BigDecimal jumlah = new BigDecimal(0);
+        CellDetail cellDetail;
+        RowData rowData;
+        List listOfData = new ArrayList();
+        List listOfCell;
+        List listOfColumn = new ArrayList();
+        String titleReport = "Kasir Telemedicine " + branchName + " : " + shiftName +". Tanggal " + stDate ;
+
+        listOfColumn.add("No. Trans");
+        listOfColumn.add("Jenis Trans");
+        listOfColumn.add("Keterangan");
+        listOfColumn.add("Nama Bank");
+        listOfColumn.add("No. RM");
+        listOfColumn.add("Nama Pasien");
+        listOfColumn.add("Pelayanan");
+        listOfColumn.add("Dokter");
+        listOfColumn.add("Nominal");
+        listOfColumn.add("Last Update");
+        listOfColumn.add("Last Update Who");
+
+        for (AntrianTelemedic data : antrianTelemedicList){
+            rowData = new RowData();
+            listOfCell = new ArrayList();
+
+            //no.trans
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(0);
+            cellDetail.setValueCell(data.getId());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //jenis Trans
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(1);
+            cellDetail.setValueCell(data.getIdJenisPeriksaPasien().toUpperCase());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Keterangan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(2);
+            cellDetail.setValueCell(data.getKeterangan());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nama Bank
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(3);
+            cellDetail.setValueCell(data.getNamaBank());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //No. RM
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(4);
+            cellDetail.setValueCell(data.getIdPasien());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nama Pasien
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(5);
+            cellDetail.setValueCell(data.getNamaPasien());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Pelayanan
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(6);
+            cellDetail.setValueCell(data.getNamaPelayanan());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Dokter
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(7);
+            cellDetail.setValueCell(data.getNamaDokter());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Nominal
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(8);
+            cellDetail.setValueCell(data.getNominal().toString());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
+            listOfCell.add(cellDetail);
+
+            //Last Update
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(9);
+            cellDetail.setValueCell(data.getStLastUpdate());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            //Last Update Who
+            cellDetail = new CellDetail();
+            cellDetail.setCellID(10);
+            cellDetail.setValueCell(data.getLastUpdateWho());
+            cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+            listOfCell.add(cellDetail);
+
+            rowData.setListOfCell(listOfCell);
+            listOfData.add(rowData);
+
+            // tambahkan ke jumlah untuk sum
+            jumlah = jumlah.add(data.getNominal());
+        }
+
+        // Tambahkan Kolom SUM, START
+        rowData = new RowData();
+        listOfCell = new ArrayList();
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(7);
+        cellDetail.setValueCell("Total : ");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(8);
+        cellDetail.setValueCell(jumlah.toString());
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
+        listOfCell.add(cellDetail);
+
+        rowData.setListOfCell(listOfCell);
+        listOfData.add(rowData);
+
+        // END
+
+        HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, currTime, listOfColumn, listOfData, null);
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            wb.write(baos);
+        } catch (IOException e) {
+            logger.error("[VerifikatorPembayaranAction.downloadXls] Error when downloading data of telemedicine, Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "Found problem when downloding data, please inform to your admin.");
+            return ERROR;
+        }
+
+        branchName = branchName.replaceAll(" ", "_").toLowerCase();
+        shiftName = shiftName.replaceAll(" ", "_").toLowerCase();
+        jenis = jenis.replaceAll(" ", "_").toLowerCase();
+
+        setExcelStream(new ByteArrayInputStream(baos.toByteArray()));
+        setContentDisposition("filename=\"LaporanTransTeleKasir_"+branchName+"_"+shiftName+"_"+jenis+".${documentFormat}\"");
+
+        logger.info("[VerifikatorPembayaranAction.print] END <<<");
+        return "downloadXls";
+    }
+
+    private String getShiftName(String shiftId){
+        logger.info("[VerifikatorPembayaranAction.getShiftName] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ShiftBo shiftBo = (ShiftBo) ctx.getBean("shiftBoProxy");
+
+        ImHrisShiftEntity shiftEntity = new ImHrisShiftEntity();
+        try {
+            shiftEntity = shiftBo.getById(shiftId);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getShiftName] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+        }
+
+        logger.info("[VerifikatorPembayaranAction.getShiftName] END <<<");
+        if (shiftEntity != null && shiftEntity.getShiftId() != null)
+            return shiftEntity.getShiftName();
+        return "";
     }
 
 }

@@ -23,6 +23,16 @@ public class Shift extends BaseModel implements Serializable {
     private String branchName;
     private String profesiName;
 
+    private String tipeShiftKasir;
+
+    public String getTipeShiftKasir() {
+        return tipeShiftKasir;
+    }
+
+    public void setTipeShiftKasir(String tipeShiftKasir) {
+        this.tipeShiftKasir = tipeShiftKasir;
+    }
+
     public String getBranchName() {
         return branchName;
     }

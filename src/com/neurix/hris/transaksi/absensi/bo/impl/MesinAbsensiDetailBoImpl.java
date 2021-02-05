@@ -195,7 +195,7 @@ public class MesinAbsensiDetailBoImpl implements MesinAbsensiDetailBo {
 //            imMesinAbsensiDetailEntity.setMesinAbsensiDetailName(bean.getMesinAbsensiDetailName());
 //            imMesinAbsensiDetailEntity.setJumlahMesinAbsensiDetail(bean.getJumlahMesinAbsensiDetail());
 //            imMesinAbsensiDetailEntity.setTipeHari(bean.getTipeHari());
-//            imMesinAbsensiDetailEntity.setBranchId(bean.getBranchId());
+            itMesinAbsensiDetailEntity.setBranchId(bean.getBranchId());
 //            imMesinAbsensiDetailEntity.setGolonganId(bean.getGolonganId());
             itMesinAbsensiDetailEntity.setFlag(bean.getFlag());
             itMesinAbsensiDetailEntity.setAction(bean.getAction());

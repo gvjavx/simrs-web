@@ -11,6 +11,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -93,4 +94,20 @@ public class TipePegawaiDao extends GenericDao<ImHrisTipePegawai, String> {
 
         return results;
     }
+
+    public String getTipeById (String tipeId){
+        List<Object[]> results = new ArrayList<Object[]>();
+        String result = "";
+
+        String query = "SELECT tipe_pegawai_id, tipe_pegawai_name FROM im_hris_tipe_pegawai WHERE tipe_pegawai_id = '" + tipeId + "';";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+        for(Object[] row : results){
+            result = (String) row[1];
+        }
+        return result;
+    }
+
 }

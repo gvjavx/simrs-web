@@ -359,6 +359,27 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-view-img">
+    <div class="modal-dialog modal-fade modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-info"></i> View Uplaoded Documment
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="body-img">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -413,7 +434,7 @@
         $('#det_tlg_faktur').text(tglFaktur);
         $('#det_no_invoice').text(noInvoice);
         $('#det_no_do').text(noDo);
-        $('#det_img').attr('onclick', 'showDoc(\''+img+'\')')
+        $('#det_img').attr('onclick', 'viewUpload(\''+idpermintaanPo+'\', \''+noBatch+'\')')
         $('#loading_detail').show();
         $('#save_detail').show();
         $('#id_permintaan_vendor').val(idpermintaanPo);
@@ -516,6 +537,58 @@
         var form = { "permintaanVendor.idPermintaanVendor":idPermintaan, "permintaanVendor.idApprovalObat":idApproval };
         var host = firstpath()+"/permintaanpo/printPo_permintaanpo.action";
         post(host, form);
+    }
+
+    function viewUpload(idpermintaanPo, batch) {
+        $("#modal-view-img").modal('show');
+        $("#body-img").html("");
+        PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
+            var str = '';
+            if(list.length > 0){
+                $.each(list, function (i, item) {
+                    var id = 'carousel-example-generic_'+item.idItem;
+                    str += '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5><div id="'+id+'" class="carousel slide" data-ride="carousel">\n' +
+                        '<ol class="carousel-indicators" id="li_'+item.idItem+'">\n' +
+                        '</ol>\n' +
+                        '<div class="carousel-inner" id="item_'+item.idItem+'">\n' +
+                        '</div>\n' +
+                        '<a class="left carousel-control" href="#'+id+'" data-slide="prev">\n' +
+                        '    <span class="fa fa-angle-left"></span>\n' +
+                        '</a>\n' +
+                        '<a class="right carousel-control" href="#'+id+'" data-slide="next">\n' +
+                        '    <span class="fa fa-angle-right"></span>\n' +
+                        '</a>\n' +
+                        '</div><hr>';
+                    showImg(item.idItem);
+                });
+            }else{
+                str = '<b style="text-align: center">Foto tidak ada..!</b>'
+            }
+            $("#body-img").html(str);
+        });
+    }
+
+    function showImg(idItem){
+        PermintaanVendorAction.getListImg(idItem, function (listimg) {
+            var str = '';
+            var li = '';
+            $.each(listimg, function (n, img) {
+                var aktive = '';
+                var liAcktive = '';
+                if(n == 0){
+                    aktive = 'active';
+                    liAcktive = 'class="active"';
+                }
+                str += '<div class="item '+aktive+'">\n' +
+                    '<img style="height: 300px; width: 100%" src="'+contextPathHeader+'/images/upload/surat_po/'+img.urlImg+'" alt="Slide'+img.urlImg+'">\n' +
+                    '<div class="carousel-caption">\n' +img.urlImg +
+                    '</div>\n' +
+                    '</div>';
+                li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
+            });
+            $("#item_"+idItem).html(str);
+            $("#li_"+idItem).html(li);
+        });
     }
 
 

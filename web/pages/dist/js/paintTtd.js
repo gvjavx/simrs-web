@@ -145,7 +145,7 @@ function removePaint(id){
     }else if ("area_gigi1" == id || "area_gigi2" == id) {
         const context = canvas.getContext('2d');
         context.clearRect(0, 0, canvas.width, canvas.height);
-        var url = contextPath+'/pages/images/scala-gigi.png';
+        var url = contextPath+'/pages/images/scala-gigi-new.png';
 
         var ctx = canvas.getContext('2d');
         var img = new Image();

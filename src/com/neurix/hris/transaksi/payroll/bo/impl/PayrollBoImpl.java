@@ -110,6 +110,7 @@ import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 /**
  * Created by IntelliJ IDEA.
@@ -6633,6 +6634,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         kursIndonesia.setDecimalFormatSymbols(formatRp);
 
         List<ImBiodataEntity> dataBiodata = biodataDao.getAllData();
+
+        // cari berdasarkan nip
+        if (!"".equalsIgnoreCase(bean.getNip()))
+        {
+            dataBiodata = dataBiodata.stream().filter(p->p.getNip().equalsIgnoreCase(bean.getNip())).collect(Collectors.toList());
+        }
+
         if(bean.getNip().equalsIgnoreCase("")){
             itPayrollEntities = payrollDao.getDataView(bean.getBranchId(), bean.getBulan(), bean.getTahun(), bean.getTipe());
             /*if(bean.getTipe().equalsIgnoreCase("PN")){
@@ -8418,6 +8426,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setPphSeharusnya(payroll.getPphSeharusnyaNilai());
                 itPayrollEntity.setPph11Bulan(payroll.getPph11BulanNilai());
 
+                // Sigit 2021-01-21, Penambahan Baru
+                itPayrollEntity.setTunjanganDapen(payroll.getTunjanganDapenNilai());
+                itPayrollEntity.setTunjanganBpjsKs(payroll.getTunjanganBpjsKsNilai());
+                itPayrollEntity.setTunjanganBpjsTk(payroll.getTunjanganBpjsTkNilai());
+                itPayrollEntity.setTunjanganPph(payroll.getTunjanganPphNilai());
+                itPayrollEntity.setIuranDapenPeg(payroll.getIuranDapenPegNilai());
+                itPayrollEntity.setIuranDapenPersh(payroll.getIuranDapenPershNilai());
+                itPayrollEntity.setIuranBpjsTkKary(payroll.getIuranBpjsTkKaryNilai());
+                itPayrollEntity.setIuranBpjsTkPers(payroll.getIuranBpjsTkPersNilai());
+                itPayrollEntity.setIuranBpjsKsKary(payroll.getIuranBpjsKsKaryNilai());
+                itPayrollEntity.setIuranBpjsKsPers(payroll.getIuranBpjsKsPersNilai());
+                itPayrollEntity.setPphGaji(payroll.getPphGajiNilai());
+                // END
+
                 //peralihan
                 itPayrollEntity.setPeralihanGapok(payroll.getPeralihanGapok());
                 itPayrollEntity.setPeralihanSankhus(payroll.getPeralihanSankhus());
@@ -8431,11 +8453,13 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 itPayrollEntity.setTotalB(payroll.getTotalBNilai());
                 itPayrollEntity.setTotalC(payroll.getTotalCNilai());
                 itPayrollEntity.setGajiBersih(payroll.getTotalGajiBersihNilai());
-                payrollDao.updateAndSave(itPayrollEntity);
 
-                //jika terjadi perubahan nilai tunjangan Peralihan
-                if (perubahanPeralihan.equalsIgnoreCase("Y")) {
+                try {
+                    payrollDao.updateAndSave(itPayrollEntity);
+                } catch (HibernateException e){
+                    logger.info("[]");
                 }
+
             }
         }
     }
@@ -21254,7 +21278,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     public List<PayrollJubileum> searchJubileumSys(Payroll payroll) throws GeneralBOException {
 
         List <PayrollJubileum> payrollJubileumList = new ArrayList<>();
-        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", "", "Y");
+        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", null,"", "Y");
 
         if(imBiodataEntities.size() > 0){
             for(ImBiodataEntity biodata: imBiodataEntities){
@@ -21311,7 +21335,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             }
         }*/
 
-        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", "", "Y");
+        List<ImBiodataEntity> imBiodataEntities = biodataDao.getDataBiodata("", "", payroll.getBranchId(), "", null, "", "Y");
         if(imBiodataEntities.size() > 0){
             for(ImBiodataEntity imBiodataEntity: imBiodataEntities){
                 String strTglPensiun = "";

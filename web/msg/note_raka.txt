@@ -1,7 +1,7 @@
--- 2020-11-30 ===> Payroll PTKP
-+ Membuat Table [im_im_hris_payroll_ptkp_history]
-+ Membuat Sequence [seq_payroll_ptkp]
-+ Membuat Sequence [seq_payroll_ptkp_history]
+------ 2020-11-30 ===> Payroll PTKP
+-- Membuat Table [im_im_hris_payroll_ptkp_history]
+-- Membuat Sequence [seq_payroll_ptkp]
+-- Membuat Sequence [seq_payroll_ptkp_history]
 
     CREATE TABLE im_hris_payroll_ptkp_history
     (
@@ -28,9 +28,356 @@
 
     CREATE SEQUENCE public.seq_payroll_ptkp_history;
 
--- 2020-12-10 ===> User
-+ Menambahakan (pada table [im_users]) [tipe_pelayanan] "rawat_inap" dan "pbf"
-+ Menambahakan column [id_vendor] pada table [im_users]
+------ 2020-12-10 ===> User
+-- Menambahakan (pada table [im_users]) [tipe_pelayanan] "rawat_inap" dan "pbf"
+-- Menambahakan column [id_vendor] pada table [im_users]
 
     ALTER TABLE im_users
         ADD id_vendor character varying(30);
+        ADD id_ruangan character varying(50);
+
+------ 2021-01-21 ===> Penambahan Column IM_HRIS_PEGAWAI
+    ALTER TABLE im_hris_pegawai
+        ADD tanggal_keluar DATE,
+        ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
+        ADD tanggal_cuti_diluar_awal DATE,
+        ADD tanggal_cuti_diluar_akhir DATE;
+
+
+------ 2021-01-24 ===> Golongan & Golongan Dapen
+-- di table im_hris_golongan, ditambahkan field golongan_pensiun (varchar5), masa_kerja_gol_awal (varchar2), masa_kerja_gol_akhir(varchar2)
+    ALTER TABLE im_hris_golongan
+        ADD COLUMN golongan_pensiun varchar(5),
+        ADD COLUMN masa_kerja_gol_awal varchar(2),
+        ADD COLUMN masa_kerja_gol_akhir varchar(2);
+
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IVB',	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6		WHERE grade_level = 1;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IVA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =10 	WHERE grade_level = 2;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11 	WHERE grade_level = 3;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =7 	WHERE grade_level = 4;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIB',	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =10	WHERE grade_level = 5;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11	WHERE grade_level = 6;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =14 	WHERE grade_level = 7;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6 	WHERE grade_level = 8;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIB', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6 	WHERE grade_level = 9;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =8 	WHERE grade_level = 10;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='ID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =7		WHERE grade_level = 11;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =9		WHERE grade_level = 12;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IB', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11	WHERE grade_level = 13;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =15	WHERE grade_level = 14;
+
+------ 2021-02-01 ===> (JIKA) Jenis Pegawai belum ada di Prod (im_hris_jenis_pegawai)
+    INSERT INTO im_hris_jenis_pegawai
+    VALUES
+        ('JP01', 'plt', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 100, null),
+        ('JP02', 'pjs', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 80, null),
+        ('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 70, null),
+        ('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 60, null),
+        ('JP05', 'normal', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 100, 'Y')
+
+
+
+--------------------------------------------------------------------------------------------
+-------------------------------     JANGAN DI RUN    ---------------------------------------
+--------------------------------------------------------------------------------------------
+
+    ------------------------------------------------------
+    ------------------------------------------------------
+    ---------   MULAI DARI SINI 6 JANUARI 2021   ---------
+    ------------------------------------------------------
+    ------------------------------------------------------
+
+------ 2020-12-15 ===> SkalaGajiPensiun
+-- Mengalihkan table ke [im_hris_pyroll_skala_gaji_pensiun]
+-- Menambahkan sequence [seq_payroll_skala_gaji_pensiun_history]
+-- Menambahkan column [masa_kerja_gol] pada [im_hris_pyroll_skala_gaji_pensiun]
+
+    CREATE SEQUENCE public.seq_payroll_skala_gaji_pensiun_history;
+
+    ALTER TABLE im_hris_payroll_skala_gaji_pensiun
+            ADD masa_kerja_gol int NOT NULL;
+
+    ALTER TABLE im_hris_payroll_skala_gaji_pensiun_history
+                ADD masa_kerja_gol int NOT NULL;
+
+------ 2020-12-21 ===> MANY QUERY
+--------------------------------------------------
+--      [Payroll Skala Gaji DPLK Pegawai]       --
+--------------------------------------------------
+
+    -- CREATE TABLE
+
+    CREATE TABLE im_hris_payroll_skala_gaji_dplk_pegawai
+    (
+      skala_gaji_pensiun_dplk_pegawai_id varchar(20) not null
+        constraint im_hris_payroll_skala_gaji_dplk_pegawai_pkey
+        primary key,
+      golongan_id                varchar(20),
+      nilai                      numeric(15, 2),
+      action                     varchar(1),
+      flag                       varchar(1),
+      created_date               timestamp,
+      created_who                varchar(100),
+      last_update                timestamp,
+      last_update_who            varchar(100)
+    );
+
+    CREATE TABLE im_hris_payroll_skala_gaji_dplk_pegawai_history
+    (
+      skala_gaji_pensiun_dplk_pegawai_history_id varchar(20) not null
+        constraint im_hris_payroll_skala_gaji_dplk_pegawai_history_pkey
+        primary key,
+      skala_gaji_pensiun_dplk_pegawai_id varchar(20) not null,
+      golongan_id                varchar(20),
+      nilai                      numeric(15, 2),
+      action                     varchar(1),
+      flag                       varchar(1),
+      created_date               timestamp,
+      created_who                varchar(100),
+      last_update                timestamp,
+      last_update_who            varchar(100)
+    );
+
+    UPDATE im_functions
+        SET url = REPLACE(url, 'IuranDplk', 'DplkPegawai');
+   UPDATE im_functions
+        SET url = REPLACE (url, 'searchPayrollSkalaGajiPensiun', 'searchPayrollSkalaGajiDplkPegawai');
+    UPDATE im_functions
+        SET func_name = 'S.G.P Dplk Pegawai' WHERE func_id = 1182;
+
+    -- CREATE SEQUENCE
+
+    CREATE SEQUENCE seq_payroll_skala_gaji_dplk_pegawai START 17;
+    CREATE SEQUENCE seq_payroll_skala_gaji_dplk_pegawai_history;
+
+    -- INSERT DATA
+
+    INSERT INTO im_hris_payroll_skala_gaji_dplk_pegawai(
+    	skala_gaji_pensiun_dplk_pegawai_id, golongan_id, nilai, action, flag, created_date, created_who, last_update, last_update_who)
+    VALUES
+    ('SGID0001', 'G01', 375000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0002', 'G02', 350000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0003', 'G03', 325000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0004', 'G04', 300000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0005', 'G05', 275000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0006', 'G06', 250000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0007', 'G07', 225000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0008', 'G08', 200000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0009', 'G09', 175000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0010', 'G10', 150000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0011', 'G11', 125000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0012', 'G12', 100000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0013', 'G13',  75000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0014', 'G14',  50000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0015', 'G15', 300000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin'),
+    ('SGID0016', 'G16', 425000.00, 'C', 'Y', '2019-12-05 08:53:53.235', 'admin', '2019-12-05 08:53:53.235', 'admin');
+
+
+--------------------------------------------------
+--       [PERUBAHAN FIELD TABEL BIODATA]        --
+--------------------------------------------------
+
+TRUNCATE im_hris_payroll_skala_gaji_pensiun;
+
+INSERT INTO im_hris_payroll_skala_gaji_pensiun(skala_gaji_pensiun_id, golongan_id, masa_kerja_gol, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id)
+SELECT skala_gaji_pensiun_rni_id, golongan_id, masa_kerja_gol, nilai, action, flag, created_date, created_who, last_update_who, tipe_dapen_id FROM im_hris_payroll_skala_gaji_dapenbun;
+
+UPDATE im_hris_payroll_skala_gaji_pensiun SET skala_gaji_pensiun_id = REPLACE(skala_gaji_pensiun_id,'DRNI', 'SGP0');
+
+--------------------------------------------------
+--              [FROM PAK FERDI]                --
+--------------------------------------------------
+
+-- table im_hris_pegawai dihapus flag_pjs, flag_plt, dan jenis_pegawai
+    ALTER TABLE im_hris_pegawai
+	    DROP COLUMN flag_pjs,
+    	DROP COLUMN flag_plt,
+	    DROP COLUMN jenis_pegawai;
+-- table historynya
+    --ALTER TABLE im_hris_pegawai_history
+	--    DROP COLUMN flag_pjs,
+	--    DROP COLUMN flag_plt;
+
+-- untuk field jenis_pegawai(plt,pjs) varchar(5) di tarok di it_hris_pegawai_position
+    ALTER TABLE it_hris_pegawai_position
+	    ADD COLUMN jenis_pegawai VARCHAR(5);
+
+-- di it_hris_pegawai_position di tambahkan flag_digaji (y/n)
+    ALTER TABLE it_hris_pegawai_position
+	    ADD COLUMN flag_digaji VARCHAR(1);
+
+-- [DONE B4] di table im_hris_payroll_skala_gaji_pensiun ( ditambahkan field tipe_dapen_id(varchar 5), masa_kerja_gol (varchar5)) -> untuk di ambil untuk perhitungan pensiun
+    ALTER TABLE im_hris_payroll_skala_gaji_pensiun
+	--    ADD COLUMN tipe_dapen_id VARCHAR(5),
+	    ADD COLUMN masa_kerja_gol VARCHAR(5);
+
+
+------ 2020-12-22 ===> Sequence Jenis Pegawai
+-- Menambahkan Sequence [seq_jenis_pegawai] & [seq_jenis_pegawai_history]
+-- Menambahkan Functions Jenis Pegawai
+
+    CREATE SEQUENCE seq_jenis_pegawai;
+    CREATE SEQUENCE seq_jenis_pegawai_history;
+
+    INSERT INTO im_functions
+    VALUES
+    	(6600, 'Jenis Pegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6000, 2, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', 6600),
+    	(6601, 'initForm jenisPegawai', '/jenisPegawai/initForm_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6602, 'Search jenisPegawai', '/jenisPegawai/search_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6603, 'Add jenisPegawai', '/jenisPegawai/add_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6604, 'SaveAdd jenisPegawai', '/jenisPegawai/saveAdd_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6605, 'Edit jenisPegawai', '/jenisPegawai/edit_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6606, 'SaveEdit jenisPegawai', '/jenisPegawai/saveEdit_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6607, 'Delete jenisPegawai', '/jenisPegawai/delete_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6608, 'SaveDelete jenisPegawai', '/jenisPegawai/saveDelete_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6609, 'Paging Display jenisPegawai', '/jenisPegawai/paging_displaytag_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null),
+    	(6610, 'View jenisPegawai', '/jenisPegawai/view_jenisPegawai.action', 6600, null, '2020-12-22 15:00:00.000', 'admin', '2020-12-22 15:00:00.000', 'admin', 'Y', 'C', null);
+
+
+------ 2020-12-27 ===> Mutasi/Rotasi
+-- Menambahkan data status mutasi
+
+    INSERT INTO im_hris_status_mutasi
+        VALUES('M','Mutasi', 'C', 'Y', '2020-12-30 08:53:53.235', 'admin', '2020-12-30 08:53:53.235', 'admin', null),
+        ('R','Rotasi', 'C', 'Y', '2020-12-30 08:53:53.235', 'admin', '2020-12-30 08:53:53.235', 'admin', null);
+
+
+------ 2020-12-28 ===> Golongan & Golongan Dapen
+-- di table im_hris_golongan, ditambahkan field golongan_pensiun (varchar5), masa_kerja_gol_awal (varchar2), masa_kerja_gol_akhir(varchar2)
+    ALTER TABLE im_hris_golongan
+        ADD COLUMN golongan_pensiun varchar(5),
+        ADD COLUMN masa_kerja_gol_awal varchar(2),
+        ADD COLUMN masa_kerja_gol_akhir varchar(2);
+
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IVB',	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6		WHERE grade_level = 1;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IVA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =10 	WHERE grade_level = 2;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11 	WHERE grade_level = 3;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =7 	WHERE grade_level = 4;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIB',	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =10	WHERE grade_level = 5;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIIA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11	WHERE grade_level = 6;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =14 	WHERE grade_level = 7;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6 	WHERE grade_level = 8;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIB', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =6 	WHERE grade_level = 9;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IIA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =8 	WHERE grade_level = 10;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='ID', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =7		WHERE grade_level = 11;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IC', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =9		WHERE grade_level = 12;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IB', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =11	WHERE grade_level = 13;
+    UPDATE im_hris_golongan
+        SET golongan_pensiun ='IA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =15	WHERE grade_level = 14;
+
+-- DROP golongan_dapen
+    --DROP TABLE im_hris_golongan_dapen;
+
+-- ditambahkan di table im_company (field payroll_tanggal_lembur_awal varchar(5), dan payroll_tanggal_lembur_akhir varchar(5)) -> digunakan untuk mengambil perhitungan lembur berdasarkan range absensi
+-- di absensi akan di get data tgl (payroll_tanggal_lembur_awal ) bln sbelumnya payroll berjalan s.d tgl (payroll_tanggal_lembur_akhir ) bln payroll.
+    ALTER TABLE im_company
+        ADD COLUMN payroll_tanggal_lembur_awal varchar(20),
+        ADD COLUMN payroll_tanggal_lembur_akhir varchar(20);
+
+------ 2020-01-04 ===> perubahan IM_BRANCHES & IM_HRIS_PEGAWAI
+    --- IM_BRANCHES ---
+    ---- NOT SURE ----
+    --ALTER TABLE im_branches
+    --    DROP COLUMN min_bpjs_ks,
+    --    DROP COLUMN max_bpjs_ks,
+    --    DROP COLUMN min_bpjs_tk,
+    --    DROP COLUMN max_bpjs_tk;
+
+    --ALTER TABLE im_branches
+    --    ADD tunj_supervisi NUMERIC,
+    --    ADD tunj_lokasi NUMERIC,
+    --    ADD tunj_siaga NUMERIC;
+
+    --- IM_HRIS_PEGAWAI ---
+    ALTER TABLE im_hris_pegawai
+        ADD tanggal_keluar DATE,
+        ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
+        ADD tanggal_cuti_diluar_awal DATE,
+        ADD tanggal_cuti_diluar_akhir DATE;
+
+    --ALTER TABLE im_hris_pegawai
+    --    DROP COLUMN mt,
+    --    DROP COLUMN status_giling,
+    --    DROP COLUMN poin_lebih,
+    --    DROP COLUMN point,
+    --    DROP COLUMN zakat_profesi,
+    --    DROP COLUMN tgl_akhir_kontrak,
+    --    DROP COLUMN golongan_dapen_nusindo,
+    --    DROP COLUMN golongan_dapen_id,
+    --    DROP COLUMN branch_id_terakhir,
+    --    DROP COLUMN position_id_terakhir,
+    --  DROP COLUMN flag_plt,
+    --  DROP COLUMN flag_pjs,
+    --    DROP COLUMN position_plt_id,
+    --  DROP COLUMN jenis_pegawai,
+    --    DROP COLUMN flag_percobaan;
+
+    --- IM_HRIS_PEGAWAI_HISTORY ---
+    --ALTER TABLE im_hris_pegawai_history
+    --    ADD tanggal_keluar DATE,
+    --    ADD flag_pegawai_cuti_diluar_tanggungan VARCHAR(1),
+    --    ADD tanggal_cuti_diluar_awal DATE,
+    --    ADD tanggal_cuti_diluar_akhir DATE;
+
+    --ALTER TABLE im_hris_pegawai_history
+    --    DROP COLUMN mt,
+    --    DROP COLUMN status_giling,
+    --    DROP COLUMN poin_lebih,
+    --    DROP COLUMN point,
+    --    DROP COLUMN zakat_profesi,
+    --  DROP COLUMN tgl_akhir_kontrak,
+    --  DROP COLUMN golongan_dapen_nusindo,
+    --    DROP COLUMN golongan_dapen_id,
+    --    DROP COLUMN branch_id_terakhir,
+    --  DROP COLUMN position_id_terakhir,
+    --  DROP COLUMN flag_plt,
+    --  DROP COLUMN flag_pjs,
+    --  DROP COLUMN position_plt_id,
+    --  DROP COLUMN jenis_pegawai,
+    --    DROP COLUMN flag_percobaan;
+
+------ 2021-01-05 ===> update im_hris_jenis_pegawai
+    ALTER TABLE im_hris_jenis_pegawai
+        ADD COLUMN persen_gaji NUMERIC,
+        ADD COLUMN flag_default VARCHAR(1);
+
+    --- belum selesai butuh nilai persen gaji & flag default (MASIH ISI DUMMY)---
+    INSERT INTO im_hris_jenis_pegawai
+    VALUES 	('JP01', 'plt', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 100, 'Y'),
+    		('JP02', 'pjs', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 80, 'Y'),
+    		('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 70,'Y' ),
+    		('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00.000', 'admin', '2021-01-05 14:00:00.000', 'admin', 60, 'Y');
+
+
+    ------------------------------------
+    ----  BUTUH PENYESUAIAN AKIBAT  ----
+    ----  PERUBAHAN im_hris_pegawai ----
+    ----         X [UNDONE] X       ----
+    ------------------------------------

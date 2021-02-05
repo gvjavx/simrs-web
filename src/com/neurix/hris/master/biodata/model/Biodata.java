@@ -1,11 +1,14 @@
 package com.neurix.hris.master.biodata.model;
 
 import com.neurix.common.model.BaseModel;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by IntelliJ IDEA.
@@ -146,6 +149,72 @@ public class Biodata extends BaseModel {
     private String stPeralihanGapok;
     private String stPeralihanSankhus;
     private String stPeralihanTunjangan;
+
+    private Date tanggalKeluar;
+    private String flagCutiDiluarTanggungan;
+    private Date tanggalCutiDiluarTanggunganAwal;
+    private Date tanggalCutiDiluarTanggunganAkhir;
+    private String stTanggalCutiDiluarTanggunganAwal;
+    private String stTanggalCutiDiluarTanggunganAkhir;
+
+    public Date getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(Date tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
+
+    // Sigit 2021-01-18, penambahan atribute
+    private List<PersonilPosition> listOfPersonilPosition = new ArrayList<>();
+
+    public List<PersonilPosition> getListOfPersonilPosition() {
+        return listOfPersonilPosition;
+    }
+
+    public void setListOfPersonilPosition(List<PersonilPosition> listOfPersonilPosition) {
+        this.listOfPersonilPosition = listOfPersonilPosition;
+    }
+
+    public String getFlagCutiDiluarTanggungan() {
+        return flagCutiDiluarTanggungan;
+    }
+
+    public void setFlagCutiDiluarTanggungan(String flagCutiDiluarTanggungan) {
+        this.flagCutiDiluarTanggungan = flagCutiDiluarTanggungan;
+    }
+
+    public Date getTanggalCutiDiluarTanggunganAwal() {
+        return tanggalCutiDiluarTanggunganAwal;
+    }
+
+    public void setTanggalCutiDiluarTanggunganAwal(Date tanggalCutiDiluarTanggunganAwal) {
+        this.tanggalCutiDiluarTanggunganAwal = tanggalCutiDiluarTanggunganAwal;
+    }
+
+    public Date getTanggalCutiDiluarTanggunganAkhir() {
+        return tanggalCutiDiluarTanggunganAkhir;
+    }
+
+    public void setTanggalCutiDiluarTanggunganAkhir(Date tanggalCutiDiluarTanggunganAkhir) {
+        this.tanggalCutiDiluarTanggunganAkhir = tanggalCutiDiluarTanggunganAkhir;
+    }
+
+    public String getStTanggalCutiDiluarTanggunganAwal() {
+        return stTanggalCutiDiluarTanggunganAwal;
+    }
+
+    public void setStTanggalCutiDiluarTanggunganAwal(String stTanggalCutiDiluarTanggunganAwal) {
+        this.stTanggalCutiDiluarTanggunganAwal = stTanggalCutiDiluarTanggunganAwal;
+    }
+
+    public String getStTanggalCutiDiluarTanggunganAkhir() {
+        return stTanggalCutiDiluarTanggunganAkhir;
+    }
+
+    public void setStTanggalCutiDiluarTanggunganAkhir(String stTanggalCutiDiluarTanggunganAkhir) {
+        this.stTanggalCutiDiluarTanggunganAkhir = stTanggalCutiDiluarTanggunganAkhir;
+    }
 
     public String getStPeralihanGapok() {
         return stPeralihanGapok;

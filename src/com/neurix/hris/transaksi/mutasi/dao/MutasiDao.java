@@ -1,11 +1,13 @@
 
 package com.neurix.hris.transaksi.mutasi.dao;
 
+import com.neurix.authorization.position.model.Position;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.transaksi.mutasi.model.ItMutasiEntity;
 import com.neurix.hris.transaksi.mutasi.model.Mutasi;
 import com.neurix.hris.transaksi.personilPosition.model.HistoryJabatanPegawai;
 import com.neurix.hris.transaksi.personilPosition.model.ImtHrisHistoryJabatanPegawaiEntity;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -168,7 +170,8 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
                 "  to_char(now(), 'dd-MM-yyyy') AS tanggal_sekarang,\n" +
                 "  mutasi.branch_lama_id,\n" +
                 "  mutasi.level_baru_name,\n" +
-                "  mutasi.level_baru\n" +
+                "  mutasi.level_baru\n," +
+                "  mutasi.no_sk\n" +
                 "FROM it_hris_mutasi_jabatan mutasi\n" +
                 "LEFT JOIN im_hris_pegawai personil\n" +
                 "  ON personil.nip = mutasi.nip\n" +
@@ -232,7 +235,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             }
 
             mutasi.setStTanggalEfektif(rows[9].toString());
-            mutasi.setPjs(rows[10].toString());
+            mutasi.setPjs(rows[10] == null ? "N" : rows[10].toString());
             mutasi.setStTanggalSekarang(rows[11].toString());
             if(rows[12] != null){
                 mutasi.setBranchLamaId(rows[12].toString());
@@ -241,6 +244,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
             }
             mutasi.setLevelBaruName(rows[13].toString());
             mutasi.setLevelBaru(rows[14].toString());
+            mutasi.setNoSk(rows[15] == null ? "" : rows[15].toString());
             listOfResult.add(mutasi);
         }
 
@@ -335,7 +339,7 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
 
     }
 
-    public String getHistoryJabatanIdLama(String nip){
+    public String getHistoryJabatanIdLama(String nip, String positionId){
         String listOfResult = "";
 
 //        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
@@ -343,17 +347,29 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
 //                "order by imt_hris_history_jabatan_pegawai.created_date DESC\n" +
 //                "limit 1";
         //update query reza 02-04-2020
-        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
-                "                where imt_hris_history_jabatan_pegawai.nip = '"+nip+"' AND jabatan_flag = 'Y'\n" +
-                "                order by imt_hris_history_jabatan_pegawai.created_date DESC \n" +
-                "                limit 1";
+//        String query = "select history_jabatan_pegawai_id from imt_hris_history_jabatan_pegawai\n" +
+//                "                where imt_hris_history_jabatan_pegawai.nip = '"+nip+"' AND jabatan_flag = 'Y'\n" +
+//                "                order by imt_hris_history_jabatan_pegawai.created_date DESC \n" +
+//                "                limit 1";
 
-        Object results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query).uniqueResult();
+        // Sigit 2020-01-12, Penambahan pecarian berdasarkan Posisi
+        String SQL = "SELECT history_jabatan_pegawai_id FROM imt_hris_history_jabatan_pegawai \n" +
+                "WHERE \n" +
+                "nip = :nip \n" +
+                "AND position_id = :position \n" +
+                "AND jabatan_flag = 'Y'\n" +
+                "ORDER BY created_date DESC \n" +
+                "LIMIT 1";
+
+        Object results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("position", positionId)
+                .uniqueResult();
+
         if (results!=null){
             listOfResult = results.toString();
         }else {
-            listOfResult=null;
+            listOfResult = null;
         }
         return listOfResult;
     }
@@ -366,6 +382,78 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public List<Position> getListOtherPosition(String positionId, String nip) throws HibernateException{
+
+        String SQL = "SELECT pp.position_id, p.position_name FROM it_hris_pegawai_position pp\n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_Id\n" +
+                "WHERE pp.flag = 'Y'\n" +
+                "AND pp.position_id != :position \n" +
+                "AND pp.nip = :nip ";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("position", positionId)
+                .setParameter("nip", nip)
+                .list();
+
+        List<Position> positions = new ArrayList<>();
+        if (results.size() > 0){
+            Position position;
+            for (Object[] obj : results){
+                position = new Position();
+                position.setPositionId(obj[0].toString());
+                position.setPositionName(obj[1].toString());
+                positions.add(position);
+            }
+        }
+
+        return positions;
+    }
+
+    public Boolean checkJenisPegawaiIsDefaultWithNip(String nip, String positionId){
+
+        String SQL = "SELECT jp.jenis_pegawai_id, jp.jenis_pegawai_name  \n" +
+                "FROM it_hris_pegawai_position pp\n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "INNER JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.flag = 'Y' \n" +
+                "AND jp.flag_default = 'Y' \n" +
+                "AND pp.nip = :nip \n" +
+                "AND pp.position_id = :position";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("position", positionId)
+                .list();
+
+        if (results != null && results.size() > 0)
+            return true;
+
+        return false;
+    }
+
+    public Boolean checkPositionUtamaAktif(String nip, String jenisPegawai){
+
+        String SQL = "SELECT jp.jenis_pegawai_id, jp.jenis_pegawai_name, pp.jenis_pegawai \n" +
+                "FROM it_hris_pegawai_position pp\n" +
+                "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
+                "INNER JOIN im_hris_jenis_pegawai jp ON jp.jenis_pegawai_id = pp.jenis_pegawai\n" +
+                "WHERE pp.flag = 'Y'\n" +
+                "AND jp.flag_default = 'Y'\n" +
+                "AND jp.jenis_pegawai_id = :jenispegawai \n" +
+                "AND pp.nip = :nip";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("nip", nip)
+                .setParameter("jenispegawai", jenisPegawai)
+                .list();
+
+        if (results != null && results.size() > 0)
+            return true;
+
+        return false;
+
     }
 
 }

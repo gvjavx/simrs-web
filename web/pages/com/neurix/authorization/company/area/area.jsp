@@ -191,12 +191,10 @@
                                         </div>
                                     </div>
                                 </s:if>
-
+                                <br>
                                     <div id="crud"></div>
                                     <div class="form-group">
-                                        <label class="control-label col-sm-4" style="visibility: hidden"></label>
-
-                                        <div style="padding-left: 140px" class="col-sm-4">
+                                        <div class="col-md-offset-5 col-sm-7">
                                             <s:if test="isAddOrEdit()">
                                                 <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="areaForm" id="save" name="save"
                                                            onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
@@ -353,17 +351,8 @@
                                                     Search
                                                 </sj:submit>
 
-                                                <div class="btn-group">
-                                                    <s:url id="urlAdd" namespace="/admin/area" action="add_area" escapeAmp="false"/>
-                                                    <button class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                                                        <i class="fa fa-edit"></i>
-                                                        Area
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu">
-                                                        <li><s:a href="%{urlAdd}"><i class="fa fa-plus"></i> Add</s:a></li>
-                                                    </ul>
-                                                </div>
+                                                <s:url id="urlAdd" namespace="/admin/area" action="add_area" escapeAmp="false"/>
+                                                <s:a href="%{urlAdd}" cssClass="btn btn-success"><i class="fa fa-plus"></i> Add</s:a>
 
                                                 <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_area"/>'">
                                                     <i class="fa fa-refresh"></i> Reset

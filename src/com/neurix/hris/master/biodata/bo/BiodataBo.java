@@ -114,6 +114,7 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     public Boolean checkAvailJenisPegawaiDefault(List<String> listOfJenisPegawai) throws GeneralBOException;
     public List<JenisPegawai> getAllJenisPegawai();
     public List<Biodata> getListOfPersonilForMutasi(String query, String branchId) throws GeneralBOException;
-
-
+    public void saveEditDokterKso(Biodata bean);
+    public List<PersonilPosition> getListPesonilPosition(String nip);
+    public String getSeqNip();
 }

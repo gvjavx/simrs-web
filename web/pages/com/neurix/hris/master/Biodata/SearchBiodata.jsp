@@ -46,23 +46,102 @@
 
 <body class="hold-transition skin-blue sidebar-mini" >
 <%@ include file="/pages/common/headerNav.jsp" %>
-<div id="modal-payroll" class="modal fade modal2" role="dialog">
-    <div class="modal-dialog " style="width:1200px;">
+<%--RAKA-14JAN2021 ==> Pembuatan modal menu biodata dengan tab --%>
+<div id="modal-menu" class="modal fade modal2" role="dialog">
+    <div class="modal-dialog " style="width:1000px;">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
+                <h4 class="modal-title">Menu Biodata</h4>
             </div>
-            <div class="modal-body" >
-                <table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>
+            <%--MENU-tab--%>
+            <div class="modal-body col-md-12">
+                <input id="menu-nip" readonly="true" style="display: none;">
+                <ul class="nav nav-tabs">
+                    <li><a href="#menu-absensi" class="tab-absensi">Absensi</a></li>
+                    <li><a href="#menu-payroll" class="tab-payroll">Payroll</a></li>
+                    <li><a href="#menu-cuti" class="tab-cuti">Cuti</a></li>
+                </ul>
+
+                <br>
+
+                <%--PAYROLL--%>
+                <div class="menu-payroll col-md-12" style="display: none;">
+                    <table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>
+                </div>
+
+                <%--ABSENSI--%>
+                <div class="menu-absensi col-md-12" style="display: none;">
+                    <form class="form-horizontal" id="formGaji">
+                        <div class="form-group">
+                            <label class="control-label col-sm-1" >Bulan</label>
+                            <input type="text" id="nipAbsensi" style="display:none;">
+                            <div class="col-sm-4">
+                                <select class="form-control" id="bulanAbsensi">
+                                    <option value="01"> Januari </option>
+                                    <option value="02"> Februari </option>
+                                    <option value="03"> Maret </option>
+                                    <option value="04"> April </option>
+                                    <option value="05"> Mei </option>
+                                    <option value="06"> Juni </option>
+                                    <option value="07"> Juli </option>
+                                    <option value="08"> Agustus </option>
+                                    <option value="09"> September </option>
+                                    <option value="10"> Oktober </option>
+                                    <option value="11"> Nopember </option>
+                                    <option value="12"> Desember </option>
+                                </select>
+                            </div>
+                            <label class="control-label col-sm-1" >Tahun</label>
+                            <div class="col-sm-3">
+                                <select id="tahunAbsensi" class="form-control" ></select>
+                            </div>
+                            <div class="col-sm-3">
+                                <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
+                            </div>
+                        </div>
+                    </form>
+                    <br>
+                    <div>
+                        <table style="width: 100%;" class="tableAbsensi table table-bordered">
+                        </table>
+                    </div>
+                </div>
+
+
+                <%--CUTI--%>
+                <div class="menu-cuti col-md-12" style="display: none;">
+                    <table style="width: 100%;" class="tableCuti table table-bordered">
+                    </table>
+                </div>
             </div>
+
             <div class="modal-footer">
                 <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
             </div>
         </div>
     </div>
 </div>
+<%--RAKA-end--%>
+
+<%--<div id="modal-payroll" class="modal fade modal2" role="dialog">--%>
+<%--<div class="modal-dialog " style="width:1200px;">--%>
+<%--<!-- Modal content-->--%>
+<%--<div class="modal-content">--%>
+<%--<div class="modal-header">--%>
+<%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+<%--<h4 class="modal-title"></h4>--%>
+<%--</div>--%>
+<%--<div class="modal-body" >--%>
+<%--<table style="width: 100%;" id="tabelPayroll" class="tabelPayroll table table-bordered"></table>--%>
+<%--</div>--%>
+<%--<div class="modal-footer">--%>
+<%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
 <div id="modal-jabatan" class="modal fade modal2" role="dialog">
     <div class="modal-dialog " style="width:800px;">
         <!-- Modal content-->
@@ -100,59 +179,59 @@
     </div>
 </div>
 
-<div id="modal-absensi" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:500px;">
+<%--<div id="modal-absensi" class="modal fade" role="dialog">--%>
+<%--<div class="modal-dialog " style="width:500px;">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal" id="formGaji">
+<%--<!-- Modal content-->--%>
+<%--<div class="modal-content">--%>
+<%--<div class="modal-header">--%>
+<%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+<%--<h4 class="modal-title"></h4>--%>
+<%--</div>--%>
+<%--<div class="modal-body">--%>
+<%--<form class="form-horizontal" id="formGaji">--%>
 
-                    <div class="form-group">
-                        <label class="control-label col-sm-1" >Bulan</label>
-                        <input type="text" id="nipAbsensi" style="display:none;">
-                        <div class="col-sm-4">
-                            <select class="form-control" id="bulanAbsensi">
-                                <option value="01"> Januari </option>
-                                <option value="02"> Februari </option>
-                                <option value="03"> Maret </option>
-                                <option value="04"> April </option>
-                                <option value="05"> Mei </option>
-                                <option value="06"> Juni </option>
-                                <option value="07"> Juli </option>
-                                <option value="08"> Agustus </option>
-                                <option value="09"> September </option>
-                                <option value="10"> Oktober </option>
-                                <option value="11"> Nopember </option>
-                                <option value="12"> Desember </option>
-                            </select>
-                        </div>
+<%--<div class="form-group">--%>
+<%--<label class="control-label col-sm-1" >Bulan</label>--%>
+<%--<input type="text" id="nipAbsensi" style="display:none;">--%>
+<%--<div class="col-sm-4">--%>
+<%--<select class="form-control" id="bulanAbsensi">--%>
+<%--<option value="01"> Januari </option>--%>
+<%--<option value="02"> Februari </option>--%>
+<%--<option value="03"> Maret </option>--%>
+<%--<option value="04"> April </option>--%>
+<%--<option value="05"> Mei </option>--%>
+<%--<option value="06"> Juni </option>--%>
+<%--<option value="07"> Juli </option>--%>
+<%--<option value="08"> Agustus </option>--%>
+<%--<option value="09"> September </option>--%>
+<%--<option value="10"> Oktober </option>--%>
+<%--<option value="11"> Nopember </option>--%>
+<%--<option value="12"> Desember </option>--%>
+<%--</select>--%>
+<%--</div>--%>
 
-                        <label class="control-label col-sm-1" >Tahun</label>
+<%--<label class="control-label col-sm-1" >Tahun</label>--%>
 
-                        <div class="col-sm-3">
-                            <select id="tahunAbsensi" class="form-control" ></select>
-                        </div>
+<%--<div class="col-sm-3">--%>
+<%--<select id="tahunAbsensi" class="form-control" ></select>--%>
+<%--</div>--%>
 
-                        <div class="col-sm-3">
-                            <a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>
-                        </div>
-                    </div>
+<%--<div class="col-sm-3">--%>
+<%--<a type="button" class="btn btn-primary" id="btnCariAbsensi" ><i class="fa fa-search"></i> Cari</a>--%>
+<%--</div>--%>
+<%--</div>--%>
 
-                </form>
-                <table style="width: 100%;" class="tableAbsensi table table-bordered">
-                </table>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-            </div>
-        </div>
-    </div>
-</div>
+<%--</form>--%>
+<%--<table style="width: 100%;" class="tableAbsensi table table-bordered">--%>
+<%--</table>--%>
+<%--</div>--%>
+<%--<div class="modal-footer">--%>
+<%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
 
 <div id="modal-sppd" class="modal fade" role="dialog">
     <div class="modal-dialog " style="width:1000px;">
@@ -174,25 +253,25 @@
     </div>
 </div>
 
-<div id="modal-cuti" class="modal fade" role="dialog">
-    <div class="modal-dialog " style="width:400px;">
+<%--<div id="modal-cuti" class="modal fade" role="dialog">--%>
+<%--<div class="modal-dialog " style="width:400px;">--%>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
-            </div>
-            <div class="modal-body">
-                <table style="width: 100%;" class="tableCuti table table-bordered">
-                </table>
-            </div>
-            <div class="modal-footer">
-                <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-            </div>
-        </div>
-    </div>
-</div>
+<%--<!-- Modal content-->--%>
+<%--<div class="modal-content">--%>
+<%--<div class="modal-header">--%>
+<%--<button type="button" class="close" data-dismiss="modal">&times;</button>--%>
+<%--<h4 class="modal-title"></h4>--%>
+<%--</div>--%>
+<%--<div class="modal-body">--%>
+<%--<table style="width: 100%;" class="tableCuti table table-bordered">--%>
+<%--</table>--%>
+<%--</div>--%>
+<%--<div class="modal-footer">--%>
+<%--<a type="button" class="btn btn-default" data-dismiss="modal">Close</a>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
+<%--</div>--%>
 
 <div id="modal-detail" class="modal fade" role="dialog">
     <div class="modal-dialog " style="width:550px;">
@@ -639,7 +718,18 @@
 
                             <tr>
                                 <td>
-                                    <label class="control-label"><small>Status Pegawai :</small></label>
+                                    <label class="control-label"><small>Jumlah Anak :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:textfield  id="jmlAnak" name="biodata.jumlahAnak" type="number" required="false" readonly="false" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Tipe Pegawai :</small></label>
                                 </td>
                                 <td>
                                     <table>
@@ -681,9 +771,9 @@
                                     </td>
                                     <td>
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-success"><i class="fa fa-plus"></i> Add Biodata</button>
                                             <button type="button" class="btn btn-success dropdown-toggle"
                                                     data-toggle="dropdown" style="height: 34px">
+                                                <i class="fa fa-plus"></i> Add Biodata
                                                 <span class="caret"></span>
                                                 <span class="sr-only">Toggle Dropdown</span>
                                             </button>
@@ -719,98 +809,299 @@
                                         <s:set name="listOfbiodata" value="#session.listOfResultBiodata" scope="request" />
                                         <display:table name="listOfbiodata" class="table table-condensed table-striped table-hover listOfbiodata"
                                                        requestURI="paging_displaytag_biodata.action" export="true" id="row" pagesize="40" style="font-size:10">
-                                            <display:column media="html" title="Edit">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:a action="edit_biodata.action">
-                                                        <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
-                                                        <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">
-                                                    </s:a>
-                                                </s:if>
-                                            </display:column>
 
-                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                            <s:if test='%{#attr.row.flagCutiDiluarTanggungan == "Y"}'>
+                                                <%--RAKA-08JAN2021 ==> Menu biodata dalam drop-down--%>
+                                                <%--<display:column class="bg-danger" media="html" title="Menu">--%>
+                                                <%--<div class="btn-group">--%>
+                                                <%--<button type="button" class="btn btn-info dropdown-toggle"--%>
+                                                <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<i class="fa fa-id-badge"></i> Action--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                                <%--</button>--%>
+                                                <%--<ul class="dropdown-menu" role="menu">--%>
                                                 <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:a action="delete_biodata.action">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                                                    <%--</s:a>--%>
+                                                <%--<li>--%>
+                                                <%--<s:a action="edit_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit--%>
+                                                <%--</s:a>--%>
+                                                <%--</li>--%>
                                                 <%--</s:if>--%>
-                                            <%--</display:column>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                <%--<li>--%>
+                                                <%--<s:a action="delete_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail--%>
+                                                <%--</s:a>--%>
+                                                <%--</li>--%>
+                                                <%--</s:if>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--</ul>--%>
+                                                <%--</div>--%>
+                                                <%--</display:column>--%>
+                                                <%--RAKA-end --%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="Jabatan">--%>
+                                                <%--RAKA-14JAN2021 ==> Menu berisi modal tab--%>
+                                                <display:column class="bg-danger" media="html" title="Menu">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
+                                                    </a>
+                                                </display:column>
+                                                <display:column class="bg-danger" media="html" title="Edit">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="edit_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column class="bg-danger" media="html" title="Detail">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="delete_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column class="bg-danger" media="html" title="Print">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                    </a>
+                                                </display:column>
+                                                <%--RAKA-end --%>
+
+                                                <display:column class="bg-danger" property="nip" sortable="true" title="NIP" />
+                                                <display:column class="bg-danger" property="nipLama" sortable="true" title="NIP Lama"/>
+                                                <display:column class="bg-danger" property="namaPegawai" sortable="true" title="Nama Pegawai" />
+                                                <display:column class="bg-danger" property="branchName" sortable="true" title="Unit"/>
+                                                <display:column class="bg-danger" property="divisiName" sortable="true" title="Departmen"/>
+                                                <display:column class="bg-danger" property="bagianName" sortable="true" title="Bagian"/>
+                                                <display:column class="bg-danger" property="positionName" sortable="true" title="Jabatan"/>
+                                                <display:column class="bg-danger" property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>
+                                                <display:column class="bg-danger" property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
+                                                <display:column class="bg-danger" property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
+                                                <display:column class="bg-danger" property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                                <display:column class="bg-danger" property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
+                                                <display:column class="bg-danger" property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
+                                            </s:if>
+                                            <s:else>
+                                                <%--RAKA-try start--%>
+                                                <%--<display:column media="html" title="Menu">--%>
+                                                <%--<div class="btn-group">--%>
+                                                <%--<button type="button" class="btn btn-info dropdown-toggle"--%>
+                                                <%--data-toggle="dropdown" style="height: 34px">--%>
+                                                <%--<i class="fa fa-id-badge"></i> Action--%>
+                                                <%--<span class="caret"></span>--%>
+                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
+                                                <%--</button>--%>
+                                                <%--<ul class="dropdown-menu" role="menu">--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                <%--<li>--%>
+                                                <%--<s:a action="edit_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit--%>
+                                                <%--</s:a>--%>
+                                                <%--</li>--%>
+                                                <%--</s:if>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Payroll--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Absensi--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Cuti--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                <%--<li>--%>
+                                                <%--<s:a action="delete_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail--%>
+                                                <%--</s:a>--%>
+                                                <%--</li>--%>
+                                                <%--</s:if>--%>
+                                                <%--<li>--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print--%>
+                                                <%--</a>--%>
+                                                <%--</li>--%>
+                                                <%--</ul>--%>
+                                                <%--</div>--%>
+                                                <%--</display:column>--%>
+                                                <%--RAKA-try end--%>
+
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column media="html" title="Edit">--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                <%--<s:a action="edit_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                                <%--</s:a>--%>
+                                                <%--</s:if>--%>
+                                                <%--</display:column>--%>
+
+                                                <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                <%--<s:a action="delete_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                                <%--</s:a>--%>
+                                                <%--</s:if>--%>
+                                                <%--</display:column>--%>
+
+                                                <%--<display:column style="text-align:center;" media="html" title="Jabatan">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-jabatan">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Payroll">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Payroll">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-payroll">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Pendidikan">--%>
                                                 <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-pendidikan">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Absensi">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Absensi">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-absensi">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                                <%--</display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="SPPD">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-sppd">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>--%>
-
-                                            <display:column style="text-align:center;" media="html" title="Cuti">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
-
-                                            <display:column style="text-align:center;" media="html" title="Detail">
-                                                <s:if test="#attr.row.flagYes">
-                                                    <s:a action="delete_biodata.action">
-                                                        <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
-                                                        <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                <%--<display:column style="text-align:center;" media="html" title="SPPD">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-sppd">
                                                         <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
-                                                    </s:a>
-                                                </s:if>
-                                            </display:column>
+                                                    </a>
+                                                </display:column>--%>
 
-                                            <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
-                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-detail">--%>
-                                                    <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Cuti">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-cuti">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
                                                 <%--</a>--%>
-                                            <%--</display:column>--%>
+                                                <%--</display:column>--%>
 
-                                            <display:column style="text-align:center;" media="html" title="Print">
-                                                <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup">
-                                                </a>
-                                            </display:column>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
+                                                <%--<s:if test="#attr.row.flagYes">--%>
+                                                <%--<s:a action="delete_biodata.action">--%>
+                                                <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</s:a>--%>
+                                                <%--</s:if>--%>
+                                                <%--</display:column>--%>
 
+                                                <%--<display:column style="text-align:center;" media="html" title="Detail">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-detail">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                                <%--</display:column>--%>
 
-                                            <display:column property="nip" sortable="true" title="NIP" />
-                                            <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
-                                            <display:column property="gender" sortable="true" title="Jenis Kelamin" />
-                                            <display:column property="positionName" sortable="true" title="Jabatan" />
-                                            <display:column property="profesiName" sortable="true" title="Profesi" />
-                                            <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
-                                            <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
-                                            <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
-                                            <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
+                                                <%--RAKA-bu--%>
+                                                <%--<display:column style="text-align:center;" media="html" title="Print">--%>
+                                                <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup">--%>
+                                                <%--</a>--%>
+                                                <%--</display:column>--%>
 
-                                            <display:column property="strLastUpdate" sortable="true" title="Last update"  />
-                                            <display:column property="lastUpdateWho" sortable="true" title="Last update who"/>
+                                                <%--RAKA-14JAN2021 ==> Menu berisi modal tab--%>
+                                                <display:column media="html" title="Menu">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu
+                                                    </a>
+                                                </display:column>
+                                                <display:column media="html" title="Edit">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="edit_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip" /></s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column media="html" title="Detail">
+                                                    <s:if test="#attr.row.flagYes">
+                                                        <s:a action="delete_biodata.action">
+                                                            <s:param name="id"><s:property value="#attr.row.nip"/> </s:param>
+                                                            <s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>
+                                                            <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail
+                                                        </s:a>
+                                                    </s:if>
+                                                </display:column>
+                                                <display:column media="html" title="Print">
+                                                    <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">
+                                                        <img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print
+                                                    </a>
+                                                </display:column>
+                                                <%--RAKA-end --%>
 
+                                                <display:column property="nip" sortable="true" title="NIP" />
+                                                <display:column property="nipLama" sortable="true" title="NIP Lama"/>
+                                                <display:column property="namaPegawai" sortable="true" title="Nama Pegawai" />
+                                                <display:column property="branchName" sortable="true" title="Unit"/>
+                                                <display:column property="divisiName" sortable="true" title="Departmen"/>
+                                                <display:column property="bagianName" sortable="true" title="Bagian"/>
+                                                <display:column property="positionName" sortable="true" title="Jabatan"/>
+                                                <%--<display:column property="gender" sortable="true" title="Jenis Kelamin" />--%>
+                                                <%--<display:column property="profesiName" sortable="true" title="Profesi" />--%>
+                                                <display:column property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>
+                                                <display:column property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>
+                                                <display:column property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>
+                                                <display:column property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>
+                                                <display:column property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
+                                                <display:column property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
+
+                                                <%--<display:column property="strLastUpdate" sortable="true" title="Last update"  />--%>
+                                                <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"/>--%>
+                                            </s:else>
                                         </display:table>
                                     </td>
                                 </tr>
@@ -853,8 +1144,8 @@
         $('#tahunAbsensi').empty();
         for(a = n-5 ; a <= (n + 5) ; a++){
             $('#tahunAbsensi').append($("<option></option>")
-                    .attr("value", a)
-                    .text(a));
+                .attr("value", a)
+                .text(a));
         }
 
         $('#btnCariAbsensi').click(function() {
@@ -870,12 +1161,12 @@
             var blnThn = tahun +"-"+bulan;
             AbsensiAction.cariAbseni(nip, blnThn, function(listdata) {
                 tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-             "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>"+
-             "<th style='text-align: center; background-color:  #3c8dbc''>In</th>"+
-             "<th style='text-align: center; background-color:  #3c8dbc''>Out</th>"+
-             "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
-             "</tr></thead>";
-             var i = i ;
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>In</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Out</th>"+
+                    "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
+                    "</tr></thead>";
+                var i = i ;
                 $.each(listdata, function (i, item) {
                     var jamMasuk = "-";
                     var jamKeluar = "-";
@@ -892,20 +1183,20 @@
                     }
 
                     tmp_table += '<tr  style="font-size: 12px;" ">' +
-                                    '<td >' + item.stTanggal+ '</td>' +
-                                    '<td align="center">' + jamMasuk+ '</td>' +
-                                    '<td align="center">' + jamKeluar  + '</td>' +
-                                    '<td align="center">' + statusName + '</td>' +
-                                    "</tr>";
+                        '<td >' + item.stTanggal+ '</td>' +
+                        '<td align="center">' + jamMasuk+ '</td>' +
+                        '<td align="center">' + jamKeluar  + '</td>' +
+                        '<td align="center">' + statusName + '</td>' +
+                        "</tr>";
                 });
                 $('.tableAbsensi').append(tmp_table);
-             });
+            });
         });
     });
 
     $('.listOfbiodata').on('click', '.item-jabatan', function(){
         var nip = $(this).attr('data');
-        
+
         $('.tabelDetailJabatan').find('tbody').remove();
         $('.tabelDetailJabatan').find('thead').remove();
         $('.tabelDetailJabatan').find('tfoot').remove();
@@ -913,15 +1204,15 @@
         var tmp_table = "";
         BiodataAction.historyJabatan(nip, function(listdata) {
             tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Bidang/Divisi</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Unit</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>PJS</th>"+
-//                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>Bidang/Divisi</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Unit</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>PJS</th>"+
+                //                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Masuk</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Keluar</th>"+
+                "</tr></thead>";
             var i = i ;
             var totalPoin = 0;
             $.each(listdata, function (i, item) {
@@ -965,15 +1256,15 @@
                     }
                 }
                 tmp_table += '<tr  style="font-size: 12px">' +
-                        '<td >' + bidang + '</td>' +
-                        '<td >' + branchName+ '</td>' +
-                        '<td >' + positionName+ '</td>' +
-                        '<td >' + status+ '</td>' +
-                        '<td >' + pjs+ '</td>' +
-//                        '<td >' + tahun+ '</td>' +
-                        '<td >' + tglMasuk+ '</td>' +
-                        '<td >' + tglKeluar+ '</td>' +
-                        "</tr>";
+                    '<td >' + bidang + '</td>' +
+                    '<td >' + branchName+ '</td>' +
+                    '<td >' + positionName+ '</td>' +
+                    '<td >' + status+ '</td>' +
+                    '<td >' + pjs+ '</td>' +
+                    //                        '<td >' + tahun+ '</td>' +
+                    '<td >' + tglMasuk+ '</td>' +
+                    '<td >' + tglKeluar+ '</td>' +
+                    "</tr>";
             });
             $('.tabelDetailJabatan').append(tmp_table);
         });
@@ -992,24 +1283,24 @@
         var tmp_table = "";
         BiodataAction.searchPayroll(nip, function(listdata) {
             tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Download</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>Download</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
                 tmp_table += '<tr  style="font-size: 12px">' +
-                        '<td ><a href="'+link+'" >Download</a></td>' +
-                        '<td >' + item.bulan+ '</td>' +
-                        '<td >' + item.tahun+ '</td>' +
-                        '<td >' + item.totalA+ '</td>' +
-                        '<td >' + item.totalB+ '</td>' +
-                        '<td >' + item.pphGaji+ '</td>' +
-                        "</tr>";
+                    '<td ><a href="'+link+'" >Download</a></td>' +
+                    '<td >' + item.bulan+ '</td>' +
+                    '<td >' + item.tahun+ '</td>' +
+                    '<td >' + item.totalA+ '</td>' +
+                    '<td >' + item.totalB+ '</td>' +
+                    '<td >' + item.pphGaji+ '</td>' +
+                    "</tr>";
             });
             $('.tabelPayroll').append(tmp_table);
         });
@@ -1029,12 +1320,12 @@
         StudyAction.searchData(nip, function(listdata) {
 
             tmp_table = "<thead style='font-size: 15px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Akhir</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Type Study</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Study Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Awal</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun Akhir</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var typeStudy = "-";
@@ -1056,16 +1347,16 @@
                 }
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td >' + typeStudy + '</td>' +
-                        '<td >' + studyName + '</td>' +
-                        '<td align="center">' + tahunAwal + '</td>' +
-                        '<td align="center">' + tahunAkhir + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td >' + typeStudy + '</td>' +
+                    '<td >' + studyName + '</td>' +
+                    '<td align="center">' + tahunAwal + '</td>' +
+                    '<td align="center">' + tahunAkhir + '</td>' +
+                    "</tr>";
             });
             $('.tablePendidikan').append(tmp_table);
         });
-        
+
         $('#modal-pendidikan').find('.modal-title').text('Riwayat Pendidikan');
         $('#modal-pendidikan').modal('show');
     });
@@ -1124,6 +1415,122 @@
         }
     });
 
+    //RAKA-start
+    $('.listOfBiodata').on('click', '.item-menu', function(){
+        var nip = $(this).attr('data');
+
+        menuAbsensi(nip);
+
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
+
+        $('.tableCuti').find('tbody').remove();
+        $('.tableCuti').find('thead').remove();
+
+        $("#menu-nip").val(nip);
+        $("#modal-menu").modal("show");
+
+    });
+
+
+    $("#modal-menu .nav-tabs a").click(function() {
+        var nip = $("#menu-nip").val();
+        var target = $(this).attr('href');
+
+        $('.tab-absensi').removeClass('bg-info');
+        $('.tab-payroll').removeClass('bg-info');
+        $('.tab-cuti').removeClass('bg-info');
+
+        $('.menu-payroll').css('display', 'none');
+        $('.menu-absensi').css('display', 'none');
+        $('.menu-cuti').css('display', 'none');
+
+        if(target == "#menu-payroll") {
+            menuPayroll(nip);
+        }else if (target == "#menu-absensi") {
+            menuAbsensi(nip);
+        }else if(target == "#menu-cuti") {
+            menuCuti(nip);
+        }
+        // $(this).tab('show');
+    });
+
+    function menuPayroll(nip){
+        $('.tab-payroll').addClass('bg-info');
+
+        $('.tabelPayroll').find('tbody').remove();
+        $('.tabelPayroll').find('thead').remove();
+        $('.tabelPayroll').find('tfoot').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        BiodataAction.searchPayroll(nip, function(listdata) {
+            tmp_table = "<thead style='color: white; font-size: 15px'><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Download</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Bulan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tahun</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Gaji Kotor</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Potongan</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Pph</th>"+
+                "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                var link = "<s:property value="appname" />payroll/printReportPayroll_payroll.action?id=" + item.payrollId + "&tipe=PR";
+                tmp_table += '<tr  style="font-size: 12px">' +
+                    '<td ><a href="'+link+'" >Download</a></td>' +
+                    '<td >' + item.bulan+ '</td>' +
+                    '<td >' + item.tahun+ '</td>' +
+                    '<td >' + item.totalA+ '</td>' +
+                    '<td >' + item.totalB+ '</td>' +
+                    '<td >' + item.pphGaji+ '</td>' +
+                    "</tr>";
+            });
+            $('.tabelPayroll').append(tmp_table);
+        });
+
+        $('.menu-payroll').css('display', 'block');
+    }
+
+    function menuAbsensi(nip){
+        $('#nipAbsensi').val(nip);
+
+        $('.tab-absensi').addClass('bg-info');
+
+        $('.tableAbsensi').find('tbody').remove();
+        $('.tableAbsensi').find('thead').remove();
+
+
+        $('.menu-absensi').css('display', 'block');
+    }
+
+    function menuCuti(nip){
+        $('.tab-cuti').addClass('bg-info');
+
+        $('.tableCuti').find('tbody').remove();
+        $('.tableCuti').find('thead').remove();
+        dwr.engine.setAsync(false);
+        var tmp_table = "";
+        CutiPegawaiAction.sisaCuti(nip, function(listdata) {
+            tmp_table = "<thead style='font-size: 15px; color: white' ><tr class='active'>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cuti</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Sisa Cuti(Hari)</th>"+
+                "</tr></thead>";
+            var i = i ;
+            $.each(listdata, function (i, item) {
+                tmp_table += '<tr style="font-size: 12px;" ">' +
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td>' + item.cutiName + '</td>' +
+                    '<td align="center">' + item.sisaCutiHari + '</td>' +
+                    "</tr>";
+            });
+            $('.tableCuti').append(tmp_table);
+        });
+
+        $('.menu-cuti').css('display', 'block');
+    }
+    // RAKA-end
+
     $('.listOfbiodata').on('click', '.item-cuti', function(){
         var nip = $(this).attr('data');
         $('.tableCuti').find('tbody').remove();
@@ -1132,17 +1539,17 @@
         var tmp_table = "";
         CutiPegawaiAction.sisaCuti(nip, function(listdata) {
             tmp_table = "<thead style='font-size: 15px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cuti</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Sisa Cuti(Hari)</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cuti</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Sisa Cuti(Hari)</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td>' + item.cutiName + '</td>' +
-                        '<td align="center">' + item.sisaCutiHari + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td>' + item.cutiName + '</td>' +
+                    '<td align="center">' + item.sisaCutiHari + '</td>' +
+                    "</tr>";
             });
             $('.tableCuti').append(tmp_table);
         });
@@ -1171,15 +1578,15 @@
         SppdAction.searchSppdPerson(nip, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Sppd ID</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Dinas</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Berangkat Dari</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tujuan Ke</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Berangkat</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Kembali</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Detail</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Sppd ID</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Dinas</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Berangkat Dari</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tujuan Ke</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Berangkat</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal Kembali</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Detail</th>"+
+                "</tr></thead>";
 
             $.each(listdata, function (i, item) {
                 var atasan = '';
@@ -1191,15 +1598,15 @@
                     var myDate = new Date(item.tanggalBerangkat);
                     var myDateKembali = new Date(item.tanggalKembali);
                     tmp_table += '<tr style="font-size: 12px;" ">' +
-                            '<td align="center">' + (i +1) + '</td>' +
-                            '<td >' + item.sppdId + '</td>' +
-                            '<td >' + item.dinas + '</td>' +
-                            '<td align="center">' + item.berangkatDari+ '</td>' +
-                            '<td align="center">' + item.tujuanKe+ '</td>' +
-                            '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
-                            '<td align="center">' + (myDateKembali.getDate()) +' - '+ ("0" + (myDateKembali.getMonth() + 1)).slice(-2) +' - '+myDateKembali.getFullYear() + '</td>' +
-                            '<td align="center"> <a class="item-sppd-detail" href="javascript:;"  data="'+item.sppdId+'"><i class="fa fa-book" style="font-size:19px"></i></a> </td>' +
-                            "</tr>";
+                        '<td align="center">' + (i +1) + '</td>' +
+                        '<td >' + item.sppdId + '</td>' +
+                        '<td >' + item.dinas + '</td>' +
+                        '<td align="center">' + item.berangkatDari+ '</td>' +
+                        '<td align="center">' + item.tujuanKe+ '</td>' +
+                        '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
+                        '<td align="center">' + (myDateKembali.getDate()) +' - '+ ("0" + (myDateKembali.getMonth() + 1)).slice(-2) +' - '+myDateKembali.getFullYear() + '</td>' +
+                        '<td align="center"> <a class="item-sppd-detail" href="javascript:;"  data="'+item.sppdId+'"><i class="fa fa-book" style="font-size:19px"></i></a> </td>' +
+                        "</tr>";
                 }
 
 
@@ -1259,21 +1666,21 @@
         SppdAction.searchAnggota(id, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Branch</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Divisi</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Position</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval SDM</th>"+
-                        /*"<th style='text-align: center; background-color:  #3c8dbc''>Nip Pengganti</th>"+*/
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Nama Pengganti</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Branch</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Divisi</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Position</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Status</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Approval SDM</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Note For Not Approval SDM</th>"+
+                /*"<th style='text-align: center; background-color:  #3c8dbc''>Nip Pengganti</th>"+*/
+                "<th style='text-align: center; background-color:  #3c8dbc''>Nama Pengganti</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var atasan = '';
@@ -1287,21 +1694,21 @@
                 }
 
                 tmp_table += '<tr  style="font-size: 12px;" ">' +
-                        '<td >' + (i + 1) + '</td>' +
-                        '<td >' + item.personName + '</td>' +
-                        '<td align="center">' + item.branchName + '</td>' +
-                        '<td align="center">' + item.divisiName  + '</td>' +
-                        '<td align="center">' + item.positionName + '</td>' +
-                        '<td align="center">' + item.tipePerson + '</td>' +
-                        '<td align="center">' + item.approvalName + '</td>' +
-                        '<td align="center"><img src="' + atasan + '"</td>' +
-                        '<td align="center">' + item.notApprovalNote + '</td>' +
-                        '<td align="center">' + item.approvalSdmName+ '</td>' +
-                        '<td align="center"><img src="' + sdm + '"</td>' +
-                        '<td align="center">' + item.notApprovalSdmNote + '</td>' +
-                        '<td align="center">' + item.pejabatSementaraNama + '</td>' +
+                    '<td >' + (i + 1) + '</td>' +
+                    '<td >' + item.personName + '</td>' +
+                    '<td align="center">' + item.branchName + '</td>' +
+                    '<td align="center">' + item.divisiName  + '</td>' +
+                    '<td align="center">' + item.positionName + '</td>' +
+                    '<td align="center">' + item.tipePerson + '</td>' +
+                    '<td align="center">' + item.approvalName + '</td>' +
+                    '<td align="center"><img src="' + atasan + '"</td>' +
+                    '<td align="center">' + item.notApprovalNote + '</td>' +
+                    '<td align="center">' + item.approvalSdmName+ '</td>' +
+                    '<td align="center"><img src="' + sdm + '"</td>' +
+                    '<td align="center">' + item.notApprovalSdmNote + '</td>' +
+                    '<td align="center">' + item.pejabatSementaraNama + '</td>' +
 
-                        "</tr>";
+                    "</tr>";
             });
             $('.sppdPersonTable').append(tmp_table);
 
@@ -1317,26 +1724,26 @@
         SppdAction.searchReroute(sppdId, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Dari</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Ke</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Dari Tanggal</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Sampai Tanggal</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>Name</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Dari</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Reroute Ke</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Dari Tanggal</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Sampai Tanggal</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
                 var myDate = new Date(item.tanggalRerouteDari);
                 var myDate1 = new Date(item.tanggalRerouteKe);
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td >' + item.sppdPersonName + '</td>' +
-                        '<td align="center">' + item.rerouteDari + '</td>' +
-                        '<td align="center">' + item.rerouteKe  + '</td>' +
-                        '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
-                        '<td align="center">' + (myDate1.getDate()) +' - '+ ("0" + (myDate1.getMonth() + 1)).slice(-2) +' - '+myDate1.getFullYear() + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td >' + item.sppdPersonName + '</td>' +
+                    '<td align="center">' + item.rerouteDari + '</td>' +
+                    '<td align="center">' + item.rerouteKe  + '</td>' +
+                    '<td align="center">' + (myDate.getDate()) +' - '+ ("0" + (myDate.getMonth() + 1)).slice(-2) +' - '+myDate.getFullYear() + '</td>' +
+                    '<td align="center">' + (myDate1.getDate()) +' - '+ ("0" + (myDate1.getMonth() + 1)).slice(-2) +' - '+myDate1.getFullYear() + '</td>' +
+                    "</tr>";
             });
             $('.sppdRerouteTable').append(tmp_table);
 
@@ -1352,18 +1759,18 @@
         SppdAction.searchDoc(sppdId, function(listdata) {
 
             tmp_table = "<thead style='font-size: 14px; color: white' ><tr class='active'>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc'>View</th>"+
-                    "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>"+
-                    "</tr></thead>";
+                "<th style='text-align: center; background-color:  #3c8dbc'>No</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc'>View</th>"+
+                "<th style='text-align: center; background-color:  #3c8dbc''>Keterangan</th>"+
+                "</tr></thead>";
             var i = i ;
             $.each(listdata, function (i, item) {
 
                 tmp_table += '<tr style="font-size: 12px;" ">' +
-                        '<td align="center">' + (i + 1) + '</td>' +
-                        '<td align="center"> <a class="item-download" href="javascript:;"  data="'+item.sppdDocId+'"><i class="fa fa-download" style="font-size:19px"></i></a> </td>' +
-                        '<td align="center">' + item.note + '</td>' +
-                        "</tr>";
+                    '<td align="center">' + (i + 1) + '</td>' +
+                    '<td align="center"> <a class="item-download" href="javascript:;"  data="'+item.sppdDocId+'"><i class="fa fa-download" style="font-size:19px"></i></a> </td>' +
+                    '<td align="center">' + item.note + '</td>' +
+                    "</tr>";
             });
             $('.sppdDocTable').append(tmp_table);
         });

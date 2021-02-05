@@ -460,7 +460,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
@@ -577,7 +577,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_refund"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_refund"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_refund"><i
@@ -603,7 +603,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -718,8 +718,7 @@
                     $('#no_sep_show').hide();
                 }
 
-                $('#fin_jenis_pasien').html(jenisPasien);
-                setLabelJenisPasien('fin_jenis_pasien', jenisPasien);
+                $('#fin_jenis_pasien').html(changeJenisPasien(jenisPasien, jenisPasienName));
                 $('#fin_no_sep').html(noSep);
                 $('#fin_no_checkup').html(idDetailCheckup);
                 $('#fin_nik').html(nik);

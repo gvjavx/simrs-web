@@ -409,6 +409,9 @@
             if(res == "VERIFIKATOR PEMBAYARAN ONLINE"){
                 pushNotifTele();
             }
+            if(res == "Kasir Telemedic"){
+                pushNotifTele();
+            }
             if(res == "ADMIN LAB"){
                 pushNotifLab('lab');
             }
@@ -429,6 +432,7 @@
         loadPengajuanBiaya();
         loadRk();
         cekRole();
+        //cekNotifTele();
 
         $('.pemberitahuan').on('click', function() {
             var my = $(this).data('id');
