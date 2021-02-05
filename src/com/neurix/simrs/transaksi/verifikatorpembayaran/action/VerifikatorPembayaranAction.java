@@ -3668,6 +3668,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
         }
 
+        BigDecimal jumlah = new BigDecimal(0);
         CellDetail cellDetail;
         RowData rowData;
         List listOfData = new ArrayList();
@@ -3770,7 +3771,31 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
             rowData.setListOfCell(listOfCell);
             listOfData.add(rowData);
+
+            // tambahkan ke jumlah untuk sum
+            jumlah = jumlah.add(data.getNominal());
         }
+
+        // Tambahkan Kolom SUM, START
+        rowData = new RowData();
+        listOfCell = new ArrayList();
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(7);
+        cellDetail.setValueCell("Total : ");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(8);
+        cellDetail.setValueCell(jumlah.toString());
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
+        listOfCell.add(cellDetail);
+
+        rowData.setListOfCell(listOfCell);
+        listOfData.add(rowData);
+
+        // END
 
         HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, currTime, listOfColumn, listOfData, null);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
