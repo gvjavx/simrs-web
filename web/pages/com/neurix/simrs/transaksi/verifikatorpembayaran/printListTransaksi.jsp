@@ -351,8 +351,10 @@
     });
 
     function printInvoice(id) {
-        var host = firstpath()+"/onlinepaymentverif/print_onlinepaymentverif.action?id="+id+"&tipe=invoice";
-        post(host);
+        var url = '<s:url  namespace="/onlinepaymentverif/" action="print_onlinepaymentverif"/>';
+        window.open(url+"?id="+id+"&tipe=invoice",  "_blank");
+        //var host = firstpath()+"/onlinepaymentverif/print_onlinepaymentverif.action?id="+id+"&tipe=invoice";
+        //post(host);
     }
 
     function formatRupiah(angka) {
