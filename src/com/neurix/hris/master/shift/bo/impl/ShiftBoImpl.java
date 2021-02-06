@@ -107,6 +107,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
             entityData.setProfesiId(bean.getProfesiId());
+            entityData.setTipeShiftKasir(bean.getTipeShiftKasir());
 
             try {
                 shiftDao.updateAndSave(entityData);
@@ -201,6 +202,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
             entityData.setProfesiId(bean.getProfesiId());
+            entityData.setTipeShiftKasir(bean.getTipeShiftKasir());
 
             try {
                 shiftDao.addAndSave(entityData);
@@ -270,6 +272,7 @@ public class ShiftBoImpl implements ShiftBo {
                     returnData.setAction(listEntity.getAction());
                     returnData.setIdBranch(listEntity.getIdBranch());
                     returnData.setProfesiId(listEntity.getProfesiId());
+                    returnData.setTipeShiftKasir(listEntity.getTipeShiftKasir());
 
                     if (listEntity.getIdBranch()!=null){
                         ImBranches imBranches = null;

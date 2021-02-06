@@ -83,6 +83,15 @@ public class AntrianTelemedic {
     private String flagKasir;
     private String shiftId;
     private String namaBank;
+    private String stLastUpdate;
+
+    public String getStLastUpdate() {
+        return stLastUpdate;
+    }
+
+    public void setStLastUpdate(String stLastUpdate) {
+        this.stLastUpdate = stLastUpdate;
+    }
 
     public String getNamaBank() {
         return namaBank;

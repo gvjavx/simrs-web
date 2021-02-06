@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="onlinepaymentverif" namespace="/onlinepaymentverif" extends="struts-default, jasperreports-default, json-default">
+    <package name="monitoringmesinabsensi" namespace="/monitoringmesinabsensi" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,42 +69,26 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_onlinepaymentverif"
-                class="com.neurix.simrs.transaksi.verifikatorpembayaran.action.VerifikatorPembayaranAction" method="{1}">
+        <action name="*_monitoringmesinabsensi"
+                class="com.neurix.hris.transaksi.notifikasi.action.MonitoringMesinAbsensiAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
+            <result name="input">/pages/com/neurix/hris/transaksi/monitoringMesinAbsensi/SearchMonitoringMesinAbsensi.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/monitoringMesinAbsensi/SearchMonitoringMesinAbsensi.jsp</result>
+            <result name="input">/pages/com/neurix/hris/transaksi/monitoringMesinAbsensi/SearchMonitoringMesinAbsensi.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/monitoringMesinAbsensi/SearchMonitoringMesinAbsensi.jsp</result>
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/verifikatorpembayaran/searchPembayaran.jsp</result>
-            <result name="init_print">/pages/com/neurix/simrs/transaksi/verifikatorpembayaran/printListTransaksi.jsp</result>
-
-            <result name="print_final_claim" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printFinalClaim.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_bukti_refund" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/buktiRefund.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_invoice" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printInvoiceTelemedic.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="downloadXls" type="stream">
-                <param name="contentType">${excelContentType}</param>
-                <param name="inputName">excelStream</param>
-                <param name="contentDisposition">contentDisposition</param>
-                <param name="bufferSize">1024</param>
-            </result>
-
+            <!--<result name="error" type="httpheader">-->
+            <!--<param name="status">504</param>-->
+            <!--<param name="headers.message">${actionErrors}</param>-->
+            <!--</result>-->
         </action>
+
+        <action name="paging_displaytag_master_monitoringmesinabsensi"
+                class="com.neurix.hris.transaksi.notifikasi.action.MonitoringMesinAbsensiAction" method="pagingMasterNotif">
+            <interceptor-ref name="defaultStack"/>
+            <result name="success">/pages/com/neurix/hris/transaksi/notifikasi/SearchMonitoringMesinAbsensi.jsp</result>
+        </action>
+
 
     </package>
 </struts>

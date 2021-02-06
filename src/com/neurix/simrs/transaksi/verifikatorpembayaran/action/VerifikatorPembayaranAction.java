@@ -111,6 +111,8 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
 import org.hibernate.NonUniqueObjectException;
 import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
@@ -236,10 +238,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         antrianTelemedic.setStDateTo(dateNow);
         setAntrianTelemedic(antrianTelemedic);
 
-        logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
-        if ("print".equalsIgnoreCase(tipe))
-            return "init_print";
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResults");
+        session.removeAttribute("listOfTransaksi");
 
+
+        logger.info("[VerifikatorPembayaranAction.initForm] END <<<");
+        if ("print".equalsIgnoreCase(this.tipe))
+            return "init_print";
         return "search";
     }
 
@@ -3619,8 +3625,105 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         return shiftList;
     }
 
+    public List<AntrianTelemedic> getSearchListTransByShift(String stJson) throws JSONException{
+        logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] START >>>");
+
+        List<AntrianTelemedic> antrianTelemedicList = new ArrayList<>();
+        JSONObject jsonObject = new JSONObject(stJson);
+
+        String stDate   = jsonObject.getString("date");
+        String shiftId  = jsonObject.getString("shift");
+        String status   = jsonObject.getString("status");
+        String jenis    = jsonObject.getString("jenis");
+        String branchId = CommonUtil.userBranchLogin();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
+
+        try {
+            antrianTelemedicList = verifikatorPembayaranBo.getListKasMasukByShift(shiftId, stDate, branchId, status, jenis);
+        } catch (GeneralBOException e){
+            logger.error("[VerifikatorPembayaranAction.getSearchListTransByShift] Error", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfTransaksi");
+        session.setAttribute("listOfTransaksi", antrianTelemedicList);
+
+        logger.info("[VerifikatorPembayaranAction.getSearchListTransByShift] END <<<");
+        return antrianTelemedicList;
+    }
+
+    private String printInvoice(){
+        logger.info("[VerifikatorPembayaranAction.printInvoice] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<AntrianTelemedic> listOfTransaksi = (List<AntrianTelemedic>) session.getAttribute("listOfTransaksi");
+
+        List<AntrianTelemedic> filteredData = listOfTransaksi.stream().filter(p->p.getId().equalsIgnoreCase(this.id)).collect(Collectors.toList());
+        if (filteredData != null && filteredData.size() > 0){
+
+            AntrianTelemedic antrianTelemedic = filteredData.get(0);
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+
+            String logo     = "";
+            Branch branches = new Branch();
+            String branchId = CommonUtil.userBranchLogin();
+            String unit     = CommonUtil.userBranchNameLogin();
+            String area     = CommonUtil.userAreaName();
+
+            try {
+                branches = branchBo.getBranchById(branchId, "Y");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error when search branch logo");
+            }
+
+            if (branches != null) {
+                logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
+            }
+
+            String userName = CommonUtil.userLogin();
+
+            reportParams.put("invoice", antrianTelemedic.getId());
+            reportParams.put("idPasien", antrianTelemedic.getIdPasien());
+            reportParams.put("petugas", CommonUtil.userLogin());
+            reportParams.put("title", "Invoice Telemedic");
+            reportParams.put("unit", unit);
+            reportParams.put("area", area);
+            reportParams.put("logo", logo);
+            reportParams.put("nama", antrianTelemedic.getNamaPasien());
+            reportParams.put("poli", antrianTelemedic.getNamaPelayanan());
+            reportParams.put("dokter", antrianTelemedic.getNamaDokter());
+            reportParams.put("bank", antrianTelemedic.getNamaBank());
+            reportParams.put("nominal", antrianTelemedic.getNominal());
+            reportParams.put("jenisPasien", antrianTelemedic.getIdJenisPeriksaPasien().toUpperCase());
+            reportParams.put("tanggalTrans", antrianTelemedic.getStLastUpdate());
+            reportParams.put("lastUpdateWho", userName);
+            reportParams.put("keterangan", antrianTelemedic.getKeterangan());
+
+            String imgPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY+CommonConstant.RESOURCE_PATH_BUKTI_TRANSFER+"/"+antrianTelemedic.getUrlFotoStruk();
+            reportParams.put("urlFoto", imgPath);
+
+            try {
+                preDownload();
+            } catch (SQLException e) {
+                logger.error("[ReportAction.printInvoice] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
+                return "init_print";
+            }
+        }
+
+        logger.info("[VerifikatorPembayaranAction.printInvoice] END <<<");
+        return "print_invoice";
+    }
+
     public String print(){
         logger.info("[VerifikatorPembayaranAction.print] START >>>");
+
+        if ("invoice".equalsIgnoreCase(this.tipe) && this.id != null){
+            return printInvoice();
+        }
 
         AntrianTelemedic antrianTelemedic = getAntrianTelemedic();
         String stDate   = antrianTelemedic.getStDateFrom();
@@ -3641,6 +3744,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
         }
 
+        BigDecimal jumlah = new BigDecimal(0);
         CellDetail cellDetail;
         RowData rowData;
         List listOfData = new ArrayList();
@@ -3657,8 +3761,10 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         listOfColumn.add("Pelayanan");
         listOfColumn.add("Dokter");
         listOfColumn.add("Nominal");
-        listOfColumn.add("Last Update");
-        listOfColumn.add("Last Update Who");
+        listOfColumn.add("Tgl. Trans");
+        listOfColumn.add("Petugas Posting");
+
+        String userName = CommonUtil.userLogin();
 
         for (AntrianTelemedic data : antrianTelemedicList){
             rowData = new RowData();
@@ -3681,7 +3787,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             //Keterangan
             cellDetail = new CellDetail();
             cellDetail.setCellID(2);
-            cellDetail.setValueCell(data.getKeterangan().toUpperCase());
+            cellDetail.setValueCell(data.getKeterangan());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
@@ -3730,20 +3836,93 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             //Last Update
             cellDetail = new CellDetail();
             cellDetail.setCellID(9);
-            cellDetail.setValueCell(data.getLastUpdate().toString());
+            cellDetail.setValueCell(data.getStLastUpdate());
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
             //Last Update Who
             cellDetail = new CellDetail();
             cellDetail.setCellID(10);
-            cellDetail.setValueCell(data.getLastUpdateWho());
+            cellDetail.setValueCell(userName);
             cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
             listOfCell.add(cellDetail);
 
             rowData.setListOfCell(listOfCell);
             listOfData.add(rowData);
+
+            // tambahkan ke jumlah untuk sum
+            jumlah = jumlah.add(data.getNominal());
         }
+
+        // Tambahkan Kolom SUM, START
+        rowData = new RowData();
+        listOfCell = new ArrayList();
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(0);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //jenis Trans
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(1);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Keterangan
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(2);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nama Bank
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(3);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //No. RM
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(4);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Nama Pasien
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(5);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        //Pelayanan
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(6);
+        cellDetail.setValueCell("");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(7);
+        cellDetail.setValueCell("Total : ");
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_LEFT);
+        listOfCell.add(cellDetail);
+
+        cellDetail = new CellDetail();
+        cellDetail.setCellID(8);
+        cellDetail.setValueCell(jumlah.toString());
+        cellDetail.setAlignmentCell(CellDetail.ALIGN_RIGHT);
+        listOfCell.add(cellDetail);
+
+        rowData.setListOfCell(listOfCell);
+        listOfData.add(rowData);
+
+        // END
 
         HSSFWorkbook wb = DownloadUtil.generateExcelOutput(titleReport, currTime, listOfColumn, listOfData, null);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
