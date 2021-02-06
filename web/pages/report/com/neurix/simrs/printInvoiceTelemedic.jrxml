@@ -293,11 +293,10 @@
 		<band height="20">
 			<staticText>
 				<reportElement mode="Opaque" x="1" y="0" width="100" height="20" backcolor="#CCCCCC" uuid="4f76bc5d-b52f-4ffd-a8a1-e0d0e09483ca"/>
-				<box topPadding="5" leftPadding="3">
+				<box leftPadding="3">
+					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 				</box>
 				<textElement>
 					<font size="8"/>
@@ -306,11 +305,10 @@
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="101" y="0" width="122" height="20" backcolor="#CCCCCC" uuid="6eb8addc-61bd-4aea-b2cd-db777ac18d78"/>
-				<box topPadding="5" leftPadding="3">
+				<box leftPadding="3">
+					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 				</box>
 				<textElement>
 					<font size="8"/>
@@ -319,11 +317,10 @@
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="223" y="0" width="157" height="20" backcolor="#CCCCCC" uuid="2db15e5f-9d98-4273-8009-cdf4a5a53915"/>
-				<box topPadding="5" leftPadding="3" rightPadding="3">
+				<box leftPadding="3">
+					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<bottomPen lineWidth="0.0" lineStyle="Dashed"/>
 				</box>
 				<textElement textAlignment="Right">
 					<font size="8"/>
@@ -337,10 +334,11 @@
 			<textField>
 				<reportElement x="1" y="0" width="100" height="14" uuid="cff3eb63-33ef-4dc8-b027-b16741cac112"/>
 				<box leftPadding="3">
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -350,10 +348,11 @@
 			<textField>
 				<reportElement x="101" y="0" width="122" height="14" uuid="ff83e1d4-5db8-498b-8735-d237f5c97a64"/>
 				<box leftPadding="3">
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
@@ -362,11 +361,12 @@
 			</textField>
 			<textField pattern="#,##0.00" isBlankWhenNull="true">
 				<reportElement x="223" y="0" width="157" height="14" uuid="a76a58ea-2d71-4c70-9c85-491d2448377a"/>
-				<box leftPadding="3" rightPadding="3">
+				<box leftPadding="3">
+					<pen lineWidth="1.0" lineStyle="Dashed"/>
 					<topPen lineWidth="1.0"/>
-					<leftPen lineWidth="1.0"/>
-					<bottomPen lineWidth="1.0"/>
-					<rightPen lineWidth="1.0"/>
+					<leftPen lineWidth="0.0"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dashed"/>
+					<rightPen lineWidth="0.0"/>
 				</box>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="8"/>
