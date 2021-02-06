@@ -3684,7 +3684,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             }
 
             String userName = CommonUtil.userLogin();
-            String stLastUpdate = antrianTelemedic.getLastUpdate().toString();
 
             reportParams.put("invoice", antrianTelemedic.getId());
             reportParams.put("idPasien", antrianTelemedic.getIdPasien());
@@ -3699,7 +3698,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             reportParams.put("bank", antrianTelemedic.getNamaBank());
             reportParams.put("nominal", antrianTelemedic.getNominal());
             reportParams.put("jenisPasien", antrianTelemedic.getIdJenisPeriksaPasien().toUpperCase());
-            reportParams.put("tanggalTrans", stLastUpdate);
+            reportParams.put("tanggalTrans", antrianTelemedic.getStLastUpdate());
             reportParams.put("lastUpdateWho", userName);
             reportParams.put("keterangan", antrianTelemedic.getKeterangan());
 
@@ -3762,8 +3761,8 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         listOfColumn.add("Pelayanan");
         listOfColumn.add("Dokter");
         listOfColumn.add("Nominal");
-        listOfColumn.add("Last Update");
-        listOfColumn.add("Last Update Who");
+        listOfColumn.add("Tgl. Trans");
+        listOfColumn.add("Petugas Posting");
 
         String userName = CommonUtil.userLogin();
 
