@@ -66,7 +66,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
         return sId;
     }
 
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId) {
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId, String idPasien) {
         String searchPelayanan = "";
         String searchNoCheckupOnline = "";
         String searchDokter = "";
@@ -74,6 +74,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
         String searchJamAwal = "";
         String searchJamAkhir = "";
         String searchBranchId = "";
+        String searchPasien ="";
 
         if (idPelayanan!=null){
             if(!idPelayanan.equalsIgnoreCase("")){
@@ -113,18 +114,21 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 searchBranchId = " and a.branch_id = '" + branchId + "' ";
             }
         }
+        if (idPasien != null && !"".equalsIgnoreCase(idPasien)) {
+            searchPasien = " and b.id_pasien = '" + idPasien + "' ";
+        }
 
 
         List<AntianOnline> listOfResult = new ArrayList<>();
         List<Object[]> results = new ArrayList<>();
-        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update, a.branch_id, e.branch_name, a.no_checkup, a.id_detail_checkup, a.flag_periksa \n" +
+        String query = "SELECT a.id_antrian_online, a.id_pelayanan, a.id_dokter, c.nama_dokter, d.nama_pelayanan, a.no_checkup_online, b.nama, a.tgl_checkup, a.jam_awal, a.jam_akhir, b.last_update, a.branch_id, e.branch_name, a.no_checkup, a.id_detail_checkup, a.flag_periksa\n" +
                 "FROM it_simrs_antian_online a \n" +
                 "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
                 "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
                 "INNER JOIN im_simrs_pelayanan d ON a.id_pelayanan = d.id_pelayanan \n" +
                 "INNER JOIN im_branches e ON a.branch_id = e.branch_id \n " +
                 "WHERE a.flag = 'Y' \n" +
-                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir + searchBranchId +
+                "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir + searchBranchId + searchPasien +
                 "ORDER BY b.last_update";
 
         results = this.sessionFactory.getCurrentSession()

@@ -112,6 +112,16 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     private String findNoAntrian;
 
+    private String idPasien;
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
     public String getFlagCall() {
         return flagCall;
     }
@@ -366,7 +376,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("show")) {
             List<AntianOnline> result = new ArrayList<>();
             try {
-                result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
+                result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId, idPasien);
             } catch (GeneralBOException e) {
                 logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                 throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
@@ -391,7 +401,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                     List<AntianOnline> temp = new ArrayList<>();
 
                     try {
-                        temp = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, null, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
+                        temp = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, null, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId, idPasien);
                     } catch (GeneralBOException e) {
                         logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                         throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
