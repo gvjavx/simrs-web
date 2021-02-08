@@ -4,6 +4,9 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 //import com.neurix.simrs.master.license.bo.VersionMobileBo;
 //import com.neurix.simrs.master.license.model.VersionMobile;
+import com.neurix.simrs.master.license.bo.LicenseZebraBo;
+import com.neurix.simrs.master.license.model.Version;
+import com.neurix.simrs.mobileapi.model.VersionMobile;
 import com.neurix.simrs.mobileapi.model.VersionMobileObj;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
@@ -18,6 +21,7 @@ public class VersionMobileController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(VersionMobileController.class);
     private VersionMobileObj model = new VersionMobileObj();
     private Collection<VersionMobileObj> listOfVersionMobile = new ArrayList();
+    private LicenseZebraBo licenseZebraBoProxy;
 //    private VersionMobileBo versionMobileBoProxy;
 
     String action;
@@ -25,6 +29,14 @@ public class VersionMobileController implements ModelDriven<Object> {
     String namaVersion;
     String flag;
     String os;
+
+    public LicenseZebraBo getLicenseZebraBoProxy() {
+        return licenseZebraBoProxy;
+    }
+
+    public void setLicenseZebraBoProxy(LicenseZebraBo licenseZebraBoProxy) {
+        this.licenseZebraBoProxy = licenseZebraBoProxy;
+    }
 
     public String getAction() {
         return action;
@@ -78,8 +90,8 @@ public class VersionMobileController implements ModelDriven<Object> {
     public HttpHeaders create() {
         logger.info("[VersionMobile.create] start process POST / <<<");
 
-//        if (action.equalsIgnoreCase("getByCriteria"))
-//            getByCriteria();
+        if (action.equalsIgnoreCase("getByCriteria"))
+            getByCriteria();
 //        if (action.equalsIgnoreCase("saveAdd"))
 //            saveAdd();
 
@@ -87,40 +99,41 @@ public class VersionMobileController implements ModelDriven<Object> {
         return new DefaultHttpHeaders("index").disableCaching();
     }
 
-//    private void getByCriteria() {
-//        List<VersionMobile> result = new ArrayList<>();
-//        listOfVersionMobile = new ArrayList<>();
-//
-//        VersionMobile bean = new VersionMobile();
-//        bean.setIdVersionMobile(idVersionMobile);
-//        bean.setNamaVersion(namaVersion);
-//        bean.setFlag(flag);
-//        bean.setOs(os);
-//
-//        try {
-//           result = versionMobileBoProxy.getByCriteria(bean);
-//        } catch (GeneralBOException e) {
-//            logger.error("[VersionMobile.getByCriteria] Error when search getByCriteria, " + e.getMessage());
-//            throw new GeneralBOException("[LicenseAction.searchLicense] Error when search license, " + e.getMessage());
-//        }
-//
-//        if (result.size() > 0) {
-//            for (VersionMobile item : result) {
-//                VersionMobileObj versionMobileObj = new VersionMobileObj();
-//                versionMobileObj.setIdVersionMobile(item.getIdVersionMobile());
-//                versionMobileObj.setNamaVersion(item.getNamaVersion());
-//                versionMobileObj.setOs(item.getOs());
-//                versionMobileObj.setFlag(item.getFlag());
-//                versionMobileObj.setAction(item.getAction());
-//                versionMobileObj.setCreatedDate(item.getCreatedDate().toLocaleString());
-//                versionMobileObj.setLastUpdate(item.getLastUpdate().toLocaleString());
-//                versionMobileObj.setCreatedWho(item.getCreatedWho());
-//                versionMobileObj.setLastUpdateWho(item.getLastUpdateWho());
-//
-//                listOfVersionMobile.add(versionMobileObj);
-//            }
-//        }
-//    }
+    private void getByCriteria() {
+        List<Version> result = new ArrayList<>();
+        listOfVersionMobile = new ArrayList<>();
+
+        Version bean = new Version();
+        bean.setIdVersion(idVersionMobile);
+        bean.setVersionName(namaVersion);
+        bean.setFlag(flag);
+        bean.setOs(os);
+        bean.setTipe("mobile");
+
+        try {
+           result = licenseZebraBoProxy.getVersionByCriteria(bean);
+        } catch (GeneralBOException e) {
+            logger.error("[VersionMobile.getByCriteria] Error when search getByCriteria, " + e.getMessage());
+            throw new GeneralBOException("[LicenseAction.searchLicense] Error when search license, " + e.getMessage());
+        }
+
+        if (result.size() > 0) {
+            for (Version item : result) {
+                VersionMobileObj versionMobileObj = new VersionMobileObj();
+                versionMobileObj.setIdVersionMobile(item.getIdVersion());
+                versionMobileObj.setNamaVersion(item.getVersionName());
+                versionMobileObj.setOs(item.getOs());
+                versionMobileObj.setFlag(item.getFlag());
+                versionMobileObj.setAction(item.getAction());
+                versionMobileObj.setCreatedDate(item.getCreatedDate().toLocaleString());
+                versionMobileObj.setLastUpdate(item.getLastUpdate().toLocaleString());
+                versionMobileObj.setCreatedWho(item.getCreatedWho());
+                versionMobileObj.setLastUpdateWho(item.getLastUpdateWho());
+
+                listOfVersionMobile.add(versionMobileObj);
+            }
+        }
+    }
 //
 //    private void saveAdd() {
 //
