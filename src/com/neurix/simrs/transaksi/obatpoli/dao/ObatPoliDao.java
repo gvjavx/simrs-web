@@ -244,7 +244,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.lembar_per_box,\n" +
                     "a.biji_per_lembar,\n" +
                     "a.flag_kronis,\n" +
-                    "c.harga_jual\n" +
+                    "c.harga_jual,\n" +
+                    "d.id_jenis_obat\n"+
                     "FROM (\n" +
                     "\tSELECT \n" +
                     "\tid_obat,\n" +
@@ -294,6 +295,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
                     obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                    obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
                     obatPoliList.add(obatPoli);
                 }
             }

@@ -76,7 +76,7 @@
                 if (tipe == "umum") {
                     if(cekEksekutif == 'Y'){
                         if($('#is_uang_muka').is(':checked')){
-                            if (pembayaran != '' && uangMuka != '') {
+                            if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
                                 $('#confirm_dialog').dialog('open');
                             } else {
                                 $("html, body").animate({scrollTop: 0}, 600);
@@ -85,7 +85,7 @@
                                 if (pembayaran == '') {
                                     $('#war_pembayaran').show();
                                 }
-                                if (uangMuka == '') {
+                                if (uangMuka == '' || parseInt(uangMuka) == 0) {
                                     $('#war_uang_muka').show();
                                 }
                             }
@@ -93,7 +93,7 @@
                             $('#confirm_dialog').dialog('open');
                         }
                     }else{
-                        if (pembayaran != '' && uangMuka != '') {
+                        if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
                             $('#confirm_dialog').dialog('open');
                         } else {
                             $("html, body").animate({scrollTop: 0}, 600);
@@ -102,7 +102,7 @@
                             if (pembayaran == '') {
                                 $('#war_pembayaran').show();
                             }
-                            if (uangMuka == '') {
+                            if (uangMuka == '' || parseInt(uangMuka) == 0) {
                                 $('#war_uang_muka').show();
                             }
                         }
@@ -1794,7 +1794,7 @@
                             <div id="jadwal_dokter"></div>
                         </div>
                     </div>
-                    <div class="col-md-offset-10 col-md-2">
+                    <div class="col-md-offset-9 col-md-3">
                         <ul style="list-style-type: none">
                             <li>
                                 <span style="color: white; background-color: #ec971f; padding: 2px; border-radius: 5px; padding: 5px; font-size: 11px">Kuota Non BPJS</span>

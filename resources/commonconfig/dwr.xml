@@ -958,7 +958,7 @@
             <param name="class" value="com.neurix.simrs.master.license.action.LicenseAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.license.model.LicenseZebra"/>
-        <convert converter="bean" match="com.neurix.simrs.master.license.model.VersionZebra"/>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.Version"/>
 
     </allow>
 </dwr>

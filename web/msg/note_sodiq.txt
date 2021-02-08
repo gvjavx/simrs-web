@@ -1625,6 +1625,41 @@ INSERT INTO im_func_roles VALUES
 (2362, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
 (2363, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra');
 
+--UPDATE MENU KASIR JALAN
+SELECT * FROM im_func_roles
+WHERE role_id = 41
+AND func_id = 2
+
+DELETE FROM im_func_roles
+WHERE role_id = 41
+AND func_id = 2
+
+--UPDATE LICENSE HABIS ASAR SEKITAR 16:15 WAKTU SEKITAR SINI
+//MOHON DI HAPUS MENDING SAYA UPDATE TABLE AJA BIAT TAK BANYAK TABLE ;-)
+DROP TABLE im_version_zebra;
+
+//CREATE NEW
+CREATE TABLE public.im_version
+(
+  id_version character varying(20) NOT NULL,
+  version_name character varying(20),
+  tipe character varying(20),
+  os character varying(20),
+  description text,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(50),
+  last_update_who character varying(50),
+  CONSTRAINT im_version_pkey PRIMARY KEY (id_version)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_version
+  OWNER TO postgres;
+
 
 
 

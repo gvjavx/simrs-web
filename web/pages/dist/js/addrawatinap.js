@@ -728,7 +728,7 @@ function showModal(select) {
         $('#load_resep_head').hide();
         $('#desti_apotek').html('');
         $('#resep_jenis_obat').attr("onchange", "var warn =$('#war_jenis_pasien').is(':visible'); if (warn){$('#cor_jenis_pasien').show().fadeOut(3000);$('#war_jenis_pasien').hide()}; setObatPoli(this.value)");
-        $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}");
+        $('#resep_apotek').attr("onchange", "var warn =$('#war_rep_apotek').is(':visible'); if (warn){$('#cor_rep_apotek').show().fadeOut(3000);$('#war_rep_apotek').hide()}; setObatPoli()");
         $('#resep_nama_obat').attr("onchange", "var warn =$('#war_rep_obat').is(':visible'); if (warn){$('#cor_rep_obat').show().fadeOut(3000);$('#war_rep_obat').hide()}; setStokObatApotek(this,\'\')");
         $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
@@ -2780,7 +2780,7 @@ function setObatPoli(jenis) {
         ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "'>" + item.namaObat + "</option>";
+                    option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "|" + item.idJenisObat + "'>" + item.namaObat + "</option>";
                 });
                 $('#resep_nama_obat').html(option);
             }
@@ -2829,6 +2829,10 @@ function setStokObatApotek(select, tipe) {
             }
             if (idObat.split('|')[7] != 'null' && idObat.split('|')[7] != '') {
                 flagKronis = idObat.split('|')[7];
+            }
+            if (idObat.split('|')[9] != 'null' && idObat.split('|')[9] != '') {
+                $('#resep_jenis_obat').select2('destroy');
+                $('#resep_jenis_obat').val(idObat.split('|')[9]).select2();
             }
 
             var total = parseInt(qtyBiji) + (parseInt(qtyBox) * parseInt(lembarPerBox)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));

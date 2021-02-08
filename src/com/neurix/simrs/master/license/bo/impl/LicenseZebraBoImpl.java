@@ -3,24 +3,19 @@ package com.neurix.simrs.master.license.bo.impl;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.common.util.FirebasePushNotif;
-import com.neurix.hris.transaksi.notifikasi.model.NotifikasiFcm;
-import com.neurix.simrs.master.labdetail.dao.LabDetailDao;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
 import com.neurix.simrs.master.license.dao.LicenseLogZebraDao;
 import com.neurix.simrs.master.license.dao.LicenseZebraDao;
-import com.neurix.simrs.master.license.dao.VersionZebraDao;
+import com.neurix.simrs.master.license.dao.VersionDao;
 import com.neurix.simrs.master.license.model.*;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
-import org.springframework.security.access.method.P;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,10 +27,10 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
     protected static transient Logger logger = Logger.getLogger(com.neurix.simrs.master.license.bo.impl.LicenseZebraBoImpl.class);
     private LicenseZebraDao licenseZebraDao;
     private LicenseLogZebraDao licenseLogZebraDao;
-    private VersionZebraDao versionZebraDao;
+    private VersionDao versionDao;
 
-    public void setVersionZebraDao(VersionZebraDao versionZebraDao) {
-        this.versionZebraDao = versionZebraDao;
+    public void setVersionDao(VersionDao versionDao) {
+        this.versionDao = versionDao;
     }
 
     public void setLicenseLogZebraDao(LicenseLogZebraDao licenseLogZebraDao) {
@@ -125,7 +120,7 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         return imLicenseZebraEntities;
     }
 
-    public boolean isKeyAvailable(String licenseKey, String deviceId) throws GeneralBOException{
+    public boolean isKeyAvailable(String licenseKey, String deviceId) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.isKeyAvailable] Start >>>>>>>");
 
         List<LicenseZebra> listLicenseZebra = new ArrayList<>();
@@ -147,13 +142,13 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
         } else return false;
     }
 
-    public void updateFlag(LicenseZebra bean) throws GeneralBOException{
+    public void updateFlag(LicenseZebra bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.saveEdit] Start >>>>>>>");
         List<ImLicenseZebraEntity> imLicenseZebraEntityList = new ArrayList<>();
 
         try {
             imLicenseZebraEntityList = getListEntityLicenseZebra(bean);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[LicenseZebraBoImpl.isKeyAvailable] error when get data entity by get by criteria " + e.getMessage());
         }
 
@@ -208,65 +203,71 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
             imLicenseZebraEntity.setStatus("0");
             List<ImLicenseZebraEntity> list = licenseZebraDao.getDeviceId(bean.getDeviceId());
-            if(list.size() > 0){
-                logger.error("Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
-                throw new GeneralBOException("Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
-            }else{
-                if(!isKeyAvailable(licenseKey, bean.getDeviceId())){
+            if (list.size() > 0) {
+                logger.error("Device ID : " + bean.getDeviceId() + " sudah ada...! @_@");
+                throw new GeneralBOException("Device ID : " + bean.getDeviceId() + " sudah ada...! @_@");
+            } else {
+                if (!isKeyAvailable(licenseKey, bean.getDeviceId())) {
                     try {
+                        String url = CommonConstant.LICENSE_API + "api/device/cekdeviceid/" + bean.getDeviceId();
+                        String cek = sendPostRequest(url, "", "GET");
+                        if ("true".equals(cek)) {
+                            licenseZebraDao.addAndSave(imLicenseZebraEntity);
 
-                        licenseZebraDao.addAndSave(imLicenseZebraEntity);
+                            //send api license
+                            String jsonString = "{\n" +
+                                    "    \"licenseId\":\"" + imLicenseZebraEntity.getLicenseId() + "\",\n" +
+                                    "    \"deviceId\":\"" + imLicenseZebraEntity.getDeviceId() + "\",\n" +
+                                    "    \"branchName\":\"" + CommonUtil.userBranchNameLogin() + "\",\n" +
+                                    "    \"createdWho\": \"" + CommonUtil.userLogin() + "\"\n" +
+                                    "}";
+                            String requestUrl = CommonConstant.LICENSE_API + "api/license/save";
+                            sendPostRequest(requestUrl, jsonString, "POST");
 
-                        //send api license
-                        String jsonString = "{\n" +
-                                "    \"licenseId\":\""+imLicenseZebraEntity.getLicenseId()+"\",\n" +
-                                "    \"deviceId\":\""+imLicenseZebraEntity.getDeviceId()+"\",\n" +
-                                "    \"branchName\":\""+CommonUtil.userBranchNameLogin()+"\",\n" +
-                                "    \"createdWho\": \""+CommonUtil.userLogin()+"\"\n" +
-                                "}";
-                        String requestUrl=CommonConstant.LICENSE_API+"api/license/save";
-                        sendPostRequest(requestUrl, jsonString);
-
-                        //send email license
-                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(imLicenseZebraEntity.getCreatedDate());
-                        Email email = new Email();
-                        email.setFrom(CommonConstant.EMAIL_USERNAME);
-                        email.setPassword(CommonConstant.EMAIL_PASSWORD);
-                        email.setTo(CommonConstant.LICENSE_EMAIL_TO);
-                        email.setSubject("License Key Verification");
-                        email.setMsg("<h2>License Key Verification</h2>\n" +
-                                "=========================================\n" +
-                                "<table width=\"100%\">\n" +
-                                "<tr>\n" +
-                                "<td width=\"20%\">Device ID</td>\n" +
-                                "<td>: "+imLicenseZebraEntity.getDeviceId()+"</td>\n" +
-                                "</tr>\n" +
-                                "<tr>\n" +
-                                "<td>Unit</td>\n" +
-                                "<td>: "+CommonUtil.userBranchNameLogin()+"</td>\n" +
-                                "</tr>\n" +
-                                "<tr>\n" +
-                                "<td>Created Who</td>\n" +
-                                "<td>: "+CommonUtil.userLogin()+"</td>\n" +
-                                "</tr>\n" +
-                                "<tr>\n" +
-                                "<td>Created Date</td>\n" +
-                                "<td>: "+formatDate+"</td>\n" +
-                                "</tr>\n" +
-                                "</table>\n" +
-                                "=========================================\n" +
-                                "<br> \n" +
-                                "<br>\n" +
-                                "<span style=\"color: blue\">click this button for activation!</span>\n" +
-                                "<a href=\""+CommonConstant.LICENSE_API+"license/auth?id="+imLicenseZebraEntity.getLicenseId()+"\" target=\"__blank\"><button style=\"cursor: pointer\">Activation</button></a>");
-                        CommonUtil.sendEmail(email);
-                    } catch (GeneralBOException e){
+                            //send email license
+                            String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(imLicenseZebraEntity.getCreatedDate());
+                            Email email = new Email();
+                            email.setFrom(CommonConstant.EMAIL_USERNAME);
+                            email.setPassword(CommonConstant.EMAIL_PASSWORD);
+                            email.setTo(CommonConstant.LICENSE_EMAIL_TO);
+                            email.setSubject("License Key Verification");
+                            email.setMsg("<h2>License Key Verification</h2>\n" +
+                                    "=========================================\n" +
+                                    "<table width=\"100%\">\n" +
+                                    "<tr>\n" +
+                                    "<td width=\"20%\">Device ID</td>\n" +
+                                    "<td>: " + imLicenseZebraEntity.getDeviceId() + "</td>\n" +
+                                    "</tr>\n" +
+                                    "<tr>\n" +
+                                    "<td>Unit</td>\n" +
+                                    "<td>: " + CommonUtil.userBranchNameLogin() + "</td>\n" +
+                                    "</tr>\n" +
+                                    "<tr>\n" +
+                                    "<td>Created Who</td>\n" +
+                                    "<td>: " + CommonUtil.userLogin() + "</td>\n" +
+                                    "</tr>\n" +
+                                    "<tr>\n" +
+                                    "<td>Created Date</td>\n" +
+                                    "<td>: " + formatDate + "</td>\n" +
+                                    "</tr>\n" +
+                                    "</table>\n" +
+                                    "=========================================\n" +
+                                    "<br> \n" +
+                                    "<br>\n" +
+                                    "<span style=\"color: blue\">click this button for activation!</span>\n" +
+                                    "<a href=\"" + CommonConstant.LICENSE_API + "license/auth?id=" + imLicenseZebraEntity.getLicenseId() + "\" target=\"__blank\"><button style=\"cursor: pointer\">Activation</button></a>");
+                            CommonUtil.sendEmail(email);
+                        } else {
+                            logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria ");
+                            throw new GeneralBOException("Mohon Maaf..! Device " + bean.getDeviceId() + " tidak terdaftar! @_@");
+                        }
+                    } catch (GeneralBOException e) {
                         logger.error("[LicenseZebraBoImpl.saveZAdd] error when get data entity by get by criteria " + e.getMessage());
-                        throw new GeneralBOException("Error...! @_@");
+                        throw new GeneralBOException("Error...! @_@ "+e.getMessage());
                     }
-                }else{
-                    logger.error("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
-                    throw new GeneralBOException("License Key : "+licenseKey+" dan Device ID : "+bean.getDeviceId()+" sudah ada...! @_@");
+                } else {
+                    logger.error("License Key : " + licenseKey + " dan Device ID : " + bean.getDeviceId() + " sudah ada...! @_@");
+                    throw new GeneralBOException("License Key : " + licenseKey + " dan Device ID : " + bean.getDeviceId() + " sudah ada...! @_@");
                 }
             }
         }
@@ -275,9 +276,9 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
     @Override
     public void saveEdit(LicenseZebra bean) throws GeneralBOException {
-        if(bean != null){
+        if (bean != null) {
             ImLicenseZebraEntity imLicenseZebraEntity = licenseZebraDao.getById("licenseId", bean.getLicenseId());
-            if(imLicenseZebraEntity != null){
+            if (imLicenseZebraEntity != null) {
                 imLicenseZebraEntity.setLastUpdate(bean.getLastUpdate());
                 imLicenseZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 imLicenseZebraEntity.setAction(bean.getAction());
@@ -285,38 +286,39 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
                 imLicenseZebraEntity.setStatus(bean.getStatus());
                 try {
                     licenseZebraDao.updateAndSave(imLicenseZebraEntity);
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error("[LicenseZebraBoImpl.saveEdit] error when edit license" + e.getMessage());
-                    throw new GeneralBOException("[LicenseZebraBoImpl.saveEdit] error when edit license" +e.getMessage());
+                    throw new GeneralBOException("[LicenseZebraBoImpl.saveEdit] error when edit license" + e.getMessage());
                 }
             }
         }
     }
 
-    public void saveAddVersion(VersionZebra bean) throws GeneralBOException {
+    public void saveAddVersion(Version bean) throws GeneralBOException {
         String id = getNextVersionId();
-        if(bean != null) {
+        if (bean != null) {
 
             //Ubah flag versi sebelumnya menjadi N
-            List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
-            VersionZebra versionZebra = new VersionZebra();
-            versionZebra.setFlag(bean.getFlag());
+            List<ImVersionEntity> imVersionEntities = new ArrayList<>();
+            Version version = new Version();
+            version.setFlag(bean.getFlag());
+            version.setTipe(bean.getTipe());
 
             try {
-                imVersionZebraEntities = getListEntityVersionByCriteria(versionZebra);
-            } catch (GeneralBOException e){
+                imVersionEntities = getListEntityVersionByCriteria(version);
+            } catch (GeneralBOException e) {
                 logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
             }
 
-            if (imVersionZebraEntities.size() > 0) {
-                for (ImVersionZebraEntity entity: imVersionZebraEntities){
+            if (imVersionEntities.size() > 0) {
+                for (ImVersionEntity entity : imVersionEntities) {
                     entity.setFlag("N");
                     entity.setAction("D");
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
 
                     try {
-                        versionZebraDao.updateAndSave(entity);
+                        versionDao.updateAndSave(entity);
                     } catch (GeneralBOException e) {
                         logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
                     }
@@ -324,80 +326,60 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             }
 
             //Add versi baru
-            ImVersionZebraEntity imVersionZebraEntity = new ImVersionZebraEntity();
-            imVersionZebraEntity.setIdVersion(id);
-            imVersionZebraEntity.setVersionName(bean.getVersionName());
-            imVersionZebraEntity.setDescription(bean.getDescription());
-            imVersionZebraEntity.setFlag(bean.getFlag());
-            imVersionZebraEntity.setAction(bean.getAction());
-            imVersionZebraEntity.setCreatedDate(bean.getCreatedDate());
-            imVersionZebraEntity.setLastUpdate(bean.getLastUpdate());
-            imVersionZebraEntity.setCreatedWho(bean.getCreatedWho());
-            imVersionZebraEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            ImVersionEntity imVersionEntity = new ImVersionEntity();
+            imVersionEntity.setIdVersion(id);
+            imVersionEntity.setVersionName(bean.getVersionName());
+            imVersionEntity.setTipe(bean.getTipe());
+            imVersionEntity.setOs(bean.getOs());
+            imVersionEntity.setDescription(bean.getDescription());
+            imVersionEntity.setFlag(bean.getFlag());
+            imVersionEntity.setAction(bean.getAction());
+            imVersionEntity.setCreatedDate(bean.getCreatedDate());
+            imVersionEntity.setLastUpdate(bean.getLastUpdate());
+            imVersionEntity.setCreatedWho(bean.getCreatedWho());
+            imVersionEntity.setLastUpdateWho(bean.getLastUpdateWho());
 
             try {
-                versionZebraDao.addAndSave(imVersionZebraEntity);
+                versionDao.addAndSave(imVersionEntity);
             } catch (GeneralBOException e) {
                 logger.error("[LicenseZebraBoImpl.saveAddVersion] error when get data entity by get by criteria " + e.getMessage());
             }
         }
     }
 
-    public List<VersionZebra> getVersionByCriteria(VersionZebra bean) throws GeneralBOException {
+    public List<Version> getVersionByCriteria(Version bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.getByCriteria] Start >>>>>>>");
-        List<VersionZebra> result = new ArrayList<>();
-        List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
-
+        List<Version> result = new ArrayList<>();
         if (bean != null) {
-            Map hsCriteria = new HashMap();
-
-            if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
-                hsCriteria.put("id_version", bean.getIdVersion());
-            }
-            if (bean.getVersionName() != null && !"".equalsIgnoreCase(bean.getVersionName())) {
-                hsCriteria.put("version_name", bean.getVersionName());
-            }
-            if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
-                hsCriteria.put("flag", bean.getFlag());
-            }
-
-            try {
-                imVersionZebraEntities = versionZebraDao.getByCriteria(hsCriteria);
-            } catch (HibernateException e) {
-                logger.error("[LicenseZebraBoImpl.getByCriteria] error when get data lab detailt by get by criteria " + e.getMessage());
-            }
-
-            if (imVersionZebraEntities.size() > 0) {
-                VersionZebra versionZebra;
-                for (ImVersionZebraEntity item : imVersionZebraEntities) {
-                    versionZebra = new VersionZebra();
-                    versionZebra.setIdVersion(item.getIdVersion());
-                    versionZebra.setVersionName(item.getVersionName());
-                    versionZebra.setCreatedDate(item.getCreatedDate());
-                    versionZebra.setLastUpdate(item.getLastUpdate());
-                    versionZebra.setCreatedWho(item.getCreatedWho());
-                    versionZebra.setLastUpdateWho(item.getLastUpdateWho());
-                    versionZebra.setDescription(item.getDescription());
-                    versionZebra.setFlag(item.getFlag());
-                    versionZebra.setAction(item.getAction());
-
-                    result.add(versionZebra);
+            List<ImVersionEntity> imVersionEntities = getListEntityVersionByCriteria(bean);
+            if (imVersionEntities.size() > 0) {
+                for (ImVersionEntity item : imVersionEntities) {
+                    Version version = new Version();
+                    version.setIdVersion(item.getIdVersion());
+                    version.setVersionName(item.getVersionName());
+                    version.setTipe(item.getTipe());
+                    version.setOs(item.getOs());
+                    version.setDescription(item.getDescription());
+                    version.setFlag(item.getFlag());
+                    version.setAction(item.getAction());
+                    version.setCreatedDate(item.getCreatedDate());
+                    version.setLastUpdate(item.getLastUpdate());
+                    version.setCreatedWho(item.getCreatedWho());
+                    version.setLastUpdateWho(item.getLastUpdateWho());
+                    result.add(version);
                 }
-
             }
-
         }
         logger.info("[LicenseZebraBoImpl.getByCriteria] End >>>>>>>");
         return result;
     }
 
-    public List<ImVersionZebraEntity> getListEntityVersionByCriteria(VersionZebra bean) throws GeneralBOException {
+    public List<ImVersionEntity> getListEntityVersionByCriteria(Version bean) throws GeneralBOException {
         logger.info("[LicenseZebraBoImpl.getByCriteria] Start >>>>>>>");
-        List<ImVersionZebraEntity> imVersionZebraEntities = new ArrayList<>();
+        List<ImVersionEntity> imVersionEntities = new ArrayList<>();
 
         if (bean != null) {
             Map hsCriteria = new HashMap();
-
             if (bean.getIdVersion() != null && !"".equalsIgnoreCase(bean.getIdVersion())) {
                 hsCriteria.put("id_version", bean.getIdVersion());
             }
@@ -407,25 +389,27 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 hsCriteria.put("flag", bean.getFlag());
             }
+            if (bean.getTipe() != null && !"".equalsIgnoreCase(bean.getTipe())) {
+                hsCriteria.put("tipe", bean.getTipe());
+            }
 
             try {
-                imVersionZebraEntities = versionZebraDao.getByCriteria(hsCriteria);
+                imVersionEntities = versionDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[LicenseZebraBoImpl.getByCriteria] error when get data lab detailt by get by criteria " + e.getMessage());
             }
         }
-
-        return imVersionZebraEntities;
+        return imVersionEntities;
     }
 
     private String getNextLicenseId() {
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Start >>>>>>>");
-        String id="";
+        String id = "";
 
         try {
             id = licenseZebraDao.getNextLicenseId();
-        } catch (HibernateException e){
-            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
+        } catch (HibernateException e) {
+            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :" + e);
         }
 
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
@@ -434,12 +418,12 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
     private String getNextLicenseLogId() {
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Start >>>>>>>");
-        String id="";
+        String id = "";
 
         try {
             id = licenseLogZebraDao.getNextLicenseLogId();
-        } catch (HibernateException e){
-            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
+        } catch (HibernateException e) {
+            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :" + e);
         }
 
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
@@ -448,30 +432,31 @@ public class LicenseZebraBoImpl implements LicenseZebraBo {
 
     private String getNextVersionId() {
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Start >>>>>>>");
-        String id="";
+        String id = "";
 
         try {
-            id = versionZebraDao.getNextId();
-        } catch (HibernateException e){
-            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :"+ e );
+            id = versionDao.getNextId();
+        } catch (HibernateException e) {
+            logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] Error :" + e);
         }
 
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
         return id;
     }
 
-    public static String sendPostRequest(String requestUrl, String payload) {
+    public static String sendPostRequest(String requestUrl, String payload, String method) {
         try {
             URL url = new URL(requestUrl);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setDoInput(true);
             connection.setDoOutput(true);
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty( "Content-Type", "application/json");
-            connection.setRequestProperty("Accept", "application/json");
-            OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
-            writer.write(payload);
-            writer.close();
+            connection.setRequestMethod(method);
+            if ("POST".equals(method)) {
+                connection.setRequestProperty("Content-Type", "application/json");
+                OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream(), "UTF-8");
+                writer.write(payload);
+                writer.close();
+            }
             BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuffer jsonString = new StringBuffer();
             String line;

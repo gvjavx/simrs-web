@@ -3273,6 +3273,28 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         return headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
     }
 
+    @Override
+    public void cancelPeriksa(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        try {
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", detailCheckup.getIdDetailCheckup());
+            if(detailCheckupEntity != null){
+                detailCheckupEntity.setKeteranganSelesai(detailCheckup.getKeteranganSelesai());
+                detailCheckupEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setStatusPeriksa("5");
+                detailCheckupEntity.setTindakLanjut("batal");
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                }catch (HibernateException e){
+                    throw new GeneralBOException("Errro"+e.getMessage());
+                }
+            }
+        }catch (Exception e){
+            throw new GeneralBOException("Errro"+e.getMessage());
+        }
+    }
+
     private CrudResponse saveRawatInap(RawatInap bean) {
         logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
         CrudResponse response = new CrudResponse();
