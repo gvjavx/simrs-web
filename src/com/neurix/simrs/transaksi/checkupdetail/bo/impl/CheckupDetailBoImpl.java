@@ -5,6 +5,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -90,6 +91,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private DiagnosaRawatDao diagnosaRawatDao;
     private PaketPasienDao paketPasienDao;
     private TempatTidurDao tempatTidurDao;
+    private PelayananDao pelayananDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -545,15 +547,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
             Pelayanan pelayanan = new Pelayanan();
             pelayanan.setIdPelayanan(detailCheckup.getIdPelayanan());
-            List<ImSimrsPelayananEntity> pelayananEntityList = getListEntityPelayanan(pelayanan);
-
-            ImSimrsPelayananEntity pelayananEntity = new ImSimrsPelayananEntity();
-            if (!pelayananEntityList.isEmpty()) {
-                pelayananEntity = pelayananEntityList.get(0);
-            }
-            if (pelayananEntity != null) {
-                detailCheckup.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
-                detailCheckup.setTipePelayanan(pelayananEntity.getTipePelayanan());
+            Pelayanan resultPelayanan = pelayananDao.getObjectPelayanan(pelayanan);
+            if(resultPelayanan != null){
+                detailCheckup.setNamaPelayanan(resultPelayanan.getNamaPelayanan());
+                detailCheckup.setTipePelayanan(resultPelayanan.getTipePelayanan());
             }
             results.add(detailCheckup);
         }
@@ -790,6 +787,13 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setKelasPasien(bean.getIdKelas());
         detailCheckupEntity.setBerkas(bean.getBerkas());
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
+        detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
+        detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
+        if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
+            if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
+                detailCheckupEntity.setMetodePembayaran("tunai");
+            }
+        }
 
         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setRujuk(bean.getPerujuk() != null ? bean.getPerujuk() : null);
@@ -800,6 +804,33 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             detailCheckupEntity.setNoRujukan(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan()) ? bean.getNoRujukan() : null);
             detailCheckupEntity.setTglRujukan(bean.getTglRujukan() != null && !"".equalsIgnoreCase(bean.getTglRujukan()) ? java.sql.Date.valueOf(bean.getTglRujukan()) : null);
             detailCheckupEntity.setUrlDocRujuk(bean.getSuratRujukan() != null && !"".equalsIgnoreCase(bean.getSuratRujukan()) ? bean.getSuratRujukan() : null);
+        }
+
+        if("pindah_poli".equalsIgnoreCase(bean.getTypeTransaction())){
+            if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                String noAntrian = "";
+                HeaderCheckup lastAntrian = new HeaderCheckup();
+                String idDokter = null;
+                if(bean.getDokterTeamList().size() > 0){
+                    idDokter = bean.getDokterTeamList().get(0).getIdDokter();
+                }
+                try {
+                    lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
+                }catch (HibernateException e){
+                    logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                }
+                if(lastAntrian.getStNoAntrian() != null){
+                    int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
+                    noAntrian = String.valueOf(jumlah);
+                }else{
+                    noAntrian = "1";
+                }
+
+                if(!"".equalsIgnoreCase(noAntrian)){
+                    detailCheckupEntity.setNoAntrian(noAntrian);
+                }
+            }
         }
 
         try {
@@ -1703,5 +1734,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
     public void setTempatTidurDao(TempatTidurDao tempatTidurDao) {
         this.tempatTidurDao = tempatTidurDao;
+    }
+
+    @Override
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
     }
 }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printInvoiceRawatJalan" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.771561000000008"/>
-	<property name="ireport.x" value="15"/>
-	<property name="ireport.y" value="477"/>
+	<property name="ireport.zoom" value="1.4641000000000066"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="96"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -47,6 +47,8 @@
 		<field name="namaTindakan" class="java.lang.String"/>
 		<field name="stTglTindakan" class="java.lang.String"/>
 		<field name="totalTarif" class="java.lang.Integer"/>
+		<field name="jenisPelayanan" class="java.lang.String"/>
+		<field name="namaPelayanan" class="java.lang.String"/>
 		<variable name="totalTarif" class="java.lang.Integer" calculation="Sum">
 			<variableExpression><![CDATA[$F{totalTarif}]]></variableExpression>
 			<initialValueExpression><![CDATA[]]></initialValueExpression>
@@ -496,28 +498,23 @@
 					<datasetRun subDataset="dataset" uuid="c076b646-75c3-4423-a6e3-68b313c55014">
 						<dataSourceExpression><![CDATA[$P{reportParams.itemDataSource}]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="85" uuid="59aea5b5-bada-407b-92fd-7166f34293b0">
-						<jr:tableFooter height="18" rowSpan="1"/>
+					<jr:column width="80" uuid="59aea5b5-bada-407b-92fd-7166f34293b0">
+						<jr:tableFooter height="30" rowSpan="1"/>
 						<jr:columnHeader height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="85" height="20" uuid="1109da0f-f2e8-486c-8b86-711b41984e51"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="80" height="20" uuid="1109da0f-f2e8-486c-8b86-711b41984e51"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
 								<text><![CDATA[Tanggal]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="21" rowSpan="1">
+						<jr:columnFooter height="20" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="85" height="20" uuid="e7e59435-641e-4bb3-b4cd-a159e71bb93c"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="80" height="20" uuid="e7e59435-641e-4bb3-b4cd-a159e71bb93c"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -525,12 +522,11 @@
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
 							<textField>
-								<reportElement x="0" y="0" width="85" height="20" uuid="9eda7ca9-58f4-472d-99f1-2c35b2a079fd"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="80" height="20" uuid="9eda7ca9-58f4-472d-99f1-2c35b2a079fd"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -538,28 +534,51 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="176" uuid="5cf70ae2-345a-41f0-b63e-7bc142b70f46">
-						<jr:tableFooter height="18" rowSpan="1"/>
+					<jr:column width="74" uuid="8b14917e-5864-433f-91cf-1dc131b7ae6e">
+						<jr:tableFooter height="30" rowSpan="1"/>
 						<jr:columnHeader height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="176" height="20" uuid="4f2e76e6-a020-4a6c-88db-b138655956e4"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="74" height="20" uuid="17fde991-4122-4c98-8eb2-6a41d64a4013"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<text><![CDATA[Pelayanan]]></text>
+							</staticText>
+						</jr:columnHeader>
+						<jr:columnFooter height="20" rowSpan="1"/>
+						<jr:detailCell height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
+							<textField>
+								<reportElement isPrintRepeatedValues="false" x="0" y="0" width="74" height="20" uuid="ca103cb4-3352-4bee-9da3-e3927cd9a897"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{namaPelayanan}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="165" uuid="5cf70ae2-345a-41f0-b63e-7bc142b70f46">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnHeader height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
+							<staticText>
+								<reportElement x="0" y="0" width="165" height="20" uuid="4f2e76e6-a020-4a6c-88db-b138655956e4"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
 								<text><![CDATA[Nama Tindakan]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="21" rowSpan="1">
+						<jr:columnFooter height="20" rowSpan="1">
 							<staticText>
-								<reportElement x="0" y="0" width="176" height="20" uuid="c1fb1978-62bb-4710-b90a-280e4f070d03"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="165" height="20" uuid="c1fb1978-62bb-4710-b90a-280e4f070d03"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -567,12 +586,11 @@
 							</staticText>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
 							<textField>
-								<reportElement x="0" y="0" width="176" height="20" uuid="941e0027-2ae2-4f7b-8588-0a5ab826fa72"/>
-								<box>
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="165" height="20" uuid="941e0027-2ae2-4f7b-8588-0a5ab826fa72"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -580,28 +598,23 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="117" uuid="fbaea428-29e4-49ec-99d2-722b7d067103">
-						<jr:tableFooter height="18" rowSpan="1"/>
+					<jr:column width="61" uuid="fbaea428-29e4-49ec-99d2-722b7d067103">
+						<jr:tableFooter height="30" rowSpan="1"/>
 						<jr:columnHeader height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="117" height="20" uuid="efd9aa1c-def7-4612-99b0-7a1fc0721c27"/>
-								<box rightPadding="10">
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="61" height="20" uuid="efd9aa1c-def7-4612-99b0-7a1fc0721c27"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
 								<text><![CDATA[Tarif (Rp.)]]></text>
 							</staticText>
 						</jr:columnHeader>
-						<jr:columnFooter height="21" rowSpan="1">
+						<jr:columnFooter height="20" rowSpan="1">
 							<textField pattern="#,##0">
-								<reportElement x="0" y="0" width="117" height="20" uuid="0b3dafce-9216-4bb6-815a-08a0a8f986b4"/>
-								<box rightPadding="10">
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="61" height="20" uuid="0b3dafce-9216-4bb6-815a-08a0a8f986b4"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>
@@ -609,12 +622,11 @@
 							</textField>
 						</jr:columnFooter>
 						<jr:detailCell height="20" rowSpan="1">
+							<box>
+								<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#999999"/>
+							</box>
 							<textField pattern="#,##0">
-								<reportElement x="0" y="0" width="117" height="20" uuid="ea679165-6daa-4fcc-b4bb-d4b7c2b12452"/>
-								<box rightPadding="10">
-									<topPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#CCCCCC"/>
-								</box>
+								<reportElement x="0" y="0" width="61" height="20" uuid="ea679165-6daa-4fcc-b4bb-d4b7c2b12452"/>
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<font size="8"/>
 								</textElement>

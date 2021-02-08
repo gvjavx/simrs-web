@@ -171,8 +171,17 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             idPelayanan = bean.getIdPelayanan();
         }
 
-        String SQL = "SELECT id_pelayanan, nama_pelayanan FROM im_simrs_pelayanan\n" +
-                "    WHERE id_pelayanan NOT LIKE :idPelayanan AND flag = 'Y'";
+        String SQL = "SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan \n" +
+                "WHERE a.id_pelayanan NOT LIKE :idPelayanan AND a.flag = 'Y'";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idPelayanan", idPelayanan)

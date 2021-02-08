@@ -144,6 +144,7 @@ public class PasienBoImpl implements PasienBo {
             if(data.getDesaId() != null ) {
                 pasien.setDesaId(data.getDesaId().toString());
             }
+
             pasien.setJalan(data.getJalan());
             pasien.setSuku(data.getSuku());
             pasien.setAgama(data.getAgama());

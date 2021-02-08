@@ -305,4 +305,7 @@
     <include file="sshconfig/com/neurix/simrs/master/license/struts/LicenseAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/master/license/struts/VersionAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/pelayanan/struts/HeaderPelayananAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/laporan/struts/LaporanOpsAction.xml"/>
+
 </struts>

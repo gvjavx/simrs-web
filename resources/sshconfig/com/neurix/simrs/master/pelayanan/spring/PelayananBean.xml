@@ -12,6 +12,7 @@
           p:pelayananSpesialisDao-ref="pelayananSpesialisDao"
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
+          p:headerPelayananDao-ref="headerPelayananDao"
     />
 
     <!--setting untuk rest api-->

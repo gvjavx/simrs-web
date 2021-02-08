@@ -42,6 +42,15 @@ public class Tindakan {
 
     private BigDecimal bDTarif;
     private BigDecimal bDTarifBpjs;
+    private String isVaksin;
+
+    public String getIsVaksin() {
+        return isVaksin;
+    }
+
+    public void setIsVaksin(String isVaksin) {
+        this.isVaksin = isVaksin;
+    }
 
     public BigDecimal getbDTarif() {
         return bDTarif;

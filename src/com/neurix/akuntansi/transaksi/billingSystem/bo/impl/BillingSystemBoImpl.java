@@ -2064,7 +2064,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
             if (riwayatTindakanEntity != null) {
                 ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(riwayatTindakanEntity.getIdTindakan());
                 if (permintaanResepEntity != null) {
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
                     if (pelayananEntity != null) {
                         ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
                         if (position != null) {
@@ -2099,7 +2099,7 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
 
             if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null) {
                 try {
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
 
                     // jika poli selain rawat inap maka mengambil kodering dari pelayanan
                     // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
@@ -2546,9 +2546,13 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
         hsCriteria.put("in_pelayanan_medic", "Y");
         hsCriteria.put("flag", "Y");
 //        List<ImSimrsPelayananEntity> pelayananEntities = pelayananDao.getByCriteria(hsCriteria);
-        List<ImSimrsPelayananEntity> pelayananEntities = new ArrayList<>();
+//        List<ImSimrsPelayananEntity> pelayananEntities = new ArrayList<>();
+        Pelayanan ply = new Pelayanan();
+        ply.setBranchId(tutupPeriod.getUnit());
+        ply.setFlag("Y");
+        List<Pelayanan> pelayananEntities = pelayananDao.getListObjectPelayanan(ply);
         if (pelayananEntities.size() > 0){
-            for (ImSimrsPelayananEntity pelayananEntity : pelayananEntities){
+            for (Pelayanan pelayananEntity : pelayananEntities){
 
                 // pelayanan selain gudang obat;
                 if (!"gudang_obat".equalsIgnoreCase(pelayananEntity.getTipePelayanan())){

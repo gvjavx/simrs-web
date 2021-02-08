@@ -70,7 +70,16 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "a.lon \n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = b.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON c.id_pelayanan = b.id_pelayanan\n" +
                     "WHERE a.id_dokter = :id";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -237,7 +246,16 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "a.sip\n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE c.branch_id = :branchId\n" + notLike +
                     "AND c.tipe_pelayanan = 'rawat_jalan' \n"+
                     "ORDER BY c.nama_pelayanan ASC";
@@ -280,7 +298,16 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "a.keterangan\n" +
                     "FROM it_simrs_dokter_team a\n" +
                     "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON a.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE a.id_detail_checkup = :id \n" + flag +
                     "ORDER BY a.created_date ASC";
 
@@ -357,7 +384,17 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "b.nama_pelayanan,\n" +
                     "b.branch_id\n" +
                     "FROM im_simrs_dokter_pelayanan a\n" +
-                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim,\n" +
+                    "a.flag \n"+
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON a.id_pelayanan = b.id_pelayanan\n" +
                     "WHERE a.flag = 'Y' AND b.flag = 'Y' \n"+
                     ") c ON a.id_dokter = c.id_dokter\n" +
                     "WHERE a.flag LIKE :flag \n" + condition +

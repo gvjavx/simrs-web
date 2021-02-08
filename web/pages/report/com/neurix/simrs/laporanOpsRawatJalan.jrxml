@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="laporanOpsRawatJalan" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c8a9776f-84b4-4822-8f5b-477c736b34f6">
+	<property name="ireport.zoom" value="1.2100000000000033"/>
+	<property name="ireport.x" value="320"/>
+	<property name="ireport.y" value="0"/>
+	<subDataset name="dataset" uuid="5d915b11-3463-4d46-b997-a438009432e1">
+		<field name="nomor" class="java.lang.String"/>
+		<field name="urain" class="java.lang.String"/>
+		<field name="jan" class="java.lang.String"/>
+		<field name="feb" class="java.lang.String"/>
+		<field name="mar" class="java.lang.String"/>
+		<field name="apr" class="java.lang.String"/>
+		<field name="mei" class="java.lang.String"/>
+		<field name="jun" class="java.lang.String"/>
+		<field name="jul" class="java.lang.String"/>
+		<field name="ags" class="java.lang.String"/>
+		<field name="sep" class="java.lang.String"/>
+		<field name="okt" class="java.lang.String"/>
+		<field name="nov" class="java.lang.String"/>
+		<field name="des" class="java.lang.String"/>
+		<field name="total" class="java.lang.String"/>
+		<field name="persen" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="logo" class="java.lang.String"/>
+	<parameter name="unit" class="java.lang.String"/>
+	<parameter name="area" class="java.lang.String"/>
+	<parameter name="tahun" class="java.lang.String"/>
+	<parameter name="itemData" class="net.sf.jasperreports.engine.data.JRBeanCollectionDataSource"/>
+	<parameter name="title" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+	</queryString>
+	<field name="id_pasien" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String">
+		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
+	</field>
+	<field name="jenis_kelamin" class="java.lang.String"/>
+	<field name="no_ktp" class="java.lang.String"/>
+	<field name="no_bpjs" class="java.lang.String"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="tgl_lahir" class="java.sql.Date"/>
+	<field name="desa_id" class="java.lang.Long"/>
+	<field name="jalan" class="java.lang.String"/>
+	<field name="suku" class="java.lang.String"/>
+	<field name="agama" class="java.lang.String"/>
+	<field name="profesi" class="java.lang.String"/>
+	<field name="no_telp" class="java.lang.String"/>
+	<field name="url_ktp" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
+	<field name="pendidikan" class="java.lang.String"/>
+	<field name="status_perkawinan" class="java.lang.String"/>
+	<field name="no_rm_lama" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<staticText>
+				<reportElement x="631" y="54" width="75" height="19" uuid="3a0b8d97-60e3-4d9f-aa30-3476c75d45bd"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="77" width="802" height="1" uuid="bb041026-4165-4119-afc7-23a276c92266"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="41" width="173" height="20" uuid="d6fb7652-d915-4579-a032-58ebeaf49cf9"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{area} == null ? "" : $P{area}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="706" y="54" width="96" height="19" uuid="28f79aa2-254a-467b-971a-098349bc346c"/>
+				<textElement>
+					<font fontName="SansSerif" size="10"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="54" width="173" height="20" uuid="71a66b7b-4a3a-4e73-b65c-7a8bf65fae8e"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{unit} == null ? "" : $P{unit}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="0" y="1" width="105" height="45" uuid="10e414ae-daf6-4fc9-978d-80e8c8b8c1d7"/>
+				<imageExpression><![CDATA[$P{logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="20" width="802" height="26" uuid="54169040-52cf-470a-a1e1-3738cec5b2e5"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="144" splitType="Stretch">
+			<componentElement>
+				<reportElement x="0" y="0" width="803" height="144" uuid="da302a1b-f0bf-4226-8bb2-3fe22bba851c"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="dataset" uuid="c5b0e41a-d483-4f28-a800-054ee9d75825">
+						<dataSourceExpression><![CDATA[$P{itemData}]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="20" uuid="e36f78b3-9b32-4aca-820c-e7659aac7eaa">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="20" height="25" uuid="334938d5-1495-481d-bef6-4d3c95c10993"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nomor} == null || $F{nomor} == "poli" || $F{nomor} == "jml" ? "" : ($F{nomor} != "A" && $F{nomor} != "B" && $F{nomor} != "C" && $F{nomor} != "No"  ? "&nbsp;&nbsp;&nbsp;"+$F{nomor} : "<b>"+$F{nomor}+"</b>")]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="100" uuid="0c9ddec4-4bea-4d59-a752-486a86dac9fe">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="100" height="25" uuid="e4a21474-5727-4655-97a8-ef5d13299d76"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{urain} == null ? "" : ($F{urain} == "BPJS" || $F{urain} == "Ownuse" || $F{urain} == "PIHAK III" || $F{nomor} == "poli" || $F{urain} == "URAIAN" || $F{nomor} == "jml"  ? "<b>"+$F{urain}+"</b>" : $F{urain})]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="b3a62be6-c44c-4e33-9515-c9354e3d0d87">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="fbd90381-bd71-4e7d-8ff2-18da10fca9fc"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{jan} != null ? ($F{nomor} == "No" ? "<b>"+$F{jan}+"</b>" : $F{jan})  : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="d1128bf4-7955-4bf7-9464-736a3e315b1e">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="8cb33892-a1d4-4ff8-aeb0-bcb67afb9160"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{feb} != null ? ($F{nomor} == "No" ? "<b>"+$F{feb}+"</b>" : $F{feb}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="eede0094-26e6-4762-b43a-5ee912ab96c0">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="15b8bfbf-64a1-49c0-b090-71f683118be1"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{mar} != null ? ($F{nomor} == "No" ? "<b>"+$F{mar}+"</b>" : $F{mar}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="348136e6-94db-4dfa-826d-77bfbad859a5">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="2fcc258e-4411-44f6-ab14-2525926c1fdb"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{apr} != null ? ($F{nomor} == "No" ? "<b>"+$F{apr}+"</b>" : $F{apr}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="554070e4-d570-4ac1-a3b5-9b86dd625ed5">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="b04c04be-c04c-415b-b156-f04e95f24ab9"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{mei} != null ? ($F{nomor} == "No" ? "<b>"+$F{mei}+"</b>" : $F{mei}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="33b158a1-fd07-4b75-89b4-6db79a1b4540">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="ea06b47d-ce28-4d77-8f50-3dc1072bdb45"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{jun} != null ? ($F{nomor} == "No" ? "<b>"+$F{jun}+"</b>" : $F{jun}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="71c12a83-9354-4293-af7c-299e69c04cf6">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="dde017e7-b02f-42ca-8165-73fbfe91f238"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{jul} != null ? ($F{nomor} == "No" ? "<b>"+$F{jul}+"</b>" : $F{jul}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="8a74a42c-c5c2-4b62-9fd7-ad1fa22dbb44">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="c706efd1-e105-4b1e-b98c-c15178c2b5e2"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{ags} != null  ? ($F{nomor} == "No" ? "<b>"+$F{ags}+"</b>" : $F{ags}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="ba5b390b-de85-4774-a0e7-8f89610f8b34">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="7f88a611-e3b7-4175-b428-aee6cab83996"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sep} != null ? ($F{nomor} == "No" ? "<b>"+$F{sep}+"</b>" : $F{sep}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="3a7a6117-a8e5-4fb5-9cab-5315c55add68">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="16d3302f-3fb4-4ee4-91db-c8063c700b25"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{okt} != null ? ($F{nomor} == "No" ? "<b>"+$F{okt}+"</b>" : $F{okt}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="1c38300e-e82c-4266-85b9-3d5f7b8cb9f4">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="43fe236a-a761-476d-8e29-3bcba7e41f8f"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{nov} != null ? ($F{nomor} == "No" ? "<b>"+$F{nov}+"</b>" : $F{nov}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="5eec41fd-57c7-45ca-a087-9bb33f58ea94">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="3572b785-5a60-496d-8e6d-548b7e9c8280"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{des} != null ? ($F{nomor} == "No" ? "<b>"+$F{des}+"</b>" : $F{des}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="9da3177f-19c3-44f5-92a1-1f0edc9872ea">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField>
+								<reportElement x="0" y="0" width="50" height="25" uuid="da68c296-fd9b-4717-b64a-98dac423203d"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{total} != null ? ($F{nomor} == "No" ? "<b>"+$F{total}+"</b>" : $F{total}) : ""]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="43" uuid="55c57c03-48d3-4d68-ad61-0e07a51f69eb">
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell height="25" rowSpan="1">
+							<textField pattern="#,##0.00">
+								<reportElement x="0" y="0" width="43" height="25" uuid="7bec499c-60c4-419e-81f0-73d247bbf910"/>
+								<box>
+									<bottomPen lineWidth="0.25" lineStyle="Dashed" lineColor="#666666"/>
+								</box>
+								<textElement verticalAlignment="Middle" markup="html">
+									<font size="8"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{persen} == null ? "" : ($F{persen} == "%" ? "<b>"+$F{persen}+"</b>" : $F{persen}+"%")]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+		</band>
+	</detail>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>
