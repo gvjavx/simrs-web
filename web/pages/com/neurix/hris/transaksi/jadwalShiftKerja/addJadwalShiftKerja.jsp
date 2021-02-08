@@ -93,14 +93,14 @@
                                     // Cancel Submit comes with 1.8.0
                                     event.originalEvent.options.submit = false;
                                 }
-                            } else{
-                                // Cancel Submit comes with 1.8.0
-                                event.originalEvent.options.submit = false;
-                                var msg = "Tanggal ini sudah ada";
-                                document.getElementById('errorValidationMessage').innerHTML = msg;
-
-                                $.publish('showErrorValidationDialog');
-                            }
+                            } //else{
+                            //     // Cancel Submit comes with 1.8.0
+                            //     event.originalEvent.options.submit = false;
+                            //     var msg = "Tanggal ini sudah ada";
+                            //     document.getElementById('errorValidationMessage').innerHTML = msg;
+                            //
+                            //     $.publish('showErrorValidationDialog');
+                            // }
                         } else{
                             // Cancel Submit comes with 1.8.0
                             event.originalEvent.options.submit = false;

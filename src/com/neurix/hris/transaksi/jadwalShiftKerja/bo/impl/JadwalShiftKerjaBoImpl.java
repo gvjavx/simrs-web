@@ -309,13 +309,13 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
                 for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : jadwalShiftKerjaDetailList) {
                     String availShift = "";
                     try {
-                        availShift = jadwalShiftKerjaDetailDao.checkByNipAndShift(bean.getNip(), jadwalShiftKerjaId);
+                        availShift = jadwalShiftKerjaDetailDao.checkByNipAndShift(jadwalShiftKerjaDetail.getNip(), jadwalShiftKerjaId);
                     }catch (HibernateException e){
                         logger.error("[JadwalShiftKerjaBoImpl.saveAdd] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when check available data Jadwal Shift Kerja Detail by NIP and Jadwal Shift ID, " + e.getMessage());
                     }
 
-                    if(availShift == "N") {
+                    if("N".equalsIgnoreCase(availShift)) {
                         ItJadwalShiftKerjaDetailEntity itJadwalShiftKerjaDetailEntity = new ItJadwalShiftKerjaDetailEntity();
                         String jadwalShiftKerjaDetailId = jadwalShiftKerjaDetailDao.getNextJadwalShiftKerjaDetailId();
 

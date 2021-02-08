@@ -178,7 +178,7 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
 
         List<ItJadwalShiftKerjaEntity> results = criteria.list();
 
-        if(results != null) status = "Y";
+        if(results.size() != 0) status = "Y";
 
         return status;
     }
