@@ -155,7 +155,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped tablePasien">
+                        <table id="table-pasien" class="table table-bordered table-striped tablePasien">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>NO RM</td>
@@ -681,6 +681,11 @@
 
 <script type='text/javascript'>
 
+    $('#table-pasien').dataTable( {
+        "ordering": false,
+        "searching": false
+    } );
+
     function pasienSuccess() {
         var idPasien = $('#val_id_pasien').val();
         $('#id_pasien').val(idPasien);
@@ -1115,11 +1120,15 @@
         var nama = $('#nama_pasien').val();
         var count = $("#nama_pasien").val().replace(/ /g,'').length;
         var countId = $("#id_pasien").val().replace(/ /g,'').length;
-        if(id == '' && nama == '' || count < 3 || countId < 3){
+        if(id == '' && count < 3){
             $('#warning_search').show().fadeOut(5000);
             $('#msg_search').text("Inputan data berikut minimal 3 Karakter...!");
             return false;
-        }else{
+        } else if(nama == '' && countId < 3){
+            $('#warning_search').show().fadeOut(5000);
+            $('#msg_search').text("Inputan data berikut minimal 3 Karakter...!");
+            return false;
+        } else{
             $('#waiting_dialog').dialog('open');
             return true;
         }
