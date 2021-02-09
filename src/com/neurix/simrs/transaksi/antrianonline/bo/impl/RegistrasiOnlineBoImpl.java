@@ -231,8 +231,15 @@ public class RegistrasiOnlineBoImpl implements RegistrasiOnlineBo {
             result.setAction(registrasiOnlineEntity.getAction());
             result.setFlag(registrasiOnlineEntity.getFlag());
             result.setValid(registrasiOnlineEntity.getValid());
-            result.setStTglLahir(CommonUtil.simpleDateFormat(registrasiOnlineEntity.getTglLahir()));
-            result.setStDesaId(registrasiOnlineEntity.getDesaId().toString());
+
+            if (registrasiOnlineEntity.getTglLahir() != null) {
+                result.setStTglLahir(CommonUtil.simpleDateFormat(registrasiOnlineEntity.getTglLahir()));
+            }
+
+            if (registrasiOnlineEntity.getDesaId().toString() != null) {
+                result.setStDesaId(registrasiOnlineEntity.getDesaId().toString());
+            }
+
             result.setCreatedDate(registrasiOnlineEntity.getCreatedDate());
             result.setCreatedWho(registrasiOnlineEntity.getCreatedWho());
             result.setLastUpdate(registrasiOnlineEntity.getLastUpdate());

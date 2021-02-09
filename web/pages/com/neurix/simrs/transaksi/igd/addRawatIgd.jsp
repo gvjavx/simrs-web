@@ -2345,7 +2345,8 @@
     var tglRujukan = '<s:property value="headerDetailCheckup.tglRujukan"/>';
     var suratRujukan = '<s:property value="headerDetailCheckup.suratRujukan"/>';
     var idKelasRuangan = "";
-    var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';;
+    var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';
+    var flagVaksin = '<s:property value="headerDetailCheckup.isVaksin"/>';
 
     $(document).ready(function () {
         $('#igd').addClass('active');

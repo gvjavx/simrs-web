@@ -1695,9 +1695,82 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE im_simrs_header_tindakan
 ADD COLUMN flag_vaksin VARCHAR(1);
 
+--Laporan
+INSERT INTO im_functions VALUES
+(6900, 'Laporan', '/laporanops/initForm_laporanops.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6900),
+(6901, 'Init Laporan', '/laporanops/initForm_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6902, 'Search', '/laporanops/search_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6900, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6901, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6902, 32, 'Y', now(), now(), 'admin', 'admin');
+
+CREATE TABLE im_simrs_laporan_ops(
+  id_laporan_ops VARCHAR(100) NOT NULL PRIMARY KEY,
+  nama_laporan VARCHAR(500),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100)
+)
 
 
 
+
+
+
+--UPDATE LICENSE HABIS ASAR SEKITAR 16:15 WAKTU SEKITAR SINI
+--MOHON DI HAPUS MENDING SAYA UPDATE TABLE AJA BIAT TAK BANYAK TABLE ;-)
+DROP TABLE im_version_zebra;
+
+--CREATE NEW
+CREATE TABLE public.im_version
+(
+  id_version character varying(20) NOT NULL,
+  version_name character varying(20),
+  tipe character varying(20),
+  os character varying(20),
+  description text,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(50),
+  last_update_who character varying(50),
+  CONSTRAINT im_version_pkey PRIMARY KEY (id_version)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_version
+  OWNER TO postgres;
+
+--SIDAH DI PROD NO RM LAMA to 6 DIGIT
+UPDATE im_simrs_pasien aa
+SET no_rm_lama = (
+	SELECT
+	CASE
+	WHEN a.panjang = 6 THEN a.no_rm_lama
+	WHEN a.panjang = 5 THEN CONCAT('0', a.no_rm_lama)
+	WHEN a.panjang = 4 THEN CONCAT('00', a.no_rm_lama)
+	WHEN a.panjang = 3 THEN CONCAT('000', a.no_rm_lama)
+	WHEN a.panjang = 2 THEN CONCAT('0000', a.no_rm_lama)
+	WHEN a.panjang = 1 THEN CONCAT('00000', a.no_rm_lama)
+	ELSE null
+	END as no_rm_lama_edit
+	FROM(
+		SELECT
+		no_rm_lama,
+		id_pasien,
+		LENGTH(no_rm_lama) as panjang
+		FROM im_simrs_pasien
+		WHERE created_who NOT LIKE 'testing'
+	)a WHERE a.id_pasien = aa.id_pasien
+)
+WHERE created_who NOT LIKE 'testing'
 
 
 

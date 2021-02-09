@@ -26,6 +26,9 @@ public interface PelayananBo {
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException;
 
     public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException;
+
+    public List<Pelayanan> getListPelayananTelemedic(String branchId) throws GeneralBOException;
+
     public List<Pelayanan> getJustPelayananByBranch(String branchId) throws GeneralBOException;
     public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException;
 
@@ -34,4 +37,6 @@ public interface PelayananBo {
     public void saveAdd(Pelayanan bean) throws GeneralBOException;
     public void saveEdit(Pelayanan bean) throws GeneralBOException;
     public void saveDelete(Pelayanan bean) throws GeneralBOException;
+
+    public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException;
 }

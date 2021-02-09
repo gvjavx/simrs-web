@@ -281,11 +281,14 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         String SQL = "SELECT\n" +
                 "id_pasien,\n" +
                 "nama,\n" +
-                "no_rm_lama\n" +
+                "no_rm_lama,\n" +
+                "desa_id,\n" +
+                "no_bpjs\n" +
                 "FROM im_simrs_pasien\n" +
                 "WHERE id_pasien ILIKE '%"+key+"%'\n" +
                 "OR nama ILIKE '%"+key+"%'\n" +
-                "OR no_rm_lama ILIKE '%"+key+"%'";
+                "OR no_bpjs ILIKE '%"+key+"%'\n" +
+                "OR no_rm_lama ILIKE '%"+key+"%' LIMIT 10";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -296,9 +299,41 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 pasien.setIdPasien(obj[0] != null ? obj[0].toString() : "");
                 pasien.setNama(obj[1] != null ? obj[1].toString() : "");
                 pasien.setNoRmLama(obj[2] != null ? obj[2].toString() : "");
+                pasien.setNoBpjs(obj[4] != null ? obj[4].toString() : "");
+                if(obj[3] != null){
+                    pasien.setDesa(desaName(obj[3].toString()));
+                }
                 listOfResult.add(pasien);
             }
         }
+        return listOfResult;
+    }
+
+    private String desaName(String id){
+        String res = "";
+        if(id != null && !"".equalsIgnoreCase(id)){
+            String SQL = "SELECT\n" +
+                    "desa_id,\n" +
+                    "desa_name\n" +
+                    "FROM im_hris_desa\n" +
+                    "WHERE desa_id = :id";
+            List<Object[]> result = new ArrayList<>();
+            result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("id", id)
+                    .list();
+            if(result.size() > 0){
+                Object[] obj = result.get(0);
+                res = obj[1].toString();
+            }
+        }
+        return res;
+    }
+
+    public List<ImSimrsPasienEntity> getDetailPasien(String tmp) {
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsPasienEntity.class);
+        criteria.add(Restrictions.eq("idPasien", tmp));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ImSimrsPasienEntity> listOfResult = criteria.list();
         return listOfResult;
     }
 

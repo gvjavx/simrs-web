@@ -23,6 +23,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -244,15 +245,12 @@ public class KasirRawatInapAction extends BaseMasterAction {
     }
 
     public String printInvoice() {
-
         HeaderCheckup checkup = new HeaderCheckup();
         String id = getId();
         String jk = "";
-        String jenisPasien = getJenis();
-
         String logo = "";
+        String jenisPasien = getJenis();
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
-        List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
         List<UangMuka> uangMukaList = new ArrayList<>();
 
         if (id != null && !"".equalsIgnoreCase(id)) {
@@ -270,7 +268,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
             if (checkup != null) {
 
                 Branch branches = new Branch();
-
                 try {
                     branches = branchBoProxy.getBranchById(branch, "Y");
                 } catch (GeneralBOException e) {
@@ -280,7 +277,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 if (branches != null) {
                     logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.RESOURCE_PATH_IMAGES + branches.getLogoName();
                 }
-
 
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                 riwayatTindakan.setNoCheckup(checkup.getNoCheckup());
@@ -293,26 +289,28 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 }
 
                 RiwayatTindakan result = new RiwayatTindakan();
-                List<TransaksiObatDetail> resultListObat = new ArrayList<>();
-                List<TransaksiObatDetail> resultListObatWithPPN = new ArrayList<>();
+                TransaksiObatDetail obatDetail = new TransaksiObatDetail();
+                BigInteger totalResepObat = new BigInteger(String.valueOf("0"));
 
                 if (riwayatTindakanList.size() > 0) {
-                    result = riwayatTindakanList.get(0);
                     for (RiwayatTindakan riwayat : riwayatTindakanList) {
                         if ("resep".equalsIgnoreCase(riwayat.getKeterangan())) {
-                            TransaksiObatDetail detail = new TransaksiObatDetail();
-                            detail.setIdPermintaanResep(riwayat.getIdTindakan());
-                            try {
-                                obatDetailList = transaksiObatBoProxy.getSearchObatTransaksiByCriteria(detail);
-                            } catch (GeneralBOException e) {
-                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
-                            }
-                            resultListObat.addAll(obatDetailList);
-                            HeaderCheckup headerCheckup = checkupBoProxy.getDataDetailPasien(riwayat.getIdDetailCheckup());
-                            if("rawat_jalan".equalsIgnoreCase(headerCheckup.getTipePelayanan()) ||
-                               "igd".equalsIgnoreCase(headerCheckup.getTipePelayanan()) ||
-                               "ugd".equalsIgnoreCase(headerCheckup.getTipePelayanan())){
-                                resultListObatWithPPN.addAll(obatDetailList);
+                            if("rawat_jalan".equalsIgnoreCase(riwayat.getTipePelayanan()) ||
+                               "igd".equalsIgnoreCase(riwayat.getTipePelayanan()) ||
+                               "ugd".equalsIgnoreCase(riwayat.getTipePelayanan())){
+                                try {
+                                    obatDetail = transaksiObatBoProxy.getTotalHargaResep(riwayat.getIdTindakan());
+                                } catch (GeneralBOException e) {
+                                    logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search list detail obat :" + e.getMessage());
+                                    throw new GeneralBOException("errro"+e.getMessage());
+                                }
+                                if(obatDetail.getTotalHarga() != null && !"".equalsIgnoreCase(obatDetail.getTotalHarga().toString())){
+                                    if(totalResepObat != null && totalResepObat.intValue() > 0){
+                                        totalResepObat = totalResepObat.add(obatDetail.getTotalHarga());
+                                    }else{
+                                        totalResepObat = obatDetail.getTotalHarga();
+                                    }
+                                }
                             }
                         }
                     }
@@ -336,16 +334,11 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 }
 
                 JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(riwayatTindakanList);
-                JRBeanCollectionDataSource itemDataObat = new JRBeanCollectionDataSource(resultListObat);
                 JRBeanCollectionDataSource itemDataUangMuka = new JRBeanCollectionDataSource(mukaList);
 
                 BigDecimal tarifJasa = hitungTotalJasa(riwayatTindakanList);
                 BigInteger tarifUangMuka = hitungTotalUangMuka(mukaList);
-                BigInteger tarifObatPpn = hitungTotalObat(resultListObatWithPPN);
-                BigDecimal ppnObat = new BigDecimal(String.valueOf(0));
-                if(resultListObatWithPPN.size() > 0){
-                    ppnObat = new BigDecimal(tarifObatPpn).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
-                }
+                BigDecimal ppnObat = ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
                 totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
@@ -354,7 +347,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("invoice", checkup.getInvoice());
                 reportParams.put("title", "Invoice Rawat Inap Pasien");
                 reportParams.put("itemDataSource", itemData);
-                reportParams.put("listObatDetail", itemDataObat);
                 reportParams.put("listUangMuka", itemDataUangMuka);
                 reportParams.put("totalJasa", totalJasa);
                 reportParams.put("idPasien", checkup.getIdPasien());
@@ -367,7 +359,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("logo", logo);
                 reportParams.put("nik", checkup.getNoKtp());
                 reportParams.put("nama", checkup.getNama());
-                if(resultListObatWithPPN.size() > 0){
+                if(ppnObat != null && ppnObat.intValue() > 0){
                     reportParams.put("ppnObat", ppnObat);
                 }else{
                     reportParams.put("ppnObat", 0);
@@ -387,7 +379,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("kabupaten", checkup.getNamaKota());
                 reportParams.put("kecamatan", checkup.getNamaKecamatan());
                 reportParams.put("desa", checkup.getNamaDesa());
-
 
                 try {
                     preDownload();

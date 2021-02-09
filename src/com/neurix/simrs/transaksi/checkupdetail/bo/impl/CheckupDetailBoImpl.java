@@ -789,6 +789,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
+        if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
+            if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
+                detailCheckupEntity.setMetodePembayaran("tunai");
+            }
+        }
 
         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setRujuk(bean.getPerujuk() != null ? bean.getPerujuk() : null);
@@ -974,7 +979,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
             diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
-            diagnosaRawat.setJenisDiagnosa("1");
+            if(bean.getRawatInap()){
+                diagnosaRawat.setJenisDiagnosa("diagnosa_awal");
+            }else{
+                diagnosaRawat.setJenisDiagnosa("1");
+            }
             response = saveDiagnosa(diagnosaRawat);
         }
 

@@ -232,8 +232,6 @@
 
             <filter-chain pattern="/mobileapi/version" filters="none" />
 
-
-
             <filter-chain pattern="/**/*"
                           filters="
                         	concurrentSessionFilter, 

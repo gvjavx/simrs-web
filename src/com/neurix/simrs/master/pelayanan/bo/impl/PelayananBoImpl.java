@@ -260,6 +260,11 @@ public class PelayananBoImpl implements PelayananBo {
     }
 
     @Override
+    public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException {
+        return pelayananDao.getJutsPelayananOnly(branchId);
+    }
+
+    @Override
     public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException {
         logger.info("[PelayananBoImpl.getByCriteria] Start >>>>>>");
         List<Pelayanan> result = new ArrayList<>();
@@ -420,6 +425,21 @@ public class PelayananBoImpl implements PelayananBo {
             status = "notExits";
         }
         return status;
+    }
+
+    @Override
+    public List<Pelayanan> getListPelayananTelemedic(String branchId) {
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+           pelayananList = pelayananDao.getListPelayananTelemedic(branchId);
+        } catch (GeneralBOException e) {
+            logger.error("[PelayananBoImpl.getListPelayananTelemedic] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        return pelayananList;
     }
 
     @Override

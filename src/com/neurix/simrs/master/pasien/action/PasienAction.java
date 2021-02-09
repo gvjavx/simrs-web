@@ -559,7 +559,7 @@ public class PasienAction extends BaseMasterAction {
             }
         } else {
             try {
-                listOfPasien = pasienBo.getListComboPasien(query);
+                listOfPasien = pasienBo.getComboRmLama(query);
             } catch (GeneralBOException e) {
                 logger.error("[PasienAction.getListComboPasien] Error when get combo pasien, please inform to your admin.", e);
             }
@@ -921,6 +921,20 @@ public class PasienAction extends BaseMasterAction {
         }
         logger.info("[PasienAction.getListComboPasienByRmLama] end process <<<");
         return listOfPasien;
+    }
+
+    public Pasien detailPasien(String idPasien) {
+        logger.info("[PasienAction.detailPasien] start process >>>");
+        Pasien pasien = new Pasien();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
+        try {
+            pasien = pasienBo.getDetailPasien(idPasien);
+        } catch (GeneralBOException e) {
+            logger.error("[PasienAction.detailPasien] Error when get combo pasien, please inform to your admin.", e);
+        }
+        logger.info("[PasienAction.detailPasien] end process <<<");
+        return pasien;
     }
 
     public String getTipe() {

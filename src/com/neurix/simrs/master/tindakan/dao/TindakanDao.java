@@ -82,7 +82,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                             "a.is_elektif\n" +
                             "FROM im_simrs_tindakan a\n" +
                             "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
-                            "WHERE a.id_kategori_tindakan = :idKat\n" +
+                            "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
                             "AND a.flag_kelas_ruangan = 'Y' \n" +
                             "AND a.id_kelas_ruangan = '" + bean.getIdKelasRuangan() + "'\n" +
                             "AND a.flag = 'Y'";
@@ -96,13 +96,14 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                         "a.is_elektif\n" +
                         "FROM im_simrs_tindakan a\n" +
                         "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
-                        "WHERE a.id_kategori_tindakan = :idKat\n" +
+                        "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
                         "AND a.flag_kelas_ruangan = 'N'\n" +
                         "AND a.flag = 'Y' \n" + vaksin + union;
 
                 List<Object[]> results = new ArrayList<>();
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                         .setParameter("idKat", bean.getIdKategoriTindakan())
+                        .setParameter("branch", bean.getBranchId())
                         .list();
 
                 if (results.size() > 0) {

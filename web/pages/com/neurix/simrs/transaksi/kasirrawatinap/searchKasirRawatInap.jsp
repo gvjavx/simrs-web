@@ -816,6 +816,7 @@
                         $('#modal-invoice').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('body').scrollTop(0);
+                        printInvoice(idDetailCheckup, jenisPasien);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();
@@ -847,6 +848,10 @@
         KasirRawatJalanAction.getCoverAsuransi(idDetail, function (res) {
             return res;
         });
+    }
+
+    function printInvoice(id, jenis){
+        window.open('printInvoice_kasirinap?id='+id+'&jenis='+jenis,'_blank');
     }
 
 </script>

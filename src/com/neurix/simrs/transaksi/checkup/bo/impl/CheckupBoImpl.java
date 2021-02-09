@@ -473,6 +473,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
+                if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
+                    if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
+                        detailCheckupEntity.setMetodePembayaran("tunai");
+                    }
+                }
                 detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
