@@ -2870,8 +2870,8 @@
             },
             updater: function (item) {
                 var selectedObj = mapped[item];
-
-                alertPasien(selectedObj.id);
+                alertPasien(selectedObj.idPasien);
+                getRiwayatPemeriksaan(selectedObj.idPasien);
                 $('#id_pasien').val(selectedObj.idPasien);
                 $('#nama_pasien').val(selectedObj.nama);
                 PasienAction.detailPasien(selectedObj.idPasien, function(res){
@@ -2917,20 +2917,6 @@
                             if (res.idPelayanan != null) {
                                 $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
                             }
-                        } else {
-                            if ("Y" == res.isCheckupUlang) {
-                                $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
-                            } else {
-                                $('#poli').val('').trigger('change').attr('disabled', false);
-                            }
-
-                            $('#last_id_detail_checkup').val(res.idLastDetailCheckup);
-                            $('#is_order_lab').val(res.isOrderLab);
-                            if (res.tglCheckup != null) {
-                                $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>" + res.tglCheckup + "</b>");
-                            } else {
-                                $('#tgl_checkup').html("");
-                            }
                         }
 
                         if (res.idPaket != null && res.idPaket != '') {
@@ -2947,7 +2933,7 @@
                             $('#btn-save').show();
                             $('#warning_pasien').hide();
                             $('#msg_pasien').text("");
-                            alertObatKronis(selectedObj.id);
+                            alertObatKronis(selectedObj.idPasien);
                         }
                     }
                 });
@@ -3042,20 +3028,6 @@
                             if ("paket_perusahaan" == tipe || "paket_individu" == tipe) {
                                 if (res.idPelayanan != null) {
                                     $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
-                                }
-                            } else {
-                                if ("Y" == res.isCheckupUlang) {
-                                    $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
-                                } else {
-                                    $('#poli').val('').trigger('change').attr('disabled', false);
-                                }
-
-                                $('#last_id_detail_checkup').val(res.idLastDetailCheckup);
-                                $('#is_order_lab').val(res.isOrderLab);
-                                if (res.tglCheckup != null) {
-                                    $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>" + res.tglCheckup + "</b>");
-                                } else {
-                                    $('#tgl_checkup').html("");
                                 }
                             }
 

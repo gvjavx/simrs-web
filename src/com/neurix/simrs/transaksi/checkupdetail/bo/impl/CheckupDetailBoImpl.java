@@ -979,7 +979,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
             diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
-            diagnosaRawat.setJenisDiagnosa("1");
+            if(bean.getRawatInap()){
+                diagnosaRawat.setJenisDiagnosa("diagnosa_awal");
+            }else{
+                diagnosaRawat.setJenisDiagnosa("1");
+            }
             response = saveDiagnosa(diagnosaRawat);
         }
 

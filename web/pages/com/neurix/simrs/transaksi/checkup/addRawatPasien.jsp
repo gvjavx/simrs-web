@@ -2942,8 +2942,8 @@
             },
             updater: function (item) {
                 var selectedObj = mapped[item];
-
-                alertPasien(selectedObj.id);
+                alertPasien(selectedObj.idPasien);
+                getRiwayatPemeriksaan(selectedObj.idPasien);
                 $('#id_pasien').val(selectedObj.idPasien);
                 $('#nama_pasien').val(selectedObj.nama);
                 PasienAction.detailPasien(selectedObj.idPasien, function(res){
