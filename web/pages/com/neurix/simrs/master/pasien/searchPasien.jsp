@@ -15,6 +15,19 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
 
     <script type='text/javascript'>
+
+        $.subscribe('beforeSubmit', function (event, data) {
+            var noRm = $("#id_pasien").val();
+            var nama = $("#nama").val();
+
+            if (noRm != null || nama != null){
+                $.publish('showDialogLoading');
+                document.getElementById("pasienForm").submit();
+            } else {
+                alert("Lengkapi Form Pengisian");
+            }
+        });
+
         $(document).ready(function () {
             $('#pasien').addClass('active');
             searchPasien();
@@ -57,8 +70,12 @@
                         <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Pasien</h3>
                     </div>
                     <div class="box-body">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_search">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_search"></p>
+                        </div>
                         <div class="form-group">
-                            <s:form id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action"
+                            <s:form onsubmit="return cekSearch()" id="pasienForm" method="post" namespace="/pasien" action="search_pasien.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">NO RM</label>
@@ -81,7 +98,7 @@
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm"
                                                    id="search" name="search"
-                                                   onClickTopics="showDialogLoading"
+                                                   onClickTopics="beforeSubmit"
                                                    onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
@@ -134,22 +151,6 @@
                                                  name="icon_success">
                                             Record has been saved successfully.
                                         </sj:dialog>
-                                            <%--<sj:dialog id="success_dialog" openTopics="showInfoDialog" modal="true"--%>
-                                            <%--resizable="false"--%>
-                                            <%--closeOnEscape="false"--%>
-                                            <%--height="200" width="400" autoOpen="false" title="Infomation Dialog"--%>
-                                            <%--buttons="{--%>
-                                            <%--'OK':function() {--%>
-                                            <%--$('#success_dialog').dialog('close');--%>
-                                            <%--pasienSuccess();--%>
-                                            <%--}--%>
-                                            <%--}"--%>
-                                            <%-->--%>
-                                            <%--<s:hidden id="val_id_pasien"></s:hidden>--%>
-                                            <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>"--%>
-                                            <%--name="icon_success">--%>
-                                            <%--Record has been saved successfully.--%>
-                                            <%--</sj:dialog>--%>
                                         <sj:dialog id="view_dialog_user" openTopics="showDialogUser" modal="true"
                                                    resizable="false" cssStyle="text-align:left;"
                                                    height="650" width="900" autoOpen="false" title="View Detail"
@@ -174,7 +175,6 @@
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Tempat, Tgl Lahir</td>
-                                <%--<td>Password</td>--%>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -1126,6 +1126,18 @@
         $('#upload_pasien').attr('disabled', false);
         $('#upload_pasien, #upload_nama_pasien, #upload_no_rm_lama').val('');
         $('#body-rm').html('');
+    }
+
+    function cekSearch(){
+        var id = $('#id_pasien').val();
+        var nama = $('#nama_pasien').val();
+        if(id && nama == ''){
+            $('#warning_search').show().fadeOut(5000);
+            $('#msg_search').text("Inputan data berikut minimal satu...!");
+            return false;
+        }else{
+            return true;
+        }
     }
 </script>
 

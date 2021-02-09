@@ -14,6 +14,7 @@ import java.util.List;
  */
 public interface PasienBo extends GeneralBo {
     public List<Pasien> getByCriteria(Pasien bean) throws GeneralBOException;
+    public List<Pasien> getSearchForMaster(Pasien bean) throws GeneralBOException;
     public void saveAdd(Pasien pasien) throws GeneralBOException;
     public CrudResponse saveEdit(Pasien pasien) throws GeneralBOException;
     public Boolean cekNikPasien(String nik) throws GeneralBOException;

@@ -324,7 +324,7 @@ public class PasienAction extends BaseMasterAction {
         List<Pasien> listOfPasien = new ArrayList<>();
 
         try {
-            listOfPasien = pasienBoProxy.getByCriteria(searchPesien);
+            listOfPasien = pasienBoProxy.getSearchForMaster(searchPesien);
         } catch (GeneralBOException e) {
             logger.error("[PasienAction.getByCriteria] Error when get by criteria pasien, please inform to your admin.", e);
         }
