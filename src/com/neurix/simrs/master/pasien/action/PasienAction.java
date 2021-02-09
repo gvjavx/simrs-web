@@ -859,6 +859,9 @@ public class PasienAction extends BaseMasterAction {
             dataPasien.setDesaId(obj.getString("desa_id"));
             dataPasien.setFlag(obj.getString("flag"));
             dataPasien.setNoTelp(obj.getString("no_telp"));
+            dataPasien.setStatusPerkawinan(obj.getString("status"));
+            dataPasien.setPendidikan(obj.getString("pendidikan"));
+            dataPasien.setPassword(obj.getString("password"));
             dataPasien.setLastUpdate(time);
             dataPasien.setLastUpdateWho(userLogin);
 
