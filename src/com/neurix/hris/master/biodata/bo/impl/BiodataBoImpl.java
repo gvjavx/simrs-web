@@ -1565,35 +1565,37 @@ public class BiodataBoImpl implements BiodataBo {
 //                List<PengalamanKerja> listPengalamanKerja = (List<PengalamanKerja>) session.getAttribute("listPengalamanKerja");
 
                 String stTglMasuk = "";
-                for(PersonilPosition position : listPersonilPosition){
-                    PengalamanKerja pengalaman = new PengalamanKerja();
+                if (listPersonilPosition != null && listPersonilPosition.size() != 0) {
+                    for (PersonilPosition position : listPersonilPosition) {
+                        PengalamanKerja pengalaman = new PengalamanKerja();
 
-                    pengalaman.setNip(position.getNip());
-                    pengalaman.setBranchId(position.getBranchId());
-                    pengalaman.setBranchName(position.getBranchName());
-                    pengalaman.setDivisiId(position.getDivisiId());
-                    pengalaman.setDivisiName(position.getDivisiName());
-                    pengalaman.setJabatan(position.getPositionId());
-                    pengalaman.setPosisiId(position.getPositionId());
-                    pengalaman.setJabatanName(position.getPositionName());
-                    pengalaman.setPositionName(position.getPositionName());
-                    pengalaman.setTipePegawaiId(bean.getTipePegawai());
-                    pengalaman.setGolonganId(bean.getGolongan());
-                    pengalaman.setStTtahunMasuk(bean.getStTanggalMasuk());
-                    pengalaman.setStTahunKeluar("");
-                    pengalaman.setProfesiId(position.getProfesiId());
-                    pengalaman.setProfesiName(position.getProfesiName());
+                        pengalaman.setNip(position.getNip());
+                        pengalaman.setBranchId(position.getBranchId());
+                        pengalaman.setBranchName(position.getBranchName());
+                        pengalaman.setDivisiId(position.getDivisiId());
+                        pengalaman.setDivisiName(position.getDivisiName());
+                        pengalaman.setJabatan(position.getPositionId());
+                        pengalaman.setPosisiId(position.getPositionId());
+                        pengalaman.setJabatanName(position.getPositionName());
+                        pengalaman.setPositionName(position.getPositionName());
+                        pengalaman.setTipePegawaiId(bean.getTipePegawai());
+                        pengalaman.setGolonganId(bean.getGolongan());
+                        pengalaman.setStTtahunMasuk(bean.getStTanggalMasuk());
+                        pengalaman.setStTahunKeluar("");
+                        pengalaman.setProfesiId(position.getProfesiId());
+                        pengalaman.setProfesiName(position.getProfesiName());
 
-                    pengalaman.setFlag("Y");
-                    pengalaman.setAction("C");
-                    pengalaman.setCreatedWho(bean.getCreatedWho());
-                    pengalaman.setLastUpdateWho(bean.getLastUpdateWho());
-                    pengalaman.setCreatedDate(bean.getCreatedDate());
-                    pengalaman.setLastUpdate(bean.getLastUpdate());
-                    pengalaman.setPjsFlag("N");
-                    pengalaman.setFlagJabatanAktif("Y");
+                        pengalaman.setFlag("Y");
+                        pengalaman.setAction("C");
+                        pengalaman.setCreatedWho(bean.getCreatedWho());
+                        pengalaman.setLastUpdateWho(bean.getLastUpdateWho());
+                        pengalaman.setCreatedDate(bean.getCreatedDate());
+                        pengalaman.setLastUpdate(bean.getLastUpdate());
+                        pengalaman.setPjsFlag("N");
+                        pengalaman.setFlagJabatanAktif("Y");
 
-                    listPengalamanKerja.add(pengalaman);
+                        listPengalamanKerja.add(pengalaman);
+                    }
                 }
 
                 personPosition =  personilPositionDao.getNextPersonilPositionId();
@@ -1694,7 +1696,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setProvinsiId(bean.getProvinsiId());
                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
                 imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
-                imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
+//                imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
                 imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                 imBiodataEntity.setTempatLahir(bean.getTempatLahir());
                 imBiodataEntity.setTipePegawai(bean.getTipePegawai());
