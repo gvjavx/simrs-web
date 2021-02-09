@@ -548,7 +548,7 @@ function saveKeterangan(idKtg, poli, kelas, kamar, idDokter, ket_selesai, tgl_ce
 function listSelectTindakan(idKtg) {
     var option = "<option value=''>[Select One]</option>";
     if (idKtg != '') {
-        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, function (response) {
+        CheckupDetailAction.getListComboTindakan(idKtg, idKelasRuangan, null, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";

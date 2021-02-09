@@ -188,6 +188,25 @@ public class HeaderCheckup {
     private String all;
     private String tahun;
 
+    private String isEksekutif;
+    private String isVaksin;
+
+    public String getIsEksekutif() {
+        return isEksekutif;
+    }
+
+    public void setIsEksekutif(String isEksekutif) {
+        this.isEksekutif = isEksekutif;
+    }
+
+    public String getIsVaksin() {
+        return isVaksin;
+    }
+
+    public void setIsVaksin(String isVaksin) {
+        this.isVaksin = isVaksin;
+    }
+
     public String getAll() {
         return all;
     }

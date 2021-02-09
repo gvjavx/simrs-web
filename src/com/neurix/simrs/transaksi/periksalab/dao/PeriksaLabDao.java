@@ -238,10 +238,18 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         if("laboratorium".equalsIgnoreCase(tipe)){
             type = "lab";
         }
-        String SQL = "SELECT a.branch_id, a.id_detail_checkup, c.kodering\n" +
+        String SQL = "SELECT a.branch_id, a.id_detail_checkup, b.divisi_id\n" +
                 "FROM it_simrs_header_detail_checkup a \n" +
-                "INNER JOIN im_simrs_pelayanan b ON b.branch_id = a.branch_id \n" +
-                "INNER JOIN im_position c ON c.position_id = b.divisi_id\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "a.branch_id,"+
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON b.branch_id = a.branch_id \n" +
                 "WHERE a.id_detail_checkup = :idDetail \n" +
                 "AND b.tipe_pelayanan ILIKE :tipe";
 
@@ -267,7 +275,16 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "a.nama_dokter\n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "a.branch_id, \n"+
+                    "b.nama_pelayanan,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE c.branch_id = :branchId\n" +
                     "AND c.tipe_pelayanan LIKE :tipe";
 
@@ -359,7 +376,16 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
                 "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
                 "INNER JOIN im_simrs_kategori_lab e ON a.id_kategori_lab = e.id_kategori_lab\n" +
-                "LEFT JOIN im_simrs_pelayanan f ON b.id_pelayanan = f.id_pelayanan\n" +
+                "LEFT JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) f ON b.id_pelayanan = f.id_pelayanan\n" +
                 "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
                 "AND a.flag = 'Y'\n" +
                 "ORDER BY a.id_detail_checkup ASC";

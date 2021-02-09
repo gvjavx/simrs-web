@@ -921,7 +921,16 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 "        a.qty_k\n" +
                 "        ORDER BY id_pelayanan, registered_date, id_barang\n" +
                 ") a \n" +
-                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = a.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = a.id_pelayanan\n" +
                 "INNER JOIN im_branches br ON br.branch_id = pl.branch_id\n" +
                 "INNER JOIN im_simrs_obat ob ON ob.id_barang = a.id_barang \n" +
                 "INNER JOIN (\n" +

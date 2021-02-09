@@ -75,8 +75,9 @@
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
+            var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -118,6 +119,9 @@
                 }
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
+                }
+                if (tglMasuk == '') {
+                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -317,7 +321,7 @@
 
                     <div class="tab-content well box-shadowed" >
                         <div id="biodata" class="tab-pane fade in active">
-                            <h3>Biodata</h3>
+                            <h3>Biodata Karyawan Kantor</h3>
                             <br>
                             <div class="row">
                                 <div class="col-md-12" style="text-align: center;">
@@ -339,16 +343,16 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir--%>
-                                                            <%--<s:if test="isAdd()">--%>
-                                                        <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control" readonly="true" />
-                                                            <%--</s:if>--%>
-                                                            <%--<s:elseif test="isDelete()">--%>
-                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
-                                                            <%--</s:elseif>--%>
-                                                            <%--<s:else>--%>
-                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
-                                                            <%--</s:else>--%>
+                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir (SEMENTARA TIDAK DIGUNAKAN)--%>
+                                                            <s:if test="isAdd()">
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:elseif test="isDelete()">
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                            </s:elseif>
+                                                            <s:else>
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                            </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -475,8 +479,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
+                                                        <%--<s:elseif test="isAdd()">--%>
+                                                            <%--<s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"--%>
+                                                                         <%--cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />--%>
+                                                        <%--</s:elseif>--%>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -982,7 +990,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1007,7 +1015,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1075,7 +1083,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1093,7 +1101,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -3316,7 +3324,7 @@
         } else{
             $('.label-prapensiun').html("<small>Tanggal MBT : </small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun : </small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Masuk : </small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk <span style=\"color:red;\">*</span> : </small>");
             $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan : </small>");
         }
     }
@@ -3330,6 +3338,10 @@
         loadPositionJabatan();
         getAllDepartment();
         getAllJenisPegawai();
+
+        var tglLahir = $('#tanggalLahir1').val();
+        var tglPensiun = $('#tanggalPensiun').val();
+        if(tglLahir != "" && tglPensiun == "") getTanggalPensiun(tglLahir);
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
@@ -6365,21 +6377,21 @@
         });
     }
 
-    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
-        dwr.engine.setAsync(false);
-        dwr.engine.beginBatch();
-        BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
-            alert('Data Berhasil Disimpan');
-            $('#modal-pengalamanKerja').modal('hide');
-            $('#myFormPengalaman')[0].reset();
-            loadSessionPengalamanKerja();
-        });
-        dwr.engine.endBatch({
-            errorHandler:function(errorString, exception){
-                alert('Jabatan aktif sudah ada');
-            }
-        });
-    }
+    // function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
+    //     dwr.engine.setAsync(false);
+    //     dwr.engine.beginBatch();
+    //     BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+    //         alert('Data Berhasil Disimpan');
+    //         $('#modal-pengalamanKerja').modal('hide');
+    //         $('#myFormPengalaman')[0].reset();
+    //         loadSessionPengalamanKerja();
+    //     });
+    //     dwr.engine.endBatch({
+    //         errorHandler:function(errorString, exception){
+    //             alert('Jabatan aktif sudah ada');
+    //         }
+    //     });
+    // }
 
     function getNip(birthDate){
         var nip = $("#nip1").val();
@@ -6389,7 +6401,7 @@
                 $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
             })
         } else {
-            var seq = nip.substr(8, 4);
+            var seq = nip.slice(nip.length - 4);
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
     }

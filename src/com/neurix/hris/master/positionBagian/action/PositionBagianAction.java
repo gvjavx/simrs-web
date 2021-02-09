@@ -497,13 +497,20 @@ public class PositionBagianAction extends BaseMasterAction{
         return listOfsearchPosisiBagian;
     }
 
-    public List<Department> searchHead(String id , String dp){
+    public List<Department> searchHead(String bagianId, String bagianName, String divisiId, String flag){
         List<Department> list = new ArrayList<>();
         //DWR FOR GET BEAN
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        positionBagian positionBagian = new positionBagian();
+
+        positionBagian.setBagianId(bagianId);
+        positionBagian.setBagianName(bagianName);
+        positionBagian.setDivisiId(divisiId);
+        positionBagian.setFlag(flag);
+        //
         try {
-            list = positionBagianBo.getHead(id,dp);
+            list = positionBagianBo.getHead(positionBagian);
         }catch (GeneralBOException e){
             logger.error(e.getMessage());
         }

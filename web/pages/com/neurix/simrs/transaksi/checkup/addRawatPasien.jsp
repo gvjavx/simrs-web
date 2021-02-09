@@ -75,23 +75,7 @@
 
                 if (tipe == "umum") {
                     if(cekEksekutif == 'Y'){
-                        if($('#is_uang_muka').is(':checked')){
-                            if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
-                                $('#confirm_dialog').dialog('open');
-                            } else {
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                                if (pembayaran == '') {
-                                    $('#war_pembayaran').show();
-                                }
-                                if (uangMuka == '' || parseInt(uangMuka) == 0) {
-                                    $('#war_uang_muka').show();
-                                }
-                            }
-                        }else{
-                            $('#confirm_dialog').dialog('open');
-                        }
+                        $('#confirm_dialog').dialog('open');
                     }else{
                         if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
                             $('#confirm_dialog').dialog('open');
@@ -452,6 +436,7 @@
                 $('#url_do').val(null);
                 $('#surat_polisi, #surat_rujuk').val(null);
                 $('#warning_pasien').hide();
+                $('#form_vaksin').hide();
             }
 
             var url_string = window.location.href;
@@ -562,6 +547,7 @@
             $('#url_do').val(null);
             $('#surat_polisi, #surat_rujuk').val(null);
             $('#warning_pasien').hide();
+            $('#form_vaksin').hide();
         }
 
         function formatRupiah2(angka) {
@@ -721,7 +707,7 @@
                                                 <div class="col-md-8">
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <s:textfield id="no_bpjs" name="headerCheckup.noBpjs"
-                                                                     cssClass="form-control"
+                                                                     cssClass="form-control" placeholder="input 3 karakter no bpjs"
                                                                      oninput="searchNoBpjs(this.id)"/>
                                                         <div class="input-group-btn" onclick="checkBpjs()">
                                                             <a class="btn btn-success">
@@ -738,7 +724,7 @@
                                                 <div class="col-md-8">
                                                     <div class="input-group" style="margin-top: 7px">
                                                         <s:textfield id="id_pasien" name="headerCheckup.idPasien"
-                                                                     oninput="searchNoRM(this.id, this.value)"
+                                                                     oninput="searchNoRM(this.id, this.value)" placeholder="input 3 karakter no rm/nama"
                                                                      onkeypress="$(this).css('border','');"
                                                                      cssClass="form-control"/>
                                                         <div class="input-group-btn">
@@ -1062,6 +1048,68 @@
                                     </div>
                                 </div>
                             </div>
+                            <div id="form-rekanan" style="display: none">
+                                <div class="box-header with-border"></div>
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">Nama
+                                                        Rekanan</label>
+
+                                                    <div class="col-md-8">
+                                                        <select id="unit_ptpn" class="form-control select2"
+                                                                style="width: 100%"
+                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
+                                                        </select>
+                                                        <span style="color: red; display: none" id="war_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group" id="form_pg" style="display: none">
+                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" id="unit_pg"
+                                                               style="margin-top: 7px">
+                                                        <span style="color: red; display: none" id="war_pg"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pg"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
+                                                        Rekanan</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield id="no_kartu_ptpn"
+                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
+                                                                     oninput="$('#h_no_kartu').val(this.value)"
+                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
+                                                        <span style="color: red; display: none"
+                                                              id="war_no_kartu_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none"
+                                                              id="con_no_kartu_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div id="form-rujukan" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
@@ -1254,6 +1302,17 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row" style="display: none" id="form_eksekutif">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Eksekutif ?</label>
+                                                <div class="col-md-8">
+                                                    <div class="form-check" style="margin-top: 10px">
+                                                        <input onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
+                                                        <label for="is_uang_muka"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="row">
@@ -1300,6 +1359,17 @@
                                                     <s:textfield id="kunjungan_poli" name="headerCheckup.kunjunganPoli"
                                                                  readonly="true" cssStyle="margin-top: 7px"
                                                                  cssClass="form-control"></s:textfield>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="display: none" id="form_vaksin">
+                                            <div class="form-group">
+                                                <label class="col-md-4" style="margin-top: 10px">Vaksin ?</label>
+                                                <div class="col-md-8">
+                                                    <div class="form-check" style="margin-top: 10px">
+                                                        <input onclick="isVaksin(this.id)" type="checkbox" id="is_vaksin" value="yes">
+                                                        <label for="is_vaksin"></label>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1404,69 +1474,6 @@
                                 </div>
                             </div>
 
-                            <div id="form-rekanan" style="display: none">
-                                <div class="box-header with-border"></div>
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Nama
-                                                        Rekanan</label>
-
-                                                    <div class="col-md-8">
-                                                        <select id="unit_ptpn" class="form-control select2"
-                                                                style="width: 100%"
-                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
-                                                        </select>
-                                                        <span style="color: red; display: none" id="war_ptpn"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group" id="form_pg" style="display: none">
-                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
-                                                    <div class="col-md-8">
-                                                        <input class="form-control" id="unit_pg"
-                                                               style="margin-top: 7px">
-                                                        <span style="color: red; display: none" id="war_pg"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_pg"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
-                                                        Rekanan</label>
-                                                    <div class="col-md-8">
-                                                        <s:textfield id="no_kartu_ptpn"
-                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
-                                                                     oninput="$('#h_no_kartu').val(this.value)"
-                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
-                                                        <span style="color: red; display: none"
-                                                              id="war_no_kartu_ptpn"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none"
-                                                              id="con_no_kartu_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
@@ -1486,19 +1493,16 @@
                             <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
-                            <s:hidden id="cek_poli_eksekutif"></s:hidden>
+                            <s:hidden id="cek_poli_eksekutif" name="headerCheckup.isEksekutif"></s:hidden>
+                            <s:hidden id="cek_is_vaksin" name="headerCheckup.isVaksin"></s:hidden>
 
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
                                     <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
-                                        <div class="form-check" id="centang" style="display: none">
-                                            <input checked onclick="isUangMuka(this.id)" type="checkbox" id="is_uang_muka" value="yes">
-                                            <label for="is_uang_muka"></label>
-                                        </div>
                                     </h3>
                                 </div>
-                                <div class="box-body" id="form-um-ex">
+                                <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="row">
@@ -2507,17 +2511,10 @@
                         $('#form-lab').hide();
                     }
 
-                    if(res.isEksekutif == 'Y'){
-                        $('#centang').show();
-                        $('#text_centang').text("Uang Muka ? ");
-                        $('#cek_poli_eksekutif').val('Y');
-                        $('#form-um-ex').show();
-                        $('#is_uang_muka').prop('checked', true);
+                    if(res.isVaksin == "Y"){
+                        $('#form_vaksin').show();
                     }else{
-                        $('#centang').hide();
-                        $('#text_centang').text("Pembayaran");
-                        $('#cek_poli_eksekutif').val('N');
-                        $('#form-um-ex').show();
+                        $('#form_vaksin').hide();
                     }
                 }
             });
@@ -2915,13 +2912,13 @@
     function searchNoBpjs(id) {
         var functions, mapped;
         $('#' + id).typeahead({
-            minLength: 1,
+            minLength: 3,
             source: function (query, process) {
                 functions = [];
                 mapped = {};
                 var data = [];
                 dwr.engine.setAsync(false);
-                PasienAction.getListComboPasienByBpjs(query, function (listdata) {
+                PasienAction.getListComboPasien(query, "", function (listdata) {
                     data = listdata;
                 });
                 if (data.length != 0) {
@@ -2934,31 +2931,9 @@
                             labelItem = item.noBpjs + "-" + item.nama;
                         }
                         mapped[labelItem] = {
-                            id: item.idPasien,
-                            nama: item.nama,
-                            ktp: item.noKtp,
-                            bpjs: item.noBpjs,
-                            tempatlahir: item.tempatLahir,
-                            tgllahir: item.tglLahir,
-                            alamat: item.jalan,
-                            suku: item.suku,
-                            profesi: item.profesi,
-                            notelp: item.noTelp,
-                            urlktp: item.urlKtp,
-                            imgKtp: item.imgKtp,
-                            sex: item.jenisKelamin,
-                            agama: item.agama,
-                            idProv: item.provinsiId,
-                            idKota: item.kotaId,
-                            idKec: item.kecamatanId,
-                            idDesa: item.desaId,
-                            prov: item.provinsi,
-                            kota: item.kota,
-                            kec: item.kecamatan,
-                            desa: item.desa,
-                            isLama: item.isPasienLama,
-                            pendidikan: item.pendidikan,
-                            statusPerkawinan: item.statusPerkawinan
+                            id: item.noBpjs,
+                            idPasien: item.idPasien,
+                            nama: item.nama
                         };
                         functions.push(labelItem);
                     });
@@ -2967,52 +2942,91 @@
             },
             updater: function (item) {
                 var selectedObj = mapped[item];
-
-                alertPasien(selectedObj.id);
-
-                $('#id_pasien').val(selectedObj.id);
-                $('#no_ktp').val(selectedObj.ktp);
+                alertPasien(selectedObj.idPasien);
+                getRiwayatPemeriksaan(selectedObj.idPasien);
+                $('#id_pasien').val(selectedObj.idPasien);
                 $('#nama_pasien').val(selectedObj.nama);
-                $('#jenis_kelamin').val(selectedObj.sex);
-                $('#tempat_lahir').val(selectedObj.tempatlahir);
-                $('#tanggal_lahir').val(selectedObj.tgllahir);
-                $('#agama').val(selectedObj.agama);
-                $('#profesi').val(selectedObj.profesi).trigger('change');
-                $('#jalan').val(selectedObj.alamat);
-                $('#suku').val(selectedObj.suku).trigger('change');
-                $('#img_ktp').val(selectedObj.imgKtp);
-                if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
-                    var cek = cekImages(selectedObj.urlktp);
-                    if(cek){
-                        $('#img-upload').attr('src', selectedObj.urlktp);
-                    }else{
-                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                PasienAction.detailPasien(selectedObj.idPasien, function(res){
+                    if(res.idPasien != null){
+                        $('#no_ktp').val(res.noKtp);
+                        $('#jenis_kelamin').val(res.jenisKelamin);
+                        $('#tempat_lahir').val(res.tempatLahir);
+                        $('#tanggal_lahir').val(res.tglLahir);
+                        $('#agama').val(res.agama);
+                        $('#profesi').val(res.profesi).trigger('change');
+                        $('#jalan').val(res.jalan);
+                        $('#suku').val(res.suku).trigger('change');
+                        $('#img_ktp').val(res.imgKtp);
+                        if(res.urlKtp != null && res.urlKtp != ''){
+                            var cek = cekImages(res.urlKtp);
+                            if(cek){
+                                $('#img-upload').attr('src', res.urlKtp);
+                            }else{
+                                $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                            }
+                        }else{
+                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                        }
+                        $('#provinsi').val(res.provinsi);
+                        $('#kabupaten').val(res.kota);
+                        $('#kecamatan').val(res.kecamatan);
+                        $('#desa').val(res.desa);
+                        $('#provinsi11').val(res.provinsiId);
+                        $('#kabupaten11').val(res.kotaId);
+                        $('#kecamatan11').val(res.kecamatanId);
+                        $('#desa11').val(res.desaId);
+                        $('#no_telp').val(res.notelp);
+                        $('#pendidikan').val(res.pendidikan).trigger('change');
+                        $('#status_perkawinan').val(res.statusPerkawinan).trigger('change');
+                        if (res.isPasienLama) {
+                            $('#kunjungan_val').val("Lama");
+                        } else {
+                            $('#kunjungan_val').val("Baru");
+                        }
+
+                        var tipe = $('#jenis_pasien').val();
+                        if ("paket_perusahaan" == tipe || "paket_individu" == tipe) {
+                            if (res.idPelayanan != null) {
+                                $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
+                            }
+                        } else {
+                            if ("Y" == res.isCheckupUlang) {
+                                $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
+                            } else {
+                                $('#poli').val('').trigger('change').attr('disabled', false);
+                            }
+
+                            $('#last_id_detail_checkup').val(res.idLastDetailCheckup);
+                            $('#is_order_lab').val(res.isOrderLab);
+                            if (res.tglCheckup != null) {
+                                $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>" + res.tglCheckup + "</b>");
+                            } else {
+                                $('#tgl_checkup').html("");
+                            }
+                        }
+
+                        if (res.idPaket != null && res.idPaket != '') {
+                            $('#id_paket').val(res.idPaket);
+                            $('#paket_perusahaan').val(res.namaPaket);
+                            $('#cover_biaya_paket').val(res.tarif);
+                        }
+
+                        if (res.isPeriksa == "Y") {
+                            $('#btn-save').hide();
+                            $('#warning_pasien').show();
+                            $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                        } else {
+                            $('#btn-save').show();
+                            $('#warning_pasien').hide();
+                            $('#msg_pasien').text("");
+                            alertObatKronis(selectedObj.id);
+                        }
                     }
-                }else{
-                    $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
-                }
-                $('#provinsi').val(selectedObj.prov);
-                $('#kabupaten').val(selectedObj.kota);
-                $('#kecamatan').val(selectedObj.kec);
-                $('#desa').val(selectedObj.desa);
-                $('#provinsi11').val(selectedObj.idProv);
-                $('#kabupaten11').val(selectedObj.idKota);
-                $('#kecamatan11').val(selectedObj.idKec);
-                $('#desa11').val(selectedObj.idDesa);
-                $('#no_telp').val(selectedObj.notelp);
-                $('#pendidikan').val(selectedObj.pendidikan).trigger('change');
-                $('#status_perkawinan').val(selectedObj.statusPerkawinan).trigger('change');
-                if (selectedObj.isLama) {
-                    // $('#kunjungan').val("Lama").attr('disabled', true);
-                    $('#kunjungan_val').val("Lama");
-                } else {
-                    // $('#kunjungan').val("Baru").attr('disabled', true);
-                    $('#kunjungan_val').val("Baru");
-                }
+                });
                 $('#id_pasien').attr('readonly', true);
                 $('#no_bpjs').attr('readonly', true);
                 $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
-                return selectedObj.bpjs;
+                return selectedObj.id;
             }
         });
     }
@@ -3021,7 +3035,7 @@
         var functions, mapped;
         if (value != '') {
             $('#' + id).typeahead({
-                minLength: 1,
+                minLength: 3,
                 source: function (query, process) {
                     var jenisPasien = $('#jenis_pasien').val();
                     functions = [];
@@ -3033,49 +3047,19 @@
                     });
                     $.each(data, function (i, item) {
                         var labelItem = "";
+                        var dddesa = "";
+                        if(item.desa != null){
+                            dddesa = '-'+item.desa;
+                        }
 
                         if (item.noBpjs != '' && item.noBpjs != null) {
-                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + "-" + item.desa;
+                            labelItem = item.idPasien + "-" + item.noBpjs + "-" + item.nama + dddesa;
                         } else {
-                            labelItem = item.idPasien + "-" + item.nama + "-" + item.desa;
+                            labelItem = item.idPasien + "-" + item.nama + dddesa;
                         }
                         mapped[labelItem] = {
                             id: item.idPasien,
-                            nama: item.nama,
-                            ktp: item.noKtp,
-                            bpjs: item.noBpjs,
-                            tempatlahir: item.tempatLahir,
-                            tgllahir: item.tglLahir,
-                            alamat: item.jalan,
-                            suku: item.suku,
-                            profesi: item.profesi,
-                            notelp: item.noTelp,
-                            imgKtp: item.imgKtp,
-                            urlktp: item.urlKtp,
-                            sex: item.jenisKelamin,
-                            agama: item.agama,
-                            noBpjs: item.noBpjs,
-                            idProv: item.provinsiId,
-                            idKota: item.kotaId,
-                            idKec: item.kecamatanId,
-                            idDesa: item.desaId,
-                            prov: item.provinsi,
-                            kota: item.kota,
-                            kec: item.kecamatan,
-                            desa: item.desa,
-                            isLama: item.isPasienLama,
-                            idPelayanan: item.idPelayanan,
-                            idPaket: item.idPaket,
-                            namaPaket: item.namaPaket,
-                            tarif: item.tarif,
-                            tglCkp: item.tglCheckup,
-                            noCkpUlang: item.noCheckuoUlang,
-                            lastIdDetail: item.idLastDetailCheckup,
-                            isOrder: item.isOrderLab,
-                            isCkp: item.isCheckupUlang,
-                            isPeriksa: item.isDaftar,
-                            pendidikan: item.pendidikan,
-                            statusPerkawinan: item.statusPerkawinan
+                            nama: item.nama
                         };
                         functions.push(labelItem);
                     });
@@ -3086,83 +3070,85 @@
                     var selectedObj = mapped[item];
                     alertPasien(selectedObj.id);
                     getRiwayatPemeriksaan(selectedObj.id);
-                    $('#no_bpjs').val(selectedObj.noBpjs);
-                    $('#no_ktp').val(selectedObj.ktp);
                     $('#nama_pasien').val(selectedObj.nama);
-                    $('#jenis_kelamin').val(selectedObj.sex);
-                    $('#tempat_lahir').val(selectedObj.tempatlahir);
-                    $('#tanggal_lahir').val(selectedObj.tgllahir);
-                    $('#agama').val(selectedObj.agama);
-                    $('#profesi').val(selectedObj.profesi).trigger('change');
-                    $('#jalan').val(selectedObj.alamat);
-                    $('#suku').val(selectedObj.suku).trigger('change');
-                    $('#img_ktp').val(selectedObj.imgKtp);
-                    if(selectedObj.urlktp != null && selectedObj.urlktp != ''){
-                        var cek = cekImages(selectedObj.urlktp);
-                        if(cek){
-                            $('#img-upload').attr('src', selectedObj.urlktp);
-                        }else{
-                            $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
-                        }
-                    }else{
-                        $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
-                    }
-                    $('#provinsi').val(selectedObj.prov);
-                    $('#kabupaten').val(selectedObj.kota);
-                    $('#kecamatan').val(selectedObj.kec);
-                    $('#desa').val(selectedObj.desa);
-                    $('#provinsi11').val(selectedObj.idProv);
-                    $('#kabupaten11').val(selectedObj.idKota);
-                    $('#kecamatan11').val(selectedObj.idKec);
-                    $('#desa11').val(selectedObj.idDesa);
-                    $('#no_telp').val(selectedObj.notelp);
-                    $('#pendidikan').val(selectedObj.pendidikan).trigger('change');
-                    $('#status_perkawinan').val(selectedObj.statusPerkawinan).trigger('change');
-                    if (selectedObj.isLama) {
-                        // $('#kunjungan').val("Lama").attr('disabled', true);
-                        $('#kunjungan_val').val("Lama");
-                    } else {
-                        // $('#kunjungan').val("Baru").attr('disabled', true);
-                        $('#kunjungan_val').val("Baru");
-                    }
+                    PasienAction.detailPasien(selectedObj.id, function(res){
+                        if(res.idPasien != null){
+                            $('#no_bpjs').val(res.noBpjs);
+                            $('#no_ktp').val(res.noKtp);
+                            $('#jenis_kelamin').val(res.jenisKelamin);
+                            $('#tempat_lahir').val(res.tempatLahir);
+                            $('#tanggal_lahir').val(res.tglLahir);
+                            $('#agama').val(res.agama);
+                            $('#profesi').val(res.profesi).trigger('change');
+                            $('#jalan').val(res.jalan);
+                            $('#suku').val(res.suku).trigger('change');
+                            $('#img_ktp').val(res.imgKtp);
+                            if(res.urlKtp != null && res.urlKtp != ''){
+                                var cek = cekImages(res.urlKtp);
+                                if(cek){
+                                    $('#img-upload').attr('src', res.urlKtp);
+                                }else{
+                                    $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                                }
+                            }else{
+                                $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
+                            }
+                            $('#provinsi').val(res.provinsi);
+                            $('#kabupaten').val(res.kota);
+                            $('#kecamatan').val(res.kecamatan);
+                            $('#desa').val(res.desa);
+                            $('#provinsi11').val(res.provinsiId);
+                            $('#kabupaten11').val(res.kotaId);
+                            $('#kecamatan11').val(res.kecamatanId);
+                            $('#desa11').val(res.desaId);
+                            $('#no_telp').val(res.notelp);
+                            $('#pendidikan').val(res.pendidikan).trigger('change');
+                            $('#status_perkawinan').val(res.statusPerkawinan).trigger('change');
+                            if (res.isPasienLama) {
+                                $('#kunjungan_val').val("Lama");
+                            } else {
+                                $('#kunjungan_val').val("Baru");
+                            }
 
-                    var tipe = $('#jenis_pasien').val();
-                    if ("paket_perusahaan" == tipe || "paket_individu" == tipe) {
-                        if (selectedObj.idPelayanan != null) {
-                            $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('disabled', true);
-                        }
-                    } else {
-                        if ("Y" == selectedObj.isCkp) {
-                            $('#poli').val(selectedObj.idPelayanan).trigger('change').attr('disabled', true);
-                        } else {
-                            $('#poli').val('').trigger('change').attr('disabled', false);
-                        }
+                            var tipe = $('#jenis_pasien').val();
+                            if ("paket_perusahaan" == tipe || "paket_individu" == tipe) {
+                                if (res.idPelayanan != null) {
+                                    $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
+                                }
+                            } else {
+                                if ("Y" == res.isCheckupUlang) {
+                                    $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
+                                } else {
+                                    $('#poli').val('').trigger('change').attr('disabled', false);
+                                }
 
-                        $('#last_id_detail_checkup').val(selectedObj.lastIdDetail);
-                        $('#is_order_lab').val(selectedObj.isOrder);
-                        if (selectedObj.tglCkp != null) {
-                            $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>" + selectedObj.tglCkp + "</b>");
-                        } else {
-                            $('#tgl_checkup').html("");
+                                $('#last_id_detail_checkup').val(res.idLastDetailCheckup);
+                                $('#is_order_lab').val(res.isOrderLab);
+                                if (res.tglCheckup != null) {
+                                    $('#tgl_checkup').html("Tanggal Checkup Ulang : <b>" + res.tglCheckup + "</b>");
+                                } else {
+                                    $('#tgl_checkup').html("");
+                                }
+                            }
+
+                            if (res.idPaket != null && res.idPaket != '') {
+                                $('#id_paket').val(res.idPaket);
+                                $('#paket_perusahaan').val(res.namaPaket);
+                                $('#cover_biaya_paket').val(res.tarif);
+                            }
+
+                            if (res.isPeriksa == "Y") {
+                                $('#btn-save').hide();
+                                $('#warning_pasien').show();
+                                $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                            } else {
+                                $('#btn-save').show();
+                                $('#warning_pasien').hide();
+                                $('#msg_pasien').text("");
+                                alertObatKronis(selectedObj.id);
+                            }
                         }
-                    }
-
-                    if (selectedObj.idPaket != null && selectedObj.idPaket != '') {
-                        $('#id_paket').val(selectedObj.idPaket);
-                        $('#paket_perusahaan').val(selectedObj.namaPaket);
-                        $('#cover_biaya_paket').val(selectedObj.tarif);
-                    }
-
-                    if (selectedObj.isPeriksa == "Y") {
-                        $('#btn-save').hide();
-                        $('#warning_pasien').show();
-                        $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                    } else {
-                        $('#btn-save').show();
-                        $('#warning_pasien').hide();
-                        $('#msg_pasien').text("");
-                        alertObatKronis(selectedObj.id);
-                    }
+                    });
                     $('#id_pasien').attr('readonly', true);
                     $('#no_bpjs').attr('readonly', true);
                     $('#no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #agama, #provinsi, #kabupaten, #kecamatan, #desa ').css('border', '');
@@ -3217,6 +3203,7 @@
             $('#form-no-bpjs').hide();
             $('#form-rujukan').hide();
             $('#poli').attr('disabled', false);
+            $('#form_eksekutif').show();
         } else if (jenis == "bpjs" || jenis == "rekanan") {
             if (jenis == "rekanan") {
                 listSelectRekanan();
@@ -3232,6 +3219,7 @@
             $('#form-paket').hide();
             $('#form-asuransi').hide();
             $('#poli').attr('disabled', false);
+            $('#form_eksekutif').hide();
         } else if (jenis == "paket_perusahaan") {
             listSelectPaket();
             $('#form-paket-perusahaan').show();
@@ -3242,6 +3230,7 @@
             $('#form-rekanan').hide();
             $('#form-paket').hide();
             $('#poli').attr('disabled', true);
+            $('#form_eksekutif').hide();
         } else if (jenis == "paket_individu") {
             listSelectPaket();
             $('#form-paket').show();
@@ -3252,6 +3241,7 @@
             $('#form-rekanan').hide();
             $('#form-uang-muka').hide();
             $('#poli').attr('disabled', true);
+            $('#form_eksekutif').hide();
         } else if (jenis == "asuransi") {
             listSelectAsuransi();
             $('#form-asuransi').show();
@@ -3262,6 +3252,7 @@
             $('#form-uang-muka').hide();
             $('#form-rekanan').hide();
             $('#poli').attr('disabled', false);
+            $('#form_eksekutif').hide();
         }
 
         if (online == "Y") {
@@ -3270,7 +3261,6 @@
             $('#jenis_pasien').attr('disabled', true);
             $('#id_pasien').attr('readonly', true);
             $('#no_bpjs').attr('readonly', true);
-            $('#')
         } else {
             var url_string = window.location.href;
             var url = new URL(url_string);
@@ -3839,9 +3829,20 @@
 
     function isUangMuka(id){
         if($('#'+id).is(':checked')){
-            $('#form-um-ex').show();
+            $('#form-uang-muka').hide();
+            $('#cek_poli_eksekutif').val('Y');
+            $('#uang_muka, #uang_muka_val, #pembayaran').val('');
         }else{
-            $('#form-um-ex').hide();
+            $('#form-uang-muka').show();
+            $('#cek_poli_eksekutif').val('N');
+        }
+    }
+
+    function isVaksin(id){
+        if($('#'+id).is(':checked')){
+            $('#cek_is_vaksin').val('Y');
+        }else{
+            $('#cek_is_vaksin').val('N');
         }
     }
 

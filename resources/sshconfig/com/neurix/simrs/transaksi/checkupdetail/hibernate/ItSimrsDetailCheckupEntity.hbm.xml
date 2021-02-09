@@ -220,5 +220,11 @@
         <property name="noRujukanInternal">
             <column name="no_rujukan_internal"/>
         </property>
+        <property name="isEksekutif">
+            <column name="is_eksekutif"/>
+        </property>
+        <property name="isVaksin">
+            <column name="is_vaksin"/>
+        </property>
     </class>
 </hibernate-mapping>

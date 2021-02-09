@@ -245,11 +245,15 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
         if(bean.getIdKelasRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
             idKelas = "AND b.id_kelas_ruangan = '"+bean.getIdKelasRuangan()+"' \n";
         }
-//        if("Y".equalsIgnoreCase(bean.getStatusRuangan())){
-//            status = "AND c.status = 'Y'\n";
-//        }
+
         if(bean.getKategori() != null && !"".equalsIgnoreCase(bean.getKategori())){
             kategori = bean.getKategori();
+        }
+
+        if(bean.getStatus() != null){
+            if("Y".equalsIgnoreCase(bean.getStatus())){
+                status = "AND c.status = 'Y' \n";
+            }
         }
         String query = "SELECT\n" +
                 "b.id_ruangan,\n" +
@@ -260,7 +264,7 @@ public class RuanganDao extends GenericDao<MtSimrsRuanganEntity, String> {
                 "FROM im_simrs_kelas_ruangan a\n" +
                 "INNER JOIN mt_simrs_ruangan b ON a.id_kelas_ruangan = b.id_kelas_ruangan\n" +
                 "INNER JOIN mt_simrs_ruangan_tempat_tidur c ON b.id_ruangan = c.id_ruangan\n" +
-                "WHERE a.kategori LIKE :kategori\n" + idKelas  +
+                "WHERE a.kategori LIKE :kategori\n" + idKelas  + status +
                 "AND b.branch_id = :branchId\n" +
                 "ORDER BY b.nama_ruangan ASC";
 
