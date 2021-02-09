@@ -1321,7 +1321,7 @@
         var nama = $('#nama_pasien').val();
         var count = $("#nama_pasien").val().replace(/ /g,'').length;
         var countId = $("#id_pasien").val().replace(/ /g,'').length;
-        if(id == '' && nama == '' || count < 3 || countId < 3){
+        if(id == '' && nama == '' || count < 3){
             $('#warning_search').show().fadeOut(5000);
             $('#msg_search').text("Inputan data berikut minimal 3 Karakter...!");
             return false;
