@@ -7,13 +7,9 @@
     <class name="com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity" dynamic-update="true"
            table="im_simrs_pelayanan" select-before-update="true" schema="public">
 
-
         <id name="idPelayanan">
             <column name="id_pelayanan" sql-type="varchar" length="30" not-null="true" />
         </id>
-        <property name="namaPelayanan">
-            <column name="nama_pelayanan" sql-type="varchar" length="100" not-null="false"/>
-        </property>
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -32,26 +28,11 @@
         <property name="lastUpdateWho">
             <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <property name="isPoli">
-            <column name="is_poli" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="isEksekutif">
-            <column name="is_eksekutif" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="tipePelayanan">
-            <column name="tipe_pelayanan" sql-type="varchar" length="100" not-null="false" />
-        </property>
         <property name="branchId">
             <column name="branch_id" sql-type="varchar" length="5" not-null="false" />
         </property>
-        <property name="divisiId">
-            <column name="divisi_id" sql-type="varchar" length="30" not-null="false" />
-        </property>
-        <property name="kategoriPelayanan">
-            <column name="kategori_pelayanan" sql-type="varchar" length="100" not-null="false" />
-        </property>
-        <property name="kodePoliVclaim">
-            <column name="kode_poli_vclaim"/>
+        <property name="idHeaderPelayanan">
+            <column name="id_header_pelayanan"/>
         </property>
 
     </class>

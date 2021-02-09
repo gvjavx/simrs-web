@@ -780,7 +780,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
                     "\te.id_jenis_periksa_pasien,\n" +
-                    "\ta.jenis_resep\n" +
+                    "\tb.jenis_resep\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +
@@ -849,7 +849,7 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
                     "\tf.no_checkup,\n" +
                     "\tf.id_pasien,\n" +
                     "\te.id_jenis_periksa_pasien,\n" +
-                    "\ta.jenis_resep\n" +
+                    "\tb.jenis_resep\n" +
                     "\tFROM mt_simrs_permintaan_resep a\n" +
                     "\tINNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat\n" +
                     "\tINNER JOIN (SELECT id_transaksi_obat_detail, SUM(qty_approve) as qty FROM mt_simrs_transaksi_obat_detail_batch WHERE approve_flag = 'Y'  GROUP BY id_transaksi_obat_detail)c ON b.id_transaksi_obat_detail = c.id_transaksi_obat_detail\n" +

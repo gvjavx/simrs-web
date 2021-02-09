@@ -118,6 +118,23 @@ public class PasienBoImpl implements PasienBo {
         return results;
     }
 
+    @Override
+    public List<Pasien> getSearchForMaster(Pasien bean) throws GeneralBOException {
+        logger.info("[PasienBoImpl.getSearchForMaster] Start >>>>>>>");
+
+        List<Pasien> pasienList = new ArrayList<>();
+
+        try {
+            pasienList = pasienDao.getSearchPasienForMaster(bean);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getSearchForMaster] Error when search pasien by criteria " + e.getMessage());
+            throw new GeneralBOException("[PasienBoImpl.getSearchForMaster] Error when search pasien by criteria " + e);
+        }
+
+
+        logger.info("[PasienBoImpl.getSearchForMaster] End <<<<<<<");
+        return pasienList;
+    }
 
     public List<Pasien> setTemplatePasien(List<ImSimrsPasienEntity> listEntity) {
         logger.info("[PasienBoImpl.setTemplatePasien] Start >>>>>>>");
@@ -135,7 +152,6 @@ public class PasienBoImpl implements PasienBo {
             pasien.setNoKtp(data.getNoKtp());
             pasien.setNoBpjs(data.getNoBpjs());
             pasien.setTempatLahir(data.getTempatLahir());
-
 
             String strDate = formatter.format(data.getTglLahir());
             pasien.setTglLahir(strDate);

@@ -15,6 +15,19 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ProvinsiAction.js"/>'></script>
 
     <script type='text/javascript'>
+
+        $.subscribe('beforeSubmit', function (event, data) {
+            var noRm = $("#id_pasien").val();
+            var nama = $("#nama").val();
+
+            if (noRm != null || nama != null){
+                $.publish('showDialogLoading');
+                document.getElementById("pasienForm").submit();
+            } else {
+                alert("Lengkapi Form Pengisian");
+            }
+        });
+
         $(document).ready(function () {
             $('#pasien').addClass('active');
             searchPasien();
@@ -81,7 +94,7 @@
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm"
                                                    id="search" name="search"
-                                                   onClickTopics="showDialogLoading"
+                                                   onClickTopics="beforeSubmit"
                                                    onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
@@ -174,7 +187,6 @@
                                 <td>Nama</td>
                                 <td>Jenis Kelamin</td>
                                 <td>Tempat, Tgl Lahir</td>
-                                <%--<td>Password</td>--%>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>

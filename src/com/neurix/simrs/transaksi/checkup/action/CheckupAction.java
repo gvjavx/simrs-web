@@ -3909,4 +3909,24 @@ public class CheckupAction extends BaseMasterAction {
         logger.info("[CheckupAction.getPelayananWithIdVclaim] END process >>>");
         return pelayanan;
     }
+
+    public CrudResponse cancelPeriksa(String idDetailCheckup, String keterangan){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
+            detailCheckup.setIdDetailCheckup(idDetailCheckup);
+            detailCheckup.setKeteranganSelesai(keterangan);
+            detailCheckup.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+            detailCheckup.setLastUpdateWho(CommonUtil.userLogin());
+            checkupBo.cancelPeriksa(detailCheckup);
+            response.setStatus("success");
+            response.setMsg("OK");
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("Error, "+e.getMessage());
+        }
+        return response;
+    }
 }
