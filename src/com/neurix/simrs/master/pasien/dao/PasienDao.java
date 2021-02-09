@@ -543,7 +543,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "\t\t) a ON b.id_detail_checkup = a.id_detail_checkup\n" +
                 "\t\t-- end sub query\n" +
                 "\t) dc ON dc.id_pasien = ps.id_pasien\n" +
-                ") pss ON pss.id_pasien = ps.id_pasien" +
+                ") pss ON pss.id_pasien = ps.id_pasien \n" +
                 "WHERE ps.flag = 'Y' \n" + where;
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
