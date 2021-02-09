@@ -10,8 +10,6 @@ import com.neurix.simrs.master.parameterketeranganobat.bo.ParameterKeteranganOba
 import com.neurix.simrs.master.parameterketeranganobat.model.ParameterKeteranganObat;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.springframework.context.ApplicationContext;
-import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;

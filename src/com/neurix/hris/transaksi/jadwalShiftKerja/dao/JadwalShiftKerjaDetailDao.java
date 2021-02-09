@@ -125,9 +125,10 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
                 "INNER JOIN (SELECT * FROM it_hris_jadwal_shift_kerja WHERE flag = 'Y') sk ON sk.jadwal_shift_kerja_id = skd.jadwal_shift_kerja_id\n" +
                 "INNER JOIN im_hris_shift ms ON ms.shift_id = skd.shift_id\n" +
                 "WHERE sk.tanggal = '"+stTanggal+" '\n" +
-                "AND skd.nip = '"+nip+"' \n" +
-                "AND ms.jam_awal <= '"+stTime+"' \n" +
-                "AND ms.jam_akhir >= '"+stTime+"' ";
+                "AND skd.nip = '"+nip+"' \n";
+                // Sigit 2020-02-05, Menghiraukan jam shift
+                //"AND ms.jam_awal <= '"+stTime+"' \n" +
+                //"AND ms.jam_akhir >= '"+stTime+"' ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 

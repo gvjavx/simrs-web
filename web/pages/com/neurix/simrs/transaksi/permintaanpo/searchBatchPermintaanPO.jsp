@@ -17,6 +17,10 @@
             return ribuan;
         }
     </script>
+
+    <%--<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>--%>
+    <%--<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>--%>
+    <%--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>--%>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -538,7 +542,7 @@
         </div>
     </div>
 </div>
-
+<%--YANG_ASLI--%>
 <div class="modal fade" id="modal-view-img">
     <div class="modal-dialog modal-fade modal-md">
         <div class="modal-content">
@@ -548,17 +552,91 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-info"></i> View Uplaoded Documment
                 </h4>
             </div>
+<<<<<<< HEAD
+            <div class="modal-body" id="body-img">
+                <%--<div id="body-img">--%>
+                    <%--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">--%>
+                        <%--<ol class="carousel-indicators">--%>
+                            <%--<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>--%>
+                            <%--<li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>--%>
+                            <%--<li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>--%>
+                        <%--</ol>--%>
+                        <%--<div class="carousel-inner">--%>
+                            <%--<div class="item active">--%>
+                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/08888-0121.png" alt="First slide">--%>
+
+                                <%--<div class="carousel-caption">--%>
+                                    <%--First Slide--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="item">--%>
+                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/28668-0121.png" alt="Second slide">--%>
+
+                                <%--<div class="carousel-caption">--%>
+                                    <%--Second Slide--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="item">--%>
+                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/47865-0121.png" alt="Third slide">--%>
+
+                                <%--<div class="carousel-caption">--%>
+                                    <%--Third Slide--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">--%>
+                            <%--<span class="fa fa-angle-left"></span>--%>
+                        <%--</a>--%>
+                        <%--<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">--%>
+                            <%--<span class="fa fa-angle-right"></span>--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+
+
+=======
             <div class="modal-body">
                 <div id="body-img">
                 </div>
             </div>
+>>>>>>> sigit/dev
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
+
         </div>
     </div>
 </div>
+</div>
+
+
+
+<%--bostrap--%>
+<%--<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">--%>
+    <%--<div class="carousel-inner">--%>
+        <%--<div class="carousel-item active">--%>
+            <%--<img class="d-block w-100" src="..." alt="First slide">--%>
+        <%--</div>--%>
+        <%--<div class="carousel-item">--%>
+            <%--<img class="d-block w-100" src="..." alt="Second slide">--%>
+        <%--</div>--%>
+        <%--<div class="carousel-item">--%>
+            <%--<img class="d-block w-100" src="..." alt="Third slide">--%>
+        <%--</div>--%>
+    <%--</div>--%>
+    <%--<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">--%>
+        <%--<span class="carousel-control-prev-icon" aria-hidden="true"></span>--%>
+        <%--<span class="sr-only">Previous</span>--%>
+    <%--</a>--%>
+    <%--<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">--%>
+        <%--<span class="carousel-control-next-icon" aria-hidden="true"></span>--%>
+        <%--<span class="sr-only">Next</span>--%>
+    <%--</a>--%>
+<%--</div>--%>
+
+
+
+
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
@@ -638,6 +716,10 @@
         var file = $("#file-doc")[0].files[0];
         var notaVendor = $("#nota-vendor").val();
         PermintaanVendorAction.uploadDocVendor(file, notaVendor, idpermintaanPo, function(response){
+<<<<<<< HEAD
+
+=======
+>>>>>>> sigit/dev
         })
     }
 
@@ -738,6 +820,10 @@
     }
 
     function checkAvail(idItem, jenis) {
+<<<<<<< HEAD
+
+=======
+>>>>>>> sigit/dev
         var batch = $("#mod_batch").text();
         var idTransakasi = $("#no_po").text();
 
@@ -913,6 +999,18 @@
                 'tgl_do':tglDo
             }
 
+<<<<<<< HEAD
+
+
+            for (i=0 ; i <= nFaktur ; i++){
+                var canvas = document.getElementById('canvas-faktur-'+i);
+                var input = document.getElementById('upload-faktur-'+i);
+                if (input.files.length != 0){
+                    var dataURL = canvas.toDataURL("image/png"), dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    listOfimg.push({"jenisnomor":"faktur", "batch":noBatch, "iditem":noFaktur, "img":dataURL});
+                }
+
+=======
             var cekFaktur = $('.faktur');
             var cekInvoice = $('.invoice');
             var cekDo = $('.do');
@@ -929,6 +1027,7 @@
                         });
                     }
                 });
+>>>>>>> sigit/dev
             }
 
             if(cekInvoice.length > 0){
@@ -959,6 +1058,10 @@
                 });
             }
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> sigit/dev
             var result = JSON.stringify(data);
             var listimg = JSON.stringify(listOfimg);
             $('#modal-confirm-dialog').modal('show');
@@ -998,6 +1101,10 @@
 
     function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo, tglInvoice, tglDo){
 
+<<<<<<< HEAD
+
+=======
+>>>>>>> sigit/dev
         $('#det_img').attr('onclick','showDoc(\''+img+'\')');
         $('#det_no_faktur').text(noFaktur);
         $('#det_tlg_faktur').text(tglFaktur);
@@ -1036,6 +1143,10 @@
     }
 
     function showDoc(img){
+<<<<<<< HEAD
+
+=======
+>>>>>>> sigit/dev
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
     }
@@ -1086,6 +1197,34 @@
 
     function viewUpload(idBatch) {
         $("#modal-view-img").modal('show');
+<<<<<<< HEAD
+        var batch = $("#mod_batch").text();
+        $("#body-img").html("");
+        PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
+            var temp = '';
+
+            $.each(list, function (i, item) {
+                console.log(item.idItem);
+                var id = 'carousel-example-generic'+item.idItem;
+                temp += '<div id="'+id+'" class="carousel slide" data-ride="carousel">\n' +
+                    '                    <ol class="carousel-indicators">\n' +
+                    '                        <li data-target="#'+id+'" data-slide-to="0" class="active"></li>\n' +
+                    '                        <li data-target="#'+id+'" data-slide-to="1" class=""></li>\n' +
+                    '                        <li data-target="#'+id+'" data-slide-to="2" class=""></li>\n' +
+                    '                    </ol>\n' +
+                    '                    <div class="carousel-inner" id="text">\n' +
+                    '                    </div>\n' +
+                    '                    <a class="left carousel-control" href="#'+id+'" data-slide="prev">\n' +
+                    '                        <span class="fa fa-angle-left"></span>\n' +
+                    '                    </a>\n' +
+                    '                    <a class="right carousel-control" href="#'+id+'" data-slide="next">\n' +
+                    '                        <span class="fa fa-angle-right"></span>\n' +
+                    '                    </a>\n' +
+                    '                </div>\n<br>';
+                showImg(item.idItem);
+            });
+            $("#body-img").html(temp);
+=======
         var batch = $("#"+idBatch).text();
         $("#body-img").html("");
         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
@@ -1111,10 +1250,144 @@
                 str = '<b style="text-align: center">Foto tidak ada..!</b>'
             }
             $("#body-img").html(str);
+>>>>>>> sigit/dev
         });
     }
 
     function showImg(idItem){
+<<<<<<< HEAD
+        var first = firstpath();
+        var indicator = "";
+
+        PermintaanVendorAction.getListImg(idItem, function (listimg) {
+            var temp = '';
+            // console.log(listimg);
+            $.each(listimg, function (n, img) {
+                temp += '<img src="'+contextPathHeader+'>/images/upload/surat_po/'+img.urlImg+'">';
+            });
+            $("#text_"+idItem).html(temp);
+        });
+    }
+
+
+
+
+
+//     function viewUpload() {
+//         $("#modal-view-img").modal('show');
+// //        $("#modal-detail-rekam-medic-lama").modal("show");
+//         var batch = $("#mod_batch").text();
+//         $("#body-img").html("");
+//         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
+//
+//             var str = '';
+//             $.each(list, function (i, item) {
+//
+//                 str += '<div class="row">' +
+//                         '<div class="col-md-12" align="center"> ' +
+//                         '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
+//                             '<div class="bungkus">'+
+//                                 '<div class="carousel">' +
+//                                     '<button onclick="carouselSwipe(\'carousel-arrow-prev\', \''+item.idItem+'\')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>'+
+//                                     '<button onclick="carouselSwipe(\'carousel-arrow-next\', \''+item.idItem+'\')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>'+
+//                                     '<div id="body-img-'+item.idItem+'"></div>'+
+//                                 '</div>'+
+//                         '</div>' +
+//                     '</div>' +
+//                     '</div>';
+//                 showImg(item.idItem);
+//             });
+//          $("#body-img").html(str);
+//         });
+//     }
+
+//     function showImg(idItem){
+//         var first = firstpath();
+//         var indicator = "";
+//         PermintaanVendorAction.getListImg(idItem, function (listimg) {
+// //            var str = '<div class="row">';
+//             var str = '';
+//             console.log(listimg);
+//             $.each(listimg, function (n, img) {
+//
+// //                str += '<div class="col-md-4" align="center">' +
+// //                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
+// //                    '</div>';
+//                 if(n == 0){
+//                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-displayed" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
+//                 }else{
+//                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-noDisplay" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
+//                 }
+//             });
+// //            str += '</div>' +
+// //                '<br>';
+// //            $("#body-img-"+idItem).html(str);
+//             $("#indicator-img").html(indicator);
+//             $("#body-img-"+idItem).html(str);
+//         });
+//     }
+
+    function carouselSwipe(id, idItem) {
+
+        var currentImg = document.getElementsByClassName('iditem-'+idItem+' carousel-img-displayed')[0].id.substring(9);
+
+        var splitId = currentImg.split("-");
+
+
+        //var newImg = parseInt(currentImg);
+        var newImg = parseInt(splitId[0]);
+        if (id == 'carousel-arrow-next') {
+            newImg++;
+//            if (newImg >= document.getElementsByClassName('carousel-img').length) {
+//                newImg = 0;
+//            }
+
+            if (newImg >= document.getElementsByClassName('iditem-'+splitId[1]).length) {
+                newImg = 0;
+            }
+        } else if (id == 'carousel-arrow-prev') {
+            newImg--;
+//            if (newImg<0) {
+//                newImg = document.getElementsByClassName('carousel-img').length-1;
+//            }
+            if (newImg<0) {
+                newImg = document.getElementsByClassName('iditem-'+splitId[1]).length-1;
+            }
+        }
+
+        document.getElementById('carousel-'+currentImg).className = 'iditem-'+splitId[1]+' carousel-img carousel-img-hidden';
+        var displayedCarousel = document.getElementById('carousel-'+newImg+'-'+idItem);
+//        console.log("id caurosel hidden --> " + 'carousel-'+newImg+'-'+idItem );
+//        console.log("display carousel --> ");
+//        console.log(displayedCarousel);
+        displayedCarousel.className = 'iditem-'+splitId[1]+' carousel-img carousel-img-hidden';
+        setTimeout(function() {
+            displayedCarousel.className = 'iditem-'+splitId[1]+' carousel-img carousel-img-displayed';
+        },20);
+
+        setTimeout(function() {
+            document.getElementById('carousel-'+currentImg).className = 'iditem-'+splitId[1]+' carousel-img carousel-img-noDisplay';
+        },520);
+    }
+
+    function viewDetailRekamMedicLama(headId) {
+        var str = "";
+        var indicator = "";
+        CheckupAction.getListUploadRekamMedic(headId, function (response) {
+            if (response.length > 0){
+                $.each(response, function (i, item) {
+                    if(i == 0){
+                        str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-displayed" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
+                    }else{
+                        str += '<img id="carousel-'+i+'" class="carousel-img carousel-img-noDisplay" src="'+item.urlImg+'" alt="Foto Rekam Medik" />';
+                    }
+                });
+                $("#modal-detail-rekam-medic-lama").modal("show");
+                $("#indicator-img").html(indicator);
+                $("#body-img-rm").html(str);
+            }
+        })
+=======
         PermintaanVendorAction.getListImg(idItem, function (listimg) {
             var str = '';
             var li = '';
@@ -1154,6 +1427,7 @@
 
     function delUpload(id){
         $('#'+id).remove();
+>>>>>>> sigit/dev
     }
 
 

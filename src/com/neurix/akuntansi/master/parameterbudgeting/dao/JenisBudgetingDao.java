@@ -24,6 +24,8 @@ public class JenisBudgetingDao extends GenericDao<ImAkunJenisBudgetingEntity, St
 
         if (mapCriteria.get("id") != null)
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
+        if (mapCriteria.get("nama_jenis") != null)
+            criteria.add(Restrictions.eq("namaJenis", mapCriteria.get("nama_jenis").toString()));
         if (mapCriteria.get("flag") != null)
             criteria.add(Restrictions.eq("flag", mapCriteria.get("flag").toString()));
 
