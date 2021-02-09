@@ -19,6 +19,15 @@ public class ImHrisShiftEntity implements Serializable {
     private String action;
     private String IdBranch;
     private String profesiId;
+    private String tipeShiftKasir;
+
+    public String getTipeShiftKasir() {
+        return tipeShiftKasir;
+    }
+
+    public void setTipeShiftKasir(String tipeShiftKasir) {
+        this.tipeShiftKasir = tipeShiftKasir;
+    }
 
     public String getProfesiId() {
         return profesiId;

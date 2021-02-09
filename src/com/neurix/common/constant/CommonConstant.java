@@ -82,7 +82,6 @@ public class CommonConstant {
     public final static String NOTIFICATION_URL = "/notificationlahan/initForm_notificationlahan.action";
 
     public final static String EXCEL = "xls";
-
     public final static String RESOURCE_PATH_USER_UPLOAD_DOC = "/pages/upload/doc/";
 
 //    public final static String URL_IMAGE_LOGO_REPORT = "/opt/tomcat/webapps/simrs/pages/images/LOGO-RW.png";
@@ -266,5 +265,13 @@ public class CommonConstant {
 
     //API LICENSE
     public final static String LICENSE_API = CommonUtil.getPropertyParams("license.api");
+
+
+    //Sigit 2021-01-02, tipe pelayanan pada role khusus kasir
+    public final static String TIPE_PELAYANAN_KASIR_TELE = CommonUtil.getPropertyParams("kasir.telemedicine");
+    public final static String TIPE_PELAYANAN_KASIR_OPS = CommonUtil.getPropertyParams("kasir.operasional");
+    public final static String TIPE_PELAYANAN_ADMIN_TELE = CommonUtil.getPropertyParams("admin.telemedicine");
+
+
 
 }

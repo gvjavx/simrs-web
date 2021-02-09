@@ -316,7 +316,7 @@
                     var msg='Apakah Anda ingin mencetak laporan uang makan tanggal '+tglFrom+' sampai tanggal '+tglTo+'  ?';
                 }
                 if (confirm(msg)) {
-                    window.location.href = "printReportAbsensiTriwulan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian;
+                    window.location.href = "printReportAbsensiTriwulan_absensi.action?tglFrom="+tglFrom+"&tglTo="+tglTo+"&branchId="+branchId+"&bagian="+bagian+"&nip="+nip;
                 }
             }else{
                 alert("ada yang masih kosong");

@@ -323,4 +323,6 @@
 
     <import resource="sshconfig/com/neurix/simrs/master/pelayanan/spring/HeaderPelayananBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/hris/transaksi/notifikasi/spring/MonitoringMesinAbsensiBean.xml"/>
+
 </beans>

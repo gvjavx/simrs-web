@@ -49,10 +49,15 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
     private static transient Logger logger = Logger.getLogger(PermintaanObatPoliAction.class);
     private ObatPoliBo obatPoliBoProxy;
     private ObatBo obatBoProxy;
+    private BranchBo branchBoProxy;
     private PermintaanObatPoli permintaanObatPoli;
     private ObatPoli obatPoli;
     private String idPermintaan;
     private String idApproval;
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public String getIdApproval() {
         return idApproval;

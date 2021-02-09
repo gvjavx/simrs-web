@@ -151,6 +151,24 @@ public class  CommonUtil {
             throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
         }
     }
+
+    // Sigit 2021-02-01, Get Tipe Pelayanan Of ROLE
+    public static String getRoleTipePelayanan() throws UsernameNotFoundException {
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
+            SecurityContextImpl securityContextImpl = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+            if (securityContextImpl.getAuthentication() != null) {
+                UserDetailsLogin userDetailsLogin=(UserDetailsLogin)securityContextImpl.getAuthentication().getPrincipal();
+                return userDetailsLogin.getTipeRole();
+            } else {
+                throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+            }
+
+        } else {
+            throw new UsernameNotFoundException("User Not Found, session may be time out. Please login again.");
+        }
+    }
+
     public static String userAreaId() throws UsernameNotFoundException {
         HttpSession session = ServletActionContext.getRequest().getSession();
         if (session.getAttribute("SPRING_SECURITY_CONTEXT") != null) {
@@ -1393,6 +1411,15 @@ public class  CommonUtil {
                 .limit(length)
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
+    }
+
+    public static String getSecurityCode() {
+        String prefix = "00";
+        String suffix = "09";
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy");
+        java.util.Date date = new java.util.Date();
+
+        return prefix + format.format(date) + suffix;
     }
 
     //Convert Date to Calendar

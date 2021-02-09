@@ -49,11 +49,16 @@ public class ObatPoliAction extends BaseMasterAction {
     private static transient Logger logger = Logger.getLogger(ObatPoliAction.class);
     private ObatPoli obatPoli;
     private ObatPoliBo obatPoliBoProxy;
+    private BranchBo branchBoProxy;
     private PermintaanObatPoli permintaanObatPoli;
     private String idPermintaan;
 
     private List<ObatPoli> listOfObatPoli = new ArrayList<>();
     private List<ObatPoli> listOfTujuanPelayanan = new ArrayList<>();
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
 
     public String getIdPermintaan() {
         return idPermintaan;

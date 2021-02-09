@@ -673,9 +673,10 @@
                                                     Online</label>
                                                 <div class="col-md-8">
                                                     <div class="input-group">
+                                                        <%--Sigit 2021-01-28, Merubah Ke Upercase--%>
                                                         <input class="form-control" id="id_online"
                                                                onchange="searchNoCheckup(this.value)"
-                                                               placeholder="Scan No Checkup Online">
+                                                               placeholder="Scan No Checkup Online" style="text-transform:uppercase" >
                                                         <div class="input-group-btn">
                                                             <a class="btn btn-success"
                                                                onclick="searchNoCheckup($('#id_online').val())"> <span

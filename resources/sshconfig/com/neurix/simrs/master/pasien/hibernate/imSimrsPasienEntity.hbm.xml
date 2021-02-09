@@ -99,6 +99,9 @@
         <property name="noRmLama">
             <column name="no_rm_lama"/>
         </property>
+        <property name="flagLogin">
+            <column name="flag_login"/>
+        </property>
 
 
     </class>

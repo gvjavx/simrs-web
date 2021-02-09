@@ -157,6 +157,7 @@ public class PasienBoImpl implements PasienBo {
             pasien.setPassword(data.getPassword());
             pasien.setPendidikan(data.getPendidikan());
             pasien.setStatusPerkawinan(data.getStatusPerkawinan());
+            pasien.setFlagLogin(data.getFlagLogin());
 
             if (pasien.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());
@@ -300,6 +301,7 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setFlag(pasien.getFlag());
                 pasienEntity.setLastUpdate(pasien.getLastUpdate());
                 pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
+                pasienEntity.setFlagLogin(pasien.getFlagLogin());
 
                 try {
                     pasienDao.updateAndSave(pasienEntity);

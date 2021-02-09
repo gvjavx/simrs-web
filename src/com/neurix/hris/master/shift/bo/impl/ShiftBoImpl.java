@@ -107,6 +107,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
             entityData.setProfesiId(bean.getProfesiId());
+            entityData.setTipeShiftKasir(bean.getTipeShiftKasir());
 
             try {
                 shiftDao.updateAndSave(entityData);
@@ -201,6 +202,7 @@ public class ShiftBoImpl implements ShiftBo {
             entityData.setLastUpdate(bean.getLastUpdate());
             entityData.setIdBranch(bean.getIdBranch());
             entityData.setProfesiId(bean.getProfesiId());
+            entityData.setTipeShiftKasir(bean.getTipeShiftKasir());
 
             try {
                 shiftDao.addAndSave(entityData);
@@ -270,6 +272,7 @@ public class ShiftBoImpl implements ShiftBo {
                     returnData.setAction(listEntity.getAction());
                     returnData.setIdBranch(listEntity.getIdBranch());
                     returnData.setProfesiId(listEntity.getProfesiId());
+                    returnData.setTipeShiftKasir(listEntity.getTipeShiftKasir());
 
                     if (listEntity.getIdBranch()!=null){
                         ImBranches imBranches = null;
@@ -288,10 +291,14 @@ public class ShiftBoImpl implements ShiftBo {
                         returnData.setBranchName("");
                     }
 
-                    if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())){
+                    if (listEntity.getProfesiId()!=null && !"".equalsIgnoreCase(listEntity.getProfesiId())) {
 
-                        ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",listEntity.getProfesiId());
-                        returnData.setProfesiName(positionBagianEntity.getBagianName());
+                        ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId", listEntity.getProfesiId());
+                        if (positionBagianEntity != null){
+                            returnData.setProfesiName(positionBagianEntity.getBagianName());
+                        } else {
+                            returnData.setProfesiName("");
+                        }
                     }else{
                         returnData.setProfesiName("");
                     }
@@ -303,6 +310,23 @@ public class ShiftBoImpl implements ShiftBo {
         logger.info("[ShiftBoImpl.getByCriteria] end process <<<");
 
         return listOfResult;
+    }
+
+    @Override
+    public ImHrisShiftEntity getById(String id) {
+        logger.info("[ShiftBoImpl.getById] start process >>>");
+
+        ImHrisShiftEntity shiftEntity = new ImHrisShiftEntity();
+
+        try {
+            shiftEntity = shiftDao.getById("shiftId", id);
+        } catch (HibernateException e){
+            logger.error("[ShiftBoImpl.getByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[ShiftBoImpl.getById] end process <<<");
+        return shiftEntity;
     }
 
     @Override

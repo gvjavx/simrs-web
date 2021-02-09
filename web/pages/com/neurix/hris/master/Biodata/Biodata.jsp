@@ -47,13 +47,12 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/BiodataAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/DepartmentAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 
+
     <script type="text/javascript">
-
-        $(document).ready(function () {
-
-        });
 
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
@@ -76,8 +75,9 @@
             var flag                = document.getElementById("flagAktif").value;
             var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
+            var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -119,6 +119,9 @@
                 }
                 if (masaGolongan == '') {
                     msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
+                }
+                if (tglMasuk == '') {
+                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -299,7 +302,7 @@
                     <li><a href="#RiwayatPendidikan">Riwayat Pendidikan</a></li>
                     <li><a href="#pelatihanJabatan">Riwayat Pelatihan</a></li>
 
-                    <li><a href="#pengalamanKerja">Riwayat Kerja</a></li>
+                    <li><a href="#pengalamanKerja">Jabatan & Riwayat</a></li>
                     <%--<li><a href="#reward">Reward</a></li>
                     <li><a href="#sertifikat">Sertifikat</a></li>--%>
 
@@ -318,7 +321,7 @@
 
                     <div class="tab-content well box-shadowed" >
                         <div id="biodata" class="tab-pane fade in active">
-                            <h3>Biodata</h3>
+                            <h3>Biodata Karyawan Kantor</h3>
                             <br>
                             <div class="row">
                                 <div class="col-md-12" style="text-align: center;">
@@ -340,16 +343,16 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir--%>
-                                                            <%--<s:if test="isAdd()">--%>
-                                                        <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control" readonly="true" />
-                                                            <%--</s:if>--%>
-                                                            <%--<s:elseif test="isDelete()">--%>
-                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
-                                                            <%--</s:elseif>--%>
-                                                            <%--<s:else>--%>
-                                                            <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
-                                                            <%--</s:else>--%>
+                                                            <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir (SEMENTARA TIDAK DIGUNAKAN)--%>
+                                                            <s:if test="isAdd()">
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>
+                                                            </s:if>
+                                                            <s:elseif test="isDelete()">
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                            </s:elseif>
+                                                            <s:else>
+                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
+                                                            </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -476,8 +479,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
+                                                        <%--<s:elseif test="isAdd()">--%>
+                                                            <%--<s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"--%>
+                                                                         <%--cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />--%>
+                                                        <%--</s:elseif>--%>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value);"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -983,7 +990,7 @@
                                         <table style="width:100%;">
                                             <tr>
                                                 <td>
-                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1008,7 +1015,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label><small>Tipe Pegawai <span style="color:red;">*</span> :</small></label>
+                                                    <label><small>Status Pegawai <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1076,7 +1083,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk :</small></label>
+                                                    <label class="label-tanggal-masuk"><small>Tanggal Masuk <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1094,7 +1101,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1775,10 +1782,34 @@
                         </div>
 
                         <div id="pengalamanKerja" class="tab-pane fade">
-                            <h3>Riwayat Kerja
-                                <s:if test="isAddOrEdit()">
-                                    <button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>
+
+                            <h3>Jabatan Existing
+                                <s:if test="isAdd()">
+                                    <button id="btnAddJabatan" type="button" class="btn btn-success" onclick="initAddJabatan()"><i class="fa fa-plus"></i> Add</button>
+                                    <button id="btnAddJabatan" type="button" class="btn btn-danger" onclick="clearPositionJabatanSession()"><i class="fa fa-refresh"></i> Clear</button>
                                 </s:if>
+                            </h3>
+                            <table style="width: 100%;" class="table table-bordered">
+                                <thead style="font-size: 15px;font-weight:bold;background-color:  #3c8dbc; color: white" align="center">
+                                    <tr>
+                                        <td>No</td>
+                                        <td>Unit</td>
+                                        <td>Jabatan</td>
+                                        <td>Profesi</td>
+                                        <td>Jenis Jabatan</td>
+                                        <td>Digaji</td>
+                                        <td style="text-align: center">Action</td>
+                                    </tr>
+                                </thead>
+                                <tbody id="tbody-position" style="font-size: 12px" align="center">
+
+                                </tbody>
+                            </table>
+
+                            <h3>Riwayat Jabatan
+                                <%--<s:if test="isAddOrEdit()">--%>
+                                    <%--<button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>--%>
+                                <%--</s:if>--%>
                             </h3>
                             <table style="width: 100%;" class="pengalamanKerjaTable table table-bordered">
                             </table>
@@ -3059,7 +3090,98 @@
     </div>
 </div>
 
+<div id="modal-edit-jabatan" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width: 40%;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 id="modal-edit-jabatan-title"></h4>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="personil-position-id"/>
+                <input type="hidden" id="personil-position-flag"/>
+                <input type="hidden" id="position-id-lama"/>
+                <input type="hidden" id="position-name-lama"/>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Unit : </label>
+                        <div class="col-sm-9">
+                            <s:action id="initComboBranch" namespace="/admin/branch"
+                                      name="initComboBranch_branch"/>
+                            <s:select list="#initComboBranch.listOfComboBranch" id="position-branch-id"
+                                      name="biodata.branchId" onchange="listDivisiHistory()"
+                                      listKey="branchId" listValue="branchName" headerKey=""
+                                      headerValue="[Select one]" cssClass="form-control"/>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Bidang : </label>
+                        <div class="col-sm-9">
+                                <select class="form-control" id="department-jabatan" onchange="listPositionJabatan()">
+
+                                </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Posisi : </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="posisi-jabatan">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" for="gender">Profesi :</label>
+                        <div class="col-sm-9">
+                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                            <s:select list="#comboProfesi.listComboProfesi" id="profesi-jabatan"
+                                      listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Jenis Jabatan : </label>
+                        <div class="col-sm-9">
+                            <select class="form-control" id="jenis-jabatan">
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group">
+                        <label class="control-label col-sm-3" >Digaji : </label>
+                        <div class="col-sm-9">
+                            <s:select list="#{'N':'Tidak'}" id="flag-digaji"
+                                      headerKey="Y" headerValue="Ya" cssClass="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="saveJabatan" type="button" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/biodata.js"/>'></script>
 
 <script>
     window.cekPerusahaanLain = function(){
@@ -3202,13 +3324,24 @@
         } else{
             $('.label-prapensiun').html("<small>Tanggal MBT : </small>");
             $('.label-pensiun').html("<small>Tanggal Pensiun : </small>");
-            $('.label-tanggal-masuk').html("<small>Tanggal Masuk : </small>");
+            $('.label-tanggal-masuk').html("<small>Tanggal Masuk <span style=\"color:red;\">*</span> : </small>");
             $('.label-tanggal-aktif').html("<small>Tanggal Pengangkatan : </small>");
         }
     }
 
+    // function detLmtMsGol(gol){
+    //
+    // }
+
     $(document).ready(function() {
         loadStatusPegawai();
+        loadPositionJabatan();
+        getAllDepartment();
+        getAllJenisPegawai();
+
+        var tglLahir = $('#tanggalLahir1').val();
+        var tglPensiun = $('#tanggalPensiun').val();
+        if(tglLahir != "" && tglPensiun == "") getTanggalPensiun(tglLahir);
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
@@ -3577,7 +3710,7 @@
                 <s:if test="isAddOrEdit()">
                 tmp_table = "<thead style='font-size: 14px; color: white;' ><tr class='active'>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>No</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Nama Cabang</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Unit</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Jabatan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Profesi</th>" +
                     //                        "<th style='text-align: center; background-color:  #3c8dbc''>Tanggal / Tahun</th>" +
@@ -3586,8 +3719,8 @@
 
                     "<th style='text-align: center; background-color:  #3c8dbc''>Tipe Pegawai</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc''>Golongan</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>Edit</th>" +
+//                    "<th style='text-align: center; background-color:  #3c8dbc'>Delete</th>" +
                     "</tr></thead>";
                 </s:if>
                 <s:else>
@@ -3619,16 +3752,16 @@
 
                         '<td align="center">' + item.tipePegawai + '</td>' +
                         '<td align="center">' + item.golonganName + '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +
-                        '</a>' +
-                        '</td>' +
-                        '<td align="center">' +
-                        "<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +
-                        "<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +
-                        '</a>' +
-                        '</td>' +
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-edit' data ='" + item.pengalamanId + "' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_edit.ico'/>' name='icon_edit'>" +--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
+                        <%--'<td align="center">' +--%>
+                        <%--"<a href='javascript:;' class ='item-delete' data ='" + item.pengalamanId + "' >" +--%>
+                        <%--"<img border='0' src='<s:url value='/pages/images/icon_trash.ico'/>' name='icon_edit'>" +--%>
+                        <%--'</a>' +--%>
+                        <%--'</td>' +--%>
                         "</tr>";
                     </s:if>
                     <s:else>
@@ -6237,11 +6370,6 @@
                                     loadSessionPengalamanKerja();
                                 }
                             });
-//                            dwr.engine.endBatch({
-//                                errorHandler:function(errorString, exception){
-//                                    alert('Jabatan aktif sudah ada');
-//                                }
-//                            });
                         }
                     }
                 });
@@ -6249,21 +6377,21 @@
         });
     }
 
-    function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
-        dwr.engine.setAsync(false);
-        dwr.engine.beginBatch();
-        BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
-            alert('Data Berhasil Disimpan');
-            $('#modal-pengalamanKerja').modal('hide');
-            $('#myFormPengalaman')[0].reset();
-            loadSessionPengalamanKerja();
-        });
-        dwr.engine.endBatch({
-            errorHandler:function(errorString, exception){
-                alert('Jabatan aktif sudah ada');
-            }
-        });
-    }
+    // function savePengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji){
+    //     dwr.engine.setAsync(false);
+    //     dwr.engine.beginBatch();
+    //     BiodataAction.saveAddPengalaman(nip, branchId, posisiId, divisiId, profesiId, tanggal, tanggalKeluar, tipePegawaiId, golonganId, pjsFlag, aktifFlag, jenisPegawaiId, flagDigaji, function (listdata) {
+    //         alert('Data Berhasil Disimpan');
+    //         $('#modal-pengalamanKerja').modal('hide');
+    //         $('#myFormPengalaman')[0].reset();
+    //         loadSessionPengalamanKerja();
+    //     });
+    //     dwr.engine.endBatch({
+    //         errorHandler:function(errorString, exception){
+    //             alert('Jabatan aktif sudah ada');
+    //         }
+    //     });
+    // }
 
     function getNip(birthDate){
         var nip = $("#nip1").val();
@@ -6273,8 +6401,9 @@
                 $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
             })
         } else {
-            var seq = nip.substr(8, 4);
+            var seq = nip.slice(nip.length - 4);
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
     }
+
 </script>
