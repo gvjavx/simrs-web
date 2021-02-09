@@ -552,10 +552,54 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-info"></i> View Uplaoded Documment
                 </h4>
             </div>
-            <div class="modal-body">
-                <div id="body-img">
-                </div>
-            </div>
+
+
+            <div class="modal-body" id="body-img">
+                <%--<div id="body-img">--%>
+                    <%--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">--%>
+                        <%--<ol class="carousel-indicators">--%>
+                            <%--<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>--%>
+                            <%--<li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>--%>
+                            <%--<li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>--%>
+                        <%--</ol>--%>
+                        <%--<div class="carousel-inner">--%>
+                            <%--<div class="item active">--%>
+                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/08888-0121.png" alt="First slide">--%>
+
+                                <%--<div class="carousel-caption">--%>
+                                    <%--First Slide--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="item">--%>
+                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/28668-0121.png" alt="Second slide">--%>
+
+                                <%--<div class="carousel-caption">--%>
+                                    <%--Second Slide--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="item">--%>
+                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/47865-0121.png" alt="Third slide">--%>
+
+                                <%--<div class="carousel-caption">--%>
+                                    <%--Third Slide--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                        <%--<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">--%>
+                            <%--<span class="fa fa-angle-left"></span>--%>
+                        <%--</a>--%>
+                        <%--<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">--%>
+                            <%--<span class="fa fa-angle-right"></span>--%>
+                        <%--</a>--%>
+                    <%--</div>--%>
+
+
+
+            <%--<div class="modal-body">--%>
+                <%--<div id="body-img">--%>
+                <%--</div>--%>
+            <%--</div>--%>
+
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
@@ -948,52 +992,63 @@
                 'tgl_do':tglDo
             }
 
-            var cekFaktur = $('.faktur');
-            var cekInvoice = $('.invoice');
-            var cekDo = $('.do');
+            for (i=0 ; i <= nFaktur ; i++) {
+                var canvas = document.getElementById('canvas-faktur-' + i);
+                var input = document.getElementById('upload-faktur-' + i);
+                if (input.files.length != 0) {
+                    var dataURL = canvas.toDataURL("image/png"),
+                        dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
+                    listOfimg.push({"jenisnomor": "faktur", "batch": noBatch, "iditem": noFaktur, "img": dataURL});
+                }
 
-            if(cekFaktur.length > 0){
-                $.each(cekFaktur, function (i, item) {
-                    if(!cekFile('upload-faktur-'+i)){
-                        var canvas = document.getElementById('canvas-faktur-'+i);
-                        listOfimg.push({
-                            "jenisnomor": "faktur",
-                            "batch": noBatch,
-                            "iditem": noFaktur,
-                            "img": convertToDataURLAtas(canvas)
-                        });
-                    }
-                });
+                var cekFaktur = $('.faktur');
+                var cekInvoice = $('.invoice');
+                var cekDo = $('.do');
+
+                if (cekFaktur.length > 0) {
+                    $.each(cekFaktur, function (i, item) {
+                        if (!cekFile('upload-faktur-' + i)) {
+                            var canvas = document.getElementById('canvas-faktur-' + i);
+                            listOfimg.push({
+                                "jenisnomor": "faktur",
+                                "batch": noBatch,
+                                "iditem": noFaktur,
+                                "img": convertToDataURLAtas(canvas)
+                            });
+                        }
+                    });
+
+                }
+
+                if (cekInvoice.length > 0) {
+                    $.each(cekInvoice, function (i, item) {
+                        if (!cekFile('upload-invoice-' + i)) {
+                            var canvas = document.getElementById('canvas-invoice-' + i);
+                            listOfimg.push({
+                                "jenisnomor": "invoice",
+                                "batch": noBatch,
+                                "iditem": noInvoice,
+                                "img": convertToDataURLAtas(canvas)
+                            });
+                        }
+                    });
+                }
+
+                if (cekDo.length > 0) {
+                    $.each(cekDo, function (i, item) {
+                        if (!cekFile('upload-do-' + i)) {
+                            var canvas = document.getElementById('canvas-do-' + i);
+                            listOfimg.push({
+                                "jenisnomor": "do",
+                                "batch": noBatch,
+                                "iditem": noDo,
+                                "img": convertToDataURLAtas(canvas)
+                            });
+                        }
+                    });
+                }
+
             }
-
-            if(cekInvoice.length > 0){
-                $.each(cekInvoice, function (i, item) {
-                    if(!cekFile('upload-invoice-'+i)){
-                        var canvas = document.getElementById('canvas-invoice-'+i);
-                        listOfimg.push({
-                            "jenisnomor": "invoice",
-                            "batch": noBatch,
-                            "iditem": noInvoice,
-                            "img": convertToDataURLAtas(canvas)
-                        });
-                    }
-                });
-            }
-
-            if(cekDo.length > 0){
-                $.each(cekDo, function (i, item) {
-                    if(!cekFile('upload-do-'+i)){
-                        var canvas = document.getElementById('canvas-do-'+i);
-                        listOfimg.push({
-                            "jenisnomor": "do",
-                            "batch": noBatch,
-                            "iditem": noDo,
-                            "img": convertToDataURLAtas(canvas)
-                        });
-                    }
-                });
-            }
-
             var result = JSON.stringify(data);
             var listimg = JSON.stringify(listOfimg);
             $('#modal-confirm-dialog').modal('show');
@@ -1121,75 +1176,236 @@
 
     function viewUpload(idBatch) {
         $("#modal-view-img").modal('show');
-        var batch = $("#"+idBatch).text();
+        var batch = $("#mod_batch").text();
         $("#body-img").html("");
         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
-            var str = '';
-            if(list.length > 0){
-                $.each(list, function (i, item) {
-                    var id = 'carousel-example-generic_'+item.idItem;
-                    str += '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5><div id="'+id+'" class="carousel slide" data-ride="carousel">\n' +
-                        '<ol class="carousel-indicators" id="li_'+item.idItem+'">\n' +
-                        '</ol>\n' +
-                        '<div class="carousel-inner" id="item_'+item.idItem+'">\n' +
-                        '</div>\n' +
-                        '<a class="left carousel-control" href="#'+id+'" data-slide="prev">\n' +
-                        '    <span class="fa fa-angle-left"></span>\n' +
-                        '</a>\n' +
-                        '<a class="right carousel-control" href="#'+id+'" data-slide="next">\n' +
-                        '    <span class="fa fa-angle-right"></span>\n' +
-                        '</a>\n' +
-                        '</div><hr>';
-                    showImg(item.idItem);
-                });
-            }else{
-                str = '<b style="text-align: center">Foto tidak ada..!</b>'
-            }
-            $("#body-img").html(str);
-        });
-    }
+            var temp = '';
 
-    function showImg(idItem){
-        PermintaanVendorAction.getListImg(idItem, function (listimg) {
-            var str = '';
-            var li = '';
-            $.each(listimg, function (n, img) {
-                var aktive = '';
-                var liAcktive = '';
-                if(n == 0){
-                    aktive = 'active';
-                    liAcktive = 'class="active"';
-                }
-                str += '<div class="item '+aktive+'">\n' +
-                    '<img style="height: 300px; width: 100%" src="'+contextPathHeader+'/images/upload/surat_po/'+img.urlImg+'" alt="Slide'+img.urlImg+'">\n' +
-                    '<div class="carousel-caption">\n' +img.urlImg +
-                    '</div>\n' +
-                    '</div>';
-                li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
+            $.each(list, function (i, item) {
+                console.log(item.idItem);
+                var id = 'carousel-example-generic' + item.idItem;
+                temp += '<div id="' + id + '" class="carousel slide" data-ride="carousel">\n' +
+                    '                    <ol class="carousel-indicators">\n' +
+                    '                        <li data-target="#' + id + '" data-slide-to="0" class="active"></li>\n' +
+                    '                        <li data-target="#' + id + '" data-slide-to="1" class=""></li>\n' +
+                    '                        <li data-target="#' + id + '" data-slide-to="2" class=""></li>\n' +
+                    '                    </ol>\n' +
+                    '                    <div class="carousel-inner" id="text">\n' +
+                    '                    </div>\n' +
+                    '                    <a class="left carousel-control" href="#' + id + '" data-slide="prev">\n' +
+                    '                        <span class="fa fa-angle-left"></span>\n' +
+                    '                    </a>\n' +
+                    '                    <a class="right carousel-control" href="#' + id + '" data-slide="next">\n' +
+                    '                        <span class="fa fa-angle-right"></span>\n' +
+                    '                    </a>\n' +
+                    '                </div>\n<br>';
+                showImg(item.idItem);
             });
-            $("#item_"+idItem).html(str);
-            $("#li_"+idItem).html(li);
-        });
+            $("#body-img").html(temp);
+
+            var batch = $("#" + idBatch).text();
+            $("#body-img").html("");
+            PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
+                var str = '';
+                if (list.length > 0) {
+                    $.each(list, function (i, item) {
+                        var id = 'carousel-example-generic_' + item.idItem;
+                        str += '<h5>' + item.jenisNomor.toUpperCase() + ' - ' + item.idItem + '</h5><div id="' + id + '" class="carousel slide" data-ride="carousel">\n' +
+                            '<ol class="carousel-indicators" id="li_' + item.idItem + '">\n' +
+                            '</ol>\n' +
+                            '<div class="carousel-inner" id="item_' + item.idItem + '">\n' +
+                            '</div>\n' +
+                            '<a class="left carousel-control" href="#' + id + '" data-slide="prev">\n' +
+                            '    <span class="fa fa-angle-left"></span>\n' +
+                            '</a>\n' +
+                            '<a class="right carousel-control" href="#' + id + '" data-slide="next">\n' +
+                            '    <span class="fa fa-angle-right"></span>\n' +
+                            '</a>\n' +
+                            '</div><hr>';
+                        showImg(item.idItem);
+                    });
+                } else {
+                    str = '<b style="text-align: center">Foto tidak ada..!</b>'
+                }
+                $("#body-img").html(str);
+
+            });
+        })
     }
 
-    function addUpload(tipe){
-        var cekTipe = $('.'+tipe).length;
-        var remove = 'remove_'+tipe+cekTipe;
-        var set = '<div id="'+remove+'">' +
-            '<div class="input-group" style="margin-top: 7px">\n' +
-            '<input type="file" class="form-control" id="upload-'+tipe+'-'+cekTipe+'" onchange="uploadDoc(\''+tipe+'\', \''+cekTipe+'\')"/>\n' +
-            '<div class="input-group-btn">\n' +
-            '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\''+remove+'\')"><i class="fa fa-trash"></i></a>\n' +
-            '</div>\n' +
-            '</div>'+
-            '<canvas id="canvas-'+tipe+'-'+cekTipe+'" class="'+tipe+'" style="display: none"></canvas>'+
-            '</div>';
-        $('#set_'+tipe).append(set);
-    }
 
-    function delUpload(id){
-        $('#'+id).remove();
-    }
+            function showImg(idItem) {
+
+                var first = firstpath();
+                var indicator = "";
+
+                PermintaanVendorAction.getListImg(idItem, function (listimg) {
+                    var temp = '';
+                    // console.log(listimg);
+                    $.each(listimg, function (n, img) {
+                        temp += '<img src="' + contextPathHeader + '>/images/upload/surat_po/' + img.urlImg + '">';
+                    });
+                    $("#text_" + idItem).html(temp);
+                });
+            }
+
+
+//     function viewUpload() {
+//         $("#modal-view-img").modal('show');
+// //        $("#modal-detail-rekam-medic-lama").modal("show");
+//         var batch = $("#mod_batch").text();
+//         $("#body-img").html("");
+//         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
+//
+//             var str = '';
+//             $.each(list, function (i, item) {
+//
+//                 str += '<div class="row">' +
+//                         '<div class="col-md-12" align="center"> ' +
+//                         '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
+//                             '<div class="bungkus">'+
+//                                 '<div class="carousel">' +
+//                                     '<button onclick="carouselSwipe(\'carousel-arrow-prev\', \''+item.idItem+'\')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>'+
+//                                     '<button onclick="carouselSwipe(\'carousel-arrow-next\', \''+item.idItem+'\')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>'+
+//                                     '<div id="body-img-'+item.idItem+'"></div>'+
+//                                 '</div>'+
+//                         '</div>' +
+//                     '</div>' +
+//                     '</div>';
+//                 showImg(item.idItem);
+//             });
+//          $("#body-img").html(str);
+//         });
+//     }
+
+//     function showImg(idItem){
+//         var first = firstpath();
+//         var indicator = "";
+//         PermintaanVendorAction.getListImg(idItem, function (listimg) {
+// //            var str = '<div class="row">';
+//             var str = '';
+//             console.log(listimg);
+//             $.each(listimg, function (n, img) {
+//
+// //                str += '<div class="col-md-4" align="center">' +
+// //                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
+// //                    '</div>';
+//                 if(n == 0){
+//                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-displayed" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
+//                 }else{
+//                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-noDisplay" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
+//                 }
+//             });
+// //            str += '</div>' +
+// //                '<br>';
+// //            $("#body-img-"+idItem).html(str);
+//             $("#indicator-img").html(indicator);
+//             $("#body-img-"+idItem).html(str);
+//         });
+//     }
+
+            function carouselSwipe(id, idItem) {
+
+                var currentImg = document.getElementsByClassName('iditem-' + idItem + ' carousel-img-displayed')[0].id.substring(9);
+
+                var splitId = currentImg.split("-");
+
+
+                //var newImg = parseInt(currentImg);
+                var newImg = parseInt(splitId[0]);
+                if (id == 'carousel-arrow-next') {
+                    newImg++;
+//            if (newImg >= document.getElementsByClassName('carousel-img').length) {
+//                newImg = 0;
+//            }
+
+                    if (newImg >= document.getElementsByClassName('iditem-' + splitId[1]).length) {
+                        newImg = 0;
+                    }
+                } else if (id == 'carousel-arrow-prev') {
+                    newImg--;
+//            if (newImg<0) {
+//                newImg = document.getElementsByClassName('carousel-img').length-1;
+//            }
+                    if (newImg < 0) {
+                        newImg = document.getElementsByClassName('iditem-' + splitId[1]).length - 1;
+                    }
+                }
+
+                document.getElementById('carousel-' + currentImg).className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-hidden';
+                var displayedCarousel = document.getElementById('carousel-' + newImg + '-' + idItem);
+//        console.log("id caurosel hidden --> " + 'carousel-'+newImg+'-'+idItem );
+//        console.log("display carousel --> ");
+//        console.log(displayedCarousel);
+                displayedCarousel.className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-hidden';
+                setTimeout(function () {
+                    displayedCarousel.className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-displayed';
+                }, 20);
+
+                setTimeout(function () {
+                    document.getElementById('carousel-' + currentImg).className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-noDisplay';
+                }, 520);
+            }
+
+            function viewDetailRekamMedicLama(headId) {
+                var str = "";
+                var indicator = "";
+                CheckupAction.getListUploadRekamMedic(headId, function (response) {
+                    if (response.length > 0) {
+                        $.each(response, function (i, item) {
+                            if (i == 0) {
+                                str += '<img id="carousel-' + i + '" class="carousel-img carousel-img-displayed" src="' + item.urlImg + '" alt="Foto Rekam Medik" />';
+                            } else {
+                                str += '<img id="carousel-' + i + '" class="carousel-img carousel-img-noDisplay" src="' + item.urlImg + '" alt="Foto Rekam Medik" />';
+                            }
+                        });
+                        $("#modal-detail-rekam-medic-lama").modal("show");
+                        $("#indicator-img").html(indicator);
+                        $("#body-img-rm").html(str);
+                    }
+                })
+
+                PermintaanVendorAction.getListImg(idItem, function (listimg) {
+                    var str = '';
+                    var li = '';
+                    $.each(listimg, function (n, img) {
+                        var aktive = '';
+                        var liAcktive = '';
+                        if (n == 0) {
+                            aktive = 'active';
+                            liAcktive = 'class="active"';
+                        }
+                        str += '<div class="item ' + aktive + '">\n' +
+                            '<img style="height: 300px; width: 100%" src="' + contextPathHeader + '/images/upload/surat_po/' + img.urlImg + '" alt="Slide' + img.urlImg + '">\n' +
+                            '<div class="carousel-caption">\n' + img.urlImg +
+                            '</div>\n' +
+                            '</div>';
+                        li += '<li data-target="#carousel-example-generic_' + idItem + '" data-slide-to="' + n + '" ' + liAcktive + '></li>';
+                    });
+                    $("#item_" + idItem).html(str);
+                    $("#li_" + idItem).html(li);
+                });
+            }
+
+            function addUpload(tipe) {
+                var cekTipe = $('.' + tipe).length;
+                var remove = 'remove_' + tipe + cekTipe;
+                var set = '<div id="' + remove + '">' +
+                    '<div class="input-group" style="margin-top: 7px">\n' +
+                    '<input type="file" class="form-control" id="upload-' + tipe + '-' + cekTipe + '" onchange="uploadDoc(\'' + tipe + '\', \'' + cekTipe + '\')"/>\n' +
+                    '<div class="input-group-btn">\n' +
+                    '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\'' + remove + '\')"><i class="fa fa-trash"></i></a>\n' +
+                    '</div>\n' +
+                    '</div>' +
+                    '<canvas id="canvas-' + tipe + '-' + cekTipe + '" class="' + tipe + '" style="display: none"></canvas>' +
+                    '</div>';
+                $('#set_' + tipe).append(set);
+            }
+
+            function delUpload(id) {
+                $('#' + id).remove();
+
+            }
 
 
 

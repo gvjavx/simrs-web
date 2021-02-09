@@ -38,6 +38,9 @@
             <basic name="flagKonsulTele">
                 <column name="flag_konsul_tele"/>
             </basic>
+            <basic name="flagVaksin">
+                <column name="flag_vaksin"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -22,6 +22,7 @@ import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
@@ -1954,7 +1955,7 @@ public class ObatBoImpl implements ObatBo {
 
 
         String pelayananTujuan = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayanan());
         if (pelayananEntity != null){
             pelayananTujuan = pelayananEntity.getNamaPelayanan();
         }
@@ -2144,7 +2145,7 @@ public class ObatBoImpl implements ObatBo {
 
 
         String pelayananTujuan = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayanan());
         if (pelayananEntity != null){
             pelayananTujuan = pelayananEntity.getNamaPelayanan();
         }

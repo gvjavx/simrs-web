@@ -1,11 +1,11 @@
-package com.neurix.simrs.master.license.model;
+package com.neurix.simrs.transaksi.laporan.model;
 
 import java.sql.Timestamp;
+import java.util.Objects;
 
-public class ImVersionMobileEntity {
-    private String idVersionMobile;
-    private String namaVersion;
-    private String os;
+public class ImSimrsLaporanOpsEntity {
+    private String idLaporanOps;
+    private String namaLaporan;
     private String flag;
     private String action;
     private Timestamp createdDate;
@@ -13,28 +13,20 @@ public class ImVersionMobileEntity {
     private String createdWho;
     private String lastUpdateWho;
 
-    public String getIdVersionMobile() {
-        return idVersionMobile;
+    public String getIdLaporanOps() {
+        return idLaporanOps;
     }
 
-    public void setIdVersionMobile(String idVersionMobile) {
-        this.idVersionMobile = idVersionMobile;
+    public void setIdLaporanOps(String idLaporanOps) {
+        this.idLaporanOps = idLaporanOps;
     }
 
-    public String getNamaVersion() {
-        return namaVersion;
+    public String getNamaLaporan() {
+        return namaLaporan;
     }
 
-    public void setNamaVersion(String namaVersion) {
-        this.namaVersion = namaVersion;
-    }
-
-    public String getOs() {
-        return os;
-    }
-
-    public void setOs(String os) {
-        this.os = os;
+    public void setNamaLaporan(String namaLaporan) {
+        this.namaLaporan = namaLaporan;
     }
 
     public String getFlag() {
@@ -84,4 +76,5 @@ public class ImVersionMobileEntity {
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
     }
+
 }

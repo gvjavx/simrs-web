@@ -143,7 +143,16 @@ public class PengirimanObatDao extends GenericDao<ItSimrsPengirimanObatEntity, S
                 "INNER JOIN im_simrs_kurir b ON a.id_kurir = b.id_kurir\n" +
                 "INNER JOIN im_simrs_pasien c ON a.id_pasien = c.id_pasien\n" +
                 "INNER JOIN im_branches d ON a.branch_id = d.branch_id\n" +
-                "INNER JOIN im_simrs_pelayanan e ON a.id_pelayanan = e.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) e ON a.id_pelayanan = e.id_pelayanan\n" +
                 "WHERE a.flag = 'Y'\n" + searchIdKurir + searchIdPasien +
                 "ORDER BY a.last_update ";
 

@@ -111,10 +111,6 @@ public class CheckupModuls {
         if (bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
             hsCriteria.put("id_ruangan", bean.getIdRuangan());
         }
-//        if (bean.getStatusRuangan() != null && !"".equalsIgnoreCase(bean.getStatusRuangan())){
-//            hsCriteria.put("status_ruangan", bean.getStatusRuangan());
-//
-//        }
         hsCriteria.put("flag", "Y");
 
         try {

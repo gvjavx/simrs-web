@@ -8,15 +8,13 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
-    <style>
-    </style>
-    <script type='text/javascript'>
 
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+
+    <script type='text/javascript'>
         $( document ).ready(function() {
             $('#rawat_jalan').addClass('active');
         });
-
-
     </script>
 </head>
 
@@ -172,6 +170,23 @@
                                         >
                                             <center><img border="0" src="<s:url value="/pages/images/spinner.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
+
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <s:hidden id="close_pos"></s:hidden>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+
                                     </div>
                                 </div>
                             </s:form>
@@ -217,6 +232,9 @@
                                                     <s:a href="%{add_rawat_jalan}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                     </s:a>
+                                                    <s:if test='#row.statusPeriksa == "0"'>
+                                                        <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
+                                                    </s:if>
                                                 </s:if>
                                                 <s:else>
                                                     <span class="span-warning">Uang muka belum bayar</span>
@@ -229,6 +247,9 @@
                                                 <s:a href="%{add_rawat_jalan}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                                 </s:a>
+                                                <s:if test='#row.statusPeriksa == "0"'>
+                                                    <img onclick="cancelPeriksa('<s:property value="idDetailCheckup"/>')" style="cursor: pointer" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>">
+                                                </s:if>
                                             </s:else>
                                         </s:if>
                                         <s:if test='#row.tglCekup == null'>
@@ -257,8 +278,121 @@
     <!-- /.content -->
 </div>
 
+<div class="modal fade" id="modal-detail">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user"></i> Data Pasien</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_cancel">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="msg_cancel"></p>
+                            </div>
+                            <table class="table table-striped" style="font-size: 13px">
+                                <tr>
+                                    <td width="30%">No Checkup</td>
+                                    <td><span id="det_no_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>ID Detail Checkup</td>
+                                    <td><span id="det_id_detail_checkup"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>NO RM</td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Pasien</td>
+                                    <td><span id="det_nama_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Pelayanan</td>
+                                    <td><span id="det_pelayanan"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Pasien</td>
+                                    <td><span id="det_jenis_pasien"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alamat</td>
+                                    <td><span id="det_alamat"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-12">
+                            <textarea id="set_alasan" class="form-control" rows="2" placeholder="Alasan"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_add" ><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
+                        id="load_add"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <%@ include file="/pages/common/footer.jsp" %>
 <%@ include file="/pages/common/lastScript.jsp" %>
+
+<script>
+    function cancelPeriksa(idDetailCHeckup){
+        CheckupAction.listDataPasien(idDetailCHeckup, {
+            callback: function (res) {
+                $('#det_no_checkup').text(res.noCheckup);
+                $('#det_id_detail_checkup').text(res.idDetailCheckup);
+                $('#det_no_rm').text(res.idPasien);
+                $('#det_nama_pasien').text(res.nama);
+                $('#det_pelayanan').text(res.namaPelayanan);
+                $('#det_jenis_pasien').text(res.statusPeriksaName);
+                $('#det_alamat').text(res.namaDesa+", "+res.namaKecamatan+", "+res.namaKota);
+            }
+        });
+        $('#save_add').attr('onclick', 'saveCancel(\''+idDetailCHeckup+'\')');
+        $('#modal-detail').modal({show: true, backdrop:'static'});
+    }
+
+    function saveCancel(idDetailCHeckup){
+        var alsan = $('#set_alasan').val();
+        if(alsan != ''){
+            $('#save_add').hide();
+            $('#load_add').show();
+            dwr.engine.setAsync(true);
+            CheckupAction.cancelPeriksa(idDetailCHeckup, alsan, {
+                callback: function (res) {
+                    if(res.status == "success"){
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#modal-detail').modal('hide');
+                        $('#info_dialog').dialog('open');
+                    }else{
+                        $('#save_add').show();
+                        $('#load_add').hide();
+                        $('#warning_cancel').show().fadeOut(5000);
+                        $('#msg_cancel').text(res.msg);
+                    }
+                }
+            });
+        }else{
+            $('#warning_cancel').show().fadeOut(5000);
+            $('#msg_cancel').text("Silahkan masukkan alasan pasien...!");
+        }
+    }
+
+</script>
 
 </body>
 </html>

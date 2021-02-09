@@ -98,7 +98,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "FROM \n" +
                     "it_simrs_header_detail_checkup detail\n" +
                     "INNER JOIN im_simrs_status_pasien status ON status.id_status_pasien = detail.status_periksa\n" +
-                    "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = detail.id_pelayanan \n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pel ON pel.id_pelayanan = detail.id_pelayanan \n" +
                     "LEFT OUTER JOIN (SELECT * FROM it_simrs_rawat_inap WHERE flag = 'Y') ranap ON ranap.id_detail_checkup = detail.id_detail_checkup\n" +
                     "WHERE (detail.no_checkup, detail.created_date) = \n" +
                     "(\n" +
@@ -392,7 +401,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "b.no_checkup_online\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
                 "LEFT JOIN it_simrs_uang_muka_pendaftaran f ON b.id_detail_checkup = f.id_detail_checkup\n" +
@@ -460,7 +478,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "c.nama_pelayanan, d.kecamatan_id, e.kecamatan_name, b.tgl_antrian\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
                 "LEFT JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = b.id_detail_checkup \n" +
@@ -516,7 +543,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "INNER JOIN im_hris_desa d ON CAST(a.desa_id AS character varying) = d.desa_id\n" +
                 "INNER JOIN im_hris_kecamatan e ON d.kecamatan_id = e.kecamatan_id\n" +
                 "INNER JOIN mt_simrs_permintaan_resep pr ON pr.id_detail_checkup = b.id_detail_checkup \n" +
-                "INNER JOIN im_simrs_pelayanan c ON c.id_pelayanan = pr.tujuan_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON c.id_pelayanan = pr.tujuan_pelayanan\n" +
                 "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = b.id_pelayanan\n" +
                 "LEFT JOIN \n" +
                 "(\n" +
@@ -592,7 +628,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "ri.created_date as tgl_pindah,\n" +
                 "mri.nama_ruangan\n" +
                 "FROM it_simrs_header_detail_checkup dck\n" +
-                "INNER JOIN im_simrs_pelayanan pel ON pel.id_pelayanan = dck.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pel ON pel.id_pelayanan = dck.id_pelayanan\n" +
                 "LEFT JOIN (\n" +
                 "\tSELECT inap.no_checkup, MIN(inap.created_date) as created_date\n" +
                 "\tFROM it_simrs_rawat_inap inap\n" +
@@ -667,7 +712,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "a.id_detail_checkup,\n" +
                 "a.no_checkup\n" +
                 "FROM it_simrs_header_detail_checkup a\n" +
-                "INNER JOIN im_simrs_pelayanan b ON b.id_pelayanan = a.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON b.id_pelayanan = a.id_pelayanan\n" +
                 "WHERE a.no_checkup LIKE :no\n" +
                 "AND b.tipe_pelayanan = :kat";
 
@@ -746,10 +800,21 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.kelas_pasien, \n"+
                     "b.catatan, \n"+
                     "b.flag_close_traksaksi, \n"+
-                    "b.flag_cover \n"+
+                    "b.flag_cover, \n"+
+                    "b.is_eksekutif, \n"+
+                    "b.is_vaksin \n"+
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien d ON b.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_hris_desa e ON CAST(a.desa_id AS VARCHAR) = e.desa_id \n" +
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
@@ -847,6 +912,8 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setCatatan(obj[54] == null ? "" : obj[54].toString());
                     checkup.setFlagCloseTransaksi(obj[55] == null ? null : obj[55].toString());
                     checkup.setFlagCover(obj[56] == null ? null : obj[56].toString());
+                    checkup.setIsEksekutif(obj[57] == null ? null : obj[57].toString());
+                    checkup.setIsVaksin(obj[58] == null ? null : obj[58].toString());
                     HeaderCheckup hdr = getPemeriksaanFisik(obj[0].toString());
                     checkup.setTensi(hdr.getTensi());
                     checkup.setSuhu(hdr.getSuhu());
@@ -1345,7 +1412,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                    "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                     "LEFT JOIN (\n" +
                     "SELECT * FROM(\n" +
                     "SELECT *, \n" +
@@ -1490,7 +1566,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.video_rm\n" +
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE a.id_pasien = :id \n" +
                     "AND a.branch_id = :branch\n" +
                     "AND b.status_periksa = '3'\n" +
@@ -1571,7 +1656,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "i.keterangan_diagnosa\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN im_simrs_jenis_periksa_pasien d ON b.id_jenis_periksa_pasien = d.id_jenis_periksa_pasien\n" +
                     "INNER JOIN im_hris_desa e ON CAST(a.desa_id AS VARCHAR) = e.desa_id \n" +
                     "INNER JOIN im_hris_kecamatan f ON e.kecamatan_id = f.kecamatan_id\n" +
@@ -1635,7 +1729,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.created_date\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "LEFT JOIN (\n" +
                     "SELECT * FROM (\n" +
                     "SELECT\n" +
@@ -1684,7 +1787,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "\tWHERE c.tipe_pelayanan = 'rawat_jalan'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
                 "\tAND a.branch_id LIKE :branchId\n" +
@@ -1699,7 +1811,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a \n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "\tWHERE c.tipe_pelayanan = 'rawat_inap'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
                 "\tAND a.branch_id LIKE :branchId \n" +
@@ -1714,7 +1835,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "\tWHERE c.tipe_pelayanan = 'igd'\n" +
                 "\tAND b.id_transaksi_online IS NULL\n" +
                 "\tAND a.branch_id LIKE :branchId \n" +
@@ -1729,7 +1859,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "\tCAST(COUNT (a.no_checkup) AS VARCHAR) as total\n"+
                 "\tFROM it_simrs_header_checkup a\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "\tINNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                 "\tWHERE b.id_transaksi_online IS NOT NULL\n" +
                 "\tAND a.branch_id LIKE :branchId \n" +
                 "\tAND b.status_periksa = '3'\n" +
@@ -1837,7 +1976,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "d.id_detail_checkup\n" +
                     "FROM it_simrs_antian_online a\n" +
                     "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON a.id_pelayanan = c.id_pelayanan\n" +
                     "LEFT JOIN it_simrs_header_detail_checkup d ON b.no_checkup_online = d.no_checkup_online\n" +
                     "WHERE a.tgl_checkup = CURRENT_DATE\n" +
                     "AND b.branch_id = :id\n" +
@@ -1910,7 +2058,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\ta.branch_id\n" +
                     "\tFROM it_simrs_header_checkup a\n" +
                     "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
+                    "\tINNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) e ON b.id_pelayanan = e.id_pelayanan\n" +
                     "\tWHERE CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
                     "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId + jenis +
                     "\tAND b.status_periksa = '3'\n" +
@@ -1993,7 +2150,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\t\ta.branch_id\n" +
                     "\t\tFROM it_simrs_header_checkup a\n" +
                     "\t\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "\t\tINNER JOIN im_simrs_pelayanan e ON b.id_pelayanan = e.id_pelayanan\n" +
+                    "\t\tINNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) e ON b.id_pelayanan = e.id_pelayanan\n" +
                     "\t\tINNER JOIN im_simrs_jenis_periksa_pasien pk ON b.id_jenis_periksa_pasien = pk.id_jenis_periksa_pasien\n" +
                     "\tWHERE CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun\n" +
                     "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan\n" + branchId + jenis +
@@ -2130,7 +2296,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.id_pelayanan,\n" +
                     "a.created_date\n" +
                     "FROM it_simrs_antian_online a\n" +
-                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON a.id_pelayanan = b.id_pelayanan\n" +
                     "WHERE tgl_checkup = CURRENT_DATE\n" +
                     "AND a.branch_id = :branch\n" +
                     "AND a.id_pelayanan = :pelayanan\n" +
@@ -2160,7 +2335,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "a.no_antrian\n" +
                     "FROM it_simrs_header_detail_checkup a\n" +
                     "INNER JOIN it_simrs_header_checkup b ON a.no_checkup = b.no_checkup\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON a.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON a.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN it_simrs_dokter_team d ON a.id_detail_checkup = d.id_detail_checkup\n" +
                     "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
                     "AND c.tipe_pelayanan = 'rawat_jalan'\n" +
@@ -2239,7 +2423,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "\tFROM it_simrs_header_checkup a\n" +
                     "\tINNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "\tINNER JOIN im_branches c ON a.branch_id = c.branch_id\n" +
-                    "\tINNER JOIN im_simrs_pelayanan e ON e.id_pelayanan = b.id_pelayanan\n" +
+                    "\tINNER JOIN (SELECT\n" +
+                    "a.id_pelayanan,\n" +
+                    "b.nama_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.tipe_pelayanan,\n" +
+                    "b.kategori_pelayanan,\n" +
+                    "b.divisi_id,\n" +
+                    "b.kode_vclaim\n" +
+                    "FROM im_simrs_pelayanan a\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) e ON e.id_pelayanan = b.id_pelayanan\n" +
                     "\tWHERE a.jenis_kelamin IS NOT NULL\n" + branchId + jenis +
                     "\tAND CAST(DATE_PART('month', b.created_date) AS VARCHAR) = :bulan \n" +
                     "\tAND CAST(DATE_PART('year', b.created_date) AS VARCHAR) = :tahun \n" +

@@ -1601,7 +1601,6 @@ INSERT INTO it_hris_pegawai_position VALUES
 ('PP000726','DKR00000027','RS01','Y','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','C','P009','N','PR001','JP05','Y'),
 ('PP000727','DKR00000028','RS01','Y','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','2020-05-15 10:48:27.921','MOH.IMRON,DRS,APT','C','P009','N','PR001','JP05','Y');
 
-
 INSERT INTO im_roles VALUES
 (86,'ADMIN ZEBRA',now(),'adminzebra',now(),'adminzebra','Y','C',null);
 
@@ -1624,6 +1623,155 @@ INSERT INTO im_func_roles VALUES
 (2361, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
 (2362, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra'),
 (2363, 86, 'Y', now(), now(), 'adminzebra', 'adminzebra');
+
+--UPDATE MENU KASIR JALAN
+SELECT * FROM im_func_roles
+WHERE role_id = 41
+AND func_id = 2;
+
+DELETE FROM im_func_roles
+WHERE role_id = 41
+AND func_id = 2;
+
+--UPDATE FOR PELAYANAN
+--01-02-2021 07:18 WIS (waktu indonesia sumenep)
+CREATE TABLE im_simrs_header_pelayanan(
+id_header_pelayanan VARCHAR(30) PRIMARY KEY NOT NULL,
+nama_pelayanan VARCHAR(500),
+tipe_pelayanan VARCHAR(100),
+kategori_pelayanan VARCHAR(100),
+kode_vclaim VARCHAR(100),
+divisi_id VARCHAR(100),
+flag VARCHAR(1),
+action VARCHAR(1),
+created_date TIMESTAMP WITHOUT TIME ZONE,
+created_who VARCHAR(100),
+last_update TIMESTAMP WITHOUT TIME ZONE,
+last_update_who VARCHAR(100),
+is_vaksin VARCHAR(1)
+);
+
+CREATE SEQUENCE seq_header_pelayanan;
+
+--drop column2 di im_simrs_pelayanan
+TRUNCATE TABLE im_simrs_pelayanan;
+
+ALTER TABLE im_simrs_pelayanan
+ADD COLUMN id_header_pelayanan VARCHAR(100);
+
+ALTER TABLE im_simrs_pelayanan
+DROP COLUMN nama_pelayanan,
+DROP COLUMN is_poli,
+DROP COLUMN is_eksekutif,
+DROP COLUMN tipe_pelayanan,
+DROP COLUMN divisi_id,
+DROP COLUMN kategori_pelayanan,
+DROP COLUMN kode_poli_vclaim;
+
+ALTER TABLE it_simrs_header_detail_checkup
+ADD COLUMN is_eksekutif VARCHAR(1),
+ADD COLUMN is_vaksin VARCHAR(1);
+
+--02-02-2021
+--function header pelayanan
+INSERT INTO im_functions VALUES
+(2365, 'Header Pelayanan', '/headerpelayanan/initForm_headerpelayanan.action', 6000, 2, now(), 'admin', now(), 'admin', 'Y','C', 2365),
+(2366, 'init', '/headerpelayanan/initForm_headerpelayanan.action', 2365, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(2367, 'search', '/headerpelayanan/search_headerpelayanan.action', 2365, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2365, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2366, 32, 'Y', now(), now(), 'admin', 'admin'),
+(2367, 32, 'Y', now(), now(), 'admin', 'admin');
+
+--print rawat jalan
+INSERT INTO im_functions VALUES
+(2368, 'print antrian', '/checkupdetail/printNoAntrian_checkupdetail.action', 1481, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(2368, 32, 'Y', now(), now(), 'admin', 'admin');
+
+--VAKSIN ADALAH CAIRAN YANG CAIR
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN flag_vaksin VARCHAR(1);
+
+--Laporan
+INSERT INTO im_functions VALUES
+(6900, 'Laporan', '/laporanops/initForm_laporanops.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6900),
+(6901, 'Init Laporan', '/laporanops/initForm_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6902, 'Search', '/laporanops/search_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6900, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6901, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6902, 32, 'Y', now(), now(), 'admin', 'admin');
+
+CREATE TABLE im_simrs_laporan_ops(
+  id_laporan_ops VARCHAR(100) NOT NULL PRIMARY KEY,
+  nama_laporan VARCHAR(500),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100)
+)
+
+
+
+
+
+
+--UPDATE LICENSE HABIS ASAR SEKITAR 16:15 WAKTU SEKITAR SINI
+--MOHON DI HAPUS MENDING SAYA UPDATE TABLE AJA BIAT TAK BANYAK TABLE ;-)
+DROP TABLE im_version_zebra;
+
+--CREATE NEW
+CREATE TABLE public.im_version
+(
+  id_version character varying(20) NOT NULL,
+  version_name character varying(20),
+  tipe character varying(20),
+  os character varying(20),
+  description text,
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(50),
+  last_update_who character varying(50),
+  CONSTRAINT im_version_pkey PRIMARY KEY (id_version)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.im_version
+  OWNER TO postgres;
+
+--SIDAH DI PROD NO RM LAMA to 6 DIGIT
+UPDATE im_simrs_pasien aa
+SET no_rm_lama = (
+	SELECT
+	CASE
+	WHEN a.panjang = 6 THEN a.no_rm_lama
+	WHEN a.panjang = 5 THEN CONCAT('0', a.no_rm_lama)
+	WHEN a.panjang = 4 THEN CONCAT('00', a.no_rm_lama)
+	WHEN a.panjang = 3 THEN CONCAT('000', a.no_rm_lama)
+	WHEN a.panjang = 2 THEN CONCAT('0000', a.no_rm_lama)
+	WHEN a.panjang = 1 THEN CONCAT('00000', a.no_rm_lama)
+	ELSE null
+	END as no_rm_lama_edit
+	FROM(
+		SELECT
+		no_rm_lama,
+		id_pasien,
+		LENGTH(no_rm_lama) as panjang
+		FROM im_simrs_pasien
+		WHERE created_who NOT LIKE 'testing'
+	)a WHERE a.id_pasien = aa.id_pasien
+)
+WHERE created_who NOT LIKE 'testing'
+
 
 
 

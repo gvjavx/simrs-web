@@ -108,11 +108,10 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                     antrianItem.setTglCheckup(item.getTglCheckup().toString());
 
                     if (item.getIdPelayanan() != null && !"".equalsIgnoreCase(item.getIdPelayanan())) {
-                        Pelayanan pelayanan = new Pelayanan();
-                        pelayanan.setIdPelayanan(item.getIdPelayanan());
-                        ImSimrsPelayananEntity pelayananEntity = getListEntityPelayanan(pelayanan);
-                        antrianItem.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
-
+                        Pelayanan pelayanan = pelayananDao.getPelayananById("idPelayanan",item.getIdPelayanan());
+                        if(pelayanan != null){
+                            antrianItem.setNamaPelayanan(pelayanan.getNamaPelayanan());
+                        }
                     }
 
                     if(item.getIdDokter() != null && !"".equalsIgnoreCase(item.getIdDokter())){

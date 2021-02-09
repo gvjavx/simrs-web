@@ -121,7 +121,16 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 "FROM it_simrs_antian_online a \n" +
                 "INNER JOIN it_simrs_registrasi_online b ON a.no_checkup_online = b.no_checkup_online\n" +
                 "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
-                "INNER JOIN im_simrs_pelayanan d ON a.id_pelayanan = d.id_pelayanan \n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON a.id_pelayanan = d.id_pelayanan \n" +
                 "INNER JOIN im_branches e ON a.branch_id = e.branch_id \n " +
                 "WHERE a.flag = 'Y' \n" +
                 "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir + searchBranchId +
