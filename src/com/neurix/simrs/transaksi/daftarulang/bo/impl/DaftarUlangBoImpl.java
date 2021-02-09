@@ -462,7 +462,7 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
                 diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                 diagnosaRawat.setIdDiagnosa(bean.getDiagnosa());
                 diagnosaRawat.setKeteranganDiagnosa(bean.getNamaDiagnosa());
-                diagnosaRawat.setJenisDiagnosa("0");
+                diagnosaRawat.setJenisDiagnosa("1");
                 response = saveDiagnosa(diagnosaRawat);
             }
 
@@ -480,12 +480,12 @@ public class DaftarUlangBoImpl implements DaftarUlangBo {
 
             if(diagnosaList.size() > 0){
                 for (ItSimrsDiagnosaRawatEntity entity: diagnosaList){
-                    if("0".equalsIgnoreCase(entity.getJenisDiagnosa())){
+                    if("1".equalsIgnoreCase(entity.getJenisDiagnosa())){
                         DiagnosaRawat diagnosaRawat = new DiagnosaRawat();
                         diagnosaRawat.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                         diagnosaRawat.setIdDiagnosa(entity.getIdDiagnosa());
                         diagnosaRawat.setKeteranganDiagnosa(entity.getKeteranganDiagnosa());
-                        diagnosaRawat.setJenisDiagnosa("0");
+                        diagnosaRawat.setJenisDiagnosa("1");
                         response = saveDiagnosa(diagnosaRawat);
                         break;
                     }

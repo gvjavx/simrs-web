@@ -81,81 +81,98 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                     throw new GeneralBOException(e);
                 }
 
-                if (!pasienList.isEmpty() && pasienList.size() > 0)
-                {
+                if (!pasienList.isEmpty() && pasienList.size() > 0) {
                     com.neurix.simrs.master.pasien.model.Pasien pasienData = pasienList.get(0);
 
-                    model.setIdPasien(pasienData.getIdPasien());
-                    model.setNama(pasienData.getNama());
-                    model.setJenisKelamin(pasienData.getJenisKelamin());
-                    model.setNoKtp(pasienData.getNoKtp());
-                    model.setNoBpjs(pasienData.getNoBpjs());
-                    model.setTempatLahir(pasienData.getTempatLahir());
-                    model.setTglLahir(pasienData.getTglLahir());
-                    model.setDesaId(pasienData.getDesaId());
-                    model.setJalan(pasienData.getJalan());
-                    model.setSuku(pasienData.getSuku());
-                    model.setAgama(pasienData.getAgama());
-                    model.setProfesi(pasienData.getProfesi());
-                    model.setNoTelp(pasienData.getNoTelp());
-                    model.setUrlKtp(pasienData.getUrlKtp());
-                    model.setFlag(pasienData.getFlag());
-                    model.setAction(pasienData.getAction());
-                    model.setCreatedDate(pasienData.getCreatedDate());
-                    model.setCreatedWho(pasienData.getCreatedWho());
-                    model.setLastUpdate(pasienData.getLastUpdate());
-                    model.setLastUpdateWho(pasienData.getLastUpdateWho());
+                    if (pasienData.getFlagLogin() == null || !"Y".equalsIgnoreCase(pasienData.getFlagLogin())) {
+                        model.setIdPasien(pasienData.getIdPasien());
+                        model.setNama(pasienData.getNama());
+                        model.setJenisKelamin(pasienData.getJenisKelamin());
+                        model.setNoKtp(pasienData.getNoKtp());
+                        model.setNoBpjs(pasienData.getNoBpjs());
+                        model.setTempatLahir(pasienData.getTempatLahir());
+                        model.setTglLahir(pasienData.getTglLahir());
+                        model.setDesaId(pasienData.getDesaId());
+                        model.setJalan(pasienData.getJalan());
+                        model.setSuku(pasienData.getSuku());
+                        model.setAgama(pasienData.getAgama());
+                        model.setProfesi(pasienData.getProfesi());
+                        model.setNoTelp(pasienData.getNoTelp());
+                        model.setUrlKtp(pasienData.getUrlKtp());
+                        model.setFlag(pasienData.getFlag());
+                        model.setAction(pasienData.getAction());
+                        model.setCreatedDate(pasienData.getCreatedDate());
+                        model.setCreatedWho(pasienData.getCreatedWho());
+                        model.setLastUpdate(pasienData.getLastUpdate());
+                        model.setLastUpdateWho(pasienData.getLastUpdateWho());
 
-                    pasienList = new ArrayList<>();
-                    try {
-                        pasienList = pasienBoProxy.getDataPasien(pasienData.getDesaId());
-                    } catch (GeneralBOException e){
-                        Long logId = null;
+                        List<com.neurix.simrs.master.pasien.model.Pasien> pasienDataList = new ArrayList<>();
                         try {
-                            logId = pasienBoProxy.saveErrorMessage(e.getMessage(), "PasienController.getDataPasien");
-                        } catch (GeneralBOException e1) {
-                            logger.error("[PasienController.getDataPasien] Error when saving error,", e1);
+                            pasienDataList = pasienBoProxy.getDataPasien(pasienData.getDesaId());
+                        } catch (GeneralBOException e){
+                            Long logId = null;
+                            try {
+                                logId = pasienBoProxy.saveErrorMessage(e.getMessage(), "PasienController.getDataPasien");
+                            } catch (GeneralBOException e1) {
+                                logger.error("[PasienController.getDataPasien] Error when saving error,", e1);
+                            }
+                            logger.error("[PasienController.getDataPasien] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                            throw new GeneralBOException(e);
                         }
-                        logger.error("[PasienController.getDataPasien] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                        throw new GeneralBOException(e);
-                    }
 
-                    if (!pasienList.isEmpty() && pasienList.size() > 0) {
-                        pasienData = new com.neurix.simrs.master.pasien.model.Pasien();
-                        pasienData = pasienList.get(0);
+                        if (!pasienDataList.isEmpty() && pasienDataList.size() > 0) {
+                           com.neurix.simrs.master.pasien.model.Pasien pasienDataNew = new com.neurix.simrs.master.pasien.model.Pasien();
+                            pasienDataNew = pasienList.get(0);
 
-                        model.setProvinsiId(pasienData.getProvinsi());
-                        model.setKotaId(pasienData.getKota());
-                        model.setKecamatanId(pasienData.getKecamatan());
-                        model.setDesa(pasienData.getDesa());
-                    }
+                            model.setProvinsiId(pasienDataNew.getProvinsi());
+                            model.setKotaId(pasienDataNew.getKota());
+                            model.setKecamatanId(pasienDataNew.getKecamatan());
+                            model.setDesa(pasienDataNew.getDesa());
+                        }
 
-                    NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
-                    notifikasiFcm.setUserId(model.getIdPasien());
-                    notifikasiFcm.setUserName(model.getNama());
-                    notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
-                    notifikasiFcm.setTokenExpo(tokenExpo == null ? "" : tokenExpo);
-                    notifikasiFcm.setLastUpdateWho(model.getNama());
-                    notifikasiFcm.setCreatedWho(model.getNama());
-                    notifikasiFcm.setOs(os);
-                    try {
-                        notifikasiFcmBoProxy.saveAdd(notifikasiFcm);
-                    } catch (GeneralBOException e) {
-                        Long logId = null;
+                        NotifikasiFcm notifikasiFcm = new NotifikasiFcm();
+                        notifikasiFcm.setUserId(model.getIdPasien());
+                        notifikasiFcm.setUserName(model.getNama());
+                        notifikasiFcm.setTokenFcm(tokenFcm == null ? "" : tokenFcm);
+                        notifikasiFcm.setTokenExpo(tokenExpo == null ? "" : tokenExpo);
+                        notifikasiFcm.setLastUpdateWho(model.getNama());
+                        notifikasiFcm.setCreatedWho(model.getNama());
+                        notifikasiFcm.setOs(os);
+                            try {
+                                notifikasiFcmBoProxy.saveAdd(notifikasiFcm);
+                            } catch (GeneralBOException e) {
+                                Long logId = null;
+                                try {
+                                    logId = notifikasiFcmBoProxy.saveErrorMessage(e.getMessage(), "LoginMobileController.isFoundOtherSessionActiveUserSessionLog");
+                                } catch (GeneralBOException e1) {
+                                    logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                                }
+                                logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                                throw new GeneralBOException(e);
+                            }
+                        pasienData.setFlagLogin("Y");
+
                         try {
-                            logId = notifikasiFcmBoProxy.saveErrorMessage(e.getMessage(), "LoginMobileController.isFoundOtherSessionActiveUserSessionLog");
-                        } catch (GeneralBOException e1) {
-                            logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when saving error,", e1);
+                            pasienBoProxy.saveEdit(pasienData);
+                        } catch (GeneralBOException e){
+                            logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + e + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                            throw new GeneralBOException(e);
                         }
-                        logger.error("[LoginMobileController.isFoundOtherSessionActiveUserSessionLog] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                        throw new GeneralBOException(e);
+                    } else {
+                        logger.info("User ID tersebut telah login");
+                        model.setActionError("User ID tersebut telah login");
                     }
+                } else {
+                    logger.info("User ID and Password not found.");
+                    model.setActionError("User ID and Password not found");
                 }
+
             } else {
                 logger.info("User ID and Password not found.");
                 model.setActionError("User ID and Password not found");
             }
-        } else if (action.equalsIgnoreCase("resetPassword")){
+        }
+        if (action.equalsIgnoreCase("resetPassword")){
             List<com.neurix.simrs.master.pasien.model.Pasien> result = new ArrayList<>();
 
             com.neurix.simrs.master.pasien.model.Pasien pasien = new com.neurix.simrs.master.pasien.model.Pasien();
@@ -181,6 +198,74 @@ public class PasienController extends ValidationAwareSupport implements ModelDri
                     model.setActionError("Password lama tidak sesuai");
                 }
 
+            }
+        }
+        if (action.equalsIgnoreCase("logout")) {
+            List<com.neurix.simrs.master.pasien.model.Pasien> result = new ArrayList<>();
+
+            com.neurix.simrs.master.pasien.model.Pasien pasien = new com.neurix.simrs.master.pasien.model.Pasien();
+            pasien.setIdPasien(idPasien);
+
+            try {
+                result = pasienBoProxy.getByCriteria(pasien);
+            } catch (GeneralBOException e){
+                logger.error("Error get user data", e);
+            }
+
+            if (result.size() == 1){
+                com.neurix.simrs.master.pasien.model.Pasien newPasien = result.get(0);
+                newPasien.setFlagLogin("N");
+                try {
+                    pasienBoProxy.saveEdit(newPasien);
+                } catch (GeneralBOException e){
+                    logger.error("Gagal logout", e);
+                    model.setActionError("Gagal Logout");
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getPasien")) {
+            com.neurix.simrs.master.pasien.model.Pasien pasien = new com.neurix.simrs.master.pasien.model.Pasien();
+
+            pasien.setIdPasien(idPasien);
+            pasien.setFlag("Y");
+
+            List<com.neurix.simrs.master.pasien.model.Pasien> pasienList = new ArrayList<>();
+            try {
+                pasienList = pasienBoProxy.getByCriteria(pasien);
+            } catch (GeneralBOException e){
+                Long logId = null;
+                try {
+                    logId = pasienBoProxy.saveErrorMessage(e.getMessage(), "PasienController.getByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[PasienController.getByCriteria] Error when saving error,", e1);
+                }
+                logger.error("[PasienController.getByCriteria] Error when searching / inquiring data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                throw new GeneralBOException(e);
+            }
+
+            if (pasienList.size() > 0) {
+                com.neurix.simrs.master.pasien.model.Pasien pasienData = pasienList.get(0);
+                model.setIdPasien(pasienData.getIdPasien());
+                model.setNama(pasienData.getNama());
+                model.setJenisKelamin(pasienData.getJenisKelamin());
+                model.setNoKtp(pasienData.getNoKtp());
+                model.setNoBpjs(pasienData.getNoBpjs());
+                model.setTempatLahir(pasienData.getTempatLahir());
+                model.setTglLahir(pasienData.getTglLahir());
+                model.setDesaId(pasienData.getDesaId());
+                model.setJalan(pasienData.getJalan());
+                model.setSuku(pasienData.getSuku());
+                model.setAgama(pasienData.getAgama());
+                model.setProfesi(pasienData.getProfesi());
+                model.setNoTelp(pasienData.getNoTelp());
+                model.setUrlKtp(pasienData.getUrlKtp());
+                model.setFlag(pasienData.getFlag());
+                model.setAction(pasienData.getAction());
+                model.setCreatedDate(pasienData.getCreatedDate());
+                model.setCreatedWho(pasienData.getCreatedWho());
+                model.setLastUpdate(pasienData.getLastUpdate());
+                model.setLastUpdateWho(pasienData.getLastUpdateWho());
             }
         }
 

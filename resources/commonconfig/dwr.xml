@@ -259,6 +259,12 @@
         </create>
         <convert converter="bean" match="com.neurix.hris.master.updateGolongan.model.UpdateGolongan"/>
 
+        <!--update Golongan Action-->
+        <create creator="new">
+            <param name="class" value="com.neurix.hris.master.golongan.action.GolonganAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.hris.master.golongan.model.Golongan"/>
+
         <!--Dashboard Absensi-->
         <create creator="new">
             <param name="class" value="com.neurix.hris.master.dashboardAbsensi.action.DashboardAbsensiAction"/>
@@ -953,6 +959,12 @@
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.ImMasterEntity"/>
         <convert converter="bean" match="com.neurix.akuntansi.master.master.model.MasterPK"/>
         <!--END-->
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.license.action.LicenseAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.LicenseZebra"/>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.VersionZebra"/>
 
     </allow>
 </dwr>

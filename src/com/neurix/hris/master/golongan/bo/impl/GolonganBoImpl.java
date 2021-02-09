@@ -379,7 +379,7 @@ public class GolonganBoImpl implements GolonganBo {
         return status;
     }
 
-    public List<Golongan> getRangeMasaGol(String golPen) throws GeneralBOException{
+    public List<Golongan> getDetailGolongan(String golPen) throws GeneralBOException{
         logger.info("[GolonganBoImpl.getRangeMasaGol] start process >>>");
 
         List<Golongan> listGolongan = new ArrayList();
@@ -387,7 +387,7 @@ public class GolonganBoImpl implements GolonganBo {
 
         List<ImGolonganEntity> listGolonganEntities = null;
         try {
-            listGolonganEntities = golonganDao.getListGolDapen(criteria);
+            listGolonganEntities = golonganDao.getGolonganById(criteria);
         } catch (HibernateException e) {
             logger.error("[GolonganBoImpl.getRangeMasaGol] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list range masa golongan with criteria, please info to your admin..." + e.getMessage());

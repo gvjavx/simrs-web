@@ -1116,7 +1116,6 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 logger.info("File name : " + videoFileName + " "+ audioFileName);
                 String path = storageDir+videoFileName;
 
-                //TODO CHECK
                 String newPath = path.replace(CommonUtil.getPropertyParams("upload.folder"), "");
                 try {
                     checkupDetailBoProxy.editVideoRm(idDetailCheckup, newPath);
@@ -1181,19 +1180,20 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
                     RecordingEngineProperties recordingEngineProperties = recordingSDK.getProperties();
                     boolean isLeave = recordingSDK.leaveChannel();
+                    recordingSDK.unRegisterOberserver(this);
                     logger.info("Channel leave : " + isLeave);
 
-                    if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
-                        try {
-                           crudResponse = telemedicBoProxy.updateVideoRmOnDetailCheckup(idDetailCheckup, newPath);
-                           if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
-                               recordingSDK.unRegisterOberserver(this);
-                           }
-                        } catch (GeneralBOException e) {
-                            logger.error("[AntrianOnlineController.insertVideoRm] Error " + e.getMessage());
-                            throw new GeneralBOException("[AntrianOnlineController.insertVideoRm] Error ");
-                        }
-                    } else recordingSDK.unRegisterOberserver(this);
+//                    if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
+//                        try {
+//                           crudResponse = telemedicBoProxy.updateVideoRmOnDetailCheckup(idDetailCheckup, newPath);
+//                           if (crudResponse.getMsg().equalsIgnoreCase("Success")) {
+//                               recordingSDK.unRegisterOberserver(this);
+//                           }
+//                        } catch (GeneralBOException e) {
+//                            logger.error("[AntrianOnlineController.insertVideoRm] Error " + e.getMessage());
+//                            throw new GeneralBOException("[AntrianOnlineController.insertVideoRm] Error ");
+//                        }
+//                    } else recordingSDK.unRegisterOberserver(this);
 
 
 

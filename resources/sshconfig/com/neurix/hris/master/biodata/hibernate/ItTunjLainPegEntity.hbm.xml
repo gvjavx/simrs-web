@@ -16,17 +16,17 @@
         </property>
 
         <property name="flagTunjSupervisi">
-            <column name="flag_tunj_supervisi" sql-type="varchar" length="10" not-null="true" />
+            <column name="flag_tunj_supervisi" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="flagTunjLokasi">
-            <column name="flag_tunj_lokasi" sql-type="varchar" length="10" not-null="true" />
+            <column name="flag_tunj_lokasi" sql-type="varchar" length="10" not-null="false" />
         </property>
 
         <property name="flagTunjProfesional">
-            <column name="flag_tunj_profesional" sql-type="varchar" length="10" not-null="true" />
+            <column name="flag_tunj_profesional" sql-type="varchar" length="10" not-null="false" />
         </property>
         <property name="flagTunjSiaga">
-            <column name="flag_tunj_siaga" sql-type="varchar" length="10" not-null="true" />
+            <column name="flag_tunj_siaga" sql-type="varchar" length="10" not-null="false" />
         </property>
 
         <property name="flag">

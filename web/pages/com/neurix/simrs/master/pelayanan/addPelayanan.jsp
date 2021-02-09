@@ -293,9 +293,9 @@
 <script>
     window.cekEksekutif1 = function () {
         if (document.getElementById("isEksekutifAdd").checked == true) {
-            $("#eksekutif").val("Yes");
+            $("#eksekutif").val("Y");
         } else {
-            $("#eksekutif").val("No");
+            $("#eksekutif").val("N");
         }
     }
     function showKategoriPelayanan(valueTipe){

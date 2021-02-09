@@ -212,169 +212,128 @@ public class TelemedicBoImpl implements TelemedicBo {
     public List<AntrianTelemedic> getSearchByCriteria(AntrianTelemedic bean) throws GeneralBOException {
         logger.info("[TelemedicBoImpl.getSearchByCriteria] START >>>");
 
-        // untuk pencarian berdasarkan id transaksi
-//        if (bean.getIdTransaksi() != null && !"".equalsIgnoreCase(bean.getIdTransaksi())){
-//            ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranDao.getById("id", bean.getIdTransaksi());
-//            if (pembayaranOnlineEntity != null){
-//                bean.setIdTransaksi(bean.getIdTransaksi());
-//            }
-//        }
-
         List<AntrianTelemedic> results = new ArrayList<>();
-        List<ItSimrsAntrianTelemedicEntity> antrianTelemedicEntities = getListEntityByCriteria(bean);
-        if (antrianTelemedicEntities.size() > 0){
+        List<AntrianTelemedic> antrianTelemedics = new ArrayList<>();
 
-            AntrianTelemedic antrianTelemedic;
-            for (ItSimrsAntrianTelemedicEntity telemedicEntity : antrianTelemedicEntities) {
-                antrianTelemedic = new AntrianTelemedic();
-                antrianTelemedic.setId(telemedicEntity.getId());
-                antrianTelemedic.setIdPasien(telemedicEntity.getIdPasien());
-                antrianTelemedic.setIdPelayanan(telemedicEntity.getIdPelayanan());
-                antrianTelemedic.setIdDokter(telemedicEntity.getIdDokter());
-                antrianTelemedic.setIdJenisPeriksaPasien(telemedicEntity.getIdJenisPeriksaPasien());
-                antrianTelemedic.setAsuransi(telemedicEntity.getIdAsuransi());
-                antrianTelemedic.setIdAsuransi(telemedicEntity.getIdAsuransi());
-
-                antrianTelemedic.setNoKartu(telemedicEntity.getNoKartu());
-                antrianTelemedic.setStatus(telemedicEntity.getStatus());
-                antrianTelemedic.setCreatedDate(telemedicEntity.getCreatedDate());
-                antrianTelemedic.setCreatedWho(telemedicEntity.getCreatedWho());
-                antrianTelemedic.setLastUpdate(telemedicEntity.getLastUpdate());
-                antrianTelemedic.setLastUpdateWho(telemedicEntity.getLastUpdateWho());
-                antrianTelemedic.setBiayaKonsultasi(telemedicEntity.getBiayaKonsultasi());
-                antrianTelemedic.setFlagResep(telemedicEntity.getFlagResep());
-                antrianTelemedic.setFlagBayarKonsultasi(telemedicEntity.getFlagBayarKonsultasi());
-
-                antrianTelemedic.setFlagBayarResep(telemedicEntity.getFlagBayarResep());
-                antrianTelemedic.setFlag(telemedicEntity.getFlag());
-                antrianTelemedic.setAction(telemedicEntity.getAction());
-                antrianTelemedic.setJenisPengambilan(telemedicEntity.getJenisPengambilan());
-                antrianTelemedic.setJumlahCover(telemedicEntity.getJumlahCover());
-                antrianTelemedic.setNoSep(telemedicEntity.getNoSep());
-                antrianTelemedic.setNoRujukan(telemedicEntity.getNoRujukan());
-                antrianTelemedic.setJenisRujukan(telemedicEntity.getJenisRujukan());
-                antrianTelemedic.setIdDiagnosa(telemedicEntity.getIdDiagnosa());
-                antrianTelemedic.setKetDiagnosa(telemedicEntity.getKetDiagnosa());
-                antrianTelemedic.setStCreatedDate(telemedicEntity.getCreatedDate() != null ? telemedicEntity.getCreatedDate().toString() : "");
-
-                if (telemedicEntity.getIdPelayanan() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPelayanan())) {
-                    antrianTelemedic.setNamaPelayanan(getPelayananById(telemedicEntity.getIdPelayanan()).getNamaPelayanan());
-                }
-                if (telemedicEntity.getIdPasien() != null && !"".equalsIgnoreCase(telemedicEntity.getIdPasien())) {
-                    antrianTelemedic.setNamaPasien(getPasienById(telemedicEntity.getIdPasien()).getNama());
-                }
-                if (telemedicEntity.getIdDokter() != null && !"".equalsIgnoreCase(telemedicEntity.getIdDokter())) {
-                    antrianTelemedic.setNamaDokter(getDokterById(telemedicEntity.getIdDokter()).getNamaDokter());
-                }
-                if (telemedicEntity.getIdAsuransi() != null && !"".equalsIgnoreCase(telemedicEntity.getIdAsuransi())) {
-                    antrianTelemedic.setNamaAsuransi(getAsuransiById(telemedicEntity.getIdAsuransi()).getNamaAsuransi());
-                }
-
-                antrianTelemedic.setKetStatus(ketStatus(telemedicEntity.getStatus()));
-                antrianTelemedic.setKetFlagResep(ketResep(telemedicEntity.getFlagResep()));
-                antrianTelemedic.setKodeBank(telemedicEntity.getKodeBank());
-                antrianTelemedic.setBranchId(telemedicEntity.getBranchId());
-                antrianTelemedic.setKeluhan(telemedicEntity.getKeluhan());
-                antrianTelemedic.setFlagEresep(telemedicEntity.getFlagEresep());
-                antrianTelemedic.setUrlResep(telemedicEntity.getUrlFotoResep());
-
-                // cari pembayaran online konsultasi;
-                PembayaranOnline pembayaranOnline = new PembayaranOnline();
-                pembayaranOnline.setIdAntrianTelemedic(telemedicEntity.getId());
-                pembayaranOnline.setKeterangan("konsultasi");
-
-                List<PembayaranOnline> listKonsultasi = getListPembayaranOnline(pembayaranOnline);
-                if (listKonsultasi.size() > 0) {
-                    for (PembayaranOnline konsultasi : listKonsultasi) {
-                        antrianTelemedic.setApproveKonsultasi(konsultasi.getApprovedFlag());
-
-                        // untuk sorting tangga upload
-                        antrianTelemedic.setTanggalUpload(konsultasi.getTanggalUpload() == null ? null : konsultasi.getTanggalUpload());
-                        antrianTelemedic.setUrutan(konsultasi.getUrutan());
-                        antrianTelemedic.setStTangalUpload(konsultasi.getTanggalUpload() == null ? "" : konsultasi.getTanggalUpload().toString());
-                    }
-                }
-                // end;
-
-                // cari pembayaran online resep;
-                pembayaranOnline = new PembayaranOnline();
-                pembayaranOnline.setIdAntrianTelemedic(telemedicEntity.getId());
-                pembayaranOnline.setKeterangan("resep");
-                List<PembayaranOnline> listResep = getListPembayaranOnline(pembayaranOnline);
-                if (listResep.size() > 0) {
-                    for (PembayaranOnline resep : listResep) {
-                        antrianTelemedic.setApproveResep(resep.getApprovedFlag());
-
-                        // untuk sorting tangga upload
-                        antrianTelemedic.setTanggalUpload(resep.getTanggalUpload() == null ? null : resep.getTanggalUpload());
-                        antrianTelemedic.setUrutan(resep.getUrutan());
-                        antrianTelemedic.setStTangalUpload(resep.getTanggalUpload() == null ? "" : resep.getTanggalUpload().toString());
-                    }
-                }
-                // end;
-
-                // filter status transaksi
-                if ("asuransi".equalsIgnoreCase(antrianTelemedic.getIdJenisPeriksaPasien())){
-                    if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagBayarKonsultasi())){
-                        antrianTelemedic.setStatusTransaksi("finish");
-                        antrianTelemedic.setLabelStatusAsuransi("Terverifikasi");
-                    }
-                    if (antrianTelemedic.getFlagBayarKonsultasi() == null) {
-                        if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveKonsultasi()) && "Y".equalsIgnoreCase(antrianTelemedic.getApproveResep())){
-                            antrianTelemedic.setStatusTransaksi("confirmation");
-                        } else {
-                            antrianTelemedic.setStatusTransaksi("exist");
-                        }
-                        antrianTelemedic.setLabelStatusAsuransi(labelStatusAsuransi(antrianTelemedic.getId()));
-                    }
-                } else {
-                    if (antrianTelemedic.getFlagResep() == null && antrianTelemedic.getApproveKonsultasi() != null) {
-                        antrianTelemedic.setStatusTransaksi("finish");
-                    } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && antrianTelemedic.getApproveKonsultasi() != null && antrianTelemedic.getApproveResep() != null) {
-                        antrianTelemedic.setStatusTransaksi("finish");
-                    } else if ("Y".equalsIgnoreCase(antrianTelemedic.getApproveResep()) && "Y".equalsIgnoreCase(telemedicEntity.getFlagBayarResep())){
-                        antrianTelemedic.setStatusTransaksi("finish");
-                    } else {
-                        antrianTelemedic.setStatusTransaksi("exist");
-                    }
-                }
-
-                // flag batal dokter;
-                BatalTelemedic batalTelemedic = getBatalTemedicByIdAntrian(telemedicEntity.getId(), telemedicEntity.getIdDokter(), telemedicEntity.getIdPelayanan(), telemedicEntity.getCreatedDate());
-                if (batalTelemedic != null){
-
-                    if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagResep()) && "Y".equalsIgnoreCase(antrianTelemedic.getFlagBayarResep())){
-                        if ("Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliKonsultasi()) && "Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliResep())){
-                            antrianTelemedic.setFlagDanaDikembaLikan("Y");
-                        } else {
-                            antrianTelemedic.setFlagDanaDikembaLikan("N");
-                        }
-                    } else if ("Y".equalsIgnoreCase(antrianTelemedic.getFlagBayarKonsultasi())){
-                        if ("Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliKonsultasi())){
-                            antrianTelemedic.setFlagDanaDikembaLikan("Y");
-                        } else {
-                            antrianTelemedic.setFlagDanaDikembaLikan("N");
-                        }
-                    } else {
-                        antrianTelemedic.setFlagDanaDikembaLikan("N");
-                    }
-
-                    antrianTelemedic.setFlagBatalDokter("Y");
-                    antrianTelemedic.setIdBatalDokterTelemedic(batalTelemedic.getId());
-                    antrianTelemedic.setAlasanBatal(batalTelemedic.getAlasan());
-                    antrianTelemedic.setStatusTransaksi("canceled");
-                }
-
-                // untuk batal;
-                if (telemedicDao.foundIfAllFlagNotActive(antrianTelemedic.getId()))
-                    antrianTelemedic.setStatusTransaksi("canceled");
-
-                results.add(antrianTelemedic);
-            }
+        try {
+            antrianTelemedics = telemedicDao.getListAntrianTelemedicSearch(bean);
+        } catch (HibernateException e){
+            logger.info("[TelemedicBoImpl.getSearchByCriteria] ERROR. when search Telemedic. ", e);
+            throw new GeneralBOException("[TelemedicBoImpl.getSearchByCriteria] ERROR. when search Telemedic. "+ e.getMessage());
         }
 
-        // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
-        Collections.sort(results, new SortingByTanggalAntrian());
+        for (AntrianTelemedic antritanTelemedicData : antrianTelemedics) {
+
+            if (antritanTelemedicData.getIdPelayanan() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdPelayanan())) {
+                antritanTelemedicData.setNamaPelayanan(getPelayananById(antritanTelemedicData.getIdPelayanan()).getNamaPelayanan());
+            }
+            if (antritanTelemedicData.getIdPasien() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdPasien())) {
+                antritanTelemedicData.setNamaPasien(getPasienById(antritanTelemedicData.getIdPasien()).getNama());
+            }
+            if (antritanTelemedicData.getIdDokter() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdDokter())) {
+                antritanTelemedicData.setNamaDokter(getDokterById(antritanTelemedicData.getIdDokter()).getNamaDokter());
+            }
+            if (antritanTelemedicData.getIdAsuransi() != null && !"".equalsIgnoreCase(antritanTelemedicData.getIdAsuransi())) {
+                antritanTelemedicData.setNamaAsuransi(getAsuransiById(antritanTelemedicData.getIdAsuransi()).getNamaAsuransi());
+            }
+
+            antritanTelemedicData.setKetStatus(ketStatus(antritanTelemedicData.getStatus()));
+            antritanTelemedicData.setKetFlagResep(ketResep(antritanTelemedicData.getFlagResep()));
+
+            // cari pembayaran online konsultasi;
+            PembayaranOnline pembayaranOnline = new PembayaranOnline();
+            pembayaranOnline.setIdAntrianTelemedic(antritanTelemedicData.getId());
+            pembayaranOnline.setKeterangan("konsultasi");
+
+            List<PembayaranOnline> listKonsultasi = getListPembayaranOnline(pembayaranOnline);
+            if (listKonsultasi.size() > 0) {
+                for (PembayaranOnline konsultasi : listKonsultasi) {
+                    antritanTelemedicData.setApproveKonsultasi(konsultasi.getApprovedFlag());
+                    if ("Y".equalsIgnoreCase(konsultasi.getApprovedFlag())){
+                        antritanTelemedicData.setUrutan(1);
+                    } else {
+                        antritanTelemedicData.setUrutan(2);
+                    }
+                }
+            }
+            // end;
+
+            // cari pembayaran online resep;
+            pembayaranOnline = new PembayaranOnline();
+            pembayaranOnline.setIdAntrianTelemedic(antritanTelemedicData.getId());
+            pembayaranOnline.setKeterangan("resep");
+            List<PembayaranOnline> listResep = getListPembayaranOnline(pembayaranOnline);
+            if (listResep.size() > 0) {
+                for (PembayaranOnline resep : listResep) {
+                    antritanTelemedicData.setApproveResep(resep.getApprovedFlag());
+                    if ("Y".equalsIgnoreCase(resep.getApprovedFlag())){
+                        antritanTelemedicData.setUrutan(2);
+                    } else {
+                        antritanTelemedicData.setUrutan(1);
+                    }
+                }
+            }
+            // end;
+
+            // filter status transaksi
+            if ("asuransi".equalsIgnoreCase(antritanTelemedicData.getIdJenisPeriksaPasien())){
+                if ("Y".equalsIgnoreCase(antritanTelemedicData.getFlagBayarKonsultasi())){
+                    antritanTelemedicData.setStatusTransaksi("finish");
+                    antritanTelemedicData.setLabelStatusAsuransi("Terverifikasi");
+                }
+                if (antritanTelemedicData.getFlagBayarKonsultasi() == null) {
+                    if ("Y".equalsIgnoreCase(antritanTelemedicData.getApproveKonsultasi()) && "Y".equalsIgnoreCase(antritanTelemedicData.getApproveResep())){
+                        antritanTelemedicData.setStatusTransaksi("confirmation");
+                    } else {
+                        antritanTelemedicData.setStatusTransaksi("exist");
+                    }
+                    antritanTelemedicData.setLabelStatusAsuransi(labelStatusAsuransi(antritanTelemedicData.getId()));
+                }
+            } else {
+                if (!"Y".equalsIgnoreCase(antritanTelemedicData.getFlagResep()) && antritanTelemedicData.getApproveKonsultasi() != null) {
+                    antritanTelemedicData.setStatusTransaksi("finish");
+                } else if ("Y".equalsIgnoreCase(antritanTelemedicData.getFlagResep()) && antritanTelemedicData.getApproveKonsultasi() != null && antritanTelemedicData.getApproveResep() != null) {
+                    antritanTelemedicData.setStatusTransaksi("finish");
+                } else if ("Y".equalsIgnoreCase(antritanTelemedicData.getApproveResep()) && "Y".equalsIgnoreCase(antritanTelemedicData.getFlagBayarResep())){
+                    antritanTelemedicData.setStatusTransaksi("finish");
+                } else {
+                    antritanTelemedicData.setStatusTransaksi("exist");
+                }
+            }
+
+            // flag batal dokter;
+            BatalTelemedic batalTelemedic = getBatalTemedicByIdAntrian(antritanTelemedicData.getId(), antritanTelemedicData.getIdDokter(), antritanTelemedicData.getIdPelayanan(), antritanTelemedicData.getCreatedDate());
+            if (batalTelemedic != null){
+
+                if ("Y".equalsIgnoreCase(antritanTelemedicData.getFlagResep()) && "Y".equalsIgnoreCase(antritanTelemedicData.getFlagBayarResep())){
+                    if ("Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliKonsultasi()) && "Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliResep())){
+                        antritanTelemedicData.setFlagDanaDikembaLikan("Y");
+                    } else {
+                        antritanTelemedicData.setFlagDanaDikembaLikan("N");
+                    }
+                } else if ("Y".equalsIgnoreCase(antritanTelemedicData.getFlagBayarKonsultasi())){
+                    if ("Y".equalsIgnoreCase(batalTelemedic.getFlagKembaliKonsultasi())){
+                        antritanTelemedicData.setFlagDanaDikembaLikan("Y");
+                    } else {
+                        antritanTelemedicData.setFlagDanaDikembaLikan("N");
+                    }
+                } else {
+                    antritanTelemedicData.setFlagDanaDikembaLikan("N");
+                }
+
+                antritanTelemedicData.setFlagBatalDokter("Y");
+                antritanTelemedicData.setIdBatalDokterTelemedic(batalTelemedic.getId());
+                antritanTelemedicData.setAlasanBatal(batalTelemedic.getAlasan());
+                antritanTelemedicData.setStatusTransaksi("canceled");
+            }
+
+            // untuk batal;
+            if (telemedicDao.foundIfAllFlagNotActive(antritanTelemedicData.getId()))
+                antritanTelemedicData.setStatusTransaksi("canceled");
+
+            results.add(antritanTelemedicData);
+        }
+
         Collections.sort(results, new SortingByUrutanUpload());
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
@@ -386,20 +345,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         }
     }
 
-    private class SortingByTanggalAntrian implements Comparator<AntrianTelemedic> {
 
-        @Override
-        public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
-
-            Timestamp tanggal1 = antrianTelemedic.getTanggalUpload();
-            Timestamp tanggal2 = t1.getTanggalUpload();
-
-            // SORTING ASC
-            return tanggal1.compareTo(tanggal2);
-        }
-    }
-
-    private class SortingByUrutanUpload implements Comparator<AntrianTelemedic> {
+    public class SortingByUrutanUpload implements Comparator<AntrianTelemedic> {
 
         @Override
         public int compare(AntrianTelemedic antrianTelemedic, AntrianTelemedic t1) {
@@ -874,6 +821,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     pembayaranOnlineEntity.setKeterangan(tipe);
                     pembayaranOnlineEntity.setKodeBank(kodeBank);
                     pembayaranOnlineEntity.setIdRekening(bean.getIdRekening());
+                    pembayaranOnlineEntity.setWaktuBayar(bean.getLastUpdate());
 
                     try {
                         verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
@@ -902,6 +850,7 @@ public class TelemedicBoImpl implements TelemedicBo {
             pembayaranOnlineEntity.setLastUpdate(bean.getLastUpdate());
             pembayaranOnlineEntity.setLastUpdateWho(bean.getLastUpdateWho());
             pembayaranOnlineEntity.setKeterangan("resep");
+            pembayaranOnlineEntity.setWaktuBayar(bean.getLastUpdate());
 
             try {
                 verifikatorPembayaranDao.addAndSave(pembayaranOnlineEntity);
@@ -1745,20 +1694,33 @@ public class TelemedicBoImpl implements TelemedicBo {
 
         try {
             videoRmDao.addAndSave(itSimrsVideoRmEntity);
-            crudResponse.setMsg("Success");
+
         } catch (GeneralBOException e){
             logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
             throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
         }
 
+
+        if ("raw".equalsIgnoreCase(tipe)) {
+            try {
+                crudResponse = updateVideoRmOnDetailCheckup(idDetailCheckup, path);
+            } catch (GeneralBOException e){
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+
+        }
+
         return crudResponse;
     }
 
-    private List<ItSimrsVideoRmEntity> getVideoRm(String idDetailCheckup) {
+    public List<ItSimrsVideoRmEntity> getVideoRm(String idDetailCheckup) {
         List<ItSimrsVideoRmEntity> list;
 
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_detail_checkup", idDetailCheckup);
+        hsCriteria.put("created_date_to_date", CommonUtil.getCurrentDateTimes());
+        hsCriteria.put("tipe", "raw");
 
         try {
             list = videoRmDao.getByCriteria(hsCriteria);
@@ -1781,9 +1743,65 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (itSimrsVideoRmEntityList != null) {
 
             //check jika terdapat lebih dari satu video, maka video digabung
-            if (itSimrsVideoRmEntityList.size() > 1) {
+            if (itSimrsVideoRmEntityList.size() + 1 > 1) {
 
-               path = gabungVideo(itSimrsVideoRmEntityList);
+//               path = gabungVideo(itSimrsVideoRmEntityList);
+
+                List<Movie> listMovie = new ArrayList<>();
+
+                for (int i = 0; i < itSimrsVideoRmEntityList.size(); i++) {
+                    Movie movie = new Movie();
+                    path = itSimrsVideoRmEntityList.get(i).getPath();
+                    try {
+                        movie = MovieCreator.build(CommonUtil.getPropertyParams("upload.folder") + path);
+                    } catch (IOException e){
+                        logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                        throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    }
+
+                    listMovie.add(movie);
+                }
+
+                Movie newMovie = listMovie.get(0);
+
+                for (int i = 1; i < listMovie.size(); i++) {
+                    List<Track> tracks = listMovie.get(i).getTracks();
+                    for (Track item : tracks) {
+                        try {
+                            newMovie.addTrack(new AppendTrack(item, item));
+                        } catch (IOException e){
+                            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                        }
+                    }
+                }
+
+                Container out = new DefaultMp4Builder().build(newMovie);
+
+                path = "/upload/video_rm/GB_"+itSimrsVideoRmEntityList.get(0).getIdDetailCheckup()+".mp4";
+
+                try {
+                    FileOutputStream fos = new FileOutputStream(new File(CommonUtil.getPropertyParams("upload.folder")+path));
+                    for ( Box item : out.getBoxes()) {
+                        try {
+                            item.getBox(fos.getChannel());
+                        } catch (IOException e){
+                            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                        }
+                    }
+
+                    try {
+                        fos.close();
+                    } catch (IOException e){
+                        logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                        throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    }
+                } catch (FileNotFoundException e) {
+                    logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                    throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                }
+
                insertVideoRm(idDetailCheckup, path, "joined");
 
             }

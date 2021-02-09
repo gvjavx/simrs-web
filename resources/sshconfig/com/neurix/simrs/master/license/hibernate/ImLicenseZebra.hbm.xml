@@ -42,5 +42,9 @@
             <column name="last_update" sql-type="timestamp" not-null="false" />
         </property>
 
+        <property name="status">
+            <column name="status"/>
+        </property>
+
     </class>
 </hibernate-mapping>

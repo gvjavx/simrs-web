@@ -43,6 +43,9 @@
         <property name="profesiId">
             <column name="profesi_id" sql-type="varchar" length="10"/>
         </property>
+        <property name="tipeShiftKasir">
+            <column name="tipe_shift_kasir" sql-type="varchar" length="100"/>
+        </property>
 
     </class>
 </hibernate-mapping>

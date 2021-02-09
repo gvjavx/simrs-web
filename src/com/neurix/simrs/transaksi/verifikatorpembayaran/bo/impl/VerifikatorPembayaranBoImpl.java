@@ -2,6 +2,8 @@ package com.neurix.simrs.transaksi.verifikatorpembayaran.bo.impl;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.shift.model.Shift;
+import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
 import com.neurix.simrs.master.diagnosa.dao.DiagnosaDao;
 import com.neurix.simrs.master.jenisperiksapasien.dao.AsuransiDao;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
@@ -12,6 +14,7 @@ import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.antrianonline.model.ItSimrsAntianOnlineEntity;
 import com.neurix.simrs.transaksi.antriantelemedic.dao.TelemedicDao;
+import com.neurix.simrs.transaksi.antriantelemedic.model.AntrianTelemedic;
 import com.neurix.simrs.transaksi.antriantelemedic.model.ItSimrsAntrianTelemedicEntity;
 import com.neurix.simrs.transaksi.checkup.dao.HeaderCheckupDao;
 import com.neurix.simrs.transaksi.checkup.model.Asesmen;
@@ -87,6 +90,11 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
     private TransaksiStokDao transaksiStokDao;
     private StrukAsuransiDao strukAsuransiDao;
     private HeaderTindakanDao headerTindakanDao;
+    private JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao;
+
+    public void setJadwalShiftKerjaDetailDao(JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao) {
+        this.jadwalShiftKerjaDetailDao = jadwalShiftKerjaDetailDao;
+    }
 
     public void setHeaderTindakanDao(HeaderTindakanDao headerTindakanDao) {
         this.headerTindakanDao = headerTindakanDao;
@@ -188,6 +196,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
                 pembayaranOnline.setUrlFotoBukti(pembayaranOnlineEntity.getUrlFotoBukti());
                 pembayaranOnline.setIdRekening(pembayaranOnlineEntity.getIdRekening());
                 pembayaranOnline.setFlagUploadUlang(pembayaranOnlineEntity.getFlagUploadUlang());
+                pembayaranOnline.setWaktuBayar(pembayaranOnlineEntity.getWaktuBayar());
 
                 // mencari data pada antrian telemedic untuk mengetahui status pembayaran
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicDao.getById("id", bean.getIdAntrianTelemedic());
@@ -323,6 +332,7 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
         Timestamp nowTime = new Timestamp(System.currentTimeMillis());
         for (ItSimrsPembayaranOnlineEntity item : resultPembayaran) {
             item.setUrlFotoBukti(pathBukti);
+            item.setLastUpdate(nowTime);
             item.setTanggalUpload(nowTime);
 
             try {
@@ -1136,6 +1146,73 @@ public class VerifikatorPembayaranBoImpl implements VerifikatorPembayaranBo {
             return pembayaranOnlineEntities.get(0);
         }
         return null;
+    }
+
+    @Override
+    public String getShifIdByNipAndTanggal(String nip, String tanggal, String tipeRole, String branchId) {
+        logger.info("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal] START >>>>>>>");
+
+        String id = "";
+
+        try {
+            id = jadwalShiftKerjaDetailDao.getShifIdByNipAndTanggal(nip, tanggal, tipeRole, branchId);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getShifIdByNipAndTanggal] END <<<<<<<");
+        return id;
+    }
+
+    @Override
+    public Boolean checkIfAvailableShiftOfKasir(String nip, String stTanggal, String stJam) throws GeneralBOException {
+        logger.info("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir] START >>>>>>>");
+
+        Boolean found = false;
+
+        try {
+            found = jadwalShiftKerjaDetailDao.foundShiftKerjaByNipAndTime(nip, stTanggal, stJam);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.checkIfAvailableShiftOfKasir] END <<<<<<<");
+        return found;
+    }
+
+    @Override
+    public List<Shift> getListShiftByIdTanggal(String branchId, String stDate, String shiftId) {
+        logger.info("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal] START >>>>>>>");
+
+        List<Shift> results = new ArrayList<>();
+
+        try {
+            results = telemedicDao.getJadwalShiftKasirTelemedicineByDate(branchId, stDate, shiftId);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal] END <<<<<<<");
+        return results;
+    }
+
+    @Override
+    public List<AntrianTelemedic> getListKasMasukByShift(String shiftId, String stDate, String branchId, String status, String jenisPasien) {
+        logger.info("[VerifikatorPembayaranBoImpl.getListKasMasukByShift] START >>>>>>>");
+
+        List<AntrianTelemedic> results = new ArrayList<>();
+        try {
+            results = verifikatorPembayaranDao.getListLaporanKasMasukTelemedic(shiftId, stDate, branchId, status, jenisPasien);
+        } catch (HibernateException e){
+            logger.error("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+            throw new GeneralBOException("[VerifikatorPembayaranBoImpl.getListShiftByIdTanggal]  ERROR. ", e);
+        }
+
+        logger.info("[VerifikatorPembayaranBoImpl.getListKasMasukByShift] START >>>>>>>");
+        return results;
     }
 
     private String getNextIdDiagnosa() {

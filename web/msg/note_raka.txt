@@ -80,6 +80,15 @@
     UPDATE im_hris_golongan
         SET golongan_pensiun ='IA', 	masa_kerja_gol_awal =0, masa_kerja_gol_akhir =15	WHERE grade_level = 14;
 
+------ 2021-02-01 ===> (JIKA) Jenis Pegawai belum ada di Prod (im_hris_jenis_pegawai)
+    INSERT INTO im_hris_jenis_pegawai
+    VALUES
+        ('JP01', 'plt', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 100, null),
+        ('JP02', 'pjs', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 80, null),
+        ('JP03', 'percobaan', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 70, null),
+        ('JP04', 'baru', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 60, null),
+        ('JP05', 'normal', 'C', 'Y', '2021-01-05 14:00:00', 'admin', '2021-01-05 14:00:00', 'admin', 100, 'Y')
+
 
 
 --------------------------------------------------------------------------------------------

@@ -2289,7 +2289,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN (" +
                     "SELECT a.* FROM(\n" +
-                    "SELECT *, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank \n" +
+                    "SELECT *, rank() OVER (PARTITION BY no_checkup, id_jenis_periksa_pasien ORDER BY created_date DESC) as rank \n" +
                     "FROM it_simrs_header_detail_checkup\n" +
                     ") a WHERE a.rank = 1"+
                     ") b ON a.no_checkup = b.no_checkup\n" +
@@ -2324,10 +2324,14 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
         return response;
     }
 
-    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status) {
+    public List<HeaderDetailCheckup> getIDDetailCheckup(String noCheckup, String status, String jenisPasien) {
         String statusPeriksa = "";
+        String jenisPs = "";
         if(status != null && !"".equalsIgnoreCase(status)){
             statusPeriksa = "AND b.status_periksa = '"+status+"'\n";
+        }
+        if(jenisPasien != null && !"".equalsIgnoreCase(jenisPasien)){
+            jenisPs = "AND b.id_jenis_periksa_pasien = '"+jenisPasien+"' \n";
         }
         List<HeaderDetailCheckup> detailCheckupList = new ArrayList<>();
         String SQL = "SELECT \n" +
@@ -2336,7 +2340,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 "b.id_pelayanan\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "WHERE a.no_checkup = :id \n"+ statusPeriksa;
+                "WHERE a.no_checkup = :id \n"+ statusPeriksa +jenisPs;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", noCheckup)

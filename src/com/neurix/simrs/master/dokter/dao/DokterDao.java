@@ -117,7 +117,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "a.kuota_tele \n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
-                    "WHERE b.id_pelayanan = :id \n"+notLikeIdDokter;
+                    "WHERE b.id_pelayanan = :id \n"+notLikeIdDokter  + "AND b.flag = 'Y'";
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPelayanan)
@@ -324,8 +324,8 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
             if(bean.getNamaDokter() != null && !"".equalsIgnoreCase(bean.getNamaDokter())){
                 condition += "AND a.nama_dokter ILIKE '%"+bean.getNamaDokter()+"%' \n";
             }
-            if(bean.getNamaPelayanan() != null && !"".equalsIgnoreCase(bean.getNamaPelayanan())){
-                condition +="AND c.nama_pelayanan ILIKE '%"+bean.getNamaPelayanan()+"%' \n";
+            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                condition +="AND c.id_pelayanan = '"+bean.getIdPelayanan()+"' \n";
             }
             if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
                 branchId = bean.getBranchId();

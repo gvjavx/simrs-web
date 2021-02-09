@@ -55,9 +55,10 @@ public class CutiDao extends GenericDao<ImCutiEntity, String> {
                 criteria.add(Restrictions.ilike("cutiName", "%" + (String)mapCriteria.get("cuti_name") + "%"));
             }
 
-            if (mapCriteria.get("jenis_cuti") != null){
-                criteria.add(Restrictions.ne("cutiId", "CT007"));
-            }
+            //RAKA-02FEB2021==>Memasukkan Cuti Diluar Tanggungan
+//            if (mapCriteria.get("jenis_cuti") != null){
+//                criteria.add(Restrictions.ne("cutiId", "CT007"));
+//            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));

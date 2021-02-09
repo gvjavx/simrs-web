@@ -50,6 +50,12 @@
                         <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Pembayaran</h3>
                     </div>
                     <div class="box-body">
+
+                        <%--alert bukan kasir / belum ada jadwal shift kerja--%>
+                        <div id="alert-shift" class="alert alert-danger" style="text-align: center; display: none">
+                            Tidak Ditemukan Jadwal Shift Kasir Telemedicine Untuk User Ini. Harap Check Jadwal Shift Kerja. Atau Check User Kembali.
+                        </div>
+
                         <div class="form-group">
                             <s:form id="searchForm" method="post" namespace="/onlinepaymentverif" action="search_onlinepaymentverif.action" theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
@@ -126,6 +132,9 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
+                                        <a type="button" class="btn btn-primary" href="initForm_onlinepaymentverif.action?tipe=print">
+                                            <i class="fa fa-print"></i> Print List Transaksi
+                                        </a>
                                         <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -183,7 +192,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped" style="font-size: 11px">
+                        <table id="" class="table table-bordered table-striped" style="font-size: 11px">
                             <thead >
                                 <tr bgcolor="#90ee90">
                                     <td>Id Telemedic</td>
@@ -287,35 +296,39 @@
                                         </s:if>
                                     </td>
                                     <td><s:property value="stCreatedDate"/></td>
-                                    <td><s:property value="stTanggalUpload"/></td>
+                                    <td><s:property value="stTangalUpload"/></td>
                                     <td align="center">
-                                        <s:if test='#row.flagBatalDokter == "Y"'>
-                                            <s:if test='#row.idJenisPeriksaPasien == "umum"'>
-                                                <s:if test='#row.flagDanaDikembaLikan == "N"'>
-                                                    <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
+                                        <s:if test='antrianTelemedic.flagKasir == "Y" '>
+
+                                            <s:if test='#row.flagBatalDokter == "Y"'>
+                                                <s:if test='#row.idJenisPeriksaPasien == "umum"'>
+                                                    <s:if test='#row.flagDanaDikembaLikan == "N"'>
+                                                        <button class="btn btn-sm btn-primary" onclick="viewBatalDokter('<s:property value="idBatalDokterTelemedic"/>', '<s:property value="id"/>', '<s:property value="idJenisPeriksaPasien"/>', '<s:property value="alasanBatal"/>')"><i class="fa fa-money"></i></button>
+                                                    </s:if>
+                                                    <s:else>
+                                                        <s:url var="print_invo" namespace="/onlinepaymentverif" action="printBuktiRefund_onlinepaymentverif" escapeAmp="false">
+                                                            <s:param name="id"><s:property value="id"/></s:param>
+                                                        </s:url>
+                                                        <s:a href="%{print_invo}" target="_blank">
+                                                            <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
+                                                        </s:a>
+                                                        <%--<img src="<s:url value="/pages/images/icon_success.ico" />">--%>
+                                                    </s:else>
                                                 </s:if>
                                                 <s:else>
-                                                    <s:url var="print_invo" namespace="/onlinepaymentverif" action="printBuktiRefund_onlinepaymentverif" escapeAmp="false">
-                                                        <s:param name="id"><s:property value="id"/></s:param>
-                                                    </s:url>
-                                                    <s:a href="%{print_invo}" target="_blank">
-                                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
-                                                    </s:a>
-                                                    <%--<img src="<s:url value="/pages/images/icon_success.ico" />">--%>
+                                                    <img src="<s:url value="/pages/images/icon_success.ico" />">
                                                 </s:else>
                                             </s:if>
                                             <s:else>
-                                                <img src="<s:url value="/pages/images/icon_success.ico" />">
+                                                <s:if test='#row.statusTransaksi == "finish"'>
+                                                    <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
+                                                </s:if>
+                                                <s:else>
+                                                    <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
+                                                </s:else>
                                             </s:else>
+
                                         </s:if>
-                                        <s:else>
-                                            <s:if test='#row.statusTransaksi == "finish"'>
-                                                <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-search"></i></button>
-                                            </s:if>
-                                            <s:else>
-                                                <button class="btn btn-sm btn-primary" onclick="viewDetail('<s:property value="id"/>','<s:property value="idJenisPeriksaPasien"/>')"><i class="fa fa-edit"></i></button>
-                                            </s:else>
-                                        </s:else>
 
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('loading')">loading test</button>--%>
                                         <%--<button class="btn btn-sm btn-primary" onclick="showDialog('success')">success test</button>--%>
@@ -780,6 +793,7 @@
 <script type='text/javascript'>
 
     $( document ).ready(function() {
+        checkIfKasirTele();
         var canvas = document.getElementById('img_ktp_canvas');
         var ctx = canvas.getContext('2d');
         $("#check_hari_ini").prop( "checked", true );
@@ -815,6 +829,16 @@
 
         });
     });
+
+    function checkIfKasirTele(){
+        VerifikatorPembayaranAction.checkKasirIfAvailableShift(function (res) {
+            if (res == false){
+                $("#alert-shift").show();
+            } else {
+                $("#alert-shift").hide();
+            }
+        });
+    }
 
     function formatRupiah(angka) {
         if(angka != "" && angka != null && parseInt(angka) > 0){

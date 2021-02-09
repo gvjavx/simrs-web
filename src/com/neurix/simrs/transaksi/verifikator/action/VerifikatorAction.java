@@ -326,7 +326,7 @@ public class VerifikatorAction extends BaseMasterAction {
         CheckResponse response = new CheckResponse();
         response = cekAllTindakanRawat(idDetail);
         if ("success".equalsIgnoreCase(response.getStatus())) {
-            List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup,"3");
+            List<HeaderDetailCheckup> detailCheckupList = checkupDetailBo.getIDDetailCheckup(noCheckup,"3", jenisPasien);
             if(detailCheckupList.size() > 0){
                 for (HeaderDetailCheckup detail: detailCheckupList){
                     saveAddToRiwayatTindakan(detail.getIdDetailCheckup(), jenisPasien);
