@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="laporanOpsRawatJalan" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="c8a9776f-84b4-4822-8f5b-477c736b34f6">
-	<property name="ireport.zoom" value="1.2100000000000033"/>
-	<property name="ireport.x" value="320"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.zoom" value="14.420993610649992"/>
+	<property name="ireport.x" value="3918"/>
+	<property name="ireport.y" value="1436"/>
 	<subDataset name="dataset" uuid="5d915b11-3463-4d46-b997-a438009432e1">
 		<field name="nomor" class="java.lang.String"/>
 		<field name="urain" class="java.lang.String"/>

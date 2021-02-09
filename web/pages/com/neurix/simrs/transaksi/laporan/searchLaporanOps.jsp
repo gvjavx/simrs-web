@@ -346,6 +346,26 @@
                     $('#war_kelas').show();
                     return false;
                 }
+            } else if("unggulan" == jenis){
+                var tgla = $('#tgl_from').val();
+                var tglb = $('#tgl_from').val();
+                var choice = $('[name=choice]:checked').val();
+                if(choice != undefined){
+                    if("tanggal" == choice){
+                        if(tgla && tglb != ''){
+                            return true;
+                        }else{
+                            $('#warning_search').show().fadeOut(5000);
+                            $('#msg_search').text("Silahkan cek kembali inputan berikut..!");
+                            $('#war_kelas').show();
+                            return false;
+                        }
+                    }else{
+                        return true;
+                    }
+                }else{
+                    return false;
+                }
             }else{
                 return true;
             }
@@ -384,11 +404,13 @@
                 $('#form_branch, #form_tahun, #form_tanggal').hide();
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
+                $('#form_choice').hide();
             }
         } else {
             $('#form_button').hide();
             $('#form_branch, #form_tahun').hide();
             $('#form_pelayanan').hide();
+            $('#form_choice').hide();
         }
     }
 
@@ -396,6 +418,7 @@
         if(value == "tanggal"){
             $('#form_tanggal').show();
             $('#form_tahun').hide();
+            $('#tahun').val('');
         }else{
             $('#form_tanggal').hide();
             $('#form_tahun').show();

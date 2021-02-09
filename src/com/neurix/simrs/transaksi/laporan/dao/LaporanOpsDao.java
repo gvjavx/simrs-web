@@ -160,12 +160,19 @@ public class LaporanOpsDao extends GenericDao<ImSimrsLaporanOpsEntity, String> {
                     .list();
             if(result.size() > 0){
                 int i = 1;
+                String tempBranch = "";
                 for (Object[] obj: result){
                     LaporanOps laporanOps = new LaporanOps();
-                    laporanOps.setNomor(String.valueOf(i));
                     laporanOps.setBranchName(obj[0] != null ? obj[0].toString() : null);
                     laporanOps.setNamaPelayanan(obj[1] != null ? obj[1].toString() : null);
                     laporanOps.setTotal(obj[2] != null ? obj[2].toString() : null);
+                    if(laporanOps.getBranchName() != null){
+                        if(!laporanOps.getBranchName().equalsIgnoreCase(tempBranch)){
+                            tempBranch = laporanOps.getBranchName();
+                            i = 1;
+                        }
+                    }
+                    laporanOps.setNomor(String.valueOf(i));
                     laporanOpsList.add(laporanOps);
                     i++;
                 }

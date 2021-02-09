@@ -1723,10 +1723,10 @@ CREATE TABLE im_simrs_laporan_ops(
 
 
 --UPDATE LICENSE HABIS ASAR SEKITAR 16:15 WAKTU SEKITAR SINI
-//MOHON DI HAPUS MENDING SAYA UPDATE TABLE AJA BIAT TAK BANYAK TABLE ;-)
+--MOHON DI HAPUS MENDING SAYA UPDATE TABLE AJA BIAT TAK BANYAK TABLE ;-)
 DROP TABLE im_version_zebra;
 
-//CREATE NEW
+--CREATE NEW
 CREATE TABLE public.im_version
 (
   id_version character varying(20) NOT NULL,
@@ -1747,6 +1747,31 @@ WITH (
 );
 ALTER TABLE public.im_version
   OWNER TO postgres;
+
+--SIDAH DI PROD NO RM LAMA to 6 DIGIT
+UPDATE im_simrs_pasien aa
+SET no_rm_lama = (
+	SELECT
+	CASE
+	WHEN a.panjang = 6 THEN a.no_rm_lama
+	WHEN a.panjang = 5 THEN CONCAT('0', a.no_rm_lama)
+	WHEN a.panjang = 4 THEN CONCAT('00', a.no_rm_lama)
+	WHEN a.panjang = 3 THEN CONCAT('000', a.no_rm_lama)
+	WHEN a.panjang = 2 THEN CONCAT('0000', a.no_rm_lama)
+	WHEN a.panjang = 1 THEN CONCAT('00000', a.no_rm_lama)
+	ELSE null
+	END as no_rm_lama_edit
+	FROM(
+		SELECT
+		no_rm_lama,
+		id_pasien,
+		LENGTH(no_rm_lama) as panjang
+		FROM im_simrs_pasien
+		WHERE created_who NOT LIKE 'testing'
+	)a WHERE a.id_pasien = aa.id_pasien
+)
+WHERE created_who NOT LIKE 'testing'
+
 
 
 

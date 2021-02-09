@@ -585,7 +585,9 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
             String SQL = "SELECT\n" +
                     "a.id,\n" +
                     "a.id_pasien,\n" +
-                    "b.url_img\n" +
+                    "b.url_img,\n" +
+                    "a.branch_id,\n" +
+                    "a.no_rm_lama\n" +
                     "FROM im_simrs_rekam_medic_lama a\n" +
                     "INNER JOIN im_simrs_upload_rekam_medic_lama b ON a.id = b.head_id\n" +
                     "WHERE a.id_pasien = :id AND a.branch_id = :branch";
@@ -599,8 +601,14 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                     RekamMedisPasien rekamMedisPasien = new RekamMedisPasien();
                     rekamMedisPasien.setIdImg(obj[0] != null ? obj[0].toString() : "");
                     rekamMedisPasien.setIdPasien(obj[1] != null ? obj[1].toString() : "");
+                    rekamMedisPasien.setBranchId(obj[3] != null ? obj[3].toString() : "");
+                    rekamMedisPasien.setNoRmLama(obj[4] != null ? obj[4].toString() : "");
                     if(obj[2] != null){
-                        rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.URL_IMG_RM+obj[2].toString());
+                        if(rekamMedisPasien.getNoRmLama() != null && !"".equalsIgnoreCase(rekamMedisPasien.getNoRmLama())){
+                            rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+"/rm/"+rekamMedisPasien.getBranchId()+"/"+rekamMedisPasien.getNoRmLama()+"/"+obj[2].toString());
+                        }else{
+                            rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.URL_IMG_RM+obj[2].toString());
+                        }
                     }
                     rekamMedisPasienList.add(rekamMedisPasien);
                 }
