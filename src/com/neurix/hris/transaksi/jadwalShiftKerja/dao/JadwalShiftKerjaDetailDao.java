@@ -165,13 +165,14 @@ public class JadwalShiftKerjaDetailDao extends GenericDao<ItJadwalShiftKerjaDeta
         return id;
     }
 
-    public String checkByNipAndShift(String nip, String shift){
+    public String checkByNipAndShift(String nip, String jadwalId, String shiftId){
         String status = "N";
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItJadwalShiftKerjaDetailEntity.class);
 
         criteria.add(Restrictions.eq("flag", "Y"));
         criteria.add(Restrictions.eq("nip", nip));
-        criteria.add(Restrictions.eq("jadwalShiftKerjaId", shift));
+        criteria.add(Restrictions.eq("jadwalShiftKerjaId", jadwalId));
+        criteria.add(Restrictions.eq("shiftId", shiftId));
 
         // Order by
         criteria.addOrder(Order.desc("jadwalShiftKerjaDetailId"));
