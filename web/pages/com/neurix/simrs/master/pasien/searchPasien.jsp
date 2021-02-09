@@ -16,18 +16,6 @@
 
     <script type='text/javascript'>
 
-        $.subscribe('beforeSubmit', function (event, data) {
-            var noRm = $("#id_pasien").val();
-            var nama = $("#nama").val();
-
-            if (noRm != null || nama != null){
-                $.publish('showDialogLoading');
-                document.getElementById("pasienForm").submit();
-            } else {
-                alert("Lengkapi Form Pengisian");
-            }
-        });
-
         $(document).ready(function () {
             $('#pasien').addClass('active');
             searchPasien();
@@ -98,7 +86,6 @@
                                     <div class="col-sm-6" style="margin-top: 7px">
                                         <sj:submit type="button" cssClass="btn btn-success" formIds="pasienForm"
                                                    id="search" name="search"
-                                                   onClickTopics="beforeSubmit"
                                                    onCompleteTopics="closeDialogLoading">
                                             <i class="fa fa-search"></i>
                                             Search
@@ -343,11 +330,6 @@
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success pull-right" id="load_upload"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
-                <%--<sj:submit type="button" cssClass="btn btn-success" formIds="uploadForm" id="save" name="save"--%>
-                <%--onClickTopics="showDialogLoading" onCompleteTopics="closeDialogLoading" >--%>
-                <%--<i class="fa fa-arrow-right"></i>--%>
-                <%--Save--%>
-                <%--</sj:submit>--%>
             </div>
         </div>
     </div>
@@ -1131,11 +1113,12 @@
     function cekSearch(){
         var id = $('#id_pasien').val();
         var nama = $('#nama_pasien').val();
-        if(id && nama == ''){
+        if(id == '' && nama == ''){
             $('#warning_search').show().fadeOut(5000);
             $('#msg_search').text("Inputan data berikut minimal satu...!");
             return false;
         }else{
+            $('#waiting_dialog').dialog('open');
             return true;
         }
     }
