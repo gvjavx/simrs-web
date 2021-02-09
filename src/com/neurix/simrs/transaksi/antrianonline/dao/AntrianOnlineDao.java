@@ -50,6 +50,9 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
             if(mapCriteria.get("flag") != null){
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
+            if(mapCriteria.get("tgl_checkup") != null) {
+                criteria.add(Restrictions.sqlRestriction("DATE(tgl_checkup) = '" + mapCriteria.get("tgl_checkup")+"'"));
+            }
         }
 
         // Order by
@@ -128,6 +131,9 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 "INNER JOIN im_simrs_pelayanan d ON a.id_pelayanan = d.id_pelayanan \n" +
                 "INNER JOIN im_branches e ON a.branch_id = e.branch_id \n " +
                 "WHERE a.flag = 'Y' \n" +
+                "AND c.flag = 'Y'\n" +
+                "AND d.flag = 'Y'\n" +
+                "AND e.flag = 'Y'\n" +
                 "AND b.flag = 'Y'\n" + searchPelayanan + searchNoCheckupOnline + searchDokter + searchTglCheckup + searchJamAwal + searchJamAkhir + searchBranchId + searchPasien +
                 "ORDER BY b.last_update";
 
