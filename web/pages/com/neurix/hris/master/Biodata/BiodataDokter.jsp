@@ -325,12 +325,12 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdd()">
-                                                            <s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:else>
+                                                        <%--<s:if test="isAdd()">--%>
+                                                            <%--<s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>--%>
+                                                        <%--</s:if>--%>
+                                                        <%--<s:else>--%>
                                                             <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                                        </s:else>
+                                                        <%--</s:else>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -414,6 +414,10 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
+                                                        <s:elseif test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
@@ -5314,7 +5318,16 @@
     //        }
     //    };
 
-    window.getTanggalPensiun = function (tanggal) {
-
-    };
+    function getNip(birthDate){
+        var nip = $("#nip1").val();
+        var headNip = birthDate.split("-");
+        if(nip==""){
+            BiodataAction.getSeqNip(function(seq){
+                $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+            })
+        } else {
+            var seq = nip.slice(nip.length - 4);
+            $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+        }
+    }
 </script>
