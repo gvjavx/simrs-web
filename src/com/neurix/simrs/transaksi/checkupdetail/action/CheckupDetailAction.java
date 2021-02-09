@@ -910,6 +910,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         tindakan.setIdKategoriTindakan(idKategoriTindakan);
         tindakan.setIdKelasRuangan(idKelasRuangan);
         tindakan.setIsVaksin(vaksin);
+        tindakan.setBranchId(CommonUtil.userBranchLogin());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
         try {
@@ -923,9 +924,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
     public List<KategoriTindakan> getListComboTindakanKategori(String idPelayanan, String kategori) {
         logger.info("[CheckupDetailAction.listOfDokter] start process >>>");
-
         List<KategoriTindakan> kategoriTindakans = new ArrayList<>();
-
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KategoriTindakanBo kategoriTindakanBo = (KategoriTindakanBo) ctx.getBean("kategoriTindakanBoProxy");
 

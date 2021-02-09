@@ -46,4 +46,6 @@ public interface PasienBo extends GeneralBo {
     public ImSimrsPasienEntity getPasienById(String id) throws GeneralBOException;
 
     public List<Pasien> getComboRmLama(String rm) throws GeneralBOException;
+
+    public Pasien getDetailPasien(String id) throws GeneralBOException;
 }

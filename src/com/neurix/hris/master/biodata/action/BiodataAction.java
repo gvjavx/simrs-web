@@ -790,7 +790,7 @@ public class BiodataAction extends BaseMasterAction{
                     Biodata biodata = getBiodata();
                     String golonganId ="";
                     if ("N".equalsIgnoreCase(biodata.getFlagDokterKso())){
-                        golonganId = biodata.getGolongan().replace(",","");
+                        golonganId = biodata.getGolongan().replace(", ","");
                     }
 
                     biodata.setGolongan(golonganId);
@@ -3740,6 +3740,58 @@ public class BiodataAction extends BaseMasterAction{
 
         logger.info("[BiodataAction.getSeqNip] END >>>>>>");
         return seq;
+    }
+
+    public String ksoToKaryawan() {
+        logger.info("[BiodataAction.ksoToKaryawan] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
+
+        Biodata transBiodata = new Biodata();
+
+        if(itemFlag != null){
+            try {
+                transBiodata = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getPersonalByCriteria");
+                } catch (GeneralBOException e1) {
+                    logger.error("[BiodataAction.ksoToKaryawan] Error when retrieving edit data,", e1);
+                }
+                logger.error("[BiodataAction.ksoToKaryawan] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
+                return "failure";
+            }
+
+            if(transBiodata != null) {
+                transBiodata.setFlagDokterKso("N");
+                setBiodata(transBiodata);
+            } else {
+                transBiodata.setFlag(itemFlag);
+                transBiodata.setNip(itemId);
+                setBiodata(transBiodata);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            transBiodata.setNip(itemId);
+            transBiodata.setFlag(getFlag());
+            setBiodata(transBiodata);
+            addActionError("Error, Unable to edit again with flag = N.");
+            return "failure";
+        }
+
+        setAddOrEdit(true);
+
+        //remove session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listSertifikat");
+        session.removeAttribute("listOfPersonilPosition");
+
+        logger.info("[BiodataAction.ksoToKaryawan] end process >>>");
+
+        return "init_add_user";
     }
 
     public String paging(){

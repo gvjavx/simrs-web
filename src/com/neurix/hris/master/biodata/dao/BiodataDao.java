@@ -653,7 +653,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setLastUpdateWho(person.getLastUpdateWho());
                 result.setTanggalAktif(person.getTanggalAktif());
                 result.setGolongan(person.getGolongan());
-                result.setStatusPegawai(person.getStatusPegawaiName());
+                result.setStatusPegawai(person.getStatusPegawai());
                 result.setStatusKeluarga(person.getStatusKeluarga());
                 result.setJumlahAnak(person.getJumlahAnak());
                 result.setGender(person.getGender());

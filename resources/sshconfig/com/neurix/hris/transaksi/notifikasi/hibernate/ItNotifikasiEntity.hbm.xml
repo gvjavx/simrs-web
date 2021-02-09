@@ -3,9 +3,8 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.transaksi.notifikasi.model.ItNotifikasiEntity" dynamic-update="true"
+    <class name="com.neurix.hris.transaksi.notifikasi.model.ImNotifikasiEntity" dynamic-update="true"
            table="it_hris_notifikasi" select-before-update="true" schema="public">
-
 
         <id name="notifId">
             <column name="notif_id" sql-type="bigint" length="4" not-null="true" />

@@ -228,7 +228,6 @@ public class PermintaanVendorAction extends BaseMasterAction {
             addActionError("[PermintaanVendorAction.edit] ERROR error when get searh obat. " + e.getMessage());
         }
 
-
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfObatDetail");
 
