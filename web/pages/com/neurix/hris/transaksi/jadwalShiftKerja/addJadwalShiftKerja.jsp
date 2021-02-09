@@ -60,7 +60,7 @@
                     JadwalShiftKerjaAction.cekTanggal(unit,tglAwal,tglAkhir,function(listdata) {
                         var rowCount = $('.shiftTable tr').length;
                         if (rowCount!=null&&rowCount>1){
-                            if (listdata=="00"){
+                            // if (listdata=="00"){
                                 if (confirm('Do you want to save this record?')) {
                                     JadwalShiftKerjaAction.cekLibur(awal,akhir,function(response) {
                                         if (response.status=="error"){
@@ -93,7 +93,7 @@
                                     // Cancel Submit comes with 1.8.0
                                     event.originalEvent.options.submit = false;
                                 }
-                            } //else{
+                            // } else{
                             //     // Cancel Submit comes with 1.8.0
                             //     event.originalEvent.options.submit = false;
                             //     var msg = "Tanggal ini sudah ada";

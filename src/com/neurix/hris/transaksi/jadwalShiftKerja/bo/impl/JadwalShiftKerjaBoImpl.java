@@ -280,7 +280,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             List<JadwalShiftKerjaDetail> jadwalShiftKerjaDetailList = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
             if (jadwalShiftKerjaDetailList != null) {
                 List<JadwalShiftKerja> jadwalShift = getJadwalShiftKerjaByUnitAndTanggal(bean.getBranchId(), bean.getTanggal());
-                if(jadwalShift != null){
+                if(jadwalShift.size() != 0){
                     for(JadwalShiftKerja jadwal : jadwalShift){
                         jadwalShiftKerjaId = jadwal.getJadwalShiftKerjaId();
                     }
