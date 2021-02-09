@@ -66,19 +66,29 @@ public class PasienBoImpl implements PasienBo {
     public List<Pasien> getByCriteria(Pasien bean) throws GeneralBOException {
         logger.info("[PasienBoImpl.getByCriteria] Start >>>>>>>");
 
-        List<Pasien> pasiens = new ArrayList<>();
-        if (bean != null) {
+        List<Pasien> pasienList = new ArrayList<>();
 
-            List<ImSimrsPasienEntity> imSimrsPasienEntities = getEntityByCriteria(bean);
-
-            if (!imSimrsPasienEntities.isEmpty()) {
-                pasiens = setTemplatePasien(imSimrsPasienEntities);
-            }
-
+        try {
+            pasienList = pasienDao.getSearchForTransaksi(bean);
+        } catch (HibernateException e){
+            logger.error("[PasienBoImpl.getByCriteria] Error when search pasien by criteria " + e.getMessage());
+            throw new GeneralBOException("[PasienBoImpl.getByCriteria] Error when search pasien by criteria " + e);
         }
 
+
+//        List<Pasien> pasiens = new ArrayList<>();
+//        if (bean != null) {
+//
+//            List<ImSimrsPasienEntity> imSimrsPasienEntities = getEntityByCriteria(bean);
+//
+//            if (!imSimrsPasienEntities.isEmpty()) {
+//                pasiens = setTemplatePasien(imSimrsPasienEntities);
+//            }
+//
+//        }
+
         logger.info("[PasienBoImpl.getByCriteria] End <<<<<<<");
-        return pasiens;
+        return pasienList;
     }
 
     public List<ImSimrsPasienEntity> getEntityByCriteria(Pasien bean) throws GeneralBOException {

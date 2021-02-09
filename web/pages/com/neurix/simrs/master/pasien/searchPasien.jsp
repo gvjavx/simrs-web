@@ -1319,9 +1319,11 @@
     function cekSearch() {
         var id = $('#id_pasien').val();
         var nama = $('#nama_pasien').val();
-        if (id == '' && nama == '') {
+        var count = $("#nama_pasien").val().replace(/ /g,'').length;
+        var countId = $("#id_pasien").val().replace(/ /g,'').length;
+        if(id == '' && nama == '' || count < 3 || countId < 3){
             $('#warning_search').show().fadeOut(5000);
-            $('#msg_search').text("Inputan data berikut minimal satu...!");
+            $('#msg_search').text("Inputan data berikut minimal 3 Karakter...!");
             return false;
         } else {
             $('#waiting_dialog').dialog('open');
