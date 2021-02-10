@@ -274,5 +274,9 @@ public class CommonConstant {
     public final static String TIPE_PELAYANAN_ADMIN_TELE = CommonUtil.getPropertyParams("admin.telemedicine");
 
 
+    //PATH NEW RM LAMA
+    public final static String URL_RM_LAMA = CommonUtil.getPropertyParams("path.rm.lama");
+
+
 
 }
