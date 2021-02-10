@@ -487,7 +487,7 @@ apply the skin class to the body tag so the changes take effect.
             $(this).attr('autocomplete', 'off');
         });
 
-        $('#myTable').css('width', '100%');
+        $('.select2').css('width', '100%');
     });
 
     $(function () {
