@@ -2230,7 +2230,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                 idPasien = "AND a.id_pasien LIKE '%" + detailCheckup.getIdPasien() + "%' \n";
             }
             if (detailCheckup.getIdPelayanan() != null && !"".equalsIgnoreCase(detailCheckup.getIdPelayanan())) {
-                idPelayanan = "AND b.id_pelayanan = " + detailCheckup.getIdPelayanan() + " \n";
+                idPelayanan = "AND b.id_pelayanan = '" + detailCheckup.getIdPelayanan() + "' \n";
             }
             if (detailCheckup.getNamaPasien() != null && !"".equalsIgnoreCase(detailCheckup.getNamaPasien())) {
                 nama = "AND a.nama ILIKE '%" + detailCheckup.getNamaPasien() + "%' \n";
