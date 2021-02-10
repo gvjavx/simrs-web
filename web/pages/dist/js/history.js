@@ -351,16 +351,28 @@ function viewAllRekamMedisLama() {
             if(res.length > 0){
                 $('#id_loading').html('');
                 $.each(res, function (i, item) {
-                    var aktive = "";
-                    if(i == 0){
-                        aktive = 'active';
+                    var x = item.urlImg;
+                    var tipe = x.split('.').pop();
+                    if(cekImages(x)){
+                        var aktive = "";
+                        if(i == 0){
+                            aktive = 'active';
+                        }
+                        ul += '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="'+aktive+'"></li>';
+                        if(tipe == "pdf"){
+                            isi += '<div class="item '+aktive+'">\n' +
+                                '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                                '<div class="carousel-caption">\n' +
+                                '</div>\n' +
+                                '</div>';
+                        }else{
+                            isi += '<div class="item '+aktive+'">\n' +
+                                '<img src="'+item.urlImg+'" style="width: 100%; height: 70%">\n' +
+                                '<div class="carousel-caption">\n' +
+                                '</div>\n' +
+                                '</div>';
+                        }
                     }
-                    ul += '<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="'+aktive+'"></li>';
-                    isi += '<div class="item '+aktive+'">\n' +
-                        '<img src="'+item.urlImg+'" style="width: 100%; height: 70%">\n' +
-                        '<div class="carousel-caption">\n' +
-                        '</div>\n' +
-                        '</div>';
                 });
                 $('#button_ol').html(ul);
                 $('#isi_carousel').html(isi);

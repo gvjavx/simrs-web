@@ -14,6 +14,6 @@ import java.util.List;
 public interface AntrianOnlineBo {
     public List<AntianOnline> getByCriteria(AntianOnline bean)throws GeneralBOException;
     public void saveAdd(AntianOnline bean)throws GeneralBOException;
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId);
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId, String idPasien);
     public CrudResponse updateScanFlag(String noCheckupOnline, String noCheckup, String idDetailCheckup) throws GeneralBOException;
 }

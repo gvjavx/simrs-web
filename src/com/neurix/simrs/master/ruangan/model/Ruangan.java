@@ -38,9 +38,6 @@ public class Ruangan extends BaseModel {
     private String tipeTransaksi;
     private BigDecimal nilaiPersen;
 
-//    private Integer sisaKuota;
-//    private Integer kuota;
-
     private String namaPasien;
     private String branchUser;
 
@@ -52,6 +49,17 @@ public class Ruangan extends BaseModel {
     private String jenisPasien;
     private BigDecimal totalTarif;
     private String idPasien;
+
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getIdPasien() {
         return idPasien;
     }

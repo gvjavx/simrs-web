@@ -2,8 +2,11 @@ package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.master.license.bo.VersionMobileBo;
-import com.neurix.simrs.master.license.model.VersionMobile;
+//import com.neurix.simrs.master.license.bo.VersionMobileBo;
+//import com.neurix.simrs.master.license.model.VersionMobile;
+import com.neurix.simrs.master.license.bo.LicenseZebraBo;
+import com.neurix.simrs.master.license.model.Version;
+import com.neurix.simrs.mobileapi.model.VersionMobile;
 import com.neurix.simrs.mobileapi.model.VersionMobileObj;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
@@ -18,13 +21,22 @@ public class VersionMobileController implements ModelDriven<Object> {
     private static final transient Logger logger = Logger.getLogger(VersionMobileController.class);
     private VersionMobileObj model = new VersionMobileObj();
     private Collection<VersionMobileObj> listOfVersionMobile = new ArrayList();
-    private VersionMobileBo versionMobileBoProxy;
+    private LicenseZebraBo licenseZebraBoProxy;
+//    private VersionMobileBo versionMobileBoProxy;
 
     String action;
     String idVersionMobile;
     String namaVersion;
     String flag;
     String os;
+
+    public LicenseZebraBo getLicenseZebraBoProxy() {
+        return licenseZebraBoProxy;
+    }
+
+    public void setLicenseZebraBoProxy(LicenseZebraBo licenseZebraBoProxy) {
+        this.licenseZebraBoProxy = licenseZebraBoProxy;
+    }
 
     public String getAction() {
         return action;
@@ -66,9 +78,9 @@ public class VersionMobileController implements ModelDriven<Object> {
         this.os = os;
     }
 
-    public void setVersionMobileBoProxy(VersionMobileBo versionMobileBoProxy) {
-        this.versionMobileBoProxy = versionMobileBoProxy;
-    }
+//    public void setVersionMobileBoProxy(VersionMobileBo versionMobileBoProxy) {
+//        this.versionMobileBoProxy = versionMobileBoProxy;
+//    }
 
     @Override
     public Object getModel() {
@@ -80,35 +92,36 @@ public class VersionMobileController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("getByCriteria"))
             getByCriteria();
-        if (action.equalsIgnoreCase("saveAdd"))
-            saveAdd();
+//        if (action.equalsIgnoreCase("saveAdd"))
+//            saveAdd();
 
         logger.info("[VersionMobile.create] start process POST / <<<");
         return new DefaultHttpHeaders("index").disableCaching();
     }
 
     private void getByCriteria() {
-        List<VersionMobile> result = new ArrayList<>();
+        List<Version> result = new ArrayList<>();
         listOfVersionMobile = new ArrayList<>();
 
-        VersionMobile bean = new VersionMobile();
-        bean.setIdVersionMobile(idVersionMobile);
-        bean.setNamaVersion(namaVersion);
+        Version bean = new Version();
+        bean.setIdVersion(idVersionMobile);
+        bean.setVersionName(namaVersion);
         bean.setFlag(flag);
         bean.setOs(os);
+        bean.setTipe("mobile");
 
         try {
-           result = versionMobileBoProxy.getByCriteria(bean);
+           result = licenseZebraBoProxy.getVersionByCriteria(bean);
         } catch (GeneralBOException e) {
             logger.error("[VersionMobile.getByCriteria] Error when search getByCriteria, " + e.getMessage());
             throw new GeneralBOException("[LicenseAction.searchLicense] Error when search license, " + e.getMessage());
         }
 
         if (result.size() > 0) {
-            for (VersionMobile item : result) {
+            for (Version item : result) {
                 VersionMobileObj versionMobileObj = new VersionMobileObj();
-                versionMobileObj.setIdVersionMobile(item.getIdVersionMobile());
-                versionMobileObj.setNamaVersion(item.getNamaVersion());
+                versionMobileObj.setIdVersionMobile(item.getIdVersion());
+                versionMobileObj.setNamaVersion(item.getVersionName());
                 versionMobileObj.setOs(item.getOs());
                 versionMobileObj.setFlag(item.getFlag());
                 versionMobileObj.setAction(item.getAction());
@@ -121,25 +134,25 @@ public class VersionMobileController implements ModelDriven<Object> {
             }
         }
     }
-
-    private void saveAdd() {
-
-        VersionMobile bean = new VersionMobile();
-        bean.setNamaVersion(namaVersion);
-        bean.setOs(os);
-        bean.setFlag("Y");
-        bean.setAction("C");
-        bean.setLastUpdate(CommonUtil.getCurrentDateTimes());
-        bean.setLastUpdateWho("admin");
-        bean.setCreatedDate(CommonUtil.getCurrentDateTimes());
-        bean.setCreatedWho("admin");
-
-        try {
-            versionMobileBoProxy.saveAdd(bean);
-            model.setMessage("success");
-        } catch (GeneralBOException e) {
-            logger.error("[VersionMobileController.saveAdd] Error when saveAdd, " + e.getMessage());
-            throw new GeneralBOException("[VersionMobileController.saveAdd] Error saveAdd, " + e.getMessage());
-        }
-    }
+//
+//    private void saveAdd() {
+//
+//        VersionMobile bean = new VersionMobile();
+//        bean.setNamaVersion(namaVersion);
+//        bean.setOs(os);
+//        bean.setFlag("Y");
+//        bean.setAction("C");
+//        bean.setLastUpdate(CommonUtil.getCurrentDateTimes());
+//        bean.setLastUpdateWho("admin");
+//        bean.setCreatedDate(CommonUtil.getCurrentDateTimes());
+//        bean.setCreatedWho("admin");
+//
+//        try {
+//            versionMobileBoProxy.saveAdd(bean);
+//            model.setMessage("success");
+//        } catch (GeneralBOException e) {
+//            logger.error("[VersionMobileController.saveAdd] Error when saveAdd, " + e.getMessage());
+//            throw new GeneralBOException("[VersionMobileController.saveAdd] Error saveAdd, " + e.getMessage());
+//        }
+//    }
 }

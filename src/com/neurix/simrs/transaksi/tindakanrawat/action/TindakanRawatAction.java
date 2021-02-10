@@ -171,6 +171,10 @@ public class TindakanRawatAction extends BaseMasterAction {
             }
             if (tindakanList.size() > 0){
                 tindakanResult = tindakanList.get(0);
+            }else{
+                response.setStatus("error");
+                response.setMsg("Tidak dapat menemukan detail tindakan..!");
+                return response;
             }
 
             RekananOps ops = new RekananOps();

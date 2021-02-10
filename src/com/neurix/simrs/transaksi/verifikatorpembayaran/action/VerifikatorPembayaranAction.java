@@ -1689,7 +1689,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         String divisiId = "";
         String masterId = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(pelayananId);
+        Pelayanan pelayananEntity = pelayananBo.getPelayananById(pelayananId);
         if (pelayananEntity != null) {
 
             ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
@@ -1801,7 +1801,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             if (riwayatTindakanEntity != null) {
                 ImSimrsPermintaanResepEntity permintaanResepEntity = permintaanResepBo.getEntityPermintaanResepById(riwayatTindakanEntity.getIdTindakan());
                 if (permintaanResepEntity != null) {
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(permintaanResepEntity.getTujuanPelayanan());
                     if (pelayananEntity != null) {
                         ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
                         if (position != null) {
@@ -1837,7 +1837,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
             if (detailCheckupEntity != null && detailCheckupEntity.getIdPelayanan() != null) {
                 try {
-                    ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
+                    Pelayanan pelayananEntity = pelayananBo.getPelayananById(detailCheckupEntity.getIdPelayanan());
 
                     // jika poli selain rawat inap maka mengambil kodering dari pelayanan
                     // jika poli rawat rawat inap maka mengambil kodering dari kelas ruangan , Sigit
@@ -2036,7 +2036,7 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
 
-        ImSimrsPelayananEntity pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+        Pelayanan pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
         ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
         if (position != null) {
             return position.getKodering();

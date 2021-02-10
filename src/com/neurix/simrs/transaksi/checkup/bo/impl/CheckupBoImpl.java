@@ -472,6 +472,13 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setCreatedWho(bean.getCreatedWho());
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
+                if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
+                    if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
+                        detailCheckupEntity.setMetodePembayaran("tunai");
+                    }
+                }
+                detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setStatusPeriksa("1");
@@ -3271,6 +3278,28 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     @Override
     public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException {
         return headerCheckupDao.getDaftarPasienOnline(branchId, idPelayanan);
+    }
+
+    @Override
+    public void cancelPeriksa(HeaderDetailCheckup detailCheckup) throws GeneralBOException {
+        try {
+            ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", detailCheckup.getIdDetailCheckup());
+            if(detailCheckupEntity != null){
+                detailCheckupEntity.setKeteranganSelesai(detailCheckup.getKeteranganSelesai());
+                detailCheckupEntity.setLastUpdate(detailCheckup.getLastUpdate());
+                detailCheckupEntity.setLastUpdateWho(detailCheckup.getLastUpdateWho());
+                detailCheckupEntity.setAction("U");
+                detailCheckupEntity.setStatusPeriksa("5");
+                detailCheckupEntity.setTindakLanjut("batal");
+                try {
+                    checkupDetailDao.updateAndSave(detailCheckupEntity);
+                }catch (HibernateException e){
+                    throw new GeneralBOException("Errro"+e.getMessage());
+                }
+            }
+        }catch (Exception e){
+            throw new GeneralBOException("Errro"+e.getMessage());
+        }
     }
 
     private CrudResponse saveRawatInap(RawatInap bean) {

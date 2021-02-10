@@ -12,6 +12,7 @@ import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.mobileapi.model.BatchPermintaanObatMobile;
@@ -958,7 +959,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                         Map jurnalMap = new HashMap();
                         if ("reture".equalsIgnoreCase(jenis)){
 
-                            ImSimrsPelayananEntity pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
+                            Pelayanan pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(idPelayanan);
                             if (pelayananEntity != null){
 
                                 ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());

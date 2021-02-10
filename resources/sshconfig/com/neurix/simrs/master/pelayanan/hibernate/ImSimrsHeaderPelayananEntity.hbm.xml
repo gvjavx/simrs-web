@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.master.pelayanan.model.ImSimrsHeaderPelayananEntity">
+        <table name="im_simrs_header_pelayanan" schema="public"/>
+        <attributes>
+            <id name="idHeaderPelayanan">
+                <column name="id_header_pelayanan"/>
+            </id>
+            <basic name="namaPelayanan">
+                <column name="nama_pelayanan"/>
+            </basic>
+            <basic name="tipePelayanan">
+                <column name="tipe_pelayanan"/>
+            </basic>
+            <basic name="kategoriPelayanan">
+                <column name="kategori_pelayanan"/>
+            </basic>
+            <basic name="kodeVclaim">
+                <column name="kode_vclaim"/>
+            </basic>
+            <basic name="divisiId">
+                <column name="divisi_id"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="isVaksin">
+                <column name="is_vaksin"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

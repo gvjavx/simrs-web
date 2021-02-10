@@ -27,6 +27,7 @@ import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -1750,7 +1751,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 
 
                                 //memetakan biaya berdasarkan billing
-                                ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan",detailEntity.getPoliId());
+                                Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",detailEntity.getPoliId());
                                 String masterId= "";
 
                                 switch (detailEntity.getMasterId()){
@@ -1764,7 +1765,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
 
                                 boolean ada = false;
                                 for (BillingPendapatanDokter billingPendapatanDokter : billingDokter){
-                                    if (pelayananEntity.getKodering().equalsIgnoreCase(billingPendapatanDokter.getDivisiId())&&masterId.equalsIgnoreCase(billingPendapatanDokter.getMasterId())){
+                                    if (pelayananEntity.getDivisiId().equalsIgnoreCase(billingPendapatanDokter.getDivisiId())&&masterId.equalsIgnoreCase(billingPendapatanDokter.getMasterId())){
                                         billingPendapatanDokter.setNilai(billingPendapatanDokter.getNilai().add(pendapatanDokterdetail.getBgHrBruto()));
                                         ada=true;
                                         break;
@@ -1772,7 +1773,7 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                                 }
                                 if (!ada){
                                     BillingPendapatanDokter billingPendapatanDokter1 = new BillingPendapatanDokter();
-                                    billingPendapatanDokter1.setDivisiId(pelayananEntity.getKodering());
+                                    billingPendapatanDokter1.setDivisiId(pelayananEntity.getDivisiId());
                                     billingPendapatanDokter1.setMasterId(masterId);
                                     billingPendapatanDokter1.setNilai(pendapatanDokterdetail.getBgHrBruto());
                                     billingPendapatanDokter1.setJenisRawat(pendapatanDokterdetail.getJenisRawat());

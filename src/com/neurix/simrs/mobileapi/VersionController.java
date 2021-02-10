@@ -2,7 +2,7 @@ package com.neurix.simrs.mobileapi;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.license.bo.LicenseZebraBo;
-import com.neurix.simrs.master.license.model.VersionZebra;
+import com.neurix.simrs.master.license.model.Version;
 import com.neurix.simrs.mobileapi.model.VersionMobile;
 import com.opensymphony.xwork2.ModelDriven;
 
@@ -101,8 +101,8 @@ public class VersionController implements ModelDriven<Object> {
         logger.info("[VersionController.create] start process POST / <<<");
 
         Timestamp now = new Timestamp(System.currentTimeMillis());
-        VersionZebra bean = new VersionZebra();
-        List<VersionZebra> result = new ArrayList<>();
+        Version bean = new Version();
+        List<Version> result = new ArrayList<>();
 
         if (action.equalsIgnoreCase("saveAddVersion")) {
 
@@ -135,7 +135,7 @@ public class VersionController implements ModelDriven<Object> {
             }
 
             if (result.size() > 0) {
-                for (VersionZebra item : result) {
+                for (Version item : result) {
                     VersionMobile versionMobile = new VersionMobile();
                     versionMobile.setIdVersion(item.getIdVersion());
                     versionMobile.setVersionName(item.getVersionName());
