@@ -468,7 +468,16 @@ public class BiodataBoImpl implements BiodataBo {
                 // Sigit 2020-01-06, jika flag dokter kso tidak mengecek jabatan aktif, START
                 String cekJabatanAktif = "";
                 if (!"Y".equalsIgnoreCase(bean.getFlagDokterKso())){
-                    cekJabatanAktif = cekJabatan(bean.getNip());
+                    for(PersonilPosition posisi : listOfPersonilPosition){
+                        //RAKA-10FEB2021 ==> Periksa Jabatan aktif langsung pada list "jabatan Existing" dari depan.
+                        if("JP01".equalsIgnoreCase(posisi.getJenisPegawai())){
+                            cekJabatanAktif = "true";
+                            break;
+                        } else {
+                            cekJabatanAktif = "false";
+                        }
+                    }
+//                    cekJabatanAktif = cekJabatan(bean.getNip());
                 } else {
                     cekJabatanAktif = "true";
                 }
