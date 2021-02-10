@@ -6432,6 +6432,7 @@
             $('#danaPensiun').prop('disabled', true);
             $('#golongan2').prop('disabled', true);
             $('#poinLebih').prop('disabled', true);
+            $('#noAnggotaDapen').prop('disabled', true);
 
         } else{
             if (tglLahir !=null && tglLahir != '') getTanggalPensiun();
@@ -6439,6 +6440,7 @@
             $('#danaPensiun').prop('disabled', false);
             $('#golongan2').prop('disabled', false);
             $('#poinLebih').prop('disabled', false);
+            $('#noAnggotaDapen').prop('disabled', false);
         }
     }
 
