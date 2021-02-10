@@ -2403,12 +2403,22 @@ public class BiodataBoImpl implements BiodataBo {
                     }else{
                         returnBiodata.setStTanggalLahir("");
                     }
-                    if(personalEntity.getTanggalPensiun() != null){
-                        String stringTanggal  = dateFormat.format(personalEntity.getTanggalPensiun());
-                        returnBiodata.setStTanggalPensiun(stringTanggal);
-                    }else{
-                        returnBiodata.setStTanggalPensiun("");
+                    if("TP03".equalsIgnoreCase(personalEntity.getTipePegawai())){
+                        if(personalEntity.getTanggalAkhirKontrak() != null){
+                            String stringTanggal  = dateFormat.format(personalEntity.getTanggalAkhirKontrak());
+                            returnBiodata.setStTanggalPensiun(stringTanggal);
+                        }else{
+                            returnBiodata.setStTanggalPensiun("");
+                        }
+                    } else {
+                        if(personalEntity.getTanggalPensiun() != null){
+                            String stringTanggal  = dateFormat.format(personalEntity.getTanggalPensiun());
+                            returnBiodata.setStTanggalPensiun(stringTanggal);
+                        }else{
+                            returnBiodata.setStTanggalPensiun("");
+                        }
                     }
+
                     if(personalEntity.getTanggalMasuk() != null){
                         String stringTanggal  = dateFormat.format(personalEntity.getTanggalMasuk());
                         returnBiodata.setStTanggalMasuk(stringTanggal);
