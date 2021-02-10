@@ -185,18 +185,18 @@
                                         <img id="t<s:property value="idPasien"/>" class="hvr-grow"
                                              onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer"
                                              src="<s:url value="/pages/images/icons8-view-25.png"/>">
-                                        <s:if test='#row.password == null || #row.password == ""'>
-                                            <img class="hvr-grow"
-                                                 onclick="setPassword('<s:property value="idPasien"/>')"
-                                                 style="cursor: pointer"
-                                                 src="<s:url value="/pages/images/icons8-create-25.png"/>">
-                                        </s:if>
-                                        <s:else>
-                                            <img class="hvr-grow"
-                                                 onclick="setPassword('<s:property value="idPasien"/>')"
-                                                 style="cursor: pointer"
-                                                 src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
-                                        </s:else>
+                                        <%--<s:if test='#row.password == null || #row.password == ""'>--%>
+                                            <%--<img class="hvr-grow"--%>
+                                                 <%--onclick="setPassword('<s:property value="idPasien"/>')"--%>
+                                                 <%--style="cursor: pointer"--%>
+                                                 <%--src="<s:url value="/pages/images/icons8-create-25.png"/>">--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<img class="hvr-grow"--%>
+                                                 <%--onclick="setPassword('<s:property value="idPasien"/>')"--%>
+                                                 <%--style="cursor: pointer"--%>
+                                                 <%--src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">--%>
+                                        <%--</s:else>--%>
                                         <s:url var="print_card" namespace="/pasien" action="printCard_pasien"
                                                escapeAmp="false">
                                             <s:param name="id"><s:property value="idPasien"/></s:param>
