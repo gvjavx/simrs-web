@@ -370,7 +370,7 @@
                                 <i class="fa fa-check"></i>
                                 Save
                             </sj:submit>
-                            <button style="display: none; cursor: no-drop" type="button" class="btn btn-success pull-right"
+                            <button style="display: block; cursor: no-drop; margin-top: 20px" type="button" class="btn btn-success"
                                     id="load_upload"><i
                                     class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                             </button>
@@ -1359,7 +1359,7 @@
     }
 
     function removeAll() {
-        $('#upload_pasien').attr('disabled', false);
+        $('#upload_pasien').attr('readonly', false);
         $('#upload_pasien, #upload_nama_pasien, #upload_no_rm_lama').val('');
         $('#body-rm').html('');
     }
