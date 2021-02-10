@@ -168,7 +168,7 @@
                                                 <a href="<%= request.getContextPath() %>/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
                                             </s:if>
                                             <s:else>
-                                                <a href="" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                                <a href="<%= request.getContextPath() %>/permintaanpo/initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
                                             </s:else>
                                         </div>
                                     </div>
@@ -673,10 +673,15 @@
     });
 
     function formatRupiah(angka) {
-        var reverse = angka.toString().split('').reverse().join(''),
+        if (angka != null){
+            var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
-        ribuan = ribuan.join('.').split('').reverse().join('');
-        return ribuan;
+            ribuan = ribuan.join('.').split('').reverse().join('');
+            return ribuan;
+        } else {
+            return angka;
+        }
+
     }
 
     function addBatch(){
@@ -898,7 +903,7 @@
                                 "<td>" + item.namaObat + "</td>" +
                                 "<td align='center'>" + item.qty + "</td>" +
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "<td>" + item.jenisSatuan + "</td>" + +
+                                "<td>" + item.jenisSatuan + "</td>" +
                                 "<td align='right'>" + formatRupiah(item.diskon) + "</td>" +
                                 "<td align='right'>" + formatRupiah(item.bruto) + "</td>" +
                                 "<td align='right'>" + formatRupiah(netto) + "</td>" +
