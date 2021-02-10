@@ -490,7 +490,7 @@
                     <%--</tr>--%>
                     <tr id="cuti1">
                         <td>
-                            <label class="control-label"><small>Cuti :</small></label>
+                            <label class="control-label"><small>Jenis Cuti :</small></label>
                         </td>
                         <td>
                             <table>
@@ -855,7 +855,12 @@
         if ($('#check').val()=="Y"){
             $('#unitId12').attr({ readonly:"true", disabled:"true" });
             $('#nipId').attr('readonly','true');
-            var jenisCuti1 = $('#jenisCuti1').val();
+            // var jenisCuti1 = $('#jenisCuti1').val();
+            var jenisCuti1;
+            var cuti = $('#cutiId').val();
+            if(cuti != "CT007"){
+                jenisCuti1 = "normal"
+            }
             var nip=$('#nipId').val();
             var data2=[];
             //("Test "+jenisCuti1);
@@ -1010,7 +1015,13 @@
                 $('#divisiId33').val(selectedObj.divisi).change();
                 $('#profesiid12').val(selectedObj.profesiId).change();
                 $('#profesiid33').val(selectedObj.profesiId).change();
-                var jenisCuti = $('#jenisCuti1').val();
+
+                // var jenisCuti = $('#jenisCuti1').val();
+                var jenisCuti;
+                var cuti = $('#cutiId').val();
+                if(cuti != "CT007"){
+                    jenisCuti = "normal"
+                }
                 document.getElementById("golonganId12").value=selectedObj.golonganId;
                 dwr.engine.setAsync(false);
                 CutiPegawaiAction.initComboSetCuti(selectedObj.id,jenisCuti, function (listdata) {
