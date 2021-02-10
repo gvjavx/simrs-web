@@ -350,6 +350,8 @@ public class PasienBoImpl implements PasienBo {
                 pasienEntity.setLastUpdate(pasien.getLastUpdate());
                 pasienEntity.setLastUpdateWho(pasien.getLastUpdateWho());
                 pasienEntity.setFlagLogin(pasien.getFlagLogin());
+                pasienEntity.setStatusPerkawinan(pasien.getStatusPerkawinan());
+                pasienEntity.setPassword(pasien.getPassword());
 
                 try {
                     pasienDao.updateAndSave(pasienEntity);
