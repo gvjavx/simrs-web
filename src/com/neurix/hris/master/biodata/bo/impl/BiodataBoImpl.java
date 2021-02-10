@@ -786,7 +786,12 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setJumlahAnak(BigInteger.valueOf(jumlahAnak));
                                 imBiodataEntity.setTempatLahir(bean.getTempatLahir());
                                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
-                                imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
+                                if("TP03".equalsIgnoreCase(bean.getTipePegawai())){
+                                    imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalPensiun());
+                                }else {
+                                    imBiodataEntity.setTanggalAkhirKontrak(null);
+                                    imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
+                                }
                                 imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
                                 imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                                 imBiodataEntity.setBranchId(bean.getBranch());
@@ -1695,7 +1700,11 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setKotaId(bean.getKabupatenId());
                 imBiodataEntity.setProvinsiId(bean.getProvinsiId());
                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
-                imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
+                if("TP03".equalsIgnoreCase(bean.getTipePegawai())){
+                    imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalPensiun());
+                }else {
+                    imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
+                }
 //                imBiodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
                 imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
                 imBiodataEntity.setTempatLahir(bean.getTempatLahir());
