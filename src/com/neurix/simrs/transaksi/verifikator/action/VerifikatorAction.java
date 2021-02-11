@@ -2647,10 +2647,6 @@ public class VerifikatorAction extends BaseMasterAction {
             if (listDetilCheckup.size() > 0){
                 String idDetailCheckup = listDetilCheckup.get(listDetilCheckup.size()-1);
                 detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetailCheckup);
-//                for (String idDetail : listDetilCheckup){
-//                    detailCheckupEntity = checkupDetailBo.getDetailCheckupById(idDetail);
-//                    break;
-//                }
             }
         }
         if (detailCheckupEntity != null) {

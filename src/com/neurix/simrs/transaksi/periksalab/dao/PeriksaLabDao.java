@@ -238,7 +238,11 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         if("laboratorium".equalsIgnoreCase(tipe)){
             type = "lab";
         }
-        String SQL = "SELECT a.branch_id, a.id_detail_checkup, b.divisi_id\n" +
+        String SQL = "SELECT\n" +
+                "a.branch_id,\n" +
+                "a.id_detail_checkup,\n" +
+                "b.divisi_id,\n" +
+                "c.kodering\n" +
                 "FROM it_simrs_header_detail_checkup a \n" +
                 "INNER JOIN (SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -246,12 +250,13 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "b.tipe_pelayanan,\n" +
                 "b.kategori_pelayanan,\n" +
                 "b.divisi_id,\n" +
-                "a.branch_id,"+
+                "a.branch_id,\n" +
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON b.branch_id = a.branch_id \n" +
+                "INNER JOIN im_position c ON b.divisi_id = c.position_id\n" +
                 "WHERE a.id_detail_checkup = :idDetail \n" +
-                "AND b.tipe_pelayanan ILIKE :tipe";
+                "AND b.tipe_pelayanan ILIKE :tipe ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("idDetail", idDetailCheckup)
@@ -261,7 +266,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         String divisId = "";
         if (results.size() > 0) {
             for (Object[] obj : results) {
-                divisId = obj[2] == null ? "" : obj[2].toString();
+                divisId = obj[3] == null ? "" : obj[3].toString();
             }
         }
         return divisId;
