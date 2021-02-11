@@ -563,7 +563,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 //        Date tanggalSekarang = new Date(c.getTimeInMillis());
 
         int tahunMasaKerja = year1-year2;
-        if ("".equalsIgnoreCase(bean.getCutiId())){
+        if ("CT007".equalsIgnoreCase(bean.getCutiId())){
             if (tahunMasaKerja<5){
                 String status1 ="Tanggal Pengajuan Cuti di Luar Tanggungan Harus Melewati 5 Tahun Masa Kerja";
                 logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + status1);
