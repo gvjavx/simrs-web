@@ -458,7 +458,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setFlag("Y");
 
 //            Edit sisa cuti jika cancel
-            if ("normal".equalsIgnoreCase(cancelCutiPegawai.getJenisCuti()))
+            if (!"CT007".equalsIgnoreCase(cancelCutiPegawai.getCutiId()) && cancelCutiPegawai.getCutiId() != null)
                 cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
 
                 List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
@@ -2019,7 +2019,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 //        return listOfCuti;
 //    }
 
-    public List initComboSetCuti(String nip, String jenisCuti) {
+    public List initComboSetCuti(String nip, String cutiId) {
         logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
 
         List<CutiPegawai> listOfCuti= new ArrayList();
@@ -2028,7 +2028,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, jenisCuti);
+            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, cutiId);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

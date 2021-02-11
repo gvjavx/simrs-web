@@ -2616,7 +2616,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
     }
 
     @Override
-    public List<CutiPegawai> getListSetCuti2(String nip, String jenisCuti){
+    public List<CutiPegawai> getListSetCuti2(String nip, String cutiId){
         List<ItCutiPegawaiEntity> cutiPegawaiEntityList = new ArrayList<>();
         List<CutiPegawai> listOfResult = new ArrayList<>();
         CutiPegawai result = new CutiPegawai();
@@ -2624,9 +2624,11 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         BigInteger sisaCutiPanjang = BigInteger.valueOf(0);
         BigInteger sisaCutiDiluarTanggungan = BigInteger.valueOf(0);
 
-        if (jenisCuti.equalsIgnoreCase("normal")){
+        if (!"CT007".equalsIgnoreCase(cutiId) && cutiId != null){
+
+            //RAKA-11FEB2021 ==>
             try {
-                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,"CT002");
+                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,cutiId);
             } catch (HibernateException e) {
                 logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
@@ -2634,28 +2636,40 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
                 sisaCutiTahunan=cutiPegawaiEntity.getSisaCutiHari();
             }
-            if (sisaCutiTahunan.equals(BigInteger.valueOf(0))){
-                try {
-                    cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,"CT006");
-                } catch (HibernateException e) {
-                    logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
-                }
+            result.setSisaCutiHari(sisaCutiTahunan);
+            result.setCutiId(cutiId);
 
-                for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
-                    sisaCutiPanjang=cutiPegawaiEntity.getSisaCutiHari();
-                }
-                if (sisaCutiPanjang.equals(BigInteger.valueOf(0))){
-                    result.setSisaCutiHari(sisaCutiTahunan);
-                    result.setCutiId("CT002");
-                }else{
-                    result.setSisaCutiHari(sisaCutiPanjang);
-                    result.setCutiId("CT006");
-                }
-            }else{
-                result.setSisaCutiHari(sisaCutiTahunan);
-                result.setCutiId("CT002");
-            }
+//            try {
+//                cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,"CT002");
+//            } catch (HibernateException e) {
+//                logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+//                throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
+//            }
+//            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
+//                sisaCutiTahunan=cutiPegawaiEntity.getSisaCutiHari();
+//            }
+//            if (sisaCutiTahunan.equals(BigInteger.valueOf(0))){
+//                try {
+//                    cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip,"CT006");
+//                } catch (HibernateException e) {
+//                    logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+//                    throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
+//                }
+//
+//                for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
+//                    sisaCutiPanjang=cutiPegawaiEntity.getSisaCutiHari();
+//                }
+//                if (sisaCutiPanjang.equals(BigInteger.valueOf(0))){
+//                    result.setSisaCutiHari(sisaCutiTahunan);
+//                    result.setCutiId("CT002");
+//                }else{
+//                    result.setSisaCutiHari(sisaCutiPanjang);
+//                    result.setCutiId("CT006");
+//                }
+//            }else{
+//                result.setSisaCutiHari(sisaCutiTahunan);
+//                result.setCutiId("CT002");
+//            }
         }else {
             try{
                 cutiPegawaiEntityList = cutiPegawaiDao.getListSisaCutiPegawai(nip, "CT007");
@@ -2664,10 +2678,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
             }
 
-            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
-                sisaCutiDiluarTanggungan = cutiPegawaiEntity.getSisaCutiHari();
-            }
-            result.setSisaCutiHari(sisaCutiDiluarTanggungan);
+//            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList){
+//                sisaCutiDiluarTanggungan = cutiPegawaiEntity.getSisaCutiHari();
+//            }
+//            result.setSisaCutiHari(sisaCutiDiluarTanggungan);
+            //RAKA=hanya sekedar menyesuaikan dengan yg lama (sebelumnya, diisi langsung nilai ini ketika didepan)
+            result.setSisaCutiHari(BigInteger.valueOf(1095));
             result.setCutiId("CT007");
         }
 
