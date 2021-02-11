@@ -657,14 +657,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                         }
                         itCutiPegawaiEntity1.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
-                        if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                        if ("CT007".equalsIgnoreCase(bean.getCutiId()))
                             itCutiPegawaiEntity1.setCutiId(bean.getCutiTanggunganId());
                         else
                             itCutiPegawaiEntity1.setCutiId(bean.getCutiId());
 
                         itCutiPegawaiEntity1.setLamaHariCuti(bean.getLamaHariCuti());
 
-                        if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                        if ("CT007".equalsIgnoreCase(bean.getCutiId()))
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(1095));
 
                         else
@@ -770,14 +770,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                 throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                             }
                             itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
-                            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                            if ("CT007".equalsIgnoreCase(bean.getCutiId()))
                                 itCutiPegawaiEntity.setCutiId(bean.getCutiTanggunganId());
                             else
                                 itCutiPegawaiEntity.setCutiId(bean.getCutiId());
 
                             itCutiPegawaiEntity.setLamaHariCuti(bean.getLamaHariCuti());
 
-                            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                            if ("CT007".equalsIgnoreCase(bean.getCutiId()))
                                 itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(1095));
                             else
                                 itCutiPegawaiEntity.setSisaCutiHari(jumlahCutiPegawai.subtract(bean.getLamaHariCuti()));
@@ -851,14 +851,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                 throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                             }
                             itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
-                            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                            if ("CT007".equalsIgnoreCase(bean.getCutiId()))
                                 itCutiPegawaiEntity.setCutiId(bean.getCutiTanggunganId());
                             else
                                 itCutiPegawaiEntity.setCutiId(bean.getCutiId());
 
                             itCutiPegawaiEntity.setLamaHariCuti(bean.getLamaHariCuti());
 
-                            if (!"normal".equalsIgnoreCase(bean.getJenisCuti()))
+                            if ("CT007".equalsIgnoreCase(bean.getCutiId()))
                                 itCutiPegawaiEntity.setSisaCutiHari(BigInteger.valueOf(1095));
                             else
                                 itCutiPegawaiEntity.setSisaCutiHari(jumlahCutiPegawai.subtract(bean.getLamaHariCuti()));
