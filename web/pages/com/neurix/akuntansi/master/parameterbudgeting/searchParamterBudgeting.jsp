@@ -49,7 +49,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Vendor
+            Item Budgeting
         </h1>
     </section>
     <!-- Main content -->
@@ -545,7 +545,7 @@
 
     function listJenisBudgeting(elid) {
         ParameterBudgetingAction.getAllJenisBudgeting(function (res) {
-            var str = "<option value=''>[Select Ones]</option>";
+            var str = "";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.id+'">'+item.namaJenis+'</option>';
             });
@@ -554,7 +554,7 @@
     }
     function listKetegori(elid) {
         ParameterBudgetingAction.getAllKategoriBudgeting(function (res) {
-            var str = "<option value=''>[Select Ones]</option>";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.id+'">'+item.nama+'</option>';
             });
@@ -563,7 +563,7 @@
     }
     function listKetegoriByJenis(elid, jenis) {
         ParameterBudgetingAction.getAllKatagoriByIdJenis(jenis, function (res) {
-            var str = "<option value=''>[Select Ones]</option>";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.id+'">'+item.nama+'</option>';
             });
@@ -572,7 +572,7 @@
     }
     function listPosition(elid) {
         ParameterBudgetingAction.getAllPosition(function (res) {
-            var str = "<option value=''>[Select Ones]</option>";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.kodering+'">'+item.positionName+'</option>';
             });
@@ -581,7 +581,7 @@
     }
     function listMaster(elid) {
         ParameterBudgetingAction.getAllMaster(function (res) {
-            var str = "<option value=''>[Select Ones]</option>";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.primaryKey.nomorMaster+'">'+item.nama+'</option>';
             });
@@ -591,7 +591,7 @@
     }
     function listRekening(elid) {
         ParameterBudgetingAction.getAllParamRekening(function (res) {
-            var str = "<option value=''>[Select Ones]</option>";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.id+'">'+item.nama+'</option>';
             });
@@ -620,9 +620,9 @@
                 str += '<tr>'+
                         '<td>'+item.namaJenisBudgeting+'</td>'+
                         '<td>'+item.namaKategoriBudgeting+'</td>'+
-                        '<td>'+item.namaMaster+'</td>'+
-                        '<td>'+item.namaDivisi+'</td>'+
-                        '<td>'+item.namaParamRekening+'</td>'+
+                        '<td>'+nullEscape(item.namaMaster)+'</td>'+
+                        '<td>'+nullEscape(item.namaDivisi)+'</td>'+
+                        '<td>'+nullEscape(item.namaParamRekening)+'</td>'+
                         '<td align="center">' +
                         '<button class="btn btn-primary btn-sm" onclick="edit(\''+item.id+'\')"><i class="fa fa-edit"></i> Edit</button>'+
                         '<button class="btn btn-danger btn-sm" onclick="showDelete(\''+item.id+'\')"><i class="fa fa-time"></i> Delete</button>'+
@@ -633,6 +633,13 @@
             $("#body_search").html(str);
             myTable();
         })
+    }
+
+    function nullEscape(id) {
+        if (id == null || id == ""){
+            return "-";
+        }
+        return id;
     }
 
     function myTable(){
