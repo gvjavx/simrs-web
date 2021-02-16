@@ -979,7 +979,7 @@
                         }
 
                     } else if (status == "M" || status == "R"){
-                        if (noSk == null && noSk == ""){
+                        if (noSk == null || noSk == ""){
                             alert("No.SK harus diisi");
                         } else {
                             save();
