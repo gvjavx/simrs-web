@@ -151,14 +151,6 @@ public class GolonganDao extends GenericDao<ImGolonganEntity, String> {
         return results;
     }
 
-    public List<ImGolonganEntity> getListGolDapen(String nama) throws HibernateException{
-        List<ImGolonganEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImGolonganEntity.class)
-                .add(Restrictions.eq("golPensiun", nama))
-                .add(Restrictions.eq("flag", "Y"))
-                .list();
-        return results;
-    }
-
     public String getStatus(Integer level){
         String status ="";
         String query = "select golongan_name from im_hris_golongan where grade_level ='"+level+"' and flag ='Y'";

@@ -96,7 +96,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
     }
 
     public JadwalShiftKerja init(String kode, String flag){
-        logger.info("[RekruitmenAction.init] start process >>>");
+        logger.info("[JadwalShiftkerjaAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerja> listOfResult = (List<JadwalShiftKerja>) session.getAttribute("listOfResultJadwalShiftKerja");
 
@@ -111,7 +111,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             } else {
                 setJadwalShiftKerja(new JadwalShiftKerja());
             }
-            logger.info("[RekruitmenAction.init] end process >>>");
+            logger.info("[JadwalShiftkerjaAction.init] end process >>>");
         }
         return getJadwalShiftKerja();
     }
@@ -140,7 +140,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
     @Override
     public String edit() {
-        logger.info("[RekruitmenAction.edit] start process >>>");
+        logger.info("[JadwalShiftkerjaAction.edit] start process >>>");
         String itemId = getId();
         String itemFlag = getFlag();
         JadwalShiftKerja editJadwalShiftKerja = new JadwalShiftKerja();
@@ -157,9 +157,9 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
                 try {
                     logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getPersonalByCriteria");
                 } catch (GeneralBOException e1) {
-                    logger.error("[RekruitmenAction.edit] Error when retrieving edit data,", e1);
+                    logger.error("[JadwalShiftkerjaAction.edit] Error when retrieving edit data,", e1);
                 }
-                logger.error("[RekruitmenAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                logger.error("[JadwalShiftkerjaAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
                 return "failure";
             }
@@ -181,7 +181,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             addActionError("Error, Unable to edit again with flag = N.");
             return "failure";
         }
-        logger.info("[JadwalShiftKerjaAction.search] start process >>>");
+        logger.info("[JadwalShiftkerjaAction.edit] start process >>>");
 
         searchJadwalShiftKerjaDetail.setJadwalShiftKerjaId(itemId);
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
@@ -200,7 +200,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         }
         session.setAttribute("listOfResultPegawaiShift", listOfsearchJadwalShiftKerjaDetail);
         setAddOrEdit(true);
-        logger.info("[RekruitmenAction.edit] end process >>>");
+        logger.info("[JadwalShiftkerjaAction.edit] end process >>>");
         return "init_edit";
     }
 
@@ -221,7 +221,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
     @Override
     public String save() {
-        logger.info("[saveAdd] start process >>>");
+        logger.info("[JadwalShiftkerjaAction.save] start process >>>");
 
         try {
             JadwalShiftKerja jadwalShiftKerja = getJadwalShiftKerja();
@@ -271,10 +271,10 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveAdd] Error when saving error,", e1);
+                logger.error("[JadwalShiftkerjaAction.save] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[liburAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[JadwalShiftkerjaAction.save] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
@@ -284,7 +284,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         session.removeAttribute("ListOfResultJadwalShiftKerjaFinal");
         session.removeAttribute("listOfResultPegawaiShift");
 
-        logger.info("[liburAction.saveAdd] end process >>>");
+        logger.info("[JadwalShiftkerjaAction.save] end process >>>");
         return null;
     }
 
@@ -354,13 +354,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
     }
 
     public List<GroupShift> searchGroupShift() {
-        logger.info("[JadwalShiftKerjaAction.searchShift] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.searchGroupShift] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<GroupShift> listOfsearchGroupShift = (List<GroupShift>) session.getAttribute("ListOfResultGroupShift");
+        logger.info("[JadwalShiftkerjaAction.searchGroupShift] end process <<<");
         return listOfsearchGroupShift;
     }
     public List<GroupShift> searchGroupShiftEdit(String JadwalShiftKerjaId) {
-        logger.info("[JadwalShiftKerjaAction.search] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.searchGroupShiftEdit] start process >>>");
 
         JadwalShiftKerjaDetail searchJadwalShiftKerjaDetail = new JadwalShiftKerjaDetail();
         searchJadwalShiftKerjaDetail.setJadwalShiftKerjaId(JadwalShiftKerjaId);
@@ -377,10 +378,10 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = jadwalShiftKerjaBo.saveErrorMessage(e.getMessage(), "JadwalShiftKerjaAction.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[JadwalShiftKerjaAction.search] Error when saving error,", e1);
+                logger.error("[JadwalShiftKerjaAction.searchGroupShiftEdit] Error when saving error,", e1);
                 return null;
             }
-            logger.error("[JadwalShiftKerjaAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[JadwalShiftKerjaAction.searchGroupShiftEdit] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return null;
         }
@@ -393,13 +394,13 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
                 listOfsearchGroupShiftAll.addAll(listOfsearchGroupShift);
             }
         }
-        logger.info("[JadwalShiftKerjaAction.search] end process <<<");
+        logger.info("[JadwalShiftKerjaAction.searchGroupShiftEdit] end process <<<");
 
         return listOfsearchGroupShiftAll;
     }
 
     public List<GroupMember> searchGroupMember(String groupId) {
-        logger.info("[JadwalShiftKerjaAction.search] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.searchGroupMember] start process >>>");
 
         GroupMember searchGroupMember = new GroupMember();
         searchGroupMember.setGroupId(groupId);
@@ -414,20 +415,20 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = groupMemberBo.saveErrorMessage(e.getMessage(), "JadwalShiftKerjaAction.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[JadwalShiftKerjaAction.search] Error when saving error,", e1);
+                logger.error("[JadwalShiftKerjaAction.searchGroupMember] Error when saving error,", e1);
                 return null;
             }
-            logger.error("[JadwalShiftKerjaAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[JadwalShiftKerjaAction.searchGroupMember] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return null;
         }
-        logger.info("[JadwalShiftKerjaAction.search] end process <<<");
+        logger.info("[JadwalShiftKerjaAction.searchGroupMember] end process <<<");
 
         return listOfsearchGroupMember;
     }
 
     public List<GroupShift> searchGroup(String groupShiftId) {
-        logger.info("[JadwalShiftKerjaAction.search] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.searchGroup] start process >>>");
 
         GroupShift searchGroupShift = new GroupShift();
         searchGroupShift.setGroupShiftId(groupShiftId);
@@ -442,14 +443,14 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = groupShiftBoProxy.saveErrorMessage(e.getMessage(), "JadwalShiftKerjaAction.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[JadwalShiftKerjaAction.search] Error when saving error,", e1);
+                logger.error("[JadwalShiftKerjaAction.searchGroup] Error when saving error,", e1);
                 return null;
             }
-            logger.error("[JadwalShiftKerjaAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[JadwalShiftKerjaAction.searchGroup] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
             return null;
         }
-        logger.info("[JadwalShiftKerjaAction.search] end process <<<");
+        logger.info("[JadwalShiftKerjaAction.searchGroup] end process <<<");
 
         return listOfsearchGroupShift;
     }
@@ -487,20 +488,20 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "jadwalShiftKerjaBo.saveTmpShift");
             } catch (GeneralBOException e1) {
-                logger.error("[jadwalShiftKerjaBo.saveTmpShift] Error when saving error,", e1);
+                logger.error("[JadwalShiftKerjaAction.saveTmpShift] Error when saving error,", e1);
             }
-            logger.error("[jadwalShiftKerjaBo.saveTmpShift] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[JadwalShiftKerjaAction.saveTmpShift] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
         }
 
         session.setAttribute("ListOfResultGroupShift", listComboGroupShift);
 
-        logger.info("[jadwalShiftKerjaBo.saveTmpShift] end process <<<");
+        logger.info("[JadwalShiftKerjaAction.saveTmpShift] end process <<<");
 
         return null;
     }
     public String saveEdit() {
-        logger.info("[saveEdit] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.saveEdit] start process >>>");
 
         try {
             JadwalShiftKerja jadwalShiftKerja = getJadwalShiftKerja();
@@ -521,10 +522,10 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[liburAction.saveEdit] Error when saving error,", e1);
+                logger.error("[JadwalShiftKerjaAction.saveEdit] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[liburAction.saveEdit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[JadwalShiftKerjaAction.saveEdit] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
@@ -534,12 +535,12 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         session.removeAttribute("ListOfResultGroupShift");
         session.removeAttribute("listOfResultPegawaiShift");
 
-        logger.info("[liburAction.saveAdd] end process >>>");
+        logger.info("[JadwalShiftKerjaAction.saveAdd] end process >>>");
         return null;
     }
 
     public List<GroupShift> deleteJadwalShiftKerja(String id) {
-        logger.info("[RekruitmenPabrikAction.editRekruitmenPabrikPerson] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.deleteJadwalShiftKerja] start process >>>");
 
         List<GroupShift> jadwalShiftKerjaGroupShift = new ArrayList();
 
@@ -553,9 +554,9 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
             try {
                 logId = jadwalShiftKerjaBoProxy.saveErrorMessage(e.getMessage(), "KeluargaBO.getByCriteria");
             } catch (GeneralBOException e1) {
-                logger.error("[KeluargaAction.search] Error when saving error,", e1);
+                logger.error("[JadwalShiftKerjaAction.deleteJadwalShiftKerja] Error when saving error,", e1);
             }
-            logger.error("[KeluargaAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[JadwalShiftKerjaAction.deleteJadwalShiftKerja] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
         }
         return null;
@@ -803,11 +804,11 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         logger.info("[JadwalShiftKerjaAction.savePegawaiShift] end process <<<");
     }
     public List<JadwalShiftKerjaDetail> searchResultPegawai() {
-        logger.info("[JadwalShiftKerjaAction.savePegawaiShift] start process >>>");
+        logger.info("[JadwalShiftKerjaAction.searchResultPegawai] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<JadwalShiftKerjaDetail> listOfResult = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
 
-        logger.info("[JadwalShiftKerjaAction.savePegawaiShift] end process <<<");
+        logger.info("[JadwalShiftKerjaAction.searchResultPegawai] end process <<<");
         return listOfResult;
     }
     public List<JadwalShiftKerjaDetail> deletePegawaiShift(String nip,String shift) {
@@ -884,14 +885,17 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
     }
 
     public CrudResponse cekLibur (String tanggalAwal, String tanggalAkhir){
+        logger.info("[JadwalShiftKerjaAction.cekLibur] start process >>>");
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         response = jadwalShiftKerjaBo.getListLibur(tanggalAwal, tanggalAkhir);
+        logger.info("[JadwalShiftKerjaAction.cekLibur] end process >>>");
         return response;
     }
 
     public void savePanggilBerdasarkanId(String id,String keterangan){
+        logger.info("[JadwalShiftKerjaAction.savePanggilBerdasarkanId] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -909,9 +913,11 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         for (Notifikasi notifikasi : notifCuti ){
             notifikasiBo.sendNotif(notifikasi);
         }
+        logger.info("[JadwalShiftKerjaAction.savePanggilBerdasarkanId] end process >>>");
     }
 
     public void saveLiburBerdasarkanId(String id){
+        logger.info("[JadwalShiftKerjaAction.saveLiburBersadarkanId] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
         JadwalShiftKerjaDetail data = new JadwalShiftKerjaDetail();
@@ -923,9 +929,11 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         data.setLastUpdateWho(userLogin);
 
         jadwalShiftKerjaBo.saveLiburBerdasarkanId(data);
+        logger.info("[JadwalShiftKerjaAction.saveLiburBersadarkanId] end process >>>");
     }
 
     public JadwalShiftKerja searchUserBagian(){
+        logger.info("[JadwalShiftKerjaAction.searchUserBagian] start process >>>");
         JadwalShiftKerja data = new JadwalShiftKerja();
         String roleId = CommonUtil.roleIdAsLogin();
         if (roleId.equalsIgnoreCase(CommonConstant.ROLE_ID_ADMIN)){
@@ -933,10 +941,12 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
         }else{
             data.setGroupId(CommonUtil.userBagianId());
         }
+        logger.info("[JadwalShiftKerjaAction.searchUserBagian] end process >>>");
         return data;
     }
 
     public JadwalShiftKerja cekJadwalKerja(String nip,String shiftId,String onCall){
+        logger.info("[JadwalShiftKerjaAction.cekJadwalKerja] start process >>>");
         JadwalShiftKerja jadwalShiftKerja= new JadwalShiftKerja();
         String status ="";
 
@@ -972,18 +982,21 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
         jadwalShiftKerja.setStatusSave(status);
         jadwalShiftKerja.setJumlahJadwal(jumlahJadwal);
+        logger.info("[JadwalShiftKerjaAction.cekjadwalkerja] end process >>>");
         return jadwalShiftKerja;
     }
 
     public List<HistoryOnCall> searchHistoryOnCallSession() {
+        logger.info("[JadwalShiftKerjaAction.searchHistoryOnCallSession] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<HistoryOnCall> historyOnCalls = (List<HistoryOnCall>) session.getAttribute("listOfResultHistoryOnCall");
-
+        logger.info("[JadwalShiftKerjaAction.searchHistoryOnCallSession] end process >>>");
         return historyOnCalls;
     }
 
 
     public void searchHistoryOnCall(String id,String nip) {
+        logger.info("[JadwalShiftKerjaAction.searchHistoryOnCall] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         JadwalShiftKerjaBo jadwalShiftKerjaBo = (JadwalShiftKerjaBo) ctx.getBean("jadwalShiftKerjaBoProxy");
@@ -994,6 +1007,7 @@ public class JadwalShiftKerjaAction extends BaseMasterAction {
 
         List<HistoryOnCall> historyOnCalls = jadwalShiftKerjaBo.getHistoryOnCall(historyOnCall);
         session.setAttribute("listOfResultHistoryOnCall",historyOnCalls);
+        logger.info("[JadwalShiftKerjaAction.searchHistoryOnCall] end process >>>");
     }
 
     @Override
