@@ -354,15 +354,15 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Jenis Cuti :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti1" name="cutiPegawai.jenisCuti"
-                                          headerKey="normal" headerValue="Normal" cssClass="form-control" />
-                            </table>
+                    <%--<tr>--%>
+                        <%--<td>--%>
+                            <%--<label class="control-label"><small>Jenis Cuti :</small></label>--%>
+                        <%--</td>--%>
+                        <%--<td>--%>
+                            <%--<table>--%>
+                                <%--<s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti1" name="cutiPegawai.jenisCuti"--%>
+                                          <%--headerKey="normal" headerValue="Normal" cssClass="form-control" />--%>
+                            <%--</table>--%>
                             <script>
                                 $(document).ready(function() {
                                    // $('#cutiId').change(function() {
@@ -370,7 +370,6 @@
                                         var cuti= $('#cutiId').val();
 
                                         //("TES ONCHANGE");
-                                            console.log("running...");
                                             function jeniscuti(){
                                                 namacuti= $('#cutiId').val();
                                                 branchid =$('#unitId12').val();
@@ -400,8 +399,12 @@
                                                 $.each(data2, function (i, item) {
                                                     // $('#cutiId').val(item.cutiId).change();
                                                     $('#cutiId15').val(item.cutiId);
-                                                    $('#sisaCuti').val(item.sisaCutiHari);
-                                                    console.log(item.sisaCutiHari);
+                                                    if(item.cutiId === "CT007") {
+                                                        $('#sisaCuti').attr("value","1095");
+                                                        console.log(item.cutiId + "   " +item.sisaCutiHari);
+                                                    } else {
+                                                        $('#sisaCuti').val(item.sisaCutiHari);
+                                                    }
 
                                                 });
                                                 jeniscuti();
@@ -418,15 +421,20 @@
                                                     data = listdata;
                                                 });
                                                 $.each(data, function (i, item) {
-                                                    var labelItem = item.sisaCutiHari;
-                                                    $('#sisaCuti').val(labelItem).change();
+                                                    if(item.cutiId === "CT007") {
+                                                        var labelItem = "1095";
+                                                        $('#sisaCuti').attr("value", labelItem).change();
+                                                    } else {
+                                                        var labelItem = item.sisaCutiHari;
+                                                        $('#sisaCuti').val(labelItem).change();
+                                                    }
                                                 });
                                             }
                                     })
                                 });
                             </script>
-                        </td>
-                    </tr>
+                        <%--</td>--%>
+                    <%--</tr>--%>
                     <tr id="cuti1">
                         <td>
                             <label class="control-label"><small>Cuti :</small></label>
