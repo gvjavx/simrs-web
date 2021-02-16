@@ -3592,7 +3592,7 @@ public class BiodataAction extends BaseMasterAction{
             // check jika jabatan sudah terpakai dan tidak boleh rangkap pada position tersebut
             try {
                 PersonilPosition personilPosition = positionBo.getAndCheckJabatanTerpakai(positionId, branchId);
-                if (personilPosition != null){
+                if (personilPosition != null && !nip.equalsIgnoreCase(personilPosition.getNip())){
                     response.setMsg("ditemukan pegawai aktif pada jabatan tersebut : "+personilPosition.getPersonName());
                     return response;
                 }
