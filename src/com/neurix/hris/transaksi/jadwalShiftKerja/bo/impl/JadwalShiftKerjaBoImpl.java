@@ -279,53 +279,71 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<JadwalShiftKerjaDetail> jadwalShiftKerjaDetailList = (List<JadwalShiftKerjaDetail>) session.getAttribute("listOfResultPegawaiShift");
             if (jadwalShiftKerjaDetailList != null) {
-                jadwalShiftKerjaId = jadwalShiftKerjaDao.getNextJadwalShiftKerjaId();
-                ItJadwalShiftKerjaEntity itJadwalShiftKerjaEntity = new ItJadwalShiftKerjaEntity();
+                List<JadwalShiftKerja> jadwalShift = getJadwalShiftKerjaByUnitAndTanggal(bean.getBranchId(), bean.getTanggal());
+                if(jadwalShift.size() != 0){
+                    for(JadwalShiftKerja jadwal : jadwalShift){
+                        jadwalShiftKerjaId = jadwal.getJadwalShiftKerjaId();
+                    }
+                }else {
+                    jadwalShiftKerjaId = jadwalShiftKerjaDao.getNextJadwalShiftKerjaId();
+                    ItJadwalShiftKerjaEntity itJadwalShiftKerjaEntity = new ItJadwalShiftKerjaEntity();
 
-                itJadwalShiftKerjaEntity.setJadwalShiftKerjaId(jadwalShiftKerjaId);
-                itJadwalShiftKerjaEntity.setBranchId(bean.getBranchId());
-                itJadwalShiftKerjaEntity.setTanggal(bean.getTanggal());
-                itJadwalShiftKerjaEntity.setJadwalShiftKerjaName(bean.getJadwalShiftKerjaName());
-                itJadwalShiftKerjaEntity.setKeterangan(bean.getKeterangan());
-                String namaJadwal = CommonUtil.convertDateToDay(bean.getTanggal())+","+CommonUtil.convertDateToString(bean.getTanggal());
-                itJadwalShiftKerjaEntity.setJadwalShiftKerjaName(namaJadwal);
-                itJadwalShiftKerjaEntity.setFlag(bean.getFlag());
-                itJadwalShiftKerjaEntity.setAction(bean.getAction());
-                itJadwalShiftKerjaEntity.setCreatedWho(bean.getCreatedWho());
-                itJadwalShiftKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                itJadwalShiftKerjaEntity.setCreatedDate(bean.getCreatedDate());
-                itJadwalShiftKerjaEntity.setLastUpdate(bean.getLastUpdate());
-                jadwalShiftKerjaDao.addAndSave(itJadwalShiftKerjaEntity);
+                    itJadwalShiftKerjaEntity.setJadwalShiftKerjaId(jadwalShiftKerjaId);
+                    itJadwalShiftKerjaEntity.setBranchId(bean.getBranchId());
+                    itJadwalShiftKerjaEntity.setTanggal(bean.getTanggal());
+                    itJadwalShiftKerjaEntity.setJadwalShiftKerjaName(bean.getJadwalShiftKerjaName());
+                    itJadwalShiftKerjaEntity.setKeterangan(bean.getKeterangan());
+                    String namaJadwal = CommonUtil.convertDateToDay(bean.getTanggal()) + "," + CommonUtil.convertDateToString(bean.getTanggal());
+                    itJadwalShiftKerjaEntity.setJadwalShiftKerjaName(namaJadwal);
+                    itJadwalShiftKerjaEntity.setFlag(bean.getFlag());
+                    itJadwalShiftKerjaEntity.setAction(bean.getAction());
+                    itJadwalShiftKerjaEntity.setCreatedWho(bean.getCreatedWho());
+                    itJadwalShiftKerjaEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                    itJadwalShiftKerjaEntity.setCreatedDate(bean.getCreatedDate());
+                    itJadwalShiftKerjaEntity.setLastUpdate(bean.getLastUpdate());
+                    jadwalShiftKerjaDao.addAndSave(itJadwalShiftKerjaEntity);
+                }
+
 
                 //save to jadwal shift kerja detail
                 for (JadwalShiftKerjaDetail jadwalShiftKerjaDetail : jadwalShiftKerjaDetailList) {
-                    ItJadwalShiftKerjaDetailEntity itJadwalShiftKerjaDetailEntity = new ItJadwalShiftKerjaDetailEntity();
-                    String jadwalShiftKerjaDetailId = jadwalShiftKerjaDetailDao.getNextJadwalShiftKerjaDetailId();
-
-                    itJadwalShiftKerjaDetailEntity.setJadwalShiftKerjaDetailId(jadwalShiftKerjaDetailId);
-                    itJadwalShiftKerjaDetailEntity.setJadwalShiftKerjaId(jadwalShiftKerjaId);
-                    itJadwalShiftKerjaDetailEntity.setNip(jadwalShiftKerjaDetail.getNip());
-                    itJadwalShiftKerjaDetailEntity.setNamaPegawai(jadwalShiftKerjaDetail.getNamaPegawai());
-                    itJadwalShiftKerjaDetailEntity.setPositionName(jadwalShiftKerjaDetail.getPositionName());
-                    itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
-                    itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
-                    itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
-                    itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
-                    itJadwalShiftKerjaDetailEntity.setFlagPanggil("N");
-                    itJadwalShiftKerjaDetailEntity.setFlagLibur("N");
-
-                    itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
-                    itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
-                    itJadwalShiftKerjaDetailEntity.setCreatedWho(bean.getCreatedWho());
-                    itJadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    itJadwalShiftKerjaDetailEntity.setCreatedDate(bean.getCreatedDate());
-                    itJadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
+                    String availShift = "";
                     try {
-                        // insert into database
-                        jadwalShiftKerjaDetailDao.addAndSave(itJadwalShiftKerjaDetailEntity);
-                    } catch (HibernateException e) {
-                        logger.error("[RekruitmenBoImpl.saveAdd] Error, " + e.getMessage());
-                        throw new GeneralBOException("Found problem when saving new data Rekruitmen, please info to your admin..." + e.getMessage());
+                        availShift = jadwalShiftKerjaDetailDao.checkByNipAndShift(jadwalShiftKerjaDetail.getNip(), jadwalShiftKerjaId, jadwalShiftKerjaDetail.getShiftId());
+                    }catch (HibernateException e){
+                        logger.error("[JadwalShiftKerjaBoImpl.saveAdd] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when check available data Jadwal Shift Kerja Detail by NIP and Jadwal Shift ID, " + e.getMessage());
+                    }
+
+                    if("N".equalsIgnoreCase(availShift)) {
+                        ItJadwalShiftKerjaDetailEntity itJadwalShiftKerjaDetailEntity = new ItJadwalShiftKerjaDetailEntity();
+                        String jadwalShiftKerjaDetailId = jadwalShiftKerjaDetailDao.getNextJadwalShiftKerjaDetailId();
+
+                        itJadwalShiftKerjaDetailEntity.setJadwalShiftKerjaDetailId(jadwalShiftKerjaDetailId);
+                        itJadwalShiftKerjaDetailEntity.setJadwalShiftKerjaId(jadwalShiftKerjaId);
+                        itJadwalShiftKerjaDetailEntity.setNip(jadwalShiftKerjaDetail.getNip());
+                        itJadwalShiftKerjaDetailEntity.setNamaPegawai(jadwalShiftKerjaDetail.getNamaPegawai());
+                        itJadwalShiftKerjaDetailEntity.setPositionName(jadwalShiftKerjaDetail.getPositionName());
+                        itJadwalShiftKerjaDetailEntity.setProfesiName(jadwalShiftKerjaDetail.getProfesiName());
+                        itJadwalShiftKerjaDetailEntity.setProfesiId(jadwalShiftKerjaDetail.getProfesiid());
+                        itJadwalShiftKerjaDetailEntity.setShiftId(jadwalShiftKerjaDetail.getShiftId());
+                        itJadwalShiftKerjaDetailEntity.setOnCall(jadwalShiftKerjaDetail.getOnCall());
+                        itJadwalShiftKerjaDetailEntity.setFlagPanggil("N");
+                        itJadwalShiftKerjaDetailEntity.setFlagLibur("N");
+
+                        itJadwalShiftKerjaDetailEntity.setFlag(bean.getFlag());
+                        itJadwalShiftKerjaDetailEntity.setAction(bean.getAction());
+                        itJadwalShiftKerjaDetailEntity.setCreatedWho(bean.getCreatedWho());
+                        itJadwalShiftKerjaDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        itJadwalShiftKerjaDetailEntity.setCreatedDate(bean.getCreatedDate());
+                        itJadwalShiftKerjaDetailEntity.setLastUpdate(bean.getLastUpdate());
+                        try {
+                            // insert into database
+                            jadwalShiftKerjaDetailDao.addAndSave(itJadwalShiftKerjaDetailEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[RekruitmenBoImpl.saveAdd] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving new data Rekruitmen, please info to your admin..." + e.getMessage());
+                        }
                     }
                 }
             }

@@ -752,13 +752,13 @@ public class GolonganAction extends BaseMasterAction{
         return "input_pkwt";
     }
 
-    public List<Golongan> getRangeMasaGol(String golPen){
+    public List<Golongan> getRangeMasaGol(String gol){
         List<Golongan> masaGol = new ArrayList<>();
 
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             GolonganBo golonganBo = (GolonganBo) ctx.getBean("golonganBoProxy");
-            masaGol = golonganBo.getRangeMasaGol(golPen);
+            masaGol = golonganBo.getDetailGolongan(gol);
         } catch (GeneralBOException e) {
             logger.error("[GolonganAction.getRangeMasaGol] Error when searching Masa Golongan by Golongan Pensiun," + "[] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=] Found problem when searching data by criteria, please inform to your admin" );

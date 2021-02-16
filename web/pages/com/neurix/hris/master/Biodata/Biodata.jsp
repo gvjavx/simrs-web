@@ -49,6 +49,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/StudyJurusanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DepartmentAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/GolonganAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/akuntansi.js"/>'></script>
 
 
@@ -73,11 +74,10 @@
             var golongan            = document.getElementById("golongan1").value;
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
-            var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -116,9 +116,6 @@
                  }*/
                 if (statusPegawai == '') {
                     msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
-                }
-                if (masaGolongan == '') {
-                    msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
@@ -344,15 +341,15 @@
                                                 <td>
                                                     <table>
                                                             <%--RAKA-09JAN2021 ==> generate NIP berdasarkan tanggal lahir (SEMENTARA TIDAK DIGUNAKAN)--%>
-                                                            <s:if test="isAdd()">
-                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>
-                                                            </s:if>
-                                                            <s:elseif test="isDelete()">
+                                                            <%--<s:if test="isAdd()">--%>
+                                                                <%--<s:textfield  id="nip1" name="biodata.nip" required="true" cssClass="form-control"/>--%>
+                                                            <%--</s:if>--%>
+                                                            <%--<s:elseif test="isDelete()">--%>
+                                                                <%--<s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>--%>
+                                                            <%--</s:elseif>--%>
+                                                            <%--<s:else>--%>
                                                                 <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
-                                                            </s:elseif>
-                                                            <s:else>
-                                                                <s:textfield  id="nip1" name="biodata.nip" required="true" readonly="true" cssClass="form-control"/>
-                                                            </s:else>
+                                                            <%--</s:else>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -479,12 +476,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
-                                                        <%--<s:elseif test="isAdd()">--%>
-                                                            <%--<s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value); getNip(this.value);"--%>
-                                                                         <%--cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />--%>
-                                                        <%--</s:elseif>--%>
+                                                        <s:elseif test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;" onchange=" getNip(this.value);getTanggalPensiun();"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:elseif>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value);"
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun();"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -1006,7 +1003,7 @@
                                                             <s:hidden name="biodata.tipePegawai" />
                                                         </s:elseif>
                                                         <s:else>
-                                                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value),loadStatusPegawai()"
+                                                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value),loadStatusPegawai(),getPensiun()"
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:else>
                                                     </table>
@@ -1193,8 +1190,8 @@
                                                             <s:hidden name="biodata.golonganDapenId"/>
                                                         </s:if>
                                                         <s:else>
-                                                            <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId"
-                                                                      listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                            <s:select list="#initComboTipe.listComboGolonganDapen" id="golongan2" name="biodata.golonganDapenId" listKey="golonganDapenId"
+                                                                      listValue="golonganDapenName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="getRangeMsKerja(this.value)"/>
                                                         </s:else>
 
                                                     </table>
@@ -1202,7 +1199,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label><small>Ms. Kerja Gol. Pensiun <span style="color:red;">*</span> : </small></label>
+                                                    <label><small>Ms. Kerja Gol. Pensiun : </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -3339,9 +3336,9 @@
         getAllDepartment();
         getAllJenisPegawai();
 
-        var tglLahir = $('#tanggalLahir1').val();
-        var tglPensiun = $('#tanggalPensiun').val();
-        if(tglLahir != "" && tglPensiun == "") getTanggalPensiun(tglLahir);
+        // var tglLahir = $('#tanggalLahir1').val();
+        // var tglPensiun = $('#tanggalPensiun').val();
+        // if(tglLahir != "" && tglPensiun == "") getTanggalPensiun();
 
         window.checkDec = function(el){
             var ex = /^[0-9]+\.?[0-9]*$/;
@@ -6286,65 +6283,69 @@
     //        }
     //    };
 
-    window.getTanggalPensiun = function (tanggal) {
-        var tanggalPensiun = document.getElementById("tanggalPensiun").value;
-        var tanggalPraPensiun = document.getElementById("tanggalPraPensiun").value;
-        var res = tanggal.split("-");
-        var tahun = parseInt(res[2]) + 55;
+    window.getTanggalPensiun = function () {
+        var tipePegawai = $('#tipePegawai1').val();
+        if(tipePegawai !=null && tipePegawai != '' && tipePegawai !='TP03') {
+            var tanggal = $('#tanggalLahir1').val();
+            var tanggalPensiun = document.getElementById("tanggalPensiun").value;
+            var tanggalPraPensiun = document.getElementById("tanggalPraPensiun").value;
+            var res = tanggal.split("-");
+            var tahun = parseInt(res[2]) + 55;
 
-        if (tanggalPraPensiun == ''){
-            if  (res[1] > 06){
-                var bulan = parseInt(res[1] - 6);
-                $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
-            }else {
-                if (res[1] == 06){
-                    var bulan = parseInt(12);
-                    var tahun1 = parseInt(tahun - 1);
-                    $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
-                }else{
-                    var bulan = parseInt(12 - (6 - res[1]));
-                    var tahun1 = parseInt(tahun - 1);
-                    if (bulan > 9){
+            if (tanggalPraPensiun == '') {
+                if (res[1] > 06) {
+                    var bulan = parseInt(res[1] - 6);
+                    $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
+                } else {
+                    if (res[1] == 06) {
+                        var bulan = parseInt(12);
+                        var tahun1 = parseInt(tahun - 1);
                         $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
-                    }else {
-                        $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun1);
+                    } else {
+                        var bulan = parseInt(12 - (6 - res[1]));
+                        var tahun1 = parseInt(tahun - 1);
+                        if (bulan > 9) {
+                            $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                        } else {
+                            $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun1);
+                        }
+                    }
+                }
+            } else {
+                if (res[1] > 06) {
+                    var bulan = parseInt(res[1] - 6);
+                    $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
+                } else {
+                    if (res[1] == 06) {
+                        var bulan = parseInt(12);
+                        var tahun1 = parseInt(tahun - 1);
+                        $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                    } else {
+                        var bulan = parseInt(12 - (6 - res[1]));
+                        var tahun1 = parseInt(tahun - 1);
+                        if (bulan > 9) {
+                            $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
+                        } else {
+                            $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun1);
+                        }
                     }
                 }
             }
-        }else{
-            if  (res[1] > 06){
-                var bulan = parseInt(res[1] - 6);
-                $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun);
-            }else {
-                if (res[1] == 06){
-                    var bulan = parseInt(12);
-                    var tahun1 = parseInt(tahun - 1);
-                    $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
-                }else{
-                    var bulan = parseInt(12 - (6 - res[1]));
-                    var tahun1 = parseInt(tahun - 1);
-                    if (bulan > 9){
-                        $('#tanggalPraPensiun').val(res[0] + "-" + bulan + "-" + tahun1);
-                    }else {
-                        $('#tanggalPraPensiun').val(res[0] + "-0" + bulan + "-" + tahun1);
-                    }
-                }
-            }
-        }
 
-        if(tanggalPensiun == ''){
-            if (res[0] > 1){
-                res[0] = 31;
-                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
-            }else{
-                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
-            }
-        }else{
-            if (res[0] > 1){
-                res[0] = 31;
-                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
-            }else{
-                $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+            if (tanggalPensiun == '') {
+                if (res[0] > 1) {
+                    res[0] = 31;
+                    $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+                } else {
+                    $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+                }
+            } else {
+                if (res[0] > 1) {
+                    res[0] = 31;
+                    $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+                } else {
+                    $('#tanggalPensiun').val(res[0] + "-" + res[1] + "-" + tahun);
+                }
             }
         }
     };
@@ -6403,6 +6404,43 @@
         } else {
             var seq = nip.slice(nip.length - 4);
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+        }
+    }
+
+    function getRangeMsKerja(gol){
+        console.log(gol);
+        GolonganAction.getRangeMasaGol(gol, function(listData){
+            $.each(listData, function (i, item) {
+                console.log(item.msKerjaAwal);
+                console.log(item.msKerjaAkhir);
+                $("#poinLebih").attr({"min":item.msKerjaAwal, "max":item.msKerjaAkhir});
+            })
+        })
+    }
+
+    function getPensiun(){
+        var tipePegawai = $('#tipePegawai1').val();
+        var tglLahir = $('#tanggalLahir1').val();
+        if(tipePegawai == 'TP03'){
+            $('#tanggalPraPensiun').val('');
+            $('#tanggalPensiun').val('');
+
+            $('#danaPensiun').val('');
+            $('#golongan2').val('');
+            $('#poinLebih').val('');
+
+            $('#danaPensiun').prop('disabled', true);
+            $('#golongan2').prop('disabled', true);
+            $('#poinLebih').prop('disabled', true);
+            $('#noAnggotaDapen').prop('disabled', true);
+
+        } else{
+            if (tglLahir !=null && tglLahir != '') getTanggalPensiun();
+
+            $('#danaPensiun').prop('disabled', false);
+            $('#golongan2').prop('disabled', false);
+            $('#poinLebih').prop('disabled', false);
+            $('#noAnggotaDapen').prop('disabled', false);
         }
     }
 
