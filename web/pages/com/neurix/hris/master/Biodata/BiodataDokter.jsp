@@ -110,7 +110,7 @@
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
                 if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Tanggal Aktif/Pengangkatan</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -945,7 +945,7 @@
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="false"/>
                                                             <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
                                                             <s:hidden id="tanggalAktifTmp"/>
                                                         </s:else>
