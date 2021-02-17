@@ -1596,3 +1596,13 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ALTER TABLE im_simrs_obat
     ADD COLUMN id_pabrik_obat VARCHAR(50);
 --
+
+-- 2021-02-17
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail
+    ADD COLUMN id_pabrik_obat VARCHAR(50);
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN id_pabrik_obat VARCHAR(50);
+
+--
