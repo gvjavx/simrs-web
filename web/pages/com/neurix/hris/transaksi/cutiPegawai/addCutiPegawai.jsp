@@ -496,7 +496,7 @@
                             <table>
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
                                 <s:select list="#comboCuti.listComboCuti" id="cutiId" name="cutiPegawai.cutiId"
-                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
+                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="false" />
                                 <s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
@@ -510,7 +510,7 @@
                             <table>
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti2_cuti"/>
                                 <s:select list="#comboCuti.listComboCuti2" id="cutiIdTanggungan" name="cutiPegawai.cutiTanggunganId"
-                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="true" />
+                                          listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="false" />
                                 <s:textfield  id="cutiId15Tanggungan" name="cutiPegawai.cutiTanggunganId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:textfield  id="jenisCutiTanggungan" name="cutiPegawai.cutiTanggunganName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
