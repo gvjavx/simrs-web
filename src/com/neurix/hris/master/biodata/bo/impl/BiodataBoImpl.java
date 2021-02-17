@@ -1690,6 +1690,14 @@ public class BiodataBoImpl implements BiodataBo {
                                     throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Add Personil Position. ",e);
                                 }
 
+                                String isDokter = "";
+                                try{
+                                    isDokter = profesiDao.
+                                } catch (HibernateException e) {
+                                    logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("[BiodataBoImpl.saveAdd] Found problem when check tipe profesi, " + e.getMessage());
+                                }
+
                                 if("PR001".equalsIgnoreCase(personilPositionEntity.getProfesiId())){
                                     List<ImSimrsDokterEntity> cekDokter = new ArrayList<>();
                                     try {
