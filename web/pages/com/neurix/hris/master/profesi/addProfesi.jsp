@@ -81,7 +81,7 @@
 
         window.cekTipeDokter = function () {
             if ($('#tipeDokter').is(":checked")) {
-                $("#fllagTipeDokter").val("dokter");
+                $("#flagTipeDokter").val("dokter");
             } else {
                 $("#flagTipeDokter").val(null);
             }
