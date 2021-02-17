@@ -1692,13 +1692,13 @@ public class BiodataBoImpl implements BiodataBo {
 
                                 String isDokter = "";
                                 try{
-                                    isDokter = profesiDao.
+                                    isDokter = profesiDao.cekTipeProfesi(personilPositionEntity.getProfesiId(),"dokter");
                                 } catch (HibernateException e) {
                                     logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
                                     throw new GeneralBOException("[BiodataBoImpl.saveAdd] Found problem when check tipe profesi, " + e.getMessage());
                                 }
 
-                                if("PR001".equalsIgnoreCase(personilPositionEntity.getProfesiId())){
+                                if("true".equalsIgnoreCase(isDokter)){
                                     List<ImSimrsDokterEntity> cekDokter = new ArrayList<>();
                                     try {
                                         cekDokter = dokterDao.getDataDokterById(bean.getNip());

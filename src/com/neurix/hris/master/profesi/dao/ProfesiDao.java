@@ -94,7 +94,7 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
     }
 
     public String cekTipeProfesi(String profesiId, String tipeProfesi) throws HibernateException {
-        String hasil = "";
+        String hasil = "false";
         List<ImProfesiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImProfesiEntity.class)
                 .add(Restrictions.eq("profesiId",profesiId))
                 .add(Restrictions.eq("flag", "Y"))
@@ -103,9 +103,11 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
 
         for(ImProfesiEntity profesi : results){
             if(tipeProfesi.equalsIgnoreCase(profesi.getTipeProfesi())){
-                hasil.
+                hasil = "true";
             }
         }
+
+        return hasil;
     }
 
     public void addAndSaveHistory(ImProfesiHistoryEntity entity) throws HibernateException {
