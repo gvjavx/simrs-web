@@ -110,7 +110,7 @@
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
                 if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif/Pengangkatan</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Tanggal Aktif / Pengangkatan </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;

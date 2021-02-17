@@ -1690,7 +1690,15 @@ public class BiodataBoImpl implements BiodataBo {
                                     throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Add Personil Position. ",e);
                                 }
 
-                                if("PR001".equalsIgnoreCase(personilPositionEntity.getProfesiId())){
+                                String isDokter = "";
+                                try{
+                                    isDokter = profesiDao.cekTipeProfesi(personilPositionEntity.getProfesiId(),"dokter");
+                                } catch (HibernateException e) {
+                                    logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("[BiodataBoImpl.saveAdd] Found problem when check tipe profesi, " + e.getMessage());
+                                }
+
+                                if("true".equalsIgnoreCase(isDokter)){
                                     List<ImSimrsDokterEntity> cekDokter = new ArrayList<>();
                                     try {
                                         cekDokter = dokterDao.getDataDokterById(bean.getNip());
@@ -1715,8 +1723,17 @@ public class BiodataBoImpl implements BiodataBo {
                                         // creating object entity serializable
                                         ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
 
+
+                                        String namaDgnGelar = bean.getNamaPegawai();
+                                        if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
+                                            namaDgnGelar = bean.getGelarDepan() +" "+ namaDgnGelar;
+                                        }
+                                        if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
+                                            namaDgnGelar = namaDgnGelar +" "+ bean.getGelarBelakang();
+                                        }
+
                                         entity.setIdDokter(bean.getNip());
-                                        entity.setNamaDokter(bean.getNamaPegawai());
+                                        entity.setNamaDokter(namaDgnGelar);
                                         entity.setIdPelayanan("");
                                         entity.setKuota("");
                                         entity.setKodeDpjp("");
@@ -1860,8 +1877,16 @@ public class BiodataBoImpl implements BiodataBo {
                     // creating object entity serializable
                     ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
 
+                    String namaDgnGelar = bean.getNamaPegawai();
+                    if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
+                        namaDgnGelar = bean.getGelarDepan() +" "+ namaDgnGelar;
+                    }
+                    if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
+                        namaDgnGelar = namaDgnGelar +" "+ bean.getGelarBelakang();
+                    }
+
                     entity.setIdDokter(bean.getNip());
-                    entity.setNamaDokter(bean.getNamaPegawai());
+                    entity.setNamaDokter(namaDgnGelar);
                     entity.setIdPelayanan("");
                     entity.setKuota("");
                     entity.setKodeDpjp("");

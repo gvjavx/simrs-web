@@ -201,12 +201,16 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "detail.no_checkup,\n" +
                 "h.branch_id\n" +
                 "FROM \n" +
-//                "it_simrs_header_detail_checkup detail\n" +
                 "(SELECT * FROM(\n" +
-                "SELECT no_checkup, id_pelayanan,status_periksa, flag, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank\n" +
-                "FROM it_simrs_header_detail_checkup\n" +
-                ") a WHERE a.rank = 1\n" +
-                ") detail\n" +
+                "\tSELECT\n" +
+                "\tno_checkup,\n" +
+                "\tid_pelayanan,\n" +
+                "\tstatus_periksa, \n" +
+                "\tflag,\n" +
+                "\tid_transaksi_online,\n" +
+                "\trank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank\n" +
+                "\tFROM it_simrs_header_detail_checkup\n" +
+                "   ) a WHERE a.rank = 1) detail\n" +
                 "INNER JOIN it_simrs_header_checkup h ON h.no_checkup = detail.no_checkup\n" +
                 "WHERE h.id_pasien LIKE :idPasien\n" +
                 "AND h.no_ktp LIKE :noKtp\n" +
@@ -215,9 +219,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                 "AND detail.id_pelayanan LIKE :idPelayanan\n" +
                 "AND detail.status_periksa LIKE :statusPeriksa\n" +
                 "AND detail.flag = 'Y'\n" +
+                "AND detail.id_transaksi_online IS NULL \n"+
                 "AND h.no_checkup LIKE :noCheckup\n" + idAntrianOnline;
 
-//        String group = "\n GROUP BY detail.no_checkup, h.branch_id";
         String order = "\n ORDER BY h.created_date DESC";
 
         List<Object[]> result = new ArrayList<>();
