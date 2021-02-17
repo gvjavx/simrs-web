@@ -5336,7 +5336,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         // Sigit 2020-11-26, Pencarian prosentase gaji dari unutk perhitungan upah lembur perjam, START
                                         BigDecimal prosentase = new BigDecimal(0);
 //                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(biodata.getJenisPegawai());
-                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList =new ArrayList<>();
+//                                        List<ImHrisMappingPersenGaji> mappingPersenGajiList =new ArrayList<>();
                                         String personPosition = "";
 
                                         try {
@@ -5347,28 +5347,35 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         }
 
                                         try {
-                                            mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(personPosition);
+                                            prosentase = jenisPegawaiDao.getPersenGaji(personPosition);
                                         } catch (HibernateException e) {
                                             logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
                                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                                         }
 
-                                        if (mappingPersenGajiList.size() > 0){
-                                            for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
-
-                                                if (persenGaji.getPresentase() != null){
-                                                    BigDecimal bdPersenGaji = new BigDecimal(persenGaji.getPresentase());
-                                                    prosentase = bdPersenGaji.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
-                                                }
-
-                                            }
-                                        }
+//                                        try {
+//                                            mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(personPosition);
+//                                        } catch (HibernateException e) {
+//                                            logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
+//                                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+//                                        }
+//
+//                                        if (mappingPersenGajiList.size() > 0){
+//                                            for (ImHrisMappingPersenGaji persenGaji : mappingPersenGajiList){
+//
+//                                                if (persenGaji.getPresentase() != null){
+//                                                    BigDecimal bdPersenGaji = new BigDecimal(persenGaji.getPresentase());
+//                                                    prosentase = bdPersenGaji.divide(new BigDecimal(100), 2, BigDecimal.ROUND_HALF_UP);
+//                                                }
+//
+//                                            }
+//                                        }
                                         // END
                                         // Sigit, 2020-11-26 perubahan Perhitungan upah biaya lembur per jam, START
                                         peralihan = getPeralihanGapok(biodata.getNip(),CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())).doubleValue();
                                         Double totalGapokPeralihan = gapok+peralihan;
                                         BigDecimal bGapokPeralihan = new BigDecimal(totalGapokPeralihan);
-                                        BigDecimal bFaktor = new BigDecimal(faktor);
+                                        BigDecimal bFaktor = new BigDecimal(faktor/100);
                                         BigDecimal bJamLembur = new BigDecimal(jamLembur);
 
                                         BigDecimal bUpahLembur = bGapokPeralihan.multiply(prosentase).multiply(bFaktor).multiply(bJamLembur);
