@@ -185,7 +185,13 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         String sql = "SELECT tele.id AS id_antrian_telemedic, tele.flag_resep, tele.flag_eresep, tele.id_pasien, dokter.nama_dokter, tele.id_dokter, pelayanan.nama_pelayanan, tele.id_pelayanan, tele.status, tele.flag_bayar_konsultasi, tele.flag_bayar_resep, pembayaran.id AS id_pembayaran, pembayaran.keterangan, pembayaran.nominal, tele.no_kartu, tele.id_jenis_periksa_pasien, tele.id_asuransi, tele.kode_bank, tele.jenis_pembayaran, tele.created_date, tele.flag, pembayaran.approved_flag\n" +
                 "FROM it_simrs_antrian_telemedic tele \n" +
                 "INNER JOIN im_simrs_dokter dokter ON dokter.id_dokter = tele.id_dokter\n" +
-                "INNER JOIN im_simrs_pelayanan pelayanan ON pelayanan.id_pelayanan = tele.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "b.branch_id,\n" +
+                "b.id_pelayanan,\n" +
+                "a.nama_pelayanan,\n" +
+                "a.tipe_pelayanan\n" +
+                "FROM im_simrs_header_pelayanan a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pelayanan ON pelayanan.id_pelayanan = tele.id_pelayanan\n" +
                 "INNER JOIN it_simrs_pembayaran_online pembayaran ON pembayaran.id_antrian_telemedic = tele.id\n" +
                 "WHERE tele.id_dokter = :idDokter\n" +
                 "ORDER BY tele.created_date DESC";

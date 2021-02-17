@@ -30,6 +30,44 @@
                 $('#val_id_pasien').val(idPasien);
             }
         }
+
+        $.subscribe('beforeProcessSave', function (event, data) {
+            var idPasien = $('#upload_pasien').val();
+            var img = $('.form-img-rm');
+            var cek = false;
+            $.each(img, function (i, item) {
+                if (item.value == '') {
+                    cek = true;
+                }
+            });
+            if (idPasien != '' && !cek && img.length > 0) {
+                $('#save').hide();
+                $('#load_upload').show();
+                event.originalEvent.options.submit = true;
+            } else {
+                $('#warning_upload').show().fadeOut(5000);
+                $('#msg_upload').text("Silahkan cek kembali inputan anda...!");
+                event.originalEvent.options.submit = false;
+            }
+        });
+
+        $.subscribe('successDialog', function (event, data) {
+            if (event.originalEvent.request.status == 200) {
+                jQuery(".ui-dialog-titlebar-close").hide();
+                $('#modal-upload').modal('hide');
+                $.publish('showInfoDialog');
+                $('#save').show();
+                $('#load_upload').hide();
+            }
+        });
+
+        $.subscribe('errorDialog', function (event, data) {
+            $('#warning_upload').show().fadeOut(5000);
+            $('#msg_upload').text(event.originalEvent.request.getResponseHeader('message'));
+            $('#save').show();
+            $('#load_upload').hide();
+        });
+
     </script>
 </head>
 
@@ -97,7 +135,7 @@
                                         <%--<a href="add_pasien.action" class="btn btn-primary"><i class="fa fa-plus"></i>--%>
                                             <%--Add Pasien</a>--%>
                                         <button type="button" class="btn btn-primary" onclick="showModalUpload()">
-                                            <i class="fa fa-plus"></i> Upload Rekam Medik Lama
+                                            <i class="fa fa-plus"></i> Upload RM Lama
                                         </button>
                                     </div>
                                 </div>
@@ -234,7 +272,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Pasien <span
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Rekam Medik Lama Pasien <span
                         id="nama_medik"></span></h4>
             </div>
             <div class="modal-body">
@@ -242,13 +280,13 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_upload"></p>
                 </div>
-                <%--<s:form id="uploadForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action" cssClass="form-horizontal">--%>
+                <s:form id="addRMForm" method="post" enctype="multipart/form-data" theme="simple" namespace="/pasien" action="saveUploadRmLama_pasien.action">
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">No RM</label>
                         <div class="col-md-7">
                             <div class="input-group">
-                                <s:textfield id="upload_pasien"
+                                <s:textfield id="upload_pasien" name="pasien.idPasien"
                                              onkeypress="$(this).css('border','');"
                                              cssClass="form-control"
                                              placeholder="ketik nama atau rm baru atau rm lama"/>
@@ -265,7 +303,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">No RM Lama</label>
                         <div class="col-md-7">
-                            <s:textfield id="upload_no_rm_lama"
+                            <s:textfield id="upload_no_rm_lama" name="pasien.noRmLama"
                                          cssStyle="margin-top: 7px"
                                          onkeypress="$(this).css('border','');"
                                          cssClass="form-control" readonly="true"/>
@@ -274,7 +312,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Pasien</label>
                         <div class="col-md-7">
-                            <s:textfield id="upload_nama_pasien"
+                            <s:textfield id="upload_nama_pasien" name="pasien.nama"
                                          cssStyle="margin-top: 7px"
                                          onkeypress="$(this).css('border','');"
                                          cssClass="form-control" readonly="true"/>
@@ -311,7 +349,7 @@
                                 var selectedObj = mapped[item];
                                 $('#upload_nama_pasien').val(selectedObj.nama);
                                 $('#upload_no_rm_lama').val(selectedObj.noRmLama);
-                                $('#upload_pasien').attr('disabled', true);
+                                $('#upload_pasien').attr('readonly', true);
                                 return selectedObj.id;
                             }
                         });
@@ -321,17 +359,27 @@
                     <div id="body-rm">
                     </div>
                 </div>
-                <%--</s:form>--%>
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-9">
+                            <sj:submit cssStyle="margin-top: 20px" targets="crud" type="button"
+                                       cssClass="btn btn-success"
+                                       formIds="addRMForm" id="save" name="save"
+                                       onBeforeTopics="beforeProcessSave"
+                                       onCompleteTopics="closeDialog,successDialog"
+                                       onSuccessTopics="successDialog" onErrorTopics="errorDialog">
+                                <i class="fa fa-check"></i>
+                                Save
+                            </sj:submit>
+                            <button style="display: block; cursor: no-drop; margin-top: 20px" type="button" class="btn btn-success"
+                                    id="load_upload"><i
+                                    class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                            </button>
+                        </div>
+                    </div>
+                </s:form>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                </button>
-                <button type="button" class="btn btn-success pull-right" id="save_upload"><i
-                        class="fa fa-check"></i> Save
-                </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success pull-right"
-                        id="load_upload"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -945,7 +993,7 @@
     }
 
     function showModalUpload() {
-        $('#upload_pasien').attr('disabled', false);
+        $('#upload_pasien').attr('readonly', false);
         $('#save_upload').show();
         $('#load_upload').hide();
         $('#save_upload').attr('onclick', 'cekUpload()');
@@ -1014,9 +1062,9 @@
         var str = '<div class="form-group img-upload" id="row_' + i + '">' +
             '<label class="col-md-3" style="margin-top: 8px">Upload Foto Rekam Medik ' + number + '</label>' +
             '<div class="col-md-7">' +
-            '<canvas id="cav_' + i + '" style="display: none"></canvas>' +
-            '<input id="text_' + i + '" onchange="setCanvasAtasWithText(\'cav_' + i + '\', \'text_' + i + '\')" type="file" name="fileUploadImage" class="form-control form-img-rm" style="margin-top: 7px">' +
-            <%--'<s:file id="upload-img" name="fileUploadImage" cssClass="form form-control"/>'+--%>
+            // '<canvas id="cav_' + i + '" style="display: none"></canvas>' +
+            // '<input id="text_' + i + '" onchange="setCanvasAtasWithText(\'cav_' + i + '\', \'text_' + i + '\')" type="file" name="fileUploadImage" class="form-control form-img-rm" style="margin-top: 7px">' +
+            '<input id="text_' + i + '" type="file" name="fileUploadImage" class="form-control form-img-rm" style="margin-top: 7px">' +
             '</div>' +
             '<div class="col-md-1" style="margin-left: -20px; margin-top: 10px">' +
             '<a class="btn btn-danger" onclick="delUpload(\'row_' + i + '\')"><i class="fa fa-trash"></i></a>';
@@ -1316,7 +1364,7 @@
     }
 
     function removeAll() {
-        $('#upload_pasien').attr('disabled', false);
+        $('#upload_pasien').attr('readonly', false);
         $('#upload_pasien, #upload_nama_pasien, #upload_no_rm_lama').val('');
         $('#body-rm').html('');
     }

@@ -2387,7 +2387,6 @@
             var pel = isi[1];
             var cover = isi[2];
             $('#poli').val(pel).trigger('change').attr('disabled', true);
-            $('#id_pelayanan_paket').val(pel);
             $('#id_paket').val(pak);
             $('#cover_biaya_paket').val(cover);
         }
@@ -2933,7 +2932,11 @@
                         mapped[labelItem] = {
                             id: item.noBpjs,
                             idPasien: item.idPasien,
-                            nama: item.nama
+                            nama: item.nama,
+                            namaPaket: item.namaPaket,
+                            idPaket: item.idPaket,
+                            tarif: item.tarif,
+                            idPelayananPaket: item.idPelayanan
                         };
                         functions.push(labelItem);
                     });
@@ -2985,9 +2988,9 @@
                         }
 
                         var tipe = $('#jenis_pasien').val();
-                        if ("paket_perusahaan" == tipe || "paket_individu" == tipe) {
-                            if (res.idPelayanan != null) {
-                                $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
+                        if ("paket_perusahaan" == tipe) {
+                            if (selectedObj.idPelayananPaket != null) {
+                                $('#poli').val(selectedObj.idPelayananPaket).trigger('change').attr('disabled', true);
                             }
                         } else {
                             if ("Y" == res.isCheckupUlang) {
@@ -3005,13 +3008,13 @@
                             }
                         }
 
-                        if (res.idPaket != null && res.idPaket != '') {
-                            $('#id_paket').val(res.idPaket);
-                            $('#paket_perusahaan').val(res.namaPaket);
-                            $('#cover_biaya_paket').val(res.tarif);
+                        if (selectedObj.idPaket != null && selectedObj.idPaket != '') {
+                            $('#id_paket').val(selectedObj.idPaket);
+                            $('#paket_perusahaan').val(selectedObj.namaPaket);
+                            $('#cover_biaya_paket').val(selectedObj.tarif);
                         }
 
-                        if (res.isPeriksa == "Y") {
+                        if (res.isDaftar == "Y") {
                             $('#btn-save').hide();
                             $('#warning_pasien').show();
                             $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
@@ -3059,7 +3062,11 @@
                         }
                         mapped[labelItem] = {
                             id: item.idPasien,
-                            nama: item.nama
+                            nama: item.nama,
+                            namaPaket: item.namaPaket,
+                            idPaket: item.idPaket,
+                            tarif: item.tarif,
+                            idPelayananPaket: item.idPelayanan
                         };
                         functions.push(labelItem);
                     });
@@ -3111,9 +3118,9 @@
                             }
 
                             var tipe = $('#jenis_pasien').val();
-                            if ("paket_perusahaan" == tipe || "paket_individu" == tipe) {
-                                if (res.idPelayanan != null) {
-                                    $('#poli').val(res.idPelayanan).trigger('change').attr('disabled', true);
+                            if ("paket_perusahaan" == tipe) {
+                                if (selectedObj.idPelayananPaket != null) {
+                                    $('#poli').val(selectedObj.idPelayananPaket).trigger('change').attr('disabled', true);
                                 }
                             } else {
                                 if ("Y" == res.isCheckupUlang) {
@@ -3131,13 +3138,13 @@
                                 }
                             }
 
-                            if (res.idPaket != null && res.idPaket != '') {
-                                $('#id_paket').val(res.idPaket);
-                                $('#paket_perusahaan').val(res.namaPaket);
-                                $('#cover_biaya_paket').val(res.tarif);
+                            if (selectedObj.idPaket != null && selectedObj.idPaket != '') {
+                                $('#id_paket').val(selectedObj.idPaket);
+                                $('#paket_perusahaan').val(selectedObj.namaPaket);
+                                $('#cover_biaya_paket').val(selectedObj.tarif);
                             }
 
-                            if (res.isPeriksa == "Y") {
+                            if (res.isDaftar == "Y") {
                                 $('#btn-save').hide();
                                 $('#warning_pasien').show();
                                 $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");

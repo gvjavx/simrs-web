@@ -623,17 +623,16 @@ public class PasienAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public String saveUploadRmLama() throws IOException {
+    public String saveUploadRmLama(){
 
         File fileToCreate = null;
         Pasien pasien = getPasien();
-
         String branchId = CommonUtil.userBranchLogin();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
-
         ImSImrsRekamMedicLamaEntity rekamMedicLamaEntity = new ImSImrsRekamMedicLamaEntity();
         rekamMedicLamaEntity.setIdPasien(pasien.getIdPasien());
+        rekamMedicLamaEntity.setNoRmLama(pasien.getNoRmLama());
         rekamMedicLamaEntity.setBranchId(branchId);
         rekamMedicLamaEntity.setFlag("Y");
         rekamMedicLamaEntity.setAction("C");
@@ -641,52 +640,58 @@ public class PasienAction extends BaseMasterAction {
         rekamMedicLamaEntity.setLastUpdate(time);
         rekamMedicLamaEntity.setCreatedWho(userLogin);
         rekamMedicLamaEntity.setLastUpdateWho(userLogin);
-
         List<ImSimrsUploadRekamMedicLamaEntity> uploads = new ArrayList<>();
-
         ImSimrsUploadRekamMedicLamaEntity uploadRekamMedicLamaEntity;
+
         if (fileUploadImage != null) {
-            for (int i = 0; i < fileUploadImage.length; i++) {
-                if (fileUploadImage[i] != null) {
-                    String fileName = fileUploadImageFileName[i];
-                    String fileNameReplace = fileName.replace(" ", "_");
-                    String seqImg = pasienBoProxy.getNextIdImg();
-                    File imagePath = fileUploadImage[i];
-                    String fileTipe = fileUploadImageContentType[i];
+            try {
+                for (int i = 0; i < fileUploadImage.length; i++) {
+                    if (fileUploadImage[i] != null) {
+                        String fileName = fileUploadImageFileName[i];
+                        String fileNameReplace = fileName.replace(" ", "_");
+                        String seqImg = pasienBoProxy.getNextIdImg();
+                        File imagePath = fileUploadImage[i];
+                        String fileTipe = fileUploadImageContentType[i];
 
-                    if ("image/jpeg".equalsIgnoreCase(fileTipe)) {
+                        if ("image/jpeg".equalsIgnoreCase(fileTipe) || "application/pdf".equalsIgnoreCase(fileTipe) || "image/png".equalsIgnoreCase(fileTipe)) {
+                            String filePathToCopy = "";
+                            if(pasien.getNoRmLama() != null){
+                                filePathToCopy = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.URL_RM_LAMA+branchId+"/"+pasien.getNoRmLama();
+                            }else{
+                                filePathToCopy = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.URL_RM_LAMA+branchId+"/"+pasien.getIdPasien();
+                            }
 
-                        // set new file path and file name to copy
-                        String filePathToCopy = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + File.separator + CommonConstant.URL_IMG_RM + File.separator;
-                        String newFileName = branchId + "_" + pasien.getIdPasien() + "_" + seqImg + "_" + fileNameReplace;
+                            File theDir = new File(filePathToCopy);
+                            if (!theDir.exists()){
+                                theDir.mkdirs();
+                            }
 
-                        // set new file then copying to new path directory
-                        fileToCreate = new File(filePathToCopy, newFileName);
-                        FileUtils.copyFile(imagePath, fileToCreate);
+                            String newFileName = branchId + "_" + pasien.getIdPasien() + "_" + seqImg + "_" + fileNameReplace;
 
-                        logger.info("fileName : " + fileNameReplace);
-                        logger.info("imagePath : " + imagePath);
-                        logger.info("fileTipe : " + fileTipe);
+                            fileToCreate = new File(filePathToCopy, newFileName);
+                            FileUtils.copyFile(imagePath, fileToCreate);
 
-                        uploadRekamMedicLamaEntity = new ImSimrsUploadRekamMedicLamaEntity();
-                        uploadRekamMedicLamaEntity.setUrlImg(newFileName);
-                        uploadRekamMedicLamaEntity.setId("URM" + seqImg);
-                        uploads.add(uploadRekamMedicLamaEntity);
+                            uploadRekamMedicLamaEntity = new ImSimrsUploadRekamMedicLamaEntity();
+                            uploadRekamMedicLamaEntity.setUrlImg(newFileName);
+                            uploadRekamMedicLamaEntity.setId("URM" + seqImg);
+                            uploads.add(uploadRekamMedicLamaEntity);
 
-                    } else {
-                        logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, (content type is not image file), please inform to your admin.");
-                        addActionError("Error,  Error when saving rekam medic lama, (content type is not image file), please inform to your admin.");
-                        return ERROR;
+                        } else {
+                            logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, (content type is not image file), please inform to your admin.");
+                            throw new GeneralBOException("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, (content type is not image file), please inform to your admin.");
+                        }
                     }
                 }
+            }catch (IOException e){
+                logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, please inform to your admin.");
+                throw new GeneralBOException("Error,  Error when saving rekam medic lama, please inform to your admin.");
             }
 
             try {
                 pasienBoProxy.saveUploadRekamMedicLama(rekamMedicLamaEntity, uploads);
-            } catch (GeneralBOException e) {
+            } catch (Exception e) {
                 logger.error("[PasienAction.saveUploadRmLama] Error when saving rekam medic lama, please inform to your admin.");
-                addActionError("Error,  Error when saving rekam medic lama, please inform to your admin.");
-                return ERROR;
+                throw new GeneralBOException("Error,  Error when saving rekam medic lama, please inform to your admin.");
             }
         }
 

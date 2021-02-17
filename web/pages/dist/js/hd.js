@@ -373,21 +373,27 @@ function saveMonHD(jenis, ket) {
         if (va1 != undefined) {
             $.each(va1, function (i, item) {
                 if (va1[i].checked) {
-                    if (tVa1 != '') {
-                        tVa1 = tVa1 + '|' + va1[i].value;
-                    } else {
-                        tVa1 = va1[i].value;
+                    if(item.value != 'on' && item.value != ''){
+                        if (tVa1 != '') {
+                            tVa1 = tVa1 + '|' + va1[i].value;
+                        } else {
+                            tVa1 = va1[i].value;
+                        }
+                        cek = true;
                     }
+
                 }
             });
-            data.push({
-                'parameter': 'Diagnosa Keperawatan',
-                'jawaban1': tVa1,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
-            cek = true;
+            if(tVa1 != ''){
+                data.push({
+                    'parameter': 'Diagnosa Keperawatan',
+                    'jawaban1': tVa1,
+                    'keterangan': jenis,
+                    'jenis': 'monitoring_hd',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
         }
     }
 
@@ -399,39 +405,48 @@ function saveMonHD(jenis, ket) {
         if (va1 && va2 != undefined) {
             $.each(va1, function (i, item) {
                 if (va1[i].checked) {
-                    if (tVa1 != '') {
-                        tVa1 = tVa1 + '|' + va1[i].value;
-                    } else {
-                        tVa1 = va1[i].value;
+                    if(item.value != 'on' && item.value != ''){
+                        if (tVa1 != '') {
+                            tVa1 = tVa1 + '|' + va1[i].value;
+                        } else {
+                            tVa1 = va1[i].value;
+                        }
+                        cek = true;
                     }
                 }
             });
             $.each(va2, function (i, item) {
                 if (va2[i].checked) {
-                    if (tVa2 != '') {
-                        tVa2 = tVa2 + '|' + va2[i].value;
-                    } else {
-                        tVa2 = va2[i].value;
+                    if(item.value != 'on' && item.value != ''){
+                        if (tVa2 != '') {
+                            tVa2 = tVa2 + '|' + va2[i].value;
+                        } else {
+                            tVa2 = va2[i].value;
+                        }
+                        cek = true;
                     }
                 }
             });
-            data.push({
-                'parameter': 'Intervensi Keperawatan',
-                'jawaban1': 'Mandiri',
-                'jawaban2': tVa1,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': '',
-                'jawaban1': 'Kolaborasi',
-                'jawaban2': tVa2,
-                'keterangan': jenis,
-                'jenis': 'monitoring_hd',
-                'id_detail_checkup': idDetailCheckup
-            });
-            cek = true;
+            if(tVa1 != ''){
+                data.push({
+                    'parameter': 'Intervensi Keperawatan',
+                    'jawaban1': 'Mandiri',
+                    'jawaban2': tVa1,
+                    'keterangan': jenis,
+                    'jenis': 'monitoring_hd',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+            if(tVa2 != ''){
+                data.push({
+                    'parameter': '',
+                    'jawaban1': 'Kolaborasi',
+                    'jawaban2': tVa2,
+                    'keterangan': jenis,
+                    'jenis': 'monitoring_hd',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
         }
     }
 

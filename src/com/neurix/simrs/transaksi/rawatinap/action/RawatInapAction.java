@@ -321,6 +321,10 @@ public class RawatInapAction extends BaseMasterAction {
                 rawatInap.setIsStay(checkup.getIsStay());
                 rawatInap.setIdKelas(checkup.getKelasPasien());
                 rawatInap.setNoTelp(checkup.getNoTelp());
+                if(checkup.getCreatedDate() != null){
+                    String format = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getCreatedDate());
+                    rawatInap.setStTglFrom(format);
+                }
                 RawatInap rt = new RawatInap();
                 rt.setIdRawatInap(idx);
                 rt.setIdDetailCheckup(id);

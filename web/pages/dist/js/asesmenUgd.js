@@ -132,6 +132,7 @@ function saveAsesmenUgd(jenis, keterangan) {
             var akral = $('[name=radio_cri_akral]:checked').val();
             var nadi2 = $('#circulation_nadi').val();
             var cr = $('[name=radio_ct]:checked').val();
+
             var cara = "";
             if(cr != undefined){
                 var ket = $('#ket_ct').val();
@@ -141,8 +142,9 @@ function saveAsesmenUgd(jenis, keterangan) {
                     cara = cr;
                 }
             }
-            var tdk = $('#tindakan').val();
+
             var rjk = $('#rujukan').val();
+            var tindakan = $('#tindakan_yang_sudah').val();
 
             if (tkn && nadi1 && rr1 && suhu && cara != ''
                 && airway && warnaKulit1 && polaNafas && kerjaNafas && suaraNafas && jejas && trakea && dada && distensi != undefined
@@ -165,14 +167,14 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Tindakan',
-                    'jawaban': tdk,
+                    'jawaban': tindakan,
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
                 });
                 data.push({
                     'parameter': 'Tekanan Darah',
-                    'jawaban': tkn + ' mmHg',
+                    'jawaban': replaceUnderLine(tkn) + ' mmHg',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
@@ -324,6 +326,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                     'id_detail_checkup': idDetailCheckup
                 });
                 cek = true;
+                console.log(data);
             }
         }
 
@@ -387,7 +390,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 && dibantu && pekerjaan && tPenanggung && sekarang && dahulu && keluarga && tRiwayat != '') {
                 data.push({
                     'parameter': 'Tekanan Darah',
-                    'jawaban': tkn + ' mmHg',
+                    'jawaban': replaceUnderLine(tkn) + ' mmHg',
                     'keterangan': jenis,
                     'jenis': keterangan,
                     'id_detail_checkup': idDetailCheckup
@@ -1134,7 +1137,7 @@ function saveAsesmenUgd(jenis, keterangan) {
                 });
                 data.push({
                     'parameter': 'Tekanan Darah',
-                    'jawaban': va3 +' mmHg',
+                    'jawaban': replaceUnderLine(va3) +' mmHg',
                     'keterangan': jenis,
                     'id_detail_checkup': idDetailCheckup
                 });
