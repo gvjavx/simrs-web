@@ -231,7 +231,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Keluhan Utama
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Data Pre Hospital
                 </h4>
             </div>
             <div class="modal-body">
@@ -279,7 +279,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Tindakan yang sudah dilakukan</label>
                             <div class="col-md-9">
-                                <textarea rows="4" class="form-control" id="tindakan"></textarea>
+                                <textarea rows="4" class="form-control" id="tindakan_yang_sudah"></textarea>
                             </div>
                         </div>
                     </div>
@@ -634,7 +634,7 @@
                             <div class="col-md-4">
                                 <label>Tekanan Darah</label>
                                 <div class="input-group">
-                                    <input class="form-control tensi-pasien" id="kep_tekanan_darah">
+                                    <input class="form-control tensi-pasien" id="kep_tekanan_darah" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>

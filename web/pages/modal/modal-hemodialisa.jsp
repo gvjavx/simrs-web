@@ -1499,7 +1499,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Instrruksi Medis
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Instruksi Medis
                 </h4>
             </div>
             <div class="modal-body">
@@ -1744,8 +1744,8 @@
                                 <label>TTD Dokter</label>
                                 <canvas class="paint-canvas-ttd" id="im016" width="220"
                                         onmouseover="paintTtd('im016')"></canvas>
-                                <input class="form-control nama_dokter_ri" id="im_nama_petugas" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="im_sip_petugas" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="im_nama_petugas" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="im_sip_petugas" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('im016')"><i
                                         class="fa fa-trash"></i> Clear
@@ -3318,8 +3318,8 @@
                             <label class="col-md-4" style="margin-top: 7px">Tanda Tangan</label>
                             <div class="col-md-6">
                                 <canvas style="margin-left: -1px;" onmouseover="paintTtd('hd_ttd_dokter')" class="paint-canvas-ttd" id="hd_ttd_dokter"></canvas>
-                                <input class="form-control nama_dokter_ri" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_hd_ttd_dokter" placeholder="SIP">
+                                <input class="form-control nama_dokter" id="nama_terang_hd_ttd_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_hd_ttd_dokter" placeholder="SIP">
                                 <button style="margin-left: -1px" type="button" class="btn btn-danger" onclick="removePaint('hd_ttd_dokter')"><i class="fa fa-trash"></i> Clear
                                 </button>
                             </div>

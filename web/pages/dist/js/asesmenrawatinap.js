@@ -4573,7 +4573,7 @@ function radioEdukasiPasien(jenis) {
         '            <label style="margin-left: 8px">TTD Pasien</label>\n' +
         '            <canvas class="paint-canvas-ttd" id="ttd_pasien_' + jenis + '" width="190"\n' +
         '               onmouseover="paintTtd(\'ttd_pasien_' + jenis + '\')"></canvas>\n' +
-        '<input class="form-control" id="nama_terang_pasien" placeholder="Nama Terang">' +
+        '<input class="form-control nama-pasien" id="nama_terang_pasien" placeholder="Nama Terang">' +
         '            <button style="margin-left: 8px" type="button" class="btn btn-danger"\n' +
         '                   onclick="removePaint(\'ttd_pasien_' + jenis + '\')"><i class="fa fa-trash"></i>\n' +
         '                Clear\n' +
@@ -4585,8 +4585,8 @@ function radioEdukasiPasien(jenis) {
         '            <label style="margin-left: 8px">TTD Staf</label>\n' +
         '            <canvas class="paint-canvas-ttd" id="ttd_staf_' + jenis + '" width="190"\n' +
         '               onmouseover="paintTtd(\'ttd_staf_' + jenis + '\')"></canvas>\n' +
-        '<input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">\n' +
-        '<input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="NIP/SIP">' +
+        '<input class="form-control nama_petugas" id="nama_terang_dokter" placeholder="Nama Terang">\n' +
+        '<input style="margin-top: 3px" class="form-control nip_petugas" id="sip_dokter" placeholder="NIP/SIP">' +
         '            <button style="margin-left: 8px" type="button" class="btn btn-danger"\n' +
         '                   onclick="removePaint(\'ttd_staf_' + jenis + '\')"><i class="fa fa-trash"></i>\n' +
         '                Clear\n' +

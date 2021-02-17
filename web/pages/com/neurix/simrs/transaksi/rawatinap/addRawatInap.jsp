@@ -284,7 +284,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td width="40%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>
@@ -4107,6 +4107,7 @@
     var setNotif = "";
     var idKelasRuangan = '<s:property value="rawatInap.idKelasRuangan"/>';
     var namaRuanganPasien = '<s:property value="rawatInap.namaRangan"/>';
+    var tanggalMasuk = '<s:property value="rawatInap.createdDate"/>';
 
     if (month.length < 2) {
         month = "0"+month;
