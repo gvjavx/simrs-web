@@ -1726,10 +1726,10 @@ public class BiodataBoImpl implements BiodataBo {
 
                                         String namaDgnGelar = bean.getNamaPegawai();
                                         if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
-                                            namaDgnGelar = bean.getGelarDepan() +" "+ namaDgnGelar;
+                                            namaDgnGelar = bean.getGelarDepan() +". "+ namaDgnGelar;
                                         }
                                         if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
-                                            namaDgnGelar = namaDgnGelar +" "+ bean.getGelarBelakang();
+                                            namaDgnGelar = namaDgnGelar +", "+ bean.getGelarBelakang();
                                         }
 
                                         entity.setIdDokter(bean.getNip());
@@ -1879,10 +1879,10 @@ public class BiodataBoImpl implements BiodataBo {
 
                     String namaDgnGelar = bean.getNamaPegawai();
                     if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
-                        namaDgnGelar = bean.getGelarDepan() +" "+ namaDgnGelar;
+                        namaDgnGelar = bean.getGelarDepan() +". "+ namaDgnGelar;
                     }
                     if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
-                        namaDgnGelar = namaDgnGelar +" "+ bean.getGelarBelakang();
+                        namaDgnGelar = namaDgnGelar +", "+ bean.getGelarBelakang();
                     }
 
                     entity.setIdDokter(bean.getNip());

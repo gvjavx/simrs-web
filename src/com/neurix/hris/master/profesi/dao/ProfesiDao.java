@@ -41,6 +41,9 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
             if (mapCriteria.get("profesi_name")!=null) {
                 criteria.add(Restrictions.ilike("profesiName", "%" + (String)mapCriteria.get("profesi_name") + "%"));
             }
+            if (mapCriteria.get("tipe_profesi")!=null) {
+                criteria.add(Restrictions.eq("tipeProfesi", (String) mapCriteria.get("tipe_profesi")));
+            }
 
 
         }

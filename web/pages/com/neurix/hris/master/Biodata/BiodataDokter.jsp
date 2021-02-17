@@ -555,7 +555,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:if test="isDelete()">
                                                                 <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
                                                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
@@ -575,7 +575,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
                                                                       listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                                         </table>

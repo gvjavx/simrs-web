@@ -79,6 +79,14 @@
             $('#view_dialog_menu').dialog('close');
         };
 
+        window.cekTipeDokter = function () {
+            if ($('#tipeDokter').is(":checked")) {
+                $("#fllagTipeDokter").val("dokter");
+            } else {
+                $("#flagTipeDokter").val(null);
+            }
+        }
+
 
     </script>
 
@@ -116,6 +124,15 @@
                             <table>
                                 <s:textfield id="profesiName1" name="profesi.profesiName" required="true" disabled="false" cssClass="form-control"/>
                             </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Profesi Dokter :</small></label>
+                        </td>
+                        <td>
+                            <input type="checkbox" id="tipeDokter" style="width: 20px; height: 20px;" onchange="cekTipeDokter()" />
+                            <s:hidden id="flagTipeDokter" name="biodata.tipeProfesi"  />
                         </td>
                     </tr>
 

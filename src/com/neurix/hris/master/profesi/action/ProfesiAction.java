@@ -359,6 +359,32 @@ public class ProfesiAction extends BaseMasterAction{
         return SUCCESS;
     }
 
+    public String searchProfesiDokter() {
+        logger.info("[ProfesiAction.search] start process >>>");
+
+        Profesi searchProfesi = new Profesi();
+        searchProfesi.setFlag("Y");
+        searchProfesi.setTipeProfesi("dokter");
+        List<Profesi> listOfsearchProfesi = new ArrayList();
+
+        try {
+            listOfsearchProfesi = profesiBoProxy.getByCriteria(searchProfesi);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = profesiBoProxy.saveErrorMessage(e.getMessage(), "ProfesiBO.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[ProfesiAction.search] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[ProfesiAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            return ERROR;
+        }
+        listComboProfesi.addAll(listOfsearchProfesi);
+        return SUCCESS;
+    }
+
     @Override
     public String initForm() {
         logger.info("[ProfesiAction.initForm] start process >>>");
