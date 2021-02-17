@@ -36,6 +36,7 @@ function setDataPasien() {
         var namaDokRi = $('.nama_dokter_ri').length;
         var namaPetugas = $('.nama_petugas').length;
         var namaRuangan = $('.nama_ruangan').length;
+        var masukRS = $('.tanggal_masuk_rs').length;
 
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
             dwr.engine.setAsync(true);
@@ -261,6 +262,10 @@ function setDataPasien() {
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, canvas.width, canvas.height);
             });
+        }
+
+        if(masukRS > 0){
+            $('.tanggal_masuk_rs').val(tanggalMasuk);
         }
     }
 }

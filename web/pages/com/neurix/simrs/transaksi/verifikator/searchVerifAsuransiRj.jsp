@@ -775,6 +775,7 @@
                 'metode_bayar': metodePembayaran,
                 'is_resep':isResep
             }
+
             var result = JSON.stringify(data);
             $('#save_fin').hide();
             $('#load_fin').show();
@@ -837,7 +838,11 @@
                                     '</select>';
 
                                 table += "<tr>" +
-                                    "<td>" +'<input type="hidden" value="'+item.idRiwayatTindakan+'" id="h_id_riwayat_tindakan_'+i+'">' +item.stTglTindakan + "</td>" +
+                                    "<td>" +
+                                    '<input type="hidden" value="'+item.idRiwayatTindakan+'" id="h_id_riwayat_tindakan_'+i+'">'+
+                                    '<input type="hidden" value="'+item.keterangan+'" id="h_keterangan_tindakan_'+i+'">'+
+                                     item.stTglTindakan +
+                                    "</td>" +
                                     "<td>" + item.namaTindakan + "</td>" +
                                     "<td align='right'>" + tarif + "</td>" +
                                     "<td>" + select + "</td>" +
@@ -855,7 +860,7 @@
                                     "<td colspan='2'>Total Cover Biaya</td>" +
                                     "<td>" +
                                     '<input type="hidden" value="'+trfTtl+'" id="h_cover_biaya">' +
-                                    '<input style="text-align: right" class="form-control" id="cover_biaya" value="'+formatRupiah(trfTtl)+'">' +
+                                    '<input readonly style="text-align: right" class="form-control" id="cover_biaya" value="'+formatRupiah(trfTtl)+'">' +
                                     "</td>" +
                                     "<td></td>" +
                                     "</tr>"+
@@ -863,7 +868,7 @@
                                     "<td colspan='2'>Total Biaya Yang Dibayar Pasien</td>" +
                                     "<td>" +
                                     '<input type="hidden" id="h_pasien_bayar" value="0">' +
-                                    '<input style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
+                                    '<input readonly style="text-align: right" class="form-control" id="pasien_bayar" value="0">' +
                                     "</td>" +
                                     "<td></td>" +
                                     "</tr>";
@@ -936,17 +941,18 @@
             var dataTable = $('#tbl_tindakan').tableToJSON();
             var cekResep = $('#tabel_resep').tableToJSON();
             var isResep = "N";
-            if(cekResep.length > 0){
-                isResep = "Y";
-            }
 
             for (var i = 0; i < dataTable.length - 3; i++){
                 var idRiwayat = $('#h_id_riwayat_tindakan_'+i).val();
+                var ket = $('#h_keterangan_tindakan_'+i).val();
                 var jenis = $('#cover_'+i).val();
                 data.push({
                     'id_riwayat_tindakan': idRiwayat,
                     'jenis_pasien':jenis
                 });
+                if(ket == "resep"){
+                    isResep = "Y";
+                }
             }
 
             dataDetail = {
@@ -958,6 +964,7 @@
                 'cover_biaya': coverBiaya,
                 'is_resep':isResep
             }
+
             var result1 = JSON.stringify(data);
             var result2 = JSON.stringify(dataDetail);
             $('#save_fin').hide();

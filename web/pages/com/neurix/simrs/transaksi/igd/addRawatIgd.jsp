@@ -280,7 +280,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td width="40%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>
