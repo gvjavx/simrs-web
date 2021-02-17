@@ -4107,7 +4107,7 @@
     var setNotif = "";
     var idKelasRuangan = '<s:property value="rawatInap.idKelasRuangan"/>';
     var namaRuanganPasien = '<s:property value="rawatInap.namaRangan"/>';
-    var tanggalMasuk = '<s:property value="rawatInap.createdDate"/>';
+    var tanggalMasuk = '<s:property value="rawatInap.stTglFrom"/>';
 
     if (month.length < 2) {
         month = "0"+month;
