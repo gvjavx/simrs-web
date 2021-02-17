@@ -1715,8 +1715,17 @@ public class BiodataBoImpl implements BiodataBo {
                                         // creating object entity serializable
                                         ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
 
+
+                                        String namaDgnGelar = bean.getNamaPegawai();
+                                        if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
+                                            namaDgnGelar = bean.getGelarDepan() +" "+ namaDgnGelar;
+                                        }
+                                        if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
+                                            namaDgnGelar = namaDgnGelar +" "+ bean.getGelarBelakang();
+                                        }
+
                                         entity.setIdDokter(bean.getNip());
-                                        entity.setNamaDokter(bean.getNamaPegawai());
+                                        entity.setNamaDokter(namaDgnGelar);
                                         entity.setIdPelayanan("");
                                         entity.setKuota("");
                                         entity.setKodeDpjp("");
@@ -1860,8 +1869,16 @@ public class BiodataBoImpl implements BiodataBo {
                     // creating object entity serializable
                     ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
 
+                    String namaDgnGelar = bean.getNamaPegawai();
+                    if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
+                        namaDgnGelar = bean.getGelarDepan() +" "+ namaDgnGelar;
+                    }
+                    if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
+                        namaDgnGelar = namaDgnGelar +" "+ bean.getGelarBelakang();
+                    }
+
                     entity.setIdDokter(bean.getNip());
-                    entity.setNamaDokter(bean.getNamaPegawai());
+                    entity.setNamaDokter(namaDgnGelar);
                     entity.setIdPelayanan("");
                     entity.setKuota("");
                     entity.setKodeDpjp("");
