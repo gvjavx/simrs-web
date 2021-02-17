@@ -132,6 +132,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 "a.id_pelayanan,\n" +
                 "b.nama_pelayanan,\n" +
                 "a.branch_id,\n" +
+                "b.flag,\n" +
                 "b.tipe_pelayanan,\n" +
                 "b.kategori_pelayanan,\n" +
                 "b.divisi_id,\n" +
