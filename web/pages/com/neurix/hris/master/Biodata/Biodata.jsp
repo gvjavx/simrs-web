@@ -74,11 +74,10 @@
             var golongan            = document.getElementById("golongan1").value;
             var statusPegawai       = document.getElementById("statusPegawai1").value;
             var flag                = document.getElementById("flagAktif").value;
-            var masaGolongan        = document.getElementById("poinLebih").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && masaGolongan != '' && tglMasuk !='') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -117,9 +116,6 @@
                  }*/
                 if (statusPegawai == '') {
                     msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
-                }
-                if (masaGolongan == '') {
-                    msg += 'Field <strong>Masa Kerja Golongan</strong> is required.' + '<br/>';
                 }
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
@@ -1203,7 +1199,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label><small>Ms. Kerja Gol. Pensiun <span style="color:red;">*</span> : </small></label>
+                                                    <label><small>Ms. Kerja Gol. Pensiun : </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -6428,8 +6424,23 @@
         if(tipePegawai == 'TP03'){
             $('#tanggalPraPensiun').val('');
             $('#tanggalPensiun').val('');
-        } else if (tglLahir !=null && tglLahir != ''){
-            getTanggalPensiun();
+
+            $('#danaPensiun').val('');
+            $('#golongan2').val('');
+            $('#poinLebih').val('');
+
+            $('#danaPensiun').prop('disabled', true);
+            $('#golongan2').prop('disabled', true);
+            $('#poinLebih').prop('disabled', true);
+            $('#noAnggotaDapen').prop('disabled', true);
+
+        } else{
+            if (tglLahir !=null && tglLahir != '') getTanggalPensiun();
+
+            $('#danaPensiun').prop('disabled', false);
+            $('#golongan2').prop('disabled', false);
+            $('#poinLebih').prop('disabled', false);
+            $('#noAnggotaDapen').prop('disabled', false);
         }
     }
 
