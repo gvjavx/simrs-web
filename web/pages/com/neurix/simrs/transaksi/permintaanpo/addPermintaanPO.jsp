@@ -508,6 +508,7 @@
             $('#warning_fisik').html('');
             $('#id_obat').val(selectedObj.id);
             $('#id_pabrik').val(selectedObj.idPabrik);
+            showComboPabrikObat(selectedObj.id);
             return selectedObj.nama;
         }
     });
@@ -803,6 +804,41 @@
         }
     }
 
+
+    // combo pabrik
+    function showComboPabrikObat(id){
+        PermintaanVendoAction.getListPabrikObatForPo(id, "specific", function (data) {
+
+            if (data.length == 0){
+                showAllPabrik(id);
+            } else {
+                var str = '<option> - </option>';
+                $each(data, function(i, item){
+                   str += "<option value='"+item.id+"'>"+item.nama+"</option>";
+                });
+                var str = "<option value='lain'> Show Other </option>";
+                $("#combo-pabrik").html(str);
+            }
+
+        });
+    }
+
+    $("#combo-pabrik").change(function () {
+        var selected = $("#combo-pabrik option:selected").val();
+        if ( selected ==  "lain" ){
+            showAllPabrik("");
+        }
+    })
+
+    function showAllPabrik(id) {
+        PermintaanVendoAction.getListPabrikObatForPo(id, "all", function(data){
+            var str = "";
+            $.each(data, function (i, item) {
+
+            });
+        });
+    }
+    // END
 
 </script>
 
