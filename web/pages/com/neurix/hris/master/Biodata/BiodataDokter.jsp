@@ -110,7 +110,7 @@
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
                 if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Tanggal Aktif / Pengangkatan </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -555,7 +555,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:if test="isDelete()">
                                                                 <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
                                                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
@@ -575,7 +575,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
                                                                       listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                                         </table>
@@ -945,7 +945,7 @@
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="false"/>
                                                             <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
                                                             <s:hidden id="tanggalAktifTmp"/>
                                                         </s:else>

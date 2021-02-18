@@ -374,13 +374,13 @@ public class MutasiBoImpl implements MutasiBo {
             }
 
             if (("M").equalsIgnoreCase(dataMutasi.getStatus())||("R").equalsIgnoreCase(dataMutasi.getStatus())){
-                if (("M").equalsIgnoreCase(dataMutasi.getTipeMutasi())){
+                if (("M").equalsIgnoreCase(dataMutasi.getStatus())){
                     if (dataMutasi.getBranchBaruId().equalsIgnoreCase(dataMutasi.getBranchLamaId())){
                         String status ="ERROR : "+dataMutasi.getNama()+" , gunakan rotasi jika unitnya sama";
                         logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);
                         throw new GeneralBOException(status);
                     }
-                }else if (("R").equalsIgnoreCase(dataMutasi.getTipeMutasi())){
+                }else if (("R").equalsIgnoreCase(dataMutasi.getStatus())){
                     if (!dataMutasi.getBranchBaruId().equalsIgnoreCase(dataMutasi.getBranchLamaId())){
                         String status ="ERROR : "+dataMutasi.getNama()+" , gunakan Mutasi jika unitnya berbeda";
                         logger.error("[PengalamanKerjaBoImpl.save mutasi] "+ status);

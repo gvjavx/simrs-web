@@ -1689,6 +1689,78 @@ public class BiodataBoImpl implements BiodataBo {
                                     logger.error("[BiodataBoImpl.saveAdd] Error When Add Personil Position. ",e);
                                     throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Add Personil Position. ",e);
                                 }
+
+                                String isDokter = "";
+                                try{
+                                    isDokter = profesiDao.cekTipeProfesi(personilPositionEntity.getProfesiId(),"dokter");
+                                } catch (HibernateException e) {
+                                    logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("[BiodataBoImpl.saveAdd] Found problem when check tipe profesi, " + e.getMessage());
+                                }
+
+                                if("true".equalsIgnoreCase(isDokter)){
+                                    List<ImSimrsDokterEntity> cekDokter = new ArrayList<>();
+                                    try {
+                                        cekDokter = dokterDao.getDataDokterById(bean.getNip());
+                                    } catch (HibernateException e) {
+                                        logger.error("[BiodataBoImpl.saveAdd] Error When Cek Dokter By ID. ",e);
+                                        throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Get Dokter By ID. ",e);
+                                    }
+
+                                    if(cekDokter.size() == 0){
+                                        String seqKodering = dokterDao.getNextKodering();
+
+                                        Map map = new HashMap<>();
+                                        map.put("position_id", personilPositionEntity.getPositionId());
+                                        String koderingPosition = positionDao.getKodringPosition(map).split("\\.")[2];
+
+                                        Map map1 = new HashMap<>();
+                                        map1.put("branch_id", personilPositionEntity.getBranchId());
+                                        String koderingBranch = branchDao.getKodringBranches(map1);
+
+                                        String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
+
+                                        // creating object entity serializable
+                                        ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
+
+
+                                        String namaDgnGelar = bean.getNamaPegawai();
+                                        if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
+                                            namaDgnGelar = bean.getGelarDepan() +". "+ namaDgnGelar;
+                                        }
+                                        if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
+                                            namaDgnGelar = namaDgnGelar +", "+ bean.getGelarBelakang();
+                                        }
+
+                                        entity.setIdDokter(bean.getNip());
+                                        entity.setNamaDokter(namaDgnGelar);
+                                        entity.setIdPelayanan("");
+                                        entity.setKuota("");
+                                        entity.setKodeDpjp("");
+                                        entity.setKodering(kodering);
+                                        entity.setLat("");
+                                        entity.setLon("");
+                                        entity.setFlagCall("");
+                                        entity.setFlagTele("");
+                                        entity.setKuotaTele("");
+                                        entity.setSip("");
+
+                                        entity.setFlag(bean.getFlag());
+                                        entity.setAction(bean.getAction());
+                                        entity.setCreatedWho(bean.getCreatedWho());
+                                        entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                        entity.setCreatedDate(bean.getCreatedDate());
+                                        entity.setLastUpdate(bean.getLastUpdate());
+
+                                        try {
+                                            // insert into database
+                                            dokterDao.addAndSave(entity);
+                                        } catch (HibernateException e) {
+                                            logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                                            throw new GeneralBOException("Found problem when saving new data Dokter, please info to your admin..." + e.getMessage());
+                                        }
+                                    }
+                                }
                             }
                             // END
                         }
@@ -1725,7 +1797,8 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imBiodataEntity.setGolongan(bean.getGolongan());
-                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
+                if("TP01".equalsIgnoreCase(bean.getTipePegawai())){
+//                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 }
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
@@ -1804,8 +1877,16 @@ public class BiodataBoImpl implements BiodataBo {
                     // creating object entity serializable
                     ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
 
+                    String namaDgnGelar = bean.getNamaPegawai();
+                    if(bean.getGelarDepan() != null && !"".equalsIgnoreCase(bean.getGelarDepan())){
+                        namaDgnGelar = bean.getGelarDepan() +". "+ namaDgnGelar;
+                    }
+                    if(bean.getGelarBelakang() != null && !"".equalsIgnoreCase(bean.getGelarBelakang())){
+                        namaDgnGelar = namaDgnGelar +", "+ bean.getGelarBelakang();
+                    }
+
                     entity.setIdDokter(bean.getNip());
-                    entity.setNamaDokter(bean.getNamaPegawai());
+                    entity.setNamaDokter(namaDgnGelar);
                     entity.setIdPelayanan("");
                     entity.setKuota("");
                     entity.setKodeDpjp("");
