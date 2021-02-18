@@ -581,6 +581,28 @@
                                                         </table>
                                                     </td>
                                                 </tr>
+                                                <s:if test="isAdd()">
+                                                    <tr>
+                                                        <td>
+                                                            <label><small>Kode DPJP :</small></label>
+                                                        </td>
+                                                        <td>
+                                                            <table>
+                                                                <s:textfield id="kodeDpjp" type="number" name="biodata.dpjpDokter" required="true" cssClass="form-control"/>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>
+                                                            <label><small>SIP :</small></label>
+                                                        </td>
+                                                        <td>
+                                                            <table>
+                                                                <s:textfield id="sip" type="number" name="biodata.sipDokter" required="true" cssClass="form-control"/>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </s:if>
                                             </s:else>
                                             <tr>
                                                 <td>

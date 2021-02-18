@@ -157,6 +157,25 @@ public class Biodata extends BaseModel {
     private String stTanggalCutiDiluarTanggunganAwal;
     private String stTanggalCutiDiluarTanggunganAkhir;
 
+    private String dpjpDokter;
+    private String sipDokter;
+
+    public String getDpjpDokter() {
+        return dpjpDokter;
+    }
+
+    public void setDpjpDokter(String dpjpDokter) {
+        this.dpjpDokter = dpjpDokter;
+    }
+
+    public String getSipDokter() {
+        return sipDokter;
+    }
+
+    public void setSipDokter(String sipDokter) {
+        this.sipDokter = sipDokter;
+    }
+
     public Date getTanggalKeluar() {
         return tanggalKeluar;
     }

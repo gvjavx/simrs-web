@@ -1736,14 +1736,14 @@ public class BiodataBoImpl implements BiodataBo {
                                         entity.setNamaDokter(namaDgnGelar);
                                         entity.setIdPelayanan("");
                                         entity.setKuota("");
-                                        entity.setKodeDpjp("");
+                                        entity.setKodeDpjp(bean.getDpjpDokter());
                                         entity.setKodering(kodering);
                                         entity.setLat("");
                                         entity.setLon("");
                                         entity.setFlagCall("");
                                         entity.setFlagTele("");
                                         entity.setKuotaTele("");
-                                        entity.setSip("");
+                                        entity.setSip(bean.getSipDokter());
 
                                         entity.setFlag(bean.getFlag());
                                         entity.setAction(bean.getAction());
@@ -1889,14 +1889,14 @@ public class BiodataBoImpl implements BiodataBo {
                     entity.setNamaDokter(namaDgnGelar);
                     entity.setIdPelayanan("");
                     entity.setKuota("");
-                    entity.setKodeDpjp("");
+                    entity.setKodeDpjp(bean.getDpjpDokter());
                     entity.setKodering(kodering);
                     entity.setLat("");
                     entity.setLon("");
                     entity.setFlagCall("");
                     entity.setFlagTele("");
                     entity.setKuotaTele("");
-                    entity.setSip("");
+                    entity.setSip(bean.getSipDokter());
 
                     entity.setFlag(bean.getFlag());
                     entity.setAction(bean.getAction());
