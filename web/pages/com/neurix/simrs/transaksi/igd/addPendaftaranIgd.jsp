@@ -1593,7 +1593,7 @@
                                                         onclick="window.location.reload(true)">
                                                     <i class="fa fa-refresh"></i> Reset
                                                 </button>
-                                                <a type="button" class="btn btn-warning" href="initForm_checkup.action">
+                                                <a type="button" class="btn btn-warning" href="initForm_igd.action">
                                                     <i class="fa fa-arrow-left"></i> Back
                                                 </a>
                                             </div>
