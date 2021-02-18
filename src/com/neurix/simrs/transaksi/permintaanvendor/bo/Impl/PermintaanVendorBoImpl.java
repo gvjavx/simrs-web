@@ -451,6 +451,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatDetailEntity.setJenisSatuan(obatDetail.getJenisSatuan());
                     obatDetailEntity.setKeterangan("Permintaan PO");
                     obatDetailEntity.setFlagObatBpjs(obatDetail.getTipeObat());
+                    obatDetailEntity.setIdPabrikObat(obatDetail.getIdPabrikObat());
 
                     try {
                         transaksiObatDetailDao.addAndSave(obatDetailEntity);
@@ -780,6 +781,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setNetto(batchEntity.getNetto());
                                 obatDetail.setIdVendor(bean.getIdVendor());
                                 obatDetail.setIdPelayanan(bean.getIdPelayanan());
+                                obatDetail.setIdPabrikObat(obatDetail.getIdPabrikObat());
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -1006,6 +1008,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setBranchId(branchId);
         newObatEntity.setFlagBpjs(bean.getTipeObat());
         newObatEntity.setFlagKronis(obatEntity.getFlagKronis());
+        newObatEntity.setIdPabrikObat(bean.getIdPabrikObat());
 
         try {
             obatDao.addAndSave(newObatEntity);
