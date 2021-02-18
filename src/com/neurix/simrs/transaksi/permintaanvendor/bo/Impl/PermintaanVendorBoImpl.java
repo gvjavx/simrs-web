@@ -758,6 +758,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatBatch.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     obatBatch.setNoBatch(obatDetail.getNoBatch());
 
+                    ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = getTransaksiObatDetailEntityById(obatDetail.getIdTransaksiObatDetail());
+
                     List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
 
                     if (batchEntities.size() > 0) {
@@ -781,7 +783,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setNetto(batchEntity.getNetto());
                                 obatDetail.setIdVendor(bean.getIdVendor());
                                 obatDetail.setIdPelayanan(bean.getIdPelayanan());
-                                obatDetail.setIdPabrikObat(obatDetail.getIdPabrikObat());
+                                obatDetail.setIdPabrikObat(transaksiObatDetailEntity.getIdPabrikObat());
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
