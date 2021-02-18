@@ -41,6 +41,9 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
             if (mapCriteria.get("profesi_name")!=null) {
                 criteria.add(Restrictions.ilike("profesiName", "%" + (String)mapCriteria.get("profesi_name") + "%"));
             }
+            if (mapCriteria.get("tipe_profesi")!=null) {
+                criteria.add(Restrictions.eq("tipeProfesi", (String) mapCriteria.get("tipe_profesi")));
+            }
 
 
         }
@@ -91,6 +94,23 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
                 .list();
 
         return results;
+    }
+
+    public String cekTipeProfesi(String profesiId, String tipeProfesi) throws HibernateException {
+        String hasil = "false";
+        List<ImProfesiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImProfesiEntity.class)
+                .add(Restrictions.eq("profesiId",profesiId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("profesiId"))
+                .list();
+
+        for(ImProfesiEntity profesi : results){
+            if(tipeProfesi.equalsIgnoreCase(profesi.getTipeProfesi())){
+                hasil = "true";
+            }
+        }
+
+        return hasil;
     }
 
     public void addAndSaveHistory(ImProfesiHistoryEntity entity) throws HibernateException {

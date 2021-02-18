@@ -67,9 +67,9 @@
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
-            var tglAktif            = document.getElementById("tanggalAktif").value;
+            var tglAkhir            = document.getElementById("tanggalAkhirKontrak").value;
 
-            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
+            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -109,8 +109,8 @@
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
-                if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
+                if (tglAkhir == '') {
+                    msg += 'Field <strong>Tanggal Akhir Kontrak </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -325,12 +325,12 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdd()">
-                                                            <s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:else>
+                                                        <%--<s:if test="isAdd()">--%>
+                                                            <%--<s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>--%>
+                                                        <%--</s:if>--%>
+                                                        <%--<s:else>--%>
                                                             <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                                        </s:else>
+                                                        <%--</s:else>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -414,8 +414,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
+                                                        <s:elseif test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getNip(this.value);"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:elseif>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
+                                                            <s:textfield cssStyle="text-align: left;"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -551,7 +555,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:if test="isDelete()">
                                                                 <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId" disabled="true" readonly="true"
                                                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
@@ -571,7 +575,7 @@
                                                     </td>
                                                     <td>
                                                         <table>
-                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
+                                                            <s:action id="comboProfesi" namespace="/profesi" name="searchProfesiDokter_profesi"/>
                                                             <s:select list="#comboProfesi.listComboProfesi" id="profesi1" name="biodata.profesiId"
                                                                       listKey="profesiId" listValue="profesiName" headerKey="" headerValue="[Select one]" cssClass="form-control" />
                                                         </table>
@@ -927,23 +931,21 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
+                                                    <label class="label-tanggal-akhir-kontrak"><small>Tanggal Akhir Kontrak <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
                                                         <s:if test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" />
                                                         </s:if>
                                                         <s:elseif test="isDelete()">
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" disabled="true" readonly="true"/>
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
-                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
-                                                            <s:hidden id="tanggalAktifTmp"/>
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" disabled="false"/>
                                                         </s:else>
 
                                                     </table>
@@ -2485,15 +2487,10 @@
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
-            $('#tanggalAktif').removeAttr('disabled');
-            $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
-            $('#tanggalAktifHid').val("");
         } else {
             $('#golongan1Group').hide();
             $('#golongan2Group').show();
             $('#point').prop('disabled', 'true');
-            $('#tanggalAktif').prop('disabled', 'true');
-            $('tanggalAktifHid').val($('#tanggalAktifTmp').val());
         }
     }
     window.changePegawaiHistory = function (id) {
@@ -5019,11 +5016,11 @@
             yearRange: "-50:+10"
         });
 
-        $('#tanggalAktif').datepicker({
+        $('#tanggalAkhirKontrak').datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,
-            yearRange: "-50:+10"
+            yearRange: "-30:+30"
         });
 
         $('#tanggalPraPensiun').datepicker({
@@ -5314,7 +5311,16 @@
     //        }
     //    };
 
-    window.getTanggalPensiun = function (tanggal) {
-
-    };
+    function getNip(birthDate){
+        var nip = $("#nip1").val();
+        var headNip = birthDate.split("-");
+        if(nip==""){
+            BiodataAction.getSeqNip(function(seq){
+                $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+            })
+        } else {
+            var seq = nip.slice(nip.length - 4);
+            $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+        }
+    }
 </script>

@@ -20,6 +20,7 @@ public class ImProfesiEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+    private String tipeProfesi;
 
     public String getProfesiId() {
         return profesiId;
@@ -83,5 +84,13 @@ public class ImProfesiEntity implements Serializable {
 
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public String getTipeProfesi() {
+        return tipeProfesi;
+    }
+
+    public void setTipeProfesi(String tipeProfesi) {
+        this.tipeProfesi = tipeProfesi;
     }
 }

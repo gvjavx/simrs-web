@@ -12,6 +12,7 @@ import com.neurix.common.model.BaseModel;
 public class Profesi extends BaseModel {
     private String profesiId;
     private String profesiName;
+    private String tipeProfesi;
 
     public String getProfesiId() {
         return profesiId;
@@ -27,5 +28,13 @@ public class Profesi extends BaseModel {
 
     public void setProfesiName(String profesiName) {
         this.profesiName = profesiName;
+    }
+
+    public String getTipeProfesi() {
+        return tipeProfesi;
+    }
+
+    public void setTipeProfesi(String tipeProfesi) {
+        this.tipeProfesi = tipeProfesi;
     }
 }
