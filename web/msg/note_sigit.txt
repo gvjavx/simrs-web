@@ -1577,3 +1577,32 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     WHERE DATE(last_update) = '2021-02-01'
     AND last_update >= '2021-02-01 12:00'
 --
+
+-- 2021-02-16
+
+    CREATE TABLE im_simrs_pabrik_obat(
+    	id VARCHAR(50) NOT NULL PRIMARY KEY,
+    	nama TEXT,
+    	flag VARCHAR(1),
+    	action VARCHAR(1),
+    	created_date TIMESTAMP WITHOUT TIME ZONE,
+    	created_who VARCHAR(100),
+    	last_update TIMESTAMP WITHOUT TIME ZONE,
+    	last_update_who VARCHAR(100)
+    );
+
+    CREATE SEQUENCE seq_pabrik_obat;
+
+    ALTER TABLE im_simrs_obat
+    ADD COLUMN id_pabrik_obat VARCHAR(50);
+--
+
+-- 2021-02-17
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail
+    ADD COLUMN id_pabrik_obat VARCHAR(50);
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ADD COLUMN id_pabrik_obat VARCHAR(50);
+
+--

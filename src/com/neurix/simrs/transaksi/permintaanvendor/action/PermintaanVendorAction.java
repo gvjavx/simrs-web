@@ -17,8 +17,10 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.master.vendor.model.Vendor;
@@ -871,7 +873,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
             Map jurnalMap = new HashMap();
             if ("reture".equalsIgnoreCase(jenis)){
 
-                ImSimrsPelayananEntity pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(pelayananId);
+                Pelayanan pelayananEntity = pelayananEntity = pelayananBo.getPelayananById(pelayananId);
                 if (pelayananEntity != null){
 
                     ImPosition position = positionBo.getPositionEntityById(pelayananEntity.getDivisiId());
@@ -1841,6 +1843,25 @@ public class PermintaanVendorAction extends BaseMasterAction {
         MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorBo.getPermintaanVendorEntityById(idPermintaan);
 
         return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis, permintaanVendorEntity.getIdApprovalObat(), batch);
+    }
+
+    public List<PabrikObat> getListPabrikObatForPo(String idObat, String tipePencarian){
+        logger.info("[PermintaanVendorAction.getListPabrikObatForPo] START >>>>>>>");
+
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            pabrikObatList = permintaanVendorBo.getListPabrikObatByIdObatForPo(idObat, tipePencarian);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListPabrikObatForPo] ERROR when get data. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListPabrikObatForPo] ERROR when get data. " + e.getMessage());
+        }
+
+
+        logger.info("[PermintaanVendorAction.getListPabrikObatForPo] END <<<<<<<");
+        return pabrikObatList;
     }
 
     @Override

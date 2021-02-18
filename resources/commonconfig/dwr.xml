@@ -964,7 +964,17 @@
             <param name="class" value="com.neurix.simrs.master.license.action.LicenseAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.license.model.LicenseZebra"/>
-        <convert converter="bean" match="com.neurix.simrs.master.license.model.VersionZebra"/>
+        <convert converter="bean" match="com.neurix.simrs.master.license.model.Version"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.pelayanan.action.HeaderPelayananAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.HeaderPelayanan"/>
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.transaksi.laporan.action.LaporanOpsAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.laporan.model.LaporanOps"/>
 
     </allow>
 </dwr>

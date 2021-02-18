@@ -269,10 +269,10 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>
                                     <div class="col-md-8">
-                                        <input class="form-control" id="lembar_perbox" type="number"
+                                        <input class="form-control" id="lembar_perbox" type="number" value="1"
                                                style="margin-top: 7px"
                                                oninput="var warn =$('#war_po_lembar_perbox').is(':visible'); if (warn){$('#cor_po_lembar_perbox').show().fadeOut(3000);$('#war_po_lembar_perbox').hide()};"
-                                               onchange="cekFisik()" readonly/>
+                                               onchange="cekFisik()"/>
                                         <p style="color: red; display: none;"
                                            id="war_po_lembar_perbox"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
@@ -284,14 +284,14 @@
                                     <div class="col-md-8">
                                         <input class="form-control" id="biji_perlembar" type="number"
                                                style="margin-top: 7px" onchange="cekFisik()"
-                                               oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};" readonly/>
+                                               oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};"/>
                                         <p style="color: red; display: none;"
                                            id="war_po_biji_perlembar"><i class="fa fa-times"></i> required</p>
                                         <p style="color: green; display: none;"
                                            id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                            </div>
+                            </div>z
                         </div>
                         <div class="box-header with-border"></div>
                         <div class="row" style="margin-top: 20px">
@@ -508,6 +508,7 @@
             $('#warning_fisik').html('');
             $('#id_obat').val(selectedObj.id);
             $('#id_pabrik').val(selectedObj.idPabrik);
+            showComboPabrikObat(selectedObj.id);
             return selectedObj.nama;
         }
     });
@@ -803,6 +804,41 @@
         }
     }
 
+
+    // combo pabrik
+    function showComboPabrikObat(id){
+        PermintaanVendoAction.getListPabrikObatForPo(id, "specific", function (data) {
+
+            if (data.length == 0){
+                showAllPabrik(id);
+            } else {
+                var str = '<option> - </option>';
+                $each(data, function(i, item){
+                   str += "<option value='"+item.id+"'>"+item.nama+"</option>";
+                });
+                var str = "<option value='lain'> Show Other </option>";
+                $("#combo-pabrik").html(str);
+            }
+
+        });
+    }
+
+    $("#combo-pabrik").change(function () {
+        var selected = $("#combo-pabrik option:selected").val();
+        if ( selected ==  "lain" ){
+            showAllPabrik("");
+        }
+    })
+
+    function showAllPabrik(id) {
+        PermintaanVendoAction.getListPabrikObatForPo(id, "all", function(data){
+            var str = "";
+            $.each(data, function (i, item) {
+
+            });
+        });
+    }
+    // END
 
 </script>
 

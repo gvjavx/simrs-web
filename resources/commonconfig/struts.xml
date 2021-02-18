@@ -308,5 +308,11 @@
     <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/ParameterBudgetingRekeningAction.xml"/>
     <include file="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/struts/KategoriParameterBudgetingAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/master/pelayanan/struts/HeaderPelayananAction.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/laporan/struts/LaporanOpsAction.xml"/>
+
+
+
     <include file="sshconfig/com/neurix/hris/transaksi/notifikasi/struts/MonitoringMesinAbsensiAction.xml"/>
+
 </struts>

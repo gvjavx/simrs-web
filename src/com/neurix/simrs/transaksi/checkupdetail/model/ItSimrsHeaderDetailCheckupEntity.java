@@ -91,6 +91,25 @@ public class ItSimrsHeaderDetailCheckupEntity implements Serializable{
     private String poliRujukanInternal;
     private String noRujukanInternal;
 
+    private String isEksekutif;
+    private String isVaksin;
+
+    public String getIsVaksin() {
+        return isVaksin;
+    }
+
+    public void setIsVaksin(String isVaksin) {
+        this.isVaksin = isVaksin;
+    }
+
+    public String getIsEksekutif() {
+        return isEksekutif;
+    }
+
+    public void setIsEksekutif(String isEksekutif) {
+        this.isEksekutif = isEksekutif;
+    }
+
     public String getNoRujukanInternal() {
         return noRujukanInternal;
     }

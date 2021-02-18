@@ -2,14 +2,18 @@ package com.neurix.simrs.master.pelayanan.action;
 
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.Position;
-import com.neurix.common.action.BaseMasterAction;
+import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.pelayanan.bo.HeaderPelayananBo;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.HeaderPelayanan;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -19,7 +23,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class PelayananAction extends BaseMasterAction {
+public class PelayananAction extends BaseTransactionAction {
     protected static transient Logger logger = Logger.getLogger(PelayananAction.class);
     Pelayanan pelayanan;
     PelayananBo pelayananBoProxy;
@@ -68,327 +72,126 @@ public class PelayananAction extends BaseMasterAction {
         this.pelayananBoProxy = pelayananBoProxy;
     }
 
-    public Pelayanan init(String kode, String flag){
-        logger.info("[PayrollSkalaGajiAction.init] start process >>>");
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        List<Pelayanan> listOfResult = (List<Pelayanan>) session.getAttribute("listOfResultPelayanan");
-
-        if(kode != null && !"".equalsIgnoreCase(kode)){
-            if(listOfResult != null){
-                for (Pelayanan pelayanan: listOfResult) {
-                    if(kode.equalsIgnoreCase(pelayanan.getIdPelayanan()) && flag.equalsIgnoreCase(pelayanan.getFlag())){
-                        setPelayanan(pelayanan);
-                        break;
-                    }
-                }
-            } else {
-                setPelayanan(new Pelayanan());
-            }
-            logger.info("[PayrollSkalaGajiAction.init] end process >>>");
-        }
-        return getPelayanan();
-    }
-
-    @Override
-    public String add() {
-        logger.info("[PelayananAction.add] start process >>>");
-        Pelayanan addPelayanan = new Pelayanan();
-        if(!"ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            addPelayanan.setBranchId(CommonUtil.userBranchLogin());
-        }
-        setPelayanan(addPelayanan);
-        setAddOrEdit(true);
-        setAdd(true);
-//        HttpSession session = ServletActionContext.getRequest().getSession();
-//        session.removeAttribute("listOfResult");
-
-        logger.info("[PelayananAction.add] stop process >>>");
-        return "init_add";
-    }
-
-    @Override
-    public String edit() {
-        logger.info("[PayrollSkalaGajiAction.edit] start process >>>");
-        String itemId = getId();
-        String itemFlag = getFlag();
-
-        Pelayanan editPelayanan = new Pelayanan();
-
-        if(itemFlag != null){
+    public Pelayanan init(String id) {
+        logger.info("[PelayananAction.init] start process >>>");
+        Pelayanan result = new Pelayanan();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
+        if(id != null && !"".equalsIgnoreCase(id)){
+            List<Pelayanan> list = new ArrayList<>();
             try {
-                editPelayanan = init(itemId, itemFlag);
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiBO.getPayrollSkalaGajiByCriteria");
-                } catch (GeneralBOException e1) {
-                    logger.error("[PayrollSkalaGajiAction.edit] Error when retrieving edit data,", e1);
-                }
-                logger.error("[PayrollSkalaGajiAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
-                return "failure";
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(id);
+                list = pelayananBo.getListObjectPelayanan(pelayanan);
+            }catch (Exception e){
+                logger.error("[pelayananAction.saveAdd] Error when saving error,", e);
             }
-
-            if(editPelayanan != null) {
-                setPelayanan(editPelayanan);
-            } else {
-                editPelayanan.setFlag(itemFlag);
-                //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-                setPelayanan(editPelayanan);
-                addActionError("Error, Unable to find data with id = " + itemId);
-                return "failure";
+            if(list.size() > 0){
+                result = list.get(0);
             }
-        } else {
-            //editPayrollSkalaGaji.getSkalaGajiId(itemId);
-            editPelayanan.setFlag(getFlag());
-            setPelayanan(editPelayanan);
-            addActionError("Error, Unable to edit again with flag = N.");
-            return "failure";
         }
-
-        setAddOrEdit(true);
-        logger.info("[PayrollSkalaGajiAction.edit] end process >>>");
-        return "init_edit";
+        logger.info("[PelayananAction.init] end process >>>");
+        return result;
     }
 
-    @Override
-    public String delete() {
-        logger.info("[PelayananAction.delete] start process >>>");
-
-        String itemId = getId();
-        String itemFlag = getFlag();
-        Pelayanan deletePelayanan = new Pelayanan();
-
-        if (itemFlag != null ) {
-
-            try {
-                deletePelayanan = init(itemId, itemFlag);
-            } catch (GeneralBOException e) {
-                Long logId = null;
-                try {
-                    logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiBO.getAlatById");
-                } catch (GeneralBOException e1) {
-                    logger.error("[PayrollSkalaGajiAction.delete] Error when retrieving delete data,", e1);
-                }
-                logger.error("[PayrollSkalaGajiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
-                return "failure";
-            }
-
-            if (deletePelayanan != null) {
-                setPelayanan(deletePelayanan);
-
-            } else {
-                //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-                deletePelayanan.setFlag(itemFlag);
-                setPelayanan(deletePelayanan);
-                addActionError("Error, Unable to find data with id = " + itemId);
-                return "failure";
-            }
-        } else {
-            //deletePayrollSkalaGaji.getSkalaGajiId(itemId);
-            deletePelayanan.setFlag(itemFlag);
-            setPelayanan(deletePelayanan);
-            addActionError("Error, Unable to delete again with flag = N.");
-            return "failure";
-        }
-
-        logger.info("[PayrollSkalaGajiAction.delete] end process <<<");
-
-        return "init_delete";
-    }
-
-    @Override
-    public String view() {
-
-        return null;
-    }
-
-    @Override
-    public String save() {
-
-        return null;
-    }
-
-    public String saveDelete(){
-        logger.info("[PayrollSkalaGajiAction.saveDelete] start process >>>");
-        try {
-
-            Pelayanan deletePelayanan = getPelayanan();
-
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            deletePelayanan.setLastUpdate(updateTime);
-            deletePelayanan.setLastUpdateWho(userLogin);
-            deletePelayanan.setAction("U");
-            deletePelayanan.setFlag("N");
-
-            pelayananBoProxy.saveDelete(deletePelayanan);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiBO.saveDelete");
-            } catch (GeneralBOException e1) {
-                logger.error("[PayrollSkalaGajiAction.saveDelete] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[PayrollSkalaGajiAction.saveDelete] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
-        }
-
-        logger.info("[PayrollSkalaGajiAction.saveDelete] end process <<<");
-
-        return "success_save_delete";
-    }
-
-    public String saveEdit(){
-        logger.info("[PayrollSkalaGajiAction.saveEdit] start process >>>");
-        try {
-
-            Pelayanan editPelayanan = getPelayanan();
-
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            editPelayanan.setLastUpdateWho(userLogin);
-            editPelayanan.setLastUpdate(updateTime);
-            editPelayanan.setAction("U");
-            editPelayanan.setFlag("Y");
-
-            pelayananBoProxy.saveEdit(editPelayanan);
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiBO.saveEdit");
-            } catch (GeneralBOException e1) {
-                logger.error("[PayrollSkalaGajiAction.saveEdit] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[PayrollSkalaGajiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
-        }
-
-        logger.info("[PayrollSkalaGajiAction.saveEdit] end process <<<");
-
-        return "success_save_edit";
-    }
-
-    public String saveAdd(){
+    public CrudResponse save(String data) {
+        CrudResponse response = new CrudResponse();
         logger.info("[PelayananAction.saveAdd] start process >>>");
-
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         try {
-            Pelayanan pelayanan = getPelayanan();
-            String userLogin = CommonUtil.userLogin();
-            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
-            pelayanan.setCreatedWho(userLogin);
-            pelayanan.setLastUpdate(updateTime);
-            pelayanan.setCreatedDate(updateTime);
-            pelayanan.setLastUpdateWho(userLogin);
-            pelayanan.setAction("C");
-            pelayanan.setFlag("Y");
-
-            pelayananBoProxy.saveAdd(pelayanan);
-        }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "payrollSkalaGajiBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[pelayananAction.saveAdd] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
+            if(data != null && !"".equalsIgnoreCase(data)){
+                JSONObject obj = new JSONObject(data);
+                if(obj != null){
+                    Pelayanan pelayanan = new Pelayanan();
+                    String type = obj.getString("tipe");
+                    pelayanan.setIdHeaderPelayanan(obj.getString("id_header_pelayanan"));
+                    pelayanan.setBranchId(obj.getString("branch_id"));
+                    pelayanan.setCreatedDate(updateTime);
+                    pelayanan.setCreatedWho(userLogin);
+                    pelayanan.setLastUpdate(updateTime);
+                    pelayanan.setLastUpdateWho(userLogin);
+                    pelayanan.setNamaPelayanan(obj.getString("nama_pelayanan"));
+                    if("add".equalsIgnoreCase(type)){
+                        pelayanan.setFlag("Y");
+                        pelayanan.setAction("C");
+                        pelayananBo.saveAdd(pelayanan);
+                        response.setStatus("success");
+                        response.setMsg("OK");
+                    }else if("edit".equalsIgnoreCase(type)){
+                        pelayanan.setIdPelayanan(obj.getString("id_pelayanan"));
+                        pelayanan.setFlag("Y");
+                        pelayanan.setAction("U");
+                        pelayananBo.saveEdit(pelayanan);
+                        response.setStatus("success");
+                        response.setMsg("OK");
+                    }else if("delete".equalsIgnoreCase(type)){
+                        pelayanan.setIdPelayanan(obj.getString("id_pelayanan"));
+                        pelayanan.setFlag("N");
+                        pelayanan.setAction("D");
+                        pelayananBo.saveDelete(pelayanan);
+                        response.setStatus("success");
+                        response.setMsg("OK");
+                    }else{
+                        response.setStatus("error");
+                        response.setStatus("Type Method is not found @_@");
+                    }
+                }else{
+                    response.setStatus("error");
+                    response.setStatus("Data not found @_@");
+                }
+            }else{
+                response.setStatus("error");
+                response.setStatus("Data not found @_@");
             }
-            logger.error("[pelayananAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setMsg("Error when parse JSON object @_@, "+e.getMessage());
+            logger.error("[pelayananAction.saveAdd] Error when saving error,", e);
         }
-
-
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResultPelayanan");
-
         logger.info("[pelayananAction.saveAdd] end process >>>");
-        return "success_save_add";
+        return response;
     }
 
     @Override
     public String search() {
         logger.info("[PelayananAction.search] start process >>>");
-
         Pelayanan searchPelayanan = getPelayanan();
         List<Pelayanan> listOfsearchPelayanan = new ArrayList();
         try {
-            listOfsearchPelayanan = pelayananBoProxy.getByCriteria(searchPelayanan);
+            listOfsearchPelayanan = pelayananBoProxy.getListObjectPelayanan(searchPelayanan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PayrollSkalaGajiBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[PelayananAction.search] Error when saving error,", e1);
-                return ERROR;
-            }
-            logger.error("[PelayananAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
-            return ERROR;
+            logger.error("[PelayananAction.save] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            throw new GeneralBOException("Error search pelayanan, " + e.getMessage());
         }
-        String branchId = CommonUtil.userBranchLogin();
-        Pelayanan data = new Pelayanan();
-        if (branchId != null){
-            data.setBranchUser(branchId);
-        }else {
-            data.setBranchUser("");
-        }
-        pelayanan = data;
-
+        setPelayanan(searchPelayanan);
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResultPelayanan");
         session.setAttribute("listOfResultPelayanan", listOfsearchPelayanan);
-
         logger.info("[PelayananAction.search] end process <<<");
-
-        return SUCCESS;
+        return "search";
     }
 
     @Override
     public String initForm() {
         logger.info("[PelayananAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        String branchId = CommonUtil.userBranchLogin();
-        Pelayanan data = new Pelayanan();
-        if (branchId != null){
-            data.setBranchUser(branchId);
-            data.setBranchId(branchId);
-        }else {
-            data.setBranchUser("");
-            data.setBranchId("");
+        Pelayanan pelayanan = new Pelayanan();
+        if (!"KP".equalsIgnoreCase(CommonUtil.roleAsLogin()) || !"01".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
+            pelayanan.setBranchId(CommonUtil.userBranchLogin());
         }
-        pelayanan = data;
-
+        setPelayanan(pelayanan);
         session.removeAttribute("listOfResultPelayanan");
         logger.info("[PelayananAction.initForm] end process >>>");
-        return INPUT;
-    }
-
-    @Override
-    public String downloadPdf() {
-
-        return null;
-    }
-
-    @Override
-    public String downloadXls() {
-
-        return null;
+        return "search";
     }
 
     public String initComboPosition() {
 
         Position position = new Position();
         position.setFlag("Y");
-//        position.setKategori("pelayanan");
         List<Position> listOfPosition = new ArrayList<Position>();
         try {
             listOfPosition = positionBoProxy.getByCriteria(position);
@@ -409,16 +212,16 @@ public class PelayananAction extends BaseMasterAction {
         return "init_combo_position";
     }
 
-    public String initComboPelayananFarmasi(){
+    public String initComboPelayananFarmasi() {
 
         String branchId = CommonUtil.userBranchLogin();
 
         List<Pelayanan> pelayanans = new ArrayList<>();
         try {
             pelayanans = pelayananBoProxy.getListPelayananFarmasi(branchId);
-        } catch (GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[PelayananAction.initComboPelayananFarmasi] ERROR. ", e);
-            throw new GeneralBOException("[PelayananAction.initComboPelayananFarmasi] ERROR. "+e.getMessage());
+            throw new GeneralBOException("[PelayananAction.initComboPelayananFarmasi] ERROR. " + e.getMessage());
         }
 
         listOfComboFarmasi.addAll(pelayanans);
@@ -432,7 +235,7 @@ public class PelayananAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
 
-        if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)){
+        if (idPelayanan != null && !"".equalsIgnoreCase(idPelayanan)) {
             List<Pelayanan> pelayananList = new ArrayList<>();
             Pelayanan pelayanan = new Pelayanan();
             pelayanan.setIdPelayanan(idPelayanan);
@@ -446,7 +249,7 @@ public class PelayananAction extends BaseMasterAction {
             }
 
             Pelayanan poli = new Pelayanan();
-            if(pelayananList.size() > 0) {
+            if (pelayananList.size() > 0) {
 
                 poli = pelayananList.get(0);
 
@@ -460,7 +263,7 @@ public class PelayananAction extends BaseMasterAction {
         return response;
     }
 
-    public List<Pelayanan> getListPelayananByBranchAndTipe(String branchId, String tipe){
+    public List<Pelayanan> getListPelayananByBranchAndTipe(String branchId, String tipe) {
         logger.info("[PelayananAction.getListPelayananByBranchAndTipe] START process >>>");
 
         List<Pelayanan> pelayananList = new ArrayList<>();
@@ -470,7 +273,7 @@ public class PelayananAction extends BaseMasterAction {
         pelayanan.setTipePelayanan(tipe);
         pelayanan.setBranchId(branchId);
 
-        if ("apotek".equalsIgnoreCase(tipe)){
+        if ("apotek".equalsIgnoreCase(tipe)) {
             try {
                 pelayananList = pelayananBo.getListApotek(branchId, "");
             } catch (HibernateException e) {
@@ -489,5 +292,21 @@ public class PelayananAction extends BaseMasterAction {
 
         logger.info("[PelayananAction.getListPelayananByBranchAndTipe] END process <<<");
         return pelayananList;
+    }
+
+    public List<HeaderPelayanan> getHeaderPelayanan() {
+        logger.info("[PelayananAction.getHeaderPelayanan] START process >>>");
+        List<HeaderPelayanan> headerPelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        HeaderPelayananBo headerPelayananBo = (HeaderPelayananBo) ctx.getBean("headerPelayananBoProxy");
+        HeaderPelayanan pelayanan = new HeaderPelayanan();
+        try {
+            headerPelayananList = headerPelayananBo.getByCriteria(pelayanan);
+        } catch (HibernateException e) {
+            logger.error("[CheckupAction.saveAdd] Error when get data for pelayanan", e);
+            throw new GeneralBOException("Error when pasien id pelayanan", e);
+        }
+        logger.info("[PelayananAction.getHeaderPelayanan] END process >>>");
+        return headerPelayananList;
     }
 }

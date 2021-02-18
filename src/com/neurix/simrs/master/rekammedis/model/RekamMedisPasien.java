@@ -25,6 +25,24 @@ public class RekamMedisPasien {
     private String urlImg;
     private String idPasien;
     private String idImg;
+    private String branchId;
+    private String noRmLama;
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
+    }
+
+    public String getNoRmLama() {
+        return noRmLama;
+    }
+
+    public void setNoRmLama(String noRmLama) {
+        this.noRmLama = noRmLama;
+    }
 
     public String getUrlImg() {
         return urlImg;

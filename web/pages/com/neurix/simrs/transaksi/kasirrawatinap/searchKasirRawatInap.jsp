@@ -751,7 +751,7 @@
         var metodeBayarDiAkhir = $('#metode_bayar').val();
         var kodeBank = $('#bank').val();
 
-        if($('#kelebihan_biaya').val() != ''){
+        if($('#kelebihan_biaya').val() != undefined){
             $('#modal-confirm-dialog').modal('show');
             $('#save_con').attr('onclick','savePembayaranTagihan()');
         }else{
@@ -816,6 +816,7 @@
                         $('#modal-invoice').modal('hide');
                         $('#info_dialog').dialog('open');
                         $('body').scrollTop(0);
+                        printInvoice(idDetailCheckup, jenisPasien);
                     } else {
                         $('#save_fin').show();
                         $('#load_fin').hide();
@@ -847,6 +848,10 @@
         KasirRawatJalanAction.getCoverAsuransi(idDetail, function (res) {
             return res;
         });
+    }
+
+    function printInvoice(id, jenis){
+        window.open('printInvoice_kasirinap?id='+id+'&jenis='+jenis,'_blank');
     }
 
 </script>

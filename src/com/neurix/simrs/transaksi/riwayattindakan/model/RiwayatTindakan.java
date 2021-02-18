@@ -46,6 +46,33 @@ public class RiwayatTindakan extends BaseModel {
     private String pasienBayar;
 
     private String idRuangan;
+    private String namaPelayanan;
+    private String tipePelayanan;
+    private String jenisPelayanan;
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
+    public String getJenisPelayanan() {
+        return jenisPelayanan;
+    }
+
+    public void setJenisPelayanan(String jenisPelayanan) {
+        this.jenisPelayanan = jenisPelayanan;
+    }
 
     public String getIdRuangan() {
         return idRuangan;

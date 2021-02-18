@@ -13,6 +13,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.MtSimrsPermintaanObatPoliEntity;
@@ -413,8 +414,8 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
                 branchTujuan    = approvalTransaksiObatEntity.getBranchId();
                 branchAsal      = permintaanObatPoliEntity.getBranchId();
 
-                ImSimrsPelayananEntity pelayananAsalEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
-                ImSimrsPelayananEntity pelayananTujuanEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
+                Pelayanan pelayananAsalEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getIdPelayanan());
+                Pelayanan pelayananTujuanEntity = pelayananBo.getPelayananById(permintaanObatPoliEntity.getTujuanPelayanan());
 
                 Branch branch = branchBo.getBranchById(branchTujuan, "Y");
                 if (branch != null){

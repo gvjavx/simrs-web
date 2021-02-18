@@ -134,7 +134,16 @@ public class TindakanRawatDao extends GenericDao<ItSimrsTindakanRawatEntity, Str
                 "FROM it_simrs_tindakan_rawat a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "a.branch_id,"+
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                 "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
                 "ORDER BY a.id_detail_checkup ASC";
         List<Object[]> result = new ArrayList<>();

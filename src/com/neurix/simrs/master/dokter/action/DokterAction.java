@@ -276,15 +276,7 @@ public class DokterAction extends BaseMasterAction {
         try {
             listOfPelayanan = pelayananBoProxy.getByCriteria(pelayanan);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = pelayananBoProxy.saveErrorMessage(e.getMessage(), "PelayananBO.getByCriteria");
-            } catch (GeneralBOException e1) {
-                logger.error("[PelayananAction.initComboRole] Error when saving error,", e1);
-            }
-            logger.error("[PelayananAction.initComboRole] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return "failure";
+            logger.error("[PelayananAction.initComboRole] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         listOfComboPelayanan.addAll(listOfPelayanan);
@@ -439,11 +431,11 @@ public class DokterAction extends BaseMasterAction {
         return dokterList;
     }
 
-    public List<ImSimrsPelayananEntity> getComboPelayanan() {
+    public List<Pelayanan> getComboPelayanan() {
         logger.info("[DokterAction.initDokter] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
-        List<ImSimrsPelayananEntity> pelayanans = new ArrayList();
+        List<Pelayanan> pelayanans = new ArrayList();
         String branchId = CommonUtil.userBranchLogin();
         if("ADMIN KP".equalsIgnoreCase(CommonUtil.roleAsLogin())){
             branchId = null;

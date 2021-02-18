@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.permintaanvendor.bo;
 
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.permintaanvendor.model.*;
@@ -69,7 +70,10 @@ public interface PermintaanVendorBo {
     public List<DocPo> getListImgByItem(String idItem) throws GeneralBOException;
 
     public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis) throws GeneralBOException;
+
     public List<TransaksiObatBatch> getListBatchByJenisItem(String idItem, String jenis, String idApproval, String batch) throws GeneralBOException;
 
     public void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji, String branchId) throws GeneralBOException;
+
+    public List<PabrikObat> getListPabrikObatByIdObatForPo(String idObat, String tipePencarian);
 }

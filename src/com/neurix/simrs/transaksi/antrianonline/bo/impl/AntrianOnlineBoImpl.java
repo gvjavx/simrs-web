@@ -80,6 +80,10 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
 
+            if (bean.getTglCheckup() != null && !"".equalsIgnoreCase(bean.getTglCheckup())) {
+                hsCriteria.put("tgl_checkup", bean.getTglCheckup());
+            }
+
             List<ItSimrsAntianOnlineEntity> listOfAntrianOnline = new ArrayList<>();
 
 
@@ -108,11 +112,10 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                     antrianItem.setTglCheckup(item.getTglCheckup().toString());
 
                     if (item.getIdPelayanan() != null && !"".equalsIgnoreCase(item.getIdPelayanan())) {
-                        Pelayanan pelayanan = new Pelayanan();
-                        pelayanan.setIdPelayanan(item.getIdPelayanan());
-                        ImSimrsPelayananEntity pelayananEntity = getListEntityPelayanan(pelayanan);
-                        antrianItem.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
-
+                        Pelayanan pelayanan = pelayananDao.getPelayananById("idPelayanan",item.getIdPelayanan());
+                        if(pelayanan != null){
+                            antrianItem.setNamaPelayanan(pelayanan.getNamaPelayanan());
+                        }
                     }
 
                     if(item.getIdDokter() != null && !"".equalsIgnoreCase(item.getIdDokter())){
@@ -180,12 +183,12 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
     }
 
     @Override
-    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId) {
+    public List<AntianOnline> getAntrianByCriteria(String idPelayanan, String idDokter, String noCheckupOnline, Date tglCheckup, String jamAwal, String jamAkhir, String branchId, String idPasien) {
         logger.info("[AntrianOnlineBoImpl.getAntrianByCriteria] Start >>>>>>>");
 
         List<AntianOnline> result = new ArrayList<>();
         try {
-            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir, branchId);
+            result = antrianOnlineDao.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, tglCheckup, jamAwal, jamAkhir, branchId, idPasien);
         } catch (HibernateException e) {
             logger.error("[AntrianOnlineBoImpl.getAntrianByCriteria] Error get antrian by criteria " + e.getMessage());
             throw new GeneralBOException("[AntrianOnlineBoImpl.getAntrianByCriteria] Error When Error get antrian by criteria");
