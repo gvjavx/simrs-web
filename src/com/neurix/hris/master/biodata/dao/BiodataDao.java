@@ -1892,7 +1892,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "pp.personil_position_id, \n" +
                 "pp.nip, \n" +
                 "p.department_id," +
-                "pp.flag \n" +
+                "pp.flag, \n" +
+                "pr.tipe_profesi \n" +
                 "FROM it_hris_pegawai_position pp \n" +
                 "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
                 "LEFT JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
@@ -1922,6 +1923,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             personilPosition.setNip(obj[10] == null ? "" : obj[10].toString());
             personilPosition.setDivisiId(obj[11] == null ? "" : obj[11].toString());
             personilPosition.setFlag(obj[12] == null ? "" : obj[12].toString());
+            personilPosition.setTipeProfesi(obj[13] == null ? "" : obj[13].toString());
             personilPositions.add(personilPosition);
         }
 
