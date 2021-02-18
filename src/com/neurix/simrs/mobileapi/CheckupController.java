@@ -778,7 +778,7 @@ public class CheckupController implements ModelDriven<Object> {
             List<ObatPoli> result = new ArrayList<>();
 
             try{
-               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, idJenisObat);
+               result = obatPoliBoProxy.getListObatGroupPoli(idPelayanan, branchId, jenisPasien, idJenisObat, idDetailCheckup);
             } catch (GeneralBOException e){
                 logger.error("CheckupController.create] Error when get obat poli group",e);
             }

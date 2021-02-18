@@ -226,7 +226,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return stringList;
     }
 
-    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat){
+    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat, String idDetailCheckup){
         List<ObatPoli> obatPoliList = new ArrayList<>();
         String queryJenisObat = "";
 
@@ -254,7 +254,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.biji_per_lembar,\n" +
                     "a.flag_kronis,\n" +
                     "c.harga_jual,\n" +
-                    "d.id_jenis_obat\n"+
+                    "d.id_jenis_obat,\n"+
+                    "c.harga_jual_umum\n"+
                     "FROM (\n" +
                     "\tSELECT \n" +
                     "\tid_obat,\n" +
@@ -291,6 +292,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     .setParameter("branchId", branchId)
                     .list();
 
+            Boolean cekKhusus = cekIsKhusus(idDetailCheckup);
+
             if (results.size() > 0){
                 for (Object[] obj : results){
                     ObatPoli obatPoli = new ObatPoli();
@@ -303,13 +306,35 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
-                    obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
                     obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
+                    if(cekKhusus){
+                        obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                    }else{
+                        obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+                    }
                     obatPoliList.add(obatPoli);
                 }
             }
         }
         return obatPoliList;
+    }
+
+    private Boolean cekIsKhusus(String idDetailCheckup){
+        Boolean res = false;
+        String SQL = "SELECT\n" +
+                "a.id_detail_checkup,\n" +
+                "a.id_asuransi\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_rekanan_ops b ON b.id_rekanan_ops = a.id_asuransi\n" +
+                "WHERE a.id_detail_checkup = :id\n" +
+                "AND b.tipe IN ('ptpn','khusus')";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if(results.size() > 0){
+            res = true;
+        }
+        return res;
     }
 
     public List<ObatPoli> getIdObatGroupPoliKandunganSerupa(String idPelayanan, String branchId, String flagBpjs, String[] kandugans){

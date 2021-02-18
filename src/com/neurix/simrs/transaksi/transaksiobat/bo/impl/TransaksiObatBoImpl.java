@@ -115,6 +115,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 ImSimrsObatEntity obatEntity = getObatById(obatDetailEntity.getIdObat());
                 if (obatEntity != null) {
 
+                    Boolean isKhusus = transaksiObatDetailDao.checkRekananKhusus(obatDetailEntity.getIdApprovalObat());
+
                     BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
                     transaksiObatDetail.setNamaObat(obatEntity.getNamaObat());
@@ -126,18 +128,23 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                     List<MtSimrsHargaObatEntity> hargaObatEntities = getListEntityHargaObat(hargaObat);
                     if (hargaObatEntities.size() > 0) {
                         MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
+                        BigDecimal tempHarga = new BigDecimal(0);
+                        if(isKhusus){
+                            tempHarga = hargaObatEntity.getHargaJual();
+                        }else{
+                            tempHarga = hargaObatEntity.getHargaJualUmum();
+                        }
 
                         if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
-                            transaksiObatDetail.setHarga(hargaObatEntity.getHargaJual().multiply(new BigDecimal(cons)).toBigInteger());
+                            transaksiObatDetail.setHarga(tempHarga.multiply(new BigDecimal(cons)).toBigInteger());
                         }
                         if ("lembar".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
-
-                            BigInteger bHarga = hargaObatEntity.getHargaJual().toBigInteger();
+                            BigInteger bHarga = tempHarga.toBigInteger();
                             BigInteger nHarga = obatEntity.getBijiPerLembar().multiply(bHarga);
                             transaksiObatDetail.setHarga(nHarga);
                         }
                         if ("biji".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
-                            transaksiObatDetail.setHarga(hargaObatEntity.getHargaJual().toBigInteger());
+                            transaksiObatDetail.setHarga(tempHarga.toBigInteger());
                         }
 
                     }

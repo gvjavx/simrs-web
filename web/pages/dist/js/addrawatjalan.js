@@ -2649,7 +2649,7 @@ function setObatPoli(jenis) {
     if (poli != '') {
         var idPel = poli.split('|')[0];
         var namePel = poli.split('|')[1];
-        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, function (response) {
+        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, idDetailCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "|" + item.idJenisObat + "'>" + item.namaObat + "</option>";
