@@ -33,11 +33,6 @@
                 <prop key="hibernate.use_sql_comments">false</prop>
                 <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
 
-                <!-- ===== PROD ====== -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">root</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== PROD-VPN ======= -->
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu_test</prop>-->
@@ -46,16 +41,15 @@
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ===== DEV ====== -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_09022021</prop>-->
+                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_09022021</prop>
+                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
+                <prop key="hibernate.connection.username">root</prop>
+                <prop key="hibernate.connection.password">123456</prop>
+
+                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_prod_old</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
-
-                <!-- ====== LOCALHOST ======= -->
-                <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod</prop>
-                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
-                <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">123456</prop>
 
             </props>
         </property>
@@ -924,33 +918,17 @@
                 <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanEntity.hbm.xml
                 </value>
                 <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiEntity.hbm.xml
-                </value>
-                <value>
-                    sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiHistoryEntity.hbm.xml
-                </value>
-                <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollHistoryEntity.hbm.xml
-                </value>
-                <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpHistoryEntity.hbm.xml
-                </value>
-                <value>
-                    sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanHistoryEntity.hbm.xml
-                </value>
-                <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganKembaliUnitEntity.hbm.xml
-                </value>
-                <value>
-                    sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItAkunPengajuanBiayaRkEntity.hbm.xml
-                </value>
-                <value>
-                    sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/hibernate/ItSimrsImplementasiPerawatEntity.hbm.xml
-                </value>
+                <value>sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/statusAbsensi/hibernate/ImHrisStatusAbsensiHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/tipePayroll/hibernate/ImHrisTipePayrollHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/hris/master/payrollPtkp/hibernate/ImHrisPayrollPtkpHistoryEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/master/tipeLaporan/hibernate/ImAkunTipeLaporanHistoryEntity.hbm.xml</value>
+                 <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanSetor/hibernate/ItAkunPerhitunganKembaliUnitEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/akuntansi/transaksi/pengajuanBiaya/hibernate/ItAkunPengajuanBiayaRkEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmenrawatinap/hibernate/ItSimrsImplementasiPerawatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/kandungan/hibernate/ItSimrsPartografEntity.hbm.xml</value>
-
                 <value>sshconfig/com/neurix/hris/master/statusMutasi/hibernate/ImHrisStatusMutasiEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/hris/master/statusMutasi/hibernate/ImHrisStatusMutasiHistoryEntity.hbm.xml
-                </value>
-
+                <value>sshconfig/com/neurix/hris/master/statusMutasi/hibernate/ImHrisStatusMutasiHistoryEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/hris/master/jenisPegawai/hibernate/ImHrisJenisPegawaiHistoryEntity.hbm.xml
                 </value>

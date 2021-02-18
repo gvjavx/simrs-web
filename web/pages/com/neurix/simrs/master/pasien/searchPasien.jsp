@@ -132,8 +132,8 @@
                                         <a type="button" class="btn btn-danger" href="initForm_pasien.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
-                                        <a href="add_pasien.action" class="btn btn-primary"><i class="fa fa-plus"></i>
-                                            Add Pasien</a>
+                                        <%--<a href="add_pasien.action" class="btn btn-primary"><i class="fa fa-plus"></i>--%>
+                                            <%--Add Pasien</a>--%>
                                         <button type="button" class="btn btn-primary" onclick="showModalUpload()">
                                             <i class="fa fa-plus"></i> Upload RM Lama
                                         </button>
@@ -194,7 +194,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="sortTable" class="table table-bordered table-striped tablePasien">
+                        <table id="table-pasien" class="table table-bordered table-striped tablePasien">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>NO RM</td>
@@ -223,18 +223,18 @@
                                         <img id="t<s:property value="idPasien"/>" class="hvr-grow"
                                              onclick="detail('<s:property value="idPasien"/>')" style="cursor: pointer"
                                              src="<s:url value="/pages/images/icons8-view-25.png"/>">
-                                        <s:if test='#row.password == null || #row.password == ""'>
-                                            <img class="hvr-grow"
-                                                 onclick="setPassword('<s:property value="idPasien"/>')"
-                                                 style="cursor: pointer"
-                                                 src="<s:url value="/pages/images/icons8-create-25.png"/>">
-                                        </s:if>
-                                        <s:else>
-                                            <img class="hvr-grow"
-                                                 onclick="setPassword('<s:property value="idPasien"/>')"
-                                                 style="cursor: pointer"
-                                                 src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">
-                                        </s:else>
+                                        <%--<s:if test='#row.password == null || #row.password == ""'>--%>
+                                            <%--<img class="hvr-grow"--%>
+                                                 <%--onclick="setPassword('<s:property value="idPasien"/>')"--%>
+                                                 <%--style="cursor: pointer"--%>
+                                                 <%--src="<s:url value="/pages/images/icons8-create-25.png"/>">--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<img class="hvr-grow"--%>
+                                                 <%--onclick="setPassword('<s:property value="idPasien"/>')"--%>
+                                                 <%--style="cursor: pointer"--%>
+                                                 <%--src="<s:url value="/pages/images/icons8-create-orange-25.png"/>">--%>
+                                        <%--</s:else>--%>
                                         <s:url var="print_card" namespace="/pasien" action="printCard_pasien"
                                                escapeAmp="false">
                                             <s:param name="id"><s:property value="idPasien"/></s:param>
@@ -290,10 +290,10 @@
                                              onkeypress="$(this).css('border','');"
                                              cssClass="form-control"
                                              placeholder="ketik nama atau rm baru atau rm lama"/>
-                                <div class="input-group-btn">
-                                    <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i
-                                            class="fa fa-plus"></i> Add Upload</a>
-                                </div>
+                                <%--<div class="input-group-btn">--%>
+                                    <%--<a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i--%>
+                                            <%--class="fa fa-plus"></i> Add Upload</a>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -796,6 +796,11 @@
 </div>
 
 <script type='text/javascript'>
+
+    $('#table-pasien').dataTable( {
+        "ordering": false,
+        "searching": false
+    } );
 
     function pasienSuccess() {
         var idPasien = $('#val_id_pasien').val();
@@ -1369,11 +1374,15 @@
         var nama = $('#nama_pasien').val();
         var count = $("#nama_pasien").val().replace(/ /g,'').length;
         var countId = $("#id_pasien").val().replace(/ /g,'').length;
-        if(id == '' && nama == '' || count < 3){
+        if(id == '' && count < 3){
             $('#warning_search').show().fadeOut(5000);
             $('#msg_search').text("Inputan data berikut minimal 3 Karakter...!");
             return false;
-        } else {
+        } else if(nama == '' && countId < 3){
+            $('#warning_search').show().fadeOut(5000);
+            $('#msg_search').text("Inputan data berikut minimal 3 Karakter...!");
+            return false;
+        } else{
             $('#waiting_dialog').dialog('open');
             return true;
         }

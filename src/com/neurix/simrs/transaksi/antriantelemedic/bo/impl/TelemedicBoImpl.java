@@ -335,6 +335,9 @@ public class TelemedicBoImpl implements TelemedicBo {
             results.add(antritanTelemedicData);
         }
 
+        // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
+//        Collections.sort(results, AntrianTelemedic.getTanggalUploadSorting());
+//        Collections.sort(results, AntrianTelemedic.getUrutanPembayaranSorting());
         Collections.sort(results, new SortingByUrutanUpload());
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");
@@ -622,6 +625,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         // status akan ditentukan dengan mencari slot waiting list.
         // apa saja properti yang dibutuhkan ? lihat ItSimrsAntrianTelemedicEntity.java
 
+        // Sigit 2021-02-11, Mnambahkan pencarian hari ini
+        String stCurDate = CommonUtil.convertDateToString2(new java.sql.Date(System.currentTimeMillis()));
+        // END
         bean.setId("TMC"+CommonUtil.stDateSeq()+getSeqTelemedic());
         bean.setBranchId(branchId);
         bean.setKodeBank(kodeBank);
@@ -630,6 +636,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
         hsCriteria.put("status", "WL");
         hsCriteria.put("flag", "Y");
+        hsCriteria.put("created_date_to_date", stCurDate);
 
         // cek jika ada slot untuk waiting list
         List<ItSimrsAntrianTelemedicEntity> telemedicEntities = telemedicDao.getByCriteria(hsCriteria);

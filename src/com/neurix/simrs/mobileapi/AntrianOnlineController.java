@@ -109,8 +109,27 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
     private String idDetailCheckup;
     private String flagCall;
+    private String flag;
 
     private String findNoAntrian;
+
+    private String idPasien;
+
+    public String getFlag() {
+        return flag;
+    }
+
+    public void setFlag(String flag) {
+        this.flag = flag;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
 
     public String getFlagCall() {
         return flagCall;
@@ -335,6 +354,8 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                 return listOfAntrianOnline;
             case "antrianAll":
                 return listOfHeaderCheckup;
+            case "getByCriteria":
+                return listOfAntrianOnline;
             default: return model;
         }
 
@@ -366,7 +387,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("show")) {
             List<AntianOnline> result = new ArrayList<>();
             try {
-                result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
+                result = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, noCheckupOnline, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId, idPasien);
             } catch (GeneralBOException e) {
                 logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                 throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
@@ -391,7 +412,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
                     List<AntianOnline> temp = new ArrayList<>();
 
                     try {
-                        temp = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, null, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId);
+                        temp = antrianOnlineBoProxy.getAntrianByCriteria(idPelayanan, idDokter, null, CommonUtil.convertStringToDate(tglCheckup), jamAwal, jamAkhir, branchId, idPasien);
                     } catch (GeneralBOException e) {
                         logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
                         throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
@@ -440,6 +461,41 @@ public class AntrianOnlineController implements ModelDriven<Object> {
 
                     listOfHeaderCheckup.add(headerCheckupMobile);
                     i++;
+                }
+            }
+        }
+
+        if (action.equalsIgnoreCase("getByCriteria")) {
+
+            List<AntianOnline> result = new ArrayList<>();
+
+            AntianOnline bean = new AntianOnline();
+            bean.setIdAntrianOnline(idAntrianOnline);
+            bean.setNoCheckupOnline(noCheckupOnline);
+            bean.setIdPelayanan(idPelayanan);
+            bean.setIdDokter(idDokter);
+            bean.setIdDetailCheckup(idDetailCheckup);
+            bean.setFlag(flag);
+            bean.setTglCheckup(tglCheckup);
+
+            try{
+               result = antrianOnlineBoProxy.getByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[AntrianOnlineController.getAntrianAll] Error get antrian all " + e.getMessage());
+                throw new GeneralBOException("[AntrianOnlineController.getAntrianAll] Error When Error get antrian all");
+            }
+
+            if (result.size() > 0) {
+                for (AntianOnline item : result) {
+                    AntrianMobile antrianMobile = new AntrianMobile();
+                    antrianMobile.setIdAntrianOnline(item.getIdAntrianOnline());
+                    antianOnline.setNoCheckupOnline(item.getNoCheckupOnline());
+                    antianOnline.setIdDokter(item.getIdDokter());
+                    antianOnline.setIdDetailCheckup(item.getIdDetailCheckup());
+                    antianOnline.setIdPelayanan(item.getIdPelayanan());
+                    antianOnline.setBranchId(item.getBranchId());
+
+                    listOfAntrianOnline.add(antrianMobile);
                 }
             }
         }

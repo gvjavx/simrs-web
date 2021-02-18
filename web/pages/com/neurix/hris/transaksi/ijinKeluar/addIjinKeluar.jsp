@@ -387,7 +387,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <s:textfield id="tgl3" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
-                                             required="false" onchange="getTanggalAkhir(this.value)" cssStyle=""/>
+                                             required="false" onchange="getTanggalAkhir(this.value); getlastDate()" cssStyle=""/>
                                     <%--<input type="text" class="form-control pull-right" id="loginTimestampFrom" name="userSessionLog.stLoginTimestampFrom">--%>
                             </div>
                         </td>
@@ -691,4 +691,26 @@
             }
         }
     };
+
+    window.getlastDate = function() {
+        var tgl = $('#tgl3').datepicker('getDate');
+        var maxIjin = parseInt($('#maxIjin').val());
+        tgl.setDate(tgl.getDate() + maxIjin-1);
+        var result = new Date(tgl);
+        console.log(tgl);
+
+        var mm = String(result.getMonth()+1);
+        var dd = String(result.getDate());
+        var yyyy = String(result.getFullYear());
+        console.log(mm.length);
+        if (mm.length < 2)
+            mm = '0' + mm;
+        if (dd.length < 2)
+            dd = '0' + dd;
+
+        var dateFinal = [dd,mm,yyyy].join('/');
+        $('#tgl2').val(dateFinal);
+        $('#tgl2').trigger('change');
+        console.log(result);
+    }
 </script>

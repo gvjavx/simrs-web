@@ -238,6 +238,9 @@
         <action name="version/*" class="com.neurix.simrs.mobileapi.VersionController">
             <interceptor-ref name="mobileStack"/>
         </action>
+        <action name="versionmobile/*" class="com.neurix.simrs.mobileapi.VersionMobileController">
+            <interceptor-ref name="mobileStack"/>
+        </action>
     </package>
 
 </struts>

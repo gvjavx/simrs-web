@@ -110,7 +110,7 @@
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
                 if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Tanggal Aktif / Pengangkatan </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -325,12 +325,12 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isAdd()">
-                                                            <s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:else>
+                                                        <%--<s:if test="isAdd()">--%>
+                                                            <%--<s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>--%>
+                                                        <%--</s:if>--%>
+                                                        <%--<s:else>--%>
                                                             <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                                        </s:else>
+                                                        <%--</s:else>--%>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -414,8 +414,12 @@
                                                             <s:textfield cssStyle="text-align: left;" readonly="true"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:if>
+                                                        <s:elseif test="isAdd()">
+                                                            <s:textfield cssStyle="text-align: left;" onchange="getNip(this.value);"
+                                                                         cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
+                                                        </s:elseif>
                                                         <s:else>
-                                                            <s:textfield cssStyle="text-align: left;" onchange="getTanggalPensiun(this.value)"
+                                                            <s:textfield cssStyle="text-align: left;"
                                                                          cssClass="form-control" id="tanggalLahir1" name="biodata.stTanggalLahir" />
                                                         </s:else>
                                                     </table>
@@ -941,7 +945,7 @@
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
+                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="false"/>
                                                             <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
                                                             <s:hidden id="tanggalAktifTmp"/>
                                                         </s:else>
@@ -5314,7 +5318,16 @@
     //        }
     //    };
 
-    window.getTanggalPensiun = function (tanggal) {
-
-    };
+    function getNip(birthDate){
+        var nip = $("#nip1").val();
+        var headNip = birthDate.split("-");
+        if(nip==""){
+            BiodataAction.getSeqNip(function(seq){
+                $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+            })
+        } else {
+            var seq = nip.slice(nip.length - 4);
+            $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
+        }
+    }
 </script>

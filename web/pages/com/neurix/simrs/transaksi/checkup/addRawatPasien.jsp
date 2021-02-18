@@ -3506,6 +3506,7 @@
     }
 
     function searchNoCheckup(id) {
+        id = id.toUpperCase();
         if (id != '') {
             $('#load_online').html('<i class="fa fa-circle-o-notch fa-spin"></i> Loading...');
             dwr.engine.setAsync(true);
