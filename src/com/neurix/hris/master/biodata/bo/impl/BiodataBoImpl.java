@@ -1783,6 +1783,8 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
                 if("TP03".equalsIgnoreCase(bean.getTipePegawai())){
                     imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalPensiun());
+                } else if("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+                    imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalAkhirKontrak());
                 }else {
                     imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
                 }

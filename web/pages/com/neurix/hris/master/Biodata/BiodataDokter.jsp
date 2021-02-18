@@ -67,9 +67,9 @@
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
-            var tglAktif            = document.getElementById("tanggalAktif").value;
+            var tglAkhir            = document.getElementById("tanggalAkhirKontrak").value;
 
-            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAktif!='') {
+            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -109,8 +109,8 @@
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
                 }
-                if (tglAktif == '') {
-                    msg += 'Field <strong>Tanggal Aktif / Pengangkatan </strong> is required.' + '<br/>';
+                if (tglAkhir == '') {
+                    msg += 'Field <strong>Tanggal Akhir Kontrak </strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -931,23 +931,21 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
+                                                    <label class="label-tanggal-akhir-kontrak"><small>Tanggal Akhir Kontrak <span style="color:red;">*</span> :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
                                                         <s:if test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" />
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" />
                                                         </s:if>
                                                         <s:elseif test="isDelete()">
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true" readonly="true"/>
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" disabled="true" readonly="true"/>
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
-                                                                         cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="false"/>
-                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
-                                                            <s:hidden id="tanggalAktifTmp"/>
+                                                                         cssClass="form-control" id="tanggalAkhirKontrak" name="biodata.stTanggalAkhirKontrak" disabled="false"/>
                                                         </s:else>
 
                                                     </table>
@@ -2489,15 +2487,10 @@
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
-            $('#tanggalAktif').removeAttr('disabled');
-            $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
-            $('#tanggalAktifHid').val("");
         } else {
             $('#golongan1Group').hide();
             $('#golongan2Group').show();
             $('#point').prop('disabled', 'true');
-            $('#tanggalAktif').prop('disabled', 'true');
-            $('tanggalAktifHid').val($('#tanggalAktifTmp').val());
         }
     }
     window.changePegawaiHistory = function (id) {
@@ -5023,11 +5016,11 @@
             yearRange: "-50:+10"
         });
 
-        $('#tanggalAktif').datepicker({
+        $('#tanggalAkhirKontrak').datepicker({
             dateFormat: 'dd-mm-yy',
             changeMonth: true,
             changeYear: true,
-            yearRange: "-50:+10"
+            yearRange: "-30:+30"
         });
 
         $('#tanggalPraPensiun').datepicker({
