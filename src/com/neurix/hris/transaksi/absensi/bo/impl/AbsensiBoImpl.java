@@ -5304,15 +5304,20 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         if (finalLamaLembur>0){
                                             do{
                                                 if (finalLamaLembur>0&&finalLamaLembur<1){
-                                                    Map hsCriteria5 = new HashMap();
-                                                    hsCriteria5.put("tipe_hari", absensiPegawai.getTipeHari());
-                                                    hsCriteria5.put("jam_lembur", j);
-                                                    hsCriteria5.put("flag", "Y");
-                                                    List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-                                                    for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-                                                        jamLembur = jamLembur + (finalLamaLembur*2);
+//                                                    Map hsCriteria5 = new HashMap();
+//                                                    hsCriteria5.put("tipe_hari", absensiPegawai.getTipeHari());
+//                                                    hsCriteria5.put("jam_lembur", j);
+//                                                    hsCriteria5.put("flag", "Y");
+//                                                    List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
+//                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+//                                                    for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
+//                                                        jamLembur = jamLembur + (finalLamaLembur*2);
+//                                                    }
+                                                    //RAKA-18FEB2021==>Perhitungan langsung sisa jam lembur < 1 jam
+                                                    if(finalLamaLembur>=0.5) {
+                                                        jamLembur = jamLembur + 0.5;
                                                     }
+                                                    //RAKA-end
                                                     finalLamaLembur= (double) 0;
                                                 }else{
                                                     Map hsCriteria5 = new HashMap();
@@ -5346,12 +5351,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                                         }
 
+                                        //RAKA-18FEB2021==>Mengambil Persen Gaji melalui tabel Jenis Pegawai;
                                         try {
                                             prosentase = jenisPegawaiDao.getPersenGaji(personPosition);
                                         } catch (HibernateException e) {
                                             logger.error("[AbsensiBoImpl.cronInquiry] Error " + e.getMessage());
                                             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
                                         }
+                                        //RAKA-end
 
 //                                        try {
 //                                            mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(personPosition);
