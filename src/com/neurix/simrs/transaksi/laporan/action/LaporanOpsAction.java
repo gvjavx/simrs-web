@@ -80,6 +80,22 @@ public class LaporanOpsAction extends BaseTransactionAction {
         }
 
         if("diagnosa".equalsIgnoreCase(searchLaporan.getTipeLaporan())){
+            if(searchLaporan.getListBulan().size() == 0){
+                List<String> stringList = new ArrayList<>();
+                stringList.add("1");
+                stringList.add("2");
+                stringList.add("3");
+                stringList.add("4");
+                stringList.add("5");
+                stringList.add("6");
+                stringList.add("7");
+                stringList.add("8");
+                stringList.add("9");
+                stringList.add("10");
+                stringList.add("11");
+                stringList.add("12");
+                searchLaporan.setListBulan(stringList);
+            }
             try {
                 laporanOpsList = laporanOpsBoProxy.getListDiagnosaTerbanyak(searchLaporan);
             }catch (Exception e){

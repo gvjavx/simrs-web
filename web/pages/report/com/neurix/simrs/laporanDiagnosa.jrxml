@@ -153,13 +153,13 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="295" uuid="a01f1ab3-05f6-4f5e-af31-d87f969f2adf">
+					<jr:column width="310" uuid="a01f1ab3-05f6-4f5e-af31-d87f969f2adf">
 						<jr:columnHeader height="30" rowSpan="1">
 							<box>
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="295" height="30" uuid="1639ec0b-fee8-48f5-bc3f-9c1d7a5fa563"/>
+								<reportElement x="0" y="0" width="310" height="30" uuid="1639ec0b-fee8-48f5-bc3f-9c1d7a5fa563"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle">
 									<font isBold="true"/>
@@ -172,20 +172,20 @@
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
 							<textField>
-								<reportElement x="0" y="0" width="295" height="25" uuid="3da00e4d-1834-4db1-8bbd-a20f93cccf1e"/>
+								<reportElement x="0" y="0" width="310" height="25" uuid="3da00e4d-1834-4db1-8bbd-a20f93cccf1e"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{namaPenyakit} != null ? $F{namaPenyakit} : ""]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="81" uuid="9075d14f-aa39-4e1a-bf71-4a3ea75d6983">
+					<jr:column width="66" uuid="9075d14f-aa39-4e1a-bf71-4a3ea75d6983">
 						<jr:columnHeader height="30" rowSpan="1">
 							<box>
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
 							<staticText>
-								<reportElement x="0" y="0" width="81" height="30" uuid="9954e5c1-723d-43e8-ad96-8dc65df117db"/>
+								<reportElement x="0" y="0" width="66" height="30" uuid="9954e5c1-723d-43e8-ad96-8dc65df117db"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle">
 									<font isBold="true"/>
@@ -198,7 +198,7 @@
 								<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
 							</box>
 							<textField>
-								<reportElement x="0" y="0" width="81" height="25" uuid="603c98c0-06de-4bcb-8465-e4a11615154a"/>
+								<reportElement x="0" y="0" width="66" height="25" uuid="603c98c0-06de-4bcb-8465-e4a11615154a"/>
 								<box leftPadding="10"/>
 								<textElement verticalAlignment="Middle"/>
 								<textFieldExpression><![CDATA[$F{total} != null ? $F{total} : "0"]]></textFieldExpression>

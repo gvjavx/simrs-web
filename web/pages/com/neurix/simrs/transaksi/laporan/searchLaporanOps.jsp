@@ -87,6 +87,30 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group" style="display: none" id="form_tipe_penunjang">
+                                    <label class="control-label col-sm-4">Tipe Penunjang</label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="tipe_penunjang"
+                                                name="laporanOps.tipePelayanan" onchange="setDetailPenunjang(this.value)">
+                                            <option value="farmasi">Farmasi</option>
+                                            <option value="kamar">Kamar</option>
+                                            <option value="radiologi">Radiologi</option>
+                                            <option value="laboratorium">Laboratorium</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none" id="form_detail_penunjang">
+                                    <label class="control-label col-sm-4"><span id="text_tipe"></span></label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="detail_penunjang"
+                                                name="laporanOps.tipePelayanan" multiple>
+                                            <option value="farmasi">Farmasi</option>
+                                            <option value="kamar">Kamar</option>
+                                            <option value="radiologi">Radiologi</option>
+                                            <option value="laboratorium">Laboratorium</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" style="display: none" id="form_bulan">
                                     <label class="control-label col-sm-4">Bulan</label>
                                     <div class="col-sm-4">
@@ -440,6 +464,16 @@
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
+            } else if("penunjang_medis" == tipe){
+                $('#form_tipe_pelayanan, #form_branch, #form_bulan, #form_tahun').show();
+
+                getTahun();
+                getBranch();
+                setBulan();
+                $('#form_tanggal').hide();
+                $('#form_pelayanan').hide();
+                $('#form_kelas, #form_ruangan').hide();
+                $('#form_choice').hide();
             } else {
                 $('#form_branch, #form_tahun, #form_tanggal').hide();
                 $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
@@ -487,6 +521,20 @@
         var dt = new Date();
         var bulan = dt.getMonth()+1;
         $('#bulan').val(bulan).trigger('change');
+    }
+
+    function setDetailPenunjang(tipe){
+        if(tipe == "farmasi"){
+
+        }else if(){
+
+        }else if(){
+
+        }else if(){
+
+        }else{
+            $("#text_tipe").text("Tidak sesuai")
+        }
     }
 
 </script>
