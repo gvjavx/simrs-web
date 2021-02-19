@@ -10,4 +10,6 @@ public interface LaporanOpsBo {
     public List<LaporanOps> getByCriteria(LaporanOps bean) throws GeneralBOException;
     public List<LaporanOps> getLaporanRjRi(LaporanOps bean) throws GeneralBOException;
     public List<LaporanOps> getLaporanPlyUnggulan(LaporanOps bean) throws GeneralBOException;
+    public List<LaporanOps> getListTahunByOps() throws GeneralBOException;
+    public List<LaporanOps> getListDiagnosaTerbanyak(LaporanOps bean) throws GeneralBOException;
 }

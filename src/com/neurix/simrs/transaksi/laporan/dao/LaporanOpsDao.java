@@ -1,11 +1,13 @@
 package com.neurix.simrs.transaksi.laporan.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.hris.transaksi.laporan.model.Laporan;
 import com.neurix.simrs.transaksi.laporan.model.*;
 import org.hibernate.Criteria;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
@@ -227,5 +229,153 @@ public class LaporanOpsDao extends GenericDao<ImSimrsLaporanOpsEntity, String> {
             }
         }
         return stringList;
+    }
+
+    public List<LaporanOps> getListTahunByOps(){
+        List<LaporanOps> laporanOpsList = new ArrayList<>();
+        String SQL = "SELECT \n" +
+                "CAST('tahun' AS VARCHAR) as label, \n"+
+                "CAST(DATE_PART('year', created_date) AS INTEGER) as tahun\n" +
+                "FROM it_simrs_header_checkup\n" +
+                "GROUP BY DATE_PART('year', created_date)\n";
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+        if(result.size() > 0){
+            int i = 1;
+            for (Object[] obj: result){
+                LaporanOps laporanOpsAwal = new LaporanOps();
+                Integer tahun = (Integer)obj[1];
+                if(i == 1){
+                    Integer year = tahun - 1;
+                    laporanOpsAwal.setTahun(String.valueOf(year));
+                    laporanOpsList.add(laporanOpsAwal);
+                }
+
+                LaporanOps laporanOps = new LaporanOps();
+                laporanOps.setTahun(obj[1] != null ? obj[1].toString() : null);
+                laporanOpsList.add(laporanOps);
+
+                LaporanOps laporanOpsAkhir = new LaporanOps();
+                if(i == result.size()){
+                    Integer year = tahun + 1;
+                    laporanOpsAkhir.setTahun(String.valueOf(year));
+                    laporanOpsList.add(laporanOpsAkhir);
+                }
+
+                i++;
+            }
+        }else{
+            int year = Calendar.getInstance().get(Calendar.YEAR);
+            LaporanOps laporanOps = new LaporanOps();
+            laporanOps.setTahun(String.valueOf(year));
+            laporanOpsList.add(laporanOps);
+        }
+        return laporanOpsList;
+    }
+
+    public List<LaporanOps> getListDiagnosaTerbanyak(LaporanOps bean){
+        List<LaporanOps> laporanOpsList = new ArrayList<>();
+        if(bean != null){
+            String orderBy = "";
+            String tempBulan = "";
+            if("rawat_jalan".equalsIgnoreCase(bean.getTipePelayanan())){
+                orderBy = "jenis_diagnosa";
+            }
+            if("rawat_inap".equalsIgnoreCase(bean.getTipePelayanan())){
+                orderBy = "created_date";
+            }
+
+            if(bean.getListBulan().size() > 0){
+                for (String bulan: bean.getListBulan()){
+                    if(!"".equalsIgnoreCase(tempBulan)){
+                        tempBulan = tempBulan +", '"+bulan+"'";
+                    }else{
+                        tempBulan = "'"+bulan+"'";
+                    }
+                }
+            }
+            String SQL = "SELECT\n" +
+                    "a.bulan,\n" +
+                    "a.nama_bulan,\n" +
+                    "b.id_diagnosa,\n" +
+                    "b.keterangan_diagnosa,\n" +
+                    "b.jumlah\n" +
+                    "FROM (\n" +
+                    "SELECT\n" +
+                    "a.bulan,\n" +
+                    "a.nama_bulan FROM (\n" +
+                    "\tSELECT\n" +
+                    "\tgenerate_series as bulan,\n" +
+                    "\tCASE\n" +
+                    "\t WHEN generate_series = 1 THEN 'Januari'\n" +
+                    "\t WHEN generate_series = 2 THEN 'Februari'\n" +
+                    "\t WHEN generate_series = 3 THEN 'Maret'\n" +
+                    "\t WHEN generate_series = 4 THEN 'April'\n" +
+                    "\t WHEN generate_series = 5 THEN 'Mei'\n" +
+                    "\t WHEN generate_series = 6 THEN 'Juni'\n" +
+                    "\t WHEN generate_series = 7 THEN 'Juli'\n" +
+                    "\t WHEN generate_series = 8 THEN 'Agustus'\n" +
+                    "\t WHEN generate_series = 9 THEN 'September'\n" +
+                    "\t WHEN generate_series = 10 THEN 'Oktober'\n" +
+                    "\t WHEN generate_series = 11 THEN 'November'\n" +
+                    "\t WHEN generate_series = 12 THEN 'Desember'\n" +
+                    "\t ELSE null END as nama_bulan\n" +
+                    "\tFROM generate_series(1,12)\n" +
+                    ")a WHERE a.bulan IN ("+tempBulan+")\n" +
+                    ")a LEFT JOIN (\n" +
+                    "SELECT\n" +
+                    "a.bulan,\n" +
+                    "a.id_diagnosa,\n" +
+                    "a.keterangan_diagnosa,\n" +
+                    "COUNT(a.id_diagnosa) as jumlah\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.id_detail_checkup,\n" +
+                    "\td.id_diagnosa,\n" +
+                    "\td.keterangan_diagnosa,\n" +
+                    "\tDATE_PART('month', d.created_date) as bulan\n" +
+                    "\tFROM it_simrs_header_detail_checkup a\n" +
+                    "\tINNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "\tINNER JOIN im_simrs_header_pelayanan c ON b.id_header_pelayanan = c.id_header_pelayanan\n" +
+                    "\tINNER JOIN (\n" +
+                    "\tSELECT * FROM (\n" +
+                    "\t\tSELECT\n" +
+                    "\t\tid_detail_checkup,\n" +
+                    "\t\tid_diagnosa,\n" +
+                    "\t\tketerangan_diagnosa,\n" +
+                    "\t\tjenis_diagnosa,\n" +
+                    "\t\tcreated_date,\n" +
+                    "\t\tRANK() OVER(PARTITION BY id_detail_checkup ORDER BY "+orderBy+" DESC) as rank\n" +
+                    "\t\tFROM it_simrs_diagnosa_rawat\n" +
+                    "\t) aa WHERE aa.rank = '1'\n" +
+                    "\t) d ON a.id_detail_checkup = d.id_detail_checkup\n" +
+                    "\tWHERE a.branch_id = :branch \n" +
+                    "\tAND c.tipe_pelayanan = :tipe \n" +
+                    "\tAND DATE_PART('month', d.created_date) IN ("+tempBulan+")\n" +
+                    ")a \n" +
+                    "GROUP BY bulan,\n" +
+                    "a.id_diagnosa,\n" +
+                    "a.keterangan_diagnosa,\n" +
+                    "a.bulan\n" +
+                    ") b ON a.bulan = b.bulan\n" +
+                    "ORDER BY a.bulan, b.id_diagnosa ASC\n";
+
+            List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("tipe", bean.getTipePelayanan())
+                    .setParameter("branch", bean.getBranchId())
+                    .list();
+
+            if(result.size() > 0){
+                for (Object[] obj: result){
+                    LaporanOps laporanOps = new LaporanOps();
+                    laporanOps.setBulan(obj[1] != null ? obj[1].toString() : null);
+                    laporanOps.setIcdx(obj[2] != null ? obj[2].toString() : null);
+                    laporanOps.setNamaPenyakit(obj[3] != null ? obj[3].toString() : null);
+                    laporanOps.setTotal(obj[4] != null ? obj[4].toString() : null);
+                    laporanOpsList.add(laporanOps);
+                }
+            }
+        }
+        return laporanOpsList;
     }
 }

@@ -411,6 +411,7 @@
                         <table id="table_pelayanan" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead>
                             <tr style="font-weight: bold">
+                                <td>ID Pelayanan</td>
                                 <td>Nama Pelayanan</td>
                                 <td width="10%">Action</td>
                             </tr>
@@ -571,7 +572,11 @@
                 var row = 'row_'+idPelayanan;
                 var table = '<tr id="'+row+'">' +
                             '<td>' +
-                            '<input type="hidden" id="id_pelayanan_'+idCount+'" value="'+idPelayanan+'">'+ namaPelayanan+
+                            idPelayanan+
+                            '</td>'+
+                            '<td>' +
+                            '<input type="hidden" id="id_pelayanan_'+idCount+'" value="'+idPelayanan+'">'+
+                             namaPelayanan+
                             '</td>'+
                             '<td align="center"><img border="0" onclick="delRow(\'' + row + '\')" class="hvr-grow" src="' + contextPathHeader + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
                             '</tr>';
@@ -613,9 +618,8 @@
                 $('#save_edit').hide();
                 $('#load_edit').show();
                 $.each(dataPelayanan, function (i, item) {
-                    var idPelayanan = $('#id_pelayanan_' + i).val();
                     tempPelayanan.push({
-                        'id_pelayanan': idPelayanan
+                        'id_pelayanan': dataPelayanan[i]["ID Pelayanan"]
                     });
                 });
                 var stringPelayanan = JSON.stringify(tempPelayanan);
@@ -734,6 +738,7 @@
                         $.each(res.pelayananList, function (i, item) {
                             var row = 'row_'+i;
                             table += '<tr id="'+row+'">' +
+                                '<td>' + item.idPelayanan+ '</td>'+
                                 '<td>' +
                                 '<input type="hidden" id="id_pelayanan_'+i+'" value="'+item.idPelayanan+'">'+ item.namaPelayanan+
                                 '</td>'+

@@ -673,7 +673,7 @@
                             <div class="form-group">
                                 <label style="margin-top: 7px">Provinsi</label>
                                 <input class="form-control" id="add_provinsi"
-                                       oninput="$(this).css('border',''); setProvAtas(this.id, 'add_id_provinsi')">
+                                       oninput="$(this).css('border',''); setProvAtas(this.id, 'add_id_provinsi'); resetFiled(this.id, 'add_id_provinsi', this.value, 'prov')">
                                 <input type="hidden" id="add_id_provinsi">
                             </div>
                         </div>
@@ -681,19 +681,19 @@
                             <div class="form-group">
                                 <label>Kota</label>
                                 <input class="form-control" id="add_kota"
-                                       oninput="$(this).css('border',''); setKabAtas(this.id, 'add_id_kota', 'add_id_provinsi')">
+                                       oninput="$(this).css('border',''); setKabAtas(this.id, 'add_id_kota', 'add_id_provinsi'); resetFiled(this.id, 'add_id_kota', this.value, 'kota')">
                                 <input type="hidden" id="add_id_kota">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kecamatan</label>
                                 <input class="form-control" id="add_kecamatan"
-                                       oninput="$(this).css('border',''); setKecAtas(this.id, 'add_id_kecamatan', 'add_id_kota')">
+                                       oninput="$(this).css('border',''); setKecAtas(this.id, 'add_id_kecamatan', 'add_id_kota'); resetFiled(this.id, 'add_id_kecamatan', this.value, 'kec')">
                                 <input type="hidden" id="add_id_kecamatan">
                             </div>
                             <div class="form-group">
                                 <label style="margin-top: 7px">Kelurahan/Desa</label>
                                 <input class="form-control" id="add_desa"
-                                       oninput="$(this).css('border',''); setDesAtas(this.id, 'add_id_desa', 'add_id_kecamatan')">
+                                       oninput="$(this).css('border',''); setDesAtas(this.id, 'add_id_desa', 'add_id_kecamatan'); resetFiled(this.id, 'add_id_desa', this.value, 'desa')">
                                 <input type="hidden" id="add_id_desa">
                             </div>
                             <div class="form-group">
@@ -1398,6 +1398,30 @@
             $('#add_password').removeAttr('type');
             $('#add_password').attr('type', 'password');
             $('#icon-password').removeClass('fa fa-eye-slash').addClass('fa fa-eye');
+        }
+    }
+
+    function resetFiled(id, idHidden, val, tipe){
+        if(val == ''){
+            $('#'+id).val('');
+            $('#'+idHidden).val('');
+        }
+
+        if(tipe == 'prov'){
+            $('#add_kota').val('');
+            $('#add_id_kota').val('');
+            $('#add_kecamatan').val('');
+            $('#add_id_kecamatan').val('');
+            $('#add_desa').val('');
+            $('#add_id_desa').val('');
+        }else if(tipe == 'kota'){
+            $('#add_kecamatan').val('');
+            $('#add_id_kecamatan').val('');
+            $('#add_desa').val('');
+            $('#add_id_desa').val('');
+        }else if(tipe == 'kec'){
+            $('#add_desa').val('');
+            $('#add_id_desa').val('');
         }
     }
 

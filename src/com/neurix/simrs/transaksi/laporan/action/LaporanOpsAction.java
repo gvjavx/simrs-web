@@ -79,6 +79,20 @@ public class LaporanOpsAction extends BaseTransactionAction {
             laporan = "print_ply_unggulan";
         }
 
+        if("diagnosa".equalsIgnoreCase(searchLaporan.getTipeLaporan())){
+            try {
+                laporanOpsList = laporanOpsBoProxy.getListDiagnosaTerbanyak(searchLaporan);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+            String tipe = "Rawat Inap";
+            if("rawat_jalan".equalsIgnoreCase(searchLaporan.getTipePelayanan())){
+                tipe = "Rawat Jalan";
+            }
+            title = "Laporan Diagnosa Terbanyak "+tipe+" Periode "+searchLaporan.getTahun();
+            laporan = "print_diagnosa_terbanyak";
+        }
+
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(laporanOpsList);
 
         try {
@@ -134,7 +148,18 @@ public class LaporanOpsAction extends BaseTransactionAction {
 
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         return ruanganList;
+    }
 
+    public List<LaporanOps> getListTahunOps(){
+        List<LaporanOps> laporanOpsList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanOpsBo laporanOpsBo = (LaporanOpsBo) ctx.getBean("laporanOpsBoProxy");
+        try {
+            laporanOpsList = laporanOpsBo.getListTahunByOps();
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return laporanOpsList;
     }
 
     public static Logger getLogger() {
