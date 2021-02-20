@@ -3263,6 +3263,7 @@
             });
         });
         listPosisiHistory();
+        listPositionJabatan();
 
     };
     function cek(){
@@ -3314,6 +3315,7 @@
             $('#golongan2Group').hide();
             $('#golongan3').val("");
             $('#tanggalAktif').removeAttr('disabled');
+            $('#tanggalPraPensiun').removeAttr('disabled');
             $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
             $('#tanggalAktifHid').val("");
         } else {
@@ -3321,6 +3323,7 @@
             $('#golongan2Group').show();
             $('#point').prop('disabled', 'true');
             $('#tanggalAktif').prop('disabled', 'true');
+            $('#tanggalPraPensiun').prop('disabled', 'true');
             $('tanggalAktifHid').val($('#tanggalAktifTmp').val());
         }
     }
