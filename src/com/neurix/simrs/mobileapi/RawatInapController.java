@@ -939,6 +939,7 @@ public class RawatInapController implements ModelDriven<Object> {
 
             Tindakan tindakan = new Tindakan();
             tindakan.setIdKategoriTindakan(idKategoriTindakan);
+            tindakan.setBranchId(branchId);
 
             try {
                result = tindakanBoProxy.getComboBoxTindakan(tindakan);
