@@ -95,7 +95,7 @@
                                             <option value="farmasi">Farmasi</option>
                                             <option value="kamar">Kamar</option>
                                             <option value="radiologi">Radiologi</option>
-                                            <option value="laboratorium">Laboratorium</option>
+                                            <option value="lab">Laboratorium</option>
                                         </select>
                                     </div>
                                 </div>
@@ -104,10 +104,6 @@
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="detail_penunjang"
                                                 name="laporanOps.tipePelayanan" multiple>
-                                            <option value="farmasi">Farmasi</option>
-                                            <option value="kamar">Kamar</option>
-                                            <option value="radiologi">Radiologi</option>
-                                            <option value="laboratorium">Laboratorium</option>
                                         </select>
                                     </div>
                                 </div>
@@ -435,6 +431,7 @@
                 $('#branch').attr('onchange', 'getPelayanan(this.value)');
 
                 $('#form_kelas, #form_ruangan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
+                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
                 getTahun();
                 getBranch();
             } else if("rawat_inap" == tipe){
@@ -445,6 +442,7 @@
                 getBranch();
                 getKelasKamar();
                 $('#form_pelayanan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
+                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
             } else if("unggulan" == tipe){
                 $('#form_branch, #form_tahun, #form_choice').show();
 
@@ -454,6 +452,7 @@
                 $('#choice2').attr('checked', true);
                 $('#form_kelas, #form_ruangan, #form_tipe_pelayanan').hide();
                 $('#form_pelayanan').hide();
+                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
             } else if("diagnosa" == tipe){
                 $('#form_tipe_pelayanan, #form_branch, #form_bulan, #form_tahun').show();
 
@@ -464,27 +463,30 @@
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
+                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
             } else if("penunjang_medis" == tipe){
-                $('#form_tipe_pelayanan, #form_branch, #form_bulan, #form_tahun').show();
+                $('#form_tipe_penunjang, #form_detail_penunjang, #form_branch, #form_tahun').show();
 
                 getTahun();
                 getBranch();
-                setBulan();
                 $('#form_tanggal').hide();
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
+                $('#form_tipe_pelayanan, #form_bulan').hide();
             } else {
                 $('#form_branch, #form_tahun, #form_tanggal').hide();
                 $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
+                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
             }
         } else {
             $('#form_button').hide();
             $('#form_branch, #form_tahun').hide();
             $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
             $('#form_choice').hide();
+            $('##form_detail_penunjang, #form_tipe_penunjang').hide();
         }
     }
 
@@ -525,15 +527,15 @@
 
     function setDetailPenunjang(tipe){
         if(tipe == "farmasi"){
-
-        }else if(){
-
-        }else if(){
-
-        }else if(){
-
+            $("#text_tipe").text("Farmasi");
+        }else if(tipe == "kamar"){
+            $("#text_tipe").text("Kamar");
+        }else if(tipe == "radiologi"){
+            $("#text_tipe").text("Radiologi");
+        }else if(tipe == "lab"){
+            $("#text_tipe").text("Laboratorium");
         }else{
-            $("#text_tipe").text("Tidak sesuai")
+            $("#text_tipe").text("Tidak sesuai");
         }
     }
 
