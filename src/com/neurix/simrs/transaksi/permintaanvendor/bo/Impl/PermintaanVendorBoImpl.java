@@ -451,6 +451,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatDetailEntity.setJenisSatuan(obatDetail.getJenisSatuan());
                     obatDetailEntity.setKeterangan("Permintaan PO");
                     obatDetailEntity.setFlagObatBpjs(obatDetail.getTipeObat());
+                    obatDetailEntity.setIdPabrikObat(obatDetail.getIdPabrikObat());
 
                     try {
                         transaksiObatDetailDao.addAndSave(obatDetailEntity);
@@ -757,6 +758,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatBatch.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     obatBatch.setNoBatch(obatDetail.getNoBatch());
 
+                    ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = getTransaksiObatDetailEntityById(obatDetail.getIdTransaksiObatDetail());
+
                     List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
 
                     if (batchEntities.size() > 0) {
@@ -780,6 +783,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setNetto(batchEntity.getNetto());
                                 obatDetail.setIdVendor(bean.getIdVendor());
                                 obatDetail.setIdPelayanan(bean.getIdPelayanan());
+                                obatDetail.setIdPabrikObat(transaksiObatDetailEntity.getIdPabrikObat());
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -1006,6 +1010,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setBranchId(branchId);
         newObatEntity.setFlagBpjs(bean.getTipeObat());
         newObatEntity.setFlagKronis(obatEntity.getFlagKronis());
+        newObatEntity.setIdPabrikObat(bean.getIdPabrikObat());
 
         try {
             obatDao.addAndSave(newObatEntity);

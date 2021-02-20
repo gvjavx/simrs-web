@@ -465,9 +465,10 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                     pabrikObat.setNama(obj[1].toString());
                     pabrikObatList.add(pabrikObat);
                 }
-            } else {
-                pabrikObatList = getAllMasterObat();
             }
+//            else {
+//                pabrikObatList = getAllMasterObat();
+//            }
         }
         return pabrikObatList;
 

@@ -95,6 +95,11 @@
         <property name="flagBpjs">
             <column name="flag_bpjs" sql-type="varchar" length="1" not-null="false"/>
         </property>
+
+        <property name="idPabrikObat">
+            <column name="id_pabrik_obat" sql-type="varchar" length="50" not-null="false"/>
+        </property>
+
         <!--<property name="bentuk">-->
             <!--<column name="bentuk" sql-type="varchar" length="30" not-null="false"/>-->
         <!--</property>-->
