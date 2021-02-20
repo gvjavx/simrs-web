@@ -300,6 +300,7 @@
                     <s:hidden name="addOrEdit"/>
                     <s:hidden id="add" name="add"/>
                     <s:hidden name="delete"/>
+                    <s:hidden id="nip1" name="biodata.nip"/>
 
                     <div class="tab-content well box-shadowed">
                         <div id="biodata" class="tab-pane fade in active">
@@ -319,22 +320,6 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <table style="width:100%;">
-                                            <tr>
-                                                <td>
-                                                    <label><small>NIP <span style="color:red;">*</span> :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <%--<s:if test="isAdd()">--%>
-                                                            <%--<s:textfield id="nip1" name="biodata.nip"  required="true" disabled="false" cssClass="form-control"/>--%>
-                                                        <%--</s:if>--%>
-                                                        <%--<s:else>--%>
-                                                            <s:textfield id="nip1" name="biodata.nip" required="true" disabled="false" cssClass="form-control" readonly="true"/>
-                                                        <%--</s:else>--%>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
                                             <tr>
                                                 <td>
                                                     <label><small>Nama <span style="color:red;">*</span> :</small></label>
