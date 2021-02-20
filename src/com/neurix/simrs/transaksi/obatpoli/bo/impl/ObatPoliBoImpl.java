@@ -14,6 +14,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.dao.ObatPoliDao;
@@ -161,12 +162,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
                 }
 
-                ImSimrsPelayananEntity pelayananEntity = getPoliById(permintaanObatPoliEntity.getIdPelayanan());
+
+
+                Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getIdPelayanan());
                 if (pelayananEntity != null) {
                     permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
                 }
 
-                ImSimrsPelayananEntity tujuanPelayananEntity = getPoliById(permintaanObatPoliEntity.getTujuanPelayanan());
+                Pelayanan tujuanPelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getTujuanPelayanan());
                 if (tujuanPelayananEntity != null) {
                     permintaanObatPoli.setNamaTujuanPelayanan(tujuanPelayananEntity.getNamaPelayanan());
                 }
@@ -1507,12 +1510,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         String pelayananAsal = "";
         String pelayananTujuan = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayanan());
         if (pelayananEntity != null){
             pelayananAsal = pelayananEntity.getNamaPelayanan();
 
             // pelayanan tujuan
-            pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayananTujuan());
+            pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayananTujuan());
             if (pelayananEntity != null){
                 pelayananTujuan = pelayananEntity.getNamaPelayanan();
             }
@@ -1735,12 +1738,12 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
         String pelayananAsal = "";
         String pelayananTujuan = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayanan());
         if (pelayananEntity != null){
             pelayananAsal = pelayananEntity.getNamaPelayanan();
 
             // pelayanan tujuan
-            pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayananTujuan());
+            pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayananTujuan());
             if (pelayananEntity != null){
                 pelayananTujuan = pelayananEntity.getNamaPelayanan();
             }

@@ -3,6 +3,7 @@ package com.neurix.akuntansi.master.parameterbudgeting.dao;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingRekeningEntity;
 import com.neurix.common.dao.GenericDao;
 import org.hibernate.Criteria;
+import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
@@ -24,6 +25,12 @@ public class ParameterBudgetingRekeningDao extends GenericDao<ImAkunParameterBud
             criteria.add(Restrictions.eq("id", mapCriteria.get("id").toString()));
         if (mapCriteria.get("nama") != null)
             criteria.add(Restrictions.ilike("nama", "%" + mapCriteria.get("nama").toString() + "%"));
+        if (mapCriteria.get("flag") != null) {
+            criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+        }
+        if (mapCriteria.get("rekening_id") != null) {
+            criteria.add(Restrictions.eq("rekeningId", mapCriteria.get("rekening_id")));
+        }
         return criteria.list();
     }
 
@@ -31,6 +38,15 @@ public class ParameterBudgetingRekeningDao extends GenericDao<ImAkunParameterBud
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_parameter_budgeting_rekening')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "PBN"+sId;
+    }
+
+    public List<ImAkunParameterBudgetingRekeningEntity> getParameterBudgetingRekening(String nama ) throws HibernateException {
+        List<ImAkunParameterBudgetingRekeningEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImAkunParameterBudgetingRekeningEntity.class)
+                .add(Restrictions.ilike("nama", nama))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+//        ne (not equal / tidak samadengan)
+        return results;
     }
 }

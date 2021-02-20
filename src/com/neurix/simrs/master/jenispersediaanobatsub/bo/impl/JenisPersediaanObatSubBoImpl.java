@@ -180,7 +180,6 @@ public class JenisPersediaanObatSubBoImpl implements JenisPersediaanObatSubBo{
         logger.info("[saveDelete.saveDelete] start process >>>");
         if (bean != null) {
             String id = bean.getId();
-
             ImSimrsJenisPersediaanObatSubEntity imSimrsJenisPersediaanObatSubEntity = null;
 
             try {

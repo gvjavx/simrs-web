@@ -16,6 +16,7 @@ import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.obatgejala.dao.ObatGejalaDao;
 import com.neurix.simrs.master.obatgejala.model.ImSimrsObatGejalaEntity;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
 import com.neurix.simrs.master.vendor.model.Vendor;
@@ -450,6 +451,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatDetailEntity.setJenisSatuan(obatDetail.getJenisSatuan());
                     obatDetailEntity.setKeterangan("Permintaan PO");
                     obatDetailEntity.setFlagObatBpjs(obatDetail.getTipeObat());
+                    obatDetailEntity.setIdPabrikObat(obatDetail.getIdPabrikObat());
 
                     try {
                         transaksiObatDetailDao.addAndSave(obatDetailEntity);
@@ -756,6 +758,8 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     obatBatch.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     obatBatch.setNoBatch(obatDetail.getNoBatch());
 
+                    ImtSimrsTransaksiObatDetailEntity transaksiObatDetailEntity = getTransaksiObatDetailEntityById(obatDetail.getIdTransaksiObatDetail());
+
                     List<MtSimrsTransaksiObatDetailBatchEntity> batchEntities = getListEntityBatchObat(obatBatch);
 
                     if (batchEntities.size() > 0) {
@@ -779,6 +783,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setNetto(batchEntity.getNetto());
                                 obatDetail.setIdVendor(bean.getIdVendor());
                                 obatDetail.setIdPelayanan(bean.getIdPelayanan());
+                                obatDetail.setIdPabrikObat(transaksiObatDetailEntity.getIdPabrikObat());
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -1005,6 +1010,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setBranchId(branchId);
         newObatEntity.setFlagBpjs(bean.getTipeObat());
         newObatEntity.setFlagKronis(obatEntity.getFlagKronis());
+        newObatEntity.setIdPabrikObat(bean.getIdPabrikObat());
 
         try {
             obatDao.addAndSave(newObatEntity);
@@ -2186,6 +2192,23 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         logger.info("[PermintaanVendorBoImpl.getHargaObatByCriteria] End <<<");
         return null;
+    }
+
+    @Override
+    public List<PabrikObat> getListPabrikObatByIdObatForPo(String idObat, String tipePencarian) {
+        logger.info("[PermintaanVendorBoImpl.getListPabrikObatByIdObatForPo] Start >>>");
+
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+
+        try {
+            pabrikObatList = permintaanVendorDao.getListDataPabrikObatForPO(idObat, tipePencarian);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListPabrikObatByIdObatForPo] ERROR when get data. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListPabrikObatByIdObatForPo] ERROR when get data. " + e.getMessage());
+        }
+
+        logger.info("[PermintaanVendorBoImpl.getListPabrikObatByIdObatForPo] End <<<");
+        return pabrikObatList;
     }
 
     // for get sequence id

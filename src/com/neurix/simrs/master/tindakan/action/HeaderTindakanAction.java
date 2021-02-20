@@ -92,6 +92,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 headerTindakan.setKategoriInaBpjs(object.getString("kategori_ina_bpjs"));
                 headerTindakan.setStandardCost(new BigInteger(object.getString("tarif")));
                 headerTindakan.setFlagKonsulTele(object.getString("flag_tele"));
+                headerTindakan.setFlagVaksin(object.getString("flag_vaksin"));
                 headerTindakan.setCreatedWho(userLogin);
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setCreatedDate(updateTime);
@@ -128,6 +129,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 if(object.has("flag_tele")){
                     headerTindakan.setFlagKonsulTele(object.getString("flag_tele"));
                 }
+                headerTindakan.setFlagVaksin(object.getString("flag_vaksin"));
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setLastUpdateWho(userLogin);
                 headerTindakan.setAction("U");

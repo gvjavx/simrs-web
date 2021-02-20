@@ -68,6 +68,15 @@ public class PembayaranController implements ModelDriven<Object> {
     private String roleId;
 
     private String idPembayaranOnline;
+    private String idTransaksi;
+
+    public String getIdTransaksi() {
+        return idTransaksi;
+    }
+
+    public void setIdTransaksi(String idTransaksi) {
+        this.idTransaksi = idTransaksi;
+    }
 
     public String getIdPembayaranOnline() {
         return idPembayaranOnline;
@@ -327,7 +336,7 @@ public class PembayaranController implements ModelDriven<Object> {
         if (action.equalsIgnoreCase("updateBuktiTransfer")) {
 
             if (fileUploadBukti != null) {
-                fileName = idTele+".jpeg";
+                fileName = idTransaksi+".jpeg";
 //                File fileCreate = new File(, fileName);
                 try {
                     BufferedImage bufferedImage = ImageIO.read(fileUploadBukti);

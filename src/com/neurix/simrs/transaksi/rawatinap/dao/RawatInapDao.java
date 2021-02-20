@@ -893,7 +893,16 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                         "FROM it_simrs_header_checkup a\n" +
                         "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                         "INNER JOIN it_simrs_uang_muka_pendaftaran c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                        "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                        "INNER JOIN (SELECT\n" +
+                        "a.id_pelayanan,\n" +
+                        "a.branch_id,\n" +
+                        "b.nama_pelayanan,\n" +
+                        "b.tipe_pelayanan,\n" +
+                        "b.kategori_pelayanan,\n" +
+                        "b.divisi_id,\n" +
+                        "b.kode_vclaim\n" +
+                        "FROM im_simrs_pelayanan a\n" +
+                        "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                         "WHERE c.flag = 'Y' " + condition +
                         "ORDER BY c.created_date ASC";
 

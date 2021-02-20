@@ -23,20 +23,50 @@
 
         $.subscribe('beforeProcessSave', function (event, data) {
             var versionId = $('#set_version_id').val();
+            var tipe = $('#set_tipe').val();
+            var os = $('#set_os').val();
+            var versionName = $('#set_name_version').val();
             var deskripsi = $('#set_deskripsi').val();
             var cekFile = cekFileAtas('set_upload_apk');
-            if (!cekFile && deskripsi != '') {
-                event.originalEvent.options.submit = true;
-                $('#save').hide();
-                $('#load_add').show();
-            } else {
+            if(tipe && os && deskripsi != ''){
+                if("zebra" == tipe){
+                    if(!cekFile){
+                        event.originalEvent.options.submit = true;
+                        $('#save').hide();
+                        $('#load_add').show();
+                    }else{
+                        event.originalEvent.options.submit = false;
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                        if (cekFile) {
+                            $('#war_set_upload_apk').show();
+                        }
+                    }
+                }else{
+                    if(versionName != ''){
+                        event.originalEvent.options.submit = true;
+                        $('#save').hide();
+                        $('#load_add').show();
+                    }else{
+                        event.originalEvent.options.submit = false;
+                        $('#warning_add').show().fadeOut(5000);
+                        $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
+                        if(versionName == ''){
+                            $('#war_set_name_version').show();
+                        }
+                    }
+                }
+            }else{
                 event.originalEvent.options.submit = false;
                 $('#warning_add').show().fadeOut(5000);
                 $('#msg_add').text("Silahkan cek kembali data inputan berikut...!");
-                if (cekFile) {
-                    $('#war_set_upload_apk').show();
+                if (tipe == '') {
+                    $('#war_set_tipe').show();
                 }
-                if(deskripsi == ''){
+                if (os == '') {
+                    $('#war_set_os').show();
+                }
+                if (deskripsi == '') {
                     $('#war_set_deskripsi').show();
                 }
             }
@@ -94,7 +124,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Version ID</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="lisence_id" name="versionZebra.idVersion"
+                                        <s:textfield id="lisence_id" name="version.idVersion"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -102,15 +132,23 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Version Name</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="license_key" name="versionZebra.versionName"
+                                        <s:textfield id="license_key" name="version.versionName"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">Tipe Version</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'mobile':'Mobile', 'zebra':'Zebra'}" id="flag" name="version.tipe"
+                                                  headerKey="" headerValue="[Select One]" cssClass="form-control select2"
+                                                  cssStyle="width: 100%"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="versionZebra.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="version.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2"
                                                   cssStyle="width: 100%"/>
                                     </div>
@@ -206,6 +244,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Version ID</td>
                                 <td>Name Version</td>
+                                <td>Tipe</td>
                                 <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
@@ -214,15 +253,16 @@
                                 <tr>
                                     <td><s:property value="idVersion"/></td>
                                     <td><s:property value="versionName"/></td>
+                                    <td><s:property value="tipe"/></td>
                                     <td align="center">
                                         <img class="hvr-grow"
                                              onclick="showModal('detail', '<s:property value="idVersion"/>')"
                                              style="cursor: pointer"
                                              src="<s:url value="/pages/images/icons8-view-25.png"/>">
-                                        <%--<img class="hvr-grow"--%>
-                                             <%--onclick="showModal('edit', '<s:property value="idVersion"/>')"--%>
-                                             <%--style="cursor: pointer"--%>
-                                             <%--src="<s:url value="/pages/images/icons8-create-25.png"/>">--%>
+                                            <%--<img class="hvr-grow"--%>
+                                            <%--onclick="showModal('edit', '<s:property value="idVersion"/>')"--%>
+                                            <%--style="cursor: pointer"--%>
+                                            <%--src="<s:url value="/pages/images/icons8-create-25.png"/>">--%>
                                             <%--<img class="hvr-grow"--%>
                                             <%--onclick="showModal('delete', '<s:property value="idHeaderTindakan"/>')"--%>
                                             <%--style="cursor: pointer"--%>
@@ -250,67 +290,109 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <s:form id="addForm" enctype="multipart/form-data" namespace="/pasien" action="saveVersion_version.action" method="post">
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
-                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_add"></p>
-                </div>
-                <div id="for_edit" style="display: none">
+                <s:form id="addForm" enctype="multipart/form-data" namespace="/pasien"
+                        action="saveVersion_version.action" method="post">
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add">
+                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                        <p id="msg_add"></p>
+                    </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3">Verison ID</label>
+                            <label class="col-md-3 jarak_atas">Tipe Version</label>
                             <div class="col-md-7">
-                                <input class="form-control" id="set_version_id" disabled>
+                                <select id="set_tipe" style="width: 100%" onchange="inputWarning('war_set_tipe', 'cor_set_tipe'); setTipe(this.value)" class="form-control select2" name="version.tipe">
+                                    <option value="">[Select One]</option>
+                                    <option value="mobile">Mobile</option>
+                                    <option value="zebra">Zebra</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_set_tipe">
+                                    <i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_set_tipe"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak_atas" style="display: none" id="from_upload">
+                        <div class="form-group">
+                            <label class="col-md-3">Upload APK</label>
+                            <div class="col-md-7">
+                                <div class="input-group">
+                                <span class="input-group-btn">
+                                    <span class="btn btn-default btn-file">Browse…
+                                        <input type="file" id="set_upload_apk" name="fileUpload"
+                                               onchange="setNameFile('nama_file'); inputWarning('war_set_upload_apk', 'cor_set_upload_apk')">
+                                    </span>
+                                </span>
+                                    <input type="text" class="form-control" readonly id="nama_file">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_set_upload_apk">
+                                    <i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_set_upload_apk"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak_atas" style="display: none;" id="form_name_version">
+                        <div class="form-group">
+                            <label class="col-md-3">Version Name</label>
+                            <div class="col-md-7">
+                                <input name="version.versionName"
+                                          oninput="inputWarning('war_set_name_version', 'cor_set_name_version')"
+                                          class="form-control" id="set_name_version">
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_set_name_version">
+                                    <i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_set_name_version"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3 jarak_atas">Operating System</label>
+                            <div class="col-md-7">
+                                <select id="set_os" style="width: 100%" onchange="inputWarning('war_set_os', 'cor_set_os');" class="form-control select2" name="version.os">
+                                    <option value="">[Select One]</option>
+                                    <option value="android">Android</option>
+                                    <option value="ios">IOS</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_set_os">
+                                    <i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_set_os"><i class="fa fa-check"></i> correct</p>
                             </div>
                         </div>
                     </div>
                     <div class="row jarak_atas">
                         <div class="form-group">
-                            <label class="col-md-3">Version Name</label>
+                            <label class="col-md-3">Deskripsi</label>
                             <div class="col-md-7">
-                                <input class="form-control" id="set_version_name" disabled>
+                                <textarea name="version.description"
+                                          oninput="inputWarning('war_set_deskripsi', 'cor_set_deskripsi')"
+                                          class="form-control" rows="10" id="set_deskripsi"></textarea>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_set_deskripsi">
+                                    <i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_set_deskripsi"><i class="fa fa-check"></i> correct</p>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="row jarak_atas" id="for_edit-2">
-                    <div class="form-group">
-                        <label class="col-md-3">Upload APK</label>
-                        <div class="col-md-7">
-                            <div class="input-group">
-                                <span class="input-group-btn">
-                                    <span class="btn btn-default btn-file">Browse…
-                                        <input type="file" id="set_upload_apk" name="fileUpload" onchange="setNameFile('nama_file'); inputWarning('war_set_upload_apk', 'cor_set_upload_apk')">
-                                    </span>
-                                </span>
-                                <input type="text" class="form-control" readonly id="nama_file">
-                            </div>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_upload_apk">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_upload_apk"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row jarak_atas">
-                    <div class="form-group">
-                        <label class="col-md-3">Deskripsi</label>
-                        <div class="col-md-7">
-                            <textarea name="versionZebra.description" oninput="inputWarning('war_set_deskripsi', 'cor_set_deskripsi')" class="form-control" rows="10" id="set_deskripsi"></textarea>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_set_deskripsi">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_set_deskripsi"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-                    <sj:submit cssStyle="margin-left: 147px; margin-top: 20px" targets="crud" type="button" cssClass="btn btn-success"
+                    <sj:submit cssStyle="margin-left: 147px; margin-top: 20px" targets="crud" type="button"
+                               cssClass="btn btn-success"
                                formIds="addForm" id="save" name="save"
                                onBeforeTopics="beforeProcessSave"
                                onCompleteTopics="closeDialog,successDialog"
@@ -318,7 +400,8 @@
                         <i class="fa fa-check"></i>
                         Save
                     </sj:submit>
-                    <button style="display: none; cursor: no-drop; margin-left: 147px; margin-top: 20px" type="button" class="btn btn-success" id="load_add"><i
+                    <button style="display: none; cursor: no-drop; margin-left: 147px; margin-top: 20px" type="button"
+                            class="btn btn-success" id="load_add"><i
                             class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                     </button>
                 </s:form>
@@ -333,61 +416,63 @@
 
 <div class="modal fade" id="modal-edit">
     <div class="modal-dialog modal-md">
-            <div class="modal-content">
-                <div class="modal-header" style="background-color: #00a65a">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" style="color: white"><i class="fa fa-desktop"></i> Edit Verison</span>
-                    </h4>
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-desktop"></i> Edit Verison</span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_edit"></p>
                 </div>
-                <div class="modal-body">
-                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_edit">
-                        <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                        <p id="msg_edit"></p>
-                    </div>
-                    <div class="row">
-                        <div class="form-group">
-                            <label class="col-md-3">Verison ID</label>
-                            <div class="col-md-7">
-                                <input class="form-control" id="edit_version_id" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak_atas">
-                        <div class="form-group">
-                            <label class="col-md-3">Version Name</label>
-                            <div class="col-md-7">
-                                <input class="form-control" id="edit_version_name" disabled>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row jarak_atas">
-                        <div class="form-group">
-                            <label class="col-md-3">Deskripsi</label>
-                            <div class="col-md-7">
-                                <textarea name="versionZebra.description" oninput="inputWarning('war_edit_deskripsi', 'cor_edit_deskripsi')" class="form-control" rows="10" id="edit_deskripsi"></textarea>
-                            </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="war_edit_deskripsi">
-                                    <i class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                                   id="cor_edit_deskripsi"><i class="fa fa-check"></i> correct</p>
-                            </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3">Verison ID</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_version_id" disabled>
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer" style="background-color: #cacaca">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
-                    </button>
-                    <button type="button" class="btn btn-success" id="save_edit"><i
-                            class="fa fa-check"></i> Save
-                    </button>
-                    <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
-                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
-                    </button>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Version Name</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="edit_version_name" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Deskripsi</label>
+                        <div class="col-md-7">
+                            <textarea name="version.description"
+                                      oninput="inputWarning('war_edit_deskripsi', 'cor_edit_deskripsi')"
+                                      class="form-control" rows="10" id="edit_deskripsi"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_edit_deskripsi">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_edit_deskripsi"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_edit"><i
+                        class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_edit"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -412,6 +497,14 @@
                                 <tr>
                                     <td><b>Version Name</b></td>
                                     <td><span id="v_version_name"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Tipe</b></td>
+                                    <td><span id="v_tipe"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Operating System</b></td>
+                                    <td><span id="v_os"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Deskripsi</b></td>
@@ -496,14 +589,14 @@
     }
 
     function saveVersion(tipe) {
-        if(!cekSession()){
+        if (!cekSession()) {
             var versionId = $('#edit_version_id').val();
             var deskripsi = $('#edit_deskripsi').val();
             var cekFile = false;
-            if(tipe == 'add'){
+            if (tipe == 'add') {
                 cekFile = cekFileAtas('set_upload_apk');
             }
-            if (!cekFile &&  deskripsi != '') {
+            if (!cekFile && deskripsi != '') {
                 var data = {
                     'tipe': tipe,
                     'version_id': versionId,
@@ -513,26 +606,28 @@
                 $('#save_edit').hide();
                 $('#load_edit').show();
                 dwr.engine.setAsync(true);
-                LicenseAction.saveVersion(dataString, {callback: function (res) {
-                        if(res.status == "success"){
+                LicenseAction.saveVersion(dataString, {
+                    callback: function (res) {
+                        if (res.status == "success") {
                             $('#modal-edit').modal('hide');
                             $('#info_dialog').dialog('open');
                             $('#save_edit').show();
                             $('#load_edit').hide();
-                        }else{
+                        } else {
                             $('#warning_edit').show().fadeOut(5000);
                             $('#msg_edit').text(res.msg);
                             $('#save_edit').show();
                             $('#load_edit').hide();
                         }
-                    }});
+                    }
+                });
             } else {
                 $('#warning_edit').show().fadeOut(5000);
                 $('#msg_edit').text("Silahkan cek kembali data inputan berikut...!");
                 if (cekFile) {
                     $('#war_edit_upload_apk').show();
                 }
-                if(deskripsi == ''){
+                if (deskripsi == '') {
                     $('#war_edit_deskripsi').show();
                 }
             }
@@ -544,6 +639,8 @@
             if (res.idVersion != null) {
                 $('#v_version_id').text(res.idVersion);
                 $('#v_version_name').text(res.versionName);
+                $('#v_tipe').text(res.tipe.toUpperCase());
+                $('#v_os').text(res.os.toUpperCase());
                 $('#v_deskripsi').text(res.description);
                 $('#v_created_who').text(res.createdWho);
                 $('#v_created_date').text(converterDateYmdHms(res.createdDate));
@@ -560,7 +657,25 @@
     function setNameFile(id) {
         var reader = new FileReader();
         reader.readAsDataURL(event.target.files[0]);
-        $('#'+id).val(event.target.files[0].name);
+        $('#' + id).val(event.target.files[0].name);
+    }
+
+    function setTipe(val){
+        if(val != ''){
+            if("zebra" == val){
+                $('#form_name_version').hide();
+                $('#from_upload').show();
+                $('#set_name_version').val('');
+            }else{
+                $('#form_name_version').show();
+                $('#from_upload').hide();
+                $('#set_upload_apk').val('');
+            }
+        }else{
+            $('#form_name_version').hide();
+            $('#from_upload').hide();
+            $('#set_upload_apk').val('');
+        }
     }
 
 

@@ -1,4 +1,10 @@
------- 2021-02-17 ===> Master Jenis Pegawai
+------ 2021-02-20 ===> Master Kelompok Position
+-- Memberi Flag Multiple Person untuk beberapa kelompok jabatan
+
+    UPDATE im_hris_kelompok_position
+    SET flag_is_multiple_person = 'Y' WHERE kelompok_id = 'KL49' OR kelompok_id = 'KL50'
+
+------ 2021-02-18 ===> Master Jenis Pegawai
 -- Mengisi Persen Gaji
 
     UPDATE im_hris_jenis_pegawai

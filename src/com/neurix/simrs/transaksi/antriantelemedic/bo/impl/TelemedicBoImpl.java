@@ -31,6 +31,7 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.dao.HeaderTindakanDao;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
 import com.neurix.simrs.master.tindakan.model.ImSimrsHeaderTindakanEntity;
@@ -534,8 +535,8 @@ public class TelemedicBoImpl implements TelemedicBo {
         return "";
     }
 
-    private ImSimrsPelayananEntity getPelayananById(String idPelayanan) throws GeneralBOException{
-        return pelayananDao.getById("idPelayanan", idPelayanan);
+    private Pelayanan getPelayananById(String idPelayanan) throws GeneralBOException{
+        return pelayananDao.getPelayananById("idPelayanan", idPelayanan);
     }
 
     private ImSimrsDokterEntity getDokterById(String idDokter) throws GeneralBOException{
@@ -621,6 +622,9 @@ public class TelemedicBoImpl implements TelemedicBo {
         // status akan ditentukan dengan mencari slot waiting list.
         // apa saja properti yang dibutuhkan ? lihat ItSimrsAntrianTelemedicEntity.java
 
+        // Sigit 2021-02-11, Mnambahkan pencarian hari ini
+        String stCurDate = CommonUtil.convertDateToString2(new java.sql.Date(System.currentTimeMillis()));
+        // END
         bean.setId("TMC"+CommonUtil.stDateSeq()+getSeqTelemedic());
         bean.setBranchId(branchId);
         bean.setKodeBank(kodeBank);
@@ -629,6 +633,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         hsCriteria.put("id_pelayanan", bean.getIdPelayanan());
         hsCriteria.put("status", "WL");
         hsCriteria.put("flag", "Y");
+        hsCriteria.put("created_date_to_date", stCurDate);
 
         // cek jika ada slot untuk waiting list
         List<ItSimrsAntrianTelemedicEntity> telemedicEntities = telemedicDao.getByCriteria(hsCriteria);

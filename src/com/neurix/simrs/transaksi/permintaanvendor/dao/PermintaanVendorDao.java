@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.DocPo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
@@ -423,5 +424,69 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    // 2021-02-17, Sigit. pencarian pabrik obat
+    // dibagi menjadi dua, "specific" & "all"
+    // specific -> untuk mencari pabrik berdasarkan yg telah terdaftar ke master obat
+    // all -> untuk memunculkan semua data pabrik obat pada master pabrik obat
+    // jika specific tidak ditemukan / belum ada data pada master obat. maka get data semua pabrik pada master pabrik
+    public List<PabrikObat> getListDataPabrikObatForPO(String idObat, String tipePencarian){
+
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        if ("all".equalsIgnoreCase(tipePencarian)){
+            pabrikObatList = getAllMasterObat();
+        } else {
+
+            String SQL = "SELECT \n" +
+                    "ob.id_pabrik_obat,\n" +
+                    "pb.nama\n" +
+                    "FROM (\n" +
+                    "\tSELECT\n" +
+                    "\ta.*\n" +
+                    "\tFROM \n" +
+                    "\t(\n" +
+                    "\t\tSELECT\n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.id_pabrik_obat,\n" +
+                    "\t\tMAX(a.created_date) as created_date\n" +
+                    "\t\tFROM im_simrs_obat a\n" +
+                    "\t\tGROUP BY a.id_obat, a.id_pabrik_obat\n" +
+                    "\t) a ORDER BY id_obat, created_date DESC\n" +
+                    ") ob\n" +
+                    "INNER JOIN (SELECT * FROM im_simrs_pabrik_obat WHERE flag = 'Y') pb ON pb.id = ob.id_pabrik_obat\n" +
+                    "WHERE ob.id_obat = '"+idObat+"'";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    PabrikObat pabrikObat = new PabrikObat();
+                    pabrikObat.setId(obj[0].toString());
+                    pabrikObat.setNama(obj[1].toString());
+                    pabrikObatList.add(pabrikObat);
+                }
+            }
+//            else {
+//                pabrikObatList = getAllMasterObat();
+//            }
+        }
+        return pabrikObatList;
+
+    }
+
+    private List<PabrikObat> getAllMasterObat(){
+        String SQL = "SELECT id, nama FROM im_simrs_pabrik_obat WHERE flag = 'Y' ORDER BY nama";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                PabrikObat pabrikObat = new PabrikObat();
+                pabrikObat.setId(obj[0].toString());
+                pabrikObat.setNama(obj[1].toString());
+                pabrikObatList.add(pabrikObat);
+            }
+        }
+        return pabrikObatList;
     }
 }

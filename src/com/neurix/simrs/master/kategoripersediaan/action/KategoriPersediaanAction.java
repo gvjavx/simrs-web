@@ -3,10 +3,7 @@ package com.neurix.simrs.master.kategoripersediaan.action;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
-import com.neurix.simrs.master.dietgizi.action.DietGiziAction;
-import com.neurix.simrs.master.dietgizi.bo.DietGiziBo;
-import com.neurix.simrs.master.dietgizi.model.DietGizi;
-import com.neurix.simrs.master.jenisobat.model.JenisObat;
+
 import com.neurix.simrs.master.kategoripersediaan.bo.KategoriPersediaanBo;
 import com.neurix.simrs.master.kategoripersediaan.model.KategoriPersediaan;
 import org.apache.log4j.Logger;

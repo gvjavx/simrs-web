@@ -40,6 +40,7 @@ public class Biodata extends BaseModel {
     private String stTanggalAktif;
     private String stTanggalMasuk;
     private String stTanggalPensiun;
+    private String stTanggalAkhirKontrak;
     private String tipePegawai;
     private String statusPegawai;
     private String statusPegawaiName;
@@ -353,6 +354,14 @@ public class Biodata extends BaseModel {
 
     public void setTanggalAkhirKontrak(Date tanggalAkhirKontrak) {
         this.tanggalAkhirKontrak = tanggalAkhirKontrak;
+    }
+
+    public String getStTanggalAkhirKontrak() {
+        return stTanggalAkhirKontrak;
+    }
+
+    public void setStTanggalAkhirKontrak(String stTanggalAkhirKontrak) {
+        this.stTanggalAkhirKontrak = stTanggalAkhirKontrak;
     }
 
     public int getMasaKerjaGolongan() {

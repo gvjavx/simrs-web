@@ -855,8 +855,8 @@
                 cekPassword = true;
             }
 
-            if (userId && username && area && unit && role && bidang && jabatan && email != ''
-                && cekPassword && cekPelayanan) {
+            if ((userId && username && area && unit && role && bidang && jabatan && email != ''
+                && cekPassword && cekPelayanan) || (tipe = 'delete')) {
                 if (tempUserId == 'Y' && tempEmail == 'Y') {
                     $('#save_add').hide();
                     $('#load_add').show();

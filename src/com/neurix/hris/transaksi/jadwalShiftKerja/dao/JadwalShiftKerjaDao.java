@@ -249,47 +249,106 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
 
         List<JadwalPelayananDTO> listOfResult = new ArrayList<JadwalPelayananDTO>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "SELECT\n" +
-                "\tdk.id_dokter,\n" +
-                "\tdk.nama_dokter,\n" +
-                "\tpl.id_pelayanan,\n" +
-                "\tpl.nama_pelayanan,\n" +
-                "\tjd.tanggal,\n" +
-                "\tsh.jam_awal,\n" +
-                "\tsh.jam_akhir,\n" +
-                "\tjd.branch_id,\n" +
-                "\tbr.branch_name,\n" +
-                "\tdk.kuota,\n" +
-                "\tjdd.flag_libur\n" +
+//        String query = "SELECT\n" +
+//                "\tdk.id_dokter,\n" +
+//                "\tdk.nama_dokter,\n" +
+//                "\tpl.id_pelayanan,\n" +
+//                "\tpl.nama_pelayanan,\n" +
+//                "\tjd.tanggal,\n" +
+//                "\tsh.jam_awal,\n" +
+//                "\tsh.jam_akhir,\n" +
+//                "\tjd.branch_id,\n" +
+//                "\tbr.branch_name,\n" +
+//                "\tdk.kuota,\n" +
+//                "\tjdd.flag_libur\n" +
+//                "FROM \n" +
+//                "\tim_simrs_dokter dk\n" +
+//                "\tINNER JOIN im_simrs_dokter_pelayanan dpl ON dk.id_dokter = dpl.id_dokter\n" +
+//                "\tINNER JOIN (SELECT\n" +
+//                "a.id_pelayanan,\n" +
+//                "a.branch_id,\n" +
+//                "b.nama_pelayanan,\n" +
+//                "b.tipe_pelayanan,\n" +
+//                "b.kategori_pelayanan,\n" +
+//                "b.divisi_id,\n" +
+//                "b.kode_vclaim\n" +
+//                "FROM im_simrs_pelayanan a\n" +
+//                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
+//                "\tINNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
+//                "\tINNER JOIN it_hris_jadwal_shift_kerja_detail jdd ON jdd.nip=pg.nip\n" +
+//                "\tINNER JOIN it_hris_jadwal_shift_kerja jd ON jd.jadwal_shift_kerja_id=jdd.jadwal_shift_kerja_id\n" +
+//                "\tINNER JOIN im_hris_shift sh ON sh.shift_id=jdd.shift_id\n" +
+//                "\tINNER JOIN it_hris_pegawai_position pp ON pp.nip=pg.nip\n" +
+//                "\tINNER JOIN im_position ps ON ps.position_id=pp.position_id\n" +
+//                "\tINNER JOIN im_hris_kelompok_position kp ON kp.kelompok_id=ps.kelompok_id\n" +
+//                "\tINNER JOIN im_branches br ON br.branch_id=jd.branch_id\n" +
+//                "WHERE \n" +
+//                "\tdk.flag='Y'\n" +
+//                "\tAND dpl.flag='Y'\n" +
+//                "\tAND pl.flag='Y'\n" +
+//                "\tAND pg.flag='Y'\n" +
+//                "\tAND jdd.flag='Y'\n" +
+//                "\tAND jd.flag='Y'\n" +
+//                "\tAND sh.flag='Y'\n" +
+//                "\tAND pp.flag='Y'\n" +
+//                "\tAND ps.flag='Y'\n" +
+//                "\tAND kp.flag='Y'\n" +
+//                "\tAND br.flag='Y'\n" + searchPelayanan + searchKelompok + searchBranch + searchNip + searchTanggal +
+//                "ORDER BY\n" +
+//                "\tpg.nip";
+
+        String SQL = "SELECT\n" +
+                "dk.id_dokter,\n" +
+                "dk.nama_dokter,\n" +
+                "pl.id_pelayanan,\n" +
+                "pl.nama_pelayanan,\n" +
+                "jd.tanggal,\n" +
+                "sh.jam_awal,\n" +
+                "sh.jam_akhir,\n" +
+                "jd.branch_id,\n" +
+                "br.branch_name,\n" +
+                "dk.kuota,\n" +
+                "jdd.flag_libur\n" +
                 "FROM \n" +
-                "\tim_simrs_dokter dk\n" +
-                "\tINNER JOIN im_simrs_dokter_pelayanan dpl ON dk.id_dokter = dpl.id_dokter\n" +
-                "\tINNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
-                "\tINNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
-                "\tINNER JOIN it_hris_jadwal_shift_kerja_detail jdd ON jdd.nip=pg.nip\n" +
-                "\tINNER JOIN it_hris_jadwal_shift_kerja jd ON jd.jadwal_shift_kerja_id=jdd.jadwal_shift_kerja_id\n" +
-                "\tINNER JOIN im_hris_shift sh ON sh.shift_id=jdd.shift_id\n" +
-                "\tINNER JOIN it_hris_pegawai_position pp ON pp.nip=pg.nip\n" +
-                "\tINNER JOIN im_position ps ON ps.position_id=pp.position_id\n" +
-                "\tINNER JOIN im_hris_kelompok_position kp ON kp.kelompok_id=ps.kelompok_id\n" +
-                "\tINNER JOIN im_branches br ON br.branch_id=jd.branch_id\n" +
+                "im_simrs_dokter dk\n" +
+                "INNER JOIN im_simrs_dokter_pelayanan dpl ON dk.id_dokter = dpl.id_dokter\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "a.flag,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim,\n" +
+                "b.flag\t\t\t\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
+                "INNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
+                "INNER JOIN it_hris_jadwal_shift_kerja_detail jdd ON jdd.nip=pg.nip\n" +
+                "INNER JOIN it_hris_jadwal_shift_kerja jd ON jd.jadwal_shift_kerja_id=jdd.jadwal_shift_kerja_id\n" +
+                "INNER JOIN im_hris_shift sh ON sh.shift_id=jdd.shift_id\n" +
+                "INNER JOIN it_hris_pegawai_position pp ON pp.nip=pg.nip\n" +
+                "INNER JOIN im_position ps ON ps.position_id=pp.position_id\n" +
+                "INNER JOIN im_hris_kelompok_position kp ON kp.kelompok_id=ps.kelompok_id\n" +
+                "INNER JOIN im_branches br ON br.branch_id=jd.branch_id\n" +
                 "WHERE \n" +
-                "\tdk.flag='Y'\n" +
-                "\tAND dpl.flag='Y'\n" +
-                "\tAND pl.flag='Y'\n" +
-                "\tAND pg.flag='Y'\n" +
-                "\tAND jdd.flag='Y'\n" +
-                "\tAND jd.flag='Y'\n" +
-                "\tAND sh.flag='Y'\n" +
-                "\tAND pp.flag='Y'\n" +
-                "\tAND ps.flag='Y'\n" +
-                "\tAND kp.flag='Y'\n" +
-                "\tAND br.flag='Y'\n" + searchPelayanan + searchKelompok + searchBranch + searchNip + searchTanggal +
+                "dk.flag='Y'\n" +
+                "AND dpl.flag='Y'\n" +
+                "AND pl.flag='Y'\n" +
+                "AND pg.flag='Y'\n" +
+                "AND jdd.flag='Y'\n" +
+                "AND jd.flag='Y'\n" +
+                "AND sh.flag='Y'\n" +
+                "AND pp.flag='Y'\n" +
+                "AND ps.flag='Y'\n" +
+                "AND kp.flag='Y'\n" +
+                "AND br.flag='Y'\n" + searchPelayanan + searchKelompok + searchBranch + searchNip + searchTanggal +
                 "ORDER BY\n" +
-                "\tpg.nip";
+                "pg.nip";
 
         results = this.sessionFactory.getCurrentSession()
-                .createSQLQuery(query)
+                .createSQLQuery(SQL)
                 .list();
 
         for (Object[] row : results) {
@@ -423,7 +482,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
         String notLikeDokter = "";
 
         if(noteLike != null && !"".equalsIgnoreCase(noteLike)){
-            notLikeDokter = "AND a.id_dokter IN ("+noteLike+") \n";
+            notLikeDokter = "AND a.id_dokter NOT IN ("+noteLike+") \n";
         }
 
         String SQL = "SELECT\n" +
@@ -456,7 +515,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "FROM it_simrs_header_checkup a \n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                 "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
                 "AND d.tipe_pelayanan IN ('rawat_jalan')\n" +
                 "AND b.id_jenis_periksa_pasien NOT LIKE 'bpjs'\n" +
@@ -469,7 +537,16 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "FROM it_simrs_header_checkup a \n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                 "INNER JOIN it_simrs_dokter_team c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan d ON b.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
                 "WHERE CAST(a.created_date AS DATE) = CURRENT_DATE\n" +
                 "AND d.tipe_pelayanan IN ('rawat_jalan')\n" +
                 "AND b.id_jenis_periksa_pasien LIKE 'bpjs'\n" +

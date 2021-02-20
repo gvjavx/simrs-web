@@ -11,6 +11,7 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.dao.VendorDao;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.hargaobat.dao.HargaObatDao;
@@ -1635,7 +1636,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         }
 
         String pelayananTujuan = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayanan());
         if (pelayananEntity != null){
             pelayananTujuan = pelayananEntity.getNamaPelayanan();
         }
@@ -2776,12 +2777,12 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         String pelayananAsal = "";
         String pelayananTujuan = "";
-        ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayanan());
+        Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayanan());
         if (pelayananEntity != null){
             pelayananAsal = pelayananEntity.getNamaPelayanan();
 
             // pelayanan tujuan
-            pelayananEntity = pelayananDao.getById("idPelayanan", bean.getIdPelayananTujuan());
+            pelayananEntity = pelayananDao.getPelayananById("idPelayanan", bean.getIdPelayananTujuan());
             if (pelayananEntity != null){
                 pelayananTujuan = pelayananEntity.getNamaPelayanan();
             }

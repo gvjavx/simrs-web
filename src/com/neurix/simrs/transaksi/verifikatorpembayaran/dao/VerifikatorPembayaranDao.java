@@ -75,7 +75,8 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
                 "at.flag_bayar_resep,\n" +
                 "po.approved_flag,\n" +
                 "hpl.nama_pelayanan,\n" +
-                "dk.nama_dokter\n" +
+                "dk.nama_dokter,\n" +
+                "po.url_foto_bukti \n" +
                 "FROM (SELECT * FROM it_simrs_pembayaran_online WHERE approved_flag = 'Y') po\n" +
                 "INNER JOIN (SELECT id, branch_id, id_pasien , id_jenis_periksa_pasien, flag_bayar_konsultasi, flag_bayar_resep, flag_resep, id_pelayanan, id_dokter FROM it_simrs_antrian_telemedic WHERE status = 'SK')at ON at.id = po.id_antrian_telemedic\n" +
                 "INNER JOIN (SELECT kode_rekening, nama_kode_rekening FROM im_akun_kode_rekening) kr ON kr.kode_rekening = po.kode_bank\n" +
@@ -95,7 +96,7 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
             for (Object[] obj : objects){
                 AntrianTelemedic antritanTelemedicData = new AntrianTelemedic();
                 antritanTelemedicData.setId(obj[0].toString());
-                antritanTelemedicData.setKeterangan(obj[1].toString());
+                antritanTelemedicData.setKeterangan(obj[1].toString().toUpperCase());
                 antritanTelemedicData.setIdJenisPeriksaPasien(obj[2].toString());
                 antritanTelemedicData.setNamaBank(obj[3].toString());
                 antritanTelemedicData.setIdPasien(obj[4].toString());
@@ -109,6 +110,8 @@ public class VerifikatorPembayaranDao extends GenericDao<ItSimrsPembayaranOnline
                 antritanTelemedicData.setApprovedFlag(obj[12] == null ? null : obj[12].toString());
                 antritanTelemedicData.setNamaPelayanan(obj[13] == null ? null : obj[13].toString());
                 antritanTelemedicData.setNamaDokter(obj[14] == null ? null : obj[14].toString());
+                antritanTelemedicData.setStLastUpdate(antritanTelemedicData.getLastUpdate().toString());
+                antritanTelemedicData.setUrlFotoStruk(obj[15] == null ? "" : obj[15].toString());
 
                 // filter status transaksi
                 if ("asuransi".equalsIgnoreCase(antritanTelemedicData.getIdJenisPeriksaPasien())){

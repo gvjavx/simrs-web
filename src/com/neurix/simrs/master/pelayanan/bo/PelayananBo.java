@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * Created by Toshiba on 12/11/2019.
  */
-public interface PelayananBo extends BaseMasterBo<Pelayanan> {
+public interface PelayananBo {
     public List<Pelayanan> getListAllPelayanan() throws GeneralBOException;
     public List<Pelayanan> getListApotek(String branch, String tipeApotek) throws GeneralBOException;
     public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException;
@@ -19,13 +19,24 @@ public interface PelayananBo extends BaseMasterBo<Pelayanan> {
     ImSimrsPelayananEntity getPelayananByDivisiId(String id,String branchId) throws GeneralBOException;
 
     public List<Pelayanan> getListPelayananPaketPeriksa(String branch) throws GeneralBOException;
-    public ImSimrsPelayananEntity getPelayananById(String id) throws GeneralBOException;
+    public Pelayanan getPelayananById(String id) throws GeneralBOException;
     public List<Pelayanan> getListPelayananFarmasi(String branchId) throws GeneralBOException;
 
     public List<Pelayanan> getListPelayananWithLab(String tipe) throws GeneralBOException;
     public List<ImSimrsPelayananEntity> getByCriteria(Map criteria) throws GeneralBOException;
 
     public List<ImSimrsPelayananEntity> getPelayananByBranch(String branchId) throws GeneralBOException;
-    public List<ImSimrsPelayananEntity> getJustPelayananByBranch(String branchId) throws GeneralBOException;
-    public List<ImSimrsPelayananEntity> getJustPelayananAndLab(String branchId) throws GeneralBOException;
+
+    public List<Pelayanan> getListPelayananTelemedic(String branchId) throws GeneralBOException;
+
+    public List<Pelayanan> getJustPelayananByBranch(String branchId) throws GeneralBOException;
+    public List<Pelayanan> getJustPelayananAndLab(String branchId) throws GeneralBOException;
+
+    public Pelayanan getObjectPelayanan(Pelayanan bean) throws GeneralBOException;
+    public List<Pelayanan> getListObjectPelayanan(Pelayanan bean) throws GeneralBOException;
+    public void saveAdd(Pelayanan bean) throws GeneralBOException;
+    public void saveEdit(Pelayanan bean) throws GeneralBOException;
+    public void saveDelete(Pelayanan bean) throws GeneralBOException;
+
+    public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException;
 }

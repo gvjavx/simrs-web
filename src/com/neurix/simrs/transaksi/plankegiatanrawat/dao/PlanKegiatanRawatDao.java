@@ -82,7 +82,16 @@ public class PlanKegiatanRawatDao extends GenericDao<ItSimrsPlanKegiatanRawatEnt
                 "dt.status_periksa,\n" +
                 "pl.tipe_pelayanan \n" +
                 "FROM it_simrs_header_detail_checkup dt \n" +
-                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dt.id_pelayanan \n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "a.branch_id,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dt.id_pelayanan \n" +
                 "INNER JOIN it_simrs_header_checkup hd ON hd.no_checkup = dt.no_checkup \n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = hd.id_pasien \n" +
                 "LEFT JOIN  \n" +

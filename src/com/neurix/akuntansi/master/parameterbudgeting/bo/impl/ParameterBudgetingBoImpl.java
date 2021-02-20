@@ -11,7 +11,7 @@ import com.neurix.akuntansi.master.parameterbudgeting.model.*;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
-import com.neurix.simrs.master.kategoripersediaan.dao.KategoriPersedianDao;
+
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -106,7 +106,7 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
 
         if (bean != null){
 
-            boolean foundParameter = false;
+            boolean foundParameter = true;
             try {
                 foundParameter = parameterBudgetingDao.foundParameterBudgetingByCriteria(bean.getIdKategoriBudgeting(), bean.getDivisiId(), bean.getMasterId(), bean.getIdParamRekening());
             } catch (HibernateException e){

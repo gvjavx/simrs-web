@@ -11,6 +11,7 @@ import com.neurix.simrs.master.pasien.dao.PasienDao;
 import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.reseponline.bo.ResepOnlineBo;
@@ -131,7 +132,7 @@ public class ResepOnlineBoImpl implements ResepOnlineBo {
                 //pengirimanObat.setDescOfLocation();
 
                 if (obatEntity.getIdPelayanan() != null){
-                    ImSimrsPelayananEntity pelayananEntity = pelayananDao.getById("idPelayanan", obatEntity.getIdPelayanan());
+                    Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan", obatEntity.getIdPelayanan());
                     pengirimanObat.setPelayananName(pelayananEntity.getNamaPelayanan() == null ? "" : pelayananEntity.getNamaPelayanan());
                 }
                 if (obatEntity.getIdPasien() != null){

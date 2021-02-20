@@ -17,6 +17,15 @@ public class HeaderTindakan {
     private String kategoriInaBpjs;
     private String namaKategoriBpjs;
     private String flagKonsulTele;
+    private String flagVaksin;
+
+    public String getFlagVaksin() {
+        return flagVaksin;
+    }
+
+    public void setFlagVaksin(String flagVaksin) {
+        this.flagVaksin = flagVaksin;
+    }
 
     public String getFlagKonsulTele() {
         return flagKonsulTele;

@@ -15,7 +15,6 @@ import com.neurix.simrs.bpjs.vclaim.bo.BpjsBo;
 import com.neurix.simrs.bpjs.vclaim.model.SepRequest;
 import com.neurix.simrs.bpjs.vclaim.model.SepResponse;
 import com.neurix.simrs.master.dietgizi.bo.DietGiziBo;
-import com.neurix.simrs.master.dietgizi.dao.JenisDietDao;
 import com.neurix.simrs.master.dietgizi.model.DietGizi;
 import com.neurix.simrs.master.dietgizi.model.JenisDiet;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
@@ -28,7 +27,6 @@ import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
-import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
@@ -1436,13 +1434,13 @@ public class RawatInapAction extends BaseMasterAction {
                                     headerDetailCheckup.setNamaDiagnosa(diagnosaRawat.getKeteranganDiagnosa());
                                 }
 
-                                List<Pelayanan> pelayananList = new ArrayList<>();
+                                Pelayanan pelayananResult = new Pelayanan();
                                 Pelayanan pelayanan = new Pelayanan();
                                 pelayanan.setTipePelayanan("rawat_inap");
                                 pelayanan.setBranchId(CommonUtil.userBranchLogin());
 
                                 try {
-                                    pelayananList = pelayananBo.getByCriteria(pelayanan);
+                                    pelayananResult = pelayananBo.getObjectPelayanan(pelayanan);
                                 } catch (GeneralBOException e) {
                                     logger.error("[Found Error] when search pelayanan " + e.getMessage());
                                     finalResponse.setStatus("error");
@@ -1450,13 +1448,10 @@ public class RawatInapAction extends BaseMasterAction {
                                     return finalResponse;
                                 }
 
-                                if (pelayananList.size() > 0) {
-                                    pelayanan = pelayananList.get(0);
-                                    if(pelayanan.getIdPelayanan() == null || "".equalsIgnoreCase(pelayanan.getIdPelayanan())){
-                                        finalResponse.setStatus("error");
-                                        finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
-                                        return finalResponse;
-                                    }
+                                if(pelayananResult.getIdPelayanan() == null || "".equalsIgnoreCase(pelayananResult.getIdPelayanan())){
+                                    finalResponse.setStatus("error");
+                                    finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
+                                    return finalResponse;
                                 }
 
                                 if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
@@ -1875,7 +1870,7 @@ public class RawatInapAction extends BaseMasterAction {
 
                                 headerDetailCheckup.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
                                 headerDetailCheckup.setNoCheckup(noCheckup);
-                                headerDetailCheckup.setIdPelayanan(pelayanan.getIdPelayanan());
+                                headerDetailCheckup.setIdPelayanan(pelayananResult.getIdPelayanan());
                                 headerDetailCheckup.setIdRuangan(kamar);
                                 headerDetailCheckup.setStatusPeriksa("1");
                                 headerDetailCheckup.setCreatedDate(now);
@@ -2767,19 +2762,22 @@ public class RawatInapAction extends BaseMasterAction {
                     }
 
                     List<Branch> branchList = new ArrayList<>();
-                    List<Pelayanan> pelayananList = new ArrayList<>();
+
+                    Pelayanan pelayananResult = new Pelayanan();
                     Pelayanan pelayanan = new Pelayanan();
                     pelayanan.setTipePelayanan("rawat_inap");
                     pelayanan.setBranchId(CommonUtil.userBranchLogin());
 
                     try {
-                        pelayananList = pelayananBo.getByCriteria(pelayanan);
+                        pelayananResult = pelayananBo.getObjectPelayanan(pelayanan);
                     } catch (GeneralBOException e) {
                         logger.error("[Found Error] when search pelayanan " + e.getMessage());
                     }
 
-                    if (pelayananList.size() > 0) {
-                        pelayanan = pelayananList.get(0);
+                    if (pelayananResult.getIdPelayanan() == null || "".equalsIgnoreCase(pelayananResult.getIdPelayanan())) {
+                        response.setStatus("error");
+                        response.setMsg("Tidak memukan pelayanan rawat inap...@_@");
+                        return response;
                     }
 
                     if ("bpjs".equalsIgnoreCase(jenisPasien)) {
@@ -3220,7 +3218,7 @@ public class RawatInapAction extends BaseMasterAction {
                     checkup.setLastUpdate(now);
                     checkup.setLastUpdateWho(user);
                     checkup.setIdRuangan(kamar);
-                    checkup.setIdPelayanan(pelayanan.getIdPelayanan());
+                    checkup.setIdPelayanan(pelayananResult.getIdPelayanan());
                     checkup.setMetodePembayaran(metodeBayar);
                     checkup.setDiagnosa(obj.getString("diagnosa"));
                     checkup.setNamaDiagnosa(obj.getString("ket_diagnosa"));

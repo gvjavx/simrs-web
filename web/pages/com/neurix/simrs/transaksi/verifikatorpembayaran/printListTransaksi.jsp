@@ -17,6 +17,22 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/VerifikatorPembayaranAction.js"/>'></script>
     <script type='text/javascript'>
 
+
+        function formatRupiah(angka) {
+            if(angka != null && angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                if (angka < 0){
+                    return "-"+ribuan;
+                } else {
+                    return ribuan;
+                }
+            }else{
+                return 0;
+            }
+        }
+
     </script>
     <style>
         .top-7{
@@ -84,22 +100,48 @@
                                                     <option value="umum">UMUM</option>
                                                     <option value="asuransi">ASURANSI</option>
                                                 </select>
-                                                <%--<s:select list="#{'asuransi':'ASURANSI'}" cssStyle="margin-top: 7px"--%>
-                                                <%--headerKey="umum" headerValue="UMUM" name="antrianTelemedic.idJenisPeriksaPasien"--%>
-                                                <%--cssClass="form-control"/>--%>
                                             </div>
                                         </div>
                                     </div>
 
                                     <input type="hidden" id="status-transaksi" value="finish"/>
                                     <br>
-                                    <div class="form-group col-md-offset-3">
-                                        <button class="btn btn-success" id="btn-print"><i class="fa fa-print"></i> Print </button>
+                                    <div class="form-group col-md-offset-2">
+                                        <button class="btn btn-success" id="btn-search"><i class="fa fa-search"></i> Search </button>
+                                        <button class="btn btn-success" id="btn-print"><i class="fa fa-print"></i> Print Sumary</button>
                                         <a type="button" class="btn btn-danger" href="initForm_onlinepaymentverif.action">
                                             <i class="fa fa-refresh"></i> Back
                                         </a>
                                     </div>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-hamburger"></i> List Transaksi</h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <table class="table table-bordered">
+                                    <thead style="font-size: 13px; background-color: #90ee90;">
+                                    <td>No. Trans</td>
+                                    <td>Jenis Trans</td>
+                                    <td>Keterangan</td>
+                                    <td>Bank</td>
+                                    <td>No. RM</td>
+                                    <td>Pasien</td>
+                                    <td>Pelayanan</td>
+                                    <td>Dokter</td>
+                                    <td align="center">Nominal</td>
+                                    <td>Last Update</td>
+                                    <td>Last Update Who</td>
+                                    <td>Action</td>
+                                    </thead>
+                                    <tbody id="body-search" style="font-size: 11px;">
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
@@ -240,7 +282,6 @@
             allowPrint = false;
         }
 
-        $("#modal-loading-dialog").modal('hide');
         if (allowPrint){
             showDialog("loading");
             var params = { "antrianTelemedic.stDateFrom" : tanggal, "antrianTelemedic.shiftId" : shifId, "antrianTelemedic.idJenisPeriksaPasien" : jenisPasien, "antrianTelemedic.statusTransaksi" : statusPasien };
@@ -251,6 +292,70 @@
             $("#alert-shift").show().fadeOut(5000);
         }
     });
+
+    $("#btn-search").click(function () {
+        dwr.engine.setAsync(true);
+        var tanggal         = $("#tanggal").val();
+        var shifId          = $("#sel-shift option:selected").val();
+        var jenisPasien     = $("#sel-jenis-pasien option:selected").val();
+        var statusPasien    = $("#status-transaksi").val();
+
+        var allowPrint = true;
+        var strError = "";
+        if (tanggal == ""){
+            strError += "<div>Tanggal Harus Diisi !</div>";
+            allowPrint = false;
+        }
+        if (shifId == "" || shifId == null){
+            strError += "<div>Shift Harus Dipilih !</div>";
+            allowPrint = false;
+        }
+        if (jenisPasien == "" || jenisPasien == null){
+            strError += "<div>Jenis Harus Dipilih !</div>";
+            allowPrint = false;
+        }
+
+        if (allowPrint){
+            //alert("onclick");
+            $("#modal-loading-dialog").modal('show');
+            var objData = {"date" : tanggal, "shift" : shifId, "jenis" : jenisPasien, "status" : statusPasien};
+            var stJson  = JSON.stringify(objData);
+
+            dwr.engine.setAsync(false);
+            VerifikatorPembayaranAction.getSearchListTransByShift(stJson, function (res) {
+                $("#modal-loading-dialog").modal('hide');
+                var str = '';
+                $.each(res, function(i, item){
+                    str += '<tr>'+
+                            '<td>'+item.id+'</td>'+
+                            '<td style="font-weight: bold">'+item.idJenisPeriksaPasien.toUpperCase()+'</td>'+
+                            '<td>'+item.keterangan+'</td>'+
+                            '<td>'+item.namaBank+'</td>'+
+                            '<td>'+item.idPasien+'</td>'+
+                            '<td>'+item.namaPasien+'</td>'+
+                            '<td>'+item.namaPelayanan+'</td>'+
+                            '<td>'+item.namaDokter+'</td>'+
+                            '<td style="text-align: right;">'+formatRupiah(item.nominal)+'</td>'+
+                            '<td>'+item.stLastUpdate+'</td>'+
+                            '<td>'+item.lastUpdateWho+'</td>'+
+                            '<td><button class="btn btn-primary" onclick="printInvoice(\''+item.id+'\');" target="_blank"><i class="fa fa-print"></i></button></td>'+
+                        '</tr>';
+                });
+
+                $("#body-search").html(str);
+            });
+        } else {
+            $("#alert-shift").html(strError);
+            $("#alert-shift").show().fadeOut(5000);
+        }
+    });
+
+    function printInvoice(id) {
+        var url = '<s:url  namespace="/onlinepaymentverif" action="print_onlinepaymentverif"/>';
+        window.open(url+"?id="+id+"&tipe=invoice",  "_blank");
+        //var host = firstpath()+"/onlinepaymentverif/print_onlinepaymentverif.action?id="+id+"&tipe=invoice";
+        //post(host);
+    }
 
     function formatRupiah(angka) {
         if(angka != "" && angka != null && parseInt(angka) > 0){

@@ -52,15 +52,6 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="verifForm" method="post" namespace="/verifasrj" action="searchVerifAs_verifasrj.action" theme="simple" cssClass="form-horizontal">
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Tipe Pelayanan</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:select list="#{'rawat_inap':'Rawat Inap'}" cssStyle="margin-top: 7px"--%>
-                                                  <%--name="headerDetailCheckup.tipePelayanan"--%>
-                                                  <%--headerKey="rawat_jalan" headerValue="Rawat Jalan"--%>
-                                                  <%--cssClass="form-control select2"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <s:hidden name="headerDetailCheckup.tipePelayanan" value="rawat_jalan"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
@@ -100,27 +91,27 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Tanggal MRS</label>--%>
-                                    <%--<div class="col-sm-2">--%>
-                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<i class="fa fa-calendar"></i>--%>
-                                            <%--</div>--%>
-                                            <%--<s:textfield id="tgl_from" name="headerDetailCheckup.stDateFrom" cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<div class="col-sm-2">--%>
-                                        <%--<div class="input-group date" style="margin-top: 7px">--%>
-                                            <%--<div class="input-group-addon">--%>
-                                                <%--<i class="fa fa-calendar"></i>--%>
-                                            <%--</div>--%>
-                                            <%--<s:textfield id="tgl_to" name="headerDetailCheckup.stDateTo" cssClass="form-control"--%>
-                                                         <%--required="false"/>--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Tanggal Masuk</label>
+                                    <div class="col-sm-2">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_from" name="headerDetailCheckup.stDateFrom" cssClass="form-control datemask2"
+                                                         required="false"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <div class="input-group date" style="margin-top: 7px">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                            <s:textfield id="tgl_to" name="headerDetailCheckup.stDateTo" cssClass="form-control datemask2"
+                                                         required="false"/>
+                                        </div>
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -283,7 +274,7 @@
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td><b>Tempat, Tanggal Lahir</b></td>
+                                    <td width="40%"><b>Tempat, Tanggal Lahir</b></td>
                                     <td><span id="tgl"></span></td>
                                 </tr>
                                 <tr>
@@ -296,7 +287,7 @@
                                 </tr>
                                 <tr>
                                     <td><b>Jenis Pasien</b></td>
-                                    <td><span style="background-color: #286090; color: white; border-radius: 5px; border: 1px solid black; padding: 5px" id="jenis_pasien"></span></td>
+                                    <td><span id="jenis_pasien"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Diagnosa</b></td>
@@ -471,7 +462,6 @@
                         $('#tgl').html(res.tempatLahir + ", " + converterDate(new Date(res.tglLahir)));
                         $('#alamat').html(alamat);
                         $('#poli').html(res.namaPelayanan);
-                        $('#jenis_pasien').html(res.statusPeriksaName);
                         $('#diagnosa').html(diagnosa);
                         $('#h_id_pasien').val(res.idPasien);
                         $('#h_id_detail_pasien').val(res.idDetailCheckup);
@@ -479,7 +469,7 @@
                         $('#h_metode_bayar').val(res.metodePembayaran);
                         $('#h_jenis_pasien').val(res.idJenisPeriksaPasien);
                         $('#h_no_checkup').val(noCheckup);
-                        setLabelJenisPasien('jenis_pasien', res.idJenisPeriksaPasien);
+                        $('#jenis_pasien').html(changeJenisPasien(res.idJenisPeriksaPasien, res.statusPeriksaName));
                         $('#save_fin').show();
                         $('#load_fin').hide();
                         if(res.flagCloseTransaksi == "Y"){

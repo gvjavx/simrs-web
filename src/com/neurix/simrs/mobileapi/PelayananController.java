@@ -303,7 +303,7 @@ public class PelayananController implements ModelDriven<Object> {
                 result.setFlagLibur(item.getFlagLibur());
 
                 try {
-                    listAntianOnline = antrianOnlineBoProxy.getAntrianByCriteria(item.getIdPelayanan(), item.getIdDokter(), "", CommonUtil.convertStringToDate(tglCheckup), item.getJamAwal(), item.getJamAkhir(), branchId);
+                    listAntianOnline = antrianOnlineBoProxy.getAntrianByCriteria(item.getIdPelayanan(), item.getIdDokter(), "", CommonUtil.convertStringToDate(tglCheckup), item.getJamAwal(), item.getJamAkhir(), branchId, "");
                 } catch (GeneralBOException e) {
                     logger.error("Pelayanan.create] Error when get jumlah antrian",e);
                     e.printStackTrace();
@@ -334,12 +334,12 @@ public class PelayananController implements ModelDriven<Object> {
         if  (action.equalsIgnoreCase("getListPelayanan")){
             List<Pelayanan> result = new ArrayList<>();
 
-            Pelayanan bean = new Pelayanan();
-            bean.setTipePelayanan(tipePelayanan);
-            bean.setBranchId(branchId);
+//            Pelayanan bean = new Pelayanan();
+//            bean.setTipePelayanan(tipePelayanan);
+//            bean.setBranchId(branchId);
 
             try {
-                result = pelayananBoProxy.getByCriteria(bean);
+                result = pelayananBoProxy.getListPelayananTelemedic(branchId);
 
             } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list pelayanan",e);
