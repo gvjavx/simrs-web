@@ -36,6 +36,8 @@
         }
 
         $(document).ready(function () {
+            status_n = [];
+            nilai_n = 0;
 
             $('#permintaan_po').addClass('active');
 
@@ -291,7 +293,21 @@
                                            id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                            </div>z
+
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Pabrik Obat</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control" id="combo-pabrik"
+                                               style="margin-top: 7px"
+                                               oninput="var warn =$('#war_combo_pabrik').is(':visible'); if (warn){$('#cor_combo_pabrik').show().fadeOut(3000);$('#war_combo_pabrik').hide()};">
+                                        </select>
+                                        <p style="color: red; display: none;"
+                                           id="war_combo_pabrik"><i class="fa fa-times"></i> required</p>
+                                        <p style="color: green; display: none;"
+                                           id="cor_combo_pabrik"><i class="fa fa-check"></i> correct</p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         <div class="box-header with-border"></div>
                         <div class="row" style="margin-top: 20px">
@@ -401,6 +417,7 @@
                                 <td align="center">Jml Biji/Lembar</td>
                                 <td align="center">Harga (Rp.)</td>
                                 <td align="center">Tipe</td>
+                                <td align="center">Pabrik Obat</td>
                                 <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>
@@ -496,6 +513,7 @@
                 $('#cor_po_biji_perlembar').show().fadeOut(3000);
                 $('#war_po_biji_perlembar').hide()
             }
+            console.log("is BPJS -> "+ selectedObj.isBpjs);
             if(selectedObj.isBpjs == "Y"){
                 $('#tipe_obat').val('bpjs').trigger('change');
             }else{
@@ -508,6 +526,7 @@
             $('#warning_fisik').html('');
             $('#id_obat').val(selectedObj.id);
             $('#id_pabrik').val(selectedObj.idPabrik);
+            console.log("id obat is : " + selectedObj.id);
             showComboPabrikObat(selectedObj.id);
             return selectedObj.nama;
         }
@@ -564,6 +583,8 @@
         $('#warning_fisik').html('');
     }
 
+    var nilai_n = 0;
+    var status_n = [];
     function addToListPo() {
 
         var vendor = $('#nama_vendor').val();
@@ -576,8 +597,9 @@
         var bijiPerLembar = $('#biji_perlembar').val();
         var tipe = $('#tipe_obat').val();
         var tgl = $('#tgl_cair').val();
-
         var idObat = $('#id_obat').val();
+        var idpabrik = $("#combo-pabrik").val();
+        var namapabrik = $("#combo-pabrik option:selected").text();
 
         var cek = false;
 
@@ -594,17 +616,23 @@
             } else {
                 $('#imgInp').attr('disabled',false).removeAttr('style');
                 $('#id_vendor').val(vendor);
-                var row = '<tr id=' + idObat + '>' +
-                        '<td>' + idObat + '</td>' +
-                        '<td>' + namaObat + '</td>' +
-                        '<td align="center">' + jumlah + '</td>' +
-                        '<td align="center">' + jenis + '</td>' +
-                        '<td align="center">' + lembarPerBox + '</td>' +
-                        '<td align="center">' + bijiPerLembar + '</td>' +
-                        '<td align="right">' + harga + '</td>' +
-                        '<td align="center">' + tipe + '</td>' +
-                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" style="cursor: pointer;"></td>' +
+                var row = '<tr id=' + idObat + "-"+nilai_n+'> <input type="hidden" id="ind-'+nilai_n+'" value="'+nilai_n+'"/>' +
+                        '<td>' + idObat + '<input type="hidden" id="id-obat-'+nilai_n+'" value="'+idObat+'"></td>' +
+                        '<td>' + namaObat + '<input type="hidden" id="nama-obat-'+nilai_n+'" value="'+namaObat+'"></td>' +
+                        '<td align="center">' + jumlah + '<input type="hidden" id="jumlah-'+nilai_n+'" value="'+jumlah+'"></td>' +
+                        '<td align="center">' + jenis + '<input type="hidden" id="jenis-'+nilai_n+'" value="'+jenis+'"></td>' +
+                        '<td align="center">' + lembarPerBox + '<input type="hidden" id="lembar-per-box-'+nilai_n+'" value="'+lembarPerBox+'"></td>' +
+                        '<td align="center">' + bijiPerLembar + '<input type="hidden" id="biji-per-lembar-'+nilai_n+'" value="'+bijiPerLembar+'"></td>' +
+                        '<td align="right">' + harga + '<input type="hidden" id="harga-'+nilai_n+'" value="'+harga+'"></td>' +
+                        '<td align="center">' + tipe + '<input type="hidden" id="tipe-'+nilai_n+'" value="'+tipe+'"></td>' +
+                        '<td align="center">' + namapabrik + '<input type="hidden" id="id-pabrik-'+nilai_n+'" value="'+idpabrik+'"></td>' +
+                        '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\', \''+nilai_n+'\')" class="hvr-grow" src="<s:url value="/pages/images/icons8-trash-can-25.png"/>" style="cursor: pointer;"></td>' +
                         '</tr>';
+
+                        // push status & index;
+                        status_n.push({ "id": nilai_n, "status":"add"});
+                        nilai_n = nilai_n + 1;
+                        console.log(status_n);
 
                 $('#body_po').append(row);
                 $('#nama_vendor').attr('disabled', true);
@@ -638,14 +666,24 @@
             if (tgl == '') {
                 $('#war_po_cair').show();
             }
+            if (idpabrik == '') {
+                $('#war_combo_pabrik').show();
+            }
 
             $('#warning_po').show().fadeOut(5000);
             $('#msg_po').text('Silahkan cek kembali data inputan...!');
         }
     }
 
-    function delRowObat(id) {
-        $('#' + id).remove();
+    function updateStatusForDelete(id) {
+        //Find index of specific object using findIndex method.
+        var objIndex = status_n[id];
+        objIndex.status = "delete";
+    };
+
+    function delRowObat(id, ind) {
+        updateStatusForDelete(ind);
+        $('#' + id + "-" + ind).remove();
     }
 
     function savePermintaanPO() {
@@ -653,31 +691,71 @@
         var data = $('#tabel_po').tableToJSON();
         var result = [];
 
-        $.each(data, function (i, item) {
+        var list_aktif = [];
+        $.each(status_n, function (i, item) {
 
-            var tipe = data[i]["Tipe"];
-            console.log(tipe);
-            var tipeObat = "";
+            var statusobj = status_n[i];
+            if (statusobj.status != "delete"){
 
-            if(tipe == "bpjs"){
-                tipeObat = "Y";
-            }else{
-                tipeObat = "N";
+                var tipe = $("#tipe-"+i).val();
+                var tipeObat = "";
+                if (tipe == "bpjs"){
+                    tipeObat = "Y";
+                } else {
+                    tipeObat = "N";
+                }
+                var hargaRaw = $("#harga-"+i).val();
+                var harga = hargaRaw.replace(/[.]/g, '');
+                var idObat = $("#id-obat-"+i).val();
+                var namaObat = $("#nama-obat-"+i).val();
+                var qty = $("#jumlah-"+i).val();
+                var jenis = $("#jenis-"+i).val();
+                var lembarPerBox = $("#lembar-per-box-"+i).val();
+                var bijiPerLembar = $("#biji-per-lembar-"+i).val();
+                var idPabrikObat = $("#id-pabrik-"+i).val();
+
+                result.push({
+                    'id_obat':idObat,
+                    'nama_obat':namaObat,
+                    'qty':qty,
+                    'jenis_satuan':jenis,
+                    'lembar_per_box':lembarPerBox,
+                    'biji_per_lembar':bijiPerLembar,
+                    'harga':harga,
+                    'tipe_obat':tipeObat,
+                    'id_pabrik_obat':idPabrikObat
+                });
             }
-
-            var harga = data[i]["Harga (Rp.)"].replace(/[.]/g, '');
-
-            result.push({
-                'id_obat':data[i]["ID"],
-                'nama_obat':data[i]["Obat"],
-                'qty':data[i]["Jumlah"],
-                'jenis_satuan':data[i]["Jenis Satuan"],
-                'lembar_per_box':data[i]["Jml Lembar/Box"],
-                'biji_per_lembar':data[i]["Jml Biji/Lembar"],
-                'harga':harga,
-                'tipe_obat':tipeObat
-            });
         });
+
+//        console.log("savePermintaanPO.result => ");
+//        console.log(result);
+
+//        $.each(data, function (i, item) {
+//
+//            var tipe = data[i]["Tipe"];
+//            console.log(tipe);
+//            var tipeObat = "";
+//
+//            if(tipe == "bpjs"){
+//                tipeObat = "Y";
+//            }else{
+//                tipeObat = "N";
+//            }
+//
+//            var harga = data[i]["Harga (Rp.)"].replace(/[.]/g, '');
+//
+//            result.push({
+//                'id_obat':data[i]["ID"],
+//                'nama_obat':data[i]["Obat"],
+//                'qty':data[i]["Jumlah"],
+//                'jenis_satuan':data[i]["Jenis Satuan"],
+//                'lembar_per_box':data[i]["Jml Lembar/Box"],
+//                'biji_per_lembar':data[i]["Jml Biji/Lembar"],
+//                'harga':harga,
+//                'tipe_obat':tipeObat
+//            });
+//        });
 
         var stringData = JSON.stringify(result);
         var vendor = $('#nama_vendor').val();
@@ -807,19 +885,18 @@
 
     // combo pabrik
     function showComboPabrikObat(id){
-        PermintaanVendoAction.getListPabrikObatForPo(id, "specific", function (data) {
-
+        console.log("[showComboPabrikObat] id is :"+id)
+        PermintaanVendorAction.getListPabrikObatForPo(id, "specific", function (data) {
             if (data.length == 0){
                 showAllPabrik(id);
             } else {
-                var str = '<option> - </option>';
-                $each(data, function(i, item){
+                var str = '';
+                $.each(data, function(i, item){
                    str += "<option value='"+item.id+"'>"+item.nama+"</option>";
                 });
-                var str = "<option value='lain'> Show Other </option>";
+                str += "<option value='lain'> - Show Other - </option>";
                 $("#combo-pabrik").html(str);
             }
-
         });
     }
 
@@ -831,11 +908,13 @@
     })
 
     function showAllPabrik(id) {
-        PermintaanVendoAction.getListPabrikObatForPo(id, "all", function(data){
+        console.log("show all pabrik");
+        PermintaanVendorAction.getListPabrikObatForPo(id, "all", function(data){
             var str = "";
             $.each(data, function (i, item) {
-
+                str += "<option value='"+item.id+"'>"+item.nama+"</option>";
             });
+            $("#combo-pabrik").html(str);
         });
     }
     // END

@@ -497,6 +497,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     obatDetail.setLembarPerBox(new BigInteger(obj.getString("lembar_per_box")));
                     obatDetail.setBijiPerLembar(new BigInteger(obj.getString("biji_per_lembar")));
                     obatDetail.setTipeObat(obj.getString("tipe_obat"));
+                    obatDetail.setIdPabrikObat(obj.getString("id_pabrik_obat"));
 
                     obatDetailList.add(obatDetail);
                 }
@@ -797,16 +798,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
             }
 
-            List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+            // List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+            // fitur list obat baru sudah dinonaktifkan
 
             try {
-                checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+                checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, null);
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
-
-
 
             List<Map> listMapPersediaan = new ArrayList<>();
             BigDecimal hutangUsaha = new BigDecimal(0);
