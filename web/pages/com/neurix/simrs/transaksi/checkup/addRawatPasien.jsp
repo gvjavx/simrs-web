@@ -2242,39 +2242,39 @@
                         $('#diagnosa_awal').val(response.kodeDiagnosa);
                         $('#diagnosa_ket').val(response.namaDiagnosa);
                         setPelayananByKodeVclaim(response.kodePoliRujukan);
+                        val = "aktif";
+                        icon = "fa-warning";
+                        title = "Info!";
+                        warnClass = "alert-warning";
+                        msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Silahkan dilanjutkan...!</p>' +
+                            '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                            '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
 
-                        const oneDay = 24 * 60 * 60 * 1000;
-                        const firstDate = new Date(response.tglKunjungan);
-                        const secondDate = new Date(2020, 9, 21);
-                        const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
-
-                        if(diffDays == 0){
-                            val = "aktif";
-                            icon = "fa-info";
-                            title = "Info!";
-                            warnClass = "alert-success";
-                            msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
-                                '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
-                                '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
-                        }else{
-                            if(diffDays <= 90){
-                                val = "aktif";
-                                icon = "fa-warning";
-                                title = "Info!";
-                                warnClass = "alert-warning";
-                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan masih kurang 90 hari. Silahkan dilanjutkan...!</p>' +
-                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
-                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
-                            }else{
-                                val = "tidak ditemukan";
-                                icon = "fa-warning";
-                                title = "Warning!";
-                                warnClass = "alert-danger";
-                                msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan sudah melebihi 90 hari. Silahkan urus kembali surat rujukan...!</p>' +
-                                    '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
-                                    '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
-                            }
-                        }
+                        // const oneDay = 24 * 60 * 60 * 1000;
+                        // const firstDate = new Date(response.tglKunjungan);
+                        // const secondDate = new Date(2020, 9, 21);
+                        // const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+                        //
+                        // if(diffDays == 0){
+                        //     val = "aktif";
+                        //     icon = "fa-info";
+                        //     title = "Info!";
+                        //     warnClass = "alert-success";
+                        //     msg = '<p>Nomor Rujukan Berhasil Diverifikasi..!</p>' +
+                        //         '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                        //         '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                        // }else{
+                        //     if(diffDays <= 90){
+                        //     }else{
+                        //         val = "tidak ditemukan";
+                        //         icon = "fa-warning";
+                        //         title = "Warning!";
+                        //         warnClass = "alert-danger";
+                        //         msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Surat Rujukan sudah melebihi 90 hari. Silahkan urus kembali surat rujukan...!</p>' +
+                        //             '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
+                        //             '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
+                        //     }
+                        // }
 
                     } else {
                         val = "tidak ditemukan";
