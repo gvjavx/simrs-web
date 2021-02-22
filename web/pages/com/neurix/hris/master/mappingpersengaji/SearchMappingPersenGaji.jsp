@@ -224,7 +224,7 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <display:column property="mappingPersenGajiId" sortable="true" title="ID" />
-                                                            <display:column property="strNamaMappingPersenGaji" sortable="true" title="Nama Mapping"  />
+                                                            <display:column property="namaMappingPersenGaji" sortable="true" title="Nama Mapping"  />
                                                             <display:column property="strJenisGaji" sortable="true" title="Jenis Gaji"  />
                                                             <display:column property="presentase" sortable="true" title="Presentase"  />
                                                             <display:column property="flag" sortable="true" title="flag"  />
