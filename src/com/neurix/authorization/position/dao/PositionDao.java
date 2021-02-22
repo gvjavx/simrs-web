@@ -141,7 +141,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public String getNextPosition() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position')");
         Iterator<BigInteger> iter=query.list().iterator();
-        return "PS" + iter.next() + "";
+        String output =  "PS" + iter.next() + "";
+        return output;
     }
 
     public void addAndSaveHistory(ImPositionHistory entity) throws HibernateException {

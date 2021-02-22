@@ -92,16 +92,16 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pengalaman_kerja')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%03d", iter.next());
-
-        return "PK"+sId;
+        String output = "PK"+sId;
+        return output;
     }
 
     public String getNextPersonalHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal_history')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%02d", iter.next());
-
-        return "H"+sId;
+        String output = "H"+sId;
+        return output;
     }
 
     public List<ImBiodataEntity> getListPersonal() throws HibernateException {
