@@ -11252,7 +11252,12 @@ public class PayrollAction extends BaseMasterAction{
         if (tipe.equalsIgnoreCase("1721")) {
             titleReport = "Tarikan Excel 1721 " + branch.getBranchName();
             filename = "Tarikan Excel 1721-" + tahun + "-" + unit;
-            listData = payrollBo.searchReportEsptSys(tahun, unit);
+            try {
+                listData = payrollBo.searchReportEsptSys(tahun, unit);
+            }catch (GeneralBOException e){
+                logger.error(" [PayrollAction.payrollReportExcelEspt] ERROR : ");
+                return ERROR;
+            }
             listOfColumn.add("Masa Pajak");
             listOfColumn.add("Tahun Pajak");
             listOfColumn.add("Pembetulan");
