@@ -2973,7 +2973,7 @@ public class TransaksiObatAction extends BaseMasterAction {
                 }
             }
 
-
+            reportParams.put("idDokter", permintaanResep.getIdDokter());
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
             reportParams.put("resepId", idResep);

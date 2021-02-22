@@ -4090,8 +4090,12 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (checkup != null) {
 
+            reportParams.put("idDokter", permintaanResep.getIdDokter());
             reportParams.put("dokter", permintaanResep.getNamaDokter());
             reportParams.put("ttdDokter", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + permintaanResep.getTtdDokter());
+            reportParams.put("petugas", permintaanResep.getNamaApoteker());
+            reportParams.put("ttdPasien", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_PASIEN + permintaanResep.getTtdPasien());
+            reportParams.put("ttdApoteker", CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_APOTEKER + permintaanResep.getTtdApoteker());
             reportParams.put("area", CommonUtil.userAreaName());
             reportParams.put("unit", CommonUtil.userBranchNameLogin());
             reportParams.put("idPasien", checkup.getIdPasien());

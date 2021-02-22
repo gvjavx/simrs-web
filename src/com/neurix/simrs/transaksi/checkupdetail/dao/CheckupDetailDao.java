@@ -1535,7 +1535,8 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "a.ttd_pasien,\n" +
                     "a.ttd_apoteker,\n" +
                     "a.id_apoteker,\n" +
-                    "c.user_name\n" +
+                    "c.user_name,\n" +
+                    "b.id_dokter \n"+
                     "FROM mt_simrs_permintaan_resep a \n" +
                     "LEFT JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                     "LEFT JOIN im_users c ON a.id_apoteker = c.user_id\n" +
@@ -1554,6 +1555,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     resep.setTtdPasien(obj[4] == null ? "" : obj[4].toString());
                     resep.setTtdApoteker(obj[5] == null ? "" : obj[5].toString());
                     resep.setNamaApoteker(obj[7] == null ? "" : obj[7].toString());
+                    resep.setIdDokter(obj[8] == null ? "" : obj[8].toString());
                 }
             }
         }
