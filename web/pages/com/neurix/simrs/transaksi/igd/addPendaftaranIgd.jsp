@@ -2209,9 +2209,9 @@
                         $('#diagnosa_ket').val(response.namaDiagnosa);
 
                         val = "aktif";
-                        icon = "fa-warning";
+                        icon = "fa-info";
                         title = "Info!";
-                        warnClass = "alert-warning";
+                        warnClass = "alert-success";
                         msg = '<p>Nomor Rujukan Berhasil Diverifikasi..! Silahkan dilanjutkan...!</p>' +
                             '<p>Jenis Rawat  : ' + response.namaPelayanan + '</p>' +
                             '<p>Poli Rujukan : ' + response.namaPoliRujukan + '</p>';
