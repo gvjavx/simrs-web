@@ -1325,11 +1325,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
                     }
 
-                    if("asuransi".equalsIgnoreCase(jenisPasien)){
-                        if(asuransi != null && !"".equalsIgnoreCase(asuransi)){
+                    if ("asuransi".equalsIgnoreCase(jenisPasien)) {
+                        if (asuransi != null && !"".equalsIgnoreCase(asuransi)) {
                             try {
                                 JSONObject oj = new JSONObject(asuransi);
-                                if(oj != null){
+                                if (oj != null) {
                                     if (oj.has("no_polisi")) {
                                         headerDetailCheckup.setNoRujukan(oj.getString("no_polisi"));
                                     }
@@ -1337,7 +1337,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                         headerDetailCheckup.setTglRujukan(oj.getString("tgl_kejadian"));
                                     }
                                     if (oj.has("surat_rujukan")) {
-                                        if(oj.getString("surat_rujukan") != null && !"".equalsIgnoreCase(oj.getString("surat_rujukan"))){
+                                        if (oj.getString("surat_rujukan") != null && !"".equalsIgnoreCase(oj.getString("surat_rujukan"))) {
                                             BASE64Decoder decoder = new BASE64Decoder();
                                             byte[] decodedBytes = decoder.decodeBuffer(oj.getString("surat_rujukan"));
                                             logger.info("Decoded upload data : " + decodedBytes.length);
@@ -1356,7 +1356,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                                         }
                                     }
                                 }
-                            }catch (Exception e){
+                            } catch (Exception e) {
                                 response.setStatus("error");
                                 response.setMsg("[Found Error] JSON data asuransi tidak bisa dilakukan...!");
                             }
@@ -1495,7 +1495,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             finalResponse.setMsg(rujukanResponse.getMessage());
                         }
 
-                        if("200".equalsIgnoreCase(rujukanResponse.getStatus())){
+                        if ("200".equalsIgnoreCase(rujukanResponse.getStatus())) {
                             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
                             headerDetailCheckup.setIdDetailCheckup(idDetailCheckup);
                             headerDetailCheckup.setPoliRujukanInternal(idPoliRujukan);
@@ -1503,7 +1503,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             headerDetailCheckup.setLastUpdate(now);
                             headerDetailCheckup.setLastUpdateWho(user);
                             finalResponse = checkupDetailBo.setNoRujukan(headerDetailCheckup);
-                        }else{
+                        } else {
                             finalResponse.setStatus("error");
                             finalResponse.setMsg(rujukanResponse.getMessage());
                         }
@@ -2751,7 +2751,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         } catch (GeneralBOException e) {
                             logger.error("[Foun Error] when search diagnosa awal " + e);
                             finalResponse.setStatus("error");
-                            finalResponse.setMsg("Error saat mencari data diagnosa, "+e.getMessage());
+                            finalResponse.setMsg("Error saat mencari data diagnosa, " + e.getMessage());
                             return finalResponse;
                         }
 
@@ -2772,11 +2772,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         } catch (GeneralBOException e) {
                             logger.error("[Found Error] when search pelayanan " + e.getMessage());
                             finalResponse.setStatus("error");
-                            finalResponse.setMsg("Error saat mencari data pelayanan, "+e.getMessage());
+                            finalResponse.setMsg("Error saat mencari data pelayanan, " + e.getMessage());
                             return finalResponse;
                         }
 
-                        if(pelayananResult.getIdPelayanan() == null || "".equalsIgnoreCase(pelayananResult.getIdPelayanan())){
+                        if (pelayananResult.getIdPelayanan() == null || "".equalsIgnoreCase(pelayananResult.getIdPelayanan())) {
                             finalResponse.setStatus("error");
                             finalResponse.setMsg("Terjadi kesalahan ketika mencari pelayanan");
                             return finalResponse;
@@ -3932,6 +3932,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 }
                                             }
                                         }
+                                    } else {
+                                        logger.error("[CheckupAction.saveAdd] Error when get Tarif cover INA CBG ,update claim not success " + grouping1Response.getMessage());
+                                        throw new GeneralBOException("Error when get Tarif cover INA CBG, [" + grouping1Response.getMessage() + "]");
                                     }
 
                                 } else {
@@ -4439,9 +4442,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setLastUpdateWho(user);
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
                         String ktb = "";
-                        if("lab".equalsIgnoreCase(entity.getKategori())){
+                        if ("lab".equalsIgnoreCase(entity.getKategori())) {
                             ktb = "laboratorium";
-                        }else{
+                        } else {
                             ktb = "radiologi";
                         }
                         riwayatTindakan.setKategoriTindakanBpjs(ktb);
@@ -5304,7 +5307,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             reportParams.put("jenisKelamin", jk);
-            reportParams.put("diagnosa", "("+checkup.getDiagnosa()+") "+checkup.getNamaDiagnosa());
+            reportParams.put("diagnosa", "(" + checkup.getDiagnosa() + ") " + checkup.getNamaDiagnosa());
 
             try {
                 preDownload();
