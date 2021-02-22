@@ -92,7 +92,7 @@
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="tipe_penunjang"
                                                 name="laporanOps.tipePelayanan" onchange="setDetailPenunjang(this.value)">
-                                            <option value="farmasi">Farmasi</option>
+                                            <option value="farmasi" selected>Farmasi</option>
                                             <option value="kamar">Kamar</option>
                                             <option value="radiologi">Radiologi</option>
                                             <option value="lab">Laboratorium</option>
@@ -100,7 +100,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group" style="display: none" id="form_detail_penunjang">
-                                    <label class="control-label col-sm-4"><span id="text_tipe"></span></label>
+                                    <label class="control-label col-sm-4"><span id="text_tipe">Farmasi</span></label>
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="detail_penunjang"
                                                 name="laporanOps.tipePelayanan" multiple>
@@ -431,7 +431,8 @@
                 $('#branch').attr('onchange', 'getPelayanan(this.value)');
 
                 $('#form_kelas, #form_ruangan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
-                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_choice').hide();
                 getTahun();
                 getBranch();
             } else if("rawat_inap" == tipe){
@@ -442,7 +443,8 @@
                 getBranch();
                 getKelasKamar();
                 $('#form_pelayanan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
-                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_choice').hide();
             } else if("unggulan" == tipe){
                 $('#form_branch, #form_tahun, #form_choice').show();
 
@@ -452,7 +454,7 @@
                 $('#choice2').attr('checked', true);
                 $('#form_kelas, #form_ruangan, #form_tipe_pelayanan').hide();
                 $('#form_pelayanan').hide();
-                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
             } else if("diagnosa" == tipe){
                 $('#form_tipe_pelayanan, #form_branch, #form_bulan, #form_tahun').show();
 
@@ -463,7 +465,7 @@
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
-                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
             } else if("penunjang_medis" == tipe){
                 $('#form_tipe_penunjang, #form_detail_penunjang, #form_branch, #form_tahun').show();
 
@@ -479,14 +481,14 @@
                 $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
-                $('##form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
             }
         } else {
             $('#form_button').hide();
             $('#form_branch, #form_tahun').hide();
             $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
             $('#form_choice').hide();
-            $('##form_detail_penunjang, #form_tipe_penunjang').hide();
+            $('#form_detail_penunjang, #form_tipe_penunjang').hide();
         }
     }
 

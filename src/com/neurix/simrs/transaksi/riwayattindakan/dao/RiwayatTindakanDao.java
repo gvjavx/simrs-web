@@ -434,4 +434,36 @@ public class RiwayatTindakanDao extends GenericDao<ItSimrsRiwayatTindakanEntity,
         }
         return false;
     }
+
+    public Boolean checkIsPelayananRawatInap(String idDetailCheckup){
+
+        String SQL = "SELECT \n" +
+                "c.id_pelayanan, \n" +
+                "c.divisi_id, \n" +
+                "c.tipe_pelayanan \n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN (\n" +
+                "SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "a.branch_id,"+
+                "b.kode_vclaim\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n"+
+                ") c ON c.id_pelayanan = a.id_pelayanan\n" +
+                "WHERE a.id_detail_checkup = :idDetail \n" +
+                "AND tipe_pelayanan IN ('rawat_inap')";
+
+        List<Object[]> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idDetail", idDetailCheckup)
+                .list();
+
+        if (objects.size() > 0){
+            return true;
+        }
+        return false;
+    }
 }

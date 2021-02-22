@@ -2314,7 +2314,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             if (detailCheckup.getTipePelayanan().equalsIgnoreCase("rawat_jalan")) {
                 tipePelayanan = "LEFT JOIN it_simrs_rawat_inap d ON b.id_detail_checkup = d.id_detail_checkup \n";
-                isNull = "AND d.id_detail_checkup IS NULL \n";
+                isNull = "AND d.id_detail_checkup IS NULL AND b.tindak_lanjut IN ('selesai', 'kontrol_ulang')\n";
             } else {
                 tipePelayanan = "INNER JOIN " +
                         "(SELECT * FROM (SELECT *, \n" +

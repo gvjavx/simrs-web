@@ -242,7 +242,7 @@
                         <div class="col-md-6">
                             <table class="table table-striped" >
                                 <tr>
-                                    <td><b>No RM</b></td>
+                                    <td width="40%"><b>No RM</b></td>
                                     <td ><span id="no_rm"></span></td>
                                 </tr>
                                 <tr>
@@ -274,7 +274,7 @@
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td><b>Tempat, Tanggal Lahir</b></td>
+                                    <td width="40%"><b>Tempat, Tgl Lahir</b></td>
                                     <td><span id="tgl"></span></td>
                                 </tr>
                                 <tr>

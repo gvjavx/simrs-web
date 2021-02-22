@@ -274,7 +274,7 @@
                         <div class="col-md-6">
                             <table class="table table-striped">
                                 <tr>
-                                    <td width="40%"><b>Tempat, Tanggal Lahir</b></td>
+                                    <td width="40%"><b>Tempat, Tgl Lahir</b></td>
                                     <td><span id="tgl"></span></td>
                                 </tr>
                                 <tr>
