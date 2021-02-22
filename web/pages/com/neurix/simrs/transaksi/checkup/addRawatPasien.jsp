@@ -2239,6 +2239,7 @@
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglKunjungan);
+                        $('#tanggal_rujukan').val(response.tglKunjungan);
                         $('#diagnosa_awal').val(response.kodeDiagnosa);
                         $('#diagnosa_ket').val(response.namaDiagnosa);
                         setPelayananByKodeVclaim(response.kodePoliRujukan);
@@ -2288,6 +2289,7 @@
                         $('#tgl_rujukan').val('');
                         $('#diagnosa_awal').val('');
                         $('#diagnosa_ket').val('');
+                        $('#tanggal_rujukan').val('');
                     }
 
                     var warning = '<div class="alert ' + warnClass + ' alert-dismissible">' +
