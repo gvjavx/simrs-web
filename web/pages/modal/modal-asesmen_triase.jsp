@@ -115,19 +115,19 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>Tensi <small>(mmHg)</small></span>
-                                <input class="form-control tensi-pasien" id="tr3">
+                                <input class="form-control tensi-pasien" id="tr3" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-3">
                                 <span>Nadi <small>(x/menit)</small></span>
-                                <input class="form-control nadi-pasien" id="tr4">
+                                <input class="form-control nadi-pasien" id="tr4" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>Suhu <small>(C)</small></span>
-                                <input class="form-control suhu-pasien" id="tr5">
+                                <input class="form-control suhu-pasien" id="tr5" type="number">
                             </div>
                             <div class="col-md-3">
                                 <span>RR <small>(x/menit)</small></span>
-                                <input class="form-control rr-pasien" id="tr6">
+                                <input class="form-control rr-pasien" id="tr6" type="number">
                             </div>
                         </div>
                     </div>

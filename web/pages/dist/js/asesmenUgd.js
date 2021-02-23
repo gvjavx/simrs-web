@@ -524,7 +524,7 @@ function saveAsesmenUgd(jenis, keterangan) {
             var skala = $('[name=radio_aud_skala]:checked').val();
             var lokasi = $('#yer_lokasi').val();
             var skal = $('#skala_nyeri').val();
-            if (nyeri && skala != undefined && lokasi  && skal != '') {
+            if (nyeri != undefined) {
                 data.push({
                     'parameter': 'Apakah terdapat keluhan nyeri',
                     'jawaban': nyeri,
