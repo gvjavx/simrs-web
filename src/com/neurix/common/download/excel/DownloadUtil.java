@@ -66,7 +66,7 @@ public class DownloadUtil {
         SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
         cell.setCellValue("Printed date : " + format.format(Calendar.getInstance().getTime()));
 
-        if (listOfData != null) {
+        if (listOfData != null && listOfData.size() > 0) {
             String className = listOfData.get(0).getClass().getSimpleName();
 
             if ((className != null) && (className.equalsIgnoreCase("GroupOfGroupOfGroupRowData"))) {

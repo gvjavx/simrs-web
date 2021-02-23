@@ -92,16 +92,16 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pengalaman_kerja')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%03d", iter.next());
-
-        return "PK"+sId;
+        String output = "PK"+sId;
+        return output;
     }
 
     public String getNextPersonalHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal_history')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%02d", iter.next());
-
-        return "H"+sId;
+        String output = "H"+sId;
+        return output;
     }
 
     public List<ImBiodataEntity> getListPersonal() throws HibernateException {
@@ -1892,7 +1892,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "pp.personil_position_id, \n" +
                 "pp.nip, \n" +
                 "p.department_id," +
-                "pp.flag \n" +
+                "pp.flag, \n" +
+                "pr.tipe_profesi \n" +
                 "FROM it_hris_pegawai_position pp \n" +
                 "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
                 "LEFT JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
@@ -1922,6 +1923,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             personilPosition.setNip(obj[10] == null ? "" : obj[10].toString());
             personilPosition.setDivisiId(obj[11] == null ? "" : obj[11].toString());
             personilPosition.setFlag(obj[12] == null ? "" : obj[12].toString());
+            personilPosition.setTipeProfesi(obj[13] == null ? "" : obj[13].toString());
             personilPositions.add(personilPosition);
         }
 

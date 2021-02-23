@@ -1,3 +1,24 @@
+------ 2021-02-20 ===> Master Kelompok Position
+-- Memberi Flag Multiple Person untuk beberapa kelompok jabatan
+
+    UPDATE im_hris_kelompok_position
+    SET flag_is_multiple_person = 'Y' WHERE kelompok_id = 'KL49' OR kelompok_id = 'KL50'
+
+------ 2021-02-18 ===> Master Jenis Pegawai
+-- Mengisi Persen Gaji
+
+    UPDATE im_hris_jenis_pegawai
+    SET persen_gaji = '75' WHERE jenis_pegawai_id = 'JP02';
+    UPDATE im_hris_jenis_pegawai
+    SET persen_gaji = '80' WHERE jenis_pegawai_id = 'JP03' OR jenis_pegawai_id = 'JP04';
+
+----------------------------------------
+----------------------------------------
+----------  SAMPAI SINI SAJA  ----------
+----------------------------------------
+----------------------------------------
+
+
 ------ 2021-02-17 ===> Master Profesi
 -- Menambahkan column tipe_profesi
 
@@ -8,13 +29,7 @@
 
     UPDATE im_hris_profesi_pegawai
     SET tipe_profesi = 'dokter'
-    WHERE	profesi_name ILIKE '%DOKTER%'
-
-----------------------------------------
-----------------------------------------
-----------  SAMPAI SINI SAJA  ----------
-----------------------------------------
-----------------------------------------
+    WHERE	profesi_name ILIKE '%DOKTER%';
 
 ------ 2020-11-30 ===> Payroll PTKP
 -- Membuat Table [im_im_hris_payroll_ptkp_history]

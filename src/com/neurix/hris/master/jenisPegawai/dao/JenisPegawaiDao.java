@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Iterator;
 import java.util.List;
@@ -109,5 +110,19 @@ public class JenisPegawaiDao extends GenericDao<ImHrisJenisPegawaiEntity, String
             return true;
 
         return false;
+    }
+
+    public BigDecimal getPersenGaji(String jenisId){
+        BigDecimal persenGaji = new BigDecimal(0);
+        List<ImHrisJenisPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImHrisJenisPegawaiEntity.class)
+                .add(Restrictions.eq("jenisPegawaiId", jenisId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("jenisPegawaiId"))
+                .list();
+        for(ImHrisJenisPegawaiEntity jenisPegawai : results){
+            persenGaji = jenisPegawai.getPersenGaji();
+        }
+        return persenGaji;
+
     }
 }

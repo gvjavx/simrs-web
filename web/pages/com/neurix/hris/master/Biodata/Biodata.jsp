@@ -1803,6 +1803,30 @@
                                 </tbody>
                             </table>
 
+                            <%--//RAKA-18FEB2021==>FAILED--%>
+                                <%--<table style="width: 40%; margin-left: auto; margin-right: auto; border: 5px solid dodgerblue;">--%>
+                                    <%--<tr>--%>
+                                        <%--<td colspan="2"><h4 style="text-align: center;"><b>DPJB & SIP Dokter</b></h4></td>--%>
+                                    <%--</tr>--%>
+                                    <%--<tr>--%>
+                                        <%--<td>--%>
+                                            <%--<label><small>Kode DPJP :</small></label>--%>
+                                        <%--</td>--%>
+                                        <%--<td>--%>
+                                            <%--<s:textfield type="number" id="kodeDpjp" name="biodata.dpjpDokter" class="form-control"/>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<tr>--%>
+                                        <%--<td>--%>
+                                            <%--<label><small>SIP :</small></label>--%>
+                                        <%--</td>--%>
+                                        <%--<td>--%>
+                                            <%--<s:textfield type="number" id="sip" name="biodata.sipDokter" class="form-control"/>--%>
+                                        <%--</td>--%>
+                                    <%--</tr>--%>
+                                    <%--<br>--%>
+                                <%--</table>--%>
+
                             <h3>Riwayat Jabatan
                                 <%--<s:if test="isAddOrEdit()">--%>
                                     <%--<button id="btnAddPengalamanKerja" type="button" class="btn btn-default btn-success" data-toggle="modal" ><i class="fa fa-plus"></i> </button>--%>
@@ -3239,6 +3263,7 @@
             });
         });
         listPosisiHistory();
+        listPositionJabatan();
 
     };
     function cek(){
@@ -3290,6 +3315,7 @@
             $('#golongan2Group').hide();
             $('#golongan3').val("");
             $('#tanggalAktif').removeAttr('disabled');
+            $('#tanggalPraPensiun').removeAttr('disabled');
             $('tanggalAktifTmp').val($('#tanggalAktifHid').val());
             $('#tanggalAktifHid').val("");
         } else {
@@ -3297,6 +3323,7 @@
             $('#golongan2Group').show();
             $('#point').prop('disabled', 'true');
             $('#tanggalAktif').prop('disabled', 'true');
+            $('#tanggalPraPensiun').prop('disabled', 'true');
             $('tanggalAktifHid').val($('#tanggalAktifTmp').val());
         }
     }

@@ -712,6 +712,10 @@ public class BiodataAction extends BaseMasterAction{
                         editBiodata.setTanggalAktif(CommonUtil.convertToDate(editBiodata.getStTanggalAktif().replace(",","").replace(" ","")));
                     }
 
+                    if (editBiodata.getStTanggalAkhirKontrak() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalAkhirKontrak())) {
+                        editBiodata.setTanggalAkhirKontrak(CommonUtil.convertToDate(editBiodata.getStTanggalAkhirKontrak().replace(",","").replace(" ","")));
+                    }
+
                     if (editBiodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(editBiodata.getStTanggalPraPensiun())){
                         editBiodata.setTanggalPraPensiun(CommonUtil.convertToDate(editBiodata.getStTanggalPraPensiun()));
                     }
@@ -809,6 +813,11 @@ public class BiodataAction extends BaseMasterAction{
                     if (biodata.getStTanggalAktif() != null && !"".equalsIgnoreCase(biodata.getStTanggalAktif())) {
                         biodata.setTanggalAktif(CommonUtil.convertToDate(biodata.getStTanggalAktif()));
                     }
+
+                    if (biodata.getStTanggalAkhirKontrak() != null && !"".equalsIgnoreCase(biodata.getStTanggalAkhirKontrak())) {
+                        biodata.setTanggalAkhirKontrak(CommonUtil.convertToDate(biodata.getStTanggalAkhirKontrak().replace(",","").replace(" ","")));
+                    }
+
 
                     if (biodata.getStTanggalPraPensiun() != null && !"".equalsIgnoreCase(biodata.getStTanggalPraPensiun())){
                         biodata.setTanggalPraPensiun(CommonUtil.convertToDate(biodata.getStTanggalPraPensiun()));
