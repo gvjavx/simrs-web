@@ -231,7 +231,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         String queryJenisObat = "";
 
         if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "WHERE id_jenis_obat = '" + idJenisObat + "' \n";
+            queryJenisObat = "AND id_jenis_obat = '" + idJenisObat + "' \n";
         }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
@@ -278,14 +278,17 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\tWHERE id_pelayanan = :idPelayanan \n" +
                     "\tAND branch_id = :branchId \n" +
                     "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
+                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n"+
                     ") b ON a.id_obat = b.id_obat\n" +
                     "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "INNER JOIN (\n" +
                     "\tSELECT\n" +
                     "\tid_obat,\n" +
                     "\tid_jenis_obat\n" +
-                    "\tFROM im_simrs_obat_gejala \n" + queryJenisObat +
-                    ")d ON d.id_obat = b.id_obat";
+                    "\tFROM im_simrs_obat_gejala \n" +
+                    ")d ON d.id_obat = b.id_obat \n"+
+                    "WHERE c.harga_jual > 0 \n" +
+                    "AND c.harga_jual_umum > 0 \n" +queryJenisObat;
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)

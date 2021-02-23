@@ -605,7 +605,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             detailCheckup.setIsEksekutif(checkup.getIsEksekutif());
             detailCheckup.setIsVaksin(checkup.getIsVaksin());
 
-            if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+            if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                 RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
                 RekananOps ops = new RekananOps();
                 String userBranch = CommonUtil.userBranchLogin();
@@ -1038,7 +1038,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             // save approve tindakan
             saveAddToRiwayatTindakan(idDetailCheckup, jenisPasien);
 
-            if ("asuransi".equalsIgnoreCase(jenisPasien) || "rekanan".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien)) {
+            if ("asuransi".equalsIgnoreCase(jenisPasien) || "rekanan".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 metodeBayar = "non_tunai";
             } else if ("umum".equalsIgnoreCase(jenisPasien)) {
                 metodeBayar = jenisBayar;
@@ -1138,7 +1138,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             for (HeaderDetailCheckup detail : detailCheckupList) {
                                 saveAddToRiwayatTindakan(detail.getIdDetailCheckup(), jenisPasien);
                             }
-                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien)) {
+                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "paket_individu".equalsIgnoreCase(jenisPasien) || "paket_perusahaan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                                 metodeBayar = "non_tunai";
                             } else if ("umum".equalsIgnoreCase(jenisPasien)) {
                                 metodeBayar = jenisBayar;
@@ -2216,21 +2216,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
 
                         // DIRUBAH SIGIT, 2020-05-07 dari checkup.getIdJenisPeriksaPasien -> detailCheckup.getIdJenisPeriksaPasien());
-                        String flagBpjs = "";
-                        if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
-                            RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
-                            RekananOps ops = new RekananOps();
-                            try {
-                                ops = rekananOpsBo.getDetailRekananOps(detailCheckup.getIdAsuransi(), CommonUtil.userBranchLogin());
-                            } catch (HibernateException e) {
-                                logger.error("Error, " + e.getMessage());
-                            }
-                            if (ops != null) {
-                                flagBpjs = ops.getIsBpjs();
-                            }
-                        }
-
-                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(flagBpjs)) {
+                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             Branch branch = new Branch();
                             branch.setBranchId(branchId);
@@ -2630,7 +2616,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             headerDetailCheckup.setSuratRujukan(detailCheckup.getSuratRujukan());
                         }
 
-                        if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                        if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
                             headerDetailCheckup.setIdAsuransi(detailCheckup.getIdAsuransi());
                             headerDetailCheckup.setNoKartuAsuransi(detailCheckup.getNoKartuAsuransi());
                             headerDetailCheckup.setMetodePembayaran(detailCheckup.getMetodePembayaran());
@@ -2782,7 +2768,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             return finalResponse;
                         }
 
-                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                        if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                             Branch branch = new Branch();
                             branch.setBranchId(branchId);
@@ -2842,20 +2828,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                                                 idDokter = dokterArrayList.get(0).getIdDokter();
                                                 kodeDpjp = dokterArrayList.get(0).getKodeDpjp();
                                             }
-
-//                                            List<DokterTeam> dokterList = new ArrayList<>();
-//                                            DokterTeam dokterTeam = new DokterTeam();
-//                                            dokterTeam.setIdDetailCheckup(detailCheckup.getIdDetailCheckup());
-//
-//                                            try {
-//                                                dokterList = teamDokterBo.getByCriteria(dokterTeam);
-//                                            } catch (GeneralBOException e) {
-//                                                logger.error("[CheckupAction.saveAdd] Error when adding item ," + "[" + e + "] Found problem when saving add data, please inform to your admin.", e);
-//                                            }
-//
-//                                            if (dokterList.size() > 0) {
-//                                                dokterTeam = dokterList.get(0);
-//                                            }
 
                                             SepRequest sepRequest = new SepRequest();
                                             sepRequest.setNoKartu(getPasien.getNoBpjs());
@@ -3539,8 +3511,8 @@ public class CheckupDetailAction extends BaseMasterAction {
         java.util.Date dateNow = new java.util.Date(millis);
         String dateToday = new SimpleDateFormat("yyyy-MM-dd").format(dateNow);
 
-        //jika bpjs dan ptpn
-        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(checkup.getIsRekananWithBpjs())) {
+        //jika bpjs dan rekanan bpjs
+        if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
             List<Pasien> pasienList = new ArrayList<>();
             List<Branch> branchList = new ArrayList<>();
@@ -4274,7 +4246,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             String userBranch = CommonUtil.userBranchLogin();
 
             RekananOps ops = new RekananOps();
-            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
+            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 try {
                     ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetail, userBranch);
                 } catch (GeneralBOException e) {
@@ -4283,7 +4255,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
 
             String jenPasien = "";
-            if ("rekanan".equalsIgnoreCase(jenisPasien) && "Y".equalsIgnoreCase(ops.getIsBpjs())) {
+            if ("bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 jenPasien = "bpjs";
             } else {
                 jenPasien = jenisPasien;
@@ -4421,8 +4393,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                         } else {
 
                             // jika bukan paket maka pakai tarif asli
-                            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
-                                if (ops.getDiskon() != null) {
+                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
                                     riwayatTindakan.setTotalTarif(totaltarif.multiply(ops.getDiskon()));
                                 } else {
                                     riwayatTindakan.setTotalTarif(totaltarif);
@@ -4496,8 +4468,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                             riwayatTindakan.setIdTindakan(entity.getIdPermintaanResep());
                             riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
-                            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
-                                if (ops.getDiskon() != null) {
+                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
                                     riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()).multiply(ops.getDiskon()));
                                 } else {
                                     riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
@@ -4572,8 +4544,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 riwayatTindakan.setIdTindakan(gizi.getIdOrderGizi());
                                 riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
                                 riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
-                                if ("rekanan".equalsIgnoreCase(jenisPasien)) {
-                                    if (ops.getDiskon() != null) {
+                                if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
                                         riwayatTindakan.setTotalTarif(gizi.getTarifTotal().multiply(ops.getDiskon()));
                                     } else {
                                         riwayatTindakan.setTotalTarif(gizi.getTarifTotal());

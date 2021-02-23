@@ -26,6 +26,8 @@ import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
+import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -1462,7 +1464,7 @@ public class RawatInapAction extends BaseMasterAction {
                                     return finalResponse;
                                 }
 
-                                if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                                if ("bpjs".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
 
                                     Branch branch = new Branch();
                                     branch.setBranchId(branchId);
@@ -1860,7 +1862,7 @@ public class RawatInapAction extends BaseMasterAction {
                                         }
                                     }
 
-                                    if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
+                                    if ("rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(detailCheckup.getIdJenisPeriksaPasien())) {
                                         headerDetailCheckup.setIdAsuransi(detailCheckup.getIdAsuransi());
                                         headerDetailCheckup.setNoKartuAsuransi(detailCheckup.getNoKartuAsuransi());
                                         headerDetailCheckup.setMetodePembayaran(detailCheckup.getMetodePembayaran());
@@ -2137,9 +2139,20 @@ public class RawatInapAction extends BaseMasterAction {
             RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
             OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
+            RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+            String userBranch = CommonUtil.userBranchLogin();
+
+            RekananOps ops = new RekananOps();
+            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                try {
+                    ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetail, userBranch);
+                } catch (GeneralBOException e) {
+                    logger.error("Error, " + e.getMessage());
+                }
+            }
 
             String jenPasien = "";
-            if ("rekanan".equalsIgnoreCase(jenisPasien)) {
+            if ("bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 jenPasien = "bpjs";
             } else {
                 jenPasien = jenisPasien;
@@ -2277,7 +2290,15 @@ public class RawatInapAction extends BaseMasterAction {
                         } else {
 
                             // jika bukan paket maka pakai tarif asli
-                            riwayatTindakan.setTotalTarif(totalTarif);
+                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                    riwayatTindakan.setTotalTarif(totalTarif.multiply(ops.getDiskon()));
+                                } else {
+                                    riwayatTindakan.setTotalTarif(totalTarif);
+                                }
+                            } else {
+                                riwayatTindakan.setTotalTarif(totalTarif);
+                            }
                         }
 
                         riwayatTindakan.setKeterangan(entity.getKategori());
@@ -2337,7 +2358,15 @@ public class RawatInapAction extends BaseMasterAction {
                             riwayatTindakan.setIdTindakan(entity.getIdPermintaanResep());
                             riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                             riwayatTindakan.setNamaTindakan("Tarif Resep dengan No. Resep " + entity.getIdPermintaanResep());
-                            riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
+                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                    riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()).multiply(ops.getDiskon()));
+                                } else {
+                                    riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
+                                }
+                            } else {
+                                riwayatTindakan.setTotalTarif(new BigDecimal(obatDetailList.getTotalHarga()));
+                            }
                             riwayatTindakan.setKeterangan("resep");
                             riwayatTindakan.setJenisPasien(obatDetailList.getJenisResep());
                             riwayatTindakan.setAction("C");
@@ -2405,7 +2434,15 @@ public class RawatInapAction extends BaseMasterAction {
                                 riwayatTindakan.setIdTindakan(gizi.getIdOrderGizi());
                                 riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
                                 riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
-                                riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
+                                if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                        riwayatTindakan.setTotalTarif(gizi.getTarifTotal().multiply(ops.getDiskon()));
+                                    } else {
+                                        riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
+                                    }
+                                } else {
+                                    riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
+                                }
                                 riwayatTindakan.setKeterangan("gizi");
                                 riwayatTindakan.setJenisPasien(jenPasien);
                                 riwayatTindakan.setAction("C");

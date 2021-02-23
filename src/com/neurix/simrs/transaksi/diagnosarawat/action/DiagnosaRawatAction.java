@@ -156,7 +156,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                     response.setStatus("error");
                     response.setMsg("Data "+jenisDiagnosa.replace("_", " ").toUpperCase()+" sudah ada ...!");
                 }else{
-                    if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                    if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                         response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
                         if ("success".equalsIgnoreCase(response.getStatus())) {
                             response = diagnosaRawatBo.saveAdd(diagnosaRawat);
@@ -169,7 +169,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
                     }
                 }
             }else{
-                if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+                if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                     response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
                     if ("success".equalsIgnoreCase(response.getStatus())) {
                         response = diagnosaRawatBo.saveAdd(diagnosaRawat);
@@ -253,7 +253,7 @@ public class DiagnosaRawatAction extends BaseMasterAction {
             diagnosaRawat.setLastUpdateWho(userLogin);
             diagnosaRawat.setAction("U");
 
-            if ("bpjs".equalsIgnoreCase(jenisPasien) || "ptpn".equalsIgnoreCase(jenisPasien)) {
+            if ("bpjs".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                 response = updateCoverBpjs(idDetailCheckup, idDiagnosa);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     response = diagnosaRawatBo.saveEdit(diagnosaRawat);

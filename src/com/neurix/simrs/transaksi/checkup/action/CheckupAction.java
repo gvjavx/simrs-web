@@ -735,8 +735,8 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
         if(checkup.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
-            //jika bpjs dan ptpn
-            if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(checkup.getIsRekananWithBpjs())) {
+            //jika bpjs dan bpjs rekanan
+            if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
 
                 List<Pasien> pasienList = new ArrayList<>();
                 List<Branch> branchList = new ArrayList<>();
@@ -907,7 +907,7 @@ public class CheckupAction extends BaseMasterAction {
                                 BigDecimal tarifRsObatKemoterapi = new BigDecimal(0);
                                 BigDecimal tarifRsSewaAlat = new BigDecimal(0);
 
-                                if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+                                if ("bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                                     try {
                                         ops = rekananOpsBo.getDetailRekananOps(checkup.getIdAsuransi(), userArea);
                                     } catch (GeneralBOException e) {
@@ -921,7 +921,7 @@ public class CheckupAction extends BaseMasterAction {
 
                                         BigDecimal tarif = new BigDecimal(entity.getTarifBpjs());
 
-                                        if ("rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
+                                        if ("bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
                                             if (ops.getDiskon() != null) {
                                                 tarif = new BigDecimal(entity.getTarifBpjs()).multiply(ops.getDiskon());
                                             } else {
@@ -3739,14 +3739,14 @@ public class CheckupAction extends BaseMasterAction {
         return jenisObatList;
     }
 
-    public List<RekananOps> getListRekananOps() {
+    public List<RekananOps> getListRekananOps(String isBpjs) {
         logger.info("[CheckupAction.getListRekananOps] START process >>>");
         List<RekananOps> rekananOpsList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
         String userArea = CommonUtil.userBranchLogin();
         try {
-            rekananOpsList = rekananOpsBo.getComboRekananOps(userArea);
+            rekananOpsList = rekananOpsBo.getComboRekananOps(userArea, isBpjs);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
         }
