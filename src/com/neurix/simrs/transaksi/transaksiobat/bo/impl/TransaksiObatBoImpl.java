@@ -130,9 +130,9 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
                         BigDecimal tempHarga = new BigDecimal(0);
                         if(isKhusus){
-                            tempHarga = hargaObatEntity.getHargaJual();
+                            tempHarga = hargaObatEntity.getHargaJual() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJual();
                         }else{
-                            tempHarga = hargaObatEntity.getHargaJualUmum();
+                            tempHarga = hargaObatEntity.getHargaJualUmum() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmum();
                         }
 
                         if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
@@ -1796,7 +1796,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
     @Override
     public List<MtSimrsHargaObatEntity> getListEntityHargaObat(HargaObat bean) throws GeneralBOException {
-        logger.info("[ObatPoliBoImpl.getListEntityHargaObat] START >>>>>>>>>>");
+        logger.info("[TransaksiObatBoImpl.getListEntityHargaObat] START >>>>>>>>>>");
 
         Map hsCriteria = new HashMap();
         if (bean.getIdObat() != null) {
@@ -1815,7 +1815,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             throw new GeneralBOException("[PermintaanResepBoImpl.getListEntityHargaObat] ERROR when get by criteria. ", e);
         }
 
-        logger.info("[ObatPoliBoImpl.getListEntityHargaObat] END <<<<<<<<<<");
+        logger.info("[TransaksiObatBoImpl.getListEntityHargaObat] END <<<<<<<<<<");
         return hargaObatEntities;
     }
 
@@ -1957,7 +1957,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             detailList = transaksiObatDetailDao.getListPembelianObat(idApprove);
         } catch (HibernateException e) {
             logger.error("[TransaksiObatBoImpl.getListPembelianObat] ERROR when search list pembelian obat. ", e);
-            throw new GeneralBOException("[ObatPoliBoImpl.getListPembelianObat] ERROR when search list pembelian obat. ", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.getListPembelianObat] ERROR when search list pembelian obat. ", e);
         }
 
         if (detailList.size() > 0) {
@@ -2233,7 +2233,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
     }
 
     private void updateSubstractStockObatPoli(TransaksiObatDetail bean, String idPoli, String branchId) throws GeneralBOException {
-        logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] START >>>>>>>>>>");
+        logger.info("[TransaksiObatBoImpl.updateAddStockObatPoli] START >>>>>>>>>>");
 
         ObatPoli obatPoli = new ObatPoli();
         obatPoli.setIdPelayanan(idPoli);
@@ -2307,8 +2307,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                             obatPoliEntity.setQtyBox(lembarToBox);
                             obatPoliEntity.setQtyLembar(sisaLembar);
                         } else {
-                            logger.error("[ObatPoliBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
-                            throw new GeneralBOException("[ObatPoliBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
+                            logger.error("[TransaksiObatBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
+                            throw new GeneralBOException("[TransaksiObatBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
                         }
                     }
                 }
@@ -2344,8 +2344,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
 
                         } else {
-                            logger.error("[ObatPoliBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
-                            throw new GeneralBOException("[ObatPoliBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
+                            logger.error("[TransaksiObatBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
+                            throw new GeneralBOException("[TransaksiObatBoImpl.updateSubstractStockObatPoli] jumlah yang diminta melebihi stock");
                         }
                     }
                 }
@@ -2358,11 +2358,11 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             try {
                 obatPoliDao.updateAndSave(obatPoliEntity);
             } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat poli. ", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.saveApproveRequest] ERROR when update master obat poli. ", e);
+                logger.error("[TransaksiObatBoImpl.saveApproveRequest] ERROR when update master obat poli. ", e);
+                throw new GeneralBOException("[TransaksiObatBoImpl.saveApproveRequest] ERROR when update master obat poli. ", e);
             }
         }
-        logger.info("[ObatPoliBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
+        logger.info("[TransaksiObatBoImpl.updateAddStockObatPoli] END <<<<<<<<<<");
     }
 
     @Override
@@ -2378,8 +2378,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
         try {
             obatDetailEntities = transaksiObatDetailDao.getByCriteria(hsCriteria);
         } catch (HibernateException e) {
-            logger.error("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
-            throw new GeneralBOException("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+            logger.error("[TransaksiObatBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+            throw new GeneralBOException("[TransaksiObatBoImpl.saveEditFlagPengambilan] ERROR. ", e);
         }
 
         if (obatDetailEntities.size() > 0) {
@@ -2394,8 +2394,8 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             try {
                 transaksiObatDetailDao.updateAndSave(transaksiObatDetailEntity);
             } catch (HibernateException e) {
-                logger.error("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
-                throw new GeneralBOException("[ObatPoliBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+                logger.error("[TransaksiObatBoImpl.saveEditFlagPengambilan] ERROR. ", e);
+                throw new GeneralBOException("[TransaksiObatBoImpl.saveEditFlagPengambilan] ERROR. ", e);
             }
         }
     }

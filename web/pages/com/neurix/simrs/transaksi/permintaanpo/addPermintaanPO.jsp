@@ -285,7 +285,7 @@
                                     <label class="col-md-4" style="margin-top: 7px">Jml Biji/Lembar</label>
                                     <div class="col-md-8">
                                         <input class="form-control" id="biji_perlembar" type="number"
-                                               style="margin-top: 7px" onchange="cekFisik()"
+                                               style="margin-top: 7px" onchange="cekFisik()" value="1"
                                                oninput="var warn =$('#war_po_biji_perlembar').is(':visible'); if (warn){$('#cor_po_biji_perlembar').show().fadeOut(3000);$('#war_po_biji_perlembar').hide()};"/>
                                         <p style="color: red; display: none;"
                                            id="war_po_biji_perlembar"><i class="fa fa-times"></i> required</p>
@@ -315,7 +315,7 @@
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Jenis Satuan</label>
                                     <div class="col-md-8">
-                                        <s:select list="#{'box':'Box','lembar':'Lembar','biji':'Biji'}"
+                                        <s:select list="#{'box':'Box'}"
                                                   cssStyle="margin-top: 7px; width: 100%"
                                                   onchange="var warn =$('#war_po_jenis').is(':visible'); if (warn){$('#cor_po_jenis').show().fadeOut(3000);$('#war_po_jenis').hide()};"
                                                   id="jenis_satuan"
@@ -688,7 +688,7 @@
 
     function savePermintaanPO() {
         $('#confirm_dialog').dialog('close');
-        var data = $('#tabel_po').tableToJSON();
+//        var data = $('#tabel_po').tableToJSON();
         var result = [];
 
         var list_aktif = [];

@@ -378,26 +378,56 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             //stok obat digudang ditambah dengan stok di apotek
             String SQLMaster = "SELECT  \n" +
-                    "\tid_obat,  \n" +
-                    "\tSUM(qty_box) as qty_box,  \n" +
-                    "\tSUM(qty_lembar) as qty_lembar, \n" +
-                    "\tSUM(qty_biji) as qty_biji \n" +
+                    "id_obat,  \n" +
+                    "a.qty_box,  \n" +
+                    "a.qty_lembar, \n" +
+                    "a.qty_biji,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\tqty_biji, \n" +
+                    "\tqty_lembar, \n" +
+                    "\tqty_box, \n" +
+                    "\tlembar_per_box, \n" +
+                    "\tbiji_per_lembar,\n" +
+                    "\tid_obat,\n" +
+                    "\tbranch_id\n" +
                     "\tFROM im_simrs_obat\n" +
                     "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND id_obat = :id1\n" +
-                    "\tAND branch_id = :branchId1\n" +
-                    "\tGROUP BY id_obat";
+                    ") a\n" +
+                    "WHERE a.id_obat = :id1 \n" +
+                    "AND a.branch_id = :branchId1 ";
 
-            String SQLPoli = "SELECT \n" +
-                    "\tid_obat, \n" +
-                    "\tSUM(qty_box) as jml_box, \n" +
-                    "\tSUM(qty_lembar) as jml_lembar, \n" +
-                    "\tSUM(qty_biji) as jml_biji\n" +
-                    "\tFROM mt_simrs_obat_poli\n" +
-                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND id_obat = :id2\n" +
-                    "\tAND branch_id = :branchId2\n" +
-                    "\tGROUP BY id_obat";
+            String SQLPoli = "\n" +
+                    "SELECT  \n" +
+                    "aa.id_obat,  \n" +
+                    "aa.qty_box,  \n" +
+                    "aa.qty_lembar, \n" +
+                    "aa.qty_biji,\n" +
+                    "aa.lembar_per_box,\n" +
+                    "aa.biji_per_lembar\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.lembar_per_box, \n" +
+                    "\ta.biji_per_lembar,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.branch_id,\n" +
+                    "\tSUM(b.qty_box) as qty_box,\n" +
+                    "\tSUM(b.qty_lembar) as qty_lembar,\n" +
+                    "\tSUM(b.qty_biji) as qty_biji\n" +
+                    "\tFROM im_simrs_obat a\n" +
+                    "\tINNER JOIN ( \n" +
+                    "\t\tSELECT id_barang, qty_box, qty_lembar, qty_biji FROM mt_simrs_obat_poli\n" +
+                    "\t\t) b ON b.id_barang = a.id_barang\n" +
+                    "\tGROUP BY \n" +
+                    "\ta.lembar_per_box, \n" +
+                    "\ta.biji_per_lembar,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.branch_id\n" +
+                    ") aa\n" +
+                    "WHERE aa.id_obat = :id2 \n" +
+                    "AND aa.branch_id = :branchId2 ";
 
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
@@ -418,13 +448,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 for (Object[] obj : results1) {
                     idObat = obj[0].toString();
                     if(obj[1] != null){
-                        totalBox1 = new BigInteger(obj[1].toString());
+                        totalBox1 = totalBox1.add(new BigInteger(obj[1].toString()));
                     }
                     if(obj[2] != null){
-                        totalLembar1 = new BigInteger(obj[2].toString());
+                        totalLembar1 = totalLembar1.add(new BigInteger(obj[2].toString()));
                     }
                     if(obj[3] != null){
-                        totalBiji1 = new BigInteger(obj[3].toString());
+                        totalBiji1 = totalBiji1.add(new BigInteger(obj[3].toString()));
                     }
                 }
             }
