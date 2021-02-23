@@ -2807,7 +2807,13 @@ public class AbsensiAction extends BaseMasterAction {
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(getBranchId());
-        List<Branch> branchList = branchBo.getByCriteria(searchBranch);
+        List<Branch> branchList = new ArrayList<>();
+        try {
+            branchList = branchBo.getByCriteria(searchBranch);
+        }catch(GeneralBOException e){
+            logger.error("[AbsensiAction.searchReportLembur] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving Branch List using criteria. \n" + e.getMessage());
+        }
         for (Branch branch:branchList){
             unit=branch.getBranchName();
         }
