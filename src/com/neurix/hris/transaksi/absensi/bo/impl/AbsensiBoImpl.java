@@ -5528,7 +5528,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         Double upahLembur = 0d;
                                         Double gapok = 0d;
                                         Double sankhus = 0d;
-                                        pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                        try{
+                                            pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                        }catch(HibernateException e){
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                            throw new HibernateException("Found problem when retieving Pengali Faktor Lembur by criteria, " + e.getMessage());
+                                        }
                                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                                             faktor = pengaliFaktorLemburEntity.getFaktor();
                                         }
@@ -5541,13 +5546,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
                                         if (biodata.getTipePegawai().equalsIgnoreCase("TP01")){
-                                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                            try {
+                                                payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
+                                            }catch(HibernateException e){
+                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                            }
                                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                                 gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                                 sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                                             }
                                         }else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")){
-                                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                            try{
+                                                payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                            }catch(HibernateException e){
+                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                            }
                                             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
                                                 gapok = skalaGajiLoop.getGajiPokok().doubleValue();
                                                 sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
@@ -5576,7 +5591,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                     hsCriteria5.put("jam_lembur", j);
                                                     hsCriteria5.put("flag", "Y");
                                                     List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    try{
+                                                        jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                    }
                                                     for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                         jamLembur = jamLembur + (finalLamaLembur*2);
                                                     }
@@ -5587,7 +5607,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                     hsCriteria5.put("jam_lembur", j);
                                                     hsCriteria5.put("flag", "Y");
                                                     List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    try{
+                                                        jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                    }
                                                     for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                         jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
                                                     }
@@ -5687,8 +5712,20 @@ public class AbsensiBoImpl implements AbsensiBo {
                     //JIKA PEGAWAI SHIFT
                     }else{
                         Date tanggalInquiry = CommonUtil.dateUtiltoDateSql(data.getTanggalUtil());
-                        List<AbsensiPegawai> jamKerjaShift = absensiPegawaiDao.getSearchJadwalShift(biodata.getNip(),tanggalInquiry);
-                        List<AbsensiPegawai> jamKerjaShiftOnCall = absensiPegawaiDao.getSearchJadwalShiftOnCall(biodata.getNip(),tanggalInquiry);
+                        List<AbsensiPegawai> jamKerjaShift = new ArrayList<>();
+                        try{
+                            jamKerjaShift = absensiPegawaiDao.getSearchJadwalShift(biodata.getNip(),tanggalInquiry);
+                        }catch(HibernateException e){
+                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                            throw new HibernateException("Found problem when retrieving Jadwal Shift from Absensi Pegawai by criteria, " + e.getMessage());
+                        }
+                        List<AbsensiPegawai> jamKerjaShiftOnCall = new ArrayList<>();
+                        try{
+                            jamKerjaShiftOnCall = absensiPegawaiDao.getSearchJadwalShiftOnCall(biodata.getNip(),tanggalInquiry);
+                        }catch(HibernateException e){
+                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                            throw new HibernateException("Found problem when retrieving Jadwal Shift On Call from Absensi Pegawai by criteria, " + e.getMessage());
+                        }
                         //ada jadwal
                         if (jamKerjaShift.size()!=0){
                             int jadwalke = 1;
@@ -5732,7 +5769,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     double lamaLembur = 0;
                                     String jenisLembur = null;
 
-                                    List<LemburEntity> lemburEntityList = lemburDao.getListLemburByNipAndTanggal(biodata.getNip(),tanggalInquiry);
+                                    List<LemburEntity> lemburEntityList = new ArrayList<>();
+                                    try{
+                                        lemburEntityList = lemburDao.getListLemburByNipAndTanggal(biodata.getNip(),tanggalInquiry);
+                                    }catch(HibernateException e){
+                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                        throw new HibernateException("Found problem when retrieving Lembur by criteria, " + e.getMessage());
+                                    }
 
                                     for (LemburEntity lemburEntity : lemburEntityList){
                                         lamaLembur = lamaLembur+lemburEntity.getLamaJam();
@@ -5820,7 +5863,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     Timestamp tsBatasAwalShift = new Timestamp(calendar.getTimeInMillis());
 
                                     List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                                    mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
+                                    try{
+                                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
+                                    }catch(HibernateException e){
+                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                        throw new HibernateException("Found problem when retrieving Jadwal Shift from Absensi Pegawai by criteria, " + e.getMessage());
+                                    }
 
                                     if (mesinAbsensiDetailEntityList.size()==0){
                                         String statusAbsensi =cariStatusTidakMasuk(biodata.getNip(), CommonUtil.dateUtiltoDateSql(data.getTanggalUtil()));
@@ -5932,7 +5980,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     Double upahLembur = 0d;
                                     Double gapok = 0d;
                                     Double sankhus = 0d;
-                                    pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                    try {
+                                        pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                    }catch(HibernateException e){
+                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                        throw new HibernateException("Found problem when retrieving Pengali Faktor Lembur by criteria, " + e.getMessage());
+                                    }
                                     for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                                         faktor = pengaliFaktorLemburEntity.getFaktor();
                                     }
@@ -5945,13 +5998,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                                     List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
                                     if (biodata.getTipePegawai().equalsIgnoreCase("TP01")){
-                                        payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                        try{
+                                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                        }catch(HibernateException e){
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                            throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                        }
                                         for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                             gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                             sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                                         }
                                     }else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")){
-                                        payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                        try{
+                                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                        }catch(HibernateException e){
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                            throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                        }
                                         for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
                                             gapok = skalaGajiLoop.getGajiPokok().doubleValue();
                                             sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
@@ -5980,7 +6043,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 hsCriteria5.put("jam_lembur", j);
                                                 hsCriteria5.put("flag", "Y");
                                                 List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                try{
+                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                }catch(HibernateException e){
+                                                    logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                    throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                }
                                                 for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                     jamLembur = jamLembur + (finalLamaLembur*2);
                                                 }
@@ -5991,7 +6059,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 hsCriteria5.put("jam_lembur", j);
                                                 hsCriteria5.put("flag", "Y");
                                                 List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                try{
+                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                }catch(HibernateException e){
+                                                    logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                    throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                                }
                                                 for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                     jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
                                                 }
@@ -6100,7 +6173,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     Timestamp tsBatasAwalShift = new Timestamp(calendar.getTimeInMillis());
 
                                     List<ItHrisMesinAbsensiDetailOnCallEntity> mesinAbsensiDetailOnCallEntityList = new ArrayList<>();
-                                    mesinAbsensiDetailOnCallEntityList = mesinAbsensiDetailOnCallDao.getAllDetailWithDateAndPin(biodata.getPin(), tsTanggalAwal, tsTanggalBesok);
+                                    try{
+                                        mesinAbsensiDetailOnCallEntityList = mesinAbsensiDetailOnCallDao.getAllDetailWithDateAndPin(biodata.getPin(), tsTanggalAwal, tsTanggalBesok);
+                                    }catch(HibernateException e){
+                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                        throw new HibernateException("Found problem when retrieving Data Absensi On Call by criteria, " + e.getMessage());
+                                    }
                                     if (mesinAbsensiDetailOnCallEntityList.size() == 0) {
                                         String statusAbsensi = cariStatusTidakMasuk(biodata.getNip(), CommonUtil.dateUtiltoDateSql(data.getTanggalUtil()));
                                         absensiPegawai.setStatusAbsensiOnCall(statusAbsensi);
@@ -6155,7 +6233,12 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                     if ("Y".equalsIgnoreCase(jamKerja.getFlagPanggil())){
                                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
+                                        try{
+                                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(biodata.getPin(),tsTanggalAwal,tsTanggalBesok,data.getBranchId());
+                                        }catch(HibernateException e){
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                            throw new HibernateException("Found problem when retrieving Data Absensi by criteria, " + e.getMessage());
+                                        }
                                         if (mesinAbsensiDetailEntityList.size() == 0) {
                                         } else {
                                             // UNTUK ONCALL LEBIH DARI 1a
@@ -6253,7 +6336,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 Double upahLembur = 0d;
                                                 Double gapok = 0d;
                                                 Double sankhus = 0d;
-                                                pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                                try{
+                                                    pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                                }catch(HibernateException e){
+                                                    logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                    throw new HibernateException("Found problem when retrieving Faktor Lembur by criteria, " + e.getMessage());
+                                                }
                                                 for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                                                     faktor = pengaliFaktorLemburEntity.getFaktor();
                                                 }
@@ -6266,13 +6354,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                                                 List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
                                                 if (biodata.getTipePegawai().equalsIgnoreCase("TP01")){
-                                                    payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                                    try{
+                                                        payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                                    }
                                                     for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                                         gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                                         sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                                                     }
                                                 }else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")){
-                                                    payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                                    try{
+                                                        payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                                    }
                                                     for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
                                                         gapok = skalaGajiLoop.getGajiPokok().doubleValue();
                                                         sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
@@ -6295,7 +6393,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                             hsCriteria5.put("jam_lembur", j);
                                                             hsCriteria5.put("flag", "Y");
                                                             List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            try{
+                                                                jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            }catch(HibernateException e){
+                                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                                throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                            }
                                                             for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                                 jamLembur = jamLembur + (finalLamaLembur*2);
                                                             }
@@ -6306,7 +6409,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                             hsCriteria5.put("jam_lembur", j);
                                                             hsCriteria5.put("flag", "Y");
                                                             List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            try{
+                                                                jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            }catch(HibernateException e){
+                                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                                throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                            }
                                                             for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                                 jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
                                                             }
@@ -6350,7 +6458,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 Double upahLembur = 0d;
                                                 Double gapok = 0d;
                                                 Double sankhus = 0d;
-                                                pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                                try{
+                                                    pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                                }catch(HibernateException e){
+                                                    logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                    throw new HibernateException("Found problem when retrieving Pengali Faktor Lembur by criteria, " + e.getMessage());
+                                                }
                                                 for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                                                     faktor = pengaliFaktorLemburEntity.getFaktor();
                                                 }
@@ -6363,13 +6476,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                                                 List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
                                                 if (biodata.getTipePegawai().equalsIgnoreCase("TP01")){
-                                                    payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                                    try{
+                                                        payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                                    }
                                                     for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                                         gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                                         sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                                                     }
                                                 }else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")){
-                                                    payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                                    try{
+                                                        payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                                    }
                                                     for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
                                                         gapok = skalaGajiLoop.getGajiPokok().doubleValue();
                                                         sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
@@ -6389,7 +6512,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                             hsCriteria5.put("jam_lembur", j);
                                                             hsCriteria5.put("flag", "Y");
                                                             List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            try{
+                                                                jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            }catch(HibernateException e){
+                                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                                            }
                                                             for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                                 jamLembur = jamLembur + (finalLamaLembur*2);
                                                             }
@@ -6400,7 +6528,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                             hsCriteria5.put("jam_lembur", j);
                                                             hsCriteria5.put("flag", "Y");
                                                             List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            try{
+                                                                jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                            }catch(HibernateException e){
+                                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                                throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                            }
                                                             for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                                 jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
                                                             }
@@ -6446,7 +6579,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         Double upahLembur = 0d;
                                         Double gapok = 0d;
                                         Double sankhus = 0d;
-                                        pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                        try{
+                                            pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
+                                        }catch(HibernateException e){
+                                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                            throw new HibernateException("Found problem when retrieving Pengali Faktor Lembur by criteria, " + e.getMessage());
+                                        }
                                         for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
                                             faktor = pengaliFaktorLemburEntity.getFaktor();
                                         }
@@ -6459,13 +6597,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
                                         if (biodata.getTipePegawai().equalsIgnoreCase("TP01")){
-                                            payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                            try{
+                                                payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(),tahunGaji);
+                                            }catch(HibernateException e){
+                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                            }
                                             for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                                                 gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                                 sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                                             }
                                         }else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")){
-                                            payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                            try{
+                                                payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(),tahunGaji);
+                                            }catch(HibernateException e){
+                                                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
+                                            }
                                             for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop:payrollSkalaGajiPkwtEntityList){
                                                 gapok = skalaGajiLoop.getGajiPokok().doubleValue();
                                                 sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
@@ -6485,7 +6633,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                     hsCriteria5.put("jam_lembur", j);
                                                     hsCriteria5.put("flag", "Y");
                                                     List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    try{
+                                                        jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                    }
                                                     for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                         jamLembur = jamLembur + (finalLamaLembur*2);
                                                     }
@@ -6496,7 +6649,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                     hsCriteria5.put("jam_lembur", j);
                                                     hsCriteria5.put("flag", "Y");
                                                     List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                                                    jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    try{
+                                                        jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+                                                    }catch(HibernateException e){
+                                                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+                                                        throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+                                                    }
                                                     for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
                                                         jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
                                                     }
