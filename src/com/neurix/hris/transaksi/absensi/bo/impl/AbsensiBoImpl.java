@@ -4737,7 +4737,8 @@ public class AbsensiBoImpl implements AbsensiBo {
 
         for (Biodata pegawai:daftarKaryawan){
             int days=0;
-            if (tanggalAwal.after(pegawai.getTanggalAktif())){
+            //RAKA-24FEB2021==>Mengganti berdasarkan tanggal aktif menjadi berdasarkan tanggal masuk
+            if (tanggalAwal.after(pegawai.getTanggalMasuk())){
                 //menghitung hari kerja
                 try {
                     List<ImLiburEntity> liburEntityList = liburDao.getLiburRange(tanggalAwal,tanggalAkhir);
@@ -4748,17 +4749,18 @@ public class AbsensiBoImpl implements AbsensiBo {
                     e.printStackTrace();
                 }
             }else{
-                String stTanggalAktif = CommonUtil.convertDateToString(pegawai.getTanggalAktif());
+                String stTanggalMasuk = CommonUtil.convertDateToString(pegawai.getTanggalMasuk());
                 //menghitung hari kerja
                 try {
                     List<ImLiburEntity> liburEntityList = liburDao.getLiburRange(tanggalAwal,tanggalAkhir);
-                    days = CommonUtil.countDays(stTanggalAktif,stTanggalAkhir);
+                    days = CommonUtil.countDays(stTanggalMasuk,stTanggalAkhir);
                     int jumlahLibur=liburEntityList.size();
                     days=days-jumlahLibur;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
+            //RAKA-end
             AbsensiTriwulanDTO result = new AbsensiTriwulanDTO();
             int masukSebelumJadwal=0,terlambatKurang60=0,terlambatLebih60=0,pulangTidakSesuai=0,masukKerja=0,tidakAbsenMasuk=0,tidakAbsenPulang=0,sakit=0,cuti=0,dinas=0,lain2=0,tanpaKeterangan=0,totalTidakMasuk=0;
             result.setNip(pegawai.getNip());
