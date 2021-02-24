@@ -443,21 +443,51 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             BigInteger totalBox1 = new BigInteger(String.valueOf(0));
             BigInteger totalLembar1 = new BigInteger(String.valueOf(0));
             BigInteger totalBiji1 = new BigInteger(String.valueOf(0));
+            BigInteger jumlahBijiAll = new BigInteger(String.valueOf(0));
 
+            System.out.println(" ====== Obat Gudang : ");
+            int i = 1;
             if (results1.size() > 0) {
                 for (Object[] obj : results1) {
                     idObat = obj[0].toString();
+
+                    BigInteger totalBox = new BigInteger(String.valueOf(0));
+                    BigInteger totalLembar = new BigInteger(String.valueOf(0));
+                    BigInteger totalBiji = new BigInteger(String.valueOf(0));
+
                     if(obj[1] != null){
-                        totalBox1 = totalBox1.add(new BigInteger(obj[1].toString()));
+                        totalBox = new BigInteger(obj[1].toString());
+                        totalBox1 = totalBox1.add(totalBox);
+//                        totalBox1 = new BigInteger(obj[1].toString());
                     }
                     if(obj[2] != null){
-                        totalLembar1 = totalLembar1.add(new BigInteger(obj[2].toString()));
+                        totalLembar = new BigInteger(obj[2].toString());
+                        totalLembar1 = totalLembar1.add(totalLembar);
+//                        totalLembar1 = new BigInteger(obj[2].toString());
                     }
                     if(obj[3] != null){
-                        totalBiji1 = totalBiji1.add(new BigInteger(obj[3].toString()));
+                        totalBiji = new BigInteger(obj[3].toString());
+                        totalBiji1 = totalBiji1.add(totalBiji);
+//                        totalBiji1 = new BigInteger(obj[3].toString());
                     }
+
+                    BigInteger lembarPerBox = new BigInteger(obj[4].toString());
+                    BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
+                    BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
+
+                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+                    System.out.println("    -> lembar / box : "+lembarPerBox+" biji / lembar : "+bijiPerLembar);
+
+                    BigInteger boxToBiji = totalBiji.multiply(consBox);
+                    BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
+
+                    // jumlah Biji all
+                    jumlahBijiAll = jumlahBijiAll.add(boxToBiji.add(lembarToBiji).add(totalBiji));
+
                 }
             }
+
+            System.out.println(" ====== Obat Poli : ");
 
             BigInteger totalBox2 = new BigInteger(String.valueOf(0));
             BigInteger totalLembar2 = new BigInteger(String.valueOf(0));
@@ -465,15 +495,39 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             if (results2.size() > 0) {
                 for (Object[] obj : results2) {
+
+                    BigInteger totalBox = new BigInteger(String.valueOf(0));
+                    BigInteger totalLembar = new BigInteger(String.valueOf(0));
+                    BigInteger totalBiji = new BigInteger(String.valueOf(0));
+
                     if(obj[1] != null){
-                        totalBox2 = new BigInteger(obj[1].toString());
+                        totalBox = new BigInteger(obj[1].toString());
+                        totalBox2 = totalBox2.add(totalBox);
+//                        totalBox2 = totalBox2.add(new BigInteger(obj[1].toString()));
                     }
                     if(obj[2] != null){
-                        totalLembar2 = new BigInteger(obj[2].toString());
+                        totalLembar = new BigInteger(obj[2].toString());
+                        totalLembar2 = totalLembar2.add(totalLembar);
+//                        totalLembar2 = totalLembar2.add(new BigInteger(obj[2].toString()));
                     }
                     if(obj[3] != null){
-                        totalBiji2 = new BigInteger(obj[3].toString());
+                        totalBiji = new BigInteger(obj[3].toString());
+                        totalBiji2 = totalBiji2.add(totalBiji);
+//                        totalBiji2 = totalBiji2.add(new BigInteger(obj[3].toString()));
                     }
+
+                    BigInteger lembarPerBox = new BigInteger(obj[4].toString());
+                    BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
+                    BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
+
+                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+                    System.out.println("    -> lembar / box : "+obj[4].toString()+" biji / lembar : "+obj[5].toString());
+
+                    BigInteger boxToBiji = totalBox.multiply(consBox);
+                    BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
+
+                    // jumlah Biji all
+                    jumlahBijiAll = jumlahBijiAll.add(boxToBiji.add(lembarToBiji).add(totalBiji));
                 }
             }
 
@@ -482,6 +536,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 obat.setQtyBox(totalBox1.add(totalBox2));
                 obat.setQtyLembar(totalLembar1.add(totalLembar2));
                 obat.setQtyBiji(totalBiji1.add(totalBiji2));
+                obat.setQtyAllBiji(jumlahBijiAll);
             }
         }
 

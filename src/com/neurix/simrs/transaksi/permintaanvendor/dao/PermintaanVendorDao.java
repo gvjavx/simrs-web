@@ -493,21 +493,23 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         return pabrikObatList;
     }
 
-    public TransaksiObatDetail getDataFisikObatBatch(BigInteger idBatch){
+    public TransaksiObatDetail getDataFisikObatMasukBatch(BigInteger idBatch){
 
         String SQL = "SELECT\n" +
                 "a.id_transaksi_obat_detail,\n" +
                 "SUM(b.qty_approve) as qty_approve,\n" +
                 "a.lembar_per_box, \n" +
-                "a. biji_per_lembar,\n" +
-                "SUM(b.netto) as netto\n" +
+                "a.biji_per_lembar,\n" +
+                "SUM(b.netto) as netto,\n" +
+                "b.jenis_satuan \n" +
                 "FROM mt_simrs_transaksi_obat_detail a\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail_batch b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
                 "WHERE b.id = "+idBatch+"\n" +
                 "GROUP BY \n" +
                 "a.id_transaksi_obat_detail,\n" +
                 "a.lembar_per_box, \n" +
-                "a. biji_per_lembar";
+                "a.biji_per_lembar, \n" +
+                "b.jenis_satuan \n";
 
         List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
@@ -516,16 +518,20 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
             TransaksiObatDetail trans = new TransaksiObatDetail();
             trans.setIdTransaksiObatDetail(obj[0].toString());
-            trans.setQtyBox(obj[1] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[1].toString()));
+            trans.setQtyApprove(obj[1] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[1].toString()));
             trans.setLembarPerBox(obj[2] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[2].toString()));
             trans.setBijiPerLembar(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
             trans.setNetto(obj[4] == null ? new BigDecimal(0) : new BigDecimal(obj[4].toString()));
+            trans.setJenisSatuan(obj[5] == null ? "" : obj[5].toString());
+            trans.setQtyBox(trans.getQtyBox());
+
+            String jenisSatuan = obj[5].toString();
 
             BigInteger cons         = trans.getLembarPerBox().multiply(trans.getBijiPerLembar());
-            BigInteger jumlahBiji   = trans.getQtyBox().multiply(cons);
+            BigInteger jumlahBiji   = trans.getQtyApprove().multiply(cons);
 
             trans.setQtyBiji(jumlahBiji);
-            trans.setAverageHargaBiji(trans.getNetto().divide(new BigDecimal(cons), 2, RoundingMode.HALF_UP));
+            trans.setAverageHargaBiji(trans.getNetto().divide(new BigDecimal(jumlahBiji), 2, RoundingMode.HALF_UP));
             return trans;
         }
 
