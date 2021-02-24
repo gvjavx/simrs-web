@@ -795,7 +795,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
 
-        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setRujuk(bean.getPerujuk() != null ? bean.getPerujuk() : null);
             detailCheckupEntity.setKetRujukan(bean.getNamaPerujuk() != null ? bean.getNamaPerujuk() : null);
             detailCheckupEntity.setKelasPasien(bean.getIdKelas());
@@ -887,7 +887,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 tindakanRawatEntity.setAction("U");
                 tindakanRawatEntity.setApproveFlag("Y");
 
-                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     tindakanRawatEntity.setTarif(tindakan.getTarifBpjs());
                 } else {
                     tindakanRawatEntity.setTarif(tindakan.getTarif());
@@ -900,7 +900,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
 
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                    if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                    if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                         ItSimrsRiwayatTindakanEntity riwayatTindakan = new ItSimrsRiwayatTindakanEntity();
                         riwayatTindakan.setIdRiwayatTindakan("RWT" + getNextIdRiwayatTindakan());

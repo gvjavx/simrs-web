@@ -36,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Transaksi Pasien BPJS / Rekanan Rawat Jalan
+            Verifikasi Transaksi Pasien BPJS / BPJS Rekanan Rawat Jalan
         </h1>
     </section>
 
@@ -728,7 +728,7 @@
                                     total = (parseInt(total) + parseInt(tarif));
                                 }
 
-                                if (jenisPasien == "rekanan") {
+                                if (jenisPasien == "bpjs_rekanan") {
                                     $('#jp').show();
                                     var choice1 = "";
                                     var choice2 = "";

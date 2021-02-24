@@ -129,19 +129,19 @@ public class TindakanRawatAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveAdd(){
+    public String saveAdd() {
         return "success_add";
     }
 
-    public String getComboJenisPeriksaPasien(){
+    public String getComboJenisPeriksaPasien() {
         return "init_add";
     }
 
-    public String getComboPelayanan(){
+    public String getComboPelayanan() {
         return "init_add";
     }
 
-    public CrudResponse saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan, String idRuangan){
+    public CrudResponse saveTindakanRawat(String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan, String idRuangan) {
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -156,7 +156,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             TindakanRawat tindakanRawat = new TindakanRawat();
             tindakanRawat.setIdDetailCheckup(idDetailCheckup);
             tindakanRawat.setIdTindakan(idTindakan);
-            if(!"".equalsIgnoreCase(idRuangan) && idRuangan != null){
+            if (!"".equalsIgnoreCase(idRuangan) && idRuangan != null) {
                 tindakanRawat.setIdRuangan(idRuangan);
             }
 
@@ -166,23 +166,23 @@ public class TindakanRawatAction extends BaseMasterAction {
             Tindakan tindakanResult = new Tindakan();
             try {
                 tindakanList = tindakanBo.getDataTindakan(tindakan);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
-            if (tindakanList.size() > 0){
+            if (tindakanList.size() > 0) {
                 tindakanResult = tindakanList.get(0);
-            }else{
+            } else {
                 response.setStatus("error");
                 response.setMsg("Tidak dapat menemukan detail tindakan..!");
                 return response;
             }
 
             RekananOps ops = new RekananOps();
-            if("rekanan".equalsIgnoreCase(jenisTransaksi)){
+            if ("rekanan".equalsIgnoreCase(jenisTransaksi) || "bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
                 try {
                     ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
-                }catch (GeneralBOException e){
-                    logger.error("Error, "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Error, " + e.getMessage());
                     response.setStatus("error");
                     response.setMsg("Tidak dapat menemukan id detail checkup");
                     return response;
@@ -191,33 +191,31 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
             BigInteger tarifNormal = tindakanResult.getTarif();
-            if(tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0){
-                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP);
+            if (tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0) {
+                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                 BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
                 BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
                 tarifBpjs = hasilTarifBpjs.toBigInteger();
                 tarifNormal = hasilTarifNormal.toBigInteger();
             }
 
-            if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
+            if ("bpjs".equalsIgnoreCase(jenisTransaksi)) {
                 tindakanRawat.setTarif(tarifBpjs);
-            }else if("rekanan".equalsIgnoreCase(jenisTransaksi)){
-                if("Y".equalsIgnoreCase(ops.getIsBpjs())){
-                    if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
-                        tindakanRawat.setTarif(hasil.toBigInteger());
-                    }else{
-                        tindakanRawat.setTarif(tarifBpjs);
-                    }
-                }else{
-                    if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
-                        tindakanRawat.setTarif(hasil.toBigInteger());
-                    }else{
-                        tindakanRawat.setTarif(tarifNormal);
-                    }
+            } else if ("rekanan".equalsIgnoreCase(jenisTransaksi)) {
+                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                    BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
+                    tindakanRawat.setTarif(hasil.toBigInteger());
+                } else {
+                    tindakanRawat.setTarif(tarifNormal);
                 }
-            }else {
+            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
+                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                    BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
+                    tindakanRawat.setTarif(hasil.toBigInteger());
+                } else {
+                    tindakanRawat.setTarif(tarifBpjs);
+                }
+            } else {
                 tindakanRawat.setTarif(tarifNormal);
             }
 
@@ -236,7 +234,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             response = tindakanRawatBo.saveAdd(tindakanRawat);
 
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             logger.error(e.getMessage());
             response.setStatus("error");
             response.setMsg(e.getMessage());
@@ -244,7 +242,7 @@ public class TindakanRawatAction extends BaseMasterAction {
         return response;
     }
 
-    public List<TindakanRawat> listTindakanRawat(String idDetailCheckup){
+    public List<TindakanRawat> listTindakanRawat(String idDetailCheckup) {
         logger.info("[TindakanRawatAction.listTindakanRawat] start process >>>");
         List<TindakanRawat> tindakanRawatList = new ArrayList<>();
         TindakanRawat tindakanRawat = new TindakanRawat();
@@ -252,21 +250,21 @@ public class TindakanRawatAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 
-        if(!"".equalsIgnoreCase(idDetailCheckup)){
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
             try {
                 tindakanRawatList = tindakanRawatBo.getByCriteria(tindakanRawat);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[TindakanRawatAction.listTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }
             logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
             return tindakanRawatList;
 
-        }else{
+        } else {
             return null;
         }
     }
 
-    public CrudResponse editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan){
+    public CrudResponse editTindakanRawat(String idTindakanRawat, String idDetailCheckup, String idTindakan, String idDokter, String tipeRawat, BigInteger qty, String jenisTransaksi, String idPelayanan) {
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -290,20 +288,20 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             try {
                 tindakanList = tindakanBo.getDataTindakan(tindakan);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[TindakanRawatAction.saveTindakanRawat] Error when search tarif dan decs tindakan by id ," + "Found problem when saving add data, please inform to your admin.", e);
             }
 
-            if (tindakanList.size() > 0){
+            if (tindakanList.size() > 0) {
                 tindakanResult = tindakanList.get(0);
             }
 
             RekananOps ops = new RekananOps();
-            if("rekanan".equalsIgnoreCase(jenisTransaksi)){
+            if ("rekanan".equalsIgnoreCase(jenisTransaksi) || "bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
                 try {
                     ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
-                }catch (GeneralBOException e){
-                    logger.error("Error, "+e.getMessage());
+                } catch (GeneralBOException e) {
+                    logger.error("Error, " + e.getMessage());
                     response.setStatus("error");
                     response.setMsg("Tidak dapat menemukan id detail checkup");
                     return response;
@@ -312,33 +310,31 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
             BigInteger tarifNormal = tindakanResult.getTarif();
-            if(tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0){
-                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2,BigDecimal.ROUND_HALF_UP);
+            if (tindakanResult.getDiskon() != null && !"".equalsIgnoreCase(tindakanResult.getDiskon().toString()) && tindakanResult.getDiskon().intValue() > 0) {
+                BigDecimal diskonTarif = (new BigDecimal(100).subtract(tindakanResult.getDiskon())).divide(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_UP);
                 BigDecimal hasilTarifBpjs = new BigDecimal(tindakanResult.getTarifBpjs()).multiply(diskonTarif);
                 BigDecimal hasilTarifNormal = new BigDecimal(tindakanResult.getTarif()).multiply(diskonTarif);
                 tarifBpjs = hasilTarifBpjs.toBigInteger();
                 tarifNormal = hasilTarifNormal.toBigInteger();
             }
 
-            if ("bpjs".equalsIgnoreCase(jenisTransaksi)){
+            if ("bpjs".equalsIgnoreCase(jenisTransaksi)) {
                 tindakanRawat.setTarif(tarifBpjs);
-            }else if("rekanan".equalsIgnoreCase(jenisTransaksi)){
-                if("Y".equalsIgnoreCase(ops.getIsBpjs())){
-                    if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
-                        tindakanRawat.setTarif(hasil.toBigInteger());
-                    }else{
-                        tindakanRawat.setTarif(tarifBpjs);
-                    }
-                }else{
-                    if(ops.getDiskon() != null){
-                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
-                        tindakanRawat.setTarif(hasil.toBigInteger());
-                    }else{
-                        tindakanRawat.setTarif(tarifNormal);
-                    }
+            } else if ("rekanan".equalsIgnoreCase(jenisTransaksi)) {
+                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                    BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
+                    tindakanRawat.setTarif(hasil.toBigInteger());
+                } else {
+                    tindakanRawat.setTarif(tarifNormal);
                 }
-            }else {
+            } else if ("bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
+                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                    BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
+                    tindakanRawat.setTarif(hasil.toBigInteger());
+                } else {
+                    tindakanRawat.setTarif(tarifBpjs);
+                }
+            } else {
                 tindakanRawat.setTarif(tarifNormal);
             }
 
@@ -354,7 +350,7 @@ public class TindakanRawatAction extends BaseMasterAction {
 
             response = tindakanRawatBo.saveEdit(tindakanRawat);
 
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             logger.error(e.getMessage());
             response.setStatus("error");
             response.setMsg(e.getMessage());
@@ -362,17 +358,17 @@ public class TindakanRawatAction extends BaseMasterAction {
         return response;
     }
 
-    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis){
+    public List<TindakanRawat> getListTindakanRawat(String noCheckup, String jenis) {
 
         logger.info("[TindakanRawatAction.getListTindakanRawat] start process >>>");
         List<TindakanRawat> tindakanRawatList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         TindakanRawatBo tindakanRawatBo = (TindakanRawatBo) ctx.getBean("tindakanRawatBoProxy");
 
-        if(!"".equalsIgnoreCase(noCheckup) && noCheckup != null){
+        if (!"".equalsIgnoreCase(noCheckup) && noCheckup != null) {
             try {
                 tindakanRawatList = tindakanRawatBo.getListTindakanRawat(noCheckup, jenis);
-            }catch (GeneralBOException e){
+            } catch (GeneralBOException e) {
                 logger.error("[TindakanRawatAction.getListTindakanRawat] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
             }
 
@@ -380,6 +376,6 @@ public class TindakanRawatAction extends BaseMasterAction {
             return tindakanRawatList;
 
         }
-        return  tindakanRawatList;
+        return tindakanRawatList;
     }
 }

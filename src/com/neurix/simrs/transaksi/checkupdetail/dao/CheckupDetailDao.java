@@ -449,7 +449,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "AND hd.nama LIKE :nama \n" +
                     "AND dt.id_pelayanan LIKE :idPelayanan \n" +
                     "AND dt.is_kronis IS NULL \n" +
-                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'rekanan') \n" +
+                    "AND dt.id_jenis_periksa_pasien IN ('bpjs', 'bpjs_rekanan') \n" +
                     "AND dt.status_periksa LIKE :status";
 
             List<Object[]> results = new ArrayList<>();
@@ -2304,7 +2304,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     flagCloseTransaksi = "AND b.flag_cover IS NULL \n";
                 }
             } else {
-                idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'ptpn','asuransi')\n";
+                idJenisPeriksaPasien = "AND b.id_jenis_periksa_pasien NOT IN ('bpjs', 'bpjs_rekanan','asuransi')\n";
                 if (detailCheckup.getFlagCloseTraksaksi() != null && !"".equalsIgnoreCase(detailCheckup.getFlagCloseTraksaksi())) {
                     flagCloseTransaksi = "AND b.flag_close_traksaksi IS NOT NULL \n";
                 } else {

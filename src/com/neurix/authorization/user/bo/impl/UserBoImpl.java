@@ -738,7 +738,7 @@ public class UserBoImpl implements UserBo {
                             icon = "<i class=\"fa fa-money\"></i>";
                             idLi = "pembayaran_active";
                             openLu = "pembayaran_open";
-                        } else if (("Verifikasi BPJS / PTPN").equalsIgnoreCase(menuName)) {
+                        } else if (("Verifikasi BPJS").equalsIgnoreCase(menuName)) {
                             icon = "<i class=\"fa fa-gavel\"></i>";
                             idLi = "verif_bpjs_active";
                             openLu = "verif_bpjs_open";
@@ -762,6 +762,8 @@ public class UserBoImpl implements UserBo {
                             icon = "<i class=\"fa fa-heartbeat\"></i>";
                             idLi = "penunjang_active";
                             openLu = "penunjang_open";
+                        } else{
+                            icon = "<i class=\"fa fa-th-large\"></i>";
                         }
 
 

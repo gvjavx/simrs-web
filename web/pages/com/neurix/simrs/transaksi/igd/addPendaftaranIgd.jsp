@@ -92,7 +92,7 @@
                     }
                 }
 
-                if (tipe == "bpjs") {
+                if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
                     if (diagnosaBpjs != '') {
                         if (statusBpjs != '') {
                             if (statusBpjs == "aktif") {
@@ -123,31 +123,11 @@
                         if (diagnosaBpjs == '') {
                             $('#diagnosa_awal').css('border', 'solid 1px red');
                         }
-                        // if (perujuk == '') {
-                        //     $('#war_perujuk').show();
-                        // }
-                        // if (ketPerujuk == '') {
-                        //     $('#war_ket_perujuk').show();
-                        // }
-                        // if (noRujukan == '') {
-                        //     $('#war_no_rujukan').show();
-                        // }
-                        // if (ppkRujukan == '') {
-                        //     $('#war_ppk_rujukan').show();
-                        // }
-                        // if (tglRujukan == '') {
-                        //     $('#war_tgl_rujukan').show();
-                        // }
-                        // if (fotoRujukan == '') {
-                        //     $('#war_foto_rujukan').show();
-                        // }
                     }
                 }
 
                 if (tipe == "asuransi") {
-                    // if(asuransi != '' && coverBiaya != ''){
                     if (asuransi != '') {
-
                         if (isLaka == "Y") {
                             $('#confirm_dialog').dialog('open');
                         } else {
@@ -180,60 +160,7 @@
 
                 if (tipe == "rekanan") {
                     if (noKartuPtpn != '' && unitPtpn != '') {
-                        if (cekBpjs == 'Y') {
-                            if (diagnosaBpjs != '') {
-
-                                if (statusBpjs != '') {
-                                    //&& statusRujukan == "aktif"
-                                    if (statusBpjs == "aktif") {
-                                        $('#confirm_dialog').dialog('open');
-                                    } else {
-                                        var msg1 = "";
-                                        var msg2 = "";
-                                        $("html, body").animate({scrollTop: 0}, 600);
-                                        $('#warning_pasien').show().fadeOut(10000);
-                                        if (statusBpjs != "aktif") {
-                                            msg1 = "No BPJS Tidak Aktif";
-                                        }
-                                        if (statusRujukan != "aktif") {
-                                            msg2 = "No Rujukan Tidak Aktif";
-                                        }
-                                        $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan " + msg1 + ". " + msg2 + "...!");
-                                    }
-                                } else {
-                                    $("html, body").animate({scrollTop: 0}, 600);
-                                    $('#warning_pasien').show().fadeOut(10000);
-                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
-                                }
-                            } else {
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
-                                if (diagnosaBpjs == '') {
-                                    $('#diagnosa_awal').css('border', 'solid 1px red');
-                                }
-                                if (perujuk == '') {
-                                    $('#war_perujuk').show();
-                                }
-                                if (ketPerujuk == '') {
-                                    $('#war_ket_perujuk').show();
-                                }
-                                if (noRujukan == '') {
-                                    $('#war_no_rujukan').show();
-                                }
-                                if (ppkRujukan == '') {
-                                    $('#war_ppk_rujukan').show();
-                                }
-                                if (tglRujukan == '') {
-                                    $('#war_tgl_rujukan').show();
-                                }
-                                if (fotoRujukan == '') {
-                                    $('#war_foto_rujukan').show();
-                                }
-                            }
-                        } else {
-                            $('#confirm_dialog').dialog('open');
-                        }
+                        $('#confirm_dialog').dialog('open');
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
@@ -3114,20 +3041,33 @@
                 $('#form-paket').hide();
                 $('#form-no-bpjs').hide();
                 $('#form-rujukan').hide();
-            } else if (jenis == "bpjs" || jenis == "rekanan") {
-                if (jenis == "rekanan") {
-                    listSelectRekanan();
+            } else if (jenis == "bpjs" || jenis == "bpjs_rekanan") {
+                if (jenis == "bpjs_rekanan") {
+                    listSelectRekanan("Y");
                     $('#form-rekanan').show();
                 }
                 if (jenis == "bpjs") {
                     $('#form-rekanan').hide();
                 }
+                $('#form_pg').hide();
                 $('#form-no-bpjs').show();
                 $('#form-rujukan').show();
                 $('#form-is-uang-muka').hide();
                 $('#form-paket-perusahaan').hide();
                 $('#form-paket').hide();
                 $('#form-asuransi').hide();
+            } else if (jenis == "rekanan") {
+                listSelectRekanan("N");
+                $('#form_pg').hide();
+                $('#form-rekanan').show();
+                $('#form-no-bpjs').hide();
+                $('#form-rujukan').hide();
+                $('#form-uang-muka').hide();
+                $('#form-paket-perusahaan').hide();
+                $('#form-paket').hide();
+                $('#form-asuransi').hide();
+                $('#poli').attr('disabled', false);
+                $('#form_eksekutif').hide();
             } else if (jenis == "paket_perusahaan") {
                 listSelectPaket();
                 $('#form-paket-perusahaan').show();

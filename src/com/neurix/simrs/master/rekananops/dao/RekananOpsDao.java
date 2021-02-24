@@ -50,9 +50,14 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
         return results;
     }
 
-    public List<RekananOps> getComboRekananOps(String branchId) {
+    public List<RekananOps> getComboRekananOps(String branchId, String isBpjs) {
         List<RekananOps> opsList = new ArrayList<>();
         if (branchId != null && !"".equalsIgnoreCase(branchId)) {
+            String bpjs = "";
+            if(isBpjs != null && !"".equalsIgnoreCase(isBpjs)){
+                bpjs = "AND b.is_bpjs = '"+isBpjs+"' \n";
+            }
+
             String SQL = "SELECT \n" +
                     "a.id_rekanan_ops,\n" +
                     "a.nomor_master,\n" +
@@ -62,7 +67,7 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
                     "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen\n" +
                     "FROM im_simrs_rekanan_ops a\n" +
                     "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
-                    "WHERE b.branch_id = :branchId \n";
+                    "WHERE b.branch_id = :branchId \n" +bpjs;
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
