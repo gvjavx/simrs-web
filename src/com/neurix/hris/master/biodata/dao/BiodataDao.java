@@ -1404,7 +1404,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   bagian2.nama_bagian,\n" +
                 "                   pegawai.shift,\n" +
                 "                   pegawai.tanggal_aktif, \n" +
-                "                   tipe.tipe_pegawai_name\n" +
+                //RAKA-24FEB2021==>Menambahkan tanggal masuk
+                "                   tipe.tipe_pegawai_name,\n" +
+                "                   pegawai.tanggal_masuk\n" +
                 "                                FROM im_hris_pegawai pegawai\n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi ON posisi.nip = pegawai.nip  \n" +
                 "                                LEFT JOIN im_branches branch ON branch.branch_id = posisi.branch_id   \n" +
@@ -1414,7 +1416,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                LEFT JOIN im_hris_position_bagian bagian2 ON position.bagian_id = bagian2.bagian_id\n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian3 ON position.bagian_id = bagian3.bagian_id\n" +
                 "                                LEFT JOIN im_hris_tipe_pegawai tipe ON tipe.tipe_pegawai_name = pegawai.tipe_pegawai\n" +
-                "                                WHERE pegawai.flag = 'Y'  \n" +
+                //RAKA-24FEB2021==>Hanya mengambil karyawan non-KSO
+                "                                WHERE pegawai.flag = 'Y'  AND pegawai.flag_dokter_kso = 'N'\n" +
+                //RAKA-end
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -1450,6 +1454,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             if (row[14] != null){
                 result.setTanggalAktif((Date) row[14]);
             }
+            if (row[16] !=null){
+                result.setTanggalMasuk((Date) row[16]);
+            }
+            //RAKA-end
 
             if (!bagianId.equalsIgnoreCase((""))){
                 if (result.getBagianId().equalsIgnoreCase(bagianId)){
