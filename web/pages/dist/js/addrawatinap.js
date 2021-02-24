@@ -4,13 +4,15 @@ function getJenisResep() {
 
     strSelect = "";
     var arBodyJenisResep = [];
-    if (jenisPeriksaPasien == "ptpn") {
-        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "ptpn", "label": "PTPN"});
+    if (jenisPeriksaPasien == "rekanan") {
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "rekanan", "label": "Rekanan"});
     } else if (jenisPeriksaPasien == "asuransi") {
         arBodyJenisResep.push({"nilai": "asuransi", "label": "ASURANSI"}, {"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs") {
         arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
-    } else {
+    } else if (jenisPeriksaPasien == "bpjs_rekanan") {
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+    } else  {
         arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
     }
 

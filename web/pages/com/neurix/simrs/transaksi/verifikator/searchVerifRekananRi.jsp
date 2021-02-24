@@ -785,7 +785,7 @@
                             $('#save_fin').attr('onclick', 'confirm()');
                             $('#top_up').scrollTop(0);
                             $('#success').show().fadeOut(5000);
-                            $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover asuransi dibawah...!");
+                            $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover rekanan dibawah...!");
                             listTindakanApprove(noCheckup, idDetailCheckup, jenisPasien);
                         } else {
                             $('#save_fin').show();

@@ -27,6 +27,8 @@ function getJenisResep() {
         arBodyJenisResep.push({"nilai": "paket_individu", "label": "Promo"});
     } else if (jenisPeriksaPasien == "umum") {
         arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
+    } else if (jenisPeriksaPasien == "bpjs_rekanan") {
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
     }
 
     var strSelect = "";
@@ -3450,9 +3452,9 @@ function showDetailPaket() {
 
 function setKeteranganPeriksa() {
     var option = '<option value="">[Select One]</option>';
-    if (jenisPeriksaPasien == 'umum' || jenisPeriksaPasien == 'rekanan') {
+    if (jenisPeriksaPasien == 'umum' || jenisPeriksaPasien == 'rekanan' || jenisPeriksaPasien == 'bpjs_rekanan') {
         option = option + ' <option value="selesai">Selesai</option>';
-        if (urlPage == "checkupdetail") {
+        if (urlPage == "checkupdetail" && jenisPeriksaPasien != "bpjs_rekanan") {
             option = option + '<option value="pindah_poli">Pindah Poli</option>\n';
         }
         option = option + '<option value="rawat_inap">Rawat Inap</option>\n' +

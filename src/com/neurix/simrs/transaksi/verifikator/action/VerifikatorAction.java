@@ -1135,7 +1135,6 @@ public class VerifikatorAction extends BaseMasterAction {
         String invoice = "";
         String company = "";
         String noKartu = "";
-        String jenisRekanan = "Rekanan ";
 
         // PENGAMBILAN DETAIL CHECKUP SEBAGAI DATA UTAMA;
         // PENGAMBILAN COVER BIAYA;
@@ -1151,7 +1150,7 @@ public class VerifikatorAction extends BaseMasterAction {
         try {
             ImSimrsRekananOpsEntity entity = rekananOpsBo.getRekananEntityById(detailCheckupEntity.getIdAsuransi());
             if(entity.getNamaRekanan() != null){
-                company = entity.getNamaRekanan();
+                company = entity.getNamaRekanan()+" ";
             }
         }catch (Exception e){
             response.setStatus("error");
@@ -1303,7 +1302,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     transId = "16";
-                    jenisPasien = " Murni Dengan Obat ";
+                    jenisPasien = "dengan Obat ";
                 } else {
 
                     // create map piutang
@@ -1315,7 +1314,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     // debit piutang pasien PTPN
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutang);
                     transId = "08";
-                    jenisPasien = " Murni Tanpa Obat ";
+                    jenisPasien = "tanpa Obat ";
                 }
             }
 
@@ -1334,14 +1333,13 @@ public class VerifikatorAction extends BaseMasterAction {
 
                 if (isTransitoris) {
                     transId = "40";
-                    jenisPasien = " Murni Terhadap Transitoris";
+                    jenisPasien = " Terhadap Transitoris";
                 } else {
                     transId = "23";
-                    jenisPasien = " Murni ";
+                    jenisPasien = " ";
                 }
 
             }
-            jenisRekanan = "BPJS Rekanan ";
         } else {
 
             //** NON MURNI BPJS / PTPN DAN BPJS **//
@@ -1371,7 +1369,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     hsCriteria.put("pendapatan_rawat_jalan_ptpn", listOfMapTindakanPtpn);
                     hsCriteria.put("ppn_keluaran", mapPajakObat);
                     transId = "18";
-                    jenisPasien = "Dengan Obat";
+                    jenisPasien = "dengan Obat";
 
                 } else {
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutangBpjs);
@@ -1379,7 +1377,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     hsCriteria.put("pendapatan_rawat_jalan_bpjs", listOfMapTindakanBpjs);
                     hsCriteria.put("pendapatan_rawat_jalan_ptpn", listOfMapTindakanPtpn);
                     transId = "10";
-                    jenisPasien = "Tanpa Obat";
+                    jenisPasien = "tanpa Obat";
                 }
             }
 
@@ -1409,6 +1407,12 @@ public class VerifikatorAction extends BaseMasterAction {
             }
         }
 
+        String jenisRekanan = "";
+        if("rekanan".equalsIgnoreCase(detailCheckupEntity.getIdJenisPeriksaPasien())){
+            jenisRekanan = "Rekanan ";
+        }else{
+            jenisRekanan = "BPJS Rekanan ";
+        }
         String catatan = "Closing" + ketPoli + jenisRekanan + company + jenisPasien + " No Checkup " + detailCheckupEntity.getNoCheckup() + " No. RM " + headerChekupEntity.getIdPasien() + noKartu;
         String noJurnal = "";
         try {
