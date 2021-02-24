@@ -96,8 +96,23 @@
                     if (diagnosaBpjs != '') {
                         if (statusBpjs != '') {
                             if (statusBpjs == "aktif") {
-                                // if(statusBpjs == "aktif" && statusRujukan == "aktif"){
-                                $('#confirm_dialog').dialog('open');
+                                if(tipe == "bpjs_rekanan"){
+                                    if (noKartuPtpn != '' && unitPtpn != '') {
+                                        $('#confirm_dialog').dialog('open');
+                                    } else {
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                        if (noKartuPtpn == '') {
+                                            $('#war_no_kartu_ptpn').show();
+                                        }
+                                        if (unitPtpn == '') {
+                                            $('#war_ptpn').show();
+                                        }
+                                    }
+                                }else{
+                                    $('#confirm_dialog').dialog('open');
+                                }
                             } else {
                                 var msg1 = "";
                                 var msg2 = "";
@@ -164,7 +179,7 @@
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                         if (noKartuPtpn == '') {
                             $('#war_no_kartu_ptpn').show();
                         }

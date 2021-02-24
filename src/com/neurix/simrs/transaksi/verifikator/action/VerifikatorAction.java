@@ -1085,7 +1085,8 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
             }
 
-            String catatan = "Closing Pasien " + ketPoli + " BPJS " + ketObat + ". No Detail Checkup " + idDetailCheckup + ". No Pasien " + idPasien;
+            //sodiq, ubah ke no checkup. 24.02.2021
+            String catatan = "Closing Pasien " + ketPoli + " BPJS " + ketObat + ". No Checkup " + headerDetailCheckupEntity.getNoCheckup() + ". No Pasien " + idPasien;
 
             String noJurnal = "";
             try {
@@ -1123,6 +1124,7 @@ public class VerifikatorAction extends BaseMasterAction {
         PelayananBo pelayananBo = (PelayananBo) ctx.getBean("pelayananBoProxy");
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
+        RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
 
         JurnalResponse response = new JurnalResponse();
         String kode = "";
@@ -1133,13 +1135,29 @@ public class VerifikatorAction extends BaseMasterAction {
         String invoice = "";
         String company = "";
         String noKartu = "";
+        String jenisRekanan = "Rekanan ";
 
         // PENGAMBILAN DETAIL CHECKUP SEBAGAI DATA UTAMA;
         // PENGAMBILAN COVER BIAYA;
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailBo.getEntityDetailCheckupByIdDetail(idDetailCheckup);
         ItSimrsHeaderChekupEntity headerChekupEntity = checkupBo.getEntityCheckupById(detailCheckupEntity.getNoCheckup());
-        BigDecimal biayaCover = detailCheckupEntity.getTarifBpjs();
+        BigDecimal biayaCover = new BigDecimal("0");
+        if(detailCheckupEntity.getTarifBpjs() != null){
+            biayaCover = detailCheckupEntity.getTarifBpjs();
+        }
         noKartu = " No. Kartu Rekanan " + detailCheckupEntity.getNoKartuAsuransi();
+
+        //GET NAMA REKANAN, Sodiq, 24,02,2021
+        try {
+            ImSimrsRekananOpsEntity entity = rekananOpsBo.getRekananEntityById(detailCheckupEntity.getIdAsuransi());
+            if(entity.getNamaRekanan() != null){
+                company = entity.getNamaRekanan();
+            }
+        }catch (Exception e){
+            response.setStatus("error");
+            response.setMsg("error when get nama rekanan...!@_@");
+            return response;
+        }
 
         // MENDAPATKAN SEMUA NILAI TINDAKAN DAN RESEP
         String isResep = "N";
@@ -1260,7 +1278,6 @@ public class VerifikatorAction extends BaseMasterAction {
         if ("murni".equalsIgnoreCase(jenisPtpn)) {
 
             //** BPJS MURNI **//
-
             // PENGURANGAN OLEH TRANSITORIS
             Map mapPajakObat = new HashMap();
 //            mapPajakObat.put("bukti", invoice);
@@ -1324,11 +1341,10 @@ public class VerifikatorAction extends BaseMasterAction {
                 }
 
             }
+            jenisRekanan = "BPJS Rekanan ";
         } else {
 
             //** NON MURNI BPJS / PTPN DAN BPJS **//
-
-            jenisPasien = "  ";
             if ("JRJ".equalsIgnoreCase(kode)) {
 
                 // PENGURANGAN OLEH TRANSITORIS
@@ -1355,6 +1371,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     hsCriteria.put("pendapatan_rawat_jalan_ptpn", listOfMapTindakanPtpn);
                     hsCriteria.put("ppn_keluaran", mapPajakObat);
                     transId = "18";
+                    jenisPasien = "Dengan Obat";
 
                 } else {
                     hsCriteria.put("piutang_pasien_bpjs", mapPiutangBpjs);
@@ -1362,6 +1379,7 @@ public class VerifikatorAction extends BaseMasterAction {
                     hsCriteria.put("pendapatan_rawat_jalan_bpjs", listOfMapTindakanBpjs);
                     hsCriteria.put("pendapatan_rawat_jalan_ptpn", listOfMapTindakanPtpn);
                     transId = "10";
+                    jenisPasien = "Tanpa Obat";
                 }
             }
 
@@ -1391,7 +1409,7 @@ public class VerifikatorAction extends BaseMasterAction {
             }
         }
 
-        String catatan = "Closing" + ketPoli + company + jenisPasien + " No Detail Checkup " + idDetailCheckup + " No. RM " + headerChekupEntity.getIdPasien() + noKartu;
+        String catatan = "Closing" + ketPoli + jenisRekanan + company + jenisPasien + " No Checkup " + detailCheckupEntity.getNoCheckup() + " No. RM " + headerChekupEntity.getIdPasien() + noKartu;
         String noJurnal = "";
         try {
             Jurnal jurnal = billingSystemBo.createJurnal(transId, hsCriteria, branchId, catatan, "Y");
@@ -2427,6 +2445,7 @@ public class VerifikatorAction extends BaseMasterAction {
         List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
         headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
         headerDetailCheckup.setIsCover("Y");
+        headerDetailCheckup.setIdJenisPeriksaPasien("asuransi");
 
         try {
             listOfsearchHeaderDetailCheckup = verifikatorBoProxy.getListVerifTransaksi(headerDetailCheckup);
@@ -2452,6 +2471,7 @@ public class VerifikatorAction extends BaseMasterAction {
         String user = CommonUtil.userLogin();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         VerifikatorBo verifikatorBo = (VerifikatorBo) ctx.getBean("verifikatorBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
         try {
             List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
@@ -2470,6 +2490,7 @@ public class VerifikatorAction extends BaseMasterAction {
                 String idPelayanan = object.getString("id_pelayanan");
                 String idPasien = object.getString("id_pasien");
                 String isResep = object.getString("is_resep");
+                String jenisPasien = object.getString("jenis_pasien");
 
                 detailCheckup.setIdDetailCheckup(idDetailCheckup);
                 detailCheckup.setLastUpdateWho(user);
@@ -2493,7 +2514,16 @@ public class VerifikatorAction extends BaseMasterAction {
                 if (riwayatTindakanList.size() > 0) {
                     response = verifikatorBo.updateCoverAsuransi(riwayatTindakanList, detailCheckup);
                     if ("success".equalsIgnoreCase(response.getStatus())) {
-                        JurnalResponse jurnalResponse = closingJurnalNonTunai(isResep, idPasien, noChekcup);
+                        JurnalResponse jurnalResponse = new JurnalResponse();
+                        if("asuransi".equalsIgnoreCase(jenisPasien)){
+                            jurnalResponse = closingJurnalNonTunai(isResep, idPasien, noChekcup);
+                        }else if("rekanan".equalsIgnoreCase(jenisPasien)){
+                            jurnalResponse = closingJurnalRekanan(idDetailCheckup, branchId);
+                        }else{
+                            response.setMsg("Tidak menemukan jenis pasien");
+                            response.setStatus("error");
+                            return response;
+                        }
                         if (!"rekanan".equalsIgnoreCase(jurnalResponse.getStatus())) {
                             if ("error".equalsIgnoreCase(jurnalResponse.getStatus())) {
                                 response.setStatus("error");
@@ -3038,6 +3068,28 @@ public class VerifikatorAction extends BaseMasterAction {
             }
         }
         return idDokter;
+    }
+
+    public String searchVerifRekanan() {
+        logger.info("[VerifikatorAction.searchVerifRekanan] START process >>>");
+
+        HeaderDetailCheckup headerDetailCheckup = getHeaderDetailCheckup();
+        List<HeaderDetailCheckup> listOfsearchHeaderDetailCheckup = new ArrayList();
+        headerDetailCheckup.setBranchId(CommonUtil.userBranchLogin());
+        headerDetailCheckup.setIdJenisPeriksaPasien("rekanan");
+
+        try {
+            listOfsearchHeaderDetailCheckup = verifikatorBoProxy.getListVerifTransaksi(headerDetailCheckup);
+        } catch (GeneralBOException e) {
+            logger.error("[VerifikatorAction.searchVerifRekanan] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+        session.setAttribute("listOfResult", listOfsearchHeaderDetailCheckup);
+
+        logger.info("[VerifikatorAction.searchVerifRekanan] END process <<<");
+        return "search";
     }
 
     @Override

@@ -311,4 +311,7 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/laporan/struts/LaporanOpsAction.xml"/>
     <include file="sshconfig/com/neurix/hris/transaksi/notifikasi/struts/MonitoringMesinAbsensiAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRekananRj.xml"/>
+    <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRekananRi.xml"/>
+
 </struts>

@@ -1776,6 +1776,27 @@ UPDATE im_functions
 SET func_name = 'Verifikasi BPJS'
 WHERE func_name = 'Verifikasi BPJS / PTPN';
 
+--insert function new 24-02-2021 waktu setempat
+INSERT INTO im_functions VALUES
+(6903, 'Verifikasi Rekanan', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6903),
+(6904, 'Rawat Jalan', '/verifrekananrj/initVerif_verifrekananrj.action', 6903, 2, now(), 'admin', now(), 'admin', 'Y','C', 6904),
+(6905, 'init', '/verifrekananrj/initVerif_verifrekananrj.action', 6904, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6906, 'search', '/verifrekananrj/searchVerifRekanan_verifrekananrj.action', 6904, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6907, 'Rawat Inap', '/verifrekananri/initVerif_verifrekananri.action', 6903, 2, now(), 'admin', now(), 'admin', 'Y','C', 6907),
+(6908, 'init', '/verifrekananri/initVerif_verifrekananri.action', 6907, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6909, 'search', '/verifrekananri/searchVerifRekanan_verifrekananri.action', 6907, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6903, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6904, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6905, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6906, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6907, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6908, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6909, 38, 'Y', now(), now(), 'admin', 'admin');
+
+
+
 
 
 

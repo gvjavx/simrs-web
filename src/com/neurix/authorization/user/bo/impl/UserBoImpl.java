@@ -762,6 +762,10 @@ public class UserBoImpl implements UserBo {
                             icon = "<i class=\"fa fa-heartbeat\"></i>";
                             idLi = "penunjang_active";
                             openLu = "penunjang_open";
+                        }else if (("Verifikasi Rekanan").equalsIgnoreCase(menuName)) {
+                            icon = "<i class=\"fa fa-gavel\"></i>";
+                            idLi = "verif_rekanan_active";
+                            openLu = "verif_rekanan_open";
                         } else{
                             icon = "<i class=\"fa fa-th-large\"></i>";
                         }

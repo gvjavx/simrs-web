@@ -17,8 +17,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #verif_asuransi_active').addClass('active');
-            $('#verif_asuransi_open').addClass('menu-open');
+            $('#bayar_rawat_inap, #verif_rekanan_active').addClass('active');
+            $('#verif_rekanan_active').addClass('menu-open');
         });
 
 
@@ -36,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Transaksi Pasien Asuransi Rawat Jalan
+            Verifikasi Transaksi Pasien Rekanan Rawat Inap
         </h1>
     </section>
 
@@ -47,12 +47,12 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Verifikasi Transaksi Pasien</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Verifikasi Traksaksi Pasien</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="verifForm" method="post" namespace="/verifasrj" action="searchVerifAs_verifasrj.action" theme="simple" cssClass="form-horizontal">
-                                <s:hidden name="headerDetailCheckup.tipePelayanan" value="rawat_jalan"></s:hidden>
+                            <s:form id="verifForm" method="post" namespace="/verifrekananri" action="searchVerifRekanan_verifrekananri.action" theme="simple" cssClass="form-horizontal">
+                                <s:hidden value="rawat_inap" name="headerDetailCheckup.tipePelayanan"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -121,7 +121,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initVerif_verifasrj.action">
+                                        <a type="button" class="btn btn-danger" href="initVerif_verifrekananri.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -242,12 +242,12 @@
                         <div class="col-md-6">
                             <table class="table table-striped" >
                                 <tr>
-                                    <td><b>No RM</b></td>
+                                    <td width="40%"><b>No RM</b></td>
                                     <td ><span id="no_rm"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>No Checkup </b></td>
-                                    <td><span id="no_checkup"></span></td>
+                                    <td><b>ID Detail Checkup </b></td>
+                                    <td><span id="no_detail_checkup"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>NIK</b></td>
@@ -432,9 +432,6 @@
 
     function detail(noCheckup, idDetailCheckup, flagClose) {
         if(!cekSession()){
-            $('#body_tindakan').html('');
-            $('#body_lab').html('');
-            $('#body_resep').html('');
             startSpinner('spin_', idDetailCheckup);
             dwr.engine.setAsync(true);
             CheckupAction.listDataPasien(idDetailCheckup, {callback: function (res) {
@@ -455,7 +452,7 @@
                         }
 
                         $('#no_rm').html(res.idPasien);
-                        $('#no_checkup').html(noCheckup);
+                        $('#no_detail_checkup').html(idDetailCheckup);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);
@@ -491,12 +488,12 @@
         }
     }
 
-    function listTindakan(noCheckup, jenis) {
+    function listTindakan(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
             var trfTtl = 0;
-            TindakanRawatAction.getListTindakanRawat(noCheckup, jenis, function (response) {
+            TindakanRawatAction.getListTindakanRawat(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var tanggal = item.createdDate;
@@ -549,11 +546,11 @@
         }
     }
 
-    function listResepPasien(noCheckup, jenis) {
+    function listResepPasien(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
-            PermintaanResepAction.getListRespPasien(noCheckup, jenis, function (response) {
+            PermintaanResepAction.getListRespPasien(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var idResep = "";
@@ -573,8 +570,6 @@
                         if (item.idPermintaanResep != null) {
                             idResep = item.idPermintaanResep;
                         }
-
-
                         var url = contextPath + '/pages/images/icons8-plus-25.png';
                         table += '<tr id="row_'+idResep+'">' +
                             "<td>" + dateFormat + "</td>" +
@@ -591,11 +586,11 @@
         }
     }
 
-    function listLab(noCheckup, jenis) {
+    function listLab(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
-            PeriksaLabAction.getListLab(noCheckup, jenis, function (response) {
+            PeriksaLabAction.getListLab(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var pemeriksaan = "-";
@@ -775,7 +770,6 @@
                 'metode_bayar': metodePembayaran,
                 'is_resep':isResep
             }
-
             var result = JSON.stringify(data);
             $('#save_fin').hide();
             $('#load_fin').show();
@@ -833,15 +827,15 @@
                                 }
 
                                 var select = '<select style="width: 100%" onchange="setCoverBiaya(this.value,\''+item.totalTarif+'\')" class="form-control select2" id="cover_'+i+'">' +
-                                    '<option value="asuransi">Ditanggung</option>'+
+                                    '<option value="rekanan">Ditanggung</option>'+
                                     '<option value="umum">Tidak Ditanggung</option>'+
                                     '</select>';
 
                                 table += "<tr>" +
                                     "<td>" +
-                                    '<input type="hidden" value="'+item.idRiwayatTindakan+'" id="h_id_riwayat_tindakan_'+i+'">'+
-                                    '<input type="hidden" value="'+item.keterangan+'" id="h_keterangan_tindakan_'+i+'">'+
-                                     item.stTglTindakan +
+                                    '<input type="hidden" value="'+item.idRiwayatTindakan+'" id="h_id_riwayat_tindakan_'+i+'">' +
+                                    '<input type="hidden" value="'+item.keterangan+'" id="h_keterangan_tindakan_'+i+'">' +
+                                    item.stTglTindakan +
                                     "</td>" +
                                     "<td>" + item.namaTindakan + "</td>" +
                                     "<td align='right'>" + tarif + "</td>" +
@@ -899,7 +893,7 @@
             pasien = jumlahPasienBayar;
         }
 
-        if(value == "asuransi"){
+        if(value == "rekanan"){
             totalCover = parseInt(cover) + parseInt(tarif);
             totalPasien = parseInt(pasien) - parseInt(tarif);
         }else{
@@ -966,7 +960,6 @@
                 'is_resep':isResep,
                 'jenis_pasien': jenisPasien
             }
-
             var result1 = JSON.stringify(data);
             var result2 = JSON.stringify(dataDetail);
             $('#save_fin').hide();

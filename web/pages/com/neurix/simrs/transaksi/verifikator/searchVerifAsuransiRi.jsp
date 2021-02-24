@@ -935,6 +935,7 @@
             var dataTable = $('#tbl_tindakan').tableToJSON();
             var cekResep = $('#tabel_resep').tableToJSON();
             var isResep = "N";
+            var jenisPasien = $('#h_jenis_pasien').val();
 
             for (var i = 0; i < dataTable.length - 3; i++){
                 var idRiwayat = $('#h_id_riwayat_tindakan_'+i).val();
@@ -956,7 +957,8 @@
                 'id_pelayanan': idPelayanan,
                 'ditanggung_pasien': pasienBayar,
                 'cover_biaya': coverBiaya,
-                'is_resep':isResep
+                'is_resep':isResep,
+                'jenis_pasien': jenisPasien
             }
             var result1 = JSON.stringify(data);
             var result2 = JSON.stringify(dataDetail);

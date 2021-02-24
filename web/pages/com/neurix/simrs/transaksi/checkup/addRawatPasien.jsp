@@ -104,7 +104,7 @@
                                     } else {
                                         $("html, body").animate({scrollTop: 0}, 600);
                                         $('#warning_pasien').show().fadeOut(10000);
-                                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                                         if (noKartuPtpn == '') {
                                             $('#war_no_kartu_ptpn').show();
                                         }
@@ -201,7 +201,7 @@
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                         if (noKartuPtpn == '') {
                             $('#war_no_kartu_ptpn').show();
                         }
@@ -2195,8 +2195,8 @@
                     var icon = "";
                     var val = "";
                     if (response.status == "200") {
-                        $('#idPelayananBpjs').val('IGD');
-                        // $('#idPelayananBpjs').val(response.kodePoliRujukan);
+                        // $('#idPelayananBpjs').val('IGD');
+                        $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglKunjungan);
@@ -2244,7 +2244,7 @@
                         title = "Warning!";
                         warnClass = "alert-warning";
                         msg = response.message;
-                        $('#idPelayananBpjs').val('IGD');
+                        $('#idPelayananBpjs').val('');
                         $('#ppk_rujukan').val('');
                         $('#intansi_perujuk').val('');
                         $('#tgl_rujukan').val('');
