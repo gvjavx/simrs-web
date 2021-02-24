@@ -977,7 +977,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger qtyLembar = new BigInteger(String.valueOf(0));
         BigInteger qtyBiji = new BigInteger(String.valueOf(0));
 
-
 //        if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
 //            qtyBox = bean.getQtyApprove();
 //
@@ -1002,7 +1001,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 //            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
 //            newObatEntity.setHargaTerakhir(bean.getNetto());
 //        }
-
 
 
         BigDecimal ttlStockInBijian = new BigDecimal(0);
@@ -1062,7 +1060,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
         updateHargaBeliHargaObat(hargaObat);
         // END
-
 
         logger.info("[PermintaanVendorBoImpl.updateAddStockGudang] END <<<");
     }
