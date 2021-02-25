@@ -1070,7 +1070,7 @@
 
     function approveBatch(data, listimg){
         $('#modal-confirm-dialog').modal('hide');
-        $('#save_approve').hide();
+//        $('#save_approve').hide();
         $('#load_approve').show();
 
         dwr.engine.setAsync(true);

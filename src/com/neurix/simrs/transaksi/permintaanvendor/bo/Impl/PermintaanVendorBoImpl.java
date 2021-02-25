@@ -785,6 +785,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                                 obatDetail.setIdPelayanan(bean.getIdPelayanan());
                                 obatDetail.setIdPabrikObat(transaksiObatDetailEntity.getIdPabrikObat());
                                 obatDetail.setNoBatch(batchEntity.getNoBatch());
+                                obatDetail.setIdBatch(batchEntity.getId());
                                 //update stock and new harga rata-rata
                                 updateAddStockGudang(obatDetail);
                             }
@@ -921,22 +922,17 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
 
         ImSimrsObatEntity obatEntity = getObatById(bean.getIdObat());
-//        BigInteger cons = obatEntity.getLembarPerBox().multiply(obatEntity.getBijiPerLembar());
 
+        // data dari stok;
         BigInteger allStockToBiji = sumObat.getQtyAllBiji();
-//        BigInteger allStockToBiji = new BigInteger(String.valueOf(0));
-//        if (sumObat.getIdObat() != null) {
-//            allStockToBiji = (sumObat.getQtyBox().multiply(cons))
-//                    .add(sumObat.getQtyLembar().multiply(obatEntity.getBijiPerLembar()))
-//                    .add(sumObat.getQtyBiji());
-//        }
+        // END
 
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
         BigDecimal ttlAvgHargaPermintaan = new BigDecimal(0);
 
         TransaksiObatDetail dataObatBatch = new TransaksiObatDetail();
         try {
-            dataObatBatch = permintaanVendorDao.getDataFisikObatMasukBatch(new BigInteger(bean.getNoBatch().toString()));
+            dataObatBatch = permintaanVendorDao.getDataFisikObatMasukBatch(bean.getIdBatch());
         } catch (HibernateException e){
             logger.error("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR.", e);
             throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());
@@ -948,13 +944,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger bijiPerLembarBatch = dataObatBatch.getBijiPerLembar();
         BigInteger lembarPerBoxBatch = dataObatBatch.getLembarPerBox();
         BigInteger cons = dataObatBatch.getLembarPerBox().multiply(dataObatBatch.getBijiPerLembar());
-
-
-//        java.util.Date now = new java.util.Date();
-//        SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
-//        f.format(now);
-//
-//        String seq = getIdNextSeqObat();
+        // END
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
         newObatEntity.setIdSeqObat(bean.getIdSeqObat());
@@ -972,9 +962,9 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         ttlQtyPermintaan = qtyBijiPadaBatch;
         ttlAvgHargaPermintaan = hargaBijianPadaBatch;
 
-        BigInteger qtyBox = dataObatBatch.getQtyBox();
-        BigInteger qtyLembar = new BigInteger(String.valueOf(0));
-        BigInteger qtyBiji = new BigInteger(String.valueOf(0));
+        BigInteger qtyBox = dataObatBatch.getQtyBox() == null ? new BigInteger(String.valueOf(0)) : dataObatBatch.getQtyBox();
+        BigInteger qtyLembar = dataObatBatch.getQtyLembar() == null ? new BigInteger(String.valueOf(0)) : dataObatBatch.getQtyLembar();
+        BigInteger qtyBiji = dataObatBatch.getQtyBiji() == null ? new BigInteger(String.valueOf(0)) : dataObatBatch.getQtyBiji();
 
 //        if ("box".equalsIgnoreCase(bean.getJenisSatuan())) {
 //            qtyBox = bean.getQtyApprove();
@@ -1014,17 +1004,18 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         BigInteger ttlQty = allStockToBiji.add(ttlQtyPermintaan);
         BigDecimal newAvgHargaBijian = ttlHargaBijian.divide(new BigDecimal(ttlQty), 2, RoundingMode.HALF_UP);
 
-        if (obatEntity.getLembarPerBox().compareTo(new BigInteger(String.valueOf(0))) == 1) {
-            newObatEntity.setAverageHargaBox(newAvgHargaBijian.multiply(new BigDecimal(cons)));
-            newObatEntity.setAverageHargaLembar(newAvgHargaBijian.multiply(new BigDecimal(obatEntity.getBijiPerLembar())));
-        }
-        if (obatEntity.getBijiPerLembar().compareTo(new BigInteger(String.valueOf(0))) == 1) {
-            newObatEntity.setAverageHargaBiji(newAvgHargaBijian);
-        }
+//        if (obatEntity.getLembarPerBox().compareTo(new BigInteger(String.valueOf(0))) == 1) {
+//            newObatEntity.setAverageHargaBox(newAvgHargaBijian.multiply(new BigDecimal(cons)));
+//            newObatEntity.setAverageHargaLembar(newAvgHargaBijian.multiply(new BigDecimal(obatEntity.getBijiPerLembar())));
+//        }
+//        if (obatEntity.getBijiPerLembar().compareTo(new BigInteger(String.valueOf(0))) == 1) {
+//            newObatEntity.setAverageHargaBiji(newAvgHargaBijian);
+//        }
 
         newObatEntity.setQtyBox(qtyBox);
         newObatEntity.setQtyLembar(qtyLembar);
         newObatEntity.setQtyBiji(qtyBiji);
+        newObatEntity.setAverageHargaBiji(newAvgHargaBijian);
 
         newObatEntity.setFlag("Y");
         newObatEntity.setAction("C");
@@ -1435,10 +1426,12 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 }
             }
 
-            BigInteger cons = obatEntity.getBijiPerLembar().multiply(obatEntity.getLembarPerBox());
-            BigInteger boxToBiji = obatEntity.getQtyBox().multiply(cons);
-            BigInteger lembarToBiji = obatEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
-            BigInteger qty = obatEntity.getQtyBiji().add(lembarToBiji).add(boxToBiji);
+//            BigInteger cons = obatEntity.getBijiPerLembar().multiply(obatEntity.getLembarPerBox());
+//            BigInteger boxToBiji = obatEntity.getQtyBox().multiply(cons);
+//            BigInteger lembarToBiji = obatEntity.getQtyLembar().multiply(obatEntity.getBijiPerLembar());
+//            BigInteger qty = obatEntity.getQtyBiji().add(lembarToBiji).add(boxToBiji);
+            BigInteger qty = obatEntity.getQtyBiji();
+
 
 
 //            BigDecimal hargaBarang = obatEntity.getHargaTerakhir().divide(new BigDecimal(cons) ,2, RoundingMode.HALF_UP);
