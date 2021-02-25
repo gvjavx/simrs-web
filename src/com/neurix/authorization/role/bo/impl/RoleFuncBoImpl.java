@@ -363,6 +363,9 @@ public class RoleFuncBoImpl implements RoleFuncBo {
 
                 }
 
+            }else{
+                logger.error("[RoleFuncBoImpl.saveAdd] Error, sudah memnpunyai menu");
+                throw new GeneralBOException("Role "+roleFunc.getRoleName()+" sudah memnpunyai menu, untuk menambahkan menu yang lain silahkan menggunakan tombol edit...!");
             }
         }
 

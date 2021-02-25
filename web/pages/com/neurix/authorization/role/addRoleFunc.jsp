@@ -175,8 +175,6 @@
         });
 
         $.subscribe('errorDialog', function (event, data) {
-
-//            alert(event.originalEvent.request.getResponseHeader('message'));
             document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
             $.publish('showErrorDialog');
         });
@@ -202,7 +200,7 @@
 
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini" onload="showAlert()">
+<body class="hold-transition skin-blue sidebar-mini">
 
 <%@ include file="/pages/common/headerNav.jsp" %>
 
@@ -319,7 +317,7 @@
                                                                 </center>
                                                             </sj:dialog>
 
-                                                        <s:set name="listOfMenu" value="roleFunc.listOfMenu" scope="request"/>
+                                                        <s:set name="listOfMenu" value="#session.listOfDefaultMenu" scope="request"/>
                                                         <display:table name="listOfMenu" class="table table-condensed table-striped table-hover"
                                                                        requestURI="" id="row" style="font-size:11">
 
@@ -366,7 +364,7 @@
                                 <center>
                                     <table>
                                         <tr>
-                                            <div id="crud">
+                                            <div>
                                                 <td>
                                                     <table>
 
@@ -409,7 +407,7 @@
                                                                    buttons="{
                                                                           'OK':function() {
                                                                                   $('#info_dialog').dialog('close');
-                                                                                  resetField();
+                                                                                  window.location.reload(true);
                                                                                }
                                                                         }"
                                                         >
@@ -420,7 +418,10 @@
                                                         <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
                                                                    height="250" width="600" autoOpen="false" title="Error Dialog"
                                                                    buttons="{
-                                                                          'OK':function() { $('#error_dialog').dialog('close'); }
+                                                                          'OK':function() {
+                                                                          $('#error_dialog').dialog('close');
+                                                                          window.location.reload(true);
+                                                                           }
                                                                         }"
                                                         >
                                                             <div class="alert alert-error fade in">
@@ -433,7 +434,10 @@
                                                         <sj:dialog id="error_validation_dialog" openTopics="showErrorValidationDialog" modal="true" resizable="false"
                                                                    height="280" width="500" autoOpen="false" title="Warning"
                                                                    buttons="{
-                                                                          'OK':function() { $('#error_validation_dialog').dialog('close'); }
+                                                                          'OK':function() {
+                                                                          $('#error_validation_dialog').dialog('close');
+
+                                                                          }
                                                                         }"
                                                         >
                                                             <div class="alert alert-error fade in">
