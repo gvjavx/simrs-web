@@ -63,6 +63,17 @@ public class ObatAction extends BaseMasterAction {
     private List<Obat> listOfObat = new ArrayList<>();
     List<TransaksiStok> report = new ArrayList<>();
     List<Aging> myList = new ArrayList<>() ;
+    private String id;
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public List<Aging> getMyList() {
         return myList;
@@ -623,9 +634,7 @@ public class ObatAction extends BaseMasterAction {
 
         logger.info("[PermintaanVendorAction.printBarcodeBarang] START process <<<");
 
-        String idPabrik = getIdPabrik();
-
-        reportParams.put("idPabrik", idPabrik);
+        reportParams.put("idObat", getId());
 
         try {
             preDownload();

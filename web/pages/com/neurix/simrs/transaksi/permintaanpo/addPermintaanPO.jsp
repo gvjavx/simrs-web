@@ -291,7 +291,7 @@
                                            id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-                            </div>z
+                            </div>
                         </div>
                         <div class="box-header with-border"></div>
                         <div class="row" style="margin-top: 20px">
