@@ -93,14 +93,28 @@
                     }
                 }
 
-                if (tipe == "bpjs") {
+                if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
                     if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
                         && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '') {
-
                         if (statusBpjs != '' && statusRujukan != '') {
-
                             if (statusBpjs == "aktif" && statusRujukan == "aktif") {
-                                $('#confirm_dialog').dialog('open');
+                                if(tipe == "bpjs_rekanan"){
+                                    if (noKartuPtpn != '' && unitPtpn != '') {
+                                        $('#confirm_dialog').dialog('open');
+                                    } else {
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                        if (noKartuPtpn == '') {
+                                            $('#war_no_kartu_ptpn').show();
+                                        }
+                                        if (unitPtpn == '') {
+                                            $('#war_ptpn').show();
+                                        }
+                                    }
+                                }else{
+                                    $('#confirm_dialog').dialog('open');
+                                }
                             } else {
                                 var msg1 = "";
                                 var msg2 = "";
@@ -183,65 +197,11 @@
 
                 if (tipe == "rekanan") {
                     if (noKartuPtpn != '' && unitPtpn != '') {
-                        if (cekBpjs == 'Y') {
-                            if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
-                                && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '') {
-
-                                if (statusBpjs != '' && statusRujukan != '') {
-                                    //&& statusRujukan == "aktif"
-                                    if (statusBpjs == "aktif") {
-                                        $('#confirm_dialog').dialog('open');
-                                    } else {
-                                        var msg1 = "";
-                                        var msg2 = "";
-                                        $("html, body").animate({scrollTop: 0}, 600);
-                                        $('#warning_pasien').show().fadeOut(10000);
-                                        if (statusBpjs != "aktif") {
-                                            msg1 = "No BPJS Tidak Aktif";
-                                        }
-                                        if (statusRujukan != "aktif") {
-                                            msg2 = "No Rujukan Tidak Aktif";
-                                        }
-                                        $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan " + msg1 + ". " + msg2 + "...!");
-                                    }
-                                } else {
-                                    $("html, body").animate({scrollTop: 0}, 600);
-                                    $('#warning_pasien').show().fadeOut(10000);
-                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
-                                }
-                            } else {
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
-                                if (diagnosaBpjs == '') {
-                                    $('#diagnosa_awal').css('border', 'solid 1px red');
-                                }
-                                if (perujuk == '') {
-                                    $('#war_perujuk').show();
-                                }
-                                if (ketPerujuk == '') {
-                                    $('#war_ket_perujuk').show();
-                                }
-                                if (noRujukan == '') {
-                                    $('#war_no_rujukan').show();
-                                }
-                                if (ppkRujukan == '') {
-                                    $('#war_ppk_rujukan').show();
-                                }
-                                if (tglRujukan == '') {
-                                    $('#war_tgl_rujukan').show();
-                                }
-                                if (fotoRujukan == '') {
-                                    $('#war_foto_rujukan').show();
-                                }
-                            }
-                        } else {
-                            $('#confirm_dialog').dialog('open');
-                        }
+                        $('#confirm_dialog').dialog('open');
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                         if (noKartuPtpn == '') {
                             $('#war_no_kartu_ptpn').show();
                         }
@@ -1499,7 +1459,7 @@
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Uang Muka</span>
                                     </h3>
                                 </div>
                                 <div class="box-body">
@@ -2235,7 +2195,8 @@
                     var icon = "";
                     var val = "";
                     if (response.status == "200") {
-                        $('#idPelayananBpjs').val(response.kodePoliRujukan);
+                        $('#idPelayananBpjs').val('IGD');
+                        // $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglKunjungan);
@@ -2344,9 +2305,9 @@
         });
     }
 
-    function listSelectRekanan() {
+    function listSelectRekanan(isBpjs) {
         var option = "<option value=''>[Select One]</option>";
-        CheckupAction.getListRekananOps(function (response) {
+        CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idRekananOps + '|' + item.isBpjs + '|' + item.tipe + "'>" + item.namaRekanan + "</option>";
@@ -3213,9 +3174,9 @@
             $('#form-rujukan').hide();
             $('#poli').attr('disabled', false);
             $('#form_eksekutif').show();
-        } else if (jenis == "bpjs" || jenis == "rekanan") {
-            if (jenis == "rekanan") {
-                listSelectRekanan();
+        } else if (jenis == "bpjs" || jenis == "bpjs_rekanan") {
+            if (jenis == "bpjs_rekanan") {
+                listSelectRekanan("Y");
                 $('#form-rekanan').show();
             }
             if (jenis == "bpjs") {
@@ -3223,6 +3184,19 @@
             }
             $('#form-no-bpjs').show();
             $('#form-rujukan').show();
+            $('#form_pg').hide();
+            $('#form-uang-muka').hide();
+            $('#form-paket-perusahaan').hide();
+            $('#form-paket').hide();
+            $('#form-asuransi').hide();
+            $('#poli').attr('disabled', false);
+            $('#form_eksekutif').hide();
+        }else if (jenis == "rekanan") {
+            listSelectRekanan("N");
+            $('#form_pg').hide();
+            $('#form-rekanan').show();
+            $('#form-no-bpjs').hide();
+            $('#form-rujukan').hide();
             $('#form-uang-muka').hide();
             $('#form-paket-perusahaan').hide();
             $('#form-paket').hide();

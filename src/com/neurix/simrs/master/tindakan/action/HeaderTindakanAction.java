@@ -93,6 +93,12 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 headerTindakan.setStandardCost(new BigInteger(object.getString("tarif")));
                 headerTindakan.setFlagKonsulTele(object.getString("flag_tele"));
                 headerTindakan.setFlagVaksin(object.getString("flag_vaksin"));
+                if(object.has("kategori")){
+                    if(!"".equalsIgnoreCase(object.getString("kategori"))){
+                        headerTindakan.setKategori(object.getString("kategori"));
+                    }
+                }
+                headerTindakan.setFlagVaksin(object.getString("flag_vaksin"));
                 headerTindakan.setCreatedWho(userLogin);
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setCreatedDate(updateTime);
@@ -104,7 +110,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 response.setStatus("error");
                 response.setMsg("Mohon maaf data headerTindakan tidak ada...!");
             }
-        }catch (JSONException e) {
+        }catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Mohon maaf tidak bisa dilanjutkan dikarenakan, "+e.getMessage());
         }
@@ -130,6 +136,11 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                     headerTindakan.setFlagKonsulTele(object.getString("flag_tele"));
                 }
                 headerTindakan.setFlagVaksin(object.getString("flag_vaksin"));
+                if(object.has("kategori")){
+                    if(!"".equalsIgnoreCase(object.getString("kategori"))){
+                        headerTindakan.setKategori(object.getString("kategori"));
+                    }
+                }
                 headerTindakan.setLastUpdate(updateTime);
                 headerTindakan.setLastUpdateWho(userLogin);
                 headerTindakan.setAction("U");
@@ -139,7 +150,7 @@ public class HeaderTindakanAction extends BaseTransactionAction {
                 response.setStatus("error");
                 response.setMsg("Mohon maaf data tindakan tidak ada...!");
             }
-        }catch (JSONException e) {
+        }catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Mohon maaf tidak bisa dilanjutkan dikarenakan, "+e.getMessage());
         }

@@ -282,10 +282,10 @@ public class RekananOpsBoImpl implements RekananOpsBo {
     }
 
     @Override
-    public List<RekananOps> getComboRekananOps(String branchId) throws GeneralBOException {
+    public List<RekananOps> getComboRekananOps(String branchId, String isBpjs) throws GeneralBOException {
         List<RekananOps> rekananOps = new ArrayList<>();
         try {
-            rekananOps = rekananOpsDao.getComboRekananOps(branchId);
+            rekananOps = rekananOpsDao.getComboRekananOps(branchId, isBpjs);
         }catch (HibernateException e){
             logger.error("Error when search detail rekanan ops,"+e.getMessage());
         }

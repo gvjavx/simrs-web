@@ -1513,6 +1513,30 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (3316, 85, 'Y', now(), now(), 'admin', 'admin');
 
+--SIDAH DI PROD NO RM LAMA to 6 DIGIT
+UPDATE im_simrs_pasien aa
+SET no_rm_lama = (
+	SELECT
+	CASE
+	WHEN a.panjang = 6 THEN a.no_rm_lama
+	WHEN a.panjang = 5 THEN CONCAT('0', a.no_rm_lama)
+	WHEN a.panjang = 4 THEN CONCAT('00', a.no_rm_lama)
+	WHEN a.panjang = 3 THEN CONCAT('000', a.no_rm_lama)
+	WHEN a.panjang = 2 THEN CONCAT('0000', a.no_rm_lama)
+	WHEN a.panjang = 1 THEN CONCAT('00000', a.no_rm_lama)
+	ELSE null
+	END as no_rm_lama_edit
+	FROM(
+		SELECT
+		no_rm_lama,
+		id_pasien,
+		LENGTH(no_rm_lama) as panjang
+		FROM im_simrs_pasien
+		WHERE created_who NOT LIKE 'testing'
+	)a WHERE a.id_pasien = aa.id_pasien
+)
+WHERE created_who NOT LIKE 'testing';
+
 ---------- SUDAH DI PROD -----------
 ====================================
 
@@ -1717,11 +1741,6 @@ CREATE TABLE im_simrs_laporan_ops(
   last_update_who character varying(100)
 )
 
-
-
-
-
-
 --UPDATE LICENSE HABIS ASAR SEKITAR 16:15 WAKTU SEKITAR SINI
 --MOHON DI HAPUS MENDING SAYA UPDATE TABLE AJA BIAT TAK BANYAK TABLE ;-)
 DROP TABLE im_version_zebra;
@@ -1748,29 +1767,40 @@ WITH (
 ALTER TABLE public.im_version
   OWNER TO postgres;
 
---SIDAH DI PROD NO RM LAMA to 6 DIGIT
-UPDATE im_simrs_pasien aa
-SET no_rm_lama = (
-	SELECT
-	CASE
-	WHEN a.panjang = 6 THEN a.no_rm_lama
-	WHEN a.panjang = 5 THEN CONCAT('0', a.no_rm_lama)
-	WHEN a.panjang = 4 THEN CONCAT('00', a.no_rm_lama)
-	WHEN a.panjang = 3 THEN CONCAT('000', a.no_rm_lama)
-	WHEN a.panjang = 2 THEN CONCAT('0000', a.no_rm_lama)
-	WHEN a.panjang = 1 THEN CONCAT('00000', a.no_rm_lama)
-	ELSE null
-	END as no_rm_lama_edit
-	FROM(
-		SELECT
-		no_rm_lama,
-		id_pasien,
-		LENGTH(no_rm_lama) as panjang
-		FROM im_simrs_pasien
-		WHERE created_who NOT LIKE 'testing'
-	)a WHERE a.id_pasien = aa.id_pasien
-)
-WHERE created_who NOT LIKE 'testing'
+--23-02-2021 seloso isuk 10:57
+INSERT INTO im_simrs_jenis_periksa_pasien VALUES
+('bpjs_rekanan','BPJS Rekanan','Y','C',now(),'migrasi',now(),'migrasi',null);
+
+--update function sore hari
+UPDATE im_functions
+SET func_name = 'Verifikasi BPJS'
+WHERE func_name = 'Verifikasi BPJS / PTPN';
+
+--insert function new 24-02-2021 waktu setempat
+INSERT INTO im_functions VALUES
+(6903, 'Verifikasi Rekanan', null, 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6903),
+(6904, 'Rawat Jalan', '/verifrekananrj/initVerif_verifrekananrj.action', 6903, 2, now(), 'admin', now(), 'admin', 'Y','C', 6904),
+(6905, 'init', '/verifrekananrj/initVerif_verifrekananrj.action', 6904, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6906, 'search', '/verifrekananrj/searchVerifRekanan_verifrekananrj.action', 6904, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6907, 'Rawat Inap', '/verifrekananri/initVerif_verifrekananri.action', 6903, 2, now(), 'admin', now(), 'admin', 'Y','C', 6907),
+(6908, 'init', '/verifrekananri/initVerif_verifrekananri.action', 6907, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6909, 'search', '/verifrekananri/searchVerifRekanan_verifrekananri.action', 6907, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6903, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6904, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6905, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6906, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6907, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6908, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6909, 38, 'Y', now(), now(), 'admin', 'admin');
+
+--15.52
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN kategori VARCHAR(100);
+
+
+
 
 
 
