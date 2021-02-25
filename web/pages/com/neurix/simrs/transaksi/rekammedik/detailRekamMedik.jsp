@@ -135,24 +135,24 @@
                                     <s:hidden id="jenis_pasien" name="detailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="detailCheckup.metodePembayaran"/>
 
-                                    <s:hidden id="h_nama_pasien" name="headerDetailCheckup.namaPasien"/>
-                                    <s:hidden id="h_tgl_lahir" name="headerDetailCheckup.tglLahir"/>
-                                    <s:hidden id="h_anamnesa" name="headerDetailCheckup.anamnese"/>
-                                    <s:hidden id="h_penunjang_medis" name="headerDetailCheckup.penunjangMedis"/>
-                                    <s:hidden id="h_keluhan_utama" name="headerDetailCheckup.keluhanUtama"/>
-                                    <s:hidden id="h_suhu" name="headerDetailCheckup.suhu"/>
-                                    <s:hidden id="h_nadi" name="headerDetailCheckup.nadi"/>
-                                    <s:hidden id="h_tensi" name="headerDetailCheckup.tensi"/>
-                                    <s:hidden id="h_pernafasan" name="headerDetailCheckup.pernafasan"/>
-                                    <s:hidden id="h_alergi" name="headerDetailCheckup.alergi"/>
-                                    <s:hidden id="h_berat_badan" name="headerDetailCheckup.berat"/>
-                                    <s:hidden id="h_tinggi_badan" name="headerDetailCheckup.tinggi"/>
-                                    <s:hidden id="h_diagnosa" name="headerDetailCheckup.namaDiagnosa"/>
-                                    <s:hidden id="h_umur" name="headerDetailCheckup.umur"/>
-                                    <s:hidden id="h_alamat_lengkap" name="headerDetailCheckup.alamatLengkap"/>
-                                    <s:hidden id="h_no_bpjs" name="headerDetailCheckup.noBpjs"/>
-                                    <s:hidden id="h_jenis_kelamin" name="headerDetailCheckup.jenisKelamin"/>
-                                    <s:hidden id="h_tipe_pelayanan" name="headerDetailCheckup.kategoriPelayanan"/>
+                                    <s:hidden id="h_nama_pasien" name="detailCheckup.namaPasien"/>
+                                    <s:hidden id="h_tgl_lahir" name="detailCheckup.tglLahir"/>
+                                    <s:hidden id="h_anamnesa" name="detailCheckup.anamnese"/>
+                                    <s:hidden id="h_penunjang_medis" name="detailCheckup.penunjangMedis"/>
+                                    <s:hidden id="h_keluhan_utama" name="detailCheckup.keluhanUtama"/>
+                                    <s:hidden id="h_suhu" name="detailCheckup.suhu"/>
+                                    <s:hidden id="h_nadi" name="detailCheckup.nadi"/>
+                                    <s:hidden id="h_tensi" name="detailCheckup.tensi"/>
+                                    <s:hidden id="h_pernafasan" name="detailCheckup.pernafasan"/>
+                                    <s:hidden id="h_alergi" name="detailCheckup.alergi"/>
+                                    <s:hidden id="h_berat_badan" name="detailCheckup.berat"/>
+                                    <s:hidden id="h_tinggi_badan" name="detailCheckup.tinggi"/>
+                                    <s:hidden id="h_diagnosa" name="detailCheckup.namaDiagnosa"/>
+                                    <s:hidden id="h_umur" name="detailCheckup.umur"/>
+                                    <s:hidden id="h_alamat_lengkap" name="detailCheckup.alamatLengkap"/>
+                                    <s:hidden id="h_no_bpjs" name="detailCheckup.noBpjs"/>
+                                    <s:hidden id="h_jenis_kelamin" name="detailCheckup.jenisKelamin"/>
+                                    <s:hidden id="h_tipe_pelayanan" name="detailCheckup.kategoriPelayanan"/>
                                     <s:hidden id="h_kategori_pelayanan" name="detailCheckup.kategoriPelayanan"/>
 
                                     <tr>
@@ -957,6 +957,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -993,6 +994,9 @@
     var tempBerat = "";
     var tempTinggi = "";
     var tempAnmnesa = "";
+    var namaRuanganPasien = "";
+    var isEksekutif = "";
+    var flagVaksin = "";
     var tanggalMasuk = new Date();
 
     function loadModalRM(jenis) {

@@ -782,6 +782,31 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     insertItemPaketToPeriksa(detailCheckupEntity.getIdDetailCheckup(), bean.getIdPasien(), bean.getIdDokter(), bean.getCreatedWho(), bean.getBranchId(), bean.getIdJenisPeriksaPasien(), bean.getIdPaket(), headerEntity.getNoCheckup());
                 }
+
+                //AMBULANCE, sodiq, 25.02.2020
+                if(bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())){
+                    ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
+                    tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
+                    tindakanRawatEntity.setIdTindakan(bean.getIdTindakan());
+                    tindakanRawatEntity.setNamaTindakan(bean.getNamaTindakan());
+                    tindakanRawatEntity.setIdDokter(bean.getIdDokter());
+                    tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
+                    tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
+                    tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
+                    tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
+                    tindakanRawatEntity.setFlag("Y");
+                    tindakanRawatEntity.setAction("U");
+                    tindakanRawatEntity.setApproveFlag("Y");
+                    tindakanRawatEntity.setTarif(new BigInteger(bean.getTarif()));
+                    tindakanRawatEntity.setQty(new BigInteger(bean.getJumlah()));
+                    tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
+                    try {
+                        tindakanRawatDao.addAndSave(tindakanRawatEntity);
+                    }catch (Exception e){
+                        throw new GeneralBOException("Error when save tindakan ambulance"+e.getMessage());
+                    }
+                }
             }else{
                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] ID Pelayanan tidak ditemukan...!");
             }

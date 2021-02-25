@@ -290,10 +290,10 @@
                                              onkeypress="$(this).css('border','');"
                                              cssClass="form-control"
                                              placeholder="ketik nama atau rm baru atau rm lama"/>
-                                <%--<div class="input-group-btn">--%>
-                                    <%--<a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i--%>
-                                            <%--class="fa fa-plus"></i> Add Upload</a>--%>
-                                <%--</div>--%>
+                                <div class="input-group-btn">
+                                    <a href="#" class="btn btn-primary pull-right" onclick="addInputUpload()"><i
+                                            class="fa fa-plus"></i> Add Upload</a>
+                                </div>
                             </div>
                         </div>
                         <div class="col-md-2">

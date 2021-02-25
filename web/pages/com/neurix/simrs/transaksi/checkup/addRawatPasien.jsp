@@ -1459,7 +1459,7 @@
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Uang Muka</span>
                                     </h3>
                                 </div>
                                 <div class="box-body">
