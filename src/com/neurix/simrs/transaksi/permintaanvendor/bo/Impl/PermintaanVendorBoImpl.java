@@ -938,12 +938,24 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());
         }
 
+        PabrikObat pabrikObat = new PabrikObat();
+        try {
+            pabrikObat = permintaanVendorDao.getPabrikObat(bean.getIdPabrikObat());
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR.", e);
+            throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());
+        }
+
         // data dari permintaan;
         BigInteger qtyBijiPadaBatch = dataObatBatch.getQtyBiji();
         BigDecimal hargaBijianPadaBatch = dataObatBatch.getAverageHargaBiji();
         BigInteger bijiPerLembarBatch = dataObatBatch.getBijiPerLembar();
         BigInteger lembarPerBoxBatch = dataObatBatch.getLembarPerBox();
         BigInteger cons = dataObatBatch.getLembarPerBox().multiply(dataObatBatch.getBijiPerLembar());
+        // END
+
+        // data dari master pabrik obat;
+        String merk = pabrikObat.getNama();
         // END
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
@@ -958,6 +970,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setIdPabrikObat(bean.getIdPabrikObat());
         newObatEntity.setMinStok(obatEntity.getMinStok());
         newObatEntity.setHargaTerakhir(hargaBijianPadaBatch);
+        newObatEntity.setMerk(merk);
 
         ttlQtyPermintaan = qtyBijiPadaBatch;
         ttlAvgHargaPermintaan = hargaBijianPadaBatch;

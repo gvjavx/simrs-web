@@ -184,7 +184,6 @@
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                             <%--<s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
                                                 <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
@@ -207,6 +206,8 @@
                                                 <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
+                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -418,10 +419,11 @@
                         '<td align="center">'+item.noBatch+'</td>' +
                         '<td>'+item.stLastUpdateWho+'</td>' +
                         '<td align="center">' +
+                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>">'+
                         '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
-                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +
+                        '</td>' +
                         '</tr>';
                 });
                 $('#body_bat').html(table);

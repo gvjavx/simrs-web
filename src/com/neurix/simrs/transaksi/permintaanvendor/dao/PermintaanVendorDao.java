@@ -537,4 +537,22 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
 
         return null;
     }
+
+    public PabrikObat getPabrikObat(String idPabrik){
+
+        String SQL = "SELECT id, nama FROM im_simrs_pabrik_obat\n" +
+                "WHERE id = '"+idPabrik+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createCriteria(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            PabrikObat pbo = new PabrikObat();
+            pbo.setId(obj[0].toString());
+            pbo.setNama(obj[1].toString());
+            return pbo;
+        }
+
+        return null;
+    }
 }
