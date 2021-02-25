@@ -965,7 +965,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         newObatEntity.setExpiredDate(bean.getExpDate());
         newObatEntity.setLembarPerBox(lembarPerBoxBatch);
         newObatEntity.setBijiPerLembar(bijiPerLembarBatch);
-//        newObatEntity.setMerk(obatEntity.getMerk());
         newObatEntity.setIdPabrikObat(bean.getIdPabrikObat());
         newObatEntity.setMinStok(obatEntity.getMinStok());
         newObatEntity.setHargaTerakhir(hargaBijianPadaBatch);
@@ -1001,7 +1000,6 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 //            ttlAvgHargaPermintaan = bean.getNetto().divide(new BigDecimal(ttlQtyPermintaan), 2, RoundingMode.HALF_UP);
 //            newObatEntity.setHargaTerakhir(bean.getNetto());
 //        }
-
 
         BigDecimal ttlStockInBijian = new BigDecimal(0);
         if (obatEntity.getAverageHargaBiji().compareTo(new BigDecimal(0)) == 1 && allStockToBiji.compareTo(new BigInteger(String.valueOf(0))) == 0) {
