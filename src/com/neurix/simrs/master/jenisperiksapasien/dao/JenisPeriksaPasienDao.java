@@ -94,7 +94,8 @@ public class JenisPeriksaPasienDao extends GenericDao<ImJenisPeriksaPasienEntity
                 "id_jenis_periksa_pasien, \n" +
                 "keterangan \n" +
                 "FROM im_simrs_jenis_periksa_pasien \n" +
-                "WHERE id_jenis_periksa_pasien != 'paket_perusahaan'";
+                "WHERE id_jenis_periksa_pasien != 'paket_perusahaan' \n" +
+                "ORDER BY keterangan DESC";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
