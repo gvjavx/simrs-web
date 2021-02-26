@@ -66,6 +66,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             if (bean.getIdKategoriTindakan() != null && !"".equalsIgnoreCase(bean.getIdKategoriTindakan())) {
                 String union  = "";
                 String vaksin = "";
+                String ambulance = "";
                 if (bean.getIsVaksin() != null) {
                     if ("Y".equalsIgnoreCase(bean.getIsVaksin())) {
                         vaksin = "AND b.flag_vaksin = 'Y' \n";
@@ -87,6 +88,25 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                             "AND a.id_kelas_ruangan = '" + bean.getIdKelasRuangan() + "'\n" +
                             "AND a.flag = 'Y'";
                 }
+
+                String tipePelayanan = cekTipePelayanan(bean.getIdKategoriTindakan(), bean.getBranchId());
+                if(!"".equalsIgnoreCase(tipePelayanan) && !"rawat_jalan".equalsIgnoreCase(tipePelayanan)){
+                    ambulance = "UNION ALL\n" +
+                            "SELECT\n" +
+                            "a.id_tindakan,\n" +
+                            "b.nama_tindakan,\n" +
+                            "a.tarif,\n" +
+                            "a.tarif_bpjs,\n" +
+                            "a.diskon,\n" +
+                            "a.is_elektif\n" +
+                            "FROM im_simrs_tindakan a\n" +
+                            "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                            "WHERE a.id_kategori_tindakan = :idKat \n" +
+                            "AND a.branch_id = :branch\n" +
+                            "AND a.flag = 'Y'\n" +
+                            "AND b.kategori IN ('ambulance_datang', 'ambulance_pulang', 'mobil_jenazah')\n";
+                }
+
                 String SQL = "SELECT\n" +
                         "a.id_tindakan,\n" +
                         "b.nama_tindakan,\n" +
@@ -98,7 +118,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                         "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
                         "WHERE a.id_kategori_tindakan = :idKat AND a.branch_id = :branch \n" +
                         "AND a.flag_kelas_ruangan = 'N'\n" +
-                        "AND a.flag = 'Y' \n" + vaksin + union;
+                        "AND a.flag = 'Y' \n"+
+                        "AND b.kategori IS NULL \n"+ vaksin + union + ambulance;
 
                 List<Object[]> results = new ArrayList<>();
                 results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -122,6 +143,32 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
             }
         }
         return tindakanList;
+    }
+
+
+    private String cekTipePelayanan(String idKat, String branch){
+        String res = "";
+        String SQL = "SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.tipe_pelayanan\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                "WHERE id_pelayanan = (\n" +
+                "SELECT\n" +
+                "id_pelayanan\n" +
+                "FROM im_simrs_tindakan\n" +
+                "WHERE id_kategori_tindakan = :idKat\n" +
+                "AND branch_id = :branch LIMIT 1\n" +
+                ")\n";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("idKat", idKat)
+                .setParameter("branch", branch)
+                .list();
+        if(results.size() > 0){
+            Object[] obj = results.get(0);
+            res = obj[1].toString();
+        }
+        return res;
     }
 
     public String getNextPelayananId() throws HibernateException {
@@ -331,4 +378,37 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         return tindakanList;
     }
 
+    public List<Tindakan> getComboAmbulance(String branchId) {
+        List<Tindakan> tindakanList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "a.id_tindakan,\n" +
+                "b.nama_tindakan,\n" +
+                "a.tarif,\n" +
+                "a.tarif_bpjs,\n" +
+                "a.diskon,\n" +
+                "a.is_elektif\n" +
+                "FROM im_simrs_tindakan a\n" +
+                "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                "WHERE a.branch_id = :branch\n" +
+                "AND a.flag = 'Y'\n" +
+                "AND b.kategori IN ('ambulance_datang', 'ambulance_pulang', 'mobil_jenazah')";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).
+                setParameter("branch", branchId)
+                .list();
+        if (result.size() > 0) {
+            Tindakan tindakan;
+            for (Object[] obj : result) {
+                tindakan = new Tindakan();
+                tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
+                tindakan.setTindakan(obj[1] == null ? "" : obj[1].toString());
+                tindakan.setTarif(obj[2] == null ? null : (BigInteger) obj[2]);
+                tindakan.setTarifBpjs(obj[3] == null ? null : (BigInteger) obj[3]);
+                tindakan.setDiskon(obj[4] == null ? null : (BigDecimal) obj[4]);
+                tindakan.setIsElektif(obj[5] == null ? "" : obj[5].toString());
+                tindakanList.add(tindakan);
+            }
+        }
+        return tindakanList;
+    }
 }

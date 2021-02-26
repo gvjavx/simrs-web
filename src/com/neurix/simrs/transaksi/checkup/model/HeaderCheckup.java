@@ -191,6 +191,34 @@ public class HeaderCheckup {
     private String isEksekutif;
     private String isVaksin;
 
+    private String tarif;
+    private String diskon;
+    private String jumlah;
+
+    public String getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(String jumlah) {
+        this.jumlah = jumlah;
+    }
+
+    public String getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(String tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getDiskon() {
+        return diskon;
+    }
+
+    public void setDiskon(String diskon) {
+        this.diskon = diskon;
+    }
+
     public String getIsEksekutif() {
         return isEksekutif;
     }

@@ -63,7 +63,10 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
                 "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
                 "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
                 "AND a.status = '3'\n" +
-                "AND c.flag_parenteral IS NULL OR c.flag_parenteral = 'N'";
+                "AND c.flag_parenteral IS NULL OR c.flag_parenteral = 'N' \n" +
+                "GROUP BY b.id_obat,\n" +
+                "c.nama_obat,\n" +
+                "d.bentuk";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .list();
@@ -90,7 +93,10 @@ public class MonPemberianObatDao extends GenericDao<ItSimrsMonPemberianObatEntit
                 "INNER JOIN im_simrs_bentuk_barang d ON c.id_bentuk = d.id_bentuk\n" +
                 "WHERE a.id_detail_checkup = '"+idDetailCheckup+"'\n" +
                 "AND a.status = '3'\n" +
-                "AND c.flag_parenteral = 'Y'";
+                "AND c.flag_parenteral = 'Y' \n" +
+                "GROUP BY b.id_obat,\n" +
+                "c.nama_obat,\n" +
+                "d.bentuk";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .list();

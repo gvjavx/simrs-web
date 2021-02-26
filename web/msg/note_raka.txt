@@ -1,3 +1,21 @@
+------ 2021-02-17 ===> Master Profesi
+-- Menambahkan column tipe_profesi
+
+    ALTER TABLE im_hris_profesi_pegawai
+    ADD COLUMN tipe_profesi varchar(50);
+
+-- Mengisi tipe_profesi = dokter
+
+    UPDATE im_hris_profesi_pegawai
+    SET tipe_profesi = 'dokter'
+    WHERE	profesi_name ILIKE '%DOKTER%'
+
+----------------------------------------
+----------------------------------------
+----------  SAMPAI SINI SAJA  ----------
+----------------------------------------
+----------------------------------------
+
 ------ 2020-11-30 ===> Payroll PTKP
 -- Membuat Table [im_im_hris_payroll_ptkp_history]
 -- Membuat Sequence [seq_payroll_ptkp]

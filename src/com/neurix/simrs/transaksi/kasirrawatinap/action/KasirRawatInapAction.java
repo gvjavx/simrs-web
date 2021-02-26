@@ -17,6 +17,7 @@ import com.neurix.simrs.transaksi.kasirrawatinap.bo.KasirRawatInapBo;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
+import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.model.RiwayatTindakan;
 import com.neurix.simrs.transaksi.transaksiobat.bo.TransaksiObatBo;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
@@ -252,6 +253,8 @@ public class KasirRawatInapAction extends BaseMasterAction {
         String jenisPasien = getJenis();
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         List<UangMuka> uangMukaList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
 
         if (id != null && !"".equalsIgnoreCase(id)) {
 
@@ -291,6 +294,7 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 RiwayatTindakan result = new RiwayatTindakan();
                 TransaksiObatDetail obatDetail = new TransaksiObatDetail();
                 BigInteger totalResepObat = new BigInteger(String.valueOf("0"));
+                boolean isRawatInap = false;
 
                 if (riwayatTindakanList.size() > 0) {
                     for (RiwayatTindakan riwayat : riwayatTindakanList) {
@@ -312,6 +316,11 @@ public class KasirRawatInapAction extends BaseMasterAction {
                                     }
                                 }
                             }
+                        }
+                        //cek rawat inap sodiq 22,20,2021
+                        boolean cekPelayanan = riwayatTindakanBo.CheckIsRawatInapByIdDetailCheckup(riwayat.getIdDetailCheckup());
+                        if(cekPelayanan){
+                            isRawatInap = true;
                         }
                     }
                 }
@@ -341,7 +350,8 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 BigDecimal ppnObat = ppnObat = new BigDecimal(totalResepObat).multiply(new BigDecimal(0.1)).setScale(2, RoundingMode.HALF_UP);
 
                 BigDecimal totalJasa = new BigDecimal(String.valueOf(0));
-                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka))).add(ppnObat);
+
+                totalJasa = (tarifJasa.subtract(new BigDecimal(tarifUangMuka)));
                 String terbilang = angkaToTerbilang(totalJasa.longValue());
 
                 reportParams.put("invoice", checkup.getInvoice());
@@ -359,11 +369,6 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("logo", logo);
                 reportParams.put("nik", checkup.getNoKtp());
                 reportParams.put("nama", checkup.getNama());
-                if(ppnObat != null && ppnObat.intValue() > 0){
-                    reportParams.put("ppnObat", ppnObat);
-                }else{
-                    reportParams.put("ppnObat", 0);
-                }
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
 
@@ -379,6 +384,15 @@ public class KasirRawatInapAction extends BaseMasterAction {
                 reportParams.put("kabupaten", checkup.getNamaKota());
                 reportParams.put("kecamatan", checkup.getNamaKecamatan());
                 reportParams.put("desa", checkup.getNamaDesa());
+                if(!isRawatInap){
+                    if (ppnObat != null && ppnObat.intValue() > 0) {
+                        reportParams.put("ppnObat", ppnObat);
+                    } else {
+                        reportParams.put("ppnObat", 0);
+                    }
+                }else{
+                    reportParams.put("ppnObat", 0);
+                }
 
                 try {
                     preDownload();

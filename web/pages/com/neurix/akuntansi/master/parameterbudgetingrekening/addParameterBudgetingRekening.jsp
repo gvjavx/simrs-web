@@ -17,7 +17,7 @@
 
     $.subscribe('beforeProcessSaveAdd', function (event, data) {
         var nama = document.getElementById("nama").value;
-        var koderek = document.getElementById("koderek").value;
+        var koderek = $("#koderekId option:selected").val();
 
         if (nama != '' && koderek != '' ) {
             if (confirm('Do you want to save this record?')) {
@@ -100,8 +100,6 @@
                             </table>
                         </td>
                     </tr>
-
-
                     <tr>
                         <td>
                             <label class="control-label"><small>Jenis Rekening :</small></label>
@@ -111,9 +109,9 @@
                                 <s:action id="rekening" namespace="/kodeRekening"
                                           name="initComboKodeRekening_kodeRekening" />
                                 <s:select cssStyle="margin-top: 7px; width: 100%" list="#rekening.listOfComboKodeRekening"
-                                          id="koderek" name="parameterBudgetingRekening.rekeningId"
-                                          listKey="rekeningId" listValue="namaKodeRekening" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control select2" onchange="KODE()"/>
+                                          id="koderekId" name="parameterBudgetingRekening.rekeningId"
+                                          listKey="rekeningId" listValue="namaKodeRekening"
+                                          cssClass="form-control" onchange="rubahLabel()"/>
                             </table>
                         </td>
                     </tr>
@@ -216,8 +214,8 @@
 
 <script>
 
-    function KODE(){
-        var label = $("#koderek option:selected").text();
+    function rubahLabel(){
+        var label = $("#koderekId option:selected").text();
         $("#nama").val(label);
     }
 

@@ -299,4 +299,48 @@ public class PembayaranOnline {
     public void setIdRiwayatTindakan(String idRiwayatTindakan) {
         this.idRiwayatTindakan = idRiwayatTindakan;
     }
+
+//    public static Comparator<PembayaranOnline> urutanPembayaranSorting = new Comparator<PembayaranOnline>() {
+//
+//        public int compare(PembayaranOnline s1, PembayaranOnline s2) {
+//            Integer urutan1 = s1.getUrutan();
+//            Integer urutan2 = s2.getUrutan();
+//
+//            //ascending order
+//            return urutan1.compareTo(urutan2);
+//
+//            //descending order
+//            //return kdRekening2.compareTo(kdRekening1);
+//        }
+//    };
+//
+//    public static Comparator<PembayaranOnline> tanggalUploadSorting = new Comparator<PembayaranOnline>() {
+//
+//        public int compare(PembayaranOnline s1, PembayaranOnline s2) {
+//            Timestamp urutan1 = s1.getTanggalUpload();
+//            Timestamp urutan2 = s2.getTanggalUpload();
+//
+//            //ascending order
+//            return urutan1.compareTo(urutan2);
+//
+//            //descending order
+//            //return kdRekening2.compareTo(kdRekening1);
+//        }
+//    };
+//
+//    public static Comparator<PembayaranOnline> getUrutanPembayaranSorting() {
+//        return urutanPembayaranSorting;
+//    }
+//
+//    public static void setUrutanPembayaranSorting(Comparator<PembayaranOnline> urutanPembayaranSorting) {
+//        PembayaranOnline.urutanPembayaranSorting = urutanPembayaranSorting;
+//    }
+//
+//    public static Comparator<PembayaranOnline> getTanggalUploadSorting() {
+//        return tanggalUploadSorting;
+//    }
+//
+//    public static void setTanggalUploadSorting(Comparator<PembayaranOnline> tanggalUploadSorting) {
+//        PembayaranOnline.tanggalUploadSorting = tanggalUploadSorting;
+//    }
 }

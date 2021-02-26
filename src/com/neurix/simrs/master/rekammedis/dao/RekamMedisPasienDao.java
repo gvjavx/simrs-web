@@ -605,9 +605,9 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
                     rekamMedisPasien.setNoRmLama(obj[4] != null ? obj[4].toString() : "");
                     if(obj[2] != null){
                         if(rekamMedisPasien.getNoRmLama() != null && !"".equalsIgnoreCase(rekamMedisPasien.getNoRmLama())){
-                            rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+"/rm/"+rekamMedisPasien.getBranchId()+"/"+rekamMedisPasien.getNoRmLama()+"/"+obj[2].toString());
+                            rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.URL_RM_LAMA+rekamMedisPasien.getBranchId()+"/"+rekamMedisPasien.getNoRmLama()+"/"+obj[2].toString());
                         }else{
-                            rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.URL_IMG_RM+obj[2].toString());
+                            rekamMedisPasien.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.URL_RM_LAMA+rekamMedisPasien.getBranchId()+"/"+rekamMedisPasien.getIdPasien()+"/"+obj[2].toString());
                         }
                     }
                     rekamMedisPasienList.add(rekamMedisPasien);

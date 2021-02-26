@@ -226,12 +226,12 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return stringList;
     }
 
-    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat){
+    public List<ObatPoli> getIdObatGroupPoli(String idPelayanan, String branchId, String flagBpjs, String idJenisObat, String idDetailCheckup){
         List<ObatPoli> obatPoliList = new ArrayList<>();
         String queryJenisObat = "";
 
         if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "WHERE id_jenis_obat = '" + idJenisObat + "' \n";
+            queryJenisObat = "AND id_jenis_obat = '" + idJenisObat + "' \n";
         }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
@@ -254,7 +254,8 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.biji_per_lembar,\n" +
                     "a.flag_kronis,\n" +
                     "c.harga_jual,\n" +
-                    "d.id_jenis_obat\n"+
+                    "d.id_jenis_obat,\n"+
+                    "c.harga_jual_umum\n"+
                     "FROM (\n" +
                     "\tSELECT \n" +
                     "\tid_obat,\n" +
@@ -277,19 +278,24 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\tWHERE id_pelayanan = :idPelayanan \n" +
                     "\tAND branch_id = :branchId \n" +
                     "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
+                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n"+
                     ") b ON a.id_obat = b.id_obat\n" +
                     "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "INNER JOIN (\n" +
                     "\tSELECT\n" +
                     "\tid_obat,\n" +
                     "\tid_jenis_obat\n" +
-                    "\tFROM im_simrs_obat_gejala \n" + queryJenisObat +
-                    ")d ON d.id_obat = b.id_obat";
+                    "\tFROM im_simrs_obat_gejala \n" +
+                    ")d ON d.id_obat = b.id_obat \n"+
+                    "WHERE c.harga_jual > 0 \n" +
+                    "AND c.harga_jual_umum > 0 \n" +queryJenisObat;
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("branchId", branchId)
                     .list();
+
+            Boolean cekKhusus = cekIsKhusus(idDetailCheckup);
 
             if (results.size() > 0){
                 for (Object[] obj : results){
@@ -303,13 +309,35 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
-                    obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
                     obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
+                    if(cekKhusus){
+                        obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                    }else{
+                        obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+                    }
                     obatPoliList.add(obatPoli);
                 }
             }
         }
         return obatPoliList;
+    }
+
+    private Boolean cekIsKhusus(String idDetailCheckup){
+        Boolean res = false;
+        String SQL = "SELECT\n" +
+                "a.id_detail_checkup,\n" +
+                "a.id_asuransi\n" +
+                "FROM it_simrs_header_detail_checkup a\n" +
+                "INNER JOIN im_simrs_rekanan_ops b ON b.id_rekanan_ops = a.id_asuransi\n" +
+                "WHERE a.id_detail_checkup = :id\n" +
+                "AND b.tipe IN ('ptpn','khusus')";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idDetailCheckup)
+                .list();
+        if(results.size() > 0){
+            res = true;
+        }
+        return res;
     }
 
     public List<ObatPoli> getIdObatGroupPoliKandunganSerupa(String idPelayanan, String branchId, String flagBpjs, String[] kandugans){

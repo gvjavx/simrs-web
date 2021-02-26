@@ -329,7 +329,7 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Status:</label>
+                        <label class="control-label col-sm-4" >Status : </label>
                         <div class="col-sm-8">
                             <s:action id="comboStatusMutasi" namespace="/statusMutasi" name="initComboStatusMutasi_statusMutasi"/>
                             <s:select list="#comboStatusMutasi.listOfComboStatusMutasi" id="statusMutasi" listKey="statusMutasiId"
@@ -338,7 +338,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >NIP</label>
+                        <label class="control-label col-sm-4" >NIP : </label>
                         <div class="col-sm-8">
                             <input type="text" class="form-control form-add" id="nip1" name="nip1" readonly>
                         </div>
@@ -423,7 +423,7 @@
 
                     <div id="panel-awal">
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="branchLamaId1">Unit Lama:</label>
+                            <label class="control-label col-sm-4" for="branchLamaId1">Unit Lama : </label>
                             <div class="col-sm-8">
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchLamaId1" name="mutasi.branchLamaId" disabled="true"
@@ -432,7 +432,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="divisiLamaId1">Divisi/Bidang Lama:</label>
+                            <label class="control-label col-sm-4" for="divisiLamaId1">Divisi/Bidang Lama : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboDivisi" namespace="/department" name="searchDepartment_department"/>
                                 <s:select list="#comboDivisi.listComboDepartment" id="divisiLamaId1" name="mutasi.divisiLamaId" disabled="true"
@@ -441,7 +441,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="positionLamaId1">Posisi Lama:</label>
+                            <label class="control-label col-sm-4" for="positionLamaId1">Posisi Lama : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                                 <s:select list="#comboPosition.listOfComboPosition" id="positionLamaId1" name="mutasi.positionLamaId" disabled="true"
@@ -450,7 +450,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" >Profesi Lama: </label>
+                            <label class="control-label col-sm-4" >Profesi Lama : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                                 <s:select list="#comboProfesi.listComboProfesi" id="profesiLamaId1" name="mutasi.profesiLamaId" disabled="true"
@@ -467,7 +467,7 @@
                         <%--</div>--%>
                         <%--</div>--%>
                         <div style="display: none" class="form-group">
-                            <label class="control-label col-sm-4" >Status Pegawai: </label>
+                            <label class="control-label col-sm-4" >Status Pegawai : </label>
                             <div class="col-sm-8">
                                 <s:action id="initComboTipe" namespace="/tipepegawai" name="searchTipePegawai_tipepegawai"/>
                                 <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="mutasi.tipePegawai" onchange="changePegawai(this.value)"
@@ -476,7 +476,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
+                            <label class="control-label col-sm-4" for="positionLamaId1">Level Lama : </label>
                             <div id="golongan1Group" class="col-sm-8">
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganLamaId1" name="mutasi.levelLama" disabled="true"
@@ -490,7 +490,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" >PJS Lama:</label>
+                            <label class="control-label col-sm-4" >PJS Lama : </label>
                             <div class="col-sm-8">
                                 <input type="checkbox" class="form-check-input big-checkbox form-add" id="pjsLama" disabled onchange="cekPjsLama()">
                                 <input style="display: none" type="text" class="form-check-input form-add" id="txtPjsLama" >
@@ -501,7 +501,7 @@
                     
                     <div id="panel-target" style="display: none;">
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="branchBaruId1">Unit Baru:</label>
+                            <label class="control-label col-sm-4" for="branchBaruId1">Unit Baru : </label>
                             <div class="col-sm-8">
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchBaruId1" name="mutasi.branchBaruId" onchange="listDivisi(),cekJabatan()"
@@ -510,7 +510,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="divisiBaruId2">Divisi/Bidang Baru:</label>
+                            <label class="control-label col-sm-4" for="divisiBaruId2">Divisi/Bidang Baru : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboDivisi" namespace="/department"
                                           name="searchDepartment2_department"/>
@@ -523,7 +523,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" >Posisi Baru:</label>
+                            <label class="control-label col-sm-4" >Posisi Baru : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                                 <s:select list="#comboPosition" id="positionBaruId1" name="mutasi.positionBaruId" onchange="cekJabatan()"
@@ -532,7 +532,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" >Profesi Baru: </label>
+                            <label class="control-label col-sm-4" >Profesi Baru : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                                 <s:select list="#comboProfesi.listComboProfesi" id="profesiBaruId1" name="mutasi.profesiBaruId"
@@ -541,7 +541,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" for="positionLamaId1">Level Lama:</label>
+                            <label class="control-label col-sm-4" for="positionLamaId1">Level Lama : </label>
                             <div id="golonganBaru1Group" class="col-sm-8">
                                 <s:action id="initComboTipe" namespace="/golongan" name="initComboGolongan_golongan"/>
                                 <s:select list="#initComboTipe.listComboGolongan" id="golonganBaruId1" name="mutasi.levelBaru" disabled="true"
@@ -555,7 +555,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4">Menggantikan:</label>
+                            <label class="control-label col-sm-4">Menggantikan : </label>
                             <div class="col-sm-8">
                                 <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
                                 <select class="form-control form-add" id="penggantiId" name="mutasi.penggantiNip"></select>
@@ -563,7 +563,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="control-label col-sm-4" >PJS Baru:</label>
+                            <label class="control-label col-sm-4" >PJS Baru : </label>
                             <div class="col-sm-8">
                                 <input type="checkbox" class="form-check-input big-checkbox form-add" onchange="cekPjsBaru()" id="pjsBaru">
                                 <input style="display: none" type="text" class="form-check-input" value="N" id="txtPjsBaru" >

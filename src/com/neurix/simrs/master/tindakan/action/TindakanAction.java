@@ -499,4 +499,20 @@ public class TindakanAction extends BaseTransactionAction {
         }
         return branchList;
     }
+
+    public List<Tindakan> getComboAmbulance() {
+        List<Tindakan> branchList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
+        String branchId = CommonUtil.userBranchLogin();
+
+        if(branchId != null && !"".equalsIgnoreCase(branchId)){
+            try {
+                branchList = tindakanBo.getComboAmbulance(branchId);
+            } catch (GeneralBOException e) {
+                logger.error("[TindakanAction.initComboKategori] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
+            }
+        }
+        return branchList;
+    }
 }

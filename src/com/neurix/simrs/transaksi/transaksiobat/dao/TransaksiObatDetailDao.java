@@ -1004,6 +1004,28 @@ public class TransaksiObatDetailDao extends GenericDao<ImtSimrsTransaksiObatDeta
         return false;
     }
 
+    public Boolean checkRekananKhusus(String idApprove){
+        Boolean res = false;
+        String SQL = "SELECT\n" +
+                "b.id_detail_checkup,\n" +
+                "d.id_rekanan_ops\n" +
+                "FROM mt_simrs_transaksi_obat_detail a\n" +
+                "INNER JOIN mt_simrs_permintaan_resep b ON a.id_approval_obat = b.id_approval_obat\n" +
+                "INNER JOIN it_simrs_header_detail_checkup c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_rekanan_ops d ON c.id_asuransi = d.id_rekanan_ops \n" +
+                "WHERE a.id_approval_obat = :id \n" +
+                "AND d.tipe IN ('ptpn', 'khusus')";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", idApprove)
+                .list();
+        if (results.size() > 0){
+            res = true;
+        }
+        return res;
+    }
+
+
+
     public String getNextId(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_transaksi_obat_detail')");
         Iterator<BigInteger> iter=query.list().iterator();

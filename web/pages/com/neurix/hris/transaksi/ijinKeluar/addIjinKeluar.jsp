@@ -695,7 +695,7 @@
     window.getlastDate = function() {
         var tgl = $('#tgl3').datepicker('getDate');
         var maxIjin = parseInt($('#maxIjin').val());
-        tgl.setDate(tgl.getDate() + maxIjin);
+        tgl.setDate(tgl.getDate() + maxIjin-1);
         var result = new Date(tgl);
         console.log(tgl);
 
@@ -710,6 +710,7 @@
 
         var dateFinal = [dd,mm,yyyy].join('/');
         $('#tgl2').val(dateFinal);
+        $('#tgl2').trigger('change');
         console.log(result);
     }
 </script>

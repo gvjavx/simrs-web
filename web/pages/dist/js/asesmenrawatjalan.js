@@ -474,10 +474,17 @@ function detailRJ(jenis) {
                                 '</td>' +
                                 '</tr>';
                         }else if("gambar" == item.tipe){
-                            body += '<tr>' +
-                                '<td width="40%">' + item.parameter + '</td>' +
-                                '<td>' + '<img src="' + jwb + '" style="width: 100%">' + '</td>' +
-                                '</tr>';
+                            if("Wong Baker Pain Scale" == item.parameter){
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + jwb + '" style="width: 20%; height: 100px">' + '</td>' +
+                                    '</tr>';
+                            }else{
+                                body += '<tr>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + jwb + '" style="width: 100%">' + '</td>' +
+                                    '</tr>';
+                            }
                         }else if("resiko_jatuh" == jenis || "skrining_gizi" == jenis){
                             if("total" == item.tipe){
                                 body += '<tr>' +

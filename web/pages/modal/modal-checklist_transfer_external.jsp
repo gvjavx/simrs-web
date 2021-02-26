@@ -83,7 +83,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl" id="ina3">
+                                    <input class="form-control tanggal_masuk_rs" id="ina3" readonly>
                                 </div>
                             </div>
                             <label class="col-md-2">DPJP</label>
@@ -507,8 +507,8 @@
                                 <label style="margin-left: 8px">TTD Dokter</label>
                                 <canvas class="paint-canvas-ttd" id="ttd1_dokter" width="220"
                                         onmouseover="paintTtd('ttd1_dokter')"></canvas>
-                                <input class="form-control" id="nama_terang_dokter" placeholder="Nama Terang">
-                                <input style="margin-top: 3px" class="form-control" id="sip_dokter" placeholder="SIP">
+                                <input class="form-control nama_dokter_ri" id="nama_terang_dokter" placeholder="Nama Terang">
+                                <input style="margin-top: 3px" class="form-control sip_dokter_ri" id="sip_dokter" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd1_dokter')"><i
                                         class="fa fa-trash"></i> Clear

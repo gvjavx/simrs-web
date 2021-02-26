@@ -200,6 +200,34 @@
                                     <s:hidden id="is_laka" name="rawatInap.isLaka"/>
                                     <s:hidden id="id_ruangan_lama" name="rawatInap.idRuangan"/>
 
+                                    <s:hidden id="h_nama_pasien" name="rawatInap.namaPasien"/>
+                                    <s:hidden id="h_tgl_lahir" name="rawatInap.tglLahir"/>
+                                    <s:hidden id="h_anamnesa" name="rawatInap.anamnese"/>
+                                    <s:hidden id="h_penunjang_medis" name="rawatInap.penunjangMedis"/>
+                                    <s:hidden id="h_keluhan_utama" name="rawatInap.keluhanUtama"/>
+                                    <s:hidden id="h_suhu" name="rawatInap.suhu"/>
+                                    <s:hidden id="h_nadi" name="rawatInap.nadi"/>
+                                    <s:hidden id="h_tensi" name="rawatInap.tensi"/>
+                                    <s:hidden id="h_pernafasan" name="rawatInap.pernafasan"/>
+                                    <s:hidden id="h_alergi" name="rawatInap.alergi"/>
+                                    <s:hidden id="h_berat_badan" name="rawatInap.berat"/>
+                                    <s:hidden id="h_tinggi_badan" name="rawatInap.tinggi"/>
+                                    <s:hidden id="h_diagnosa" name="rawatInap.namaDiagnosa"/>
+                                    <s:hidden id="h_umur" name="rawatInap.umur"/>
+                                    <s:hidden id="h_alamat_lengkap" name="rawatInap.alamatLengkap"/>
+                                    <s:hidden id="h_no_bpjs" name="rawatInap.noBpjs"/>
+                                    <s:hidden id="h_jenis_kelamin" name="rawatInap.jenisKelamin"/>
+                                    <s:hidden id="h_kategori_ruangan" name="rawatInap.kategoriRuangan"/>
+                                    <s:hidden id="h_kelas_pasien_bpjs" name="rawatInap.idKelas"/>
+                                    <s:hidden id="h_id_ruangan" name="rawatInap.idRuangan"/>
+                                    <s:hidden id="h_nama_ruangan" name="rawatInap.namaRangan"/>
+                                    <s:hidden id="h_stay_ruangan" name="rawatInap.isStay"/>
+                                    <s:hidden id="h_no_sep" name="rawatInap.noSep"/>
+                                    <s:hidden id="h_id_asuransi" name="rawatInap.idAsuransi"/>
+                                    <s:hidden id="h_id_kelas_ruangan" name="rawatInap.idKelasRuangan"/>
+                                    <s:hidden id="h_nama_ruangan_pasien" name="rawatInap.namaRangan"/>
+                                    <s:hidden id="h_tgl_masuk" name="rawatInap.stTglFrom"/>
+
                                     <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -284,7 +312,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td width="40%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>
@@ -360,13 +388,6 @@
                                             </table>
                                         </td>
                                     </tr>
-
-                                    <%--<tr>--%>
-                                        <%--<td></td>--%>
-                                        <%--<td>--%>
-                                            <%--<button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="rawatInap.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medic Saat Ini</button>--%>
-                                        <%--</td>--%>
-                                    <%--</tr>--%>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -610,54 +631,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%--<div id="status_asuransi" style="display: none">--%>
-                        <%--<div class="box-header with-border">--%>
-                        <%--</div>--%>
-                        <%--<div class="box-header with-border">--%>
-                            <%--<h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>--%>
-                        <%--</div>--%>
-                        <%--<div class="box-body">--%>
-                            <%--<div class="row">--%>
-                                <%--<div class="col-md-offset-2 col-md-8">--%>
-                                    <%--<h5>--%>
-                                        <%--Cover Biaya Asuransi--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>--%>
-                                        <%--</small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_cover_biaya_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<h5>--%>
-                                        <%--Total Biaya Tindakan--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span--%>
-                                                <%--id="b_tindakan_asuransi"></span></small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_biaya_tindakan_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<ul style="list-style-type: none">--%>
-                                        <%--<li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <--%>
-                                            <%--50% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >--%>
-                                            <%--50% dan < 70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >--%>
-                                            <%--70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                    <%--</ul>--%>
-                                <%--</div>--%>
-                                <%--<div class="col-md-2">--%>
-
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
 
                     <div class="box-header with-border" id="pos_tin">
                     </div>
@@ -4069,24 +4042,24 @@
     var pathImages = '<%= request.getContextPath() %>';
     var contextPath = '<%= request.getContextPath() %>';
     var isReadRM = false;
-    var tglLhr = '<s:property value="rawatInap.tglLahir"/>';
+    var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");
-    var namaPasien = '<s:property value="rawatInap.namaPasien"/>';
-    var anamnese = '<s:property value="rawatInap.anamnese"/>';
-    var penunjangMedis = '<s:property value="rawatInap.penunjangMedis"/>';
-    var keluhanUtama = '<s:property value="rawatInap.keluhanUtama"/>';
-    var suhu = '<s:property value="rawatInap.suhu"/>';
-    var nadi = '<s:property value="rawatInap.nadi"/>';
-    var tensi = '<s:property value="rawatInap.tensi"/>';
-    var pernafasan = '<s:property value="rawatInap.pernafasan"/>';
-    var alergi = '<s:property value="rawatInap.alergi"/>';
-    var beratBadan = '<s:property value="rawatInap.berat"/>';
-    var tinggiBadan = '<s:property value="rawatInap.tinggi"/>';
-    var diagnosa = '<s:property value="rawatInap.namaDiagnosa"/>';
-    var umur = '<s:property value="rawatInap.umur"/>';
-    var alamatLengkap = '<s:property value="rawatInap.alamatLengkap"/>';
-    var noBpjs = '<s:property value="rawatInap.noBpjs"/>';
-    var jenisKelamin = '<s:property value="rawatInap.jenisKelamin"/>';
+    var namaPasien = $('#h_nama_pasien').val();
+    var anamnese = $('#h_anamnesa').val();
+    var penunjangMedis = $('#h_penunjang_medis').val();
+    var keluhanUtama = $('#h_keluhan_utama').val();
+    var suhu = $('#h_suhu').val();
+    var nadi = $('#h_nadi').val();
+    var tensi = $('#h_tensi').val();
+    var pernafasan = $('#h_pernafasan').val();
+    var alergi = $('#h_alergi').val();
+    var beratBadan = $('#h_berat_badan').val();
+    var tinggiBadan = $('#h_tinggi_badan').val();
+    var diagnosa = $('#h_diagnosa').val();
+    var umur = $('#h_umur').val();
+    var alamatLengkap = $('#h_alamat_lengkap').val();
+    var noBpjs = $('#h_no_bpjs').val();
+    var jenisKelamin = $('#h_jenis_kelamin').val();
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";
@@ -4094,19 +4067,20 @@
     var tempBerat = "";
     var tempTinggi = "";
     var tempAnmnesa = "";
-    var kategoriRuangan = '<s:property value="rawatInap.kategoriRuangan"/>';
-    var kelasPasienBpjs = '<s:property value="rawatInap.idKelas"/>';
+    var kategoriRuangan = $('#h_kategori_ruangan').val();
+    var kelasPasienBpjs = $('#h_kelas_pasien_bpjs').val();
     var tempidRm = "";
     var urlPage = "";
-    var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
-    var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
-    var stayRuangan = '<s:property value="rawatInap.isStay"/>';
-    var NOSEP = '<s:property value="rawatInap.noSep"/>';
-    var IdAsuransi = '<s:property value="rawatInap.idAsuransi"/>';
+    var idRuangan = $('#h_id_ruangan').val();
+    var namaRuangan = $('#h_nama_ruangan').val();
+    var stayRuangan = $('#h_stay_ruangan').val();
+    var NOSEP = $('#h_no_sep').val();
+    var IdAsuransi = $('#h_id_asuransi').val();
     var isBpjsRekanan = "";
     var setNotif = "";
-    var idKelasRuangan = '<s:property value="rawatInap.idKelasRuangan"/>';
-    var namaRuanganPasien = '<s:property value="rawatInap.namaRangan"/>';
+    var idKelasRuangan = $('#h_id_kelas_ruangan').val();
+    var namaRuanganPasien = $('#h_nama_ruangan_pasien').val();
+    var tanggalMasuk = $('#h_tgl_masuk').val();
 
     if (month.length < 2) {
         month = "0"+month;

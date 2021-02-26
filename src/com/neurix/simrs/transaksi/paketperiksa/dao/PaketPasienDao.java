@@ -395,7 +395,13 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "c.nama_pelayanan\n" +
                     "FROM mt_simrs_paket a\n" +
                     "INNER JOIN (SELECT * FROM mt_simrs_detail_paket WHERE urutan = 1) b ON a.id_paket = b.id_paket\n" +
-                    "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "b.branch_id,\n" +
+                    "b.id_pelayanan,\n" +
+                    "a.nama_pelayanan,\n" +
+                    "a.tipe_pelayanan\n" +
+                    "FROM im_simrs_header_pelayanan a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "WHERE a.branch_id = :id\n" +
                     "AND c.tipe_pelayanan = :tipe\n";
 
@@ -436,7 +442,13 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                     "a.tarif,\n" +
                     "b.nama_pelayanan\n" +
                     "FROM mt_simrs_paket a\n" +
-                    "INNER JOIN im_simrs_pelayanan b ON a.id_pelayanan = b.id_pelayanan\n" +
+                    "INNER JOIN (SELECT\n" +
+                    "b.branch_id,\n" +
+                    "b.id_pelayanan,\n" +
+                    "a.nama_pelayanan,\n" +
+                    "a.tipe_pelayanan\n" +
+                    "FROM im_simrs_header_pelayanan a\n" +
+                    "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) b ON a.id_pelayanan = b.id_pelayanan\n" +
                     "WHERE a.branch_id = :id AND b.tipe_pelayanan = 'igd'";
 
             List<Object[]> results = new ArrayList<>();

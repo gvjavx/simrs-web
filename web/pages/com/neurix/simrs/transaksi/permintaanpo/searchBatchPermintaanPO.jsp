@@ -553,6 +553,7 @@
                 </h4>
             </div>
 
+
             <div class="modal-body" id="body-img">
                 <%--<div id="body-img">--%>
                     <%--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">--%>
@@ -721,7 +722,6 @@
         var file = $("#file-doc")[0].files[0];
         var notaVendor = $("#nota-vendor").val();
         PermintaanVendorAction.uploadDocVendor(file, notaVendor, idpermintaanPo, function(response){
-
         })
     }
 
@@ -822,7 +822,6 @@
     }
 
     function checkAvail(idItem, jenis) {
-
         var batch = $("#mod_batch").text();
         var idTransakasi = $("#no_po").text();
 
@@ -998,8 +997,6 @@
                 'tgl_do':tglDo
             }
 
-
-
             for (i=0 ; i <= nFaktur ; i++) {
                 var canvas = document.getElementById('canvas-faktur-' + i);
                 var input = document.getElementById('upload-faktur-' + i);
@@ -1008,7 +1005,6 @@
                         dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
                     listOfimg.push({"jenisnomor": "faktur", "batch": noBatch, "iditem": noFaktur, "img": dataURL});
                 }
-
 
                 var cekFaktur = $('.faktur');
                 var cekInvoice = $('.invoice');
@@ -1097,7 +1093,6 @@
 
     function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo, tglInvoice, tglDo){
 
-
         $('#det_img').attr('onclick','showDoc(\''+img+'\')');
         $('#det_no_faktur').text(noFaktur);
         $('#det_tlg_faktur').text(tglFaktur);
@@ -1136,7 +1131,6 @@
     }
 
     function showDoc(img){
-
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
     }
@@ -1187,7 +1181,6 @@
 
     function viewUpload(idBatch) {
         $("#modal-view-img").modal('show');
-
         var batch = $("#mod_batch").text();
         $("#body-img").html("");
         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
@@ -1418,7 +1411,6 @@
                 $('#' + id).remove();
 
             }
-
 
 
 

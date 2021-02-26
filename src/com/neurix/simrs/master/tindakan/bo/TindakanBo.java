@@ -22,4 +22,6 @@ public interface TindakanBo{
     public List<Tindakan> getDataTindakan(Tindakan bean) throws GeneralBOException;
     public List<ImSimrsTindakanEntity> cekTindakan(String idHeader, String idPelayanan, String idKelas) throws GeneralBOException;
     public List<Tindakan> getTindakanApotek(String branchId, String idPelayanan, String idTindakan) throws GeneralBOException;
+
+    public List<Tindakan> getComboAmbulance(String branch) throws GeneralBOException;
 }
