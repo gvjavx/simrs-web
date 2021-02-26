@@ -400,3 +400,7 @@ CREATE SEQUENCE public.seq_version_mobile
 
 ALTER SEQUENCE public.seq_version_mobile
     OWNER TO postgres;
+
+--2021-02-25
+ALTER TABLE it_simrs_antian_online ADD id_paket character varying(50)
+

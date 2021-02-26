@@ -153,6 +153,7 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
             antianOnlineEntity.setAction("C");
             antianOnlineEntity.setFlag("Y");
             antianOnlineEntity.setBranchId(bean.getBranchId());
+            antianOnlineEntity.setIdPaket(bean.getIdPaket());
 
             Timestamp timestamp = new Timestamp(System.currentTimeMillis());
 

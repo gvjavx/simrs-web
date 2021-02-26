@@ -106,6 +106,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String jamAkhir;
     private String tglCheckup;
     private String action;
+    private String idPaket;
 
     private String idDetailCheckup;
     private String flagCall;
@@ -114,6 +115,14 @@ public class AntrianOnlineController implements ModelDriven<Object> {
     private String findNoAntrian;
 
     private String idPasien;
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
 
     public String getFlag() {
         return flag;
@@ -374,6 +383,7 @@ public class AntrianOnlineController implements ModelDriven<Object> {
         antianOnline.setJamAwal(jamAwal);
         antianOnline.setTglCheckup(tglCheckup);
         antianOnline.setBranchId(branchId);
+        antianOnline.setIdPaket(idPaket);
 
         if (action.equalsIgnoreCase("tambah")) {
             try {
