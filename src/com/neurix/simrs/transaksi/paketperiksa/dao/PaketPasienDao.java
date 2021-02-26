@@ -509,7 +509,11 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                 "INNER JOIN mt_simrs_paket pk ON pk.id_paket = pp.id_paket\n" +
                 "INNER JOIN im_akun_master pr ON pr.nomor_master = pp.id_perusahaan\n" +
                 "INNER JOIN mt_simrs_detail_paket dt ON pk.id_paket = dt.id_paket\n" +
-                "INNER JOIN im_simrs_pelayanan pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
+                "INNER JOIN (SELECT \n" +
+                "a.id_pelayanan, \n" +
+                "b.nama_pelayanan \n" +
+                "FROM im_simrs_pelayanan a \n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
                 "WHERE pp.id_pasien = :idPasien\n" +
                 "AND pp.flag = 'Y'\n" +
                 "AND pp.flag_selesai IS NULL\n" +

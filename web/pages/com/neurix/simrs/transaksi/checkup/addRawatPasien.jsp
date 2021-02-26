@@ -2299,6 +2299,7 @@
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
+                console.log(option);
             } else {
                 $('#paket').html(option);
             }
@@ -3543,6 +3544,7 @@
                                 }else{
                                     $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                                 }
+
                                 $('#provinsi').val(response.namaProvinsi);
                                 $('#kabupaten').val(response.namaKota);
                                 $('#kecamatan').val(response.namaKecamatan);
@@ -3563,11 +3565,35 @@
                                         });
                                     }
                                 });
+
                                 $('#is_online').val(response.isOnline);
                                 $('#tgl_antrian').val(converterDateYmdHms(response.tglAntian));
                                 $('#id_checkup_online').val(response.noCheckupOnline);
                                 $('#jenis_pasien').val(response.idJenisPeriksaPasien).trigger('change').attr('disabled', true);
-                                // $('#kunjungan').val(response.jenisKunjungan).attr('disabled', true);
+                                $('#id_paket').val(response.idPaket);
+
+                                if("paket_perusahaan" == response.idJenisPeriksaPasien){
+                                    $('#paket_perusahaan').val(response.namaPaket).attr('disabled', true);
+                                    $('#id_paket').val(response.idPaket);
+                                    $('#cover_biaya_paket').val(response.tarif);
+                                }
+
+                                setTimeout(function () {
+                                    if("paket_individu" == response.idJenisPeriksaPasien){
+                                        $('#paket').val(response.idPaket+"|"+response.idPelayanan+"|"+response.tarif).trigger('change').attr('disabled', true);
+                                        $('#dokter').val(response.idDokter);
+                                        CheckupAction.listOfDokter(response.idPelayanan, function (res) {
+                                            if (res.length > 0) {
+                                                $.each(res, function (i, item) {
+                                                    if (response.idDokter == item.idDokter) {
+                                                        $('#nama_dokter').val(item.namaDokter);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                },1000);
+
                                 $('#kunjungan_val').val(response.jenisKunjungan);
                             } else {
                                 $('#warning_pasien').show().fadeOut(5000);
