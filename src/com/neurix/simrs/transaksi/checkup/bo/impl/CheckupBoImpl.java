@@ -519,7 +519,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                                 noAntrian = String.valueOf(urutan);
                             }
                         }
-                        detailCheckupEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
                     }else{
                         HeaderCheckup lastAntrian = new HeaderCheckup();
                         try {
@@ -544,6 +543,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                 if ("Y".equalsIgnoreCase(bean.getIsOnline())) {
                     detailCheckupEntity.setTglAntrian(Timestamp.valueOf(bean.getStTglAntrian()));
+                    detailCheckupEntity.setNoCheckupOnline(bean.getNoCheckupOnline());
                 } else {
                     detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
                 }

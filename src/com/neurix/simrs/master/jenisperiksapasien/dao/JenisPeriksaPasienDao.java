@@ -87,4 +87,29 @@ public class JenisPeriksaPasienDao extends GenericDao<ImJenisPeriksaPasienEntity
         }
         return list;
     }
+
+    public List<JenisPriksaPasien> getJenisPeriksaExcMCU() {
+        List<JenisPriksaPasien> list = new ArrayList<>();
+        String sql = "SELECT \n" +
+                "id_jenis_periksa_pasien, \n" +
+                "keterangan \n" +
+                "FROM im_simrs_jenis_periksa_pasien \n" +
+                "WHERE id_jenis_periksa_pasien != 'paket_perusahaan' \n" +
+                "ORDER BY keterangan DESC";
+
+        List<Object[]> result = new ArrayList<>();
+        result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .list();
+
+        if (result.size() > 0) {
+            for (Object[] obj: result){
+                JenisPriksaPasien jenisPriksaPasien = new JenisPriksaPasien();
+                jenisPriksaPasien.setIdJenisPeriksaPasien(obj[0] != null ? obj[0].toString() : "");
+                jenisPriksaPasien.setKeterangan(obj[1] != null ? obj[1].toString() : "");
+                list.add(jenisPriksaPasien);
+            }
+        }
+
+        return list;
+    }
 }

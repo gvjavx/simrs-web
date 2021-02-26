@@ -234,6 +234,11 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
         return getListPelayanan(branchId, null, like);
     }
 
+    public List<Pelayanan> getJutsPelayananOnlyRJ(String branchId) throws HibernateException {
+        String like = "('rawat_jalan')";
+        return getListPelayanan(branchId, null, like);
+    }
+
     public List<Pelayanan> getListPelayanan(String branchId, String notLike, String like){
         String br = "%";
         String where = "";

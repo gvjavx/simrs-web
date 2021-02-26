@@ -4,6 +4,7 @@ import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 
 import java.util.List;
 import java.util.Map;
@@ -40,4 +41,5 @@ public interface PelayananBo {
 
     public List<Pelayanan> getJustPelayananOnly(String branchId) throws GeneralBOException;
     public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId) throws GeneralBOException;
+    public List<Pelayanan> getJustPelayananOnlyRJ(String branchId) throws GeneralBOException;
 }

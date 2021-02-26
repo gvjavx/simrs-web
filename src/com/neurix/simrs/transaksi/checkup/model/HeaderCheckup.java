@@ -195,6 +195,16 @@ public class HeaderCheckup {
     private String diskon;
     private String jumlah;
 
+    private String namaPaket;
+
+    public String getNamaPaket() {
+        return namaPaket;
+    }
+
+    public void setNamaPaket(String namaPaket) {
+        this.namaPaket = namaPaket;
+    }
+
     public String getJumlah() {
         return jumlah;
     }
