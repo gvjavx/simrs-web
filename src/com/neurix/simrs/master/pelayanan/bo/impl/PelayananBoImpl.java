@@ -17,6 +17,7 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsHeaderPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPoliSpesialisEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.transaksi.paketperiksa.dao.PaketPasienDao;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
@@ -264,6 +265,10 @@ public class PelayananBoImpl implements PelayananBo {
         return pelayananDao.getJutsPelayananOnly(branchId);
     }
 
+    public List<Pelayanan> getJustPelayananOnlyRJ(String branchId) throws GeneralBOException {
+        return pelayananDao.getJutsPelayananOnlyRJ(branchId);
+    }
+
     @Override
     public List<Pelayanan> getByCriteria(Pelayanan bean) throws GeneralBOException {
         logger.info("[PelayananBoImpl.getByCriteria] Start >>>>>>");
@@ -481,4 +486,6 @@ public class PelayananBoImpl implements PelayananBo {
     public List<Pelayanan> getListObjectPelayanan(Pelayanan bean) throws GeneralBOException {
         return pelayananDao.getListObjectPelayanan(bean);
     }
+
+
 }

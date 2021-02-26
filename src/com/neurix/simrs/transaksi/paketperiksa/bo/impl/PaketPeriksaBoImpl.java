@@ -486,6 +486,31 @@ public class PaketPeriksaBoImpl implements PaketPeriksaBo {
         return id;
     }
 
+    @Override
+    public PaketPasien checkPaketPasien(String idPasien) throws GeneralBOException {
+        PaketPasien paketPasien = new PaketPasien();
+        try{
+           paketPasien = paketPasienDao.checkPaketPasien(idPasien);
+        } catch (GeneralBOException e) {
+            logger.error("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
+            throw new GeneralBOException("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
+        }
+
+        return paketPasien;
+    }
+
+    @Override
+    public List<PaketPeriksa> getDetailPaketPeriksa(String idPaket) throws GeneralBOException {
+        List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
+        try {
+            paketPeriksaList = paketPasienDao.getDetailPaketPeriksa(idPaket);
+        } catch (GeneralBOException e){
+            logger.error("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
+            throw new GeneralBOException("[PaketPeriksaBoImpl.getNextItemPaketId] ERROR. ", e);
+        }
+        return paketPeriksaList;
+    }
+
     public void setItemPaketDao(ItemPaketDao itemPaketDao) {
         this.itemPaketDao = itemPaketDao;
     }

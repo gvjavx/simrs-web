@@ -45,6 +45,16 @@ public class PaketPeriksa {
     private String namaPelayanan;
     private BigInteger urutan;
 
+    private String namaItem;
+
+    public String getNamaItem() {
+        return namaItem;
+    }
+
+    public void setNamaItem(String namaItem) {
+        this.namaItem = namaItem;
+    }
+
     public BigInteger getUrutan() {
         return urutan;
     }

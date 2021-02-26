@@ -14,4 +14,6 @@ public interface JenisPriksaPasienBo {
     public List<JenisPriksaPasien> getListJenisPeriksaNotBpjs(JenisPriksaPasien bean);
     public ImJenisPeriksaPasienEntity getJenisPerikasEntityById(String id) throws GeneralBOException;
     public List<JenisPriksaPasien> getListJenisPeriksaByIdDetailCheckup(String jenis, String idDetail);
+
+    public List<JenisPriksaPasien> getJenisPeriksaExecMCU() throws GeneralBOException;
 }

@@ -19,6 +19,9 @@ import com.neurix.simrs.mobileapi.model.JenisPeriksaMobile;
 import com.neurix.simrs.mobileapi.model.PelayananMobile;
 import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
 import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
+import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
 import com.opensymphony.xwork2.ModelDriven;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -41,6 +44,7 @@ public class PelayananController implements ModelDriven<Object> {
     private JadwalShiftKerjaBo jadwalShiftKerjaBoProxy;
     private JenisObatBo jenisObatBoProxy;
     private UserBo userBoProxy;
+    private PaketPeriksaBo paketPeriksaBoProxy;
     private JenisPriksaPasienBo jenisPriksaPasienBoProxy;
     private Collection<PelayananMobile> listOfPelayanan = new ArrayList<>();
     private Collection<JenisPeriksaMobile> listOfJenisPeriksa = new ArrayList<>();
@@ -55,6 +59,33 @@ public class PelayananController implements ModelDriven<Object> {
     private String nip;
     private String channelId;
     private String tipePelayanan;
+    private String idPasien;
+
+    private String idPaket;
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public PaketPeriksaBo getPaketPeriksaBoProxy() {
+        return paketPeriksaBoProxy;
+    }
+
+    public void setPaketPeriksaBoProxy(PaketPeriksaBo paketPeriksaBoProxy) {
+        this.paketPeriksaBoProxy = paketPeriksaBoProxy;
+    }
 
     public UserBo getUserBoProxy() {
         return userBoProxy;
@@ -230,6 +261,10 @@ public class PelayananController implements ModelDriven<Object> {
                return listOfJenisPeriksa;
            case "getJenisObat" :
                return listOfJenisObat;
+           case "getListPelayananRJ" :
+               return listOfPelayanan;
+           case "getDetailPaket" :
+               return listOfPelayanan;
            default:
                return model;
        }
@@ -410,13 +445,29 @@ public class PelayananController implements ModelDriven<Object> {
 
         if  (action.equalsIgnoreCase("getJenisPeriksaPasien")) {
             List<JenisPriksaPasien> result = new ArrayList<>();
+            PaketPasien paketPasien = new PaketPasien();
 
             JenisPriksaPasien bean = new JenisPriksaPasien();
 
             try {
-                result = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(bean);
-            } catch (GeneralBOException e){
+               paketPasien = paketPeriksaBoProxy.checkPaketPasien(idPasien);
+            } catch (GeneralBOException e) {
                 logger.error("Pelayanan.create] Error when get list jenis periksa pasien",e);
+                throw new GeneralBOException("Pelayanan.create] Error when get list jenis periksa pasien",e);
+            }
+
+            if (paketPasien != null) {
+                try {
+                    result = jenisPriksaPasienBoProxy.getListAllJenisPeriksa(bean);
+                } catch (GeneralBOException e){
+                    logger.error("Pelayanan.create] Error when get list jenis periksa pasien",e);
+                }
+            } else {
+                try {
+                    result = jenisPriksaPasienBoProxy.getJenisPeriksaExecMCU();
+                } catch (GeneralBOException e){
+                    logger.error("Pelayanan.create] Error when get list jenis periksa pasien",e);
+                }
             }
 
             for (JenisPriksaPasien item : result){
@@ -528,6 +579,66 @@ public class PelayananController implements ModelDriven<Object> {
             } catch (IOException e) {
                 // Handle a network error here
                 System.out.println(e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("getListPelayananRJ")) {
+            List<Pelayanan> result = new ArrayList<>();
+
+
+            try {
+                result = pelayananBoProxy.getJustPelayananOnlyRJ(branchId);
+            } catch (GeneralBOException e) {
+                logger.error("Pelayanan.create] Error when get list pelayanan",e);
+            }
+
+            for (Pelayanan item : result){
+                PelayananMobile pelayananMobile = new PelayananMobile();
+                pelayananMobile.setNamaPelayanan(item.getNamaPelayanan());
+                pelayananMobile.setIdPelayanan(item.getIdPelayanan());
+
+                listOfPelayanan.add(pelayananMobile);
+            }
+        }
+
+        if (action.equalsIgnoreCase("checkPaketPasien")) {
+            PaketPasien paketPasien;
+            try {
+                paketPasien = paketPeriksaBoProxy.checkPaketPasien(idPasien);
+            } catch (GeneralBOException e) {
+                logger.error("Pelayanan.create] Error when check paket pasien",e);
+                throw new GeneralBOException("Pelayanan.create] Error when check paket pasien",e);
+            }
+
+            if (paketPasien != null) {
+                model.setIdPaket(paketPasien.getIdPaket());
+                model.setIdPelayanan(paketPasien.getIdPelayanan());
+                model.setNamaPelayanan(paketPasien.getNamaPelayanan());
+                model.setIdPerusahaan(paketPasien.getIdPerusahaan());
+                model.setNamaPerusahaan(paketPasien.getNamaPerusahaan());
+                model.setIdPasien(paketPasien.getIdPasien());
+            }
+        }
+
+        if (action.equalsIgnoreCase("getDetailPaket")) {
+            List<PaketPeriksa> paketPeriksaList = new ArrayList<>();
+            try {
+                paketPeriksaList = paketPeriksaBoProxy.getDetailPaketPeriksa(idPaket);
+            } catch (GeneralBOException e) {
+                logger.error("Pelayanan.create] Error when check paket pasien",e);
+                throw new GeneralBOException("Pelayanan.create] Error when check paket pasien",e);
+            }
+
+            if (paketPeriksaList.size() > 0 ) {
+              for (PaketPeriksa item : paketPeriksaList) {
+                  PelayananMobile pelayananMobile = new PelayananMobile();
+                  pelayananMobile.setIdPaket(item.getIdPaket());
+                  pelayananMobile.setIdItem(item.getIdItem());
+                  pelayananMobile.setNamaItem(item.getNamaItem());
+                  pelayananMobile.setJenisItem(item.getJenisItem());
+
+                  listOfPelayanan.add(pelayananMobile);
+              }
             }
         }
 
