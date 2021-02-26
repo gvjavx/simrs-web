@@ -293,7 +293,6 @@
                                            id="cor_po_biji_perlembar"><i class="fa fa-check"></i> correct</p>
                                     </div>
                                 </div>
-
                                 <div class="form-group">
                                     <label class="col-md-4" style="margin-top: 7px">Pabrik Obat</label>
                                     <div class="col-md-8">

@@ -924,7 +924,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         ImSimrsObatEntity obatEntity = getObatById(bean.getIdObat());
 
         // data dari stok;
-        BigInteger allStockToBiji = sumObat.getQtyAllBiji();
+        BigInteger allStockToBiji = sumObat.getQtyAllBiji() == null ? new BigInteger(String.valueOf(0)) : sumObat.getQtyAllBiji();
         // END
 
         BigInteger ttlQtyPermintaan = new BigInteger(String.valueOf(0));
