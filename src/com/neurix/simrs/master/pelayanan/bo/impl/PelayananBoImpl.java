@@ -323,14 +323,19 @@ public class PelayananBoImpl implements PelayananBo {
                     pelayanan.setLastUpdateWho(entity.getLastUpdateWho());
                     pelayanan.setIdHeaderPelayanan(entity.getIdHeaderPelayanan());
 
-                    ImSimrsHeaderPelayananEntity headerPelayananEntity = headerPelayananDao.getById("idHeaderPelayanan", entity.getIdHeaderPelayanan());
-                    if (headerPelayananEntity != null) {
-                        pelayanan.setNamaPelayanan(headerPelayananEntity.getNamaPelayanan());
-                        pelayanan.setTipePelayanan(headerPelayananEntity.getTipePelayanan());
-                        pelayanan.setKategoriPelayanan(headerPelayananEntity.getKategoriPelayanan());
-                        pelayanan.setDivisiId(headerPelayananEntity.getDivisiId());
-                        pelayanan.setKodePoliVclaim(headerPelayananEntity.getKodeVclaim());
-                        pelayanan.setIsVaksin(headerPelayananEntity.getIsVaksin());
+                    try {
+                        ImSimrsHeaderPelayananEntity headerPelayananEntity = headerPelayananDao.getById("idHeaderPelayanan", entity.getIdHeaderPelayanan());
+                        if (headerPelayananEntity != null) {
+                            pelayanan.setNamaPelayanan(headerPelayananEntity.getNamaPelayanan());
+                            pelayanan.setTipePelayanan(headerPelayananEntity.getTipePelayanan());
+                            pelayanan.setKategoriPelayanan(headerPelayananEntity.getKategoriPelayanan());
+                            pelayanan.setDivisiId(headerPelayananEntity.getDivisiId());
+                            pelayanan.setKodePoliVclaim(headerPelayananEntity.getKodeVclaim());
+                            pelayanan.setIsVaksin(headerPelayananEntity.getIsVaksin());
+                        }
+                    }catch (Exception e){
+                        logger.error(e.getMessage());
+                        throw new GeneralBOException("Error get pelayanan, "+e.getMessage());
                     }
 
                     ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
@@ -486,6 +491,8 @@ public class PelayananBoImpl implements PelayananBo {
     public List<Pelayanan> getListObjectPelayanan(Pelayanan bean) throws GeneralBOException {
         return pelayananDao.getListObjectPelayanan(bean);
     }
+
+
 
 
 }
