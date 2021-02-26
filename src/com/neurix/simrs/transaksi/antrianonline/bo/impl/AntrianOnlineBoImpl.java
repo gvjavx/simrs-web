@@ -110,6 +110,7 @@ public class AntrianOnlineBoImpl implements AntrianOnlineBo {
                     antrianItem.setJamAwal(item.getJamAwal());
                     antrianItem.setJamAkhir(item.getJamAkhir());
                     antrianItem.setTglCheckup(item.getTglCheckup().toString());
+                    antrianItem.setIdPaket(item.getIdPaket());
 
                     if (item.getIdPelayanan() != null && !"".equalsIgnoreCase(item.getIdPelayanan())) {
                         Pelayanan pelayanan = pelayananDao.getPelayananById("idPelayanan",item.getIdPelayanan());

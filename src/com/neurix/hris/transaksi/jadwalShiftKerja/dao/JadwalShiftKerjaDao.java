@@ -320,8 +320,7 @@ public class JadwalShiftKerjaDao extends GenericDao<ItJadwalShiftKerjaEntity, St
                 "b.tipe_pelayanan,\n" +
                 "b.kategori_pelayanan,\n" +
                 "b.divisi_id,\n" +
-                "b.kode_vclaim,\n" +
-                "b.flag\t\t\t\n" +
+                "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dpl.id_pelayanan\n" +
                 "INNER JOIN im_hris_pegawai pg ON pg.nip=dk.id_dokter\n" +
