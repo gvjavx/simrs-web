@@ -356,6 +356,7 @@
                 $('#kunjungan_val').val(null);
                 $('#paket_perusahaan').val(null);
                 $('#paket').val(null);
+                $('#paket').attr("disabled", false);
                 $('#dokter').val(null);
                 $('#nama_dokter').val(null);
                 $('#id_lab').val(null);
@@ -508,6 +509,8 @@
             $('#surat_polisi, #surat_rujuk').val(null);
             $('#warning_pasien').hide();
             $('#form_vaksin').hide();
+            $('#paket').attr("disabled", false);
+            $('#paket').val(null);
         }
 
         function formatRupiah2(angka) {
@@ -2299,7 +2302,6 @@
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
-                console.log(option);
             } else {
                 $('#paket').html(option);
             }
