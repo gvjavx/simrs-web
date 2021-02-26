@@ -3321,6 +3321,7 @@
         } else {
             $('#golongan1Group').hide();
             $('#golongan2Group').show();
+            $('#golongan1').val("");
             $('#point').prop('disabled', 'true');
             $('#tanggalAktif').prop('disabled', 'true');
             $('#tanggalPraPensiun').prop('disabled', 'true');
