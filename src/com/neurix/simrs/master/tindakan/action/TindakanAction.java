@@ -421,7 +421,7 @@ public class TindakanAction extends BaseTransactionAction {
                 tindakan.setIdTindakan(object.getString("id_tindakan"));
                 tindakan.setIdHeaderTindakan(object.getString("id_header_tindakan"));
                 tindakan.setIdKategoriTindakan(object.getString("id_kategori_tindakan"));
-                tindakan.setTarifBpjs(new BigInteger(object.getString("tarif")));
+                tindakan.setTarif(new BigInteger(object.getString("tarif")));
                 tindakan.setTarifBpjs(new BigInteger(object.getString("tarif_bpjs")));
                 tindakan.setDiskon(new BigDecimal(object.getString("diskon")));
                 tindakan.setIsIna(object.getString("is_ina"));
