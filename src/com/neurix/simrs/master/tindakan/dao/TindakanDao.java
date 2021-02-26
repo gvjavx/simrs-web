@@ -216,8 +216,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         if (bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())) {
             condition = condition + "AND b.id_tindakan = '" + bean.getIdTindakan() + "' \n";
         }
-        if (bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())) {
-            condition = condition + "AND a.nama_tindakan ILIKE '%" + bean.getIdTindakan() + "%' \n";
+        if (bean.getTindakan() != null && !"".equalsIgnoreCase(bean.getTindakan())) {
+            condition = condition + "AND a.nama_tindakan ILIKE '%" + bean.getTindakan() + "%' \n";
         }
         if (bean.getIdHeaderTindakan() != null && !"".equalsIgnoreCase(bean.getIdHeaderTindakan())) {
             condition = condition + "AND a.id_header_tindakan = '" + bean.getIdHeaderTindakan() + "' \n";
@@ -236,6 +236,9 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         }
         if (bean.getKategoriInaBpjs() != null && !"".equalsIgnoreCase(bean.getKategoriInaBpjs())) {
             condition = condition + "AND a.kategori_ina_bpjs = '" + bean.getKategoriInaBpjs() + "' \n";
+        }
+        if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
+            condition = condition + "AND b.id_pelayanan = '" + bean.getIdPelayanan() + "' \n";
         }
         String SQL = "SELECT \n" +
                 "a.id_header_tindakan,\n" +
