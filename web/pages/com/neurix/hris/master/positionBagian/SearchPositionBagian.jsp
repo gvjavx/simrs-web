@@ -77,208 +77,198 @@
                     <s:form id="positionBagianForm" method="post"  theme="simple"
                             namespace="/positionBagian" action="search_positionBagian.action" cssClass="well form-horizontal">
 
-                    <s:hidden name="addOrEdit"/>
-                    <s:hidden name="delete"/>
+                        <s:hidden name="addOrEdit"/>
+                        <s:hidden name="delete"/>
 
-                    <table>
-                        <tr >
-                            <td width="10%" align="center">
-                                <%@ include file="/pages/common/message.jsp" %>
-                            </td>
-                        </tr>
-                    </table>
+                        <table>
+                            <tr >
+                                <td width="10%" align="center">
+                                    <%@ include file="/pages/common/message.jsp" %>
+                                </td>
+                            </tr>
+                        </table>
 
-                    <table >
-                            <%--<tr>--%>
-                            <%--<td width="20%">--%>
-                            <%--<label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>--%>
-                            <%--</td>--%>
-                            <%--<td>--%>
-                            <%--<table>--%>
-                            <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
-                            <%--required="false" readonly="false" cssClass="form-control"/>--%>
-                            <%--</table>--%>
-                            <%--</td>--%>
-                            <%--</tr>--%>
-                        <tr>
-                            <td width="20%">
-                                <label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>
-                            </td>
-                            <td>
+                        <table >
+                                <%--<tr>--%>
+                                <%--<td width="20%">--%>
+                                <%--<label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>--%>
+                                <%--</td>--%>
+                                <%--<td>--%>
+                                <%--<table>--%>
+                                <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
+                                <%--required="false" readonly="false" cssClass="form-control"/>--%>
+                                <%--</table>--%>
+                                <%--</td>--%>
+                                <%--</tr>--%>
+                            <tr>
+                                <td width="20%">
+                                    <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:textfield  id="positionBagianName" name="positionBagian.bagianName"
+                                                      required="false" readonly="false" cssClass="form-control"
+                                                      cssStyle="margin-top: 5px"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <br>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Bidang/Devisi :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>
+                                        <s:select list="#comboDept.listComboDepartment" id="departmentId"
+                                                  name="positionBagian.divisiId"
+                                                  listKey="departmentId" listValue="departmentName"
+                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
+                                            <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
+                                            <%--required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
+                                    </table>
+                                </td>
+                            </tr>
 
-                                    <s:textfield  id="positionBagianId" name="positionBagian.bagianId" required="false" readonly="false" cssClass="form-control"/>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td width="18%">
-                    <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
-                </td>
-                <td>
-                    <table>
-                        <s:textfield  id="positionBagianName" name="positionBagian.bagianName"
-                                      required="false" readonly="false" cssClass="form-control"
-                                      cssStyle="margin-top: 5px"/>
-                    </table>
-                </td>
-            </tr>
-            <br>
-            <tr>
-                <td>
-                    <label class="control-label"><small>Bidang/Devisi :</small></label>
-                </td>
-                <td>
-                    <table>
-                        <s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>
-                        <s:select list="#comboDept.listComboDepartment" id="departmentId"
-                                  name="positionBagian.divisiId"
-                                  listKey="departmentId" listValue="departmentName"
-                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                            <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
-                            <%--required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
-                    </table>
-                </td>
-            </tr>
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Flag :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="positionBagian.flag"
+                                                  headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: 5px" />
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <br>
 
-            <tr>
-                <td>
-                    <label class="control-label"><small>Flag :</small></label>
-                </td>
-                <td>
-                    <table>
-                        <s:select list="#{'N':'Non-Active'}" id="flag" name="positionBagian.flag"
-                                  headerKey="Y" headerValue="Active" cssClass="form-control" cssStyle="margin-top: 5px" />
-                    </table>
-                </td>
-            </tr>
-        </table>
-        <br>
+                        <div id="actions" class="form-actions">
+                            <table align="center">
+                                <tr>
+                                        <%--<td>--%>
+                                        <%--<sj:submit type="button" cssClass="btn btn-primary" formIds="positionBagianForm" id="search" name="search"--%>
+                                        <%--onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">--%>
+                                        <%--<i class="fa fa-search"></i>--%>
+                                        <%--Search--%>
+                                        <%--</sj:submit>--%>
+                                        <%--</td>--%>
+                                    <td>
+                                        <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData()"><i class="fa fa-search"></i> Search</a>
+                                    </td>
+                                    <td>
+                                        <s:url var="urlAdd" namespace="/positionBagian" action="add_positionBagian" escapeAmp="false">
+                                        </s:url>
+                                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                            <i class="fa fa-plus"></i>
+                                            Add Bagian
+                                        </sj:a>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger"
+                                                onclick="window.location.href='<s:url action="initForm_positionBagian"/>'">
+                                            <i class="fa fa-refresh"></i> Reset
+                                        </button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
 
-        <div id="actions" class="form-actions">
-            <table align="center">
-                <tr>
-                        <%--<td>--%>
-                        <%--<sj:submit type="button" cssClass="btn btn-primary" formIds="positionBagianForm" id="search" name="search"--%>
-                        <%--onClickTopics="showDialog" onCompleteTopics="closeDialog" onclick="showLoadingDialog();">--%>
-                        <%--<i class="fa fa-search"></i>--%>
-                        <%--Search--%>
-                        <%--</sj:submit>--%>
-                        <%--</td>--%>
-                    <td>
-                        <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData()"><i class="fa fa-search"></i> Search</a>
-                    </td>
-                    <td>
-                        <s:url var="urlAdd" namespace="/positionBagian" action="add_positionBagian" escapeAmp="false">
-                        </s:url>
-                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
-                            <i class="fa fa-plus"></i>
-                            Add Bagian
-                        </sj:a>
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger"
-                                onclick="window.location.href='<s:url action="initForm_positionBagian"/>'">
-                            <i class="fa fa-refresh"></i> Reset
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </div>
-
-        <br>
-        <br>
-        <center>
-            <table id="showdata" width="80%">
-                <tr>
-                    <td align="center">
-                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                   height="auto" width="auto" autoOpen="false"
-                                   title="Position Bagian ">
-                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
-                        </sj:dialog>
+                        <br>
+                        <br>
+                        <center>
+                            <table id="showdata" width="80%">
+                                <tr>
+                                    <td align="center">
+                                        <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
+                                                   height="auto" width="auto" autoOpen="false"
+                                                   title="Position Bagian ">
+                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
+                                        </sj:dialog>
 
 
-                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
-                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
-                                   buttons="{
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
                                                                       saveEdit();
                                                                    }
                                                             }"
-                        >
-                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
-                            Record has been saved successfully.
-                        </sj:dialog>
+                                        >
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>" name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
 
-                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
-                                   height="250" width="600" autoOpen="false" title="Error Dialog"
-                                   buttons="{
+                                        <sj:dialog id="error_dialog" openTopics="showErrorDialog" modal="true" resizable="false"
+                                                   height="250" width="600" autoOpen="false" title="Error Dialog"
+                                                   buttons="{
                                                                         'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
-                        ></sj:dialog>
-                            <%--<s:set name="listOfPositionBagian" value="#session.listOfResult" scope="request" />--%>
-                            <%--<display:table name="listOfPositionBagian" class="table table-condensed table-striped table-hover"--%>
-                            <%--requestURI="paging_displaytag_positionBagian.action" export="true" id="row" pagesize="14" style="font-size:10">--%>
-                            <%--<display:column media="html" title="Edit">--%>
-                            <%--<s:if test="#attr.row.flagYes">--%>
-                            <%--<s:url var="urlEdit" namespace="/positionBagian" action="edit_positionBagian" escapeAmp="false">--%>
-                            <%--<s:param name="id"><s:property value="#attr.row.bagianId"/></s:param>--%>
-                            <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
-                            <%--</s:url>--%>
-                            <%--<sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">--%>
-                            <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
-                            <%--</sj:a>--%>
-                            <%--</s:if>--%>
-                            <%--</display:column>--%>
+                                        ></sj:dialog>
+                                            <%--<s:set name="listOfPositionBagian" value="#session.listOfResult" scope="request" />--%>
+                                            <%--<display:table name="listOfPositionBagian" class="table table-condensed table-striped table-hover"--%>
+                                            <%--requestURI="paging_displaytag_positionBagian.action" export="true" id="row" pagesize="14" style="font-size:10">--%>
+                                            <%--<display:column media="html" title="Edit">--%>
+                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                            <%--<s:url var="urlEdit" namespace="/positionBagian" action="edit_positionBagian" escapeAmp="false">--%>
+                                            <%--<s:param name="id"><s:property value="#attr.row.bagianId"/></s:param>--%>
+                                            <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">--%>
+                                            <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                            <%--</sj:a>--%>
+                                            <%--</s:if>--%>
+                                            <%--</display:column>--%>
 
-                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
-                            <%--<s:if test="#attr.row.flagYes">--%>
-                            <%--<s:url var="urlViewDelete" namespace="/positionBagian" action="delete_positionBagian" escapeAmp="false">--%>
-                            <%--<s:param name="id"><s:property value="#attr.row.bagianId" /></s:param>--%>
-                            <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                            <%--</s:url>--%>
-                            <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
-                            <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                            <%--</sj:a>--%>
-                            <%--</s:if>--%>
-                            <%--</display:column>--%>
-                            <%--<display:column property="bagianId" sortable="true" title="Sub Bidang/Divisi Id" />--%>
-                            <%--<display:column property="bagianName" sortable="true" title="Sub Bidang/Divisi Name"  />--%>
-                            <%--<display:column property="divisiName" sortable="true" title="Bidang/Divisi"  />--%>
-                            <%--<display:column property="kodering" sortable="true" title="Kodering"  />--%>
-                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
-                            <%--<display:column property="action" sortable="true" title="action"  />--%>
-                            <%--<display:column property="createdDate" sortable="true" title="Created date"  />--%>
-                            <%--<display:column property="createdWho" sortable="true" title="Created who"  />--%>
-                            <%--<display:column property="lastUpdate" sortable="true" title="Last update"  />--%>
-                            <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"  />--%>
-                            <%--</display:table>--%>
-                        <table class="table table-bordered" style="font-size: 13px;">
-                            <thead >
-                            <tr style="background-color:#30d196;">
-                                    <%--<td>Departement ID</td>--%>
-                                <td>Name</td>
-                                <td>Created Date</td>
-                                <td>Last Update</td>
-                                <td>Created Who</td>
-                                <td>Last Update Who</td>
-                                <td>Edit</td>
-                                <td>Delete</td>
+                                            <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
+                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                            <%--<s:url var="urlViewDelete" namespace="/positionBagian" action="delete_positionBagian" escapeAmp="false">--%>
+                                            <%--<s:param name="id"><s:property value="#attr.row.bagianId" /></s:param>--%>
+                                            <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
+                                            <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                            <%--</sj:a>--%>
+                                            <%--</s:if>--%>
+                                            <%--</display:column>--%>
+                                            <%--<display:column property="bagianId" sortable="true" title="Sub Bidang/Divisi Id" />--%>
+                                            <%--<display:column property="bagianName" sortable="true" title="Sub Bidang/Divisi Name"  />--%>
+                                            <%--<display:column property="divisiName" sortable="true" title="Bidang/Divisi"  />--%>
+                                            <%--<display:column property="kodering" sortable="true" title="Kodering"  />--%>
+                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
+                                            <%--<display:column property="createdDate" sortable="true" title="Created date"  />--%>
+                                            <%--<display:column property="createdWho" sortable="true" title="Created who"  />--%>
+                                            <%--<display:column property="lastUpdate" sortable="true" title="Last update"  />--%>
+                                            <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"  />--%>
+                                            <%--</display:table>--%>
+                                        <table class="table table-bordered" style="font-size: 13px;">
+                                            <thead >
+                                            <tr style="background-color:#30d196;">
+                                                    <%--<td>Departement ID</td>--%>
+                                                <td>Name</td>
+                                                <td>Created Date</td>
+                                                <td>Last Update</td>
+                                                <td>Created Who</td>
+                                                <td>Last Update Who</td>
+                                                <td>Edit</td>
+                                                <td>Delete</td>
 
-                            </tr>
-                            </thead>
-                            <tbody id="body_masuk">
+                                            </tr>
+                                            </thead>
+                                            <tbody id="body_masuk">
 
-                            </tbody>
-                        </table>
-                    </td>
-                </tr>
-            </table>
-        </center>
-        </s:form>
-        </td>
-        </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </center>
+                    </s:form>
+                </td>
+            </tr>
         </table>
 
         <!-- Your Page Content Here -->

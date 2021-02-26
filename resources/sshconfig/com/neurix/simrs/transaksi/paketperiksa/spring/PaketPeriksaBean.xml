@@ -10,6 +10,10 @@
           p:masterVendorBoProxy-ref="masterVendorBoProxy"
     />
 
+    <bean id="paketPeriksaController" class="com.neurix.simrs.mobileapi.CheckupController"
+          p:paketPeriksaBoProxy-ref="paketPeriksaBoProxy"
+    />
+
     <bean id="paketPeriksaBo" class="com.neurix.simrs.transaksi.paketperiksa.bo.impl.PaketPeriksaBoImpl"
           p:itemPaketDao-ref="itemPaketDao"
           p:kelasPaketDao-ref="kelasPaketDao"

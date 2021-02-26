@@ -59,6 +59,9 @@
         <property name="idDetailCheckup">
             <column name="id_detail_checkup" sql-type="varchar" length="30" />
         </property>
+        <property name="idPaket">
+            <column name="id_paket" sql-type="varchar" length="50" />
+        </property>
 
 
     </class>

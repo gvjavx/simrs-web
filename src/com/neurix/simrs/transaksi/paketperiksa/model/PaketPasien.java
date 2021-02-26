@@ -19,6 +19,33 @@ public class PaketPasien {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String idPerusahaan;
+    private String idPelayanan;
+    private String namaPerusahaan;
+    private String namaPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPerusahaan() {
+        return namaPerusahaan;
+    }
+
+    public void setNamaPerusahaan(String namaPerusahaan) {
+        this.namaPerusahaan = namaPerusahaan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
 
     public String getIdPerusahaan() {
         return idPerusahaan;

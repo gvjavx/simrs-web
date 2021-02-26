@@ -130,6 +130,7 @@ public class AntrianOnlineDao extends GenericDao<ItSimrsAntianOnlineEntity, Stri
                 "INNER JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
                 "INNER JOIN (SELECT\n" +
                 "a.id_pelayanan,\n" +
+                "a.flag,\n" +
                 "b.nama_pelayanan,\n" +
                 "a.branch_id,\n" +
                 "b.flag,\n" +
