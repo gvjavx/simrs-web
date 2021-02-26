@@ -363,6 +363,7 @@
             $('#set_judul').text("Tambah Pelayanan");
             $('#modal-add').modal({show: true, backdrop: 'static'});
             getHeaderPelayanan();
+            $('#set_nama_pelayanan').attr('disabled', false);
         }
         if ('detail' == tipe) {
             getDataPelayanan(id);
@@ -374,6 +375,7 @@
             $('#save_add').attr('onclick', 'savePelayanan(\''+tipe+'\')');
             $('#modal-add').modal({show: true, static: 'backdrop'});
             getDataPelayanan(id);
+            $('#set_nama_pelayanan').attr('disabled', false);
         }
         if ('delete' == tipe) {
             getHeaderPelayanan();
@@ -381,6 +383,7 @@
             $('#save_add').attr('onclick', 'savePelayanan(\''+tipe+'\')');
             $('#modal-add').modal({show: true, static: 'backdrop'});
             getDataPelayanan(id);
+            $('#set_nama_pelayanan').attr('disabled', true);
         }
     }
 
@@ -450,8 +453,6 @@
                     option += '<option value="' + item.branchId + '">' + item.branchName + '</option>';
                 });
             }
-            console.log(idDef);
-            console.log(isDis);
             if(isDis == "Y"){
                 $('#set_nama_unit').html(option);
                 $('#branch').html(option);
