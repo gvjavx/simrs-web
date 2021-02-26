@@ -663,7 +663,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "a.created_date,\n" +
                 "a.created_who,\n" +
                 "a.last_update,\n" +
-                "a.last_update_who\n" +
+                "a.last_update_who,\n" +
+                "a.kodering\n" +
                 "FROM im_hris_department a\n" +
                 "INNER JOIN (\n" +
                 "\tSELECT\n" +
@@ -699,6 +700,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 department.setLastUpdate(obj[4] == null ?  null : (Timestamp) obj[4]);
                 department.setStLastUpdate(obj[4] != null ? obj[4].toString() : "");
                 department.setLastUpdateWho(obj[5] != null ? obj[5].toString() : "");
+                department.setKodering(obj[6] != null ? obj[6].toString() : "");
 
                 positionBagianList.add(department);
             }
