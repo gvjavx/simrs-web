@@ -335,6 +335,9 @@ public class TelemedicBoImpl implements TelemedicBo {
             results.add(antritanTelemedicData);
         }
 
+        // sorting collection berdasrjan urutan pembayaran belum bayar dan tanggal upload Sorting
+//        Collections.sort(results, AntrianTelemedic.getTanggalUploadSorting());
+//        Collections.sort(results, AntrianTelemedic.getUrutanPembayaranSorting());
         Collections.sort(results, new SortingByUrutanUpload());
 
         logger.info("[TelemedicBoImpl.getSearchByCriteria] END <<<");

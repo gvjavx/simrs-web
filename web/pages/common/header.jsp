@@ -417,6 +417,14 @@ apply the skin class to the body tag so the changes take effect.
         border-radius: 5px;
         box-shadow: 1px 3px 8px grey
     }
+    .span-bpjs-rekanan{
+        font-size: 13px;
+        padding: 5px;
+        color: black;
+        background-color: wheat;
+        border-radius: 5px;
+        box-shadow: 1px 3px 8px grey
+    }
 
     .top_margin{
         margin-top: 7px;
@@ -487,7 +495,7 @@ apply the skin class to the body tag so the changes take effect.
             $(this).attr('autocomplete', 'off');
         });
 
-        $('#myTable').css('width', '100%');
+        $('.select2').css('width', '100%');
     });
 
     $(function () {
@@ -976,6 +984,8 @@ apply the skin class to the body tag so the changes take effect.
             res = '<span class="span-ungu">'+value+'</span>';
         }else if(jenis == 'paket_individu'){
             res = '<span class="span-orange">'+value+'</span>';
+        }else if(jenis == 'bpjs_rekanan'){
+            res = '<span class="span-bpjs-rekanan">'+value+'</span>';
         }
         return res;
     }

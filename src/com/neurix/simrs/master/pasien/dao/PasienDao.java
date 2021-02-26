@@ -128,37 +128,25 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
     }
 
     public List<Pasien> getListPasienWithPaket(String nama) {
-
         List<Pasien> pasienList = new ArrayList<>();
-
         String search = "%"+nama+"%";
-
         String SQL = "SELECT \n" +
                 "a.id_pasien,\n" +
                 "a.nama,\n" +
-                "a.jenis_kelamin,\n" +
-                "a.no_ktp,\n" +
-                "a.no_bpjs,\n" +
-                "a.tempat_lahir,\n" +
-                "a.tgl_lahir,\n" +
                 "a.desa_id,\n" +
-                "a.jalan,\n" +
-                "a.suku,\n" +
-                "a.agama,\n" +
-                "a.profesi,\n" +
-                "a.no_telp,\n" +
-                "a.url_ktp,\n" +
-                "b.id_paket,\n" +
-                "d.id_pelayanan,\n" +
                 "c.nama_paket,\n" +
                 "c.tarif,\n" +
-                "a.pendidikan,\n" +
-                "a.status_perkawinan\n" +
-                "FROM im_simrs_pasien a\n" +
-                "INNER JOIN it_simrs_paket_pasien b ON a.id_pasien = b.id_pasien\n" +
-                "INNER JOIN mt_simrs_paket c ON b.id_paket = c.id_paket\n" +
-                "INNER JOIN (SELECT * FROM mt_simrs_detail_paket WHERE urutan = 1) d ON c.id_paket = d.id_paket \n"+
-                "WHERE b.flag = 'Y' AND a.nama ILIKE :search OR a.id_pasien ILIKE :search";
+                "c.id_paket,\n" +
+                "d.id_pelayanan\n" +
+                "FROM (SELECT id_pasien, nama, desa_id FROM im_simrs_pasien) a\n" +
+                "INNER JOIN (SELECT id_paket, id_pasien, flag, flag_selesai FROM it_simrs_paket_pasien) b ON a.id_pasien = b.id_pasien\n" +
+                "INNER JOIN (SELECT id_paket, nama_paket, tarif FROM mt_simrs_paket) c ON b.id_paket = c.id_paket\n" +
+                "INNER JOIN (SELECT id_paket, id_pelayanan FROM mt_simrs_detail_paket WHERE urutan = 1) d ON c.id_paket = d.id_paket \n" +
+                "WHERE b.flag = 'Y'\n" +
+                "AND b.flag_selesai IS NULL\n" +
+                "AND a.nama ILIKE :search \n" +
+                "OR a.id_pasien ILIKE :search \n" +
+                "LIMIT 10";
 
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -170,42 +158,12 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 Pasien pasien = new Pasien();
                 pasien.setIdPasien(obj[0] == null ? "" : obj[0].toString());
                 pasien.setNama(obj[1] == null ? "" : obj[1].toString());
-                pasien.setJenisKelamin(obj[2] == null ? "" : obj[2].toString());
-                pasien.setNoKtp(obj[3] == null ? "" : obj[3].toString());
-                pasien.setNoBpjs(obj[4] == null ? "" : obj[4].toString());
-                pasien.setTempatLahir(obj[5] == null ? "" : obj[5].toString());
-                pasien.setTglLahir(obj[6] == null ? "" : obj[6].toString());
-                pasien.setDesaId(obj[7] == null ? "" : obj[7].toString());
-                pasien.setJalan(obj[8] == null ? "" : obj[8].toString());
-                pasien.setSuku(obj[9] == null ? "" : obj[9].toString());
-                pasien.setAgama(obj[10] == null ? "" : obj[10].toString());
-                pasien.setProfesi(obj[11] == null ? "" : obj[11].toString());
-                pasien.setNoTelp(obj[12] == null ? "" : obj[12].toString());
-                pasien.setUrlKtp(obj[13] == null ? "" : CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_KTP_PASIEN +obj[13].toString());
-                pasien.setIdPaket(obj[14] == null ? "" : obj[14].toString());
-                pasien.setIdPelayanan(obj[15] == null ? "" : obj[15].toString());
-                pasien.setNamaPaket(obj[16] == null ? "" : obj[16].toString());
-                pasien.setTarif(obj[17] != null ? new BigDecimal(obj[17].toString()) : null);
-                pasien.setPendidikan(obj[18] != null ? obj[18].toString() : null);
-                pasien.setStatusPerkawinan(obj[19] != null ? obj[19].toString() : null);
-
-                if(obj[0] != null && !"".equalsIgnoreCase(obj[0].toString())){
-                    List<Object[]> objects = getListAlamat(obj[7].toString());
-                    if(objects != null){
-                        for (Object[] ob: objects){
-                            pasien.setDesa(ob[1].toString());
-                            pasien.setKecamatan(ob[2].toString());
-                            pasien.setKota(ob[3].toString());
-                            pasien.setProvinsi(ob[4].toString());
-                            pasien.setKecamatanId(ob[5].toString());
-                            pasien.setKotaId(ob[6].toString());
-                            pasien.setProvinsiId(ob[7].toString());
-                        }
-                    }
-                }
-
+                pasien.setDesa(obj[2] != null ? desaName(obj[2].toString()) : null);
+                pasien.setNamaPaket(obj[3] == null ? "" : obj[3].toString());
+                pasien.setTarif(obj[4] != null ? new BigDecimal(obj[4].toString()) : null);
+                pasien.setIdPaket(obj[5] == null ? "" : obj[5].toString());
+                pasien.setIdPelayanan(obj[6] == null ? "" : obj[6].toString());
                 pasienList.add(pasien);
-
             }
         }
 
@@ -455,6 +413,7 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
         if (param.getNoBpjs() != null && !"".equalsIgnoreCase(param.getNoBpjs()))
             where += "AND ps.no_bpjs = '"+param.getNoBpjs()+"' \n";
 
+        //ada penambahan atuh
         String SQL = "SELECT\n" +
                 "ps.id_pasien,\n" +
                 "ps.nama,\n" +
@@ -490,7 +449,10 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "pss.no_checkup_ulang,\n" +
                 "pss.id_detail_checkup,\n" +
                 "pss.is_order_lab,\n" +
-                "pss.pasien_lama\n" +
+                "pss.pasien_lama,\n" +
+                "pss.kecamatan_id,\n" +
+                "pss.kota_id,\n" +
+                "pss.provinsi_id\n" +
                 "FROM im_simrs_pasien ps\n" +
                 "INNER JOIN (\n" +
                 "\tSELECT\n" +
@@ -504,7 +466,10 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 "\tdc.no_checkup_ulang,\n" +
                 "\tdc.id_detail_checkup,\n" +
                 "\tdc.is_order_lab,\n" +
-                "\thd.id_pasien as pasien_lama\n" +
+                "\thd.id_pasien as pasien_lama,\n" +
+                "\tkc.kecamatan_id,\n" +//penambahan ini, sodiq 10,02,2021 waktu setempat
+                "\tkt.kota_id,\n" +//ini dibutuhkan atuh
+                "\tpv.provinsi_id\n" +//ini juga atuh
                 "\tFROM im_simrs_pasien ps\n" +
                 "\tLEFT JOIN (SELECT desa_id, desa_name, kecamatan_id FROM im_hris_desa WHERE flag = 'Y') ds ON ds.desa_id = CAST( ps.desa_id AS VARCHAR )\n" +
                 "\tINNER JOIN (SELECT kecamatan_id, kecamatan_name, kota_id FROM im_hris_kecamatan WHERE flag = 'Y') kc ON kc.kecamatan_id = ds.kecamatan_id\n" +
@@ -586,6 +551,9 @@ public class PasienDao extends GenericDao<ImSimrsPasienEntity, String> {
                 pasien.setIdLastDetailCheckup(stNullEscape(32));
                 pasien.setIsOrderLab(stNullEscape(33));
                 pasien.setIsPasienLama(foundBoolean(obj[34]));
+                pasien.setKecamatanId(obj[35].toString());
+                pasien.setKotaId(obj[36].toString());
+                pasien.setProvinsiId(obj[37].toString());
                 pasienList.add(pasien);
             }
         }

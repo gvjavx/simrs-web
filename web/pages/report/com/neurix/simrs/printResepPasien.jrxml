@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printResepPasien" language="groovy" pageWidth="421" pageHeight="595" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.7715610000000144"/>
+	<property name="ireport.zoom" value="2.5937424601000223"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="581"/>
 	<parameter name="reportParams.resepId" class="java.lang.String"/>
 	<parameter name="reportParams.logo" class="java.lang.String"/>
 	<parameter name="reportParams.nik" class="java.lang.String"/>
@@ -22,6 +22,9 @@
 	<parameter name="reportParams.isKronis" class="java.lang.String"/>
 	<parameter name="reportParams.dokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdDokter" class="java.lang.String" isForPrompting="false"/>
+	<parameter name="ttdPasien" class="java.lang.String"/>
+	<parameter name="ttdApoteker" class="java.lang.String"/>
+	<parameter name="idDokter" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT a.id_permintaan_resep, a.id_pasien, a.id_detail_checkup, b.id_obat, b.jenis_satuan, c.nama_obat, b.qty, b.keterangan FROM mt_simrs_permintaan_resep a
 INNER JOIN mt_simrs_transaksi_obat_detail b ON a.id_approval_obat = b.id_approval_obat
@@ -373,7 +376,7 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 		<band height="11" splitType="Stretch"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="71">
+		<band height="84">
 			<staticText>
 				<reportElement x="1" y="0" width="100" height="13" uuid="497fff24-2bee-47aa-9109-80ac2641288a"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -422,6 +425,28 @@ WHERE a.id_permintaan_resep LIKE $P{reportParams.resepId}]]>
 				<reportElement x="159" y="13" width="78" height="44" uuid="4a48a78f-1cec-4ccf-b85c-7b9794cac441"/>
 				<imageExpression><![CDATA[$P{reportParams.ttdDokter}]]></imageExpression>
 			</image>
+			<image onErrorType="Blank">
+				<reportElement x="11" y="13" width="78" height="44" uuid="17e43363-e2d5-45fe-b9bd-c094dcadddaf"/>
+				<imageExpression><![CDATA[$P{ttdPasien}]]></imageExpression>
+			</image>
+			<image onErrorType="Blank">
+				<reportElement x="292" y="13" width="78" height="44" uuid="cfdc166e-b353-43b5-b0f3-d56c0173a56a"/>
+				<imageExpression><![CDATA[$P{ttdApoteker}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="274" y="57" width="107" height="12" uuid="1c5bce91-279f-467b-af74-2c5bc7e94f63"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.petugas} == null ? "" : $P{reportParams.petugas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="129" y="71" width="135" height="12" uuid="b3f5aa62-3100-473a-9786-fc49fc99cfc9"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{idDokter} == null ? "" : $P{idDokter}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>

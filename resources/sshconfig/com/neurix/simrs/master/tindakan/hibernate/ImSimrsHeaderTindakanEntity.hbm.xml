@@ -41,6 +41,9 @@
             <basic name="flagVaksin">
                 <column name="flag_vaksin"/>
             </basic>
+            <basic name="kategori">
+                <column name="kategori"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

@@ -46,7 +46,7 @@ public class DepartmentDao extends GenericDao<ImDepartmentEntity, String> {
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
 
         // Order by
-        criteria.addOrder(Order.desc("departmentId"));
+        criteria.addOrder(Order.asc("kodering"));
 
         List<ImDepartmentEntity> results = criteria.list();
 
@@ -75,7 +75,7 @@ public class DepartmentDao extends GenericDao<ImDepartmentEntity, String> {
         List<ImDepartmentEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImDepartmentEntity.class)
                 .add(Restrictions.ilike("departmentName",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("departmentId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -86,7 +86,7 @@ public class DepartmentDao extends GenericDao<ImDepartmentEntity, String> {
         List<ImDepartmentEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImDepartmentEntity.class)
                 .add(Restrictions.ilike("kodering",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("departmentId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;

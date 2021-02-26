@@ -27,8 +27,6 @@ public class LaporanOps {
     private String branchId;
     private String pelayananId;
     private String tahun;
-    List<String> listIdPelayanan = new ArrayList<>();
-    List<String> listIdRuangan = new ArrayList<>();
     private String idRuangan;
     private String idKelasRuangan;
     private String namaKelasRuangan;
@@ -36,6 +34,54 @@ public class LaporanOps {
     private String dateTo;
     private String namaPelayanan;
     private String branchName;
+    private String tipePelayanan;
+    private String bulan;
+    private String namaPenyakit;
+    private String icdx;
+
+    List<String> listIdPelayanan = new ArrayList<>();
+    List<String> listIdRuangan = new ArrayList<>();
+    List<String> listBulan = new ArrayList<>();
+
+    public List<String> getListBulan() {
+        return listBulan;
+    }
+
+    public void setListBulan(List<String> listBulan) {
+        this.listBulan = listBulan;
+    }
+
+    public String getNamaPenyakit() {
+        return namaPenyakit;
+    }
+
+    public void setNamaPenyakit(String namaPenyakit) {
+        this.namaPenyakit = namaPenyakit;
+    }
+
+    public String getIcdx() {
+        return icdx;
+    }
+
+    public void setIcdx(String icdx) {
+        this.icdx = icdx;
+    }
+
+    public String getBulan() {
+        return bulan;
+    }
+
+    public void setBulan(String bulan) {
+        this.bulan = bulan;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     public String getBranchName() {
         return branchName;

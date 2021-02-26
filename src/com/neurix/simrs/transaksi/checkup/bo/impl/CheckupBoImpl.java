@@ -450,7 +450,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
                 detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
 
-                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setMetodePembayaran("non_tunai");
                 } else {
                     detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran() != null && !"".equalsIgnoreCase(bean.getMetodePembayaran()) ? bean.getMetodePembayaran() : null);
@@ -487,7 +487,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 }
 
-                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
                     detailCheckupEntity.setRujuk(bean.getRujuk() != null ? bean.getRujuk() : null);
                     detailCheckupEntity.setKetRujukan(bean.getKetPerujuk() != null ? bean.getKetPerujuk() : null);
@@ -577,7 +577,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
 
                 BigDecimal diskon = null;
-                if ("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                if ("bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     RekananOps ops = new RekananOps();
                     try {
                         ops = rekananOpsDao.getDetailRekananOps(bean.getIdAsuransi(), bean.getBranchId());
@@ -586,7 +586,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     }
 
                     if (ops != null) {
-                        if (ops.getDiskon() != null && !"".equalsIgnoreCase(ops.getDiskon().toString())) {
+                        if (ops.getDiskon() != null && !"".equalsIgnoreCase(ops.getDiskon().toString()) && ops.getDiskon().intValue() > 0) {
                             diskon = ops.getDiskon();
                         }
                     }
@@ -608,11 +608,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         tindakanRawatEntity.setAction("U");
                         tindakanRawatEntity.setApproveFlag("Y");
 
-                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                 tindakanRawatEntity.setTarif(tindakan.getTarifBpjs());
                             } else {
-                                if (diskon != null) {
+                                if (diskon != null && diskon.intValue() > 0) {
                                     BigDecimal hasil = new BigDecimal(tindakan.getTarifBpjs()).multiply(diskon);
                                     tindakanRawatEntity.setTarif(hasil.toBigInteger());
                                 }
@@ -628,10 +628,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                             tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                                 String jenPasien = "";
-                                if ("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                                if ("bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                     jenPasien = "bpjs";
                                 } else {
                                     jenPasien = bean.getIdJenisPeriksaPasien();
@@ -781,6 +781,31 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     insertItemPaketToPeriksa(detailCheckupEntity.getIdDetailCheckup(), bean.getIdPasien(), bean.getIdDokter(), bean.getCreatedWho(), bean.getBranchId(), bean.getIdJenisPeriksaPasien(), bean.getIdPaket(), headerEntity.getNoCheckup());
+                }
+
+                //AMBULANCE, sodiq, 25.02.2020
+                if(bean.getIdTindakan() != null && !"".equalsIgnoreCase(bean.getIdTindakan())){
+                    ItSimrsTindakanRawatEntity tindakanRawatEntity = new ItSimrsTindakanRawatEntity();
+                    tindakanRawatEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+                    tindakanRawatEntity.setIdTindakanRawat("TDR" + getNextTindakanRawatId());
+                    tindakanRawatEntity.setIdTindakan(bean.getIdTindakan());
+                    tindakanRawatEntity.setNamaTindakan(bean.getNamaTindakan());
+                    tindakanRawatEntity.setIdDokter(bean.getIdDokter());
+                    tindakanRawatEntity.setCreatedDate(bean.getCreatedDate());
+                    tindakanRawatEntity.setCreatedWho(bean.getCreatedWho());
+                    tindakanRawatEntity.setLastUpdate(bean.getCreatedDate());
+                    tindakanRawatEntity.setLastUpdateWho(bean.getCreatedWho());
+                    tindakanRawatEntity.setFlag("Y");
+                    tindakanRawatEntity.setAction("U");
+                    tindakanRawatEntity.setApproveFlag("Y");
+                    tindakanRawatEntity.setTarif(new BigInteger(bean.getTarif()));
+                    tindakanRawatEntity.setQty(new BigInteger(bean.getJumlah()));
+                    tindakanRawatEntity.setTarifTotal(tindakanRawatEntity.getTarif().multiply(tindakanRawatEntity.getQty()));
+                    try {
+                        tindakanRawatDao.addAndSave(tindakanRawatEntity);
+                    }catch (Exception e){
+                        throw new GeneralBOException("Error when save tindakan ambulance"+e.getMessage());
+                    }
                 }
             }else{
                 throw new GeneralBOException("[CheckupBoImpl.saveAdd] ID Pelayanan tidak ditemukan...!");
@@ -3034,7 +3059,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
                 detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
 
-                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setMetodePembayaran("non_tunai");
                 } else {
                     detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran() != null && !"".equalsIgnoreCase(bean.getMetodePembayaran()) ? bean.getMetodePembayaran() : null);
@@ -3063,7 +3088,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
                 }
 
-                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
                     detailCheckupEntity.setRujuk(bean.getRujuk() != null ? bean.getRujuk() : null);
                     detailCheckupEntity.setKetRujukan(bean.getKetPerujuk() != null ? bean.getKetPerujuk() : null);
@@ -3118,7 +3143,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 }
 
                 BigDecimal diskon = null;
-                if ("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                if ("bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     RekananOps ops = new RekananOps();
                     try {
                         ops = rekananOpsDao.getDetailRekananOps(bean.getIdAsuransi(), bean.getBranchId());
@@ -3149,7 +3174,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         tindakanRawatEntity.setAction("U");
                         tindakanRawatEntity.setApproveFlag("Y");
 
-                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                        if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                             if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                 tindakanRawatEntity.setTarif(tindakan.getTarifBpjs());
                             } else {
@@ -3169,10 +3194,10 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
                             tindakanRawatDao.addAndSave(tindakanRawatEntity);
 
-                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                            if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                                 String jenPasien = "";
-                                if ("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) && "Y".equalsIgnoreCase(bean.getIsRekananWithBpjs())) {
+                                if ("bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                                     jenPasien = "bpjs";
                                 } else {
                                     jenPasien = bean.getIdJenisPeriksaPasien();

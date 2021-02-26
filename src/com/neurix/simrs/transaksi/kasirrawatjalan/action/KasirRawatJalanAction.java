@@ -343,6 +343,8 @@ public class KasirRawatJalanAction extends BaseMasterAction {
 
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
         List<UangMuka> uangMukaList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RiwayatTindakanBo riwayatTindakanBo = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
 
         if (id != null && !"".equalsIgnoreCase(id)) {
 
@@ -381,6 +383,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 RiwayatTindakan result = new RiwayatTindakan();
                 TransaksiObatDetail obatDetail = new TransaksiObatDetail();
                 BigInteger totalResepObat = new BigInteger(String.valueOf("0"));
+                boolean isRawatInap = false;
 
                 if (riwayatTindakanList.size() > 0) {
                     for (RiwayatTindakan riwayat : riwayatTindakanList) {
@@ -399,6 +402,12 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                 }
                             }
                         }
+                        //cek rawat inap sodiq 22,20,2021
+                        boolean cekPelayanan = riwayatTindakanBo.CheckIsRawatInapByIdDetailCheckup(riwayat.getIdDetailCheckup());
+                        if(cekPelayanan){
+                            isRawatInap = true;
+                        }
+
                     }
                 }
 
@@ -461,10 +470,13 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 reportParams.put("kabupaten", checkup.getNamaKota());
                 reportParams.put("kecamatan", checkup.getNamaKecamatan());
                 reportParams.put("desa", checkup.getNamaDesa());
-
-                if (ppnObat != null && ppnObat.intValue() > 0) {
-                    reportParams.put("ppnObat", ppnObat);
-                } else {
+                if(!isRawatInap){
+                    if (ppnObat != null && ppnObat.intValue() > 0) {
+                        reportParams.put("ppnObat", ppnObat);
+                    } else {
+                        reportParams.put("ppnObat", 0);
+                    }
+                }else{
                     reportParams.put("ppnObat", 0);
                 }
 
@@ -1292,18 +1304,20 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                                             mapTindakanAsuransi.put("activity", getAcitivityList(idDetail, "asuransi", keterangan, kode, ""));
 
                                             if (isRawatJalan) {
-                                                BigDecimal ppnObatUmum = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, "umum", keterangan, "", ""));
-                                                BigDecimal ppnObatAsuransi = new BigDecimal(0);
-                                                if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {
-                                                    ppnObatAsuransi = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, "asuransi", keterangan, "", ""));
-                                                }
-                                                BigDecimal jumlahPPN = ppnObatUmum.add(ppnObatAsuransi);
-                                                ppnObat = ppnObat.add(jumlahPPN);
-
+                                                //edit sodiq 22-02-2021, ppn obat rawat jalan tidak ada
                                                 listOfMapTindakanUmumRi.add(mapTindakanUmum);
                                                 if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {
                                                     listOfMapTindakanAsuransiRi.add(mapTindakanAsuransi);
                                                 }
+//                                                if("resep".equalsIgnoreCase(keterangan)){
+//                                                    BigDecimal ppnObatUmum = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, "umum", keterangan, "", ""));
+//                                                    BigDecimal ppnObatAsuransi = new BigDecimal(0);
+//                                                    if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {
+//                                                        ppnObatAsuransi = hitungPPN(getJumlahNilaiBiayaByKeterangan(idDetail, "asuransi", keterangan, "", ""));
+//                                                    }
+//                                                    BigDecimal jumlahPPN = ppnObatUmum.add(ppnObatAsuransi);
+//                                                    ppnObat = ppnObat.add(jumlahPPN);
+//                                                }
                                             } else {
                                                 listOfMapTindakanUmumRi.add(mapTindakanUmum);
                                                 if (!"asuransi".equalsIgnoreCase(jenis) && !"bpjs".equalsIgnoreCase(jenis)) {

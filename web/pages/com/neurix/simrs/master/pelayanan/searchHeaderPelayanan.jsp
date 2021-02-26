@@ -242,11 +242,21 @@
                     <div class="form-group">
                         <label class="col-md-3 jarak_atas">Tipe</label>
                         <div class="col-md-7">
-                            <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan',
-                                                                'apotek' : 'Instalasi Farmasi RJ',
-                                                                 'apotek_ri' : 'Instalasi Farmasi RI',
-                                                                'rawat_inap' : 'Rawat Inap',
-                                                                 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
+                            <s:select list="#{'igd':'IGD',
+                                              'rawat_jalan' : 'Rawat Jalan',
+                                              'apotek' : 'Instalasi Farmasi RJ',
+                                              'apotek_ri' : 'Instalasi Farmasi RI',
+                                              'rawat_inap' : 'Rawat Inap',
+                                              'radiologi' : 'Radiologi',
+                                              'lab' : 'Laboratorium',
+                                              'gizi':'Instalasi Gizi',
+                                              'gudang_obat':'Gudang Obat',
+                                              'rawat_intensif':'ICU',
+                                              'kamar_operasi':'Kamar Operasi',
+                                              'ruang_bersalin':'Ruang Bersalin',
+                                              'rawat_isolasi':'Ruang Isolasi',
+                                              'rr':'Ruang Recovery'
+                                              }"
                                       id="set_tipe_pelayanan" cssStyle="width: 100%"
                                       headerKey="" headerValue="[Select one]" cssClass="form-control select2"
                                       onchange="inputWarning('war_set_tipe_pelayanan', 'cor_set_tipe_pelayanan'); cekTipe(this.value)"></s:select>
