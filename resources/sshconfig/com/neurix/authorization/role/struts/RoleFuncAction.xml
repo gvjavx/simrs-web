@@ -74,9 +74,8 @@
             <result name="view_detail_func">/pages/com/neurix/authorization/role/detailFunc.jsp</result>
 
             <result name="success_save_edit">/pages/com/neurix/authorization/role/detailRoleFunc.jsp</result>
-            <!--<result name="success_save_edit" type="json">/pages/com/neurix/authorization/role/detailRoleFunc.jsp</result>-->
-            <result name="success_save_delete" type="json">/pages/com/neurix/authorization/role/detailRoleFunc.jsp</result>
-            <result name="success_save_add" type="json">/pages/com/neurix/authorization/role/addRoleFunc.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/authorization/role/detailRoleFunc.jsp</result>
+            <result name="success_save_add">/pages/com/neurix/authorization/role/addRoleFunc.jsp</result>
             <result name="failure">/pages/com/neurix/authorization/role/roleFunc.jsp</result>
 
             <result name="error" type="httpheader">

@@ -5,41 +5,33 @@
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.idBarang" class="java.lang.String"/>
 	<queryString>
-		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+		<![CDATA[SELECT
+nama_obat,
+merk
+FROM im_simrs_obat
+WHERE id_barang = $P{reportParams.idBarang}
+LIMIT 1]]>
 	</queryString>
-	<field name="id_pasien" class="java.lang.String"/>
-	<field name="nama" class="java.lang.String"/>
-	<field name="jenis_kelamin" class="java.lang.String"/>
-	<field name="no_ktp" class="java.lang.String"/>
-	<field name="no_bpjs" class="java.lang.String"/>
-	<field name="tempat_lahir" class="java.lang.String"/>
-	<field name="tgl_lahir" class="java.sql.Date"/>
-	<field name="desa_id" class="java.lang.Long"/>
-	<field name="jalan" class="java.lang.String"/>
-	<field name="suku" class="java.lang.String"/>
-	<field name="agama" class="java.lang.String"/>
-	<field name="profesi" class="java.lang.String"/>
-	<field name="no_telp" class="java.lang.String"/>
-	<field name="url_ktp" class="java.lang.String"/>
-	<field name="flag" class="java.lang.String"/>
-	<field name="action" class="java.lang.String"/>
-	<field name="created_date" class="java.sql.Timestamp"/>
-	<field name="created_who" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
-	<field name="last_update_who" class="java.lang.String"/>
-	<field name="email" class="java.lang.String"/>
-	<field name="password" class="java.lang.String"/>
+	<field name="nama_obat" class="java.lang.String"/>
+	<field name="merk" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="60" splitType="Stretch">
 			<componentElement>
-				<reportElement x="0" y="0" width="110" height="55" uuid="03ebd133-b4a8-4ece-93de-1d52b9b68681"/>
+				<reportElement x="0" y="10" width="110" height="50" uuid="03ebd133-b4a8-4ece-93de-1d52b9b68681"/>
 				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" moduleWidth="1.0" textPosition="bottom">
 					<jr:codeExpression><![CDATA[$P{reportParams.idBarang}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
+			<textField>
+				<reportElement x="0" y="0" width="110" height="10" uuid="1beed307-20c2-4a82-bb73-9362a53df431"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="5"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama_obat} != null ? $F{nama_obat}+"-"+$F{merk} : ""]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 </jasperReport>

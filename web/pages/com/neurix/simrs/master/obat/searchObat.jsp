@@ -361,7 +361,7 @@
                                                  class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                         </s:if>
                                             <s:url var="print_id_pabrik" namespace="/obat" action="printIDPabrik_obat" escapeAmp="false">
-                                                <s:param name="idPabrik"><s:property value="idPabrik"/></s:param>
+                                                <s:param name="id"><s:property value="idObat"/></s:param>
                                             </s:url>
                                             <s:a href="%{print_id_pabrik}" target="_blank">
                                                 <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>">
