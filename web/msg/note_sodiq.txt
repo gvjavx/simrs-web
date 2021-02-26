@@ -1799,6 +1799,16 @@ INSERT INTO im_func_roles VALUES
 ALTER TABLE im_simrs_header_tindakan
 ADD COLUMN kategori VARCHAR(100);
 
+--malam sabtu 26.02.2021
+SELECT * FROM im_functions
+WHERE func_id = 2206;
+
+UPDATE im_functions
+SET flag = 'N'
+WHERE func_id = 2206;
+
+
+
 
 
 
