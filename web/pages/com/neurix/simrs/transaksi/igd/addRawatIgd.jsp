@@ -186,7 +186,36 @@
                                     <s:hidden id="surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
                                     <s:hidden id="is_laka" name="headerDetailCheckup.isLaka"/>
 
-                                    <s:if test='headerDetailCheckup.idJenisPeriksaPasien == "bpjs" || headerDetailCheckup.idJenisPeriksaPasien == "ptpn"'>
+                                    <s:hidden id="h_nama_pasien" name="headerDetailCheckup.namaPasien"/>
+                                    <s:hidden id="h_tgl_lahir" name="headerDetailCheckup.tglLahir"/>
+                                    <s:hidden id="h_anamnesa" name="headerDetailCheckup.anamnese"/>
+                                    <s:hidden id="h_penunjang_medis" name="headerDetailCheckup.penunjangMedis"/>
+                                    <s:hidden id="h_keluhan_utama" name="headerDetailCheckup.keluhanUtama"/>
+                                    <s:hidden id="h_suhu" name="headerDetailCheckup.suhu"/>
+                                    <s:hidden id="h_nadi" name="headerDetailCheckup.nadi"/>
+                                    <s:hidden id="h_tensi" name="headerDetailCheckup.tensi"/>
+                                    <s:hidden id="h_pernafasan" name="headerDetailCheckup.pernafasan"/>
+                                    <s:hidden id="h_alergi" name="headerDetailCheckup.alergi"/>
+                                    <s:hidden id="h_berat_badan" name="headerDetailCheckup.berat"/>
+                                    <s:hidden id="h_tinggi_badan" name="headerDetailCheckup.tinggi"/>
+                                    <s:hidden id="h_diagnosa" name="headerDetailCheckup.namaDiagnosa"/>
+                                    <s:hidden id="h_umur" name="headerDetailCheckup.umur"/>
+                                    <s:hidden id="h_alamat_lengkap" name="headerDetailCheckup.alamatLengkap"/>
+                                    <s:hidden id="h_no_bpjs" name="headerDetailCheckup.noBpjs"/>
+                                    <s:hidden id="h_jenis_kelamin" name="headerDetailCheckup.jenisKelamin"/>
+                                    <s:hidden id="h_tipe_pelayanan" name="headerDetailCheckup.kategoriPelayanan"/>
+                                    <s:hidden id="h_jenis_pelayanan" name="headerDetailCheckup.kategoriPelayanan"/>
+                                    <s:hidden id="h_no_sep" name="headerDetailCheckup.noSep"/>
+                                    <s:hidden id="h_id_asuransi" name="headerDetailCheckup.idAsuransi"/>
+                                    <s:hidden id="h_is_laka" name="headerDetailCheckup.isLaka"/>
+                                    <s:hidden id="h_no_rujukan" name="headerDetailCheckup.noRujukan"/>
+                                    <s:hidden id="h_tgl_rujukan" name="headerDetailCheckup.tglRujukan"/>
+                                    <s:hidden id="h_surat_rujukan" name="headerDetailCheckup.suratRujukan"/>
+                                    <s:hidden id="h_nama_ruangan" name="headerDetailCheckup.namaPelayanan"/>
+                                    <s:hidden id="h_is_eksekutif" name="headerDetailCheckup.isEksekutif"/>
+                                    <s:hidden id="h_flag_vaksin" name="headerDetailCheckup.isVaksin"/>
+
+                                    <s:if test='headerDetailCheckup.noSep != ""'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
                                             <td style="vertical-align: middle;">
@@ -280,7 +309,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Jenis Pasien</b></td>
+                                        <td width="40%"><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>
                                                 <script>
@@ -2306,24 +2335,25 @@
 
     var isReadRM = false;
     var contextPath = '<%= request.getContextPath() %>';
-    var tglLhr = '<s:property value="headerDetailCheckup.tglLahir"/>';
+    var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");
-    var namaPasien = '<s:property value="headerDetailCheckup.namaPasien"/>';
-    var anamnese = '<s:property value="headerDetailCheckup.anamnese"/>';
-    var penunjangMedis = '<s:property value="headerDetailCheckup.penunjangMedis"/>';
-    var keluhanUtama = '<s:property value="headerDetailCheckup.keluhanUtama"/>';
-    var suhu = '<s:property value="headerDetailCheckup.suhu"/>';
-    var nadi = '<s:property value="headerDetailCheckup.nadi"/>';
-    var tensi = '<s:property value="headerDetailCheckup.tensi"/>';
-    var pernafasan = '<s:property value="headerDetailCheckup.pernafasan"/>';
-    var alergi = '<s:property value="headerDetailCheckup.alergi"/>';
-    var beratBadan = '<s:property value="headerDetailCheckup.berat"/>';
-    var tinggiBadan = '<s:property value="headerDetailCheckup.tinggi"/>';
-    var diagnosa = '<s:property value="headerDetailCheckup.namaDiagnosa"/>';
-    var umur = '<s:property value="headerDetailCheckup.umur"/>';
-    var alamatLengkap = '<s:property value="headerDetailCheckup.alamatLengkap"/>';
-    var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
-    var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
+    var namaPasien = $('#h_nama_pasien').val();
+    var anamnese = $('#h_anamnesa').val();
+    var penunjangMedis = $('#h_penunjang_medis').val();
+    var keluhanUtama = $('#h_keluhan_utama').val();
+    var suhu = $('#h_suhu').val();
+    var nadi = $('#h_nadi').val();
+    var tensi = $('#h_tensi').val();
+    var pernafasan = $('#h_pernafasan').val();
+    var alergi = $('#h_alergi').val();
+    var beratBadan = $('#h_berat_badan').val();
+    var tinggiBadan = $('#h_tinggi_badan').val();
+    var diagnosa = $('#h_diagnosa').val();
+    var umur = $('#h_umur').val();
+    var alamatLengkap = $('#h_alamat_lengkap').val();
+    var noBpjs = $('#h_no_bpjs').val();
+    var jenisKelamin = $('#h_jenis_kelamin').val();
+    var tipePelayanan = $('#h_tipe_pelayanan').val();
     var urlPage = 'igd';
     var title = "";
     var tempTensi = "";
@@ -2336,17 +2366,19 @@
     var tempidRm = "";
     var jenisTrans = 'igd';
     var jenisPelayanan = 'igd';
-    var NOSEP = '<s:property value="headerDetailCheckup.noSep"/>';
-    var IdAsuransi = '<s:property value="headerDetailCheckup.idAsuransi"/>';
+    var NOSEP = $('#h_no_sep').val();
+    var IdAsuransi = $('#h_id_asuransi').val();
     var isBpjsRekanan = "";
     var isLanjutPaket = false;
-    var isLaka = '<s:property value="headerDetailCheckup.isLaka"/>';
-    var noRujukan = '<s:property value="headerDetailCheckup.noRujukan"/>';
-    var tglRujukan = '<s:property value="headerDetailCheckup.tglRujukan"/>';
-    var suratRujukan = '<s:property value="headerDetailCheckup.suratRujukan"/>';
+    var isLaka = $('#h_is_laka').val();
+    var noRujukan = $('#h_no_rujukan').val();
+    var tglRujukan = $('#h_tgl_rujukan').val();
+    var suratRujukan = $('#h_surat_rujukan').val();
     var idKelasRuangan = "";
-    var namaRuanganPasien = '<s:property value="headerDetailCheckup.namaPelayanan"/>';
-    var flagVaksin = '<s:property value="headerDetailCheckup.isVaksin"/>';
+    var namaRuanganPasien = $('#h_nama_ruangan').val();
+    var isEksekutif = $('#h_is_eksekutif').val();
+    var flagVaksin = $('#h_flag_vaksin').val();
+    var tanggalMasuk = new Date();
 
     $(document).ready(function () {
         $('#igd').addClass('active');

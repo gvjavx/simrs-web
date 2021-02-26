@@ -126,7 +126,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
                     "a.kuota_tele \n" +
                     "FROM im_simrs_dokter a\n" +
                     "INNER JOIN im_simrs_dokter_pelayanan b ON a.id_dokter = b.id_dokter\n" +
-                    "WHERE b.id_pelayanan = :id \n"+notLikeIdDokter  + "AND b.flag = 'Y'";
+                    "WHERE b.id_pelayanan = :id AND a.flag = 'Y' \n"+notLikeIdDokter;
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPelayanan)

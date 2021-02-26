@@ -77,6 +77,56 @@
                                         <s:hidden name="laporanOps.branchId" id="h_branch"></s:hidden>
                                     </div>
                                 </div>
+                                <div class="form-group" style="display: none" id="form_tipe_pelayanan">
+                                    <label class="control-label col-sm-4">Tipe Pelayanan</label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="tipe_pelayanan"
+                                                name="laporanOps.tipePelayanan">
+                                            <option value="rawat_jalan">Rawat Jalan</option>
+                                            <option value="rawat_inap">Rawat Inap</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none" id="form_tipe_penunjang">
+                                    <label class="control-label col-sm-4">Tipe Penunjang</label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="tipe_penunjang"
+                                                name="laporanOps.tipePelayanan" onchange="setDetailPenunjang(this.value)">
+                                            <option value="farmasi" selected>Farmasi</option>
+                                            <option value="kamar">Kamar</option>
+                                            <option value="radiologi">Radiologi</option>
+                                            <option value="lab">Laboratorium</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none" id="form_detail_penunjang">
+                                    <label class="control-label col-sm-4"><span id="text_tipe">Farmasi</span></label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="detail_penunjang"
+                                                name="laporanOps.tipePelayanan" multiple>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group" style="display: none" id="form_bulan">
+                                    <label class="control-label col-sm-4">Bulan</label>
+                                    <div class="col-sm-4">
+                                        <select style="width: 100%" class="form-control select2" id="bulan"
+                                                name="laporanOps.listBulan" multiple>
+                                            <option value="1">Januari</option>
+                                            <option value="2">Februari</option>
+                                            <option value="3">Maret</option>
+                                            <option value="4">April</option>
+                                            <option value="5">Mei</option>
+                                            <option value="6">Juni</option>
+                                            <option value="7">Juli</option>
+                                            <option value="8">Agustus</option>
+                                            <option value="9">September</option>
+                                            <option value="10">Oktober</option>
+                                            <option value="11">November</option>
+                                            <option value="12">Desember</option>
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group" style="display: none" id="form_pelayanan">
                                     <label class="control-label col-sm-4">Pelayanan</label>
                                     <div class="col-sm-4">
@@ -150,9 +200,6 @@
                                     <div class="col-sm-4">
                                         <select style="width: 100%" class="form-control select2" id="tahun"
                                                 name="laporanOps.tahun">
-                                            <option value="2020">2020</option>
-                                            <option value="2021" selected>2021</option>
-                                            <option value="2022">2022</option>
                                         </select>
                                     </div>
                                 </div>
@@ -383,34 +430,65 @@
                 $('#form_pelayanan').show();
                 $('#branch').attr('onchange', 'getPelayanan(this.value)');
 
-                $('#form_kelas, #form_ruangan, #form_tanggal').hide();
+                $('#form_kelas, #form_ruangan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_choice').hide();
+                getTahun();
                 getBranch();
             } else if("rawat_inap" == tipe){
                 $('#form_branch, #form_tahun').show();
                 $('#form_kelas, #form_ruangan').show();
 
+                getTahun();
                 getBranch();
                 getKelasKamar();
-                $('#form_pelayanan, #form_tanggal').hide();
+                $('#form_pelayanan, #form_tanggal, #form_tipe_pelayanan, #form_bulan').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+                $('#form_choice').hide();
             } else if("unggulan" == tipe){
-                getBranch();
                 $('#form_branch, #form_tahun, #form_choice').show();
 
+                getTahun();
+                getBranch();
                 $('#choice1').attr('checked', false);
                 $('#choice2').attr('checked', true);
-                $('#form_kelas, #form_ruangan').hide();
+                $('#form_kelas, #form_ruangan, #form_tipe_pelayanan').hide();
                 $('#form_pelayanan').hide();
-            } else {
-                $('#form_branch, #form_tahun, #form_tanggal').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+            } else if("diagnosa" == tipe){
+                $('#form_tipe_pelayanan, #form_branch, #form_bulan, #form_tahun').show();
+
+                getTahun();
+                getBranch();
+                setBulan();
+                $('#form_tanggal').hide();
                 $('#form_pelayanan').hide();
                 $('#form_kelas, #form_ruangan').hide();
                 $('#form_choice').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
+            } else if("penunjang_medis" == tipe){
+                $('#form_tipe_penunjang, #form_detail_penunjang, #form_branch, #form_tahun').show();
+
+                getTahun();
+                getBranch();
+                $('#form_tanggal').hide();
+                $('#form_pelayanan').hide();
+                $('#form_kelas, #form_ruangan').hide();
+                $('#form_choice').hide();
+                $('#form_tipe_pelayanan, #form_bulan').hide();
+            } else {
+                $('#form_branch, #form_tahun, #form_tanggal').hide();
+                $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
+                $('#form_kelas, #form_ruangan').hide();
+                $('#form_choice').hide();
+                $('#form_detail_penunjang, #form_tipe_penunjang').hide();
             }
         } else {
             $('#form_button').hide();
             $('#form_branch, #form_tahun').hide();
-            $('#form_pelayanan').hide();
+            $('#form_pelayanan, #form_tipe_pelayanan, #form_bulan').hide();
             $('#form_choice').hide();
+            $('#form_detail_penunjang, #form_tipe_penunjang').hide();
         }
     }
 
@@ -423,6 +501,43 @@
             $('#form_tanggal').hide();
             $('#form_tahun').show();
             $('#tgl_from, #tgl_to').val('');
+        }
+    }
+
+    function getTahun() {
+        var option = "";
+        var dt = new Date();
+        var year = dt.getFullYear();
+        LaporanOpsAction.getListTahunOps(function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.tahun + "'>" + item.tahun + "</option>";
+                });
+                $('#tahun').html(option);
+                $('#tahun').val(year).trigger('change');
+            } else {
+                $('#tahun').html(option);
+            }
+        });
+    }
+
+    function setBulan(){
+        var dt = new Date();
+        var bulan = dt.getMonth()+1;
+        $('#bulan').val(bulan).trigger('change');
+    }
+
+    function setDetailPenunjang(tipe){
+        if(tipe == "farmasi"){
+            $("#text_tipe").text("Farmasi");
+        }else if(tipe == "kamar"){
+            $("#text_tipe").text("Kamar");
+        }else if(tipe == "radiologi"){
+            $("#text_tipe").text("Radiologi");
+        }else if(tipe == "lab"){
+            $("#text_tipe").text("Laboratorium");
+        }else{
+            $("#text_tipe").text("Tidak sesuai");
         }
     }
 

@@ -194,7 +194,14 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "\tINNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = od.id_approval_obat\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup hdc ON hdc.id_detail_checkup = pr.id_detail_checkup\n" +
                 "\tINNER JOIN it_akun_jurnal jd ON jd.no_jurnal = hdc.no_jurnal\n" +
-                "\tINNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE tipe_pelayanan = 'apotek') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "b.branch_id,\n" +
+                "b.id_pelayanan,\n" +
+                "a.nama_pelayanan,\n" +
+                "a.tipe_pelayanan\n" +
+                "FROM im_simrs_header_pelayanan a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan \n" +
+                "WHERE a.tipe_pelayanan = 'apotek') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
                 "\tWHERE hdc.branch_id = :unit\n" +
                 "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun\n" +
                 "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= :bulan\n" +
@@ -255,7 +262,14 @@ public class PerhitunganBudgetingDao extends GenericDao<ItAkunPerhitunganBudgeti
                 "\tINNER JOIN mt_simrs_permintaan_resep pr ON pr.id_approval_obat = od.id_approval_obat\n" +
                 "\tINNER JOIN it_simrs_header_detail_checkup hdc ON hdc.id_detail_checkup = pr.id_detail_checkup\n" +
                 "\tINNER JOIN it_akun_jurnal jd ON jd.no_jurnal = hdc.no_jurnal\n" +
-                "\tINNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE tipe_pelayanan = 'apotek_ri') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
+                "\tINNER JOIN (SELECT\n" +
+                "b.branch_id,\n" +
+                "b.id_pelayanan,\n" +
+                "a.nama_pelayanan,\n" +
+                "a.tipe_pelayanan\n" +
+                "FROM im_simrs_header_pelayanan a\n" +
+                "INNER JOIN im_simrs_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan \n" +
+                "WHERE a.tipe_pelayanan = 'apotek_ri') ml ON ml.id_pelayanan = pr.tujuan_pelayanan\n" +
                 "\tWHERE hdc.branch_id = :unit\n" +
                 "\tAND EXTRACT(YEAR from jd.tanggal_jurnal) = :tahun\n" +
                 "\tAND EXTRACT(MONTH from jd.tanggal_jurnal) <= :bulan\n" +

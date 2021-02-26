@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="laporanops" namespace="/laporanops" extends="struts-default, jasperreports-default, json-default">
+    <package name="verifrekananrj" namespace="/verifrekananrj" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -40,6 +40,10 @@
             <interceptor-stack name="defaultStack">
                 <interceptor-ref name="sessionCheckInterceptor"/>
                 <interceptor-ref name="params">
+                    <!--
+                       Excludes the jQuery no-cache _ parameter and
+                       the Displaytag d-#-X parameter(s)
+                    -->
                     <param name="excludeParams">
                         _,d-\d+?-[sop],6578706f7274
                     </param>
@@ -65,40 +69,13 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_laporanops"
-                class="com.neurix.simrs.transaksi.laporan.action.LaporanOpsAction" method="{1}">
+        <action name="*_verifrekananrj"
+                class="com.neurix.simrs.transaksi.verifikator.action.VerifikatorAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
 
-            <result name="search">/pages/com/neurix/simrs/transaksi/laporan/searchLaporanOps.jsp</result>
-
-            <result name="print_laporan_rawat_jalan" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/laporanOpsRawatJalan.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_not_found" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/notFound.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_ply_unggulan" type="jasper">
-                <param name="location">/pages/report/com/neurix/akuntansi/laporanPelayananUnggulan.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_diagnosa_terbanyak" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/laporanDiagnosa.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/verifikator/searchVerifRekananRj.jsp</result>
 
         </action>
+
     </package>
 </struts>

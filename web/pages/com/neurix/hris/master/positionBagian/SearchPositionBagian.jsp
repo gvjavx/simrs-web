@@ -102,6 +102,16 @@
                             <%--</tr>--%>
                             <tr>
                                 <td width="20%">
+                                    <label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>
+                                </td>
+                                <td>
+
+                                        <s:textfield  id="positionBagianId" name="positionBagian.bagianId" required="false" readonly="false" cssClass="form-control"/>
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="18%">
                                     <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
                                 </td>
                                 <td>

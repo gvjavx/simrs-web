@@ -472,7 +472,6 @@ public class RoleFuncAction extends BaseMasterAction {
 
                 HttpSession session = ServletActionContext.getRequest().getSession();
                 session.removeAttribute("listOfResult");
-                session.removeAttribute("listOfDefaultMenu");
 
                 return "success_save_add";
 

@@ -17,8 +17,8 @@
     <script type='text/javascript'>
 
         $( document ).ready(function() {
-            $('#bayar_rawat_jalan, #verif_asuransi_active').addClass('active');
-            $('#verif_asuransi_open').addClass('menu-open');
+            $('#bayar_rawat_jalan, #verif_rekanan_active').addClass('active');
+            $('#verif_rekanan_open').addClass('menu-open');
         });
 
 
@@ -36,7 +36,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Verifikasi Transaksi Pasien Asuransi Rawat Jalan
+            Verifikasi Transaksi Pasien Rekanan Rawat Jalan
         </h1>
     </section>
 
@@ -51,7 +51,7 @@
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="verifForm" method="post" namespace="/verifasrj" action="searchVerifAs_verifasrj.action" theme="simple" cssClass="form-horizontal">
+                            <s:form id="verifForm" method="post" namespace="/verifrekananrj" action="searchVerifRekanan_verifrekananrj.action" theme="simple" cssClass="form-horizontal">
                                 <s:hidden name="headerDetailCheckup.tipePelayanan" value="rawat_jalan"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
@@ -121,7 +121,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initVerif_verifasrj.action">
+                                        <a type="button" class="btn btn-danger" href="initVerif_verifrekananrj.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -791,7 +791,7 @@
                             $('#save_fin').attr('onclick', 'confirm()');
                             $('#top_up').scrollTop(0);
                             $('#success').show().fadeOut(5000);
-                            $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover asuransi dibawah...!");
+                            $('#msg_suc').text("Traksaksi berhasil di close, silahkan update cover rekanan dibawah...!");
                             listTindakanApprove(noCheckup, idDetailCheckup, jenisPasien);
                         } else {
                             $('#save_fin').show();
@@ -833,7 +833,7 @@
                                 }
 
                                 var select = '<select style="width: 100%" onchange="setCoverBiaya(this.value,\''+item.totalTarif+'\')" class="form-control select2" id="cover_'+i+'">' +
-                                    '<option value="asuransi">Ditanggung</option>'+
+                                    '<option value="rekanan">Ditanggung</option>'+
                                     '<option value="umum">Tidak Ditanggung</option>'+
                                     '</select>';
 
@@ -899,7 +899,7 @@
             pasien = jumlahPasienBayar;
         }
 
-        if(value == "asuransi"){
+        if(value == "rekanan"){
             totalCover = parseInt(cover) + parseInt(tarif);
             totalPasien = parseInt(pasien) - parseInt(tarif);
         }else{

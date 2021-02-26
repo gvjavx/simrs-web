@@ -320,10 +320,8 @@
     <import resource="sshconfig/com/neurix/simrs/master/kategoripersediaan/spring/KategoriPersediaanBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/KategoriParameterBudgetingBean.xml"/>
     <import resource="sshconfig/com/neurix/akuntansi/master/parameterbudgeting/spring/JenisBudgetingBean.xml"/>
-
     <import resource="sshconfig/com/neurix/simrs/master/pelayanan/spring/HeaderPelayananBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/laporan/spring/LaporanOpsBean.xml"/>
-
     <import resource="sshconfig/com/neurix/hris/transaksi/notifikasi/spring/MonitoringMesinAbsensiBean.xml"/>
 
 </beans>

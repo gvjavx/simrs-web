@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printStrukResepPasien" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.464100000000004"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="371"/>
+	<property name="ireport.y" value="251"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -69,6 +69,7 @@
 	<parameter name="reportParams.ttdDokter" class="java.lang.String"/>
 	<parameter name="reportParams.ttdApoteker" class="java.lang.String"/>
 	<parameter name="reportParams.tipePelayanan" class="java.lang.String"/>
+	<parameter name="reportParams.idDokter" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT ttd_pasien FROM mt_simrs_permintaan_resep WHERE id_permintaan_resep = $P{reportParams.resepId}]]>
 	</queryString>
@@ -613,7 +614,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 		<band height="50"/>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="83">
+		<band height="93">
 			<staticText>
 				<reportElement x="0" y="0" width="115" height="14" uuid="a3e5cfc8-7658-4f4b-88d5-2eef79136045"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
@@ -680,6 +681,14 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 				<reportElement x="277" y="14" width="94" height="50" uuid="a2d9fd1e-4a23-472d-8fc9-51cb53d92e45"/>
 				<imageExpression><![CDATA[$P{reportParams.ttdApoteker}]]></imageExpression>
 			</image>
+			<textField>
+				<reportElement x="133" y="78" width="115" height="15" uuid="bb1fd215-a886-4ce3-9cc1-000f26b8552f"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idDokter} == null ? "" : $P{reportParams.idDokter}]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 	<summary>

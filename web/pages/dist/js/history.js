@@ -35,6 +35,7 @@ function viewAllRekamMedis() {
                         var terIsi = 0;
                         var labelPrint = "";
                         var terIsiPrint = "";
+                        var enter = '';
 
                         if (item.jumlahKategori != null) {
                             constan = item.jumlahKategori;
@@ -44,47 +45,48 @@ function viewAllRekamMedis() {
                             terIsiPrint = item.terisi;
                         }
 
-                        if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        if (parseInt(terIsi) > 0) {
                             var conver = "";
                             if (item.createdDate != null) {
-                                conver = converterDate(new Date(item.createdDate));
+                                conver = converterDateTime(new Date(item.createdDate));
                                 tol = 'class="box-rm"';
-                                tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                                tolText = '<span class="box-rmtext">created ' + conver + '</span>';
                             }
                             icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                            enter = '<br>';
                         }
 
                         labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
 
                         if ("spesialis" == item.tipeRM) {
-                            sps += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            sps += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow "><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("fisioterapi" == item.tipeRM) {
-                            fs += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            fs += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("hemodialisa" == item.tipeRM) {
-                            hd += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            hd += '<li '+ tol +' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("igd" == item.tipeRM) {
-                            igd += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            igd += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("tppri" == item.tipeRM) {
-                            tp += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            tp += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("rawat_inap" == item.tipeRM) {
-                            ri += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            ri += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("rawat_intensif" == item.tipeRM) {
-                            icu += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            icu += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("ruang_bersalin" == item.tipeRM) {
-                            rb += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            rb += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("kamar_operasi" == item.tipeRM) {
-                            ko += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>';
+                            ko += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + tolText + '</span></li>'+enter;
                         }
                         if ("surat" == item.tipeRM) {
-                            su += '<li ' + tol + ' onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'N\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + ' ' + labelPrint + tolText + '</span></li>';
+                            su += '<li ' + tol + ' onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'N\')"><span class="hvr-grow"><span class="fa-li">' + icons + '</span>' + item.namaRm + ' ' + labelPrint + tolText + '</span></li>'+enter;
                         }
 
                     });

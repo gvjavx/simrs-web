@@ -66,7 +66,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl-pattern" id="rps1">
+                                    <input class="form-control tanggal_masuk_rs" id="rps1" readonly>
                                 </div>
                             </div>
                         </div>
@@ -77,7 +77,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl-pattern" id="rps2">
+                                    <input class="form-control tgl" id="rps2">
                                 </div>
                             </div>
                         </div>
@@ -140,7 +140,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps8">
+                                    <input class="form-control" type="number" id="rps8" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>

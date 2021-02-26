@@ -4,13 +4,15 @@ function getJenisResep() {
 
     strSelect = "";
     var arBodyJenisResep = [];
-    if (jenisPeriksaPasien == "ptpn") {
-        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "ptpn", "label": "PTPN"});
+    if (jenisPeriksaPasien == "rekanan") {
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"}, {"nilai": "rekanan", "label": "Rekanan"});
     } else if (jenisPeriksaPasien == "asuransi") {
         arBodyJenisResep.push({"nilai": "asuransi", "label": "ASURANSI"}, {"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs") {
         arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
-    } else {
+    } else if (jenisPeriksaPasien == "bpjs_rekanan") {
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+    } else  {
         arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
     }
 
@@ -2777,7 +2779,7 @@ function setObatPoli(jenis) {
     if (poli != '') {
         var idPel = poli.split('|')[0];
         var namePel = poli.split('|')[1];
-        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, function (response) {
+        ObatPoliAction.getSelectOptionObatByPoli(idPel, jenisPasien, jenis, idDetailCheckup, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idObat + "|" + item.namaObat + "|" + item.qtyBox + "|" + item.qtyLembar + "|" + item.qtyBiji + "|" + item.lembarPerBox + "|" + item.bijiPerLembar + "|" + item.flagKronis + "|" + item.harga + "|" + item.idJenisObat + "'>" + item.namaObat + "</option>";

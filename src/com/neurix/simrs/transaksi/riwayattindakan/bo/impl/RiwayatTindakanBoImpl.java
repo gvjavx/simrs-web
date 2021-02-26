@@ -380,4 +380,9 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
     public Boolean CheckIsRawatJalanByIdDetailCheckup(String idDetail) throws GeneralBOException {
         return riwayatTindakanDao.checkIsPelayananRawatJalan(idDetail);
     }
+
+    @Override
+    public Boolean CheckIsRawatInapByIdDetailCheckup(String idDetail) throws GeneralBOException {
+        return riwayatTindakanDao.checkIsPelayananRawatInap(idDetail);
+    }
 }

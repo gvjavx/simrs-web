@@ -79,6 +79,36 @@ public class LaporanOpsAction extends BaseTransactionAction {
             laporan = "print_ply_unggulan";
         }
 
+        if("diagnosa".equalsIgnoreCase(searchLaporan.getTipeLaporan())){
+            if(searchLaporan.getListBulan().size() == 0){
+                List<String> stringList = new ArrayList<>();
+                stringList.add("1");
+                stringList.add("2");
+                stringList.add("3");
+                stringList.add("4");
+                stringList.add("5");
+                stringList.add("6");
+                stringList.add("7");
+                stringList.add("8");
+                stringList.add("9");
+                stringList.add("10");
+                stringList.add("11");
+                stringList.add("12");
+                searchLaporan.setListBulan(stringList);
+            }
+            try {
+                laporanOpsList = laporanOpsBoProxy.getListDiagnosaTerbanyak(searchLaporan);
+            }catch (Exception e){
+                logger.error(e.getMessage());
+            }
+            String tipe = "Rawat Inap";
+            if("rawat_jalan".equalsIgnoreCase(searchLaporan.getTipePelayanan())){
+                tipe = "Rawat Jalan";
+            }
+            title = "Laporan Diagnosa Terbanyak "+tipe+" Periode "+searchLaporan.getTahun();
+            laporan = "print_diagnosa_terbanyak";
+        }
+
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(laporanOpsList);
 
         try {
@@ -134,7 +164,18 @@ public class LaporanOpsAction extends BaseTransactionAction {
 
         logger.info("[TindakanRawatAction.saveTindakanRawat] start process >>>");
         return ruanganList;
+    }
 
+    public List<LaporanOps> getListTahunOps(){
+        List<LaporanOps> laporanOpsList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LaporanOpsBo laporanOpsBo = (LaporanOpsBo) ctx.getBean("laporanOpsBoProxy");
+        try {
+            laporanOpsList = laporanOpsBo.getListTahunByOps();
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return laporanOpsList;
     }
 
     public static Logger getLogger() {

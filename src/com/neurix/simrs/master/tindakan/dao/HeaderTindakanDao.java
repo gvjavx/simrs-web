@@ -47,6 +47,16 @@ public class HeaderTindakanDao extends GenericDao<ImSimrsHeaderTindakanEntity, S
         return results;
     }
 
+    public List<ImSimrsHeaderTindakanEntity> cekKategoriHeaderTindakan(String kategori) throws HibernateException {
+        List<ImSimrsHeaderTindakanEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsHeaderTindakanEntity.class)
+                .add(Restrictions.ilike("kategori", kategori))
+                .add(Restrictions.eq("flag", "Y"))
+                .list();
+        return results;
+    }
+
+
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_header_tindakan')");
         Iterator<BigInteger> iter = query.list().iterator();

@@ -67,6 +67,28 @@ public class LaporanOpsBoImpl implements LaporanOpsBo {
         return laporanOpsList;
     }
 
+    @Override
+    public List<LaporanOps> getListTahunByOps() throws GeneralBOException {
+        List<LaporanOps> laporanOpsList = new ArrayList<>();
+        try {
+            laporanOpsList = laporanOpsDao.getListTahunByOps();
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return laporanOpsList;
+    }
+
+    @Override
+    public List<LaporanOps> getListDiagnosaTerbanyak(LaporanOps bean) throws GeneralBOException {
+        List<LaporanOps> laporanOpsList = new ArrayList<>();
+        try {
+            laporanOpsList = laporanOpsDao.getListDiagnosaTerbanyak(bean);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return laporanOpsList;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

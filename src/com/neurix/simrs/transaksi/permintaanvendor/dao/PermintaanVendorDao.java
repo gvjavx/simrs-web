@@ -10,6 +10,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
@@ -49,7 +50,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         if (mapCriteria.get("tipe_transaksi") != null) {
             criteria.add(Restrictions.eq("tipeTransaksi", mapCriteria.get("tipe_transaksi").toString()));
         }
-
+        criteria.addOrder(Order.desc("createdDate"));
         List<MtSimrsPermintaanVendorEntity> list = criteria.list();
         return list;
     }

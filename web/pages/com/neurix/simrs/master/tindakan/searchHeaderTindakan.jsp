@@ -14,6 +14,7 @@
         }
     </style>
 
+    <link rel="stylesheet" href="<s:url value="/pages/bootstraplte/css/radio_checkbox.css"/>">
     <script type='text/javascript' src='<s:url value="/dwr/interface/HeaderTindakanAction.js"/>'></script>
     <script type='text/javascript'>
 
@@ -315,6 +316,50 @@
                         </div>
                     </div>
                 </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Ambulance</label>
+                        <div class="col-md-2">
+                            <div class="form-check" style="margin-top: 5px">
+                                <input onclick="setAmbulance(this.id)" type="checkbox" id="is_ambulance" value="Y">
+                                <label for="is_ambulance"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Mobil Jenzah</label>
+                        <div class="col-md-7">
+                            <div class="form-check" style="margin-top: 5px">
+                                <input onclick="setMobilJenazah(this.id)" type="checkbox" id="is_mobil_jenazah" value="Y">
+                                <label for="is_mobil_jenazah"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas" style="display: none" id="form_jenis_ambulance">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Ambulance</label>
+                        <div class="col-md-7">
+                            <s:select list="#{'ambulance_pulang':'Ambulance Pulang'}" id="set_jenis_ambulance"
+                                      headerKey="ambulance_datang" headerValue="Ambulance Datang" cssClass="form-control select2"
+                                      cssStyle="width: 100%" onchange="
+                                  var warn =$('#war_set_jenis_ambulance').is(':visible');
+                                    if (warn){
+                                    $('#cor_set_jenis_ambulance').show().fadeOut(3000);
+                                    $('#war_set_jenis_ambulance').hide()
+                                    }"/>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                               id="war_set_jenis_ambulance">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_set_jenis_ambulance"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Standart Cost</label>
@@ -462,6 +507,19 @@
             var tarif = $('#h_tarif').val();
             var flagTele = $('#flagKonsulTele').val();
             var flagVaksin = $('#set_vaksin').val();
+            var isAmbulance = $('#is_ambulance').is(':checked');
+            var isJenazah = $('#is_mobil_jenazah').is(':checked');
+            var jenisAmbulance = $('#set_jenis_ambulance').val();
+            var jenis = $('#set_jenis_ambulance').val();
+            if(isJenazah){
+                jenis = "mobil_jenazah";
+            }else{
+                if(isAmbulance){
+                    jenis = jenis;
+                }else{
+                    jenis = "";
+                }
+            }
             if (nama != '' && idKategori != '' && tarif != '' && flagTele && flagVaksin != '') {
                 $('#save_add').hide();
                 $('#load_add').show();
@@ -472,7 +530,8 @@
                         'kategori_ina_bpjs': idKategori,
                         'tarif': tarif,
                         'flag_tele': flagTele,
-                        'flag_vaksin': flagVaksin
+                        'flag_vaksin': flagVaksin,
+                        'kategori': jenis
                     };
                     var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
@@ -499,7 +558,8 @@
                         'kategori_ina_bpjs': idKategori,
                         'tarif': tarif,
                         'flag_tele': flagTele,
-                        'flag_vaksin': flagVaksin
+                        'flag_vaksin': flagVaksin,
+                        'kategori': jenis
                     };
                     var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
@@ -572,6 +632,20 @@
                 $('#flagKonsulTele').val(res.flagKonsulTele).trigger('change');
                 $('#set_vaksin').val(res.flagVaksin).trigger('change');
                 $('#h_tarif').val(res.standardCost);
+                if("mobil_jenazah" == res.kategori){
+                    $('#is_mobil_jenazah').attr('checked', true);
+                }else{
+                    $('#is_mobil_jenazah').attr('checked', false);
+                }
+                if("ambulance_datang" == res.kategori || "ambulance_pulang" == res.kategori){
+                    $('#form_jenis_ambulance').show();
+                    $('#is_ambulance').attr('checked', true);
+                    $('#set_jenis_ambulance').val(res.kategori).trigger('change');
+                }else{
+                    $('#form_jenis_ambulance').hide();
+                    $('#is_ambulance').attr('checked', false);
+                    $('#set_jenis_ambulance').val('').trigger('change');
+                }
             }
         });
     }
@@ -610,6 +684,24 @@
             $('#h_tarif_diskon').val('');
         }
     }
+
+    function setAmbulance(id){
+        if($('#'+id).is(':checked')){
+            $('#form_jenis_ambulance').show();
+            $('#is_mobil_jenazah').attr('checked', false);
+        }else{
+            $('#form_jenis_ambulance').hide();
+        }
+    }
+
+    function setMobilJenazah(id){
+        if($('#'+id).is(':checked')){
+            $('#is_ambulance').attr('checked', false);
+            $('#form_jenis_ambulance').hide();
+        }
+    }
+
+
 
 
 </script>
