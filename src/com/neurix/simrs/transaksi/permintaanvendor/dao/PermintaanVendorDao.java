@@ -543,7 +543,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         String SQL = "SELECT id, nama FROM im_simrs_pabrik_obat\n" +
                 "WHERE id = '"+idPabrik+"'";
 
-        List<Object[]> list = this.sessionFactory.getCurrentSession().createCriteria(SQL).list();
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
         if (list.size() > 0){
             Object[] obj = list.get(0);
