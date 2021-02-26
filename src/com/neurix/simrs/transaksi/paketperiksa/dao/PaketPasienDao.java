@@ -547,6 +547,7 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                 "itm.id_item, \n" +
                 "itm.jenis_item,\n" +
                 "htdk.nama_tindakan,\n" +
+                "htdk.standard_cost,\n" +
                 "itm.harga\n" +
                 "FROM mt_simrs_item_paket_periksa itm\n" +
                 "INNER JOIN im_simrs_tindakan tdk ON tdk.id_tindakan = itm.id_item\n" +
@@ -559,6 +560,7 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                 "itm.id_item, \n" +
                 "itm.jenis_item ,\n" +
                 "pp.nama_pemeriksaan,\n" +
+                "pp.tarif,\n" +
                 "itm.harga\n" +
                 "FROM mt_simrs_item_paket_periksa itm\n" +
                 "INNER JOIN im_simrs_lab_detail lbd ON lbd.id_lab_detail = itm.id_item\n" +
@@ -577,6 +579,8 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
                 paketPeriksa.setIdItem(obj[1].toString());
                 paketPeriksa.setJenisItem(obj[2].toString());
                 paketPeriksa.setNamaItem(obj[3].toString());
+                paketPeriksa.setTarifAwal(new BigDecimal(obj[4].toString()));
+                paketPeriksa.setTarif(new BigDecimal(obj[5].toString()));
 
                 result.add(paketPeriksa);
             }
