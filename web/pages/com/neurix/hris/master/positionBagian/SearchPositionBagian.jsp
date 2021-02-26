@@ -249,9 +249,10 @@
                                             <tr style="background-color:#30d196;">
                                                     <%--<td>Departement ID</td>--%>
                                                 <td>Name</td>
-                                                <td>Created Date</td>
+                                                <td>Kodering</td>
+                                                    <%--<td>Created Date</td>--%>
                                                 <td>Last Update</td>
-                                                <td>Created Who</td>
+                                                    <%--<td>Created Who</td>--%>
                                                 <td>Last Update Who</td>
                                                 <td>Edit</td>
                                                 <td>Delete</td>
@@ -392,8 +393,9 @@
                     }
                     body += '<tr id="row_'+item.departmentId+'" style="background-color: gainsboro">' +
                         '<td>'+icon+" "+item.departmentName+'</td>'+
-                        '<td>'+item.stCreatedDate+'</td>'+
-                        '<td>'+item.createdWho+'</td>'+
+                        '<td>'+item.kodering+'</td>'+
+                        // '<td>'+item.stCreatedDate+'</td>'+
+                        // '<td>'+item.createdWho+'</td>'+
                         '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
                         '<td></td>'+
@@ -417,8 +419,9 @@
                     tr += '<tr class="del_'+id+'">' +
                         //                        '<td><span style="margin-left: 20px">'+item.bagianId+'</span></td>'+
                         '<td><span style="margin-left: 20px">'+item.bagianName+'</span></td>'+
-                        '<td>'+item.stCreatedDate+'</td>'+
-                        '<td>'+item.createdWho+'</td>'+
+                        '<td>'+item.kodering+'</td>'+
+                        // '<td>'+item.stCreatedDate+'</td>'+
+                        // '<td>'+item.createdWho+'</td>'+
                         '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
                         '<td><button type="button" id="demo" class="btn btn-success " onclick="edit(\''+item.bagianId+'\')" > <span class="glyphicon glyphicon-pencil"></span></button></td>'+
