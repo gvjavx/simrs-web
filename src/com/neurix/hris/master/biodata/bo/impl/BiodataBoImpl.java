@@ -797,6 +797,8 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
                                 if("TP03".equalsIgnoreCase(bean.getTipePegawai())){
                                     imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalPensiun());
+                                }else if("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+                                    imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalAkhirKontrak());
                                 }else {
                                     imBiodataEntity.setTanggalAkhirKontrak(null);
                                     imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
@@ -1736,14 +1738,14 @@ public class BiodataBoImpl implements BiodataBo {
                                         entity.setNamaDokter(namaDgnGelar);
                                         entity.setIdPelayanan("");
                                         entity.setKuota("");
-                                        entity.setKodeDpjp("");
+                                        entity.setKodeDpjp(bean.getDpjpDokter());
                                         entity.setKodering(kodering);
                                         entity.setLat("");
                                         entity.setLon("");
                                         entity.setFlagCall("");
                                         entity.setFlagTele("");
                                         entity.setKuotaTele("");
-                                        entity.setSip("");
+                                        entity.setSip(bean.getSipDokter());
 
                                         entity.setFlag(bean.getFlag());
                                         entity.setAction(bean.getAction());
@@ -1783,6 +1785,8 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
                 if("TP03".equalsIgnoreCase(bean.getTipePegawai())){
                     imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalPensiun());
+                } else if("Y".equalsIgnoreCase(bean.getFlagDokterKso())){
+                    imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalAkhirKontrak());
                 }else {
                     imBiodataEntity.setTanggalPensiun(bean.getTanggalPensiun());
                 }
@@ -1889,14 +1893,14 @@ public class BiodataBoImpl implements BiodataBo {
                     entity.setNamaDokter(namaDgnGelar);
                     entity.setIdPelayanan("");
                     entity.setKuota("");
-                    entity.setKodeDpjp("");
+                    entity.setKodeDpjp(bean.getDpjpDokter());
                     entity.setKodering(kodering);
                     entity.setLat("");
                     entity.setLon("");
                     entity.setFlagCall("");
                     entity.setFlagTele("");
                     entity.setKuotaTele("");
-                    entity.setSip("");
+                    entity.setSip(bean.getSipDokter());
 
                     entity.setFlag(bean.getFlag());
                     entity.setAction(bean.getAction());
@@ -2499,6 +2503,13 @@ public class BiodataBoImpl implements BiodataBo {
                             returnBiodata.setStTanggalPensiun(stringTanggal);
                         }else{
                             returnBiodata.setStTanggalPensiun("");
+                        }
+                    } else if("Y".equalsIgnoreCase(personalEntity.getFlagDokterKso())){
+                        if(personalEntity.getTanggalAkhirKontrak() != null){
+                            String stringTanggal  = dateFormat.format(personalEntity.getTanggalAkhirKontrak());
+                            returnBiodata.setStTanggalAkhirKontrak(stringTanggal);
+                        }else{
+                            returnBiodata.setStTanggalAkhirKontrak("");
                         }
                     } else {
                         if(personalEntity.getTanggalPensiun() != null){
@@ -6121,7 +6132,7 @@ public class BiodataBoImpl implements BiodataBo {
         biodataEntity.setTempatLahir(bean.getTempatLahir());
         biodataEntity.setTanggalLahir(bean.getTanggalLahir());
         biodataEntity.setTanggalMasuk(bean.getTanggalMasuk());
-        biodataEntity.setTanggalAktif(bean.getTanggalAktif());
+        biodataEntity.setTanggalAkhirKontrak(bean.getTanggalAkhirKontrak());
         biodataEntity.setBranchId(bean.getBranch());
         biodataEntity.setGelarDepan(bean.getGelarDepan());
         biodataEntity.setGelarBelakang(bean.getGelarBelakang());

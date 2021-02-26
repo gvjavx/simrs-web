@@ -88,8 +88,8 @@ public class MutasiDao extends GenericDao<ItMutasiEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_mutasi')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%04d", iter.next());
-
-        return "M"+sId;
+        String output = "M"+sId;
+        return output;
     }
 
     public List<Mutasi> getKualifikasi(String qryWhere) throws HibernateException {

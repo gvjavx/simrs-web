@@ -1,5 +1,6 @@
 
 function loadPositionJabatan() {
+    $("#inputKodeDokter").css('display','block');
     var nip = $("#nip1").val();
     BiodataAction.listPersonilPosition(nip, function (res) {
 
@@ -28,6 +29,10 @@ function loadPositionJabatan() {
 
             str += '</td>' +
                 '</tr>';
+
+            // if(item.tipeProfesi == "dokter"){
+            //     $("#inputKodeDokter").css('display','block');
+            // }
         });
 
         $("#tbody-position").html(str);

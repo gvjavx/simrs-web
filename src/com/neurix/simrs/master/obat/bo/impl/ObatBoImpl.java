@@ -2465,11 +2465,25 @@ public class ObatBoImpl implements ObatBo {
         try {
             headerObatEntity = headerObatDao.getById("idObat", id);
         } catch (HibernateException e){
-            logger.error("[TransaksiObatBoImpl.getHeaderObatById] ERROR.", e);
-            throw new GeneralBOException("[TransaksiObatBoImpl.getHeaderObatById] ERROR." + e.getMessage());
+            logger.error("[ObatBoImpl.getHeaderObatById] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.getHeaderObatById] ERROR." + e.getMessage());
         }
 
         logger.info("[ObatBoImpl.getAllBentukBarang] END <<<");
         return headerObatEntity;
+    }
+
+    @Override
+    public void testSumPersediaanObat(String id, String ket, String branchId) {
+        logger.info("[ObatBoImpl.testSumPersediaanObat] START >>>");
+
+        try {
+            obatDao.getSumStockObatGudangById(id, ket, branchId);
+        } catch (HibernateException e){
+            logger.error("[ObatBoImpl.testSumPersediaanObat] ERROR.", e);
+            throw new GeneralBOException("[ObatBoImpl.testSumPersediaanObat] ERROR." + e.getMessage());
+        }
+
+        logger.info("[ObatBoImpl.testSumPersediaanObat] END <<<");
     }
 }

@@ -94,6 +94,15 @@ public class Obat extends BaseModel {
     private String flagParenteral;
     private String idJenisBentuk;
     private String idJenisSub;
+    private BigInteger qtyAllBiji;
+
+    public BigInteger getQtyAllBiji() {
+        return qtyAllBiji;
+    }
+
+    public void setQtyAllBiji(BigInteger qtyAllBiji) {
+        this.qtyAllBiji = qtyAllBiji;
+    }
 
     public String getIdJenisBentuk() {
         return idJenisBentuk;

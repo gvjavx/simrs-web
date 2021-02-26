@@ -17,6 +17,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -496,6 +497,7 @@ public class PermintaanVendorAction extends BaseMasterAction {
                     obatDetail.setLembarPerBox(new BigInteger(obj.getString("lembar_per_box")));
                     obatDetail.setBijiPerLembar(new BigInteger(obj.getString("biji_per_lembar")));
                     obatDetail.setTipeObat(obj.getString("tipe_obat"));
+                    obatDetail.setIdPabrikObat(obj.getString("id_pabrik_obat"));
 
                     obatDetailList.add(obatDetail);
                 }
@@ -796,16 +798,15 @@ public class PermintaanVendorAction extends BaseMasterAction {
                 addActionError("[PermintaanVendorAction.saveApproveBatch] ERROR. " + e.getMessage());
             }
 
-            List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+            // List<TransaksiObatDetail> transaksiObatDetailNew = new ArrayList<>();
+            // fitur list obat baru sudah dinonaktifkan
 
             try {
-                checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, transaksiObatDetailNew);
+                checkObatResponse = permintaanVendorBo.saveConfirm(permintaanVendor, transaksiObatDetails, null);
             } catch (GeneralBOException e) {
                 logger.error("[PermintaanVendorAction.saveApproveBatch] Error when save data approve PO", e);
                 addActionError(" Error when save data approve PO" + e.getMessage());
             }
-
-
 
             List<Map> listMapPersediaan = new ArrayList<>();
             BigDecimal hutangUsaha = new BigDecimal(0);
@@ -1842,6 +1843,25 @@ public class PermintaanVendorAction extends BaseMasterAction {
         MtSimrsPermintaanVendorEntity permintaanVendorEntity = permintaanVendorBo.getPermintaanVendorEntityById(idPermintaan);
 
         return permintaanVendorBo.getListBatchByJenisItem(idItem, jenis, permintaanVendorEntity.getIdApprovalObat(), batch);
+    }
+
+    public List<PabrikObat> getListPabrikObatForPo(String idObat, String tipePencarian){
+        logger.info("[PermintaanVendorAction.getListPabrikObatForPo] START >>>>>>>");
+
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PermintaanVendorBo permintaanVendorBo = (PermintaanVendorBo) ctx.getBean("permintaanVendorBoProxy");
+
+        try {
+            pabrikObatList = permintaanVendorBo.getListPabrikObatByIdObatForPo(idObat, tipePencarian);
+        } catch (HibernateException e){
+            logger.error("[PermintaanVendorBoImpl.getListPabrikObatForPo] ERROR when get data. " + e.getMessage());
+            throw new GeneralBOException("[PermintaanVendorBoImpl.getListPabrikObatForPo] ERROR when get data. " + e.getMessage());
+        }
+
+
+        logger.info("[PermintaanVendorAction.getListPabrikObatForPo] END <<<<<<<");
+        return pabrikObatList;
     }
 
     @Override

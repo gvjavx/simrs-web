@@ -1098,7 +1098,8 @@
     function changeTipeMutasi() {
         var tipe = $('#tipeMutasi').val();
         var status = $('#statusMutasi').val();
-        if (tipe=='MT'){
+        console.log("Tipe : " + tipe);
+        if (status=='M'){
             $('#branchBaruId1').prop("disabled",false);
             if (status!="M"){
                 $('#branchBaruId1').prop("disabled",true);

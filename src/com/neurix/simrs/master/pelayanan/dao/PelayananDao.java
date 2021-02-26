@@ -466,4 +466,33 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
 
     }
 
+    public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId){
+
+        String SQL = "SELECT \n" +
+                "b.id_pelayanan,\n" +
+                "a.nama_pelayanan,\n" +
+                "a.tipe_pelayanan,\n" +
+                "a.divisi_id\n" +
+                "FROM\n" +
+                "im_simrs_header_pelayanan a\n" +
+                "INNER JOIN (SELECT id_pelayanan, id_header_pelayanan, branch_id FROM im_simrs_pelayanan WHERE flag = 'Y') b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                "WHERE \n" +
+                "b.branch_id = '"+branchId+"'\n" +
+                "AND a.tipe_pelayanan = '"+tipe+"'";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Pelayanan> listPelayanan = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+                pelayanan.setTipePelayanan(obj[2].toString());
+                pelayanan.setDivisiId(obj[3].toString());
+                listPelayanan.add(pelayanan);
+            }
+        }
+        return listPelayanan;
+    }
 }

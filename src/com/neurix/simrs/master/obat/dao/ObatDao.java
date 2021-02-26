@@ -378,26 +378,56 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             //stok obat digudang ditambah dengan stok di apotek
             String SQLMaster = "SELECT  \n" +
-                    "\tid_obat,  \n" +
-                    "\tSUM(qty_box) as qty_box,  \n" +
-                    "\tSUM(qty_lembar) as qty_lembar, \n" +
-                    "\tSUM(qty_biji) as qty_biji \n" +
+                    "id_obat,  \n" +
+                    "a.qty_box,  \n" +
+                    "a.qty_lembar, \n" +
+                    "a.qty_biji,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\tqty_biji, \n" +
+                    "\tqty_lembar, \n" +
+                    "\tqty_box, \n" +
+                    "\tlembar_per_box, \n" +
+                    "\tbiji_per_lembar,\n" +
+                    "\tid_obat,\n" +
+                    "\tbranch_id\n" +
                     "\tFROM im_simrs_obat\n" +
                     "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND id_obat = :id1\n" +
-                    "\tAND branch_id = :branchId1\n" +
-                    "\tGROUP BY id_obat";
+                    ") a\n" +
+                    "WHERE a.id_obat = :id1 \n" +
+                    "AND a.branch_id = :branchId1 ";
 
-            String SQLPoli = "SELECT \n" +
-                    "\tid_obat, \n" +
-                    "\tSUM(qty_box) as jml_box, \n" +
-                    "\tSUM(qty_lembar) as jml_lembar, \n" +
-                    "\tSUM(qty_biji) as jml_biji\n" +
-                    "\tFROM mt_simrs_obat_poli\n" +
-                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND id_obat = :id2\n" +
-                    "\tAND branch_id = :branchId2\n" +
-                    "\tGROUP BY id_obat";
+            String SQLPoli = "\n" +
+                    "SELECT  \n" +
+                    "aa.id_obat,  \n" +
+                    "aa.qty_box,  \n" +
+                    "aa.qty_lembar, \n" +
+                    "aa.qty_biji,\n" +
+                    "aa.lembar_per_box,\n" +
+                    "aa.biji_per_lembar\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.lembar_per_box, \n" +
+                    "\ta.biji_per_lembar,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.branch_id,\n" +
+                    "\tSUM(b.qty_box) as qty_box,\n" +
+                    "\tSUM(b.qty_lembar) as qty_lembar,\n" +
+                    "\tSUM(b.qty_biji) as qty_biji\n" +
+                    "\tFROM im_simrs_obat a\n" +
+                    "\tINNER JOIN ( \n" +
+                    "\t\tSELECT id_barang, qty_box, qty_lembar, qty_biji FROM mt_simrs_obat_poli\n" +
+                    "\t\t) b ON b.id_barang = a.id_barang\n" +
+                    "\tGROUP BY \n" +
+                    "\ta.lembar_per_box, \n" +
+                    "\ta.biji_per_lembar,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.branch_id\n" +
+                    ") aa\n" +
+                    "WHERE aa.id_obat = :id2 \n" +
+                    "AND aa.branch_id = :branchId2 ";
 
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
@@ -413,21 +443,51 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             BigInteger totalBox1 = new BigInteger(String.valueOf(0));
             BigInteger totalLembar1 = new BigInteger(String.valueOf(0));
             BigInteger totalBiji1 = new BigInteger(String.valueOf(0));
+            BigInteger jumlahBijiAll = new BigInteger(String.valueOf(0));
 
+            System.out.println(" ====== Obat Gudang : ");
+            int i = 1;
             if (results1.size() > 0) {
                 for (Object[] obj : results1) {
                     idObat = obj[0].toString();
+
+                    BigInteger totalBox = new BigInteger(String.valueOf(0));
+                    BigInteger totalLembar = new BigInteger(String.valueOf(0));
+                    BigInteger totalBiji = new BigInteger(String.valueOf(0));
+
                     if(obj[1] != null){
-                        totalBox1 = new BigInteger(obj[1].toString());
+                        totalBox = new BigInteger(obj[1].toString());
+                        totalBox1 = totalBox1.add(totalBox);
+//                        totalBox1 = new BigInteger(obj[1].toString());
                     }
                     if(obj[2] != null){
-                        totalLembar1 = new BigInteger(obj[2].toString());
+                        totalLembar = new BigInteger(obj[2].toString());
+                        totalLembar1 = totalLembar1.add(totalLembar);
+//                        totalLembar1 = new BigInteger(obj[2].toString());
                     }
                     if(obj[3] != null){
-                        totalBiji1 = new BigInteger(obj[3].toString());
+                        totalBiji = new BigInteger(obj[3].toString());
+                        totalBiji1 = totalBiji1.add(totalBiji);
+//                        totalBiji1 = new BigInteger(obj[3].toString());
                     }
+
+                    BigInteger lembarPerBox = new BigInteger(obj[4].toString());
+                    BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
+                    BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
+
+                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+                    System.out.println("    -> lembar / box : "+lembarPerBox+" biji / lembar : "+bijiPerLembar);
+
+                    BigInteger boxToBiji = totalBiji.multiply(consBox);
+                    BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
+
+                    // jumlah Biji all
+                    jumlahBijiAll = jumlahBijiAll.add(boxToBiji.add(lembarToBiji).add(totalBiji));
+
                 }
             }
+
+            System.out.println(" ====== Obat Poli : ");
 
             BigInteger totalBox2 = new BigInteger(String.valueOf(0));
             BigInteger totalLembar2 = new BigInteger(String.valueOf(0));
@@ -435,15 +495,39 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             if (results2.size() > 0) {
                 for (Object[] obj : results2) {
+
+                    BigInteger totalBox = new BigInteger(String.valueOf(0));
+                    BigInteger totalLembar = new BigInteger(String.valueOf(0));
+                    BigInteger totalBiji = new BigInteger(String.valueOf(0));
+
                     if(obj[1] != null){
-                        totalBox2 = new BigInteger(obj[1].toString());
+                        totalBox = new BigInteger(obj[1].toString());
+                        totalBox2 = totalBox2.add(totalBox);
+//                        totalBox2 = totalBox2.add(new BigInteger(obj[1].toString()));
                     }
                     if(obj[2] != null){
-                        totalLembar2 = new BigInteger(obj[2].toString());
+                        totalLembar = new BigInteger(obj[2].toString());
+                        totalLembar2 = totalLembar2.add(totalLembar);
+//                        totalLembar2 = totalLembar2.add(new BigInteger(obj[2].toString()));
                     }
                     if(obj[3] != null){
-                        totalBiji2 = new BigInteger(obj[3].toString());
+                        totalBiji = new BigInteger(obj[3].toString());
+                        totalBiji2 = totalBiji2.add(totalBiji);
+//                        totalBiji2 = totalBiji2.add(new BigInteger(obj[3].toString()));
                     }
+
+                    BigInteger lembarPerBox = new BigInteger(obj[4].toString());
+                    BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
+                    BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
+
+                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+                    System.out.println("    -> lembar / box : "+obj[4].toString()+" biji / lembar : "+obj[5].toString());
+
+                    BigInteger boxToBiji = totalBox.multiply(consBox);
+                    BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
+
+                    // jumlah Biji all
+                    jumlahBijiAll = jumlahBijiAll.add(boxToBiji.add(lembarToBiji).add(totalBiji));
                 }
             }
 
@@ -452,6 +536,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 obat.setQtyBox(totalBox1.add(totalBox2));
                 obat.setQtyLembar(totalLembar1.add(totalLembar2));
                 obat.setQtyBiji(totalBiji1.add(totalBiji2));
+                obat.setQtyAllBiji(jumlahBijiAll);
             }
         }
 

@@ -492,7 +492,19 @@ public class PelayananBoImpl implements PelayananBo {
         return pelayananDao.getListObjectPelayanan(bean);
     }
 
+    @Override
+    public List<Pelayanan> getListPelayananByTipe(String tipe, String branchId) throws GeneralBOException {
+        logger.info("[PelayananBoImpl.getListPelayananByTipe] START >>>");
 
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        try {
+            pelayananList = pelayananDao.getListPelayananByTipe(tipe, branchId);
+        } catch (HibernateException e){
+            logger.error("[PelayananBoImpl.getListPelayananByTipe] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
 
-
+        logger.info("[PelayananBoImpl.getListPelayananByTipe] END <<<");
+        return pelayananList;
+    }
 }

@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.DocPo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.MtSimrsPermintaanVendorEntity;
@@ -8,12 +9,14 @@ import com.neurix.simrs.transaksi.permintaanvendor.model.PermintaanVendor;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatBatch;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
+import org.hibernate.NonUniqueObjectException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.math.RoundingMode;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -424,5 +427,132 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
         return sId;
+    }
+
+    // 2021-02-17, Sigit. pencarian pabrik obat
+    // dibagi menjadi dua, "specific" & "all"
+    // specific -> untuk mencari pabrik berdasarkan yg telah terdaftar ke master obat
+    // all -> untuk memunculkan semua data pabrik obat pada master pabrik obat
+    // jika specific tidak ditemukan / belum ada data pada master obat. maka get data semua pabrik pada master pabrik
+    public List<PabrikObat> getListDataPabrikObatForPO(String idObat, String tipePencarian){
+
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        if ("all".equalsIgnoreCase(tipePencarian)){
+            pabrikObatList = getAllMasterObat();
+        } else {
+
+            String SQL = "SELECT \n" +
+                    "ob.id_pabrik_obat,\n" +
+                    "pb.nama\n" +
+                    "FROM (\n" +
+                    "\tSELECT\n" +
+                    "\ta.*\n" +
+                    "\tFROM \n" +
+                    "\t(\n" +
+                    "\t\tSELECT\n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.id_pabrik_obat,\n" +
+                    "\t\tMAX(a.created_date) as created_date\n" +
+                    "\t\tFROM im_simrs_obat a\n" +
+                    "\t\tGROUP BY a.id_obat, a.id_pabrik_obat\n" +
+                    "\t) a ORDER BY id_obat, created_date DESC\n" +
+                    ") ob\n" +
+                    "INNER JOIN (SELECT * FROM im_simrs_pabrik_obat WHERE flag = 'Y') pb ON pb.id = ob.id_pabrik_obat\n" +
+                    "WHERE ob.id_obat = '"+idObat+"'";
+
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    PabrikObat pabrikObat = new PabrikObat();
+                    pabrikObat.setId(obj[0].toString());
+                    pabrikObat.setNama(obj[1].toString());
+                    pabrikObatList.add(pabrikObat);
+                }
+            }
+//            else {
+//                pabrikObatList = getAllMasterObat();
+//            }
+        }
+        return pabrikObatList;
+
+    }
+
+    private List<PabrikObat> getAllMasterObat(){
+        String SQL = "SELECT id, nama FROM im_simrs_pabrik_obat WHERE flag = 'Y' ORDER BY nama";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<PabrikObat> pabrikObatList = new ArrayList<>();
+        if (results.size() > 0){
+            for (Object[] obj : results){
+                PabrikObat pabrikObat = new PabrikObat();
+                pabrikObat.setId(obj[0].toString());
+                pabrikObat.setNama(obj[1].toString());
+                pabrikObatList.add(pabrikObat);
+            }
+        }
+        return pabrikObatList;
+    }
+
+    public TransaksiObatDetail getDataFisikObatMasukBatch(BigInteger idBatch){
+
+        String SQL = "SELECT\n" +
+                "a.id_transaksi_obat_detail,\n" +
+                "SUM(b.qty_approve) as qty_approve,\n" +
+                "a.lembar_per_box, \n" +
+                "a.biji_per_lembar,\n" +
+                "SUM(b.netto) as netto,\n" +
+                "b.jenis_satuan \n" +
+                "FROM mt_simrs_transaksi_obat_detail a\n" +
+                "INNER JOIN mt_simrs_transaksi_obat_detail_batch b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
+                "WHERE b.id = "+idBatch+"\n" +
+                "GROUP BY \n" +
+                "a.id_transaksi_obat_detail,\n" +
+                "a.lembar_per_box, \n" +
+                "a.biji_per_lembar, \n" +
+                "b.jenis_satuan \n";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (result.size() > 0){
+            Object[] obj = result.get(0);
+
+            TransaksiObatDetail trans = new TransaksiObatDetail();
+            trans.setIdTransaksiObatDetail(obj[0].toString());
+            trans.setQtyApprove(obj[1] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[1].toString()));
+            trans.setLembarPerBox(obj[2] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[2].toString()));
+            trans.setBijiPerLembar(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
+            trans.setNetto(obj[4] == null ? new BigDecimal(0) : new BigDecimal(obj[4].toString()));
+            trans.setJenisSatuan(obj[5] == null ? "" : obj[5].toString());
+            trans.setQtyBox(trans.getQtyBox());
+
+            String jenisSatuan = obj[5].toString();
+
+            BigInteger cons         = trans.getLembarPerBox().multiply(trans.getBijiPerLembar());
+            BigInteger jumlahBiji   = trans.getQtyApprove().multiply(cons);
+
+            trans.setQtyBiji(jumlahBiji);
+            trans.setAverageHargaBiji(trans.getNetto().divide(new BigDecimal(jumlahBiji), 2, RoundingMode.HALF_UP));
+            return trans;
+        }
+
+        return null;
+    }
+
+    public PabrikObat getPabrikObat(String idPabrik){
+
+        String SQL = "SELECT id, nama FROM im_simrs_pabrik_obat\n" +
+                "WHERE id = '"+idPabrik+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            PabrikObat pbo = new PabrikObat();
+            pbo.setId(obj[0].toString());
+            pbo.setNama(obj[1].toString());
+            return pbo;
+        }
+
+        return null;
     }
 }

@@ -74,8 +74,8 @@ public class PersonilPositionDao extends GenericDao<ItPersonilPositionEntity, St
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personil_position')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%06d", iter.next());
-
-        return "PP"+sId;
+        String output = "PP"+sId;
+        return output;
     }
 
     public List<ItPersonilPositionEntity> getListPersonilPosition(String term) throws HibernateException {

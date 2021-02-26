@@ -60,4 +60,5 @@ public interface ObatBo{
     public List<ImSimrsKategoriPersediaanEntity> getAllKategoriPersediaan() throws GeneralBOException;
     public List<ImSimrsBentukBarangEntity> getAllBentukBarang() throws  GeneralBOException;
     public ImSimrsHeaderObatEntity getHeaderObatById(String id) throws GeneralBOException;
+    public void testSumPersediaanObat(String id, String ket, String branchId);
 }
