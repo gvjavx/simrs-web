@@ -300,14 +300,14 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Tujuan</label>
-                        <%--<div class="col-md-2">--%>
-                            <%--<label style="margin-top: 7px">Box</label>--%>
-                            <%--<input class="form-control" readonly id="req_stok_box">--%>
-                        <%--</div>--%>
-                        <%--<div class="col-md-2">--%>
-                            <%--<label style="margin-top: 7px">Lembar</label>--%>
-                            <%--<input class="form-control" readonly id="req_stok_lembar">--%>
-                        <%--</div>--%>
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Box</label>
+                            <input class="form-control" readonly id="req_stok_box">
+                        </div>
+                        <div class="col-md-2">
+                            <label style="margin-top: 7px">Lembar</label>
+                            <input class="form-control" readonly id="req_stok_lembar">
+                        </div>
                         <div class="col-md-3">
                             <label style="margin-top: 7px">Biji</label>
                             <input class="form-control" readonly id="req_stok_biji">
