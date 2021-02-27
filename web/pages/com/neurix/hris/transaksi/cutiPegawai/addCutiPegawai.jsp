@@ -356,7 +356,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Jenis Cuti :</small></label>
+                            <label class="control-label"><small>Cuti :</small></label>
                         </td>
                         <td>
                             <table>
@@ -490,7 +490,7 @@
                     </tr>
                     <tr id="cuti1">
                         <td>
-                            <label class="control-label"><small>Cuti :</small></label>
+                            <label class="control-label"><small>Detail Cuti :</small></label>
                         </td>
                         <td>
                             <table>

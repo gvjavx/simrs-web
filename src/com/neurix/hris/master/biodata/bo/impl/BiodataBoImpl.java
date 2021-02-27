@@ -867,6 +867,8 @@ public class BiodataBoImpl implements BiodataBo {
 
                                 if(!"".equalsIgnoreCase(bean.getStTanggalPensiun()) && bean.getStTanggalPensiun() != null) {
                                     imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                                }else{
+                                    imBiodataEntity.setMasaKerjaGolongan(0);
                                 }
 //                                imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
@@ -954,8 +956,8 @@ public class BiodataBoImpl implements BiodataBo {
                                             personilPositionEntity.setProfesiId(personilPosition.getProfesiId());
                                             personilPositionEntity.setFlag(personilPosition.getFlag());
                                             personilPositionEntity.setAction("U");
-                                            personilPositionEntity.setLastUpdate(personilPosition.getLastUpdate());
-                                            personilPositionEntity.setLastUpdateWho(personilPosition.getLastUpdateWho());
+                                            personilPositionEntity.setLastUpdate(bean.getLastUpdate());
+                                            personilPositionEntity.setLastUpdateWho(bean.getLastUpdateWho());
                                             // END
 
                                             try {
@@ -1567,7 +1569,7 @@ public class BiodataBoImpl implements BiodataBo {
                         }
                     }
                 }else {
-                    throw new GeneralBOException("Peringatan!!!, Harus ada jabatan aktif minimal 1");
+                    throw new GeneralBOException("Peringatan!!!, Harus ada jabatan aktif (normal) minimal 1");
                 }
             }else {
                 throw new GeneralBOException("Peringatan!!!, Tipe Karyawan tetap tidak boleh diganti dengan Tipe Karyawan PKWT");
@@ -1864,6 +1866,8 @@ public class BiodataBoImpl implements BiodataBo {
                 if("TP01".equalsIgnoreCase(bean.getTipePegawai())){
 //                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                }else{
+                    imBiodataEntity.setMasaKerjaGolongan(0);
                 }
                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                 imBiodataEntity.setShift(bean.getShift());
@@ -2226,11 +2230,11 @@ public class BiodataBoImpl implements BiodataBo {
                             }else {
                                 jum += 1;
                                 if (jum == listPengalamanKerja.size())
-                                    throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif");
+                                    throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif (normal)");
                             }
                         }
                     }else {
-                        throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif");
+                        throw new GeneralBOException("Peringatan!!!, Form Riwayat Kerja harus memiliki satu jabatan aktif (normal)");
                     }
                 }
 
@@ -4196,7 +4200,7 @@ public class BiodataBoImpl implements BiodataBo {
                             throw new GeneralBOException("Found problem when update History Jabatan Pegawai, please inform to your admin...," + e.getMessage());
                         }
                     }else {
-                        throw new GeneralBOException("Peringatan!!!, User sudah memiliki 1 jabatan aktif");
+                        throw new GeneralBOException("Peringatan!!!, User sudah memiliki 1 jabatan aktif (normal)");
                     }
                 }
 
@@ -4347,7 +4351,7 @@ public class BiodataBoImpl implements BiodataBo {
                     throw new GeneralBOException("Found problem when saving new data PengalamanKerja, please info to your admin..." + e.getMessage());
                 }
             }else {
-                throw new GeneralBOException("Peringatan!!!, User sudah memiliki 1 jabatan aktif");
+                throw new GeneralBOException("Peringatan!!!, User sudah memiliki 1 jabatan aktif (normal)");
             }
         }
 
