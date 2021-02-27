@@ -2627,7 +2627,7 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setStatusCaption(personalEntity.getStatusCaption());
                     returnBiodata.setKeterangan(personalEntity.getKeterangan());
-                    if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso())){
+                    if ("N".equalsIgnoreCase(personalEntity.getFlagDokterKso()) && "TP01".equalsIgnoreCase(personalEntity.getTipePegawai())){
                         returnBiodata.setStMasaKerjaGol(String.valueOf(personalEntity.getMasaKerjaGolongan()));
                         returnBiodata.setMasaKerjaGolongan(personalEntity.getMasaKerjaGolongan());
                     }
