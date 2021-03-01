@@ -483,7 +483,6 @@
                 <value>sshconfig/com/neurix/simrs/master/telemedic/hibernate/ImSimrsRekeningTelemedicEntity.hbm.xml
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsHeaderTindakanEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsHeaderPelayananEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsHeaderObatEntity.hbm.xml</value>
                 <value>
                     sshconfig/com/neurix/simrs/master/kategoripersediaan/hibernate/ImSimrsKategoriPersediaanEntity.hbm.xml

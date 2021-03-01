@@ -182,8 +182,9 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public String saveAddRequest(String request, String idTujuan, String flagOtherBranch) {
-        logger.info("[TindakanRawatAction.saveAdd] start process >>>");
+    public CrudResponse saveAddRequest(String request, String idTujuan, String flagOtherBranch) {
+        logger.info("[ObatPoliAction.saveAddRequest] start process >>>");
+        CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
             String userArea = CommonUtil.userBranchLogin();
@@ -210,32 +211,30 @@ public class ObatPoliAction extends BaseMasterAction {
 
             ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
             try {
-
                 if (request != null && !"".equalsIgnoreCase(request)) {
                     JSONArray json = new JSONArray(request);
                     for (int i = 0; i < json.length(); i++) {
                         obatDetail = new TransaksiObatDetail();
                         JSONObject obj = json.getJSONObject(i);
-                        obatDetail.setIdObat(obj.getString("ID"));
-                        obatDetail.setQty(new BigInteger(obj.getString("Qty")));
-                        obatDetail.setJenisSatuan(obj.getString("Jenis Satuan"));
+                        obatDetail.setIdObat(obj.getString("id_obat"));
+                        obatDetail.setQty(new BigInteger(obj.getString("qty")));
+                        obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
                         obatDetailList.add(obatDetail);
                     }
                 }
 
                 obatPoliBo.saveRequest(obatPoli, obatDetailList);
+                response.setStatus("success");
+                response.setMsg("OK");
             } catch (JSONException e) {
-                logger.error("[PermintaanResepAction.saveResepPasien] Error when sabe resep obat", e);
+                logger.error("[ObatPoliAction.saveAddRequest] Error when sabe resep obat", e);
             }
-
-
-        } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[TindakanRawatAction.saveTindakanRawat] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
-            return ERROR;
+        } catch (Exception e) {
+            logger.error("[ObatPoliAction.saveAddRequest] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            response.setStatus("error");
+            response.setMsg("Error when request obat, "+e.getMessage());
         }
-        return SUCCESS;
+        return response;
     }
 
     public CrudResponse saveAddReture(String reture, String idTujuan, String idPermintaan) throws JSONException {
