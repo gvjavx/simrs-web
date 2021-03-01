@@ -57,6 +57,9 @@
         <property name="flagTunjPeralihanTunjangan">
             <column name="flag_tunj_peralihan_tunjangan" sql-type="varchar" length="2"/>
         </property>
+        <property name="flagTunjPemondokan">
+            <column name="flag_tunj_pemondokan" sql-type="varchar" length="2"/>
+        </property>
         <property name="tunjPeralihanGapok">
             <column name="tunj_peralihan_gapok" sql-type="numeric" length="15" precision="2"/>
         </property>

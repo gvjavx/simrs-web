@@ -30,6 +30,7 @@ public class ItTunjLainPegawaiEntity implements Serializable {
     private String flagTunjPeralihanGapok;
     private String flagTunjPeralihanSankhus;
     private String flagTunjPeralihanTunjangan;
+    private String flagTunjPemondokan;
     private BigDecimal tunjPeralihanGapok;
     private BigDecimal tunjPeralihanSankhus;
     private BigDecimal tunjPeralihanTunjangan;
@@ -177,5 +178,13 @@ public class ItTunjLainPegawaiEntity implements Serializable {
 
     public void setTunjPeralihanTunjangan(BigDecimal tunjPeralihanTunjangan) {
         this.tunjPeralihanTunjangan = tunjPeralihanTunjangan;
+    }
+
+    public String getFlagTunjPemondokan() {
+        return flagTunjPemondokan;
+    }
+
+    public void setFlagTunjPemondokan(String flagTunjPemondokan) {
+        this.flagTunjPemondokan = flagTunjPemondokan;
     }
 }

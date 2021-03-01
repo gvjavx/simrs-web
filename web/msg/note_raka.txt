@@ -14,6 +14,12 @@
     ADD COLUMN tunj_peralihan_sankhus numeric(15,2),
     ADD COLUMN tunj_peralihan_tunjangan numeric(15,2);
 
+-- Menambahkan field Tunjangan Pemondokan
+
+    ALTER TABLE it_hris_tunj_lain_pegawai
+    ADD COLUMN flag_tunj_pemondokan varchar(2);
+    ALTER TABLE im_branches
+    ADD COLUMN tunj_pemondokan numeric(15,2);
 
 ----------------------------------------
 ----------------------------------------

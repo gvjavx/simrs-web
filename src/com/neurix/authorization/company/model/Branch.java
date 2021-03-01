@@ -57,6 +57,16 @@ public class Branch extends BaseModel implements Serializable, Comparable<Branch
     private String isDisabled;
     private String roleName;
 
+    private BigDecimal tunjPemondokan;
+
+    public BigDecimal getTunjPemondokan() {
+        return tunjPemondokan;
+    }
+
+    public void setTunjPemondokan(BigDecimal tunjPemondokan) {
+        this.tunjPemondokan = tunjPemondokan;
+    }
+
     public String getRoleName() {
         return roleName;
     }
