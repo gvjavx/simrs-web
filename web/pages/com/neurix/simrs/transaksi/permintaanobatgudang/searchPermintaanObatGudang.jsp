@@ -278,6 +278,8 @@
                                id="cor_gudang_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
                         <div class="col-md-7">
@@ -298,56 +300,68 @@
                                id="cor_req_obat"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Tujuan</label>
-                        <div class="col-md-2">
-                            <label style="margin-top: 7px">Box</label>
-                            <input class="form-control" readonly id="req_stok_box">
-                        </div>
-                        <div class="col-md-2">
-                            <label style="margin-top: 7px">Lembar</label>
-                            <input class="form-control" readonly id="req_stok_lembar">
-                        </div>
+                        <%--<label class="col-md-3" style="margin-top: 7px"></label>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<label style="margin-top: 7px">Box</label>--%>
+                            <%--<input class="form-control" readonly id="req_stok_box">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<label style="margin-top: 7px">Lembar</label>--%>
+                            <%--<input class="form-control" readonly id="req_stok_lembar">--%>
+                        <%--</div>--%>
                         <div class="col-md-3">
-                            <label style="margin-top: 7px">Biji</label>
+                            <label style="margin-top: 7px" id="label-tujuan">Biji</label>
                             <input class="form-control" readonly id="req_stok_biji">
                         </div>
+
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Stok Sendiri</label>
-                        <div class="col-md-2">
-                            <label style="margin-top: 7px">Box</label>
-                            <input class="form-control" readonly id="req_stok_box_sendiri">
-                        </div>
-                        <div class="col-md-2">
-                            <label style="margin-top: 7px">Lembar</label>
-                            <input class="form-control" readonly id="req_stok_lembar_sendiri">
-                        </div>
+                        <%--<div class="col-md-2">--%>
+                            <%--<label style="margin-top: 7px">Box</label>--%>
+                            <%--<input class="form-control" readonly id="req_stok_box_sendiri">--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<label style="margin-top: 7px">Lembar</label>--%>
+                            <%--<input class="form-control" readonly id="req_stok_lembar_sendiri">--%>
+                        <%--</div>--%>
                         <div class="col-md-3">
-                            <label style="margin-top: 7px">Biji</label>
+                            <label style="margin-top: 7px" id="label-sendiri">Biji</label>
                             <input class="form-control" readonly id="req_stok_biji_sendiri">
                         </div>
+                        <input type="hidden" id="req_jenis_satuan" value="biji"/>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
-                        <div class="col-md-7">
-                            <s:select list="#{'biji':'Biji'}"
-                                      cssStyle="margin-top: 7px; width: 100%"
-                                      onchange="var warn = $('#war_req_jenis_satuan').is(':visible'); if (warn){$('#cor_req_jenis_satuan').show().fadeOut(3000);$('#war_req_jenis_satuan').hide()}"
-                                      id="req_jenis_satuan"
-                                      headerKey="" headerValue="[Select one]"
-                                      cssClass="form-control select2"/>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_req_jenis_satuan"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_req_jenis_satuan"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                </div>
+                <%--<div class="row">--%>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:select list="#{'biji':'Biji'}"--%>
+                                      <%--cssStyle="margin-top: 7px; width: 100%"--%>
+                                      <%--onchange="var warn = $('#war_req_jenis_satuan').is(':visible'); if (warn){$('#cor_req_jenis_satuan').show().fadeOut(3000);$('#war_req_jenis_satuan').hide()}"--%>
+                                      <%--id="req_jenis_satuan"--%>
+                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                      <%--cssClass="form-control select2"/>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_req_jenis_satuan"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_req_jenis_satuan"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jumlah Request</label>
                         <div class="col-md-7">
+                            <label style="margin-top: 7px" id="label-jumlah-request">Biji</label>
                             <input oninput="var warn =$('#war_req_qty').is(':visible'); if (warn){$('#cor_req_qty').show().fadeOut(3000);$('#war_req_qty').hide()}"
                                    style="margin-top: 7px" class="form-control" type="number" min="1"
                                    id="req_qty">
@@ -359,6 +373,8 @@
                                id="cor_req_qty"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
                         <div class="col-md-7">

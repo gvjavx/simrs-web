@@ -39,6 +39,25 @@ public class PelayananMobile implements Serializable {
     private String namaItem;
     private String jenisItem;
 
+    private String tarifAwal;
+    private String tarif;
+
+    public String getTarifAwal() {
+        return tarifAwal;
+    }
+
+    public void setTarifAwal(String tarifAwal) {
+        this.tarifAwal = tarifAwal;
+    }
+
+    public String getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(String tarif) {
+        this.tarif = tarif;
+    }
+
     public String getIdItem() {
         return idItem;
     }
