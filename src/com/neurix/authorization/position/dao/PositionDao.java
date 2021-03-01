@@ -64,7 +64,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-        criteria.addOrder(Order.desc("positionId"));
+        criteria.addOrder(Order.asc("kodering"));
 //        criteria.addOrder(Order.asc("departmentId"));
 //        criteria.addOrder(Order.asc("bagianId"));
 //        criteria.addOrder(Order.asc("kelompokId"));
@@ -79,7 +79,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("positionId", term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.desc("createdDate"))
+                .addOrder(Order.asc("kodering"))
                 .setMaxResults(1)
                 .list();
 
@@ -91,7 +91,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.ilike("positionName",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -102,7 +102,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.ilike("kodering",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -115,7 +115,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .add(Restrictions.eq("bagianId",bagian))
                 .add(Restrictions.eq("kelompokId", kelompok))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -124,7 +124,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public List<ImPosition> getListPositionSppd(String positionId) throws HibernateException {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -133,7 +133,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("positionId", positionId))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -171,7 +171,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tbranch_id is not null\n" + unit + bagian + "\n" +
                 "\tand nip is not null\n" +
                 "\tand im_position.position_id = it_hris_pegawai_position.position_id\n" +
-                "\torder by position_name";
+                "\torder by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -205,7 +205,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" + bagian + " and flag='Y'\n" +
-                "\torder by position_name";
+                "\torder by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -236,7 +236,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tdepartment_name\n" +
                 "from\n" +
                 "\tim_hris_department where flag='Y'\n" +
-                "order by department_name";
+                "order by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -271,7 +271,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
                 "order by\n" +
-                "\tposition_name";
+                "\tkodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -305,7 +305,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
                 "order by\n" +
-                "\tposition_name";
+                "\tkodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -336,7 +336,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "from\n" +
                 "\tstruktur_jabatan\n" +
                 "where\n" +
-                "\tbranch_id is not null\n" + unit + " order by position_name";
+                "\tbranch_id is not null\n" + unit + " order by kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -357,7 +357,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
                 .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOC))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -366,7 +366,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.ne("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -375,7 +375,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .add(Restrictions.eq("bagianId", CommonConstant.BAGIAN_ID_BOD_BOC))
                 .add(Restrictions.eq("kelompokId", CommonConstant.KELOMPOK_ID_BOD))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -389,7 +389,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                         )
                 )
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
@@ -421,7 +421,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 .add(Restrictions.ilike("kodering", term))
                 .add(Restrictions.eq("kelompokId", kelompok))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -458,7 +458,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 )
         );
         criteria.add(Restrictions.eq("flag", "Y"));
-        criteria.addOrder(Order.asc("positionId"));
+        criteria.addOrder(Order.asc("kodering"));
 
         List<ImPosition> results = criteria.list();
         return results;
@@ -468,7 +468,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("kelompokId", kelompok))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
 
         return results;
@@ -478,7 +478,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.eq("bagianId", id))
-                .addOrder(Order.asc("positionId"))
+                .addOrder(Order.asc("kodering"))
                 .list();
         return results;
     }
