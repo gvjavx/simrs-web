@@ -1578,6 +1578,7 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[BiodataBoImpl.saveEdit] end process <<<");
     }
 
+    @Override
     public void saveEditCaption(Biodata bean) throws GeneralBOException {
         logger.info("[BiodataBoImpl.saveEdit] start process >>>");
 
@@ -2872,6 +2873,7 @@ public class BiodataBoImpl implements BiodataBo {
         return null;
     }
 
+    @Override
     public List<Biodata> getComboBiodataWithCriteria(String query) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
@@ -3116,6 +3118,7 @@ public class BiodataBoImpl implements BiodataBo {
         return listComboBiodata;
     }
 
+    @Override
     public List<Biodata> getListOfPersonilPosition(String query) throws GeneralBOException {
         logger.info("[BiodataBoImpl.getListPersonilPosition] start process >>>");
 
@@ -3898,6 +3901,7 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[BiodataBoImpl.saveUploadImage] end process <<<");
     }
 
+    @Override
     public void saveEditPengalamanKerja(HistoryJabatanPegawai bean) throws GeneralBOException {
         logger.info("[BiodataBoImpl.saveEditPengalamanKerja] start process >>>");
 
@@ -5797,6 +5801,8 @@ public class BiodataBoImpl implements BiodataBo {
 
         return studies;
     }
+
+    @Override
     public List<Biodata> getAllListOfPersonil(String query, String branchId) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
@@ -5883,6 +5889,8 @@ public class BiodataBoImpl implements BiodataBo {
         logger.info("[BiodataBoImpl.convertEntityToModel] start process >>>");
         return result;
     }
+
+    @Override
     public String cekStatus(String nip, String noKtp)throws GeneralBOException{
         String status ="";
         ImBiodataEntity skalaGajiEntity = new ImBiodataEntity();
@@ -5935,6 +5943,7 @@ public class BiodataBoImpl implements BiodataBo {
         return jumlahAnak;
     }
 
+    @Override
     public String cekStatusPgw(String nip, String tipePegawai){
         String status = "true";
 
@@ -5962,6 +5971,7 @@ public class BiodataBoImpl implements BiodataBo {
         return status;
     }
 
+    @Override
     public String cekStatusKeluarga(String nip){
         String status = "notExits";
 
@@ -5984,6 +5994,7 @@ public class BiodataBoImpl implements BiodataBo {
         return status;
     }
 
+    @Override
     public String cekStatusJabatan(String nip, String statusJabatan){
         String status = "true";
 
@@ -6006,6 +6017,7 @@ public class BiodataBoImpl implements BiodataBo {
         return status;
     }
 
+    @Override
     public String cekJabatan(String nip){
         //RAKA-01FEB2021 ==> Merubah cara Validasi Jabatan Aktif
         String status = "false";
@@ -6051,6 +6063,7 @@ public class BiodataBoImpl implements BiodataBo {
         return status;
     }
 
+    @Override
     public String cekMutasiJabatan(String pengalamanId){
         String status = "true";
 

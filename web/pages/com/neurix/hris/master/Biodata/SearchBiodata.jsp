@@ -810,6 +810,18 @@
                         <br>
                         <center>
                             <table id="showdata" width="90%">
+                                <%--RAKA-27FEB2021==>Belum jadi, mau buat keterangan warna baris--%>
+                                <%--<tr>--%>
+                                    <%--<td>--%>
+                                        <%--<label>--%>
+                                            <%--Ket. Warna Baris :--%>
+                                            <%--<span class="border border-dark ml-md-3">   Biodata Karyawan Kantor   </span>--%>
+                                            <%--<span class="border bg-info border-dark ml-md-3">   Biodata Dokter Tamu   </span>--%>
+                                            <%--<span class="border bg-danger border-dark ml-md-3">   Sedang Cuti Diluar Tanggungan   </span>--%>
+                                        <%--</label>--%>
+                                    <%--</td>--%>
+                                <%--</tr>--%>
+                                    <%--RAKA-end--%>
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"

@@ -117,4 +117,11 @@ public interface BiodataBo extends BaseMasterBo<Biodata>{
     public void saveEditDokterKso(Biodata bean);
     public List<PersonilPosition> getListPesonilPosition(String nip);
     public String getSeqNip();
+
+    public String cekStatus(String nip, String noKtp);
+    public String cekStatusPgw(String nip, String tipePegawai);
+    public String cekStatusKeluarga(String nip);
+    public String cekStatusJabatan(String nip, String statusJabatan);
+    public String cekJabatan(String nip);
+    public String cekMutasiJabatan(String pengalamanId);
 }
