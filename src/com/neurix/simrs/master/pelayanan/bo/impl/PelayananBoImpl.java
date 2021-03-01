@@ -299,6 +299,9 @@ public class PelayananBoImpl implements PelayananBo {
             if (bean.getKodePoliVclaim() != null) {
                 hsCriteria.put("kode_poli_vclaim", bean.getKodePoliVclaim());
             }
+            if (bean.getIsNotNull() != null) {
+                hsCriteria.put("not_null", bean.getIsNotNull());
+            }
 
             List<ImSimrsPelayananEntity> entityList = new ArrayList<>();
 

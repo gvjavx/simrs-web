@@ -1807,6 +1807,19 @@ UPDATE im_functions
 SET flag = 'N'
 WHERE func_id = 2206;
 
+--REVIEW MASTER OPS 27.02.2020 sabtu menjelang weekend
+SELECT * FROM im_functions
+WHERE func_id = '2087';
+
+--CEK DULU SEBELUM UPDATE,
+--APAKAH YANG TAMPIL ADALAH "Display Tag Kelas Ruangan"
+--JIKA IYA LANJUTKAN EXECUTE DI BAWAH
+UPDATE im_functions
+SET url = '/kelasruangan/paging_displaytag_kelasruangan.action'
+WHERE func_id = '2087';
+
+
+
 
 
 

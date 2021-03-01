@@ -1474,7 +1474,7 @@
                                                         Pembayaran</label>
                                                     <div class="col-md-8">
                                                         <s:select
-                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                                list="#{'tunai':'Tunai','non_tunai':'Transfer'}"
                                                                 cssStyle="margin-top: 7px"
                                                                 id="pembayaran"
                                                                 onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"

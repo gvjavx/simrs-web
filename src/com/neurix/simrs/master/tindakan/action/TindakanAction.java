@@ -154,14 +154,12 @@ public class TindakanAction extends BaseTransactionAction {
             logger.error("[TindakanAction.save] Error when searching alat by criteria, Found problem when searching data by criteria, please inform to your admin."+ e.getMessage());
         }
 
-        String branchId = CommonUtil.userBranchLogin();
-        Tindakan data = new Tindakan();
-        if (branchId != null){
-            data.setBranchUser(branchId);
+        if (CommonUtil.userBranchLogin() != null){
+            searchTindakan.setBranchUser(CommonUtil.userBranchLogin());
         }else {
-            data.setBranchUser("");
+            searchTindakan.setBranchUser("");
         }
-        setTindakan(data);
+        setTindakan(searchTindakan);
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfsearchTindakan);
