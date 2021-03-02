@@ -704,14 +704,14 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setNipLama(person.getNipLama());
                 result.setFlagDokterKso(person.getFlagDokterKso());
                 result.setJenisPegawai(person.getJenisPegawai());
+                result.setFlagPegawaiCutiDiluarTanggungan(person.getFlagPegawaiCutiDiluarTanggungan());
+                result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
+                result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());
+
 
                 result.setPeralihanGapok(person.getPeralihanGapok());
                 result.setPeralihanSankhus(person.getPeralihanSankhus());
                 result.setPeralihanTunjangan(person.getPeralihanTunjangan());
-
-                result.setFlagPegawaiCutiDiluarTanggungan(person.getFlagPegawaiCutiDiluarTanggungan());
-                result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
-                result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());
 
                 listOfResult.add(result);
             }
@@ -1937,4 +1937,6 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         return personilPositions;
     }
+
+    private itTunjanganLain
 }
