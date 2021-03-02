@@ -1041,7 +1041,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label><small>Level :</small></label>
+                                                    <label><small>Level <span style="color:red;">*</span>:</small></label>
                                                 </td>
                                                 <td id="golongan1Group">
                                                     <table>
