@@ -696,7 +696,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                     notif.setNoRequest("");
                     notif.setTipeNotifId("umum");
                     notif.setTipeNotifName(("Pemberitahuan"));
-                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
+                    notif.setNote("[getAllDataFromMesin] Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
                     notif.setCreatedWho("Cron");
                     notif.setTo("self");
 
@@ -720,7 +720,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                     notif.setNoRequest("");
                     notif.setTipeNotifId("umum");
                     notif.setTipeNotifName(("Pemberitahuan"));
-                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
+                    notif.setNote("[getDataFromMesin] Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
                     notif.setCreatedWho("Cron");
                     notif.setTo("self");
 

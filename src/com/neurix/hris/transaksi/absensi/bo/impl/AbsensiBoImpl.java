@@ -2598,7 +2598,12 @@ public class AbsensiBoImpl implements AbsensiBo {
         hsCriteriaMesin.put("flag", "Y");
 
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
-        imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
+        try {
+            imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
+        }catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving Data Mesin Absensi using criteria, " + e.getMessage());
+        }
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
             String urlParameters = "sn="+mesin.getMesinSn();
             String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
@@ -2664,10 +2669,21 @@ public class AbsensiBoImpl implements AbsensiBo {
                 hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
                 hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
                 hsCriteria.put("flag", "Y");
-                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                try {
+                    mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                }catch (HibernateException e){
+                    logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Absensi Detai using Criteria, " + e.getMessage());
+                }
                 if (mesinAbsensiDetailEntityList.size() == 0) {
                     MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    String mesinAbsensiDetailId;
+                    try{
+                        mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    }catch (HibernateException e){
+                        logger.error("[AbsensiBoImpl.getAlldataFromMesin] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when retrieving next ID, " + e.getMessage());
+                    }
                     String userLogin = bean.getCreatedWho();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
                     mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
