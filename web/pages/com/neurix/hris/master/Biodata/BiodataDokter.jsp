@@ -1180,7 +1180,7 @@
                             <s:a action="ksoToKaryawan_biodata.action" cssClass="btn btn-info" id="kso2karyawan">
                                 <s:param name="id"><s:property value="biodata.nip" /></s:param>
                                 <s:param name="flag"><s:property value="biodata.flag" /></s:param>
-                                <i class="fa fa-user"></i>  Jadikan Karyawan Tetap
+                                <i class="fa fa-user"></i>  Jadikan Karyawan Kantor
                             </s:a>
                         </s:if>
                     </s:if>

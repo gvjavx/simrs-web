@@ -77,7 +77,13 @@
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='') {
+            if(tipePegawai == 'TP01') {
+                var level               = document.getElementById("golongan1").value;
+            } else {
+                var level               = document.getElementById("golongan3").value;
+            }
+
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && level !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -107,6 +113,9 @@
                 }
                 if (tipePegawai == '') {
                     msg += 'Field <strong>Tipe Pegawai</strong> is required.' + '<br/>';
+                }
+                if (level == '') {
+                    msg += 'Field <strong>Level</strong> is required.' + '<br/>';
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
@@ -1098,7 +1107,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif  :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
