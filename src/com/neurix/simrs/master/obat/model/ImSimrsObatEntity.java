@@ -36,6 +36,15 @@ public class ImSimrsObatEntity implements Serializable{
     private BigInteger minStok;
     private String flagBpjs;
     private String idPabrikObat;
+    private String nomorProduksi;
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
 
     public String getIdPabrikObat() {
         return idPabrikObat;

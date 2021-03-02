@@ -106,6 +106,15 @@ public class TransaksiObatDetail extends BaseModel {
     private List<ItSimrsKeteranganResepEntity> keteranganResepEntityList = new ArrayList<>();
     private String idPabrikObat;
     private BigInteger idBatch;
+    private String nomorProduksi;
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
 
     public BigInteger getIdBatch() {
         return idBatch;

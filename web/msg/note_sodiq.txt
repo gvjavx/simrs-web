@@ -1819,6 +1819,15 @@ SET url = '/kelasruangan/paging_displaytag_kelasruangan.action'
 WHERE func_id = '2087';
 
 
+--BULAN MARET
+--SENIN, MARI ASAR 01.02.2021
+ALTER TABLE mt_simrs_transaksi_obat_detail
+ADD COLUMN nomor_produksi VARCHAR(100);
+
+ALTER TABLE im_simrs_obat
+ADD COLUMN nomor_produksi VARCHAR(100);
+
+
 
 
 

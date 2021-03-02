@@ -373,7 +373,7 @@
                 <div id="body-img">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -430,6 +430,7 @@
             }
         })
     }
+
     function showDetailListObat(idpermintaanPo, noBatch, noFaktur, tglFaktur, noInvoice, noDo, img){
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#det_no_faktur').text(noFaktur);
@@ -550,9 +551,9 @@
                 $.each(list, function (i, item) {
                     var id = 'carousel-example-generic_'+item.idItem;
                     str += '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5><div id="'+id+'" class="carousel slide" data-ride="carousel">\n' +
-                        '<ol class="carousel-indicators" id="li_'+item.idItem+'">\n' +
+                        '<ol class="carousel-indicators" id="li_'+item.idItem+item.jenisNomor+'">\n' +
                         '</ol>\n' +
-                        '<div class="carousel-inner" id="item_'+item.idItem+'">\n' +
+                        '<div class="carousel-inner" id="item_'+item.idItem+item.jenisNomor+'">\n' +
                         '</div>\n' +
                         '<a class="left carousel-control" href="#'+id+'" data-slide="prev">\n' +
                         '    <span class="fa fa-angle-left"></span>\n' +
@@ -561,7 +562,7 @@
                         '    <span class="fa fa-angle-right"></span>\n' +
                         '</a>\n' +
                         '</div><hr>';
-                    showImg(item.idItem);
+                    showImg(item.idItem, item.jenisNomor);
                 });
             }else{
                 str = '<b style="text-align: center">Foto tidak ada..!</b>'
@@ -570,7 +571,7 @@
         });
     }
 
-    function showImg(idItem){
+    function showImg(idItem, jenis){
         PermintaanVendorAction.getListImg(idItem, function (listimg) {
             var str = '';
             var li = '';
@@ -588,8 +589,8 @@
                     '</div>';
                 li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
             });
-            $("#item_"+idItem).html(str);
-            $("#li_"+idItem).html(li);
+            $("#item_"+idItem+jenis).html(str);
+            $("#li_"+idItem+jenis).html(li);
         });
     }
 

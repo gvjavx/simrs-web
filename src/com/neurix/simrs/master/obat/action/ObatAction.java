@@ -197,6 +197,7 @@ public class ObatAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", obatList);
+        setObat(obat);
 
         logger.info("[ObatAction.search] END <<<<<<<");
         return "search";
@@ -748,12 +749,13 @@ public class ObatAction extends BaseMasterAction {
         List<Obat> obatList = new ArrayList<>();
 
         if (idObat != null && !"".equalsIgnoreCase(idObat)) {
-
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
             Obat obat = new Obat();
             obat.setIdObat(idObat);
-            obat.setBranchId(CommonUtil.userBranchLogin());
+            if(!"KP".equalsIgnoreCase(CommonUtil.userBranchLogin()) && !"01".equalsIgnoreCase(CommonUtil.userBranchLogin())){
+                obat.setBranchId(CommonUtil.userBranchLogin());
+            }
 
             try {
                 obatList = obatBo.getListObatDetail(obat);

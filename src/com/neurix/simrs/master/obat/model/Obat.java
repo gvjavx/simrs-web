@@ -96,6 +96,53 @@ public class Obat extends BaseModel {
     private String idJenisSub;
     private BigInteger qtyAllBiji;
 
+    private String nomorProduksi;
+    private String status;
+    private String msg;
+
+    private String idPabrikObat;
+    private String namaPabrikObat;
+
+    public String getIdPabrikObat() {
+        return idPabrikObat;
+    }
+
+    public void setIdPabrikObat(String idPabrikObat) {
+        this.idPabrikObat = idPabrikObat;
+    }
+
+    public String getNamaPabrikObat() {
+        return namaPabrikObat;
+    }
+
+    public void setNamaPabrikObat(String namaPabrikObat) {
+        this.namaPabrikObat = namaPabrikObat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public void setMsg(String msg) {
+        this.msg = msg;
+    }
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
+
     public BigInteger getQtyAllBiji() {
         return qtyAllBiji;
     }
