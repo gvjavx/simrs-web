@@ -283,7 +283,7 @@
                     <div class="col-md-4">
                         <div class="form-group">
                             <label>NIK</label>
-                            <input class="form-control" id="add_nik" oninput="$(this).css('border','')">
+                            <input type="number" class="form-control" id="add_nik" oninput="$(this).css('border','')">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Nama</label>
@@ -299,11 +299,16 @@
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Tempat Lahir</label>
-                            <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border','')">
+                            <input class="form-control" id="add_tempat_lahir" oninput="$(this).css('border',''); setKotaKab(this.id)">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Tanggal Lahir</label>
-                            <input class="form-control datepicker datemask" id="add_tanggal_lahir" onchange="$(this).css('border','')">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input style="cursor: pointer" readonly placeholder="yyyy-mm-dd" class="form-control datepicker datemask" id="add_tanggal_lahir" onchange="$(this).css('border','')">
+                            </div>
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Agama</label>
@@ -332,7 +337,8 @@
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">No Telp</label>
-                            <input class="form-control" id="add_no_telp">
+                            <input class="form-control" id="add_no_telp"  data-inputmask="'mask': ['9999-9999-9999']"
+                                   data-mask="">
                         </div>
                         <div class="form-group">
                             <label style="margin-top: 7px">Provinsi</label>
@@ -379,7 +385,7 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_add" onclick="saveNewPasien()"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_add"><i
@@ -405,7 +411,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
                 </button>
             </div>
         </div>

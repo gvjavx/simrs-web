@@ -104,6 +104,33 @@ public class TransaksiObatDetail extends BaseModel {
     private List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
     private List<ItSimrsRiwayatTindakanEntity> biayaTambahanList = new ArrayList<>();
     private List<ItSimrsKeteranganResepEntity> keteranganResepEntityList = new ArrayList<>();
+    private String idPabrikObat;
+    private BigInteger idBatch;
+    private String nomorProduksi;
+
+    public String getNomorProduksi() {
+        return nomorProduksi;
+    }
+
+    public void setNomorProduksi(String nomorProduksi) {
+        this.nomorProduksi = nomorProduksi;
+    }
+
+    public BigInteger getIdBatch() {
+        return idBatch;
+    }
+
+    public void setIdBatch(BigInteger idBatch) {
+        this.idBatch = idBatch;
+    }
+
+    public String getIdPabrikObat() {
+        return idPabrikObat;
+    }
+
+    public void setIdPabrikObat(String idPabrikObat) {
+        this.idPabrikObat = idPabrikObat;
+    }
 
     public List<ItSimrsKeteranganResepEntity> getKeteranganResepEntityList() {
         return keteranganResepEntityList;

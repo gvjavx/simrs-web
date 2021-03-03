@@ -201,6 +201,7 @@ public class ProfesiBoImpl implements ProfesiBo {
 
                 imProfesiEntity.setProfesiId(profesiId);
                 imProfesiEntity.setProfesiName(bean.getProfesiName());
+                imProfesiEntity.setTipeProfesi(bean.getTipeProfesi());
                 imProfesiEntity.setFlag(bean.getFlag());
                 imProfesiEntity.setAction(bean.getAction());
                 imProfesiEntity.setCreatedWho(bean.getCreatedWho());
@@ -239,6 +240,9 @@ public class ProfesiBoImpl implements ProfesiBo {
             }
             if (searchBean.getProfesiName() != null && !"".equalsIgnoreCase(searchBean.getProfesiName())) {
                 hsCriteria.put("profesi_name", searchBean.getProfesiName());
+            }
+            if (searchBean.getTipeProfesi() != null && !"".equalsIgnoreCase(searchBean.getTipeProfesi())) {
+                hsCriteria.put("tipe_profesi", searchBean.getTipeProfesi());
             }
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {

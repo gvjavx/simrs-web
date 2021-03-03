@@ -256,13 +256,14 @@
                     </tr>
                 </table>
                 <div class="box">
-                    <table class="table table-bordered" id="tabel_approve">
+                    <table class="table table-bordered" id="tabel_approve" style="font-size: 12px">
                         <thead>
                         <td>ID Barang</td>
+                        <td align="center">Pabrik</td>
+                        <td align="center">Merk</td>
                         <td>Expired Date</td>
-                        <td align="center">Qty BX</td>
-                        <td align="center">Qty LB</td>
-                        <td align="center">Qty BJ</td>
+                        <%--<td align="center">Qty LB</td>--%>
+                        <td align="center">Stok Biji</td>
                         <td width="25%" align="center">Scan ID Barang</td>
                         <td width="12%" align="center">Qty AP</td>
                         <td>Jenis Satuan</td>
@@ -416,9 +417,9 @@
                                 '<td>' + idBarang +
                                 '<input type="hidden" id=id_barang' + i + ' value='+item.idBarang+'>'+
                                 '</td>' +
+                                '<td>' + item.namaPabrikObat + '</td>' +
+                                '<td>' + item.merk + '</td>' +
                                 '<td>' + dateFormat + '</td>' +
-                                '<td align="center">' + qtyBox + '</td>' +
-                                '<td align="center">' + qtyLembar + '</td>' +
                                 '<td align="center">' + qtyBiji + '</td>' +
                                 '<td>' +
                                 '<div class="input-group">' +

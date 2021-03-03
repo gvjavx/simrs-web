@@ -454,7 +454,7 @@
         var lamaLembur=0;
         dwr.engine.setAsync(false);
         LemburAction.cekLembur(nip,tglAwal,function (data) {
-            lamaLembur=lama+data;
+            lamaLembur = parseFloat(lama) + parseFloat(data);
         });
         if (lamaLembur>3){
             if (confirm('Lembur ini sudah lebih dari 3 Jam '+'( '+lamaLembur+' Jam ) , Lanjutkan ? ')) {

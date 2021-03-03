@@ -271,6 +271,7 @@ public class DokterAction extends BaseMasterAction {
 
         Pelayanan pelayanan = new Pelayanan();
         pelayanan.setFlag("Y");
+        pelayanan.setIsNotNull("Y");
 
         List<Pelayanan> listOfPelayanan = new ArrayList<Pelayanan>();
         try {

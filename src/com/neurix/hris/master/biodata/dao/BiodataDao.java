@@ -92,16 +92,16 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pengalaman_kerja')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%03d", iter.next());
-
-        return "PK"+sId;
+        String output = "PK"+sId;
+        return output;
     }
 
     public String getNextPersonalHistoryId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_personal_history')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%02d", iter.next());
-
-        return "H"+sId;
+        String output = "H"+sId;
+        return output;
     }
 
     public List<ImBiodataEntity> getListPersonal() throws HibernateException {
@@ -1404,7 +1404,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                   bagian2.nama_bagian,\n" +
                 "                   pegawai.shift,\n" +
                 "                   pegawai.tanggal_aktif, \n" +
-                "                   tipe.tipe_pegawai_name\n" +
+                //RAKA-24FEB2021==>Menambahkan tanggal masuk
+                "                   tipe.tipe_pegawai_name,\n" +
+                "                   pegawai.tanggal_masuk\n" +
                 "                                FROM im_hris_pegawai pegawai\n" +
                 "                                LEFT JOIN it_hris_pegawai_position posisi ON posisi.nip = pegawai.nip  \n" +
                 "                                LEFT JOIN im_branches branch ON branch.branch_id = posisi.branch_id   \n" +
@@ -1414,7 +1416,9 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "                                LEFT JOIN im_hris_position_bagian bagian2 ON position.bagian_id = bagian2.bagian_id\n" +
                 "                                LEFT JOIN im_hris_position_bagian bagian3 ON position.bagian_id = bagian3.bagian_id\n" +
                 "                                LEFT JOIN im_hris_tipe_pegawai tipe ON tipe.tipe_pegawai_name = pegawai.tipe_pegawai\n" +
-                "                                WHERE pegawai.flag = 'Y'  \n" +
+                //RAKA-24FEB2021==>Hanya mengambil karyawan non-KSO
+                "                                WHERE pegawai.flag = 'Y'  AND pegawai.flag_dokter_kso = 'N'\n" +
+                //RAKA-end
                 "                                AND posisi.flag = 'Y'  \n" +searchBranchId+searchDivisiId+searchBagianId+searchNip+" ORDER BY posisi.branch_id ASC,position.department_id ASC,position.bagian_id ASC,position.position_id ASC";
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -1450,6 +1454,10 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             if (row[14] != null){
                 result.setTanggalAktif((Date) row[14]);
             }
+            if (row[16] !=null){
+                result.setTanggalMasuk((Date) row[16]);
+            }
+            //RAKA-end
 
             if (!bagianId.equalsIgnoreCase((""))){
                 if (result.getBagianId().equalsIgnoreCase(bagianId)){
@@ -1892,7 +1900,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "pp.personil_position_id, \n" +
                 "pp.nip, \n" +
                 "p.department_id," +
-                "pp.flag \n" +
+                "pp.flag, \n" +
+                "pr.tipe_profesi \n" +
                 "FROM it_hris_pegawai_position pp \n" +
                 "INNER JOIN im_position p ON p.position_id = pp.position_id\n" +
                 "LEFT JOIN im_hris_profesi_pegawai pr ON pr.profesi_id = pp.profesi_id\n" +
@@ -1922,6 +1931,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             personilPosition.setNip(obj[10] == null ? "" : obj[10].toString());
             personilPosition.setDivisiId(obj[11] == null ? "" : obj[11].toString());
             personilPosition.setFlag(obj[12] == null ? "" : obj[12].toString());
+            personilPosition.setTipeProfesi(obj[13] == null ? "" : obj[13].toString());
             personilPositions.add(personilPosition);
         }
 

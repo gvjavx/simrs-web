@@ -356,6 +356,7 @@
                 $('#kunjungan_val').val(null);
                 $('#paket_perusahaan').val(null);
                 $('#paket').val(null);
+                $('#paket').attr("disabled", false);
                 $('#dokter').val(null);
                 $('#nama_dokter').val(null);
                 $('#id_lab').val(null);
@@ -508,6 +509,8 @@
             $('#surat_polisi, #surat_rujuk').val(null);
             $('#warning_pasien').hide();
             $('#form_vaksin').hide();
+            $('#paket').attr("disabled", false);
+            $('#paket').val(null);
         }
 
         function formatRupiah2(angka) {
@@ -1471,7 +1474,7 @@
                                                         Pembayaran</label>
                                                     <div class="col-md-8">
                                                         <s:select
-                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                                list="#{'tunai':'Tunai','non_tunai':'Transfer'}"
                                                                 cssStyle="margin-top: 7px"
                                                                 id="pembayaran"
                                                                 onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
@@ -2299,7 +2302,6 @@
                     option += "<option value='" + item.idPaket + "|" + item.idPelayanan + "|" + item.tarif + "'>" + item.namaPaket + "</option>";
                 });
                 $('#paket').html(option);
-                console.log(option);
             } else {
                 $('#paket').html(option);
             }

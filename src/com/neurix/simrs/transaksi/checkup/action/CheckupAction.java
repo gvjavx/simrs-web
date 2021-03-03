@@ -1550,7 +1550,7 @@ public class CheckupAction extends BaseMasterAction {
         pelayanan.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            pelayananList = pelayananBo.getByCriteria(pelayanan);
+            pelayananList = pelayananBo.getListPelayananByTipe("gudang_obat", CommonUtil.userBranchLogin());
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());

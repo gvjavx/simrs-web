@@ -1766,7 +1766,7 @@
 </div>
 
 <div class="modal fade" id="modal-resep-head">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1779,8 +1779,8 @@
                     <p id="msg_resep"></p>
                 </div>
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Apotek</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Apotek</label>
+                    <div class="col-md-9">
                         <s:action id="initApotek" namespace="/checkup"
                                   name="getComboApotek_checkup"/>
                         <s:select cssStyle="margin-top: 7px; width: 100%"
@@ -1794,8 +1794,10 @@
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Kategori</label>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Kategori</label>
+                    <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_jenis_obat">
                             <option value="">[select one]</option>
@@ -1807,8 +1809,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Nama Obat</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                    <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_nama_obat">
                             <option value="">[select one]</option>
@@ -1821,8 +1823,10 @@
                         <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                         <input type="hidden" id="val-kronis"/>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Stok Obat</label>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                    <div class="col-md-9">
                         <div class="input-group" style="margin-top: 7px;">
                             <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
                             <div class="input-group-addon">
@@ -1832,12 +1836,12 @@
                     </div>
                     <input type="hidden" id="h-qty-default"/>
                 </div>
-                <div class="row">
-                    <div id="obat-serupa" style="background-color: #fff4f0; height:100px; padding-top:5px; margin-top:5px">
+                <div id="obat-serupa" style="background-color: #fff4f0; height:100px; padding-top:5px; margin-top:5px">
+                    <div class="row">
                         <label class="col-md-12" style="color: black"><b class="blink_me">Obat Kandungan Serupa</b></label>
                         <input type="hidden" value="N" id="flag-obat-serupa">
-                        <label class="col-md-2" style="margin-top: 7px">Nama Obat</label>
-                        <div class="col-md-4">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-9">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="resep_nama_obat_serupa">
                                 <option value="">[select one]</option>
@@ -1848,8 +1852,10 @@
                                   id="cor_rep_obat_serupa"><i class="fa fa-check"></i> correct</span>
                             <span style="margin-top: 17px; display: none;" id="label-kronis-serupa"><label class="label label-warning" >Obat Kronis</label></span>
                         </div>
-                        <label class="col-md-2" style="margin-top: 7px">Stok Obat</label>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                        <div class="col-md-9">
                             <div class="input-group" style="margin-top: 7px;">
                                 <input class="form-control" type="number" min="1" id="resep_stok_biji_serupa" readonly>
                                 <div class="input-group-addon">
@@ -1859,23 +1865,24 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Jenis Satuan</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                    <div class="col-md-9">
                         <s:select list="#{'lembar':'Lembar','box':'Box'}"
                                   cssStyle="margin-top: 7px; width: 100%"
                                   onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)"
                                   id="resep_jenis_satuan"
                                   headerKey="biji" headerValue="Biji"
-                                  cssClass="form-control select2"/>
+                                  cssClass="form-control select2" disabled="true"/>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_jenis_satuan"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Jumlah</label>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
+                    <div class="col-md-9">
                         <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
                                style="margin-top: 7px;" value="1" class="form-control" type="number" min="1"
                                id="resep_qty">
@@ -1886,8 +1893,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Obat Racik ?</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
+                    <div class="col-md-9">
                         <div class="form-check" style="margin-top: 7px;">
                             <input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">
                             <label for="racik_racik"></label> Ya
@@ -1897,15 +1904,10 @@
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Jenis Resep</label>
-                    <div class="col-md-4">
-                        <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
-                        </select>
-                    </div>
                 </div>
                 <div class="row" id="form-nama-racik" style="display: none">
-                    <label class="col-md-2" style="margin-top: 7px;">Nama Racik</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
+                    <div class="col-md-9">
                         <div class="input-group" style="margin-top: 7px;">
                             <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
                                    class="form-control" type="text"
@@ -1921,8 +1923,8 @@
                     </div>
                 </div>
                 <div class="row" id="form-hari" style="display: none">
-                    <label class="col-md-2" style="margin-top: 7px; font-size:12px">Pengambilan(Hari)</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px; font-size:12px">Pengambilan(Hari)</label>
+                    <div class="col-md-9">
                         <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_hari').show().fadeOut(3000);$('#war_rep_hari').hide()}"
                                style="margin-top: 7px; width: 40%;" value="7" class="form-control" type="number" min="1"
                                id="hari-kronis">
@@ -1930,6 +1932,13 @@
                               id="war_rep_hari"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
+                    <div class="col-md-9">
+                        <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
+                        </select>
                     </div>
                 </div>
                 <hr/>
@@ -1962,7 +1971,7 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px">
-                    <div class="col-md-offset-2 col-md-8">
+                    <div class="col-md-12">
                         <table class="table table-bordered" style="font-size: 14px" id="table_keterangan">
                             <thead>
                             <tr>
@@ -1984,7 +1993,7 @@
                 </div>
                 <hr/>
                 <div class="row" style="margin-top: -10px">
-                    <div class="col-md-offset-2 col-md-7">
+                    <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                         </button>
                         <button class="btn btn-danger" onclick="resetAll()"><i
@@ -2018,7 +2027,7 @@
                 </div>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label><b>Total Harga</b></label>
                             <div class="input-group">
                                 <div class="input-group-addon">
@@ -2027,10 +2036,7 @@
                                 <input class="form-control" id="total_harga_obat" readonly>
                             </div>
                         </div>
-                        <div class="col-md-offset-2 col-md-2">
-                            <button onclick="removePaint('ttd_canvas')" style="margin-left: 80px; margin-top: 21px" class="btn btn-danger"><i class="fa fa-trash"></i> Clear</button>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <span style="margin-left: 10px"><b>TTD Dokter</b></span>
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px; display: none">
                                 <div class="col-md-1">
@@ -2044,6 +2050,7 @@
                                 </div>
                             </div>
                             <canvas onmouseover="paintTtd('ttd_canvas')" style="margin-top: 2px" class="paint-canvas" id="ttd_canvas" width="250" height="200"></canvas>
+                            <button onclick="removePaint('ttd_canvas')" style="margin-top: -8px; margin-right: 5px" class="btn btn-danger pull-right"><i class="fa fa-trash"></i> Clear</button>
                         </div>
                     </div>
                 </div>
