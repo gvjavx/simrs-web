@@ -708,11 +708,6 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
                 result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());
 
-
-                result.setPeralihanGapok(person.getPeralihanGapok());
-                result.setPeralihanSankhus(person.getPeralihanSankhus());
-                result.setPeralihanTunjangan(person.getPeralihanTunjangan());
-
                 listOfResult.add(result);
             }
         }
@@ -1937,6 +1932,4 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         return personilPositions;
     }
-
-    private itTunjanganLain
 }

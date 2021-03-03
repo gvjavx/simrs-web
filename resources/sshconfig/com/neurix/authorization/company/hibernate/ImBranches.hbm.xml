@@ -159,7 +159,7 @@
         </property>
 
         <property name="tunjPemondokan">
-            <column name="tunjangan_pemondokan" sql-type="numeric" length="15" precision="2"/>
+            <column name="tunj_pemondokan" sql-type="numeric" length="15" precision="2"/>
         </property>
 
         <set name="imAreasBranchesUsers" inverse="true" lazy="true" where="flag='Y'">

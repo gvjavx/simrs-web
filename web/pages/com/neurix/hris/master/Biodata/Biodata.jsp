@@ -1642,10 +1642,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.tunjPeralihanGapok" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.tunjPeralihanGapok" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" required="true" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1670,10 +1670,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.tunjPeralihanSankhus" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.tunjPeralihanSankhus" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" required="true" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -1698,12 +1698,29 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.tunjPeralihanTunjangan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.tunjPeralihanTunjangan" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" required="true" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Tunj.Pemondokan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <input type="checkbox" id="tunjPemondokan" class="checkZakat" disabled onchange="cekTunjPemondokan()" />
+                                                            <s:textfield cssStyle="display: none" id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <input type="checkbox" id="tunjPemondokan" class="checkZakat" onchange="cekTunjPemondokan()" />
+                                                            <s:hidden id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
+                                                        </s:else>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -6219,6 +6236,14 @@
             $("#flagPeralihanTunjangan").val("N");
             $("#nomTunjPeralihanTunjangan").val("");
             $("#nomTunjPeralihanTunjangan").hide();
+        }
+    }
+
+    window.cekTunjPemondokan = function () {
+        if (document.getElementById("tunjPemondokan").checked == true) {
+            $("#flagTunjPemondokan").val("Y");
+        } else {
+            $("#flagTunjPemondokan").val("N");
         }
     }
 
