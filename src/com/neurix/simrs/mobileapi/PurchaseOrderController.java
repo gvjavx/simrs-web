@@ -535,12 +535,12 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 //                        transaksiObatMobile.setQtyBox(item.getQtyBox().toString());
 //                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
 //                        transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());
-                            transaksiObatMobile.setQty(item.getQty().toString());
-                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox().toString());
-                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar().toString());
-                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
+                            transaksiObatMobile.setQty(item.getQty().toString() !=  null ? item.getQty().toString() : "0");
+                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox().toString() != null ? item.getLembarPerBox().toString() : "0");
+                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar().toString() != null ? item.getBijiPerLembar().toString() : "0");
+//                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
 //                        transaksiObatMobile.setAverageHargaLembar(item.getAverageHargaLembar().toString());
-//                        transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
+                        transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
                             transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
                             transaksiObatMobile.setJenisSatuan(item.getJenisSatuan());
                             transaksiObatMobile.setIdPabrik(item.getIdPabrik());
