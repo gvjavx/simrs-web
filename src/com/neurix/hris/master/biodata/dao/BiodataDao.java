@@ -530,7 +530,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select\n" +
                 "\titPosisi.branch_id,\n" +
                 "\tdivisi.department_id,\n" +
                 "\titPosisi.position_id,\n" +
