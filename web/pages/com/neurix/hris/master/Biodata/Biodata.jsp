@@ -76,8 +76,9 @@
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
+            var level               = document.getElementById("golongan1").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='') {
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && level !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -95,30 +96,42 @@
                 }
                 if (namaPegawai == '') {
                     msg += 'Field <strong>Nama </strong> is required.' + '<br/>';
+                    $("#namaPegawai1").css("background","lightcoral");
                 }
                 if (noKtp == '') {
                     msg += 'Field <strong>No KTP</strong> is required.' + '<br/>';
+                    $("#noKtp1").css("background","lightcoral");
                 }
                 if (tanggalLahir == '') {
                     msg += 'Field <strong>Tanggal Lahir</strong> is required.' + '<br/>';
+                    $("#tanggalLahir1").css("background","lightcoral");
                 }
                 if (tempatLahir == '') {
                     msg += 'Field <strong>Tempat Lahir</strong> is required.' + '<br/>';
+                    $("#tempatLahir1").css("background","lightcoral");
                 }
                 if (tipePegawai == '') {
                     msg += 'Field <strong>Tipe Pegawai</strong> is required.' + '<br/>';
+                    $("#tipePegawai1").css("background","lightcoral");
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                    $("#branch1").css("background","lightcoral");
                 }
                 /*if (divisi == '') {
                  msg += 'Field <strong>divisi</strong> is required.' + '<br/>';
                  }*/
                 if (statusPegawai == '') {
                     msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
+                    $("#statusPegawai1").css("background","lightcoral");
                 }
                 if (tglMasuk == '') {
-                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Tanggal Masuk / Kontrak</strong> is required.' + '<br/>';
+                    $("#tanggalMasuk").css("background","lightcoral");
+                }
+                if (level == '') {
+                    msg += 'Field <strong>Level</strong> is required.' + '<br/>';
+                    $("#golongan1").css("background","lightcoral");
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -1041,7 +1054,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label><small>Level :</small></label>
+                                                    <label><small>Level <span style="color:red;">*</span>:</small></label>
                                                 </td>
                                                 <td id="golongan1Group">
                                                     <table>
