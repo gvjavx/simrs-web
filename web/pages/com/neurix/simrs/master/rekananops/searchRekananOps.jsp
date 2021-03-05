@@ -68,22 +68,22 @@
                                         <table>
 
                                             <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nama rekanan :</small></label>
+                                                <td width="30%">
+                                                    <label class="control-label"><small>Nama Rekanan </small></label>
                                                 </td>
                                                 <td width="70%">
                                                     <table>
                                                         <s:action id="initComboRekanan" namespace="/rekananops" name="initComboRekanan_rekananops"/>
                                                         <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="rekananOps.idRekananOps"
                                                         listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                                        cssClass="form-control select2" cssStyle="width: 100%"/>
                                                     </table>
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
+                                                    <label class="control-label"><small>Flag </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -112,7 +112,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add RekananOps
+                                                            Add Rekanan OPS
                                                         </sj:a>
                                                     </td>
                                                     <td>
@@ -150,8 +150,8 @@
                                                         </sj:dialog>
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="440" width="600" autoOpen="false"
-                                                                   title="RekananOps ">
+                                                                   height="300" width="600" autoOpen="false"
+                                                                   title="Rekanan OPS ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -193,10 +193,10 @@
                                                                 </s:if>
                                                             </display:column>
                                                             <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
-                                                            <display:column property="idRekananOps" sortable="true" title="id RekananOps" />
-                                                            <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
+                                                            <display:column property="idRekananOps" sortable="true" title="ID Rekanan OPS" />
+                                                            <display:column property="namaRekanan" sortable="true" title="Nama Rekanan OPS" />
 
-                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <display:column property="action" sortable="true" title="Action"  />
                                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />

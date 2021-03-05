@@ -71,28 +71,36 @@
                         <div class="form-group">
                             <s:form id="stokForm" method="post" namespace="/stokobat"
                                     action="searchStok_stokobat.action" theme="simple" cssClass="form-horizontal">
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="id_pasien" cssStyle="margin-top: 7px"--%>
-                                                     <%--name="obatPoli.idObat" required="false"--%>
-                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Obat</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
+                                                     name="obatPoli.idObat" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Barang</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_barang" cssStyle="margin-top: 7px"
+                                                     name="obatPoli.idBarang" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
-                                        <%--<s:textfield id="nama_pasien" name="obatPoli.namaObat"--%>
-                                                     <%--required="false" readonly="false"--%>
-                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
-                                            <s:action id="initComboObatPoli" namespace="/stokobat"
-                                                      name="getListObatPoli_stokobat"/>
-                                            <s:select cssStyle="border-radius: 4px; width: 100%"
-                                                      list="#initComboObatPoli.listOfObatPoli" id="nama_obat"
-                                                      name="obatPoli.idObat" listKey="idObat"
-                                                      listValue="namaObat"
-                                                      headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control select2"/>
+                                        <s:textfield id="nama_obat" name="obatPoli.namaObat"
+                                                     required="false" readonly="false"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
+                                            <%--<s:action id="initComboObatPoli" namespace="/stokobat"--%>
+                                                      <%--name="getListObatPoli_stokobat"/>--%>
+                                            <%--<s:select cssStyle="border-radius: 4px; width: 100%"--%>
+                                                      <%--list="#initComboObatPoli.listOfObatPoli" id="nama_obat"--%>
+                                                      <%--name="obatPoli.idObat" listKey="idObat"--%>
+                                                      <%--listValue="namaObat"--%>
+                                                      <%--headerKey="" headerValue="[Select one]"--%>
+                                                      <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
                                 <br>
@@ -172,19 +180,21 @@
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>ID Obat</td>
                                 <td>ID Barang</td>
                                 <td>Nama Obat</td>
                                 <td>Expired Date</td>
-                                <td align="center">Qty Box</td>
-                                <td align="center">Qty Lembar</td>
-                                <td align="center">Qty Biji</td>
+                                <%--<td align="center">Qty Lembar</td>--%>
+                                <%--<td align="center">Qty Biji</td>--%>
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
+                                <td align="center">Stok Biji</td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" status="listOfRawatInap">
                                 <tr>
+                                    <td><s:property value="idObat"/></td>
                                     <td><s:property value="idBarang"/></td>
                                     <td><s:property value="namaObat"/></td>
                                     <td>
@@ -193,11 +203,11 @@
                                             document.write(converterDate(new Date(tgl)));
                                         </script>
                                     </td>
-                                    <td align="center"><s:property value="qtyBox"/></td>
-                                    <td align="center"><s:property value="qtyLembar"/></td>
-                                    <td align="center"><s:property value="qtyBiji"/></td>
+                                    <%--<td align="center"><s:property value="qtyBox"/></td>--%>
+                                    <%--<td align="center"><s:property value="qtyLembar"/></td>--%>
                                     <td align="center"><s:property value="lembarPerBox"/></td>
                                     <td align="center"><s:property value="bijiPerLembar"/></td>
+                                    <td align="center"><s:property value="qtyBiji"/></td>
                                 </tr>
                             </s:iterator>
                             </tbody>

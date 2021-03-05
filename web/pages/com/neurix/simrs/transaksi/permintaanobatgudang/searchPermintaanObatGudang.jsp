@@ -877,7 +877,7 @@
     function confirm(idApp, idPermin, tanggal, tujuan) {
         $('#save_req_detail').show();
         $('#load_req_detail').hide();
-        $('#judul_req').html('Konfirmasi request diterima');
+        $('#judul_req').html('Konfirmasi Request Diterima');
         $('#req_id_permintaan').val(idPermin);
         $('#req_tanggal').val(tanggal);
         $('#req_id_approve').val(idApp);
@@ -903,7 +903,7 @@
                                 "<td align='center'>" + item.qtyApprove + "</td>" +
                                 "<td align='center'>" +
                                 '<div class="input-group">'+
-                                '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value,\''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
+                                '<input autocomplete="off" class="form-control" onchange="cekIdBarang(\''+i+'\',this.value,\''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
                                 '<div class="input-group-addon">'+
                                 '<span id=loading'+i+'></span> '+
                                 '</div>'+

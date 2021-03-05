@@ -7,10 +7,13 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.authorization.company.model.ImBranchesPK;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.master.obat.dao.HeaderObatDao;
 import com.neurix.simrs.master.obat.dao.KandunganObatDetailDao;
 import com.neurix.simrs.master.obat.dao.ObatDao;
+import com.neurix.simrs.master.obat.dao.PabrikDao;
 import com.neurix.simrs.master.obat.model.ImSimrsKandunganObatDetailEntity;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
+import com.neurix.simrs.master.obat.model.ImSimrsPabrikObatEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
@@ -61,6 +64,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
     private BranchDao branchDao;
     private BatasTutupPeriodDao batasTutupPeriodDao;
     private KandunganObatDetailDao kandunganObatDetailDao;
+    private PabrikDao pabrikDao;
 
     @Override
     public List<ObatPoli> getObatPoliByCriteria(ObatPoli bean) throws GeneralBOException {
@@ -96,11 +100,26 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                             obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
                             obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
 
-                            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId());
+                            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId(), obatPoliEntity.getPrimaryKey().getIdBarang());
                             if (obatEntity != null) {
                                 obatPoli.setNamaObat(obatEntity.getNamaObat());
                                 obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
                                 obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                                obatPoli.setMerk(obatEntity.getMerk());
+                                if(obatEntity.getIdPabrikObat() != null && !"".equalsIgnoreCase(obatEntity.getIdPabrikObat())){
+                                    ImSimrsPabrikObatEntity pabrikObatEntity = pabrikDao.getById("id", obatEntity.getIdPabrikObat());
+                                    if(pabrikObatEntity != null){
+                                        if(pabrikObatEntity.getNama() != null){
+                                            obatPoli.setNamaPabrikObat(pabrikObatEntity.getNama());
+                                        }else{
+                                            obatPoli.setNamaPabrikObat("");
+                                        }
+                                    }else{
+                                        obatPoli.setNamaPabrikObat("");
+                                    }
+                                }else{
+                                    obatPoli.setNamaPabrikObat("");
+                                }
                             }
                             obatPoliList.add(obatPoli);
                         }
@@ -2751,8 +2770,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         hsCriteria.put("id_obat", id);
         if (branchId != null && !branchId.isEmpty()) {
             hsCriteria.put("branch_id", branchId);
-        } else hsCriteria.put("branch_id", CommonUtil.userBranchLogin());
-
+        } else{
+            hsCriteria.put("branch_id", CommonUtil.userBranchLogin());
+        }
         hsCriteria.put("flag", "Y");
 
         try {
@@ -3231,6 +3251,18 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return approvalTransaksiObatDao.getById("idApprovalObat", id);
     }
 
+    @Override
+    public List<ObatPoli> getStokObatPoli(ObatPoli bean) throws GeneralBOException {
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+        try {
+            obatPoliList = obatPoliDao.getStokObatPoli(bean);
+        } catch (HibernateException e) {
+            logger.error("[PermintaanResepBoImpl.getStokObatPoli] ERROR when get search obat poli. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getStokObatPoli] ERROR when get search obat poli. ", e);
+        }
+        return obatPoliList;
+    }
+
     // list method seq
 
     private String getNextPermintaanObatId() throws GeneralBOException {
@@ -3308,5 +3340,9 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
     public void setKandunganObatDetailDao(KandunganObatDetailDao kandunganObatDetailDao) {
         this.kandunganObatDetailDao = kandunganObatDetailDao;
+    }
+
+    public void setPabrikDao(PabrikDao pabrikDao) {
+        this.pabrikDao = pabrikDao;
     }
 }

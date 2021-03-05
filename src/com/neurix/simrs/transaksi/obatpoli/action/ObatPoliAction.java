@@ -421,18 +421,15 @@ public class ObatPoliAction extends BaseMasterAction {
         obatPoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
 
         try {
-            listObatPoli = obatPoliBoProxy.getObatPoliByCriteria(obatPoli);
+            listObatPoli = obatPoliBoProxy.getStokObatPoli(obatPoli);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[ObatPoliAction.search] Error when searching pasien by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[ObatPoliAction.search] Error when searching pasien by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listObatPoli);
+        setObatPoli(obatPoli);
 
         logger.info("[ObatPoliAction.searchStok] end process <<<");
         return "search";

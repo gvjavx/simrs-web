@@ -809,6 +809,8 @@ public class UserBoImpl implements UserBo {
                         icon = "<i class=\"fa fa-plus-square-o\"></i>";
                     } else if (menuName.equalsIgnoreCase("Cuti")) {
                         icon = "<i class=\"fa fa-calendar-times-o\"></i>";
+                    } else {
+                        icon = "<i class=\"fa fa fa-circle-o\"></i>";
                     }
 
                     menuNameString +=
@@ -821,7 +823,7 @@ public class UserBoImpl implements UserBo {
                                     "<ul class=\"treeview-menu\">";
                 } else if (itemMenu.get(2).equals("4")) {
                     //menuNameString = "<li><a href=\"#\"><i class=\"fa fa-files-o\"></i><span><strong> "+ menuName + "</strong></span></a></li>";
-                    menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-gear\"></i><span> " + menuName + "</span></a></li>";
+                    menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa fa-circle-o\"></i><span> " + menuName + "</span></a></li>";
                     if (i < listdownMenu.size() - 1) {
                         itemMenuTmp = (List) listdownMenu.get(i + 1);
                         if (!itemMenuTmp.get(2).equals("4")) {

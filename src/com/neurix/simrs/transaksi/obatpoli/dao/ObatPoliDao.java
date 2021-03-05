@@ -12,6 +12,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -445,4 +446,62 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         return obatPoli;
     }
 
+    public List<ObatPoli> getStokObatPoli(ObatPoli bean){
+        List<ObatPoli> obatPoliList = new ArrayList<>();
+        if(bean != null){
+            String flag = "Y";
+            String condition= "";
+            if(bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())){
+                flag = bean.getFlag();
+            }
+            if(bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())){
+                condition += "AND a.id_pelayanan = '"+bean.getIdPelayanan()+"'\n";
+            }
+            if(bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())){
+                condition += "AND a.branch_id = '"+bean.getBranchId()+"'\n";
+            }
+            if(bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())){
+                condition += "AND a.id_obat LIKE '%"+bean.getIdObat()+"%'\n";
+            }
+            if(bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())){
+                condition += "AND b.nama_obat ILIKE '%"+bean.getNamaObat()+"%'\n";
+            }
+            if(bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())){
+                condition += "AND a.id_barang LIKE '%"+bean.getIdBarang()+"%' \n";
+            }
+
+            String SQL = "SELECT\n" +
+                    "a.id_obat,\n" +
+                    "b.nama_obat,\n" +
+                    "a.id_barang,\n" +
+                    "a.expired_date,\n" +
+                    "a.qty_biji,\n" +
+                    "a.id_pelayanan,\n" +
+                    "a.branch_id,\n" +
+                    "b.lembar_per_box,\n" +
+                    "b.biji_per_lembar\n" +
+                    "FROM mt_simrs_obat_poli a\n" +
+                    "INNER JOIN im_simrs_header_obat b ON a.id_obat = b.id_obat\n" +
+                    "WHERE a.flag = :flag\n" +condition;
+            List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                    .setParameter("flag", flag)
+                    .list();
+            if (results.size() > 0){
+                for (Object[] obj : results){
+                    ObatPoli obatPoli = new ObatPoli();
+                    obatPoli.setIdObat(obj[0] != null ? obj[0].toString() : "");
+                    obatPoli.setNamaObat(obj[1] != null ? obj[1].toString() : "");
+                    obatPoli.setIdBarang(obj[2] != null ? obj[2].toString() : "");
+                    obatPoli.setExpiredDate(obj[3] != null ? (Date) obj[3] : null);
+                    obatPoli.setQtyBiji(obj[4] != null ? (BigInteger) obj[4] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setIdPelayanan(obj[5] != null ? obj[5].toString() : "");
+                    obatPoli.setBranchId(obj[6] != null ? obj[6].toString() : "");
+                    obatPoli.setLembarPerBox(obj[7] != null ? (BigInteger) obj[7] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setBijiPerLembar(obj[8] != null ? (BigInteger) obj[8] : new BigInteger(String.valueOf("0")));
+                    obatPoliList.add(obatPoli);
+                }
+            }
+        }
+        return obatPoliList;
+    }
 }

@@ -885,6 +885,7 @@
             <param name="class" value="com.neurix.simrs.master.parampemeriksaan.action.ParameterPemeriksaanAction"/>
         </create>
         <convert converter="bean" match="com.neurix.simrs.master.parampemeriksaan.model.ParameterPemeriksaan"/>
+        <convert converter="bean" match="com.neurix.simrs.master.kategorilab.model.KategoriLab"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.master.labdetail.action.LabDetailAction"/>

@@ -660,14 +660,12 @@ public class ObatAction extends BaseMasterAction {
             obats = obatBoProxy.getListHargaObat(obat);
         } catch (GeneralBOException e) {
             logger.error("[ReportAction.searchHargaObat] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + e + "] Found problem when downloading data, please inform to your admin.");
-            return "search";
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", obats);
-
+        setObat(obat);
         logger.info("[PermintaanVendorAction.searchHargaObat] END process <<<");
         return "search";
     }

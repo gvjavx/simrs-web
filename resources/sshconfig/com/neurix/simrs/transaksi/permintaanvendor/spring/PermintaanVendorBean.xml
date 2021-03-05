@@ -32,6 +32,7 @@
          p:userVendorDao-ref="userVendorDao"
          p:hargaObatDao-ref="hargaObatDao"
          p:hargaTerakhirDao-ref="hargaTerakhirDao"
+         p:headerObatDao-ref="headerObatDao"
     />
 
     <bean id="permintaanVendorBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

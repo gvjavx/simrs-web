@@ -1827,6 +1827,161 @@ ADD COLUMN nomor_produksi VARCHAR(100);
 ALTER TABLE im_simrs_obat
 ADD COLUMN nomor_produksi VARCHAR(100);
 
+--05.03.2021
+--Perapian Menu Master OPS
+INSERT INTO im_functions VALUES
+(7001, 'Pelayanan', '/#', 6000, 3, now(), 'admin', now(), 'admin', 'Y','C', 7001),
+(7002, 'Tindakan', '/#', 6000, 3, now(), 'admin', now(), 'admin', 'Y','C', 7002),
+(7003, 'Lab & Radiologi', '/#', 6000, 3, now(), 'admin', now(), 'admin', 'Y','C', 7003),
+(7004, 'Ruangan', '/#', 6000, 3, now(), 'admin', now(), 'admin', 'Y','C', 7004),
+(7005, 'Paket / Promo', '/#', 6000, 3, now(), 'admin', now(), 'admin', 'Y','C', 7005),
+(7006, 'Rekanan', '/#', 6000, 3, now(), 'admin', now(), 'admin', 'Y','C', 7006);
+
+INSERT INTO im_func_roles VALUES
+(7001, 32, 'Y', now(), now(), 'admin', 'admin'),
+(7002, 32, 'Y', now(), now(), 'admin', 'admin'),
+(7003, 32, 'Y', now(), now(), 'admin', 'admin'),
+(7004, 32, 'Y', now(), now(), 'admin', 'admin'),
+(7005, 32, 'Y', now(), now(), 'admin', 'admin'),
+(7006, 32, 'Y', now(), now(), 'admin', 'admin');
+
+--Pelayanan
+UPDATE im_functions
+SET parent = 7001,
+func_level = 4
+WHERE func_id IN (2365, 2064);
+
+UPDATE im_functions
+SET func_name = 'Detail Pelayanan'
+WHERE func_id = 2064;
+
+UPDATE im_functions
+SET func_id = 5101
+WHERE func_id = 2064;
+
+UPDATE im_func_roles
+SET func_id = 5101
+WHERE func_id = 2064;
+
+UPDATE im_functions
+SET parent = 5101
+WHERE parent = 2064;
+
+--Tindakan
+UPDATE im_functions
+SET parent = 7002,
+func_level = 4
+WHERE func_id IN (2114, 2341);
+
+UPDATE im_functions
+SET func_name = 'Header Tindakan'
+WHERE func_id = 2341;
+
+UPDATE im_functions
+SET func_name = 'Detail Tindakan'
+WHERE func_id = 2114;
+
+UPDATE im_functions
+SET func_id = 5102
+WHERE func_id = 2114;
+
+UPDATE im_func_roles
+SET func_id = 5102
+WHERE func_id = 2114;
+
+UPDATE im_functions
+SET parent = 5102
+WHERE parent = 2114;
+
+--Lab & Radiologi
+UPDATE im_functions
+SET parent = 7003,
+func_level = 4
+WHERE func_id IN (2137, 2157, 2344);
+
+UPDATE im_functions
+SET flag = 'N'
+WHERE func_id = 2137;
+
+UPDATE im_functions
+SET func_name = 'Header Tindakan'
+WHERE func_id = 2344;
+
+UPDATE im_functions
+SET func_name = 'Detail Tindakan'
+WHERE func_id = 2157;
+
+UPDATE im_functions
+SET func_id = 5103
+WHERE func_id = 2157;
+
+UPDATE im_func_roles
+SET func_id = 5103
+WHERE func_id = 2157;
+
+UPDATE im_functions
+SET parent = 5103
+WHERE parent = 2157;
+
+--Ruangan
+UPDATE im_functions
+SET parent = 7004,
+func_level = 4
+WHERE func_id IN (2084, 2104, 2347);
+
+UPDATE im_functions
+SET func_name = 'Kamar Ruangan'
+WHERE func_id = 2104;
+
+UPDATE im_functions
+SET func_name = 'TT Ruangan'
+WHERE func_id = 2347;
+
+--Paket / Promo
+UPDATE im_functions
+SET parent = 7005,
+func_level = 4
+WHERE func_id IN (1998, 2006);
+
+UPDATE im_functions
+SET func_name = 'Pendaftaran MCU'
+WHERE func_id = 2006;
+
+--Rekanan
+UPDATE im_functions
+SET parent = 7006,
+func_level = 4
+WHERE func_id IN (4013, 4023);
+
+UPDATE im_functions
+SET func_name = 'Header Rekanan'
+WHERE func_id = 4023;
+
+UPDATE im_functions
+SET func_id = 5100
+WHERE func_id = 4013;
+
+UPDATE im_func_roles
+SET func_id = 5100
+WHERE func_id = 4013;
+
+UPDATE im_functions
+SET parent = 5100
+WHERE parent = 4013;
+
+--Asuransi
+UPDATE im_functions
+SET func_id = 7007
+WHERE func_id = 2074;
+
+UPDATE im_func_roles
+SET func_id = 7007
+WHERE func_id = 2074;
+
+UPDATE im_functions
+SET parent = 7007
+WHERE parent = 2074;
+
 
 
 

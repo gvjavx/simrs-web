@@ -277,7 +277,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_req" onclick="saveRequest()"><i
-                        class="fa fa-arrow-right"></i> Konfirmasi
+                        class="fa fa-check"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_req"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -335,7 +335,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_ret" onclick="confirmSaveReture()"><i
-                        class="fa fa-arrow-right"></i> Konfirmasi
+                        class="fa fa-check"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_ret"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -360,7 +360,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -438,7 +438,7 @@
                             "<td align='center'>" + item.qtyApprove + "</td>" +
                             "<td align='center'>" +
                             '<div class="input-group">'+
-                            '<input class="form-control" onchange="cekIdBarang(\''+i+'\',this.value, \''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
+                            '<input autocomplete="off" class="form-control" onchange="cekIdBarang(\''+i+'\',this.value, \''+item.idBatch+'\')" id=cek_id_barang'+i+'>' +
                             '<div class="input-group-addon">'+
                             '<span id=loading'+i+'></span> '+
                             '</div>'+

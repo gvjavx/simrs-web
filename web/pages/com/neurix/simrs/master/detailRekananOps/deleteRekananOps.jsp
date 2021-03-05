@@ -99,7 +99,7 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID Detail RekananOps :</small></label>
+                            <label class="control-label"><small>ID Detail Rekanan OPS :</small></label>
                         </td>
                         <td>
                             <table>
@@ -113,22 +113,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>isbpjs :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Non-Active'}" id="isbpjs" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" readonly="true"
-                                          required="true" disabled="true" />
-                                <s:hidden id="isbpjs" name="detailRekananOps.isBpjs" />
-                            </table>
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Nama rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan :</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -142,9 +127,10 @@
                             </table>
                         </td>
                     </tr>
+
                     <tr>
                         <td>
-                            <label class="control-label"><small>branch:</small></label>
+                            <label class="control-label"><small>Unit:</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -152,19 +138,18 @@
                                 <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
                                           readonly="true" disabled="true"
-                                          cssClass="form-control" />
+                                          cssClass="form-control" cssStyle="margin-top: 5px"/>
                                 <s:hidden id="branchId" name="detailRekananOps.branchId" />
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td width="18%">
-                            <label class="control-label"><small> diskon :</small></label>
+                            <label class="control-label"><small> Diskon :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield cssStyle="margin-top: 7px"
+                                <s:textfield cssStyle="margin-top: 5px"
                                              id="diskondelet"
                                              name="detailRekananOps.diskon"
                                              required="false"
@@ -172,6 +157,22 @@
                             </table>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Cover BPJS :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Tidak'}" id="isbpjs" name="detailRekananOps.isBpjs"
+                                          headerKey="Y" headerValue="Ya" cssClass="form-control select2" readonly="true"
+                                          required="true" disabled="true" cssStyle="margin-top: 5px"/>
+                                <s:hidden id="isbpjs" name="detailRekananOps.isBpjs" />
+                            </table>
+
+                        </td>
+                    </tr>
+
+
 
 
                 </table>

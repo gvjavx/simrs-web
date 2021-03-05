@@ -18,6 +18,15 @@ public class ParameterPemeriksaan {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String namaKategori;
+    private String isNewKategori;
+
+    public String getIsNewKategori() {
+        return isNewKategori;
+    }
+
+    public void setIsNewKategori(String isNewKategori) {
+        this.isNewKategori = isNewKategori;
+    }
 
     public String getNamaKategori() {
         return namaKategori;

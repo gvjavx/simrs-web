@@ -67,8 +67,8 @@
                                         </table>
                                         <table>
                                             <tr>
-                                                <td width="18%">
-                                                    <label class="control-label"><small>Kategori Lab. ID :</small></label>
+                                                <td width="30%">
+                                                    <label class="control-label"><small>Kategori Lab. ID </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -79,7 +79,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Kategori :</small></label>
+                                                    <label class="control-label"><small>Nama Kategori </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -91,7 +91,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
+                                                    <label class="control-label"><small>Flag </small></label>
                                                 </td>
                                                 <td>
                                                     <table>

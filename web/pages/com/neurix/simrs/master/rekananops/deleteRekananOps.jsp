@@ -85,7 +85,7 @@
 
 
 
-                <legend align="left">Delete Pelayanan</legend>
+                <legend align="left">Delete Rekanan OPS</legend>
 
 
                 <table>
@@ -99,7 +99,7 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID Detail RekananOps :</small></label>
+                            <label class="control-label"><small>ID Detail Rekanan OPS :</small></label>
                         </td>
                         <td>
                             <table>
@@ -114,7 +114,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan :</small></label>
                         </td>
                         <td width="70%">
                             <table>
