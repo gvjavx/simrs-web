@@ -3199,7 +3199,8 @@
                             <s:action id="initComboBranch" namespace="/admin/branch"
                                       name="initComboBranch_branch"/>
                             <s:select list="#initComboBranch.listOfComboBranch" id="position-branch-id"
-                                      name="biodata.branchId" onchange="listDivisiHistory()"
+                                      name="biodata.branchId"
+                                      onchange="listDivisiHistory()"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>

@@ -882,7 +882,7 @@
                                                 <display:column class="bg-danger" property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
                                                 <display:column class="bg-danger" property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
                                             </s:if>
-                                            <s:elseif test="%{#attr.row.flagDokterKso=='Y'}">
+                                            <s:elseif test='%{#attr.row.flagDokterKso == "Y"}'>
                                                 <%--RAKA-14JAN2021 ==> Menu berisi modal tab--%>
                                                 <display:column class="bg-info" media="html" title="Menu">
                                                     <a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">
