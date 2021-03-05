@@ -1485,7 +1485,11 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
                             }
 
-                            imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                            if(bean.getStMasaKerjaGol() != null && !"".equalsIgnoreCase(bean.getStMasaKerjaGol())){
+                                imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                            }else{
+                                imBiodataEntity.setMasaKerjaGolongan(0);
+                            }
                             imBiodataEntity.setGolonganDapenId(bean.getGolonganDapenId()); //RAKA-delete
 
                             if(bean.getFotoUpload() != null){
