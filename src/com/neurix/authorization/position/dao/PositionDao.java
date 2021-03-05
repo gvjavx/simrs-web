@@ -164,7 +164,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
                 "\tim_position.position_id,\n" +
-                "\tim_position.position_name\n" +
+                "\tim_position.position_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position, it_hris_pegawai_position\n" +
                 "where\n" +
@@ -201,7 +202,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" + bagian + " and flag='Y'\n" +
@@ -233,7 +235,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
                 "\tdepartment_id,\n" +
-                "\tdepartment_name\n" +
+                "\tdepartment_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_hris_department where flag='Y'\n" +
                 "order by kodering";
@@ -265,7 +268,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" +
@@ -299,7 +303,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" +
@@ -332,7 +337,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select DISTINCT \n" +
                 "\tposition_id,\n" +
-                "\tposition_name\n" +
+                "\tposition_name,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tstruktur_jabatan\n" +
                 "where\n" +

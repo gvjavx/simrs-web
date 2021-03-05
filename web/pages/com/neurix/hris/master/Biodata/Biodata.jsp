@@ -3200,7 +3200,7 @@
                                       name="initComboBranch_branch"/>
                             <s:select list="#initComboBranch.listOfComboBranch" id="position-branch-id"
                                       name="biodata.branchId"
-                                      onchange="listDivisiHistory()"
+                                      onchange="listDivisiJabatan()"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>
@@ -3332,8 +3332,21 @@
         });
         listPosisiHistory();
         listPositionJabatan();
-
     };
+    window.listDivisiJabatan= function(){
+        var branch = document.getElementById("position-branch-id").value;
+        $('#department-jabatan').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#department-jabatan').append($("<option></option>")
+                    .attr("value",item.departmentId)
+                    .text(item.departmentName));
+            });
+        });
+        listPosisiHistory();
+        listPositionJabatan();
+    };
+
     function cek(){
         var home    = document.getElementById("home1").value;
         var person    = document.getElementById("person1").value;
