@@ -10,14 +10,14 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.bo.ObatBo;
 import com.neurix.simrs.master.obat.model.ImSimrsObatEntity;
+import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.vendor.bo.VendorBo;
 import com.neurix.simrs.master.vendor.model.ImSimrsVendorEntity;
-import com.neurix.simrs.mobileapi.model.BatchPermintaanObatMobile;
-import com.neurix.simrs.mobileapi.model.PurchaseOrderMobile;
-import com.neurix.simrs.mobileapi.model.TransaksiObatMobile;
+import com.neurix.simrs.mobileapi.model.*;
 import com.neurix.simrs.transaksi.permintaanvendor.bo.PermintaanVendorBo;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.CheckObatResponse;
@@ -59,9 +59,12 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 
     private static final transient Logger logger = Logger.getLogger(PurchaseOrderController.class);
     private PurchaseOrderMobile model = new PurchaseOrderMobile();
+    private ObatMobile obatModel = new ObatMobile();
     private Collection<PurchaseOrderMobile> listOfPurchaseOrder = new ArrayList<>();
     private Collection<TransaksiObatMobile> listOfTransaksiObat = new ArrayList<>();
     private Collection<BatchPermintaanObatMobile> listOfBatchObat = new ArrayList<>();
+    private Collection<PabrikObatMobile> listOfPabrikObat = new ArrayList<>();
+
     private PermintaanVendorBo permintaanVendorBoProxy;
 
     private String idPermintaanVendor;
@@ -74,7 +77,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
     private String expDate;
     private String noBatch;
     private String idPabrik;
-
+    private String idPabrikObat;
 
     private String idApprovalObat;
 
@@ -101,7 +104,58 @@ public class PurchaseOrderController implements ModelDriven<Object> {
     private String idPelayanan;
     private String jenis = "";
 
+    private String noProduksi;
 
+    private String idObat;
+    private String merk;
+
+    public String getIdPabrikObat() {
+        return idPabrikObat;
+    }
+
+    public void setIdPabrikObat(String idPabrikObat) {
+        this.idPabrikObat = idPabrikObat;
+    }
+
+    public ObatMobile getObatModel() {
+        return obatModel;
+    }
+
+    public void setObatModel(ObatMobile obatModel) {
+        this.obatModel = obatModel;
+    }
+
+    public Collection<PabrikObatMobile> getListOfPabrikObat() {
+        return listOfPabrikObat;
+    }
+
+    public void setListOfPabrikObat(Collection<PabrikObatMobile> listOfPabrikObat) {
+        this.listOfPabrikObat = listOfPabrikObat;
+    }
+
+    public String getIdObat() {
+        return idObat;
+    }
+
+    public void setIdObat(String idObat) {
+        this.idObat = idObat;
+    }
+
+    public String getMerk() {
+        return merk;
+    }
+
+    public void setMerk(String merk) {
+        this.merk = merk;
+    }
+
+    public String getNoProduksi() {
+        return noProduksi;
+    }
+
+    public void setNoProduksi(String noProduksi) {
+        this.noProduksi = noProduksi;
+    }
 
     public File getFotoDocPo() {
         return fotoDocPo;
@@ -374,6 +428,10 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                 return listOfTransaksiObat;
             case "editBatch":
                 return listOfTransaksiObat;
+            case "getPabrikObat":
+                return listOfPabrikObat;
+            case "cekNoProduksi":
+                return obatModel;
             default:
                 return model;
         }
@@ -536,8 +594,8 @@ public class PurchaseOrderController implements ModelDriven<Object> {
 //                        transaksiObatMobile.setQtyLembar(item.getQtyLembar().toString());
 //                        transaksiObatMobile.setQtyBiji(item.getQtyBiji().toString());
                             transaksiObatMobile.setQty(item.getQty().toString() !=  null ? item.getQty().toString() : "0");
-                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox().toString() != null ? item.getLembarPerBox().toString() : "0");
-                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar().toString() != null ? item.getBijiPerLembar().toString() : "0");
+                            transaksiObatMobile.setLembarPerBox(item.getLembarPerBox() != null ? item.getLembarPerBox().toString() : "0");
+                            transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar() != null ? item.getBijiPerLembar().toString() : "0");
 //                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
 //                        transaksiObatMobile.setAverageHargaLembar(item.getAverageHargaLembar().toString());
                         transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
@@ -574,9 +632,12 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                     transaksiObatDetail.setLastUpdateWho(userId);
                     transaksiObatDetail.setQty(new BigInteger(qty));
                     transaksiObatDetail.setIdPabrik(idPabrik);
+                    transaksiObatDetail.setIdPabrikObat(idPabrikObat);
                     transaksiObatDetail.setFlagDiterima(flag);
                     transaksiObatDetail.setLembarPerBox(new BigInteger(lembarPerBox));
                     transaksiObatDetail.setBijiPerLembar(new BigInteger(bijiPerLembar));
+                    transaksiObatDetail.setNomorProduksi(noProduksi);
+                    transaksiObatDetail.setMerek(merk);
 
                     if (noBatch.isEmpty()){
                         transaksiObatDetail.setNoBatch(0);
@@ -637,9 +698,9 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             transaksiObatMobile.setQty(item.getQty().toString());
                             transaksiObatMobile.setLembarPerBox(item.getLembarPerBox().toString());
                             transaksiObatMobile.setBijiPerLembar(item.getBijiPerLembar().toString());
-                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
+//                            transaksiObatMobile.setAverageHargaBox(item.getAverageHargaBox().toString());
 //                        transaksiObatMobile.setAverageHargaLembar(item.getAverageHargaLembar().toString());
-//                        transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
+                        transaksiObatMobile.setAverageHargaBiji(item.getAverageHargaBiji().toString());
                             transaksiObatMobile.setFlagDiterima(item.getFlagDiterima());
                             transaksiObatMobile.setJenisSatuan(item.getJenisSatuan());
                             transaksiObatMobile.setIdPabrik(item.getIdPabrik());
@@ -1011,6 +1072,47 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                             checkObatResponse.setStatus("error");
 //                            addActionError(" Error when save data approve PO" + e.getMessage());
                             model.setMessage(checkObatResponse.getStatus());
+                        }
+                    }
+                }
+
+                if (action.equalsIgnoreCase("cekNoProduksi")) {
+                    Obat obat = null;
+                    try {
+                       obat = permintaanVendorBoProxy.cekNoProduksi(noProduksi);
+                    } catch (GeneralBOException e){
+                        logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
+                    }
+
+                    if (obat != null) {
+                        obatModel = new ObatMobile();
+                        obatModel.setIdObat(obat.getIdObat());
+                        obatModel.setNamaObat(obat.getNamaObat());
+                        obatModel.setBijiPerLembar(obat.getBijiPerLembar() != null ? obat.getBijiPerLembar().toString() : "0");
+                        obatModel.setLembarPerBox(obat.getLembarPerBox() != null ? obat.getLembarPerBox().toString() : "0");
+                        obatModel.setMerk(obat.getMerk());
+                        obatModel.setIdPabrik(obat.getIdPabrik());
+                        obatModel.setStatus(obat.getStatus());
+                        obatModel.setMsg(obat.getMsg());
+                    }
+                }
+
+                if (action.equalsIgnoreCase("getPabrikObat")) {
+                    List<PabrikObat> pabrikObatList = null;
+
+                    try {
+                       pabrikObatList = permintaanVendorBoProxy.getListPabrikObatByIdObatForPo(idObat,"all");
+                    } catch (GeneralBOException e){
+                        logger.error("[PermintaanVendorAction.saveApproveBatch] ERROR. ", e);
+                    }
+
+                    if (pabrikObatList != null) {
+                        for (PabrikObat item : pabrikObatList) {
+                            PabrikObatMobile pabrikObatMobile = new PabrikObatMobile();
+                            pabrikObatMobile.setId(item.getId());
+                            pabrikObatMobile.setNama(item.getNama());
+
+                            listOfPabrikObat.add(pabrikObatMobile);
                         }
                     }
                 }
