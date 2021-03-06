@@ -76,7 +76,12 @@
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
-            var level               = document.getElementById("golongan1").value;
+
+            if(tipePegawai == 'TP01') {
+                var level               = document.getElementById("golongan1").value;
+            } else {
+                var level               = document.getElementById("golongan3").value;
+            }
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && level !='') {
                 if (confirm('Do you want to save this record?')) {
