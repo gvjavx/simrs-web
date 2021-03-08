@@ -1254,7 +1254,6 @@ function listSelectParameter(idLab) {
                     option += "<option value='" + item.idLabDetail + "'>" + item.namaDetailPeriksa + "</option>";
                 });
                 $('#lab_parameter').html(option);
-                $('#lab_parameter option').prop('selected', true);
             } else {
                 $('#lab_parameter').html('');
             }
