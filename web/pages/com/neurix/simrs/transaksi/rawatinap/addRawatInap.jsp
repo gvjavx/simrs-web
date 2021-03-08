@@ -200,6 +200,34 @@
                                     <s:hidden id="is_laka" name="rawatInap.isLaka"/>
                                     <s:hidden id="id_ruangan_lama" name="rawatInap.idRuangan"/>
 
+                                    <s:hidden id="h_nama_pasien" name="rawatInap.namaPasien"/>
+                                    <s:hidden id="h_tgl_lahir" name="rawatInap.tglLahir"/>
+                                    <s:hidden id="h_anamnesa" name="rawatInap.anamnese"/>
+                                    <s:hidden id="h_penunjang_medis" name="rawatInap.penunjangMedis"/>
+                                    <s:hidden id="h_keluhan_utama" name="rawatInap.keluhanUtama"/>
+                                    <s:hidden id="h_suhu" name="rawatInap.suhu"/>
+                                    <s:hidden id="h_nadi" name="rawatInap.nadi"/>
+                                    <s:hidden id="h_tensi" name="rawatInap.tensi"/>
+                                    <s:hidden id="h_pernafasan" name="rawatInap.pernafasan"/>
+                                    <s:hidden id="h_alergi" name="rawatInap.alergi"/>
+                                    <s:hidden id="h_berat_badan" name="rawatInap.berat"/>
+                                    <s:hidden id="h_tinggi_badan" name="rawatInap.tinggi"/>
+                                    <s:hidden id="h_diagnosa" name="rawatInap.namaDiagnosa"/>
+                                    <s:hidden id="h_umur" name="rawatInap.umur"/>
+                                    <s:hidden id="h_alamat_lengkap" name="rawatInap.alamatLengkap"/>
+                                    <s:hidden id="h_no_bpjs" name="rawatInap.noBpjs"/>
+                                    <s:hidden id="h_jenis_kelamin" name="rawatInap.jenisKelamin"/>
+                                    <s:hidden id="h_kategori_ruangan" name="rawatInap.kategoriRuangan"/>
+                                    <s:hidden id="h_kelas_pasien_bpjs" name="rawatInap.idKelas"/>
+                                    <s:hidden id="h_id_ruangan" name="rawatInap.idRuangan"/>
+                                    <s:hidden id="h_nama_ruangan" name="rawatInap.namaRangan"/>
+                                    <s:hidden id="h_stay_ruangan" name="rawatInap.isStay"/>
+                                    <s:hidden id="h_no_sep" name="rawatInap.noSep"/>
+                                    <s:hidden id="h_id_asuransi" name="rawatInap.idAsuransi"/>
+                                    <s:hidden id="h_id_kelas_ruangan" name="rawatInap.idKelasRuangan"/>
+                                    <s:hidden id="h_nama_ruangan_pasien" name="rawatInap.namaRangan"/>
+                                    <s:hidden id="h_tgl_masuk" name="rawatInap.stTglFrom"/>
+
                                     <s:if test='rawatInap.idJenisPeriksa == "bpjs" || rawatInap.idJenisPeriksa == "rekanan"'>
                                         <tr>
                                             <td width="45%"><b>No SEP</b></td>
@@ -360,13 +388,6 @@
                                             </table>
                                         </td>
                                     </tr>
-
-                                    <%--<tr>--%>
-                                        <%--<td></td>--%>
-                                        <%--<td>--%>
-                                            <%--<button class="btn btn-primary" onclick="viewDetailRekamMedic('<s:property value="rawatInap.noCheckup"></s:property>')"><i class="fa fa-search"></i> View Rekam Medic Saat Ini</button>--%>
-                                        <%--</td>--%>
-                                    <%--</tr>--%>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -610,54 +631,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <%--<div id="status_asuransi" style="display: none">--%>
-                        <%--<div class="box-header with-border">--%>
-                        <%--</div>--%>
-                        <%--<div class="box-header with-border">--%>
-                            <%--<h3 class="box-title"><i class="fa fa-line-chart"></i> Status Biaya Tindakan</h3>--%>
-                        <%--</div>--%>
-                        <%--<div class="box-body">--%>
-                            <%--<div class="row">--%>
-                                <%--<div class="col-md-offset-2 col-md-8">--%>
-                                    <%--<h5>--%>
-                                        <%--Cover Biaya Asuransi--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span id="b_asuransi"></span>--%>
-                                        <%--</small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_cover_biaya_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<h5>--%>
-                                        <%--Total Biaya Tindakan--%>
-                                        <%--<small class="pull-right" style="margin-top: 7px">Rp. <span--%>
-                                                <%--id="b_tindakan_asuransi"></span></small>--%>
-                                    <%--</h5>--%>
-                                    <%--<div class="progress">--%>
-                                        <%--<div id="sts_biaya_tindakan_asuransi">--%>
-                                        <%--</div>--%>
-                                    <%--</div>--%>
-                                    <%--<ul style="list-style-type: none">--%>
-                                        <%--<li><i class="fa fa-square" style="color: #337ab7"></i> Total biaya cover Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #5cb85c"></i> Total biaya tindakan <--%>
-                                            <%--50% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #f0ad4e"></i> Total biaya tindakan >--%>
-                                            <%--50% dan < 70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                        <%--<li><i class="fa fa-square" style="color: #d9534f"></i> Total biaya tindakan >--%>
-                                            <%--70% dari cover biaya Asuransi--%>
-                                        <%--</li>--%>
-                                    <%--</ul>--%>
-                                <%--</div>--%>
-                                <%--<div class="col-md-2">--%>
-
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
 
                     <div class="box-header with-border" id="pos_tin">
                     </div>
@@ -1977,7 +1950,7 @@
 </div>
 
 <div class="modal fade" id="modal-resep-head">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1990,10 +1963,10 @@
                     <p id="msg_resep"></p>
                 </div>
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Apotek</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Apotek</label>
+                    <div class="col-md-9">
                         <s:action id="initApotek" namespace="/checkup"
-                                  name="getComboApotekRi_checkup"/>
+                                  name="getComboApotek_checkup"/>
                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                   list="#initApotek.listOfApotek" id="resep_apotek"
                                   listKey="idPelayanan + '|' + namaPelayanan"
@@ -2005,8 +1978,10 @@
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_apotek"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Kategori</label>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Kategori</label>
+                    <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_jenis_obat">
                             <option value="">[select one]</option>
@@ -2018,8 +1993,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Nama Obat</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                    <div class="col-md-9">
                         <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                 id="resep_nama_obat">
                             <option value="">[select one]</option>
@@ -2032,8 +2007,10 @@
                         <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                         <input type="hidden" id="val-kronis"/>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Stok Obat</label>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                    <div class="col-md-9">
                         <div class="input-group" style="margin-top: 7px;">
                             <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
                             <div class="input-group-addon">
@@ -2043,12 +2020,12 @@
                     </div>
                     <input type="hidden" id="h-qty-default"/>
                 </div>
-                <div class="row">
-                    <div id="obat-serupa" style="background-color: #fff4f0; height:100px; padding-top:5px; margin-top:5px; display: none">
+                <div id="obat-serupa" style="background-color: #fff4f0; height:100px; padding-top:5px; margin-top:5px">
+                    <div class="row">
                         <label class="col-md-12" style="color: black"><b class="blink_me">Obat Kandungan Serupa</b></label>
                         <input type="hidden" value="N" id="flag-obat-serupa">
-                        <label class="col-md-2" style="margin-top: 7px">Nama Obat</label>
-                        <div class="col-md-4">
+                        <label class="col-md-3" style="margin-top: 7px">Nama Obat</label>
+                        <div class="col-md-9">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%"
                                     id="resep_nama_obat_serupa">
                                 <option value="">[select one]</option>
@@ -2059,8 +2036,10 @@
                                   id="cor_rep_obat_serupa"><i class="fa fa-check"></i> correct</span>
                             <span style="margin-top: 17px; display: none;" id="label-kronis-serupa"><label class="label label-warning" >Obat Kronis</label></span>
                         </div>
-                        <label class="col-md-2" style="margin-top: 7px">Stok Obat</label>
-                        <div class="col-md-4">
+                    </div>
+                    <div class="row">
+                        <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                        <div class="col-md-9">
                             <div class="input-group" style="margin-top: 7px;">
                                 <input class="form-control" type="number" min="1" id="resep_stok_biji_serupa" readonly>
                                 <div class="input-group-addon">
@@ -2070,23 +2049,24 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Jenis Satuan</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
+                    <div class="col-md-9">
                         <s:select list="#{'lembar':'Lembar','box':'Box'}"
                                   cssStyle="margin-top: 7px; width: 100%"
                                   onchange="var warn = $('#war_rep_jenis_satuan').is(':visible'); if (warn){$('#cor_rep_jenis_satuan').show().fadeOut(3000);$('#war_rep_jenis_satuan').hide()};defaultValByJenisSatuan(this.value)"
                                   id="resep_jenis_satuan"
                                   headerKey="biji" headerValue="Biji"
-                                  cssClass="form-control select2"/>
+                                  cssClass="form-control select2" disabled="true"/>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_jenis_satuan"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_jenis_satuan"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Jumlah</label>
-                    <div class="col-md-4">
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
+                    <div class="col-md-9">
                         <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
                                style="margin-top: 7px;" value="1" class="form-control" type="number" min="1"
                                id="resep_qty">
@@ -2097,8 +2077,8 @@
                     </div>
                 </div>
                 <div class="row">
-                    <label class="col-md-2" style="margin-top: 7px">Obat Racik ?</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px">Obat Racik ?</label>
+                    <div class="col-md-9">
                         <div class="form-check" style="margin-top: 7px;">
                             <input type="checkbox" name="cek_racik" id="racik_racik" value="Y" onclick="var warn = $('#war_rep_racik').is(':visible'); if (warn){$('#cor_rep_racik').show().fadeOut(3000);$('#war_rep_racik').hide()}; cekRacik(this.id)">
                             <label for="racik_racik"></label> Ya
@@ -2108,15 +2088,10 @@
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_racik"><i class="fa fa-check"></i> correct</span>
                     </div>
-                    <label class="col-md-2" style="margin-top: 7px">Jenis Resep</label>
-                    <div class="col-md-4">
-                        <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
-                        </select>
-                    </div>
                 </div>
                 <div class="row" id="form-nama-racik" style="display: none">
-                    <label class="col-md-2" style="margin-top: 7px;">Nama Racik</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px;">Nama Racik</label>
+                    <div class="col-md-9">
                         <div class="input-group" style="margin-top: 7px;">
                             <input oninput="var warn =$('#war_nama_racik').is(':visible'); if (warn){$('#cor_nama_racik').show().fadeOut(3000);$('#war_nama_racik').hide()}"
                                    class="form-control" type="text"
@@ -2132,8 +2107,8 @@
                     </div>
                 </div>
                 <div class="row" id="form-hari" style="display: none">
-                    <label class="col-md-2" style="margin-top: 7px; font-size:12px">Pengambilan(Hari)</label>
-                    <div class="col-md-4">
+                    <label class="col-md-3" style="margin-top: 7px; font-size:12px">Pengambilan(Hari)</label>
+                    <div class="col-md-9">
                         <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_hari').show().fadeOut(3000);$('#war_rep_hari').hide()}"
                                style="margin-top: 7px; width: 40%;" value="7" class="form-control" type="number" min="1"
                                id="hari-kronis">
@@ -2143,8 +2118,14 @@
                               id="cor_rep_hari"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: 7px">Jenis Resep</label>
+                    <div class="col-md-9">
+                        <select class="form-control" style="margin-top: 7px;" id="select-jenis-resep">
+                        </select>
+                    </div>
+                </div>
                 <hr/>
-                <%--Keterangan Obat Berdasarkan Jenis Obat--%>
                 <%--Keterangan Obat Berdasarkan Jenis Obat--%>
                 <div class="row" style="margin-top: -7px">
                     <div class="col-md-offset-2 col-md-8">
@@ -2174,7 +2155,7 @@
                     </div>
                 </div>
                 <div class="row" style="margin-top: 10px">
-                    <div class="col-md-offset-2 col-md-8">
+                    <div class="col-md-12">
                         <table class="table table-bordered" style="font-size: 14px" id="table_keterangan">
                             <thead>
                             <tr>
@@ -2196,7 +2177,7 @@
                 </div>
                 <hr/>
                 <div class="row" style="margin-top: -10px">
-                    <div class="col-md-offset-2 col-md-7">
+                    <div class="col-md-12">
                         <button class="btn btn-success" onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                         </button>
                         <button class="btn btn-danger" onclick="resetAll()"><i
@@ -2230,7 +2211,7 @@
                 </div>
                 <div class="row" style="margin-top: 10px">
                     <div class="form-group">
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <label><b>Total Harga</b></label>
                             <div class="input-group">
                                 <div class="input-group-addon">
@@ -2239,10 +2220,7 @@
                                 <input class="form-control" id="total_harga_obat" readonly>
                             </div>
                         </div>
-                        <div class="col-md-offset-2 col-md-2">
-                            <button onclick="removePaint('ttd_canvas')" style="margin-left: 80px; margin-top: 21px" class="btn btn-danger"><i class="fa fa-trash"></i> Clear</button>
-                        </div>
-                        <div class="col-md-4">
+                        <div class="col-md-6">
                             <span style="margin-left: 10px"><b>TTD Dokter</b></span>
                             <div class="form-group" style="padding-top: 10px; padding-bottom: 10px; display: none">
                                 <div class="col-md-1">
@@ -2256,6 +2234,7 @@
                                 </div>
                             </div>
                             <canvas onmouseover="paintTtd('ttd_canvas')" style="margin-top: 2px" class="paint-canvas" id="ttd_canvas" width="250" height="200"></canvas>
+                            <button onclick="removePaint('ttd_canvas')" style="margin-top: -8px; margin-right: 5px" class="btn btn-danger pull-right"><i class="fa fa-trash"></i> Clear</button>
                         </div>
                     </div>
                 </div>
@@ -4069,24 +4048,24 @@
     var pathImages = '<%= request.getContextPath() %>';
     var contextPath = '<%= request.getContextPath() %>';
     var isReadRM = false;
-    var tglLhr = '<s:property value="rawatInap.tglLahir"/>';
+    var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");
-    var namaPasien = '<s:property value="rawatInap.namaPasien"/>';
-    var anamnese = '<s:property value="rawatInap.anamnese"/>';
-    var penunjangMedis = '<s:property value="rawatInap.penunjangMedis"/>';
-    var keluhanUtama = '<s:property value="rawatInap.keluhanUtama"/>';
-    var suhu = '<s:property value="rawatInap.suhu"/>';
-    var nadi = '<s:property value="rawatInap.nadi"/>';
-    var tensi = '<s:property value="rawatInap.tensi"/>';
-    var pernafasan = '<s:property value="rawatInap.pernafasan"/>';
-    var alergi = '<s:property value="rawatInap.alergi"/>';
-    var beratBadan = '<s:property value="rawatInap.berat"/>';
-    var tinggiBadan = '<s:property value="rawatInap.tinggi"/>';
-    var diagnosa = '<s:property value="rawatInap.namaDiagnosa"/>';
-    var umur = '<s:property value="rawatInap.umur"/>';
-    var alamatLengkap = '<s:property value="rawatInap.alamatLengkap"/>';
-    var noBpjs = '<s:property value="rawatInap.noBpjs"/>';
-    var jenisKelamin = '<s:property value="rawatInap.jenisKelamin"/>';
+    var namaPasien = $('#h_nama_pasien').val();
+    var anamnese = $('#h_anamnesa').val();
+    var penunjangMedis = $('#h_penunjang_medis').val();
+    var keluhanUtama = $('#h_keluhan_utama').val();
+    var suhu = $('#h_suhu').val();
+    var nadi = $('#h_nadi').val();
+    var tensi = $('#h_tensi').val();
+    var pernafasan = $('#h_pernafasan').val();
+    var alergi = $('#h_alergi').val();
+    var beratBadan = $('#h_berat_badan').val();
+    var tinggiBadan = $('#h_tinggi_badan').val();
+    var diagnosa = $('#h_diagnosa').val();
+    var umur = $('#h_umur').val();
+    var alamatLengkap = $('#h_alamat_lengkap').val();
+    var noBpjs = $('#h_no_bpjs').val();
+    var jenisKelamin = $('#h_jenis_kelamin').val();
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";
@@ -4094,20 +4073,20 @@
     var tempBerat = "";
     var tempTinggi = "";
     var tempAnmnesa = "";
-    var kategoriRuangan = '<s:property value="rawatInap.kategoriRuangan"/>';
-    var kelasPasienBpjs = '<s:property value="rawatInap.idKelas"/>';
+    var kategoriRuangan = $('#h_kategori_ruangan').val();
+    var kelasPasienBpjs = $('#h_kelas_pasien_bpjs').val();
     var tempidRm = "";
     var urlPage = "";
-    var idRuangan = '<s:property value="rawatInap.idRuangan"/>';
-    var namaRuangan = '<s:property value="rawatInap.namaRangan"/>';
-    var stayRuangan = '<s:property value="rawatInap.isStay"/>';
-    var NOSEP = '<s:property value="rawatInap.noSep"/>';
-    var IdAsuransi = '<s:property value="rawatInap.idAsuransi"/>';
+    var idRuangan = $('#h_id_ruangan').val();
+    var namaRuangan = $('#h_nama_ruangan').val();
+    var stayRuangan = $('#h_stay_ruangan').val();
+    var NOSEP = $('#h_no_sep').val();
+    var IdAsuransi = $('#h_id_asuransi').val();
     var isBpjsRekanan = "";
     var setNotif = "";
-    var idKelasRuangan = '<s:property value="rawatInap.idKelasRuangan"/>';
-    var namaRuanganPasien = '<s:property value="rawatInap.namaRangan"/>';
-    var tanggalMasuk = '<s:property value="rawatInap.stTglFrom"/>';
+    var idKelasRuangan = $('#h_id_kelas_ruangan').val();
+    var namaRuanganPasien = $('#h_nama_ruangan_pasien').val();
+    var tanggalMasuk = $('#h_tgl_masuk').val();
 
     if (month.length < 2) {
         month = "0"+month;

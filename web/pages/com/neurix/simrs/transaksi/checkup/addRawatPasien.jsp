@@ -104,7 +104,7 @@
                                     } else {
                                         $("html, body").animate({scrollTop: 0}, 600);
                                         $('#warning_pasien').show().fadeOut(10000);
-                                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                                         if (noKartuPtpn == '') {
                                             $('#war_no_kartu_ptpn').show();
                                         }
@@ -201,7 +201,7 @@
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                         if (noKartuPtpn == '') {
                             $('#war_no_kartu_ptpn').show();
                         }
@@ -356,6 +356,7 @@
                 $('#kunjungan_val').val(null);
                 $('#paket_perusahaan').val(null);
                 $('#paket').val(null);
+                $('#paket').attr("disabled", false);
                 $('#dokter').val(null);
                 $('#nama_dokter').val(null);
                 $('#id_lab').val(null);
@@ -508,6 +509,8 @@
             $('#surat_polisi, #surat_rujuk').val(null);
             $('#warning_pasien').hide();
             $('#form_vaksin').hide();
+            $('#paket').attr("disabled", false);
+            $('#paket').val(null);
         }
 
         function formatRupiah2(angka) {
@@ -1459,7 +1462,7 @@
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Pembayaran</span>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> <span id="text_centang">Uang Muka</span>
                                     </h3>
                                 </div>
                                 <div class="box-body">
@@ -1471,7 +1474,7 @@
                                                         Pembayaran</label>
                                                     <div class="col-md-8">
                                                         <s:select
-                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                                list="#{'tunai':'Tunai','non_tunai':'Transfer'}"
                                                                 cssStyle="margin-top: 7px"
                                                                 id="pembayaran"
                                                                 onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
@@ -2244,7 +2247,7 @@
                         title = "Warning!";
                         warnClass = "alert-warning";
                         msg = response.message;
-                        $('#idPelayananBpjs').val('IGD');
+                        $('#idPelayananBpjs').val('');
                         $('#ppk_rujukan').val('');
                         $('#intansi_perujuk').val('');
                         $('#tgl_rujukan').val('');
@@ -3543,6 +3546,7 @@
                                 }else{
                                     $('#img-upload').attr('src', contextPathHeader+'/pages/images/no-images.png');
                                 }
+
                                 $('#provinsi').val(response.namaProvinsi);
                                 $('#kabupaten').val(response.namaKota);
                                 $('#kecamatan').val(response.namaKecamatan);
@@ -3563,11 +3567,35 @@
                                         });
                                     }
                                 });
+
                                 $('#is_online').val(response.isOnline);
                                 $('#tgl_antrian').val(converterDateYmdHms(response.tglAntian));
                                 $('#id_checkup_online').val(response.noCheckupOnline);
                                 $('#jenis_pasien').val(response.idJenisPeriksaPasien).trigger('change').attr('disabled', true);
-                                // $('#kunjungan').val(response.jenisKunjungan).attr('disabled', true);
+                                $('#id_paket').val(response.idPaket);
+
+                                if("paket_perusahaan" == response.idJenisPeriksaPasien){
+                                    $('#paket_perusahaan').val(response.namaPaket).attr('disabled', true);
+                                    $('#id_paket').val(response.idPaket);
+                                    $('#cover_biaya_paket').val(response.tarif);
+                                }
+
+                                setTimeout(function () {
+                                    if("paket_individu" == response.idJenisPeriksaPasien){
+                                        $('#paket').val(response.idPaket+"|"+response.idPelayanan+"|"+response.tarif).trigger('change').attr('disabled', true);
+                                        $('#dokter').val(response.idDokter);
+                                        CheckupAction.listOfDokter(response.idPelayanan, function (res) {
+                                            if (res.length > 0) {
+                                                $.each(res, function (i, item) {
+                                                    if (response.idDokter == item.idDokter) {
+                                                        $('#nama_dokter').val(item.namaDokter);
+                                                    }
+                                                });
+                                            }
+                                        });
+                                    }
+                                },1000);
+
                                 $('#kunjungan_val').val(response.jenisKunjungan);
                             } else {
                                 $('#warning_pasien').show().fadeOut(5000);

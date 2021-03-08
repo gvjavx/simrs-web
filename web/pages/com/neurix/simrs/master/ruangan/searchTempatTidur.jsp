@@ -805,6 +805,7 @@
 
     function getKelasKamar() {
         var option = '<option value="">[Select One]</option>';
+        var kelas = '<s:property value="tempatTidur.idKelasRuangan"/>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar(null, function (res) {
             if (res.length > 0) {
@@ -812,6 +813,7 @@
                     option += '<option value="' + item.idKelasRuangan + '">' + item.namaKelasRuangan + '</option>';
                 });
                 $('#kelas_kamar').html(option);
+                $('#kelas_kamar').val(kelas).trigger('change');
                 $('#set_id_kelas').html(option);
                 $('#edit_id_kelas').html(option);
             } else {
@@ -822,6 +824,7 @@
 
     function listSelectRuangan(id, add) {
         var option = "<option value=''>[Select One]</option>";
+        var ruang = '<s:property value="tempatTidur.idRuangan"/>';
         TempatTidurAction.getRuanganByBranch(id, {
             callback: function (response) {
                 if (response.length > 0) {
@@ -833,6 +836,7 @@
                         $('#set_id_ruangan').html(option);
                     }else{
                         $('#ruangan').html(option);
+                        $('#ruangan').val(ruang).trigger('change');
                         $('#edit_id_ruangan').html(option);
                     }
                 } else {

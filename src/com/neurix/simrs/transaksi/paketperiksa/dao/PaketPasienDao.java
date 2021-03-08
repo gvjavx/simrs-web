@@ -4,6 +4,7 @@ import com.neurix.akuntansi.master.master.model.Master;
 import com.neurix.akuntansi.master.masterVendor.model.MasterVendor;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPasien;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -492,5 +493,99 @@ public class PaketPasienDao extends GenericDao<ItSimrsPaketPasienEntity, String>
         }
         return masterVendors;
 
+    }
+
+    public PaketPasien checkPaketPasien(String idPasien) {
+        PaketPasien paketPasien = null;
+        String sql = "SELECT \n" +
+                "pp.id, \n" +
+                "pp.id_pasien, \n" +
+                "pp.id_paket, \n" +
+                "pp.id_perusahaan, \n" +
+                "dt.id_pelayanan,\n" +
+                "pl.nama_pelayanan,\n" +
+                "pr.nama AS nama_perusahaan\n" +
+                "FROM it_simrs_paket_pasien pp\n" +
+                "INNER JOIN mt_simrs_paket pk ON pk.id_paket = pp.id_paket\n" +
+                "INNER JOIN im_akun_master pr ON pr.nomor_master = pp.id_perusahaan\n" +
+                "INNER JOIN mt_simrs_detail_paket dt ON pk.id_paket = dt.id_paket\n" +
+                "INNER JOIN (SELECT \n" +
+                "a.id_pelayanan, \n" +
+                "b.nama_pelayanan \n" +
+                "FROM im_simrs_pelayanan a \n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) pl ON pl.id_pelayanan = dt.id_pelayanan\n" +
+                "WHERE pp.id_pasien = :idPasien\n" +
+                "AND pp.flag = 'Y'\n" +
+                "AND pp.flag_selesai IS NULL\n" +
+                "AND dt.urutan = 1";
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("idPasien", idPasien)
+                .list();
+        if (results.size() > 0) {
+            for (Object[] obj: results){
+               paketPasien = new PaketPasien();
+               paketPasien.setId(obj[0].toString());
+               paketPasien.setIdPasien(obj[1].toString());
+               paketPasien.setIdPaket(obj[2].toString());
+               paketPasien.setIdPerusahaan(obj[3].toString());
+               paketPasien.setIdPelayanan(obj[4].toString());
+               paketPasien.setNamaPelayanan(obj[5].toString());
+               paketPasien.setNamaPerusahaan(obj[6].toString());
+
+            }
+        }
+
+        return paketPasien;
+    }
+
+    public List<PaketPeriksa> getDetailPaketPeriksa(String idPaket) {
+        List<PaketPeriksa> result = new ArrayList<>();
+        PaketPeriksa paketPeriksa = null;
+        String sql = "SELECT\n" +
+                "itm.id_paket,\n" +
+                "itm.id_item, \n" +
+                "itm.jenis_item,\n" +
+                "htdk.nama_tindakan,\n" +
+                "htdk.standard_cost,\n" +
+                "itm.harga\n" +
+                "FROM mt_simrs_item_paket_periksa itm\n" +
+                "INNER JOIN im_simrs_tindakan tdk ON tdk.id_tindakan = itm.id_item\n" +
+                "INNER JOIN im_simrs_header_tindakan htdk ON htdk.id_header_tindakan = tdk.id_header_tindakan\n" +
+                "WHERE itm.jenis_item = 'tindakan'\n" +
+                "AND itm.id_paket = :idPaket\n" +
+                "UNION ALL\n" +
+                "SELECT \n" +
+                "itm.id_paket,\n" +
+                "itm.id_item, \n" +
+                "itm.jenis_item ,\n" +
+                "pp.nama_pemeriksaan,\n" +
+                "pp.tarif,\n" +
+                "itm.harga\n" +
+                "FROM mt_simrs_item_paket_periksa itm\n" +
+                "INNER JOIN im_simrs_lab_detail lbd ON lbd.id_lab_detail = itm.id_item\n" +
+                "INNER JOIN im_simrs_parameter_pemeriksaan pp ON pp.id_parameter_pemeriksaan = lbd.id_parameter_pemeriksaan\n" +
+                "WHERE itm.jenis_item != 'tindakan'\n" +
+                "AND itm.id_paket = :idPaket\n";
+
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
+                .setParameter("idPaket", idPaket)
+                .list();
+        if (results.size() > 0) {
+            for (Object[] obj: results) {
+                paketPeriksa = new PaketPeriksa();
+                paketPeriksa.setIdPaket(obj[0].toString());
+                paketPeriksa.setIdItem(obj[1].toString());
+                paketPeriksa.setJenisItem(obj[2].toString());
+                paketPeriksa.setNamaItem(obj[3].toString());
+                paketPeriksa.setTarifAwal(new BigDecimal(obj[4].toString()));
+                paketPeriksa.setTarif(new BigDecimal(obj[5].toString()));
+
+                result.add(paketPeriksa);
+            }
+        }
+
+        return result;
     }
 }

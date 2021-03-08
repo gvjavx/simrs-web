@@ -31,6 +31,88 @@ public class PelayananMobile implements Serializable {
     private String userId;
 
     private String flagLibur;
+    private String idPasien;
+    private String idPerusahaan;
+    private String namaPerusahaan;
+    private String idPaket;
+    private String idItem;
+    private String namaItem;
+    private String jenisItem;
+
+    private String tarifAwal;
+    private String tarif;
+
+    public String getTarifAwal() {
+        return tarifAwal;
+    }
+
+    public void setTarifAwal(String tarifAwal) {
+        this.tarifAwal = tarifAwal;
+    }
+
+    public String getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(String tarif) {
+        this.tarif = tarif;
+    }
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public String getNamaItem() {
+        return namaItem;
+    }
+
+    public void setNamaItem(String namaItem) {
+        this.namaItem = namaItem;
+    }
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getIdPerusahaan() {
+        return idPerusahaan;
+    }
+
+    public void setIdPerusahaan(String idPerusahaan) {
+        this.idPerusahaan = idPerusahaan;
+    }
+
+    public String getNamaPerusahaan() {
+        return namaPerusahaan;
+    }
+
+    public void setNamaPerusahaan(String namaPerusahaan) {
+        this.namaPerusahaan = namaPerusahaan;
+    }
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
 
     public String getFlagLibur() {
         return flagLibur;

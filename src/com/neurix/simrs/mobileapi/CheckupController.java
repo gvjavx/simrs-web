@@ -40,6 +40,9 @@ import com.neurix.simrs.transaksi.obatpoli.bo.ObatPoliBo;
 import com.neurix.simrs.transaksi.obatpoli.model.ObatPoli;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
+import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
+import com.neurix.simrs.transaksi.paketperiksa.model.DetailPaket;
+import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
@@ -57,6 +60,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import com.neurix.simrs.transaksi.transketeranganobat.model.ItSimrsKeteranganResepEntity;
 import com.opensymphony.xwork2.ModelDriven;
 import net.sf.json.*;
+import org.apache.commons.collections.comparators.FixedOrderComparator;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
@@ -89,6 +93,7 @@ public class CheckupController implements ModelDriven<Object> {
     private Collection<ObatPoliMobile> listOfObatPoli = new ArrayList<>();
     private Collection<PermintaanResepMobile> listOfPermintaanResep = new ArrayList<>();
     private Collection<DokterMobile> listOfDokter = new ArrayList<>();
+    private Collection<PaketPeriksaMobile> listOfPaketPeriksa = new ArrayList<>();
     private CheckupDetailBo checkupDetailBoProxy;
     private CheckupBo checkupBoProxy;
     private ObatPoliBo obatPoliBoProxy;
@@ -98,6 +103,7 @@ public class CheckupController implements ModelDriven<Object> {
     private DokterBo dokterBoProxy;
     private InitDashboardBo initDashboardBoProxy;
     private BranchBo branchBoProxy;
+    private PaketPeriksaBo paketPeriksaBoProxy;
 
     private String idDetailCheckup;
     private String noCheckup;
@@ -147,6 +153,10 @@ public class CheckupController implements ModelDriven<Object> {
     private String tahun;
 
     private String jenisKunjungan;
+
+    public void setPaketPeriksaBoProxy(PaketPeriksaBo paketPeriksaBoProxy) {
+        this.paketPeriksaBoProxy = paketPeriksaBoProxy;
+    }
 
     public String getJenisKunjungan() {
         return jenisKunjungan;
@@ -619,6 +629,8 @@ public class CheckupController implements ModelDriven<Object> {
                 return listOfCheckup;
             case "getDetailKunjunganJK":
                 return listOfCheckup;
+            case "getPaketPeriksa":
+                return listOfPaketPeriksa;
             default:
                 return model;
         }
@@ -1260,6 +1272,29 @@ public class CheckupController implements ModelDriven<Object> {
                 checkupMobile.setTotal(item.getTotal());
                 checkupMobile.setJenisKelamin(item.getJenisKelamin());
                 listOfCheckup.add(checkupMobile);
+            }
+        } else if (action.equalsIgnoreCase("getPaketPeriksa")) {
+
+            List<PaketPeriksa> result = new ArrayList<>();
+
+            try {
+                result = paketPeriksaBoProxy.getListPaket(branchId, "rawat_jalan");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error getPaketPeriksa" + e);
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            if(result != null) {
+                for (PaketPeriksa item : result) {
+                    PaketPeriksaMobile paketPeriksaMobile = new PaketPeriksaMobile();
+                    paketPeriksaMobile.setIdPaket(item.getIdPaket());
+                    paketPeriksaMobile.setNamaPaket(item.getNamaPaket());
+                    paketPeriksaMobile.setIdPelayanan(item.getIdPelayanan());
+                    paketPeriksaMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    paketPeriksaMobile.setTarif(item.getTarif().toString());
+
+                    listOfPaketPeriksa.add(paketPeriksaMobile);
+                }
             }
         }
 

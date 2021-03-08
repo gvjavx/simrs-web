@@ -144,7 +144,7 @@
                                             class="fa fa-times"></i> No
                                     </a>
                                     <a style="color: white" type="button" class="btn btn-success"
-                                       onclick="saveRequestApprove()"><i class="fa fa-arrow-right"></i>
+                                       onclick="saveRequestApprove()"><i class="fa fa-check"></i>
                                         Yes</a>
                                 </div>
                             </sj:dialog>
@@ -256,15 +256,16 @@
                     </tr>
                 </table>
                 <div class="box">
-                    <table class="table table-bordered" id="tabel_approve">
+                    <table class="table table-bordered" id="tabel_approve" style="font-size: 12px">
                         <thead>
                         <td>ID Barang</td>
+                        <td align="center">Pabrik</td>
+                        <td align="center">Merk</td>
                         <td>Expired Date</td>
-                        <td align="center">Qty BX</td>
-                        <td align="center">Qty LB</td>
-                        <td align="center">Qty BJ</td>
+                        <%--<td align="center">Qty LB</td>--%>
+                        <td align="center">Stok Biji</td>
                         <td width="25%" align="center">Scan ID Barang</td>
-                        <td width="12%" align="center">Qty AP</td>
+                        <td width="12%" align="center">Qty Approve</td>
                         <td>Jenis Satuan</td>
                         </thead>
                         <tbody id="body_approve">
@@ -286,7 +287,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_app"><i
-                        class="fa fa-arrow-right"></i> Konfirmasi
+                        class="fa fa-check"></i> Konfirmasi
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_app"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -311,7 +312,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -349,7 +350,7 @@
         $('#body_approve').html('');
         $('#app_id').text(idObat);
         $('#app_nama').text(nama);
-        $('#app_req').text(qtyReq);
+        $('#app_req').text(qtyReq+" "+satuan);
         var table = [];
         var lembarPerBox = "";
         var bijiPerLembar = "";
@@ -416,9 +417,9 @@
                                 '<td>' + idBarang +
                                 '<input type="hidden" id=id_barang' + i + ' value='+item.idBarang+'>'+
                                 '</td>' +
+                                '<td>' + item.namaPabrikObat + '</td>' +
+                                '<td>' + item.merk + '</td>' +
                                 '<td>' + dateFormat + '</td>' +
-                                '<td align="center">' + qtyBox + '</td>' +
-                                '<td align="center">' + qtyLembar + '</td>' +
                                 '<td align="center">' + qtyBiji + '</td>' +
                                 '<td>' +
                                 '<div class="input-group">' +
@@ -526,42 +527,22 @@
 
         $.each(data, function (i, item) {
             var id = data[i]["Expired Date"];
-            var box = data[i]["Qty BX"];
-            var lembar = data[i]["Qty LB"];
-            var biji = data[i]["Qty BJ"];
+            var biji = data[i]["Stok Biji"];
             var qty = $('#newQty' + i).val();
 
             if (qty == "") {
                 qty = 0;
             }
-            if (box == "") {
-                box = 0;
-            }
-            if (lembar == "") {
-                lembar = 0;
-            }
             if (biji == "") {
                 biji = 0;
             }
 
-            qtyBox = parseInt(qtyBox) + parseInt(box);
-            qtyLembar = parseInt(qtyLembar) + parseInt(lembar);
             qtyBiji = parseInt(qtyBiji) + parseInt(biji);
             qtyApp = parseInt(qtyApp) + parseInt(qty);
 
         });
 
-        var stok = 0;
-
-        if ("box" == jenisSatuan) {
-            stok = qtyBox;
-        }
-        if ("lembar" == jenisSatuan) {
-            stok = parseInt(qtyLembar) + (parseInt(lembarPerBox * parseInt(qtyBox)));
-        }
-        if ("biji" == jenisSatuan) {
-            stok = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar));
-        }
+        var stok = qtyBiji;
 
         var stringData = JSON.stringify(result);
 
@@ -592,6 +573,7 @@
                     $('#save_app').show();
                     $('#modal-approve').modal('hide');
                     $('#info_dialog').dialog('open');
+                    $('#pabrik' + idObat).attr('readonly', true);
                     $('#qtyApp' + idObat).text(qtyApp);
                     $('#status' + idObat).html('<img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">');
                     $('body').scrollTop(0);

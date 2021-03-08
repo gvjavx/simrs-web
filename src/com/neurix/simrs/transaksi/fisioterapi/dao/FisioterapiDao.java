@@ -55,7 +55,16 @@ public class FisioterapiDao extends GenericDao<ItSimrsFisioterapiEntity, String>
                 "it_simrs_tindakan_rawat a\n" +
                 "INNER JOIN im_simrs_dokter b ON a.id_dokter = b.id_dokter\n" +
                 "INNER JOIN it_simrs_header_detail_checkup c ON a.id_detail_checkup = c.id_detail_checkup\n" +
-                "INNER JOIN im_simrs_pelayanan d ON c.id_pelayanan = d.id_pelayanan\n" +
+                "INNER JOIN (SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "b.nama_pelayanan,\n" +
+                "b.tipe_pelayanan,\n" +
+                "b.kategori_pelayanan,\n" +
+                "b.divisi_id,\n" +
+                "b.kode_vclaim,\n" +
+                "a.branch_id\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON c.id_pelayanan = d.id_pelayanan\n" +
                 "INNER JOIN it_simrs_header_checkup e ON c.no_checkup = e.no_checkup\n" +
                 "WHERE d.kategori_pelayanan = 'fisioterapi'\n" +
                 "AND e.id_pasien = :id \n" +

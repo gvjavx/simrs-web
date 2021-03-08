@@ -105,4 +105,16 @@ public class JenisPriksaPasienBoImpl implements JenisPriksaPasienBo {
         }
         return list;
     }
+
+    @Override
+    public List<JenisPriksaPasien> getJenisPeriksaExecMCU() throws GeneralBOException {
+        List<JenisPriksaPasien> jenisPriksaPasienList = new ArrayList<>();
+        try {
+           jenisPriksaPasienList = jenisPeriksaPasienDao.getJenisPeriksaExcMCU();
+        } catch (GeneralBOException e){
+            logger.error("Found Error"+e.getMessage());
+            throw new GeneralBOException("Found Error"+e.getMessage());
+        }
+        return jenisPriksaPasienList;
+    }
 }

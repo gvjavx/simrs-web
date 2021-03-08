@@ -134,6 +134,27 @@
                                     <s:hidden id="id_pasien" name="detailCheckup.idPasien"/>
                                     <s:hidden id="jenis_pasien" name="detailCheckup.idJenisPeriksaPasien"/>
                                     <s:hidden id="jenis_bayar" name="detailCheckup.metodePembayaran"/>
+
+                                    <s:hidden id="h_nama_pasien" name="detailCheckup.namaPasien"/>
+                                    <s:hidden id="h_tgl_lahir" name="detailCheckup.tglLahir"/>
+                                    <s:hidden id="h_anamnesa" name="detailCheckup.anamnese"/>
+                                    <s:hidden id="h_penunjang_medis" name="detailCheckup.penunjangMedis"/>
+                                    <s:hidden id="h_keluhan_utama" name="detailCheckup.keluhanUtama"/>
+                                    <s:hidden id="h_suhu" name="detailCheckup.suhu"/>
+                                    <s:hidden id="h_nadi" name="detailCheckup.nadi"/>
+                                    <s:hidden id="h_tensi" name="detailCheckup.tensi"/>
+                                    <s:hidden id="h_pernafasan" name="detailCheckup.pernafasan"/>
+                                    <s:hidden id="h_alergi" name="detailCheckup.alergi"/>
+                                    <s:hidden id="h_berat_badan" name="detailCheckup.berat"/>
+                                    <s:hidden id="h_tinggi_badan" name="detailCheckup.tinggi"/>
+                                    <s:hidden id="h_diagnosa" name="detailCheckup.namaDiagnosa"/>
+                                    <s:hidden id="h_umur" name="detailCheckup.umur"/>
+                                    <s:hidden id="h_alamat_lengkap" name="detailCheckup.alamatLengkap"/>
+                                    <s:hidden id="h_no_bpjs" name="detailCheckup.noBpjs"/>
+                                    <s:hidden id="h_jenis_kelamin" name="detailCheckup.jenisKelamin"/>
+                                    <s:hidden id="h_tipe_pelayanan" name="detailCheckup.kategoriPelayanan"/>
+                                    <s:hidden id="h_kategori_pelayanan" name="detailCheckup.kategoriPelayanan"/>
+
                                     <tr>
                                         <td width="35%"><b>No RM</b></td>
                                         <td>
@@ -936,35 +957,36 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/rencana_asuahan.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/tindakan_medis.js"/>'></script>
 
 <script type='text/javascript'>
 
     var isReadRM = true;
-    var idDetailCheckup = '<s:property value="detailCheckup.idDetailCheckup"/>';
+    var idDetailCheckup = $('#no_detail_checkup').val();
     var contextPath = '<%= request.getContextPath() %>';
     var idPasien = $('#id_pasien').val();
 
-    var tglLhr = '<s:property value="headerDetailCheckup.tglLahir"/>';
+    var tglLhr = $('#h_tgl_lahir').val();
     var tglLahir = tglLhr.split("-").reverse().join("-");
-    var namaPasien = '<s:property value="headerDetailCheckup.namaPasien"/>';
-    var anamnese = '<s:property value="headerDetailCheckup.anamnese"/>';
-    var penunjangMedis = '<s:property value="headerDetailCheckup.penunjangMedis"/>';
-    var keluhanUtama = '<s:property value="headerDetailCheckup.keluhanUtama"/>';
-    var suhu = '<s:property value="headerDetailCheckup.suhu"/>';
-    var nadi = '<s:property value="headerDetailCheckup.nadi"/>';
-    var tensi = '<s:property value="headerDetailCheckup.tensi"/>';
-    var pernafasan = '<s:property value="headerDetailCheckup.pernafasan"/>';
-    var alergi = '<s:property value="headerDetailCheckup.alergi"/>';
-    var beratBadan = '<s:property value="headerDetailCheckup.berat"/>';
-    var tinggiBadan = '<s:property value="headerDetailCheckup.tinggi"/>';
-    var diagnosa = '<s:property value="headerDetailCheckup.namaDiagnosa"/>';
-    var umur = '<s:property value="headerDetailCheckup.umur"/>';
-    var alamatLengkap = '<s:property value="headerDetailCheckup.alamatLengkap"/>';
-    var noBpjs = '<s:property value="headerDetailCheckup.noBpjs"/>';
-    var jenisKelamin = '<s:property value="headerDetailCheckup.jenisKelamin"/>';
-    var noCheckup = '<s:property value="detailCheckup.noCheckup"/>';
-    var tipePelayanan = '<s:property value="detailCheckup.tipePelayanan"/>';
-    var kategoriPelayanan = '<s:property value="detailCheckup.kategoriPelayanan"/>';
+    var namaPasien = $('#h_nama_pasien').val();
+    var anamnese = $('#h_anamnesa').val();
+    var penunjangMedis = $('#h_penunjang_medis').val();
+    var keluhanUtama = $('#h_keluhan_utama').val();
+    var suhu = $('#h_suhu').val();
+    var nadi = $('#h_nadi').val();
+    var tensi = $('#h_tensi').val();
+    var pernafasan = $('#h_pernafasan').val();
+    var alergi = $('#h_alergi').val();
+    var beratBadan = $('#h_berat_badan').val();
+    var tinggiBadan = $('#h_tinggi_badan').val();
+    var diagnosa = $('#h_diagnosa').val();
+    var umur = $('#h_umur').val();
+    var alamatLengkap = $('#h_alamat_lengkap').val();
+    var noBpjs = $('#h_no_bpjs').val();
+    var jenisKelamin = $('#h_jenis_kelamin').val();
+    var noCheckup = $('#no_checkup').val();
+    var tipePelayanan = $('#h_tipe_pelayanan').val();
+    var kategoriPelayanan = $('#h_kategori_pelayanan').val();
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";
@@ -972,6 +994,10 @@
     var tempBerat = "";
     var tempTinggi = "";
     var tempAnmnesa = "";
+    var namaRuanganPasien = "";
+    var isEksekutif = "";
+    var flagVaksin = "";
+    var tanggalMasuk = new Date();
 
     function loadModalRM(jenis) {
         var context = "";

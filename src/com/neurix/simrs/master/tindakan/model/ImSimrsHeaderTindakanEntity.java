@@ -20,6 +20,15 @@ public class ImSimrsHeaderTindakanEntity {
     private String kategoriInaBpjs;
     private String flagKonsulTele;
     private String flagVaksin;
+    private String kategori;
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
 
     public String getFlagVaksin() {
         return flagVaksin;

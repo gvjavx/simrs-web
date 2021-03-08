@@ -33,8 +33,8 @@
         /*frans*/
 
         /*#demo {*/
-            /*-webkit-box-shadow: 2px 0px 24px 1px rgba(0,0,0,0.44);*/
-            /*box-shadow:2px 0px 24px 1px rgba(0,0,0,0.44);*/
+        /*-webkit-box-shadow: 2px 0px 24px 1px rgba(0,0,0,0.44);*/
+        /*box-shadow:2px 0px 24px 1px rgba(0,0,0,0.44);*/
         /*}*/
 
     </style>
@@ -89,29 +89,19 @@
                         </table>
 
                         <table >
-                            <%--<tr>--%>
+                                <%--<tr>--%>
                                 <%--<td width="20%">--%>
-                                    <%--<label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>--%>
+                                <%--<label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>--%>
                                 <%--</td>--%>
                                 <%--<td>--%>
-                                    <%--<table>--%>
-                                        <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
-                                                      <%--required="false" readonly="false" cssClass="form-control"/>--%>
-                                    <%--</table>--%>
+                                <%--<table>--%>
+                                <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
+                                <%--required="false" readonly="false" cssClass="form-control"/>--%>
+                                <%--</table>--%>
                                 <%--</td>--%>
-                            <%--</tr>--%>
+                                <%--</tr>--%>
                             <tr>
                                 <td width="20%">
-                                    <label class="control-label"><small>Sub Bidang/Divisi Id :</small></label>
-                                </td>
-                                <td>
-
-                                        <s:textfield  id="positionBagianId" name="positionBagian.bagianId" required="false" readonly="false" cssClass="form-control"/>
-                                    </table>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td width="18%">
                                     <label class="control-label"><small>Sub Bidang/Divisi Name :</small></label>
                                 </td>
                                 <td>
@@ -122,7 +112,7 @@
                                     </table>
                                 </td>
                             </tr>
-                                <br>
+                            <br>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Bidang/Devisi :</small></label>
@@ -134,8 +124,8 @@
                                                   name="positionBagian.divisiId"
                                                   listKey="departmentId" listValue="departmentName"
                                                   headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                        <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
-                                                      <%--required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
+                                            <%--<s:textfield  id="positionBagianId" name="positionBagian.bagianId"--%>
+                                            <%--required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>--%>
                                     </table>
                                 </td>
                             </tr>
@@ -164,12 +154,12 @@
                                         <%--Search--%>
                                         <%--</sj:submit>--%>
                                         <%--</td>--%>
-                                        <td>
-                                            <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData()"><i class="fa fa-search"></i> Search</a>
-                                        </td>
+                                    <td>
+                                        <a class="btn btn-primary" Style="margin-right: 5px" onclick="searchData()"><i class="fa fa-search"></i> Search</a>
+                                    </td>
                                     <td>
                                         <s:url var="urlAdd" namespace="/positionBagian" action="add_positionBagian" escapeAmp="false">
-                                    </s:url>
+                                        </s:url>
                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
                                             Add Bagian
@@ -217,31 +207,31 @@
                                                                         'OK':function() { $('#error_dialog').dialog('close'); window.location.reload(true)}
                                                                     }"
                                         ></sj:dialog>
-                                        <%--<s:set name="listOfPositionBagian" value="#session.listOfResult" scope="request" />--%>
-                                        <%--<display:table name="listOfPositionBagian" class="table table-condensed table-striped table-hover"--%>
-                                                       <%--requestURI="paging_displaytag_positionBagian.action" export="true" id="row" pagesize="14" style="font-size:10">--%>
+                                            <%--<s:set name="listOfPositionBagian" value="#session.listOfResult" scope="request" />--%>
+                                            <%--<display:table name="listOfPositionBagian" class="table table-condensed table-striped table-hover"--%>
+                                            <%--requestURI="paging_displaytag_positionBagian.action" export="true" id="row" pagesize="14" style="font-size:10">--%>
                                             <%--<display:column media="html" title="Edit">--%>
-                                                <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:url var="urlEdit" namespace="/positionBagian" action="edit_positionBagian" escapeAmp="false">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.bagianId"/></s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
-                                                    <%--</s:url>--%>
-                                                    <%--<sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
-                                                    <%--</sj:a>--%>
-                                                <%--</s:if>--%>
+                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                            <%--<s:url var="urlEdit" namespace="/positionBagian" action="edit_positionBagian" escapeAmp="false">--%>
+                                            <%--<s:param name="id"><s:property value="#attr.row.bagianId"/></s:param>--%>
+                                            <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">--%>
+                                            <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
+                                            <%--</sj:a>--%>
+                                            <%--</s:if>--%>
                                             <%--</display:column>--%>
 
                                             <%--<display:column media="html" title="Delete" style="text-align:center;font-size:9">--%>
-                                                <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:url var="urlViewDelete" namespace="/positionBagian" action="delete_positionBagian" escapeAmp="false">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.bagianId" /></s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
-                                                    <%--</s:url>--%>
-                                                    <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
-                                                    <%--</sj:a>--%>
-                                                <%--</s:if>--%>
+                                            <%--<s:if test="#attr.row.flagYes">--%>
+                                            <%--<s:url var="urlViewDelete" namespace="/positionBagian" action="delete_positionBagian" escapeAmp="false">--%>
+                                            <%--<s:param name="id"><s:property value="#attr.row.bagianId" /></s:param>--%>
+                                            <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                            <%--</s:url>--%>
+                                            <%--<sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">--%>
+                                            <%--<img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">--%>
+                                            <%--</sj:a>--%>
+                                            <%--</s:if>--%>
                                             <%--</display:column>--%>
                                             <%--<display:column property="bagianId" sortable="true" title="Sub Bidang/Divisi Id" />--%>
                                             <%--<display:column property="bagianName" sortable="true" title="Sub Bidang/Divisi Name"  />--%>
@@ -253,15 +243,16 @@
                                             <%--<display:column property="createdWho" sortable="true" title="Created who"  />--%>
                                             <%--<display:column property="lastUpdate" sortable="true" title="Last update"  />--%>
                                             <%--<display:column property="lastUpdateWho" sortable="true" title="Last update who"  />--%>
-                                        <%--</display:table>--%>
+                                            <%--</display:table>--%>
                                         <table class="table table-bordered" style="font-size: 13px;">
                                             <thead >
                                             <tr style="background-color:#30d196;">
-                                                <%--<td>Departement ID</td>--%>
+                                                    <%--<td>Departement ID</td>--%>
                                                 <td>Name</td>
-                                                <td>Created Date</td>
+                                                <td>Kodering</td>
+                                                <%--<td>Created Date</td>--%>
                                                 <td>Last Update</td>
-                                                <td>Created Who</td>
+                                                <%--<td>Created Who</td>--%>
                                                 <td>Last Update Who</td>
                                                 <td>Edit</td>
                                                 <td>Delete</td>
@@ -324,9 +315,9 @@
                         <div class="col-sm-8">
                             <select id="department-id-edit" class="form-control">
                             </select>
-                            <%--<s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>--%>
-                            <%--<s:select list="#comboDept.listComboDepartment" id="departmentId-edit"--%>
-                                      <%--listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                <%--<s:action id="comboDept" namespace="/department" name="initComboDepartment_department"/>--%>
+                                <%--<s:select list="#comboDept.listComboDepartment" id="departmentId-edit"--%>
+                                <%--listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                         </div>
                     </div>
                 </s:form>
@@ -402,8 +393,9 @@
                     }
                     body += '<tr id="row_'+item.departmentId+'" style="background-color: gainsboro">' +
                         '<td>'+icon+" "+item.departmentName+'</td>'+
-                        '<td>'+item.stCreatedDate+'</td>'+
-                        '<td>'+item.createdWho+'</td>'+
+                        '<td>'+item.kodering+'</td>'+
+                        // '<td>'+item.stCreatedDate+'</td>'+
+                        // '<td>'+item.createdWho+'</td>'+
                         '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
                         '<td></td>'+
@@ -425,10 +417,11 @@
                 var tr = '';
                 $.each(response, function (i, item) {
                     tr += '<tr class="del_'+id+'">' +
-//                        '<td><span style="margin-left: 20px">'+item.bagianId+'</span></td>'+
+                        //                        '<td><span style="margin-left: 20px">'+item.bagianId+'</span></td>'+
                         '<td><span style="margin-left: 20px">'+item.bagianName+'</span></td>'+
-                        '<td>'+item.stCreatedDate+'</td>'+
-                        '<td>'+item.createdWho+'</td>'+
+                        '<td>'+item.kodering+'</td>'+
+                        // '<td>'+item.stCreatedDate+'</td>'+
+                        // '<td>'+item.createdWho+'</td>'+
                         '<td>'+item.stLastUpdate+'</td>'+
                         '<td>'+item.lastUpdateWho+'</td>'+
                         '<td><button type="button" id="demo" class="btn btn-success " onclick="edit(\''+item.bagianId+'\')" > <span class="glyphicon glyphicon-pencil"></span></button></td>'+
@@ -462,11 +455,11 @@
             console.log(res);
             var str = "";
             $.each(res, function (i, item) {
-               if (item.departmentId == divisiId){
-                   str += '<option value="'+item.departmentId+'" selected>'+item.departmentName+'</option>';
-               } else {
-                   str += '<option value="'+item.departmentId+'">'+item.departmentName+'</option>';
-               }
+                if (item.departmentId == divisiId){
+                    str += '<option value="'+item.departmentId+'" selected>'+item.departmentName+'</option>';
+                } else {
+                    str += '<option value="'+item.departmentId+'">'+item.departmentName+'</option>';
+                }
             });
             $('#department-id-edit').html(str);
             $('#department-id-delete').html(str);
@@ -485,29 +478,29 @@
     }
 
     function saveEdit() {
-      var iddevisi = $("#iddevisiedit").val();
-      var namadevisi = $("#devisiedit").val();
-      var bidang = $("#department-id-edit").val();
+        var iddevisi = $("#iddevisiedit").val();
+        var namadevisi = $("#devisiedit").val();
+        var bidang = $("#department-id-edit").val();
 
-      PositionBagianAction.saveEditDwr(iddevisi,namadevisi, bidang, function (CrudResponse) {
-          if(CrudResponse.status == "succes"){
-              // alert("berhasil");
-              $('#modal-edit').modal("hide");
-              // $('#info_dialog').dialog('open');
-              window.location.reload(true);
-          }else {
-              alert(CrudResponse.msg);
-          }
+        PositionBagianAction.saveEditDwr(iddevisi,namadevisi, bidang, function (CrudResponse) {
+            if(CrudResponse.status == "succes"){
+                // alert("berhasil");
+                $('#modal-edit').modal("hide");
+                // $('#info_dialog').dialog('open');
+                window.location.reload(true);
+            }else {
+                alert(CrudResponse.msg);
+            }
             $('#modal-edit').modal("hide");
 
-          searchData();
-      })
-      // console.log(iddevisi);
-      // console.log(namadevisi);
+            searchData();
+        })
+        // console.log(iddevisi);
+        // console.log(namadevisi);
     }
 
     function saveDelete() {
-    var iddevisi= $("#iddevisidelete").val();
+        var iddevisi= $("#iddevisidelete").val();
         PositionBagianAction.saveDeleteDwr(iddevisi, function (CrudResponse) {
             if(CrudResponse.status == "succes"){
                 alert("delete berhasil");

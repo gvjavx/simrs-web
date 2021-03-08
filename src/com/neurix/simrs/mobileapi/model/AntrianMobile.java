@@ -27,6 +27,15 @@ public class AntrianMobile {
     private String idDetailCheckup;
     private String flagCall;
     private String message;
+    private String idPaket;
+
+    public String getIdPaket() {
+        return idPaket;
+    }
+
+    public void setIdPaket(String idPaket) {
+        this.idPaket = idPaket;
+    }
 
     public String getMessage() {
         return message;

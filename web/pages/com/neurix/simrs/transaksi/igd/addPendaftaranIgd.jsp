@@ -16,6 +16,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PaketPeriksaAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PelayananAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -66,6 +67,8 @@
             var unitPg = $('#unit_pg').val();
             var cekBpjs = $('#cek_is_bpjs').val();
             var poliUmum = $('#poli_umum').val();
+            var ambulance = $('#ambulance').val();
+            var jumlahKm = $('#jumlah_kilometer').val();
 
             if (idPasien != '' && noKtp != '' && namaPasien != '' && jenisKelamin != '' && tempatLahir != ''
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
@@ -75,7 +78,17 @@
                 if (tipe == "umum") {
                     if($('#is_uang_muka').is(':checked')){
                         if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
-                            $('#confirm_dialog').dialog('open');
+                            if(ambulance != ''){
+                                if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                    $('#confirm_dialog').dialog('open');
+                                }else{
+                                    $("html, body").animate({scrollTop: 0}, 600);
+                                    $('#warning_pasien').show().fadeOut(10000);
+                                    $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                }
+                            }else{
+                                $('#confirm_dialog').dialog('open');
+                            }
                         } else {
                             $("html, body").animate({scrollTop: 0}, 600);
                             $('#warning_pasien').show().fadeOut(10000);
@@ -88,7 +101,17 @@
                             }
                         }
                     }else{
-                        $('#confirm_dialog').dialog('open');
+                        if(ambulance != ''){
+                            if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                $('#confirm_dialog').dialog('open');
+                            }else{
+                                $("html, body").animate({scrollTop: 0}, 600);
+                                $('#warning_pasien').show().fadeOut(10000);
+                                $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                            }
+                        }else{
+                            $('#confirm_dialog').dialog('open');
+                        }
                     }
                 }
 
@@ -96,8 +119,43 @@
                     if (diagnosaBpjs != '') {
                         if (statusBpjs != '') {
                             if (statusBpjs == "aktif") {
-                                // if(statusBpjs == "aktif" && statusRujukan == "aktif"){
-                                $('#confirm_dialog').dialog('open');
+                                if(tipe == "bpjs_rekanan"){
+                                    if (noKartuPtpn != '' && unitPtpn != '') {
+                                        if(ambulance != ''){
+                                            if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                                $('#confirm_dialog').dialog('open');
+                                            }else{
+                                                $("html, body").animate({scrollTop: 0}, 600);
+                                                $('#warning_pasien').show().fadeOut(10000);
+                                                $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                            }
+                                        }else{
+                                            $('#confirm_dialog').dialog('open');
+                                        }
+                                    } else {
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                        if (noKartuPtpn == '') {
+                                            $('#war_no_kartu_ptpn').show();
+                                        }
+                                        if (unitPtpn == '') {
+                                            $('#war_ptpn').show();
+                                        }
+                                    }
+                                }else{
+                                    if(ambulance != ''){
+                                        if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                            $('#confirm_dialog').dialog('open');
+                                        }else{
+                                            $("html, body").animate({scrollTop: 0}, 600);
+                                            $('#warning_pasien').show().fadeOut(10000);
+                                            $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                        }
+                                    }else{
+                                        $('#confirm_dialog').dialog('open');
+                                    }
+                                }
                             } else {
                                 var msg1 = "";
                                 var msg2 = "";
@@ -129,10 +187,30 @@
                 if (tipe == "asuransi") {
                     if (asuransi != '') {
                         if (isLaka == "Y") {
-                            $('#confirm_dialog').dialog('open');
+                            if(ambulance != ''){
+                                if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                    $('#confirm_dialog').dialog('open');
+                                }else{
+                                    $("html, body").animate({scrollTop: 0}, 600);
+                                    $('#warning_pasien').show().fadeOut(10000);
+                                    $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                }
+                            }else{
+                                $('#confirm_dialog').dialog('open');
+                            }
                         } else {
                             if (noKartu != '') {
-                                $('#confirm_dialog').dialog('open');
+                                if(ambulance != ''){
+                                    if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                        $('#confirm_dialog').dialog('open');
+                                    }else{
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                    }
+                                }else{
+                                    $('#confirm_dialog').dialog('open');
+                                }
                             } else {
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
@@ -160,11 +238,21 @@
 
                 if (tipe == "rekanan") {
                     if (noKartuPtpn != '' && unitPtpn != '') {
-                        $('#confirm_dialog').dialog('open');
+                        if(ambulance != ''){
+                            if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                $('#confirm_dialog').dialog('open');
+                            }else{
+                                $("html, body").animate({scrollTop: 0}, 600);
+                                $('#warning_pasien').show().fadeOut(10000);
+                                $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                            }
+                        }else{
+                            $('#confirm_dialog').dialog('open');
+                        }
                     } else {
                         $("html, body").animate({scrollTop: 0}, 600);
                         $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data PTPN...!");
+                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
                         if (noKartuPtpn == '') {
                             $('#war_no_kartu_ptpn').show();
                         }
@@ -1385,6 +1473,9 @@
                             <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.idLab" id="h_id_order_lab"></s:hidden>
+                            <s:hidden name="headerCheckup.tarif" id="h_tarif"></s:hidden>
+                            <s:hidden name="headerCheckup.idTindakan" id="h_id_tindakan"></s:hidden>
+                            <s:hidden name="headerCheckup.namaTindakan" id="h_nama_tindakan"></s:hidden>
 
                             <div id="form-is-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
@@ -1405,10 +1496,48 @@
                                 </div>
                             </div>
 
+                            <div id="form-ambulance">
+                                <div class="box-header with-border"></div>
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-ambulance"></i> Penunjang</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px"> Jenis Kendaraan</label>
+                                                    <div class="col-md-8">
+                                                        <select class="form-control select2" id="ambulance" onchange="setDiskonHarga(this.value)">
+                                                            <option value="">[Select One]</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group" style="margin-top: 7px">
+                                                    <div class="col-md-4">
+                                                        <input class="form-control" readonly placeholder="Tarif/km" id="val_tarif">
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <s:textfield cssClass="form-control" placeholder="Diskon" name="headerCheckup.diskon" id="val_diskon" readonly="true"></s:textfield>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <s:textfield cssClass="form-control" placeholder="Jumlah Kilometer" name="headerCheckup.jumlah" type="number" id="jumlah_kilometer"></s:textfield>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="form-uang-muka" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-money"></i> Pembayaran</h3>
+                                    <h3 class="box-title"><i class="fa fa-money"></i> Uang Muka</h3>
                                 </div>
                                 <div class="box-body">
                                     <div class="row">
@@ -2056,6 +2185,7 @@
         $('#igd').addClass('active');
         listJenisPasien();
         setPelayanan();
+        setPenunjang();
 
         $(document).on('change', '.btn-file :file', function () {
             var input = $(this),
@@ -3068,6 +3198,7 @@
                 $('#form-asuransi').hide();
                 $('#poli').attr('disabled', false);
                 $('#form_eksekutif').hide();
+                $('#form-is-uang-muka').hide();
             } else if (jenis == "paket_perusahaan") {
                 listSelectPaket();
                 $('#form-paket-perusahaan').show();
@@ -3077,6 +3208,7 @@
                 $('#form-asuransi').hide();
                 $('#form-rekanan').hide();
                 $('#form-paket').hide();
+                $('#form-is-uang-muka').hide();
             } else if (jenis == "paket_individu") {
                 listSelectPaket();
                 $('#form-paket').show();
@@ -3095,6 +3227,7 @@
                 $('#form-rujukan').hide();
                 $('#form-is-uang-muka').hide();
                 $('#form-rekanan').hide();
+                $('#form-is-uang-muka').hide();
             }
 
             if (online == "Y") {
@@ -3671,6 +3804,49 @@
             $('#form-uang-muka').show();
         }else{
             $('#form-uang-muka').hide();
+        }
+    }
+
+    function setPenunjang(){
+        var option = '<option value="">[Select One]</option>';
+        TindakanAction.getComboAmbulance(function (res) {
+            if(res.length > 0){
+                $.each(res, function (i, item) {
+                    option += '<option value="'+item.idTindakan+'">'+item.tindakan+'</option>';
+                });
+                $('#ambulance').html(option);
+            }
+        });
+    }
+
+    function setDiskonHarga(id) {
+        var jenisPeriksaPasien = $('#jenis_pasien').val();
+        if (id != '') {
+            TindakanAction.initTindakan(id, function (res) {
+                if (res.idTindakan != '') {
+                    var disk = 0;
+                    if (res.diskon != '' && res.diskon != null) {
+                        disk = res.diskon;
+                    }
+                    if (jenisPeriksaPasien == "bpjs") {
+                        $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                        $('#h_tarif').val(res.tarifBpjs);
+                    } else {
+                        $('#val_tarif').val("Rp. " + formatRupiahAtas(res.tarif));
+                        $('#h_tarif').val(res.tarif);
+                    }
+                    $('#val_diskon').val(disk);
+                }
+            });
+            var nama = $('#ambulance option:selected').text();
+            $('#h_id_tindakan').val(id);
+            $('#h_nama_tindakan').val(nama);
+        }else{
+            $('#val_diskon').val('');
+            $('#val_tarif').val('');
+            $('#h_tarif').val('');
+            $('#h_id_tindakan').val('');
+            $('#h_nama_tindakan').val('');
         }
     }
 

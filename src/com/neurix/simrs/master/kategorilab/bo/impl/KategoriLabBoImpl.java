@@ -237,10 +237,14 @@ public class KategoriLabBoImpl implements KategoriLabBo {
                     kategoriLab.setNamaKategori(kategoriLabEntity.getNamaKategori());
                     kategoriLab.setFlag(kategoriLabEntity.getFlag());
                     kategoriLab.setAction(kategoriLabEntity.getAction());
-                    kategoriLab.setStCreatedDate(kategoriLabEntity.getCreatedDate().toString());
+                    if(kategoriLabEntity.getCreatedDate() != null){
+                        kategoriLab.setStCreatedDate(kategoriLabEntity.getCreatedDate().toString());
+                    }
                     kategoriLab.setCreatedDate(kategoriLabEntity.getCreatedDate());
                     kategoriLab.setCreatedWho(kategoriLabEntity.getCreatedWho());
-                    kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
+                    if(kategoriLabEntity.getLastUpdate() != null){
+                        kategoriLab.setStLastUpdate(kategoriLabEntity.getLastUpdate().toString());
+                    }
                     kategoriLab.setLastUpdate(kategoriLabEntity.getLastUpdate());
                     kategoriLab.setLastUpdateWho(kategoriLabEntity.getLastUpdateWho());
 
