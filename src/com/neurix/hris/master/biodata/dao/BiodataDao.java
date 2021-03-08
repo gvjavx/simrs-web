@@ -704,11 +704,6 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setNipLama(person.getNipLama());
                 result.setFlagDokterKso(person.getFlagDokterKso());
                 result.setJenisPegawai(person.getJenisPegawai());
-
-                result.setPeralihanGapok(person.getPeralihanGapok());
-                result.setPeralihanSankhus(person.getPeralihanSankhus());
-                result.setPeralihanTunjangan(person.getPeralihanTunjangan());
-
                 result.setFlagPegawaiCutiDiluarTanggungan(person.getFlagPegawaiCutiDiluarTanggungan());
                 result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
                 result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());

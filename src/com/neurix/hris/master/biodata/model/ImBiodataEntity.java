@@ -90,11 +90,6 @@ public class ImBiodataEntity implements Serializable {
     private String divisiName;
     private String jenisPegawai;
 
-    //BARU
-    private BigDecimal peralihanGapok;
-    private BigDecimal peralihanSankhus;
-    private BigDecimal peralihanTunjangan;
-
     private Date tanggalKeluar;
     private String flagPegawaiCutiDiluarTanggungan;
     private Date tanggalCutiDiluarAwal;
@@ -130,30 +125,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setTanggalKeluar(Date tanggalKeluar) {
         this.tanggalKeluar = tanggalKeluar;
-    }
-
-    public BigDecimal getPeralihanGapok() {
-        return peralihanGapok;
-    }
-
-    public void setPeralihanGapok(BigDecimal peralihanGapok) {
-        this.peralihanGapok = peralihanGapok;
-    }
-
-    public BigDecimal getPeralihanSankhus() {
-        return peralihanSankhus;
-    }
-
-    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
-        this.peralihanSankhus = peralihanSankhus;
-    }
-
-    public BigDecimal getPeralihanTunjangan() {
-        return peralihanTunjangan;
-    }
-
-    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
-        this.peralihanTunjangan = peralihanTunjangan;
     }
 
     public String getJenisPegawai() {

@@ -274,14 +274,33 @@ public class PositionBoImpl implements PositionBo {
                 ImPosition imPosition = new ImPosition();
 
                 imPosition.setFlag("Y");
-                imPosition.setPositionId(positionDao.getNextPosition() + "");
+                String positionId = "";
+                try{
+                    positionId = positionDao.getNextPosition();
+                }catch (HibernateException e){
+                    logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Position Id, " + e.getMessage());
+                }
+                imPosition.setPositionId(positionId);
                 imPosition.setPositionName(position.getPositionName());
                 imPosition.setDepartmentId(position.getDepartmentId());
                 imPosition.setKelompokId(position.getKelompokId());
                 imPosition.setBagianId(position.getBagianId());
 
-                ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",position.getBagianId());
-                List<ImPosition> positionList = positionDao.getListByBagianId(position.getBagianId());
+                ImPositionBagianEntity positionBagianEntity;
+                try {
+                    positionBagianEntity = positionBagianDao.getById("bagianId", position.getBagianId());
+                }catch (HibernateException e){
+                    logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Position Bagian by Id, " + e.getMessage());
+                }
+                List<ImPosition> positionList = new ArrayList<>();
+                try{
+                    positionList = positionDao.getListByBagianId(position.getBagianId());
+                }catch (HibernateException e){
+                    logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Position by Bagian, " +e.getMessage());
+                }
                 String sId = String.format("%02d", positionList.size()+1);
 
                 imPosition.setKodering(positionBagianEntity.getKodering()+"."+sId);

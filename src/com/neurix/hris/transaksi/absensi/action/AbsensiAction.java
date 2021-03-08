@@ -1317,7 +1317,8 @@ public class AbsensiAction extends BaseMasterAction {
             BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
             branch = branchBo.getBranchById(unitId,"Y");
         }catch( HibernateException e){
-
+            logger.error("[AbsensiAction.printReportAbsensi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving Branch By Id, " + e.getMessage());
         }
         String logo ="";
         if (unitId.equalsIgnoreCase("RS01")){

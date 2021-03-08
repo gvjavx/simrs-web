@@ -273,16 +273,6 @@
             <column name="nip_lama" sql-type="varchar" length="15" />
         </property>
 
-        <!-- BARU -->
-        <property name="peralihanGapok">
-            <column name="peralihan_gapok"/>
-        </property>
-        <property name="peralihanSankhus">
-            <column name="peralihan_sankhus"/>
-        </property>
-        <property name="peralihanTunjangan">
-            <column name="peralihan_tunjangan"/>
-        </property>
         <property name="tanggalKeluar">
             <column name="tanggal_keluar" sql-type="date"/>
         </property>
