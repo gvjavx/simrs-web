@@ -135,7 +135,7 @@ public class LabDetailDao extends GenericDao<ImSimrsLabDetailEntity, String> {
             condition = condition + "AND a.id_parameter_pemeriksaan = '"+bean.getIdParameterPemeriksaan()+"' \n";
         }
         if(bean.getNamaDetailPeriksa() != null && !"".equalsIgnoreCase(bean.getNamaDetailPeriksa())){
-            condition = condition + "AND a.nama_pemeriksaan ILIKE '%"+bean.getNamaDetailPeriksa()+"%' \n";
+            condition = condition + "AND c.nama_pemeriksaan ILIKE '%"+bean.getNamaDetailPeriksa()+"%' \n";
         }
         if(bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())){
             condition = condition + "AND d.id_kategori_lab = '"+bean.getIdKategoriLab()+"' \n";

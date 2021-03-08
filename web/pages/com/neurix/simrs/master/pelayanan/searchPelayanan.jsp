@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Pelayanan
+            Data Detail Pelayanan
         </h1>
     </section>
 

@@ -111,7 +111,7 @@
                 <table >
                     <tr>
                         <td width="30%">
-                            <label class="control-label"><small>ID Detail RekananOps :</small></label>
+                            <label class="control-label"><small>ID Detail Rekanan OPS :</small></label>
                         </td>
                         <td>
                             <table>
@@ -125,20 +125,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>isbpjs :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
-                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" />
-                            </table>
-
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Nama rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan :</small></label>
                         </td>
                         <td width="70%">
                             <table>
@@ -151,30 +138,43 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>branch:</small></label>
+                            <label class="control-label"><small>Unit:</small></label>
                         </td>
                         <td width="70%">
                             <table>
                                 <s:action id="comboBranch" namespace="/admin/user" name="initComboBranch_user"/>
                                 <s:select list="#comboBranch.listOfComboBranches" id="branchId" name="detailRekananOps.branchId"
                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                          cssClass="form-control" />
+                                          cssClass="form-control" cssStyle="margin-top: 5px" disabled="true"/>
+                                <s:hidden name="detailRekananOps.branchId"></s:hidden>
                             </table>
                         </td>
                     </tr>
-
                     <tr>
                         <td width="18%">
-                            <label class="control-label"><small> diskon :</small></label>
+                            <label class="control-label"><small>Diskon :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield cssStyle="margin-top: 7px"
+                                <s:textfield cssStyle="margin-top: 5px" type="number"
                                              id="diskon"
                                              name="detailRekananOps.diskon"
                                              required="false"
                                              readonly="false" cssClass="form-control"/>
                             </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Cover BPJS :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
+                                          headerKey="Y" headerValue="Active" cssClass="form-control select2" cssStyle="margin-top: 5px" />
+                            </table>
+
                         </td>
                     </tr>
                 </table>

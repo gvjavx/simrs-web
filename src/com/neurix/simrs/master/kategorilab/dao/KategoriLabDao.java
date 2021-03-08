@@ -50,7 +50,7 @@ public class KategoriLabDao extends GenericDao<ImSimrsKategoriLabEntity,String> 
 
     public List<ImSimrsKategoriLabEntity> getDataKategoriLab(String namaKategoriLab) throws HibernateException {
         List<ImSimrsKategoriLabEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsKategoriLabEntity.class)
-                .add(Restrictions.eq("namaKategori", namaKategoriLab))
+                .add(Restrictions.ilike("namaKategori", namaKategoriLab))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

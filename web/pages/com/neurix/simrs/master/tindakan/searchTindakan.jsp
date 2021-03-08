@@ -548,6 +548,8 @@
                         <div class="col-md-7">
                             <select class="form-control select2" id="edit_nama_tindakan" style="width: 100%"
                                     onchange="var warn =$('#war_edit_nama_tindakan').is(':visible'); if (warn){$('#cor_edit_nama_tindakan').show().fadeOut(3000);$('#war_edit_nama_tindakan').hide()}"></select>
+                            <span id="loading_edit" style="color: green;">
+                                <i class="fa fa-circle-o-notch fa-spin"></i> sedang mencari...</span>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
@@ -1087,6 +1089,7 @@
     function getTindakan() {
         var option = '<option value="">[Select One]</option>';
         $('#loading_add').show();
+        $('#loading_edit').show();
         setTimeout(function () {
             TindakanAction.getComboTindakan(function (res) {
                 if (res.length > 0) {
@@ -1096,8 +1099,10 @@
                 }
                 $('#set_nama_tindakan').html(option);
                 $('#edit_nama_tindakan').html(option);
-                $('#btn-add').removeAttr('style');
+
                 $('#loading_add').hide();
+
+                $('#loading_edit').hide();
             });
         },500);
     }
@@ -1121,7 +1126,9 @@
                     $('#edit_nama_unit').val(res.branchId).trigger('change');
                     $('#edit_nama_pelayanan').val(res.idPelayanan).trigger('change');
                     $('#edit_kategori_tindakan').val(res.idKategoriTindakan).trigger('change');
-                    $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
+                    setTimeout(function () {
+                        $('#edit_nama_tindakan').val(res.idHeaderTindakan).trigger('change');
+                    },1000);
                     $('#edit_tarif').val(formatRupiahAtas(res.tarif));
                     $('#h_tarif').val(res.tarif);
                     $('#edit_tarif_bpjs').val(formatRupiahAtas(res.tarifBpjs));

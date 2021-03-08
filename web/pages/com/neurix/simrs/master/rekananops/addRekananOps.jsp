@@ -74,7 +74,7 @@
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
-                <legend align="left">Add Rekanan Ops</legend>
+                <legend align="left">Add Rekanan OPS</legend>
                 <table>
                     <tr>
                         <td width="10%" align="center">
@@ -87,7 +87,7 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Nama rekanan :</small></label>
+                            <label class="control-label"><small>Nama Rekanan :</small></label>
                         </td>
                         <td width="70%">
                             <table>

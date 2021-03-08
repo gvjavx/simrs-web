@@ -431,7 +431,7 @@
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Nomor Produksi</label>
                         <div class="col-md-7">
-                            <s:textfield type="number" min="1" cssClass="form-control"
+                            <s:textfield cssClass="form-control"
                                          cssStyle="margin-top: 7px" id="app_no_produksi"
                                          onkeypress="var warn =$('#war_app_no_produksi').is(':visible'); if (warn){$('#cor_app_no_produksi').show().fadeOut(3000);$('#war_app_no_produksi').hide()}"></s:textfield>
                         </div>
