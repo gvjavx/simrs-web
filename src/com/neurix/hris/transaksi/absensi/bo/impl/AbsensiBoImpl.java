@@ -5208,7 +5208,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     tsJamIstirahatAkhirKantor = new Timestamp(dJamIstirahatAkhirKantor.getTime());
 
                                 } catch (ParseException e) {
-                                    String status ="[AbsensiBoImpl.cronInquiry] ERROR :"+e;
+                                    String status ="[AbsensiBoImpl.cronInquiry] ERROR : "+e;
                                     logger.error(status);
                                     throw new GeneralBOException(status);
                                 }
@@ -5872,7 +5872,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         if (jamKerjaShift.size()!=0){
                             int jadwalke = 1;
                             for (AbsensiPegawai jamKerja : jamKerjaShift){
-                                if (jamKerja.getJamMasuk()!=null&&jamKerja.getJamPulang()!=null) {
+                                if (jamKerja.getJamMasuk()!=null&&jamKerja.getJamPulang()!=null){
                                     boolean lembur=false;
                                     Timestamp tsTanggalAwalShift;
                                     Timestamp tsTanggalBesokShift;
@@ -5880,8 +5880,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     Timestamp tsTanggalBesokFinalShift;
                                     Timestamp tsTanggalAwalLembur = null;
                                     Timestamp tsTanggalBesokLembur = null;
-                                    Timestamp tsJamAwalFinger =null;
-                                    Timestamp tsJamAkhirFinger=null;
+                                    Timestamp tsJamAwalFinger = null;
+                                    Timestamp tsJamAkhirFinger= null;
 
                                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                                     SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -5940,7 +5940,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             throw new GeneralBOException(status);
                                         }
 
-                                        if (jadwalke==1){
+                                        //RAKA-08MAR2021 ==> Menonaktifkan IF(jadwalke==1)
+//                                        if (jadwalke==1){
                                             //jika lembur sebelum jadwal
                                             if (tsTanggalAwalLembur.before(tsTanggalAwalShift)){
                                               lembur=true;
@@ -5952,7 +5953,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                               tsTanggalBesokFinalShift = tsTanggalAwalLembur;
                                               jamKerja.setJamPulang(lemburEntity.getJamAkhir());
                                             }
-                                        }else{
+//                                        }else{
                                             //jika lembur sesudah jadwal
                                             if (tsTanggalAwalLembur.after(tsTanggalAwalShift)){
                                                 lembur=true;
@@ -5963,7 +5964,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 tsTanggalAwalFinalShift = tsTanggalAwalLembur;
                                                 jamKerja.setJamMasuk(lemburEntity.getJamAwal());
                                             }
-                                        }
+//                                        }
+                                        //RAKA-end
                                     }
 
                                     int iJamMasukDBShift = Integer.parseInt(jamKerja.getJamMasuk().substring(0,2));
@@ -5971,6 +5973,11 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                     int jamMasukInquiry=iJamMasukDBShift-2;
                                     int jamPulangInquiry=iJamPulangDBShift+2;
+                                    //RAKA-08MAR2021 ==> Menyesuaikan Range Jam Pulang.
+                                    if(jamPulangInquiry > 24){
+                                        jamPulangInquiry = jamPulangInquiry-24;
+                                    }
+                                    //RAKA-end
 
                                     int iHari=0;
 
