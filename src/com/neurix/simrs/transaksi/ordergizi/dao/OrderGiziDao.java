@@ -368,7 +368,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 "waktu,\n" +
                 "created_date\n" +
                 "FROM it_simrs_order_gizi\n" +
-                "WHERE waktu LIKE :ket \n" + condi;
+                "WHERE waktu LIKE :ket AND flag = 'Y' \n" + condi;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
