@@ -2887,7 +2887,12 @@ public class AbsensiBoImpl implements AbsensiBo {
         hsCriteria2.put("branch_id",branch);
         hsCriteria2.put("hari",day);
         hsCriteria2.put("flag","Y");
-        jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
+        try {
+            jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
+        }catch(HibernateException e){
+            logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get Jam Kerja using Criteria, " + e.getMessage());
+        }
         for (ImHrisJamKerja jamKerja : jamKerjaList){
             jamMasukDB=jamKerja.getJamAwalKerja();
             jamPulangDB=jamKerja.getJamAkhirKerja();
@@ -2902,7 +2907,13 @@ public class AbsensiBoImpl implements AbsensiBo {
 
 
         Date tanggalLibur = CommonUtil.convertToDate(tanggal);
-        List<ImLiburEntity> liburEntityList = liburDao.getListLibur(tanggalLibur);
+        List<ImLiburEntity> liburEntityList = new ArrayList<>();
+        try{
+            liburEntityList = liburDao.getListLibur(tanggalLibur);
+        }catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving List Libur by Tanggal, " + e.getMessage());
+        }
         //cari hari libur
         if ( liburEntityList.size()!=0) {
             libur = "Y";
@@ -2985,7 +2996,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 ijinKeluar = ijinKeluarEntity.getJamKeluar();
                                 ijinKembali = ijinKeluarEntity.getJamKembali();
                             }
-                            List<ItIndisiplinerEntity> indisiplinerEntityList = indisiplinerDao.getListIndisiplinerFromBlokir(hasilInquiry.getNip(), tanggalAwal);
+                            List<ItIndisiplinerEntity> indisiplinerEntityList = new ArrayList<>();
+                            try{
+                                indisiplinerEntityList = indisiplinerDao.getListIndisiplinerFromBlokir(hasilInquiry.getNip(), tanggalAwal);
+                            }catch (GeneralBOException e){
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when retrieving List Indisipliner From Blokir using NIP and Tanggal Awal, " + e.getMessage());
+                            }
                             String statusAbsensi;
                             if(indisiplinerEntityList.size()!=0){
                                 statusAbsensi="10";
@@ -3024,7 +3041,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     jamPulangLemburAsli = Integer.parseInt(hasilInquiry.getJamKeluar().replace(":",""));
                                 }
                             }
-                            List<LemburEntity> lemburEntityList = lemburDao.getListLemburByNipAndTanggal(hasilInquiry.getNip(),tanggalAwal);
+                            List<LemburEntity> lemburEntityList =new ArrayList<>();
+                            try{
+                                lemburEntityList = lemburDao.getListLemburByNipAndTanggal(hasilInquiry.getNip(),tanggalAwal);
+                            }catch (HibernateException e) {
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when receiving List Lembur by NIP dan Tanggal, " + e.getMessage());
+                            }
                             if (lemburEntityList.size()!=0){
                                 for (LemburEntity lemburEntity : lemburEntityList){
                                     int jamMasukLemburTmp = Integer.parseInt(lemburEntity.getJamAwal().replace(":",""));
@@ -3121,7 +3144,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                             Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
 
                             List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
+                            try{
+                                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
+                            }catch ( HibernateException e){
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when receiving All Detail Mesin Absensi, " + e.getMessage());
+                            }
                             if (mesinAbsensiDetailEntityList.size()!=0){
                                 int iJamMasukTmp,iJamKeluarTmp,i,iJamLibur;
                                 if (hari==1){
@@ -3163,7 +3191,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     }
                                 }
 
-                                List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
+                                List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
+                                try{
+                                    ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
+                                }catch (HibernateException e) {
+                                    logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when receiving Ijin Keluar by NIP, " + e.getMessage());
+                                }
                                 for (IjinKeluarEntity ijinKeluarEntity:ijinKeluarEntityList){
                                     ijinKeluar = ijinKeluarEntity.getJamKeluar();
                                     ijinKembali = ijinKeluarEntity.getJamKembali();
