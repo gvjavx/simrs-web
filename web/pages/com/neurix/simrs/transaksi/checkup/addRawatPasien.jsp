@@ -27,7 +27,7 @@
             var namaPasien = $('#nama_pasien').val();
             var jenisKelamin = $('#jenis_kelamin').val();
             var tempatLahir = $('#tempat_lahir').val();
-            var tglLahir = $('#tanggal_lahir').val();
+            var tglLahir = $('#tgl_lahir').val();
             var jalan = $('#jalan').val();
             var suku = $('#suku').val();
             var profesi = $('#profesi').val();
@@ -320,7 +320,7 @@
                 $('#poli').val(null).trigger('change');
                 $('#nama_dokter').val(null);
                 $('#asuransi').val(null);
-                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
+                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
                 var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
                 $('#img-upload').attr('src', img);
                 $('#imgInp').attr('value', null);
@@ -432,7 +432,7 @@
             $('#poli').val(null).trigger('change');
             $('#nama_dokter').val(null);
             $('#asuransi').val(null);
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
             var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
             $('#img-upload').attr('src', img);
             $('#imgInp').attr('value', null);
@@ -751,8 +751,8 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-                                                        <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir"
-                                                                     cssClass="form-control datemask" cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
+                                                        <s:textfield id="tgl_lahir" name="headerCheckup.stTglLahir"
+                                                                     cssClass="form-control tgl_lahir_validasi datemask" cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
                                                                      onchange="$('#st_tgl_lahir').css('border','')" readonly="true"/>
                                                     </div>
                                                 </div>
@@ -1840,7 +1840,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker datemask" id="add_tanggal_lahir"
+                                    <input class="form-control tgl_lahir_validasi datemask" id="add_tanggal_lahir"
                                            onchange="$(this).css('border','')" oninput="$(this).css('border','')">
                                 </div>
                             </div>
@@ -2920,7 +2920,7 @@
                         $('#no_ktp').val(res.noKtp);
                         $('#jenis_kelamin').val(res.jenisKelamin);
                         $('#tempat_lahir').val(res.tempatLahir);
-                        $('#tanggal_lahir').val(res.tglLahir);
+                        $('#tgl_lahir').val(res.tglLahir);
                         $('#agama').val(res.agama);
                         $('#profesi').val(res.profesi).trigger('change');
                         $('#jalan').val(res.jalan);
@@ -3050,7 +3050,7 @@
                             $('#no_ktp').val(res.noKtp);
                             $('#jenis_kelamin').val(res.jenisKelamin);
                             $('#tempat_lahir').val(res.tempatLahir);
-                            $('#tanggal_lahir').val(res.tglLahir);
+                            $('#tgl_lahir').val(res.tglLahir);
                             $('#agama').val(res.agama);
                             $('#profesi').val(res.profesi).trigger('change');
                             $('#jalan').val(res.jalan);
@@ -3447,7 +3447,7 @@
                         $('#nama_pasien').val(response.nama);
                         $('#jenis_kelamin').val(response.jenisKelamin);
                         $('#tempat_lahir').val(response.tempatLahir);
-                        $('#tanggal_lahir').val(response.tglLahir);
+                        $('#tgl_lahir').val(response.tglLahir);
                         $('#agama').val(response.agama);
                         $('#profesi').val(response.profesi).trigger('change');
                         $('#jalan').val(response.jalan);
@@ -3530,7 +3530,7 @@
                                 $('#nama_pasien').val(response.nama);
                                 $('#jenis_kelamin').val(response.jenisKelamin);
                                 $('#tempat_lahir').val(response.tempatLahir);
-                                $('#tanggal_lahir').val(response.tglLahir);
+                                $('#tgl_lahir').val(response.tglLahir);
                                 $('#agama').val(response.agama);
                                 $('#profesi').val(response.profesi);
                                 $('#jalan').val(response.jalan);
@@ -3613,7 +3613,7 @@
                         $('#nama_pasien').val(null);
                         $('#jenis_kelamin').val(null);
                         $('#tempat_lahir').val(null);
-                        $('#tanggal_lahir').val(null);
+                        $('#tgl_lahir').val(null);
                         $('#agama').val(null);
                         $('#profesi').val(null);
                         $('#jalan').val(null);
@@ -3649,7 +3649,7 @@
             $('#nama_pasien').val(null);
             $('#jenis_kelamin').val(null);
             $('#tempat_lahir').val(null);
-            $('#tanggal_lahir').val(null);
+            $('#tgl_lahir').val(null);
             $('#agama').val(null);
             $('#profesi').val(null);
             $('#jalan').val(null);
@@ -3757,7 +3757,7 @@
                         $('#nama_pasien').val(item.nama);
                         $('#jenis_kelamin').val(item.jenisKelamin);
                         $('#tempat_lahir').val(item.tempatLahir);
-                        $('#tanggal_lahir').val(item.tglLahir);
+                        $('#tgl_lahir').val(item.tglLahir);
                         $('#agama').val(item.agama);
                         $('#profesi').val(item.profesi).trigger('change');
                         $('#jalan').val(item.jalan);

@@ -686,7 +686,11 @@ function showModal(select) {
         $('.jam').timepicker();
         $('.jam').inputmask('hh:mm', {'placeholder': 'hh:mm'});
         $('.tgl').datepicker({
-            dateFormat: 'dd-mm-yy'
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy',
+            minDate: new Date()
         });
         $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         $('#form_ttd').show();
@@ -696,8 +700,11 @@ function showModal(select) {
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#modal-lab').modal({show: true, backdrop: 'static'});
     } else if (select == 5) {
+        $('.remove_cek').attr('checked', false);
+        $('#untuk1').prop('checked', true);
+        $('#body_add_diet').html('');
         getListComboJenisDiet();
-        $('#bentuk_diet, #keterangan_diet').val('');
+        $('#bentuk_diet, #keterangan_diet').val('').trigger('change');
         $('#bentuk_diet, #keterangan_diet').val('').removeAttr('disabled');
         $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
         $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();

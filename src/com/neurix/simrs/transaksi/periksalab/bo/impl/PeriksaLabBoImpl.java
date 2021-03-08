@@ -863,4 +863,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     public List<PeriksaLab> pushListLab(String kategori, String branchId) throws GeneralBOException {
         return periksaLabDao.pushNotifLab(kategori, branchId);
     }
+
+    @Override
+    public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) throws GeneralBOException {
+        return periksaLabDao.getHistoryLabRadiologi(idPasien);
+    }
 }

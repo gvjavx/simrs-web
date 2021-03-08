@@ -18,6 +18,10 @@
         .garis {
             color: #ddd;
         }
+
+        .top_jarak{
+            margin-top: 7px;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -250,22 +254,22 @@
 
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <span class="btn btn-default btn-file">
-                                                 Browse… <input id="url_img" accept=".jpg" type="file">
-                                            </span>
-                                        </span>
-                                        <input type="text" class="form-control" readonly id="label_img">
-                                    </div>
-                                    <span style="color: red">* Upload hasil radiologi luar</span>
-                                    <canvas id="temp_canvas" style="display: none"></canvas>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<div class="col-md-4">--%>
+                                    <%--<div class="input-group">--%>
+                                        <%--<span class="input-group-btn">--%>
+                                            <%--<span class="btn btn-default btn-file">--%>
+                                                 <%--Browse… <input id="url_img" accept=".jpg" type="file">--%>
+                                            <%--</span>--%>
+                                        <%--</span>--%>
+                                        <%--<input type="text" class="form-control" readonly id="label_img">--%>
+                                    <%--</div>--%>
+                                    <%--<span style="color: red">* Upload hasil radiologi luar</span>--%>
+                                    <%--<canvas id="temp_canvas" style="display: none"></canvas>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_rad"></p>
@@ -294,6 +298,77 @@
 
                             </tbody>
                         </table>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi Luar</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-10">
+                                            <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                 Browse… <input onchange="setCanvasWithText('hasil_lab_0', 'label_hasil_lab_0', 'img_hasil_lab_0')" type="file">
+                                            </span>
+                                        </span>
+                                                <input type="text" class="form-control" readonly id="label_hasil_lab_0">
+                                            </div>
+                                            <canvas id="hasil_lab_0" class="hasil_lab" style="display: none"></canvas>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button onclick="addUpload('hasil_lab', 'set_hasil')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="set_hasil">
+
+                                </div>
+                                <div class="row top_jarak">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-success" onclick="viewUpload('hasil_lab')"><i class="fa fa-image"></i> View Upload</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-10">
+                                            <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                 Browse… <input onchange="setCanvasWithText('hasil_luar_0', 'label_hasil_luar_0', 'img_hasil_luar_0')" type="file">
+                                            </span>
+                                        </span>
+                                                <input type="text" class="form-control" readonly id="label_hasil_luar_0">
+                                            </div>
+                                            <canvas id="hasil_luar_0" class="hasil_luar" style="display: none"></canvas>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button onclick="addUpload('hasil_luar', 'set_luar')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="set_luar">
+
+                                </div>
+                                <div class="row top_jarak">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i class="fa fa-image"></i> View Upload</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr class="garis">
                     <div class="box-body">
@@ -587,6 +662,86 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+                                    <li data-target="#carousel-hasil_lab" data-slide-to="0" class="active"></li>
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+                                    <div class="item active">
+                                        <img id="img_hasil_lab_0" style="width: 100%">
+                                    </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hasil_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span id="title_hasil_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_luar" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators" id="li_hasil_luar">
+                                    <li data-target="#carousel-hasil_luar" data-slide-to="0" class="active"></li>
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_luar">
+                                    <div class="item active">
+                                        <img id="img_hasil_luar_0" style="width: 100%">
+                                    </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_luar" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_luar" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -624,41 +779,6 @@
                     });
                 });
             }
-
-        });
-
-        $(document).on('change', '.btn-file :file', function () {
-            var input = $(this),
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [label]);
-        });
-
-        var canvas = document.getElementById('temp_canvas');
-        var ctx = canvas.getContext('2d');
-
-        $('.btn-file :file').on('fileselect', function (event, label) {
-
-            var input = $(this).parents('.input-group').find(':text'),
-                log = label;
-
-            if (input.length) {
-                input.val(log);
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var img = new Image();
-                    img.onload = function () {
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(img, 0, 0);
-                    }
-                    img.src = event.target.result;
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            } else {
-                if (log) alert(log);
-            }
-
         });
 
         if (keterangan == "just_lab") {
@@ -722,7 +842,6 @@
     }
 
     function saveRadiologi(id) {
-
         var idDokter = $('#id_dokter').val();
         var kesimpulan = $('#par_hasil').val();
         var ket = "";
@@ -920,6 +1039,77 @@
 
     function printPeriksaLab(){
         window.open('printRadiologi_radiologi.action?id='+idDetailCheckup+'&lab='+idPeriksaLab+'&ket=label', "_blank");
+    }
+
+    function addUpload(jen, idset){
+        var valJen = $('.'+jen);
+        var count = valJen.length;
+        var idRow = jen+count;
+        var jenis = jen+"_"+count;
+        var label = 'label_'+jen+"_"+count;
+        var set = '<div class="row top_jarak" id="'+idRow+'">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-10">\n' +
+            '        <div class="input-group">\n' +
+            '<span class="input-group-btn">\n' +
+            '    <span class="btn btn-default btn-file">\n' +
+            '         Browse… <input onchange="setCanvasWithText(\''+jenis+'\', \''+label+'\', \'img_'+jenis+'\')" type="file">\n' +
+            '    </span>\n' +
+            '</span>\n' +
+            '            <input type="text" class="form-control" readonly id="'+label+'">\n' +
+            '        </div>\n' +
+            '        <canvas id="'+jenis+'" class="'+jen+'" style="display: none"></canvas>\n' +
+            '    </div>\n' +
+            '    <div class="col-md-2">\n' +
+            '        <button onclick="delUpload(\''+idRow+'\',\'item_'+count+'\', \'li_'+count+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-trash"></i></button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>';
+        var imgCanvas = '<div class="item" id="item_'+count+'">\n' +
+            '<img id="img_'+jenis+'" style="width: 100%">\n' +
+            '</div>';
+        $('#item_'+jen).append(imgCanvas);
+        $('#li_'+jen).append('<li id="li_'+count+'" data-target="#carousel-'+jen+'" data-slide-to="'+count+'"></li>');
+        $('#'+idset).append(set);
+    }
+
+    function delUpload(id, hidden, li){
+        $('#'+id).remove();
+        $('#'+hidden).remove();
+        $('#'+li).remove();
+    }
+
+    function viewUpload(jenis){
+        if(jenis == 'hasil_lab'){
+            $('#title_'+jenis).html("View Radiologi Hasil Radiologi");
+        }else{
+            $('#title_'+jenis).html("View Radiologi Hasil Radiologi Luar");
+        }
+        $('#modal-'+jenis).modal({show:true, backdrop:'static'});
+    }
+
+    function setCanvasWithText(id, tujuan, idHidden) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        $('#'+tujuan).val(event.target.files[0].name);
+
+        var fr = new FileReader();
+        fr.onload = function (event) {
+            document.getElementById(idHidden).src = event.target.result;
+        }
+        fr.readAsDataURL(event.target.files[0]);
     }
 
 </script>

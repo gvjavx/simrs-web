@@ -496,6 +496,22 @@ apply the skin class to the body tag so the changes take effect.
         });
 
         $('.select2').css('width', '100%');
+
+        $(".tgl_lahir_validasi").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'yy-mm-dd',
+            maxDate: new Date()
+        });
+
+        $(".tgl_maju").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy',
+            minDate: new Date()
+        });
     });
 
     $(function () {
