@@ -19,7 +19,7 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
 
     void saveAddKeterangan(AbsensiPegawai bean) throws GeneralBOException;
 
-    List getAllDataFromMesin(MesinAbsensi bean) throws Exception;
+    String getAllDataFromMesin(MesinAbsensi bean) throws Exception;
 
     void getDataInquiryForCronJob() throws Exception;
 
@@ -44,7 +44,7 @@ public interface AbsensiBo extends BaseMasterBo<AbsensiPegawai> {
     List<MesinAbsensi> getByCriteriaMesin(MesinAbsensi searchBean) throws GeneralBOException;
     public List<AbsensiPegawai> cariAbseniSys(String nip, String tanggal, String statusabsensi) throws GeneralBOException;
 
-    List getDataFromMesin(MesinAbsensi bean) throws Exception;
+    String getDataFromMesin(MesinAbsensi bean) throws Exception;
 
     List<MesinAbsensi> inquiry(String tanggal,Boolean awalTanggal, String statusPegawai, String branchId) throws Exception;
 
