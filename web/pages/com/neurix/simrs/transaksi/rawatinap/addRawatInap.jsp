@@ -1570,6 +1570,23 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
+                        <div class="col-md-7">
+                            <select id="jenis_diet" class="form-control select2" multiple style="width: 100%"
+                                    onchange="var warn =$('#war_jenis_diet').is(':visible'); if (warn){$('#cor_jenis_diet').show().fadeOut(3000);$('#war_jenis_diet').hide()}">
+
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_jenis_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_jenis_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 10px">Bentuk Diet</label>
                         <div class="col-md-7">
                             <s:action id="comboDiet1" namespace="/rawatinap"
@@ -1583,23 +1600,6 @@
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_bentuk_diet"><i
                                     class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_bentuk_diet">
-                                <i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
-                        <div class="col-md-7">
-                            <select id="jenis_diet" class="form-control select2" multiple style="width: 100%"
-                                    onchange="var warn =$('#war_jenis_diet').is(':visible'); if (warn){$('#cor_jenis_diet').show().fadeOut(3000);$('#war_jenis_diet').hide()}">
-
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_jenis_diet"><i
-                                    class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_jenis_diet">
                                 <i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
@@ -1639,8 +1639,8 @@
                             <thead>
                             <tr>
                                 <td>Waktu</td>
-                                <td>Bentuk</td>
                                 <td>Jenis</td>
+                                <td>Bentuk</td>
                             </tr>
                             </thead>
                             <tbody id="body_add_diet"></tbody>
@@ -1650,11 +1650,10 @@
                 <hr class="garis">
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-4">Order Untuk Besok?</label>
+                        <label class="col-md-3">Order Gizi Untuk ?</label>
                         <div class="col-md-6">
-                            <div class="form-check">
-                                <input type="checkbox" name="besok_diet" id="besok_diet" value="Y">
-                                <label for="besok_diet"></label>
+                            <div class="custom02">
+                                <input checked type="radio" value="1" id="untuk1" name="untuk" /><label for="untuk1" >Hari Ini Saja</label>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -1662,6 +1661,20 @@
                                     class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_besok_diet">
                                 <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-6">
+                            <div class="custom02">
+                                <input type="radio" value="2" id="untuk2" name="untuk" /><label for="untuk2" >Besok Saja</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-6">
+                            <div class="custom02">
+                                <input type="radio" value="12" id="untuk3" name="untuk" /><label for="untuk3" >Hari Ini & Besok</label>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1982,6 +1982,11 @@ UPDATE im_functions
 SET parent = 7007
 WHERE parent = 2074;
 
+--GIZI, malam senin 07,03,2021. habis pulang dari sumenep
+ALTER TABLE it_simrs_order_gizi
+ADD COLUMN id_detail_checkup VARCHAR(50);
+
+
 
 
 
