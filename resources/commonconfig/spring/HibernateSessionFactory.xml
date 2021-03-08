@@ -49,7 +49,7 @@
                 <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod</prop>
                 <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>
                 <prop key="hibernate.connection.username">postgres</prop>
-                <prop key="hibernate.connection.password">postgres</prop>
+                <prop key="hibernate.connection.password">123456</prop>
 
 
             </props>
@@ -483,7 +483,6 @@
                 <value>sshconfig/com/neurix/simrs/master/telemedic/hibernate/ImSimrsRekeningTelemedicEntity.hbm.xml
                 </value>
                 <value>sshconfig/com/neurix/simrs/master/tindakan/hibernate/ImSimrsHeaderTindakanEntity.hbm.xml</value>
-                <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsHeaderPelayananEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsHeaderObatEntity.hbm.xml</value>
                 <value>
                     sshconfig/com/neurix/simrs/master/kategoripersediaan/hibernate/ImSimrsKategoriPersediaanEntity.hbm.xml
@@ -984,6 +983,9 @@
                 </value>
 
                 <value>sshconfig/com/neurix/simrs/transaksi/transketeranganobat/hibernate/ItSimrsKeteranganResepEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/master/pelayanan/hibernate/ImSimrsHeaderPelayananEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsPabrikObatEntity.hbm.xml</value>
 
             </list>
 

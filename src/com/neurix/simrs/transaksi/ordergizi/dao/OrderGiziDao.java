@@ -42,6 +42,9 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
             if (mapCriteria.get("diterima_flag") != null) {
                 criteria.add(Restrictions.eq("diterimaFlag", mapCriteria.get("diterima_flag").toString()));
             }
+            if (mapCriteria.get("id_detail_checkup") != null) {
+                criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
+            }
         }
         criteria.addOrder(Order.asc("idOrderGizi"));
         List<ItSimrsOrderGiziEntity> resilt = criteria.list();
@@ -411,21 +414,34 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
         return cek;
     }
 
-    public List<OrderGizi> cekOrderGiziToday(String id, String waktu) {
+    public List<OrderGizi> cekOrderGiziToday(String id, String waktu, String type, String when) {
         List<OrderGizi> orderGizis = new ArrayList<>();
+        String condi = "";
+        if("RJ".equalsIgnoreCase(type)){
+            condi = "AND id_detail_checkup = '"+id+"' \n";
+        }else{
+            condi = "AND id_rawat_inap = '"+id+"' \n";
+        }
+
+        if("1".equalsIgnoreCase(when)){
+            condi += "AND CAST(tgl_order AS DATE) = CURRENT_DATE";
+        }
+        if("2".equalsIgnoreCase(when)){
+            condi += "AND CAST(tgl_order AS DATE) = (SELECT CURRENT_DATE + 1 AS DATE)";
+        }
+        if("12".equalsIgnoreCase(when)){
+            condi += "AND CAST(tgl_order AS DATE) = CURRENT_DATE OR CAST(tgl_order AS DATE) = CURRENT_DATE + 1";
+        }
         String SQL = "SELECT \n" +
                 "id_order_gizi,\n" +
                 "id_rawat_inap,\n" +
                 "waktu,\n" +
                 "created_date\n" +
                 "FROM it_simrs_order_gizi\n" +
-                "WHERE waktu LIKE :ket \n" +
-                "AND id_rawat_inap LIKE :idRawat \n" +
-                "AND CAST(created_date AS DATE) = CURRENT_DATE";
+                "WHERE waktu LIKE :ket \n" + condi;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idRawat", id)
                 .setParameter("ket", waktu)
                 .list();
 

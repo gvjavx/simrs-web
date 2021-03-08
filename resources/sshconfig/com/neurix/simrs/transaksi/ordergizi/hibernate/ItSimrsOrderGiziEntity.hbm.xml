@@ -55,5 +55,8 @@
         <property name="waktu">
             <column name="waktu"/>
         </property>
+        <property name="idDetailCheckup">
+            <column name="id_detail_checkup"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -24,6 +24,15 @@ public class ItSimrsOrderGiziEntity implements Serializable{
     private String keterangan;
     private String bentukDiet;
     private String waktu;
+    private String idDetailCheckup;
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public String getWaktu() {
         return waktu;

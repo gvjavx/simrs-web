@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.permintaanvendor.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pabrikobat.model.PabrikObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.BatchPermintaanObat;
 import com.neurix.simrs.transaksi.permintaanvendor.model.DocPo;
@@ -501,7 +502,10 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                 "a.lembar_per_box, \n" +
                 "a.biji_per_lembar,\n" +
                 "SUM(b.netto) as netto,\n" +
-                "b.jenis_satuan \n" +
+                "b.jenis_satuan,\n" +
+                "a.id_pabrik_obat,\n" +
+                "a.nomor_produksi,\n" +
+                "a.mrek \n"+
                 "FROM mt_simrs_transaksi_obat_detail a\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail_batch b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
                 "WHERE b.id = "+idBatch+"\n" +
@@ -509,13 +513,15 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                 "a.id_transaksi_obat_detail,\n" +
                 "a.lembar_per_box, \n" +
                 "a.biji_per_lembar, \n" +
-                "b.jenis_satuan \n";
+                "b.jenis_satuan,\n" +
+                "a.id_pabrik_obat,\n" +
+                "a.nomor_produksi,\n" +
+                "a.mrek";
 
         List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 
         if (result.size() > 0){
             Object[] obj = result.get(0);
-
             TransaksiObatDetail trans = new TransaksiObatDetail();
             trans.setIdTransaksiObatDetail(obj[0].toString());
             trans.setQtyApprove(obj[1] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[1].toString()));
@@ -523,13 +529,12 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
             trans.setBijiPerLembar(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
             trans.setNetto(obj[4] == null ? new BigDecimal(0) : new BigDecimal(obj[4].toString()));
             trans.setJenisSatuan(obj[5] == null ? "" : obj[5].toString());
+            trans.setJenisSatuan(obj[5] == null ? "" : obj[5].toString());
+            trans.setIdPabrikObat(obj[6] == null ? "" : obj[6].toString());
+            trans.setNomorProduksi(obj[7] == null ? "" : obj[7].toString());
+            trans.setMerek(obj[8] == null ? "" : obj[8].toString());
             trans.setQtyBox(trans.getQtyBox());
-
-            String jenisSatuan = obj[5].toString();
-
-            BigInteger cons         = trans.getLembarPerBox().multiply(trans.getBijiPerLembar());
-            BigInteger jumlahBiji   = trans.getQtyApprove().multiply(cons);
-
+            BigInteger jumlahBiji   = trans.getQtyApprove();
             trans.setQtyBiji(jumlahBiji);
             trans.setAverageHargaBiji(trans.getNetto().divide(new BigDecimal(jumlahBiji), 2, RoundingMode.HALF_UP));
             return trans;
@@ -554,5 +559,40 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         }
 
         return null;
+    }
+
+    public Obat cekNoProduksi(String noProduksi){
+        Obat obat = new Obat();
+        String SQL = "SELECT * FROM (\n" +
+                "SELECT\n" +
+                "id_obat,\n" +
+                "nama_obat,\n" +
+                "biji_per_lembar,\n" +
+                "lembar_per_box,\n" +
+                "merk,\n" +
+                "id_pabrik_obat,\n" +
+                "RANK() OVER(PARTITION BY id_obat ORDER BY created_date DESC) as rank\n" +
+                "FROM im_simrs_obat\n" +
+                "WHERE nomor_produksi = '"+noProduksi+"'\n" +
+                ") a WHERE rank = 1";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            obat.setIdObat(obj[0] != null ? obj[0].toString() : "");
+            obat.setNamaObat(obj[1] != null ? obj[1].toString() : "");
+            obat.setBijiPerLembar(obj[2] != null ? (BigInteger) obj[2] : null);
+            obat.setLembarPerBox(obj[3] != null ? (BigInteger) obj[3] : null);
+            obat.setMerk(obj[4] != null ? obj[4].toString() : "");
+            obat.setIdPabrik(obj[5] != null ? obj[5].toString() : "");
+            obat.setStatus("success");
+            obat.setMsg("ok");
+        }else{
+            obat.setStatus("error");
+            obat.setMsg("notoke");
+        }
+
+        return obat;
     }
 }

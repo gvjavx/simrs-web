@@ -75,6 +75,11 @@ public class ObatBoImpl implements ObatBo {
     private KandunganObatDetailDao kandunganObatDetailDao;
     private KandunganObatDao kandunganObatDao;
     private BentukBarangDao bentukBarangDao;
+    private PabrikDao pabrikDao;
+
+    public void setPabrikDao(PabrikDao pabrikDao) {
+        this.pabrikDao = pabrikDao;
+    }
 
     public BentukBarangDao getBentukBarangDao() {
         return bentukBarangDao;
@@ -1028,9 +1033,7 @@ public class ObatBoImpl implements ObatBo {
         }
 
         if (obatEntityList.size() > 0) {
-
             for (ImSimrsObatEntity entity : obatEntityList) {
-
                 if(entity.getIdBarang() != null && !"".equalsIgnoreCase(entity.getIdBarang())){
                     Integer box = Integer.valueOf(entity.getQtyBox().toString());
                     Integer lembar = Integer.valueOf(entity.getQtyLembar().toString());
@@ -1055,6 +1058,14 @@ public class ObatBoImpl implements ObatBo {
                         obat.setExpiredDate(entity.getExpiredDate());
                         obat.setIdBarang(entity.getIdBarang());
                         obat.setFlagBpjs(entity.getFlagBpjs());
+                        obat.setIdPabrikObat(entity.getIdPabrikObat());
+                        obat.setNomorProduksi(entity.getNomorProduksi());
+                        ImSimrsPabrikObatEntity pabrikObatEntity = pabrikDao.getById("id", entity.getIdPabrikObat());
+                        if(pabrikObatEntity.getNama() != null){
+                            obat.setNamaPabrikObat(pabrikObatEntity.getNama());
+                        }else{
+                            obat.setNamaPabrikObat("");
+                        }
                         result.add(obat);
                     }
                 }

@@ -36,6 +36,15 @@ public class Pelayanan extends BaseModel implements Serializable {
     private String idHeaderPelayanan;
 
     private String isVaksin;
+    private String isNotNull;
+
+    public String getIsNotNull() {
+        return isNotNull;
+    }
+
+    public void setIsNotNull(String isNotNull) {
+        this.isNotNull = isNotNull;
+    }
 
     public String getIsVaksin() {
         return isVaksin;

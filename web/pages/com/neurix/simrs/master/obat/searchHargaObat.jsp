@@ -58,14 +58,14 @@
                     <div class="box-body">
                         <div class="form-group">
                             <s:form id="obatForm" method="post" namespace="/hargaobat" action="searchHargaObat_hargaobat.action" theme="simple" cssClass="form-horizontal">
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">ID Obat</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:textfield id="id_pabrik" cssStyle="margin-top: 7px"--%>
-                                                     <%--name="obat.idObat" required="false"--%>
-                                                     <%--readonly="false" cssClass="form-control"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Obat</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
+                                                     name="obat.idObat" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
                                 <%--<div class="form-group">--%>
                                     <%--<label class="control-label col-sm-4">Jenis Obat</label>--%>
                                     <%--<div class="col-sm-4">--%>
@@ -83,18 +83,18 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Obat</label>
                                     <div class="col-sm-4">
-                                        <s:action id="initObat" namespace="/obat"
-                                                  name="getListObat_obat"/>
-                                        <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                  list="#initObat.listOfObat" id="nama_obat"
-                                                  listKey="idObat"
-                                                  listValue="namaObat"
-                                                  name="obat.idObat"
-                                                  headerKey="" headerValue="[Select one]"
-                                                  cssClass="form-control select2"/>
-                                        <%--<s:textfield id="nama_pasien" name="obat.namaObat"--%>
-                                                     <%--required="false" readonly="false"--%>
-                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                        <%--<s:action id="initObat" namespace="/obat"--%>
+                                                  <%--name="getListObat_obat"/>--%>
+                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
+                                                  <%--list="#initObat.listOfObat" id="nama_obat"--%>
+                                                  <%--listKey="idObat"--%>
+                                                  <%--listValue="namaObat"--%>
+                                                  <%--name="obat.idObat"--%>
+                                                  <%--headerKey="" headerValue="[Select one]"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                        <s:textfield id="nama_obat" name="obat.namaObat"
+                                                     required="false" readonly="false"
+                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
                                 <%--<div class="form-group">--%>
@@ -168,7 +168,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Harga Obat</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered">
+                        <table id="myTable" class="table table-bordered" style="font-size: 12px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>

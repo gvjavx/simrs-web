@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Data Parameter Pemeriksaan Penunjang Medis
+            Data Detail Tindakan Pemeriksaan Lab & Radiologi
         </h1>
     </section>
 
@@ -52,7 +52,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data Parameter Pemeriksaan
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Data
                             Penunjang Medis</h3>
                     </div>
                     <div class="box-body">
@@ -86,23 +86,23 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Paket</label>
                                     <div class="col-sm-4">
-                                        <select class="form-control select2" id="paket" style="width: 100%">
+                                        <select class="form-control select2" id="paket" style="width: 100%" name="labDetail.idLab">
                                             <option value="">[Select One]</option>
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">ID Parameter</label>
-                                    <div class="col-sm-4">
-                                        <s:textfield id="id_labdetail" name="labdetail.idTindakan"
-                                                     required="false" readonly="false"
-                                                     cssClass="form-control" cssStyle="margin-top: 7px"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">ID Parameter</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:textfield id="id_labdetail" name="labDetail.idParameterPemeriksaan"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama Parameter</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_labdetail" name="labdetail.namaDetailPeriksa"
+                                        <s:textfield id="nama_labdetail" name="labDetail.namaDetailPeriksa"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
@@ -110,7 +110,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Flag</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="labdetail.flag"
+                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="labDetail.flag"
                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2"
                                                   cssStyle="width: 100%"/>
                                     </div>
@@ -198,13 +198,13 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Tindakan</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Tindakan Pemeriksaan</h3>
                     </div>
                     <div class="box-body">
                         <table id="sortTable" class="table table-bordered table-striped" style="font-size: 12px">
                             <thead>
                             <tr bgcolor="#90ee90">
-                                <td>ID Parameter</td>
+                                <td>ID</td>
                                 <td>Paket</td>
                                 <td>Nama Pemeriksaan</td>
                                 <td>Ket Acuan L</td>
@@ -893,6 +893,7 @@
     }
 
     function getLab() {
+        var idLab = '<s:property value="labDetail.idLab"/>';
         var option = '<option value="">[Select One]</option>';
         LabDetailAction.getLab(function (res) {
             if (res.length > 0) {
@@ -901,6 +902,7 @@
                 });
             }
             $('#paket').html(option);
+            $('#paket').val(idLab).trigger('change');
             // $('#edit_paket').html(option);
         });
     }

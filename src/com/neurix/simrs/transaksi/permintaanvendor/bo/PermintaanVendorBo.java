@@ -76,4 +76,6 @@ public interface PermintaanVendorBo {
     public void updateAllNewAverageHargaByObatId(String idObat, BigDecimal avgBox, BigDecimal avgLembar, BigDecimal avgBiji, String branchId) throws GeneralBOException;
 
     public List<PabrikObat> getListPabrikObatByIdObatForPo(String idObat, String tipePencarian);
+
+    public Obat cekNoProduksi(String noProduksi) throws GeneralBOException;
 }
