@@ -309,11 +309,15 @@
 </html>
 <script>
     $(document).ready(function(){
+        var limNow = new Date();
+        limNow.setDate(limNow.getDate() - 1);
         $('#tanggal1').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            maxDate: limNow
         });
         $('#tanggal2').datepicker({
-            dateFormat: 'dd-mm-yy'
+            dateFormat: 'dd-mm-yy',
+            maxDate: limNow
         });
     });
 </script>
