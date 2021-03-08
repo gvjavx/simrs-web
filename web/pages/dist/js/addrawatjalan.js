@@ -91,7 +91,6 @@ function hitungCoverBiaya() {
             if (response.coverBiaya != null) {
                 $('#status_asuransi').show();
                 if (response.coverBiaya != null) {
-
                     var coverBiaya = response.coverBiaya;
                     var biayaTindakan = response.tarifTindakan;
 
@@ -933,7 +932,11 @@ function showModal(select) {
         $('.jam').timepicker();
         $('.jam').inputmask('hh:mm', {'placeholder': 'hh:mm'});
         $('.tgl').datepicker({
-            dateFormat: 'dd-mm-yy'
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy',
+            minDate: new Date()
         });
         $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         $('#form_ttd').show();
@@ -943,9 +946,11 @@ function showModal(select) {
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
         $('#modal-lab').modal({show: true, backdrop: 'static'});
     } else if (select == 5) {
+        $('.remove_cek').attr('checked', false);
+        $('#untuk1').prop('checked', true);
         $('#body_add_diet').html('');
         getListComboJenisDiet();
-        $('#bentuk_diet, #keterangan_diet').val('');
+        $('#bentuk_diet, #keterangan_diet').val('').trigger('change');
         $('#bentuk_diet, #keterangan_diet').val('').removeAttr('disabled');
         $('#save_diet').attr('onclick', 'saveDiet(\'' + id + '\')').show();
         $('#load_diet, #warning_diet, #war_bentuk_diet, #war_keterangan_diet').hide();
@@ -3959,7 +3964,7 @@ function setDiet(id) {
     var table = "";
     var idCount = $('#table_add_diet').tableToJSON().length;
     if ($('#' + id).is(':checked')) {
-        if (bentuk && jenis != '') {
+        if (bentuk && jenis != '' && jenis && bentuk != null) {
             table = '<tr id="' + ket + '">' +
                 '<td>' + keterangan + '<input type="hidden" value="' + ket + '" id="waktu_' + idCount + '"></td>' +
                 '<td>' + tempText + '<input type="hidden" value="' + jenis + '" id="jenis_' + idCount + '"></td>' +
@@ -3975,7 +3980,7 @@ function setDiet(id) {
             if (bentuk == '') {
                 $('#war_bentuk_diet').show();
             }
-            if (jenis == '' || jenisDiet == null) {
+            if (jenis == '' || jenis == null) {
                 $('#war_jenis_diet').show();
             }
             $('#' + id).prop('checked', false);
@@ -4020,6 +4025,32 @@ function saveCancelDiet(id) {
         $('#warning_cancel').show().fadeOut(5000);
         $('#msg_cancel').text('Silahkan cek kembali data inputan...!');
         $('#war_keterangan_cancel').show();
+    }
+}
+
+function cekBarcode(value, idOrderGizi) {
+
+    if (value != '' && idOrderGizi != '') {
+
+        if (value == idOrderGizi) {
+            $('#status' + idOrderGizi).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+            setTimeout(function () {
+                OrderGiziAction.updateDiterimaFlag(idOrderGizi, function (response) {
+                    if (response.status == "success") {
+                        listDiet();
+                    } else {
+                        $('#status' + idOrderGizi).html('<img src="' + contextPathHeader + '/pages/images/icon_failure.ico" style="height: 20px; width: 20px;">');
+                    }
+                });
+            }, 200);
+        } else {
+            $('#status' + idOrderGizi).html('<i style="color: #00a65a" class="fa fa-circle-o-notch fa-spin"></i>');
+            setTimeout(function () {
+                $('#status' + idOrderGizi).html('<img src="' + contextPathHeader + '/pages/images/icon_failure.ico" style="height: 20px; width: 20px;">');
+            }, 200);
+        }
+    } else {
+        $('#status' + idOrderGizi).html('');
     }
 }
 

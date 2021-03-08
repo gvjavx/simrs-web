@@ -920,4 +920,22 @@ public class PeriksaLabAction extends BaseMasterAction {
         return periksaLabList;
     }
 
+    public List<PeriksaLab> getListHistoryLabRadiologi(String idPasien) {
+        logger.info("[PeriksaLabAction.getListHistoryLabRadiologi] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+        if (!"".equalsIgnoreCase(idPasien) && idPasien != null) {
+            try {
+                periksaLabList = periksaLabBo.getHistoryLabRadiologi(idPasien);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getListLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getListHistoryLabRadiologi] end process >>>");
+        return periksaLabList;
+    }
+
 }
