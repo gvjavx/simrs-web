@@ -2515,13 +2515,13 @@ public class AbsensiAction extends BaseMasterAction {
 
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
         listDataFinal = new ArrayList<>();
-//        BigDecimal
-        Double hasilLamaLembur = (double) 0, hasilhariKerja15 = (double) 0,
-                hasilhariKerja20 = (double) 0, hasilJumlahhariKerja = (double) 0,
-                hasilhariLibur20 = (double) 0, hasilhariLibur30 = (double) 0,
-                hasilhariLibur40 = (double) 0, hasilJumlahHariLibur = (double) 0,
-                hasilJamLembur = (double) 0, hasilBiayaLemburPerJam = (double) 0,
-                hasilBiayaLembur = (double) 0;
+
+        BigDecimal hasilLamaLembur = new BigDecimal(0), hasilhariKerja15 = new BigDecimal(0),
+                hasilhariKerja20 = new BigDecimal(0), hasilJumlahhariKerja = new BigDecimal(0),
+                hasilhariLibur20 = new BigDecimal(0), hasilhariLibur30 = new BigDecimal(0),
+                hasilhariLibur40 = new BigDecimal(0), hasilJumlahHariLibur = new BigDecimal(0),
+                hasilJamLembur = new BigDecimal(0), hasilBiayaLemburPerJam = new BigDecimal(0),
+                hasilBiayaLembur = new BigDecimal(0);
         DecimalFormat df = new DecimalFormat("0.00");
         int i = 1;
         String nip = "", nama = "", bagianName = "";
@@ -2543,21 +2543,21 @@ public class AbsensiAction extends BaseMasterAction {
                 AbsensiPegawai resultSetHari;
                 resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
 
-                hasilLamaLembur = hasilLamaLembur + realisasi;
-                hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
-                hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
-                hasilJumlahhariKerja = hasilhariKerja15 + hasilhariKerja20;
-                hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
-                hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
-                hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
-                hasilJumlahHariLibur = hasilhariLibur20 + hasilhariLibur30 + hasilhariLibur40;
-                hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
-                hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
+                hasilLamaLembur = hasilLamaLembur.add(new BigDecimal(realisasi));
+                hasilhariKerja15 = hasilhariKerja15.add(new BigDecimal(resultSetHari.getHariKerja15()));
+                hasilhariKerja20 = hasilhariKerja20.add(new BigDecimal(resultSetHari.getHariKerja20()));
+                hasilJumlahhariKerja = hasilhariKerja15.add(hasilhariKerja20);
+                hasilhariLibur20 = hasilhariLibur20.add(new BigDecimal(resultSetHari.getHariLibur20()));
+                hasilhariLibur30 = hasilhariLibur30.add(new BigDecimal(resultSetHari.getHariLibur30()));
+                hasilhariLibur40 = hasilhariLibur40.add(new BigDecimal(resultSetHari.getHariLibur40()));
+                hasilJumlahHariLibur = hasilhariLibur20.add(hasilhariLibur30).add(hasilhariLibur40);
+                hasilJamLembur = hasilJamLembur.add(new BigDecimal(absensiPegawai.getJamLembur()));
+                hasilBiayaLembur = hasilBiayaLembur.add(new BigDecimal(absensiPegawai.getBiayaLembur()));
 
-                if (hasilBiayaLembur == 0) {
-                    hasilBiayaLemburPerJam = 0d;
+                if (hasilBiayaLembur == new BigDecimal(0)) {
+                    hasilBiayaLemburPerJam = new BigDecimal(0);
                 } else {
-                    hasilBiayaLemburPerJam = hasilBiayaLembur / hasilJamLembur;
+                    hasilBiayaLemburPerJam = hasilBiayaLembur.divide(hasilJamLembur);
                 }
 
                 bagianName = absensiPegawai.getBagian();
@@ -2577,21 +2577,21 @@ public class AbsensiAction extends BaseMasterAction {
                 tmp.setStHariLibur40(df.format(hasilhariLibur40));
                 tmp.setsJumlahHariLibur(df.format(hasilJumlahHariLibur));
                 tmp.setStJamLembur(df.format(hasilJamLembur));
-                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam), "###,###"));
-                tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
+                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(hasilBiayaLemburPerJam, "###,###"));
+                tmp.setStBiayaLembur(CommonUtil.numbericFormat(hasilBiayaLembur, "###,###"));
 
                 listDataFinal.add(tmp);
-                hasilLamaLembur = (double) 0;
-                hasilhariKerja15 = (double) 0;
-                hasilhariKerja20 = (double) 0;
-                hasilJumlahhariKerja = (double) 0;
-                hasilhariLibur20 = (double) 0;
-                hasilhariLibur30 = (double) 0;
-                hasilhariLibur40 = (double) 0;
-                hasilJumlahHariLibur = (double) 0;
-                hasilJamLembur = (double) 0;
-                hasilBiayaLembur = (double) 0;
-                hasilBiayaLemburPerJam = (double) 0;
+                hasilLamaLembur = new BigDecimal(0);
+                hasilhariKerja15 = new BigDecimal(0);
+                hasilhariKerja20 = new BigDecimal(0);
+                hasilJumlahhariKerja = new BigDecimal(0);
+                hasilhariLibur20 = new BigDecimal(0);
+                hasilhariLibur30 = new BigDecimal(0);
+                hasilhariLibur40 = new BigDecimal(0);
+                hasilJumlahHariLibur = new BigDecimal(0);
+                hasilJamLembur = new BigDecimal(0);
+                hasilBiayaLembur = new BigDecimal(0);
+                hasilBiayaLemburPerJam = new BigDecimal(0);
 
                 nip = absensiPegawai.getNip();
                 nama = absensiPegawai.getNama();
@@ -2605,21 +2605,21 @@ public class AbsensiAction extends BaseMasterAction {
                 AbsensiPegawai resultSetHari;
                 resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
 
-                hasilLamaLembur = hasilLamaLembur + realisasi;
-                hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
-                hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
-                hasilJumlahhariKerja = hasilhariKerja15 + hasilhariKerja20;
-                hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
-                hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
-                hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
-                hasilJumlahHariLibur = hasilhariLibur20 + hasilhariLibur30 + hasilhariLibur40;
-                hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
-                hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
+                hasilLamaLembur = hasilLamaLembur.add(new BigDecimal(realisasi));
+                hasilhariKerja15 = hasilhariKerja15.add(new BigDecimal(resultSetHari.getHariKerja15()));
+                hasilhariKerja20 = hasilhariKerja20.add(new BigDecimal(resultSetHari.getHariKerja20()));
+                hasilJumlahhariKerja = hasilhariKerja15.add(hasilhariKerja20);
+                hasilhariLibur20 = hasilhariLibur20.add(new BigDecimal(resultSetHari.getHariLibur20()));
+                hasilhariLibur30 = hasilhariLibur30.add(new BigDecimal(resultSetHari.getHariLibur30()));
+                hasilhariLibur40 = hasilhariLibur40.add(new BigDecimal(resultSetHari.getHariLibur40()));
+                hasilJumlahHariLibur = hasilhariLibur20.add(hasilhariLibur30).add(hasilhariLibur40);
+                hasilJamLembur = hasilJamLembur.add(new BigDecimal(absensiPegawai.getJamLembur()));
+                hasilBiayaLembur = hasilBiayaLembur.add(new BigDecimal(absensiPegawai.getBiayaLembur()));
 
-                if (hasilBiayaLembur == 0) {
-                    hasilBiayaLemburPerJam = 0d;
+                if (hasilBiayaLembur == new BigDecimal(0)) {
+                    hasilBiayaLemburPerJam = new BigDecimal(0);
                 } else {
-                    hasilBiayaLemburPerJam = hasilBiayaLembur / hasilJamLembur;
+                    hasilBiayaLemburPerJam = hasilBiayaLembur.divide(hasilJamLembur);
                 }
             }
             i++;
@@ -2647,19 +2647,20 @@ public class AbsensiAction extends BaseMasterAction {
 //        data.setStHariLibur40(hasilhariLibur40.toString());
 //        data.setsJumlahHariLibur(hasilJumlahHariLibur.toString());
 //        data.setStJamLembur(hasilJamLembur.toString());
-        data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam), "###,###"));
-        data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
+        data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(hasilBiayaLemburPerJam, "###,###"));
+        data.setStBiayaLembur(CommonUtil.numbericFormat(hasilBiayaLembur, "###,###"));
         listDataFinal.add(data);
 
         List<AbsensiPegawai> forReport = new ArrayList<>();
         String bagianPegawai = "";
         int a = 0;
-        Double jJumlahJamSeluruhnya = (double) 0, jJamKerja15 = (double) 0, jJamKerja20 = (double) 0, jJumlahJamKerja = (double) 0,
-                jJamlibur20 = (double) 0, jJamlibur30 = (double) 0, jJamlibur40 = (double) 0, jJumlahLibur = (double) 0,
-                jJumlahJamLemburPerhitungan = (double) 0, jJumlahUpahLembur = (double) 0;
-        Double jJumlahJamSeluruhnyaAll = (double) 0, jJamKerja15All = (double) 0, jJamKerja20All = (double) 0, jJumlahJamKerjaAll = (double) 0,
-                jJamlibur20All = (double) 0, jJamlibur30All = (double) 0, jJamlibur40All = (double) 0, jJumlahLiburAll = (double) 0,
-                jJumlahJamLemburPerhitunganAll = (double) 0, jJumlahUpahLemburAll = (double) 0;
+        BigDecimal jJumlahJamSeluruhnya = new BigDecimal(0), jJamKerja15 = new BigDecimal(0), jJamKerja20 = new BigDecimal(0), jJumlahJamKerja = new BigDecimal(0),
+                jJamlibur20 = new BigDecimal(0), jJamlibur30 = new BigDecimal(0), jJamlibur40 = new BigDecimal(0), jJumlahLibur = new BigDecimal(0),
+                jJumlahJamLemburPerhitungan = new BigDecimal(0), jJumlahUpahLembur = new BigDecimal(0);
+        BigDecimal jJumlahJamSeluruhnyaAll = new BigDecimal(0), jJamKerja15All = new BigDecimal(0), jJamKerja20All = new BigDecimal(0),
+                jJumlahJamKerjaAll = new BigDecimal(0), jJamlibur20All = new BigDecimal(0), jJamlibur30All = new BigDecimal(0),
+                jJamlibur40All = new BigDecimal(0), jJumlahLiburAll = new BigDecimal(0), jJumlahJamLemburPerhitunganAll = new BigDecimal(0),
+                jJumlahUpahLemburAll = new BigDecimal(0);
 
         for (AbsensiPegawai absensiPegawai : listDataFinal) {
             if (!bagianPegawai.equalsIgnoreCase(absensiPegawai.getBagian())) {
@@ -2680,28 +2681,28 @@ public class AbsensiAction extends BaseMasterAction {
                     tmp.setsJumlahHariLibur(String.valueOf(jJumlahLibur));
                     tmp.setStJamLembur(String.valueOf(jJumlahJamLemburPerhitungan));
                     tmp.setStBiayaLemburPerjam("");
-                    tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur), "###,###"));
+                    tmp.setStBiayaLembur(CommonUtil.numbericFormat(jJumlahUpahLembur, "###,###"));
                     forReport.add(tmp);
-                    jJumlahJamSeluruhnyaAll = jJumlahJamSeluruhnyaAll + jJumlahJamSeluruhnya;
-                    jJamKerja15All = jJamKerja15All + jJamKerja15;
-                    jJamKerja20All = jJamKerja20All + jJamKerja20;
-                    jJumlahJamKerjaAll = jJumlahJamKerjaAll + jJumlahJamKerja;
-                    jJamlibur20All = jJamlibur20All + jJamlibur20;
-                    jJamlibur30All = jJamlibur30All + jJamlibur30;
-                    jJamlibur40All = jJamlibur40All + jJamlibur40;
-                    jJumlahLiburAll = jJumlahLiburAll + jJumlahLibur;
-                    jJumlahJamLemburPerhitunganAll = jJumlahJamLemburPerhitunganAll + jJumlahJamLemburPerhitungan;
-                    jJumlahUpahLemburAll = jJumlahUpahLemburAll + jJumlahUpahLembur;
-                    jJumlahJamSeluruhnya = (double) 0;
-                    jJamKerja15 = (double) 0;
-                    jJamKerja20 = (double) 0;
-                    jJumlahJamKerja = (double) 0;
-                    jJamlibur20 = (double) 0;
-                    jJamlibur30 = (double) 0;
-                    jJamlibur40 = (double) 0;
-                    jJumlahLibur = (double) 0;
-                    jJumlahJamLemburPerhitungan = (double) 0;
-                    jJumlahUpahLembur = (double) 0;
+                    jJumlahJamSeluruhnyaAll = jJumlahJamSeluruhnyaAll.add(jJumlahJamSeluruhnya);
+                    jJamKerja15All = jJamKerja15All.add(jJamKerja15);
+                    jJamKerja20All = jJamKerja20All.add(jJamKerja20);
+                    jJumlahJamKerjaAll = jJumlahJamKerjaAll.add(jJumlahJamKerja);
+                    jJamlibur20All = jJamlibur20All.add(jJamlibur20);
+                    jJamlibur30All = jJamlibur30All.add(jJamlibur30);
+                    jJamlibur40All = jJamlibur40All.add(jJamlibur40);
+                    jJumlahLiburAll = jJumlahLiburAll.add(jJumlahLibur);
+                    jJumlahJamLemburPerhitunganAll = jJumlahJamLemburPerhitunganAll.add(jJumlahJamLemburPerhitungan);
+                    jJumlahUpahLemburAll = jJumlahUpahLemburAll.add(jJumlahUpahLembur);
+                    jJumlahJamSeluruhnya = new BigDecimal(0);
+                    jJamKerja15 = new BigDecimal(0);
+                    jJamKerja20 = new BigDecimal(0);
+                    jJumlahJamKerja = new BigDecimal(0);
+                    jJamlibur20 = new BigDecimal(0);
+                    jJamlibur30 = new BigDecimal(0);
+                    jJamlibur40 = new BigDecimal(0);
+                    jJumlahLibur = new BigDecimal(0);
+                    jJumlahJamLemburPerhitungan = new BigDecimal(0);
+                    jJumlahUpahLembur = new BigDecimal(0);
                 }
                 tmp = new AbsensiPegawai();
                 tmp.setNo("");
@@ -2725,29 +2726,29 @@ public class AbsensiAction extends BaseMasterAction {
             NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY);
             NumberFormat nf1 = NumberFormat.getInstance(Locale.US);
 //            DecimalFormat df1 =  new DecimalFormat("#.00",DecimalFormatSymbols.getInstance(Locale.US));
-            jJumlahJamSeluruhnya += nf.parse(absensiPegawai.getStLamaLembur()).doubleValue();
-            jJamKerja15 += nf.parse(absensiPegawai.getStHariKerja15()).doubleValue();
-            jJamKerja20 += nf.parse(absensiPegawai.getStHariKerja20()).doubleValue();
-            jJumlahJamKerja += nf.parse(absensiPegawai.getsJumlahHariKerja()).doubleValue();
-            jJamlibur20 += nf.parse(absensiPegawai.getStHariLibur20()).doubleValue();
-            jJamlibur30 += nf.parse(absensiPegawai.getStHariLibur30()).doubleValue();
-            jJamlibur40 += nf.parse(absensiPegawai.getStHariLibur40()).doubleValue();
-            jJumlahLibur += nf.parse(absensiPegawai.getsJumlahHariLibur()).doubleValue();
-            jJumlahJamLemburPerhitungan += nf.parse(absensiPegawai.getStJamLembur()).doubleValue();
-            jJumlahUpahLembur += nf1.parse(absensiPegawai.getStBiayaLembur()).doubleValue();
+            jJumlahJamSeluruhnya = new BigDecimal(absensiPegawai.getStLamaLembur()).add(jJumlahJamSeluruhnya);
+            jJamKerja15 = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getStHariKerja15()).doubleValue()).add(jJamKerja15);
+            jJamKerja20 = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getStHariKerja20()).doubleValue()).add(jJamKerja20);
+            jJumlahJamKerja = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getsJumlahHariKerja()).doubleValue()).add(jJumlahJamKerja);
+            jJamlibur20 = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getStHariLibur20()).doubleValue()).add(jJamlibur20);
+            jJamlibur30 = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getStHariLibur30()).doubleValue()).add(jJamlibur30);
+            jJamlibur40 = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getStHariLibur40()).doubleValue()).add(jJamlibur40);
+            jJumlahLibur = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getsJumlahHariLibur()).doubleValue()).add(jJumlahLibur);
+            jJumlahJamLemburPerhitungan = CommonUtil.dobelToBigDecimal(nf.parse(absensiPegawai.getStJamLembur()).doubleValue()).add(jJumlahJamLemburPerhitungan);
+            jJumlahUpahLembur = CommonUtil.dobelToBigDecimal(nf1.parse(absensiPegawai.getStBiayaLembur()).doubleValue()).add(jJumlahUpahLembur);
 
             a++;
         }
-        jJumlahJamSeluruhnyaAll = jJumlahJamSeluruhnyaAll + jJumlahJamSeluruhnya;
-        jJamKerja15All = jJamKerja15All + jJamKerja15;
-        jJamKerja20All = jJamKerja20All + jJamKerja20;
-        jJumlahJamKerjaAll = jJumlahJamKerjaAll + jJumlahJamKerja;
-        jJamlibur20All = jJamlibur20All + jJamlibur20;
-        jJamlibur30All = jJamlibur30All + jJamlibur30;
-        jJamlibur40All = jJamlibur40All + jJamlibur40;
-        jJumlahLiburAll = jJumlahLiburAll + jJumlahLibur;
-        jJumlahJamLemburPerhitunganAll = jJumlahJamLemburPerhitunganAll + jJumlahJamLemburPerhitungan;
-        jJumlahUpahLemburAll = jJumlahUpahLemburAll + jJumlahUpahLembur;
+        jJumlahJamSeluruhnyaAll = jJumlahJamSeluruhnyaAll.add(jJumlahJamSeluruhnya);
+        jJamKerja15All = jJamKerja15All.add(jJamKerja15);
+        jJamKerja20All = jJamKerja20All.add(jJamKerja20);
+        jJumlahJamKerjaAll = jJumlahJamKerjaAll.add(jJumlahJamKerja);
+        jJamlibur20All = jJamlibur20All.add(jJamlibur20);
+        jJamlibur30All = jJamlibur30All.add(jJamlibur30);
+        jJamlibur40All = jJamlibur40All.add(jJamlibur40);
+        jJumlahLiburAll = jJumlahLiburAll.add(jJumlahLibur);
+        jJumlahJamLemburPerhitunganAll = jJumlahJamLemburPerhitunganAll.add(jJumlahJamLemburPerhitungan);
+        jJumlahUpahLemburAll = jJumlahUpahLemburAll.add(jJumlahUpahLembur);
         AbsensiPegawai tmp = new AbsensiPegawai();
         tmp.setNo("");
         tmp.setNip("JUMLAH");
@@ -2762,7 +2763,7 @@ public class AbsensiAction extends BaseMasterAction {
         tmp.setsJumlahHariLibur(df.format(jJumlahLibur));
         tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitungan));
         tmp.setStBiayaLemburPerjam("");
-        tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur), "###,###"));
+        tmp.setStBiayaLembur(CommonUtil.numbericFormat(jJumlahUpahLembur, "###,###"));
         forReport.add(tmp);
         //memberi nomor
         List<AbsensiPegawai> finalRekapLembur = new ArrayList<>();
@@ -2796,7 +2797,7 @@ public class AbsensiAction extends BaseMasterAction {
         tmp.setsJumlahHariLibur(df.format(jJumlahLiburAll));
         tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitunganAll));
         tmp.setStBiayaLemburPerjam("");
-        tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLemburAll), "###,###"));
+        tmp.setStBiayaLembur(CommonUtil.numbericFormat(jJumlahUpahLemburAll, "###,###"));
         finalRekapLembur.add(tmp);
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(finalRekapLembur);
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
