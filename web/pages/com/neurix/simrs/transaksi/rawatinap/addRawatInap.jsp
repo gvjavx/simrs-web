@@ -1431,7 +1431,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_lab"></pid>
+                    <p id="msg_lab"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1455,7 +1455,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
                         <div class="col-md-7">
                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
                                     onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
@@ -1469,12 +1469,13 @@
                                     class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                    <input type="hidden" id="jenis_lab">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Parameter</label>
                         <div class="col-md-7">
-                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%"
+                            <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
                                     id="lab_parameter"
-                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
+                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">
                                 <option value=''>[Select One]</option>
                             </select>
                         </div>
@@ -1489,27 +1490,30 @@
                         <div class="col-md-offset-3 col-md-7">
                             <div class="form-check jarak">
                                 <input onclick="isPemeriksaan(this.id, 'form_pending')" type="checkbox" id="is_pending_lab" value="yes">
-                                <label for="is_pending_lab"></label> Is Pending?
+                                <label for="is_pending_lab"></label> Input hasil untuk waktu yg ditentukan ?
                             </div>
+                            <span style="font-size: 12px; color: red; text-align: justify">*Centang pilihan tersebut jika penginputan nilai hasil pemeriksaan lab / radiologi,  tidak bisa langsung. yang berarti pasien bisa menyelesaikan adminstrasi dahulu</span>
                         </div>
                     </div>
-                    <div class="form-group" style="display: none" id="form_pending">
-                        <label class="col-md-3">Tanggal Jam</label>
+                    <div class="form-group" style="display: none;" id="form_pending">
+                        <label class="col-md-3" style="margin-top: 7px">Tanggal & Jam</label>
                         <div class="col-md-4">
-                            <div class="input-group">
-                                <div class="input-group-addon">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon" >
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input class="form-control tgl" id="tgl_pending" readonly style="cursor: pointer"
+                                       placeholder="mm-dd-yyyy"
                                        onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="input-group">
+                            <div class="input-group" style="margin-top: 7px">
                                 <div class="input-group-addon">
                                     <i class="fa fa-clock-o"></i>
                                 </div>
                                 <input class="form-control jam" id="jam_pending"
+                                       placeholder="hh:mm"
                                        onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
                             </div>
                         </div>
@@ -1609,17 +1613,17 @@
                         <label class="col-md-3">Keterangan</label>
                         <div class="col-md-7">
                             <div class="form-check">
-                                <input type="checkbox" name="ket_diet" id="ket_diet1" value="pagi"
+                                <input type="checkbox" name="ket_diet" id="ket_diet1" value="pagi" checked class="remove_cek"
                                        onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
                                 <label for="ket_diet1"></label> Pagi
                             </div>
                             <div class="form-check" style="margin-left: 10px">
-                                <input type="checkbox" name="ket_diet" id="ket_diet2" value="siang"
+                                <input type="checkbox" name="ket_diet" id="ket_diet2" value="siang" class="remove_cek"
                                        onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
                                 <label for="ket_diet2"></label> Siang
                             </div>
                             <div class="form-check" style="margin-left: 10px">
-                                <input type="checkbox" name="ket_diet" id="ket_diet3" value="malam"
+                                <input type="checkbox" name="ket_diet" id="ket_diet3" value="malam" class="remove_cek"
                                        onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
                                 <label for="ket_diet3"></label> Malam
                             </div>
@@ -1653,7 +1657,7 @@
                         <label class="col-md-3">Order Gizi Untuk ?</label>
                         <div class="col-md-6">
                             <div class="custom02">
-                                <input checked type="radio" value="1" id="untuk1" name="untuk" /><label for="untuk1" >Hari Ini Saja</label>
+                                <input checked type="radio" value="1" id="untuk1" name="untuk" /><label for="untuk1" >Order Untuk Hari Ini</label>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -1666,14 +1670,14 @@
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-6">
                             <div class="custom02">
-                                <input type="radio" value="2" id="untuk2" name="untuk" /><label for="untuk2" >Besok Saja</label>
+                                <input type="radio" value="2" id="untuk2" name="untuk" /><label for="untuk2" >Order Untuk Besok</label>
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-6">
                             <div class="custom02">
-                                <input type="radio" value="12" id="untuk3" name="untuk" /><label for="untuk3" >Hari Ini & Besok</label>
+                                <input type="radio" value="12" id="untuk3" name="untuk" /><label for="untuk3" >Order Untuk Hari Ini dan Besok</label>
                             </div>
                         </div>
                     </div>

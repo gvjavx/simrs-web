@@ -125,6 +125,34 @@ public class RawatInap {
 
     private String noTelp;
 
+    private String tipePelayanan;
+    private String waktu;
+    private Timestamp tglOrder;
+
+    public Timestamp getTglOrder() {
+        return tglOrder;
+    }
+
+    public void setTglOrder(Timestamp tglOrder) {
+        this.tglOrder = tglOrder;
+    }
+
+    public String getWaktu() {
+        return waktu;
+    }
+
+    public void setWaktu(String waktu) {
+        this.waktu = waktu;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
     public String getNoTelp() {
         return noTelp;
     }

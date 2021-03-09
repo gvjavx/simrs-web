@@ -459,4 +459,61 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         }
         return labList;
     }
+
+    public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) {
+        List<PeriksaLab> labList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "c.tanggal_masuk_lab,\n" +
+                "a.id_pasien,\n" +
+                "b.id_detail_checkup,\n" +
+                "b.id_pelayanan,\n" +
+                "e.nama_pelayanan,\n" +
+                "c.id_periksa_lab,\n" +
+                "d.nama_lab,\n" +
+                "c.url_img,\n" +
+                "f.kategori,\n" +
+                "a.created_date \n"+
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN it_simrs_periksa_lab c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_lab d ON c.id_lab = d.id_lab\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT\n" +
+                "\ta.id_pelayanan,\n" +
+                "\ta.nama_pelayanan\n" +
+                "\tFROM im_simrs_pelayanan a\n" +
+                "\tINNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") e ON b.id_pelayanan = e.id_pelayanan\n" +
+                "INNER JOIN im_simrs_kategori_lab f ON c.id_kategori_lab = f.id_kategori_lab\n" +
+                "WHERE a.id_pasien = '"+idPasien+"'\n" +
+                "ORDER BY c.tanggal_masuk_lab, b.id_pelayanan DESC";
+
+        List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+
+        if (result.size() > 0) {
+            String namaPelayanan = "";
+            for (Object[] obj : result) {
+                PeriksaLab lab = new PeriksaLab();
+                if(!namaPelayanan.equalsIgnoreCase(obj[4].toString())){
+                    namaPelayanan = obj[4].toString();
+                    lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
+                }
+                lab.setTanggalMasukLab(obj[0] == null ? null : (java.sql.Date) obj[0]);
+                lab.setIdPasien(obj[1] == null ? "" : obj[1].toString());
+                lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
+                lab.setNamaPelayanan(namaPelayanan);
+                lab.setIdPeriksaLab(obj[5] == null ? "" : obj[5].toString());
+                lab.setLabName(obj[6] == null ? "" : obj[6].toString());
+                if(obj[7] != null){
+                    lab.setUrlImg(obj[7] == null ? null : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+obj[7].toString());
+                }
+
+                lab.setKeterangan(obj[8] == null ? "" : obj[8].toString());
+                labList.add(lab);
+            }
+        }
+        return labList;
+    }
 }
