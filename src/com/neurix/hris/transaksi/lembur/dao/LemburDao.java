@@ -278,4 +278,55 @@ public class LemburDao extends GenericDao<LemburEntity, String> {
         }
         return listOfResult;
     }
+
+    public Boolean cekHakLembur(String nip){
+        List<Object[]> results = new ArrayList<>();
+
+        Boolean hakLembur = true;
+
+        String query = "SELECT pegawai.nip,\n" +
+                "\tpegawai.nama_pegawai,\n" +
+                "\ttunj_struktural.tunj_jabatan,\n" +
+                "\ttunj_struktural.tunj_struktural,\n" +
+                "\ttunj_strategis.nilai\n" +
+                "FROM im_hris_pegawai pegawai\n" +
+                "\tLEFT JOIN it_hris_pegawai_position p_position\n" +
+                "\tON pegawai.nip = p_position.nip\n" +
+                "\tLEFT JOIN im_position posisi\n" +
+                "\tON posisi.position_id = p_position.position_id" +
+                "\tLEFT JOIN im_hris_payroll_tunjangan_strategis tunj_strategis\n" +
+                "\tON tunj_strategis.position_id = p_position.profesi_id\n" +
+                "\tLEFT JOIN im_hris_payroll_tunjangan_jabatan_struktural tunj_struktural\n" +
+                "\tON tunj_struktural.kelompok_id = posisi.kelompok_id\n" +
+                "\tWHERE pegawai.nip = '" + nip + "'";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        BigDecimal zero = new BigDecimal(0);
+        int compResult;
+
+        for(Object[] result : results){
+            if(result[2] != null){
+                 compResult = zero.compareTo((BigDecimal) result[2]);
+                 if(compResult == 1){
+                     hakLembur = false;
+                 }
+            }
+            if(result[3] != null){
+                compResult = zero.compareTo((BigDecimal) result[3]);
+                if(compResult == 1){
+                    hakLembur = false;
+                }
+            }
+            if(result[4] != null){
+                compResult = zero.compareTo((BigDecimal) result[4]);
+                if(compResult == 1){
+                    hakLembur = false;
+                }
+            }
+        }
+        return hakLembur;
+    }
 }

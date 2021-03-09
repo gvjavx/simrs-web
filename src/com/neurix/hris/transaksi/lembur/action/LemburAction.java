@@ -21,6 +21,7 @@ import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -770,6 +771,18 @@ public class LemburAction extends BaseMasterAction {
             hasil = hasil+lembur.getLamaJam();
         }
         return hasil;
+    }
+
+    public Boolean cekHakLembur (String nip){
+        Boolean hakLembur = false;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LemburBo lemburBo = (LemburBo) ctx.getBean("lemburBoProxy");
+        try{
+            hakLembur = lemburBo.cekHakLembur(nip);
+        }catch (GeneralBOException e){
+            logger.error("[LemburAction.cekHakLembur] Error, " + e.getMessage());
+        }
+        return hakLembur;
     }
 
 }

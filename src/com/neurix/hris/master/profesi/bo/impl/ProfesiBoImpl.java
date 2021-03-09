@@ -340,4 +340,25 @@ public class ProfesiBoImpl implements ProfesiBo {
         }
         return status;
     }
+
+    @Override
+    public String getTipeProfesi(String profesiId) throws GeneralBOException{
+        String tipeProfesi = "";
+        Map hsCriteria = new HashMap();
+        hsCriteria.put("profesi_id", profesiId);
+        hsCriteria.put("flag", "Y");
+        List<ImProfesiEntity> profesiEntityList = new ArrayList<>();
+        try{
+            profesiEntityList = profesiDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            logger.error("[ProfesiBoImpl.getTipeProfesi] Error, " + e.getMessage() );
+            throw new GeneralBOException("Found problem when receiving profesi using criteria, " + e.getMessage());
+        }
+        for(ImProfesiEntity profesi : profesiEntityList){
+            if(profesi.getTipeProfesi() != null) {
+                tipeProfesi = profesi.getTipeProfesi();
+            }
+        }
+        return tipeProfesi;
+    }
 }

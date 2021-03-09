@@ -1255,4 +1255,16 @@ public class LemburBoImpl implements LemburBo {
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
     }
+
+    @Override
+    public Boolean cekHakLembur(String nip) throws GeneralBOException {
+        Boolean hakLembur;
+        try{
+            hakLembur = lemburDao.cekHakLembur(nip);
+        }catch(HibernateException e){
+            logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
+        }
+        return hakLembur;
+    }
 }
