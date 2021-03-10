@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.rekananops.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -16,6 +17,51 @@ public class ImSimrsDetailRekananOpsEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String idItem;
+    private String parentId;
+    private String flagParent;
+    private String jenisItem;
+    private BigDecimal tarif;
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getFlagParent() {
+        return flagParent;
+    }
+
+    public void setFlagParent(String flagParent) {
+        this.flagParent = flagParent;
+    }
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
 
     public String getIdDetailRekananOps() {
         return idDetailRekananOps;

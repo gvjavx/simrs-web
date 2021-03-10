@@ -35,9 +35,22 @@
             <basic name="lastUpdate">
                 <column name="last_update"/>
             </basic>
-            <basic name="lastUpdateWho">
-                <column name="last_update_who"/>
+            <basic name="idItem">
+                <column name="id_item"/>
             </basic>
+            <basic name="parentId">
+                <column name="parent_id"/>
+            </basic>
+            <basic name="flagParent">
+                <column name="flag_parent"/>
+            </basic>
+            <basic name="jenisItem">
+                <column name="jenis_item"/>
+            </basic>
+            <basic name="tarif">
+                <column name="tarif"/>
+            </basic>
+
         </attributes>
     </entity>
 </entity-mappings>

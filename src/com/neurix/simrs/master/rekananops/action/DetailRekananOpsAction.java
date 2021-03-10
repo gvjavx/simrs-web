@@ -494,4 +494,44 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         listOfComboBranch.addAll(listOfBranch);
         return SUCCESS;
     }
+
+    // Sigit 2020-03-10
+    public String initComboTarif(){
+        logger.info("[CheckupAction.initComboTarif] START process >>>");
+
+        String id = this.id;
+
+        // mendapatkan data parent yg di set ke object DetailRekananOps;
+        try {
+            List<DetailRekananOps> detailRekananOps = detailRekananOpsBoProxy.getParentDataById(id);
+
+            // set jika ditemukan parent
+            if (detailRekananOps.size() > 0)
+                setDetailRekananOps(detailRekananOps.get(0));
+            // END
+
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.initComboTarif] ERROR get Parent ", e);
+            throw new GeneralBOException("ERROR get Parent ", e);
+        }
+        // END
+
+        // mendapatkan list detail per tindakan untuk masing - masing tarif dengan id sebagai parent
+        // kemudian di set ke session "listOfTindakan";
+        List<DetailRekananOps> listDetailTindakan = new ArrayList<>();
+        try {
+            listDetailTindakan = detailRekananOpsBoProxy.getDetailDataByIdParent(id);
+        } catch (GeneralBOException e){
+            logger.error("[CheckupAction.initComboTarif] ERROR get Detail ", e);
+            throw new GeneralBOException("ERROR get Detail ", e);
+        }
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfTindakan");
+        session.setAttribute("listOfTindakan", listDetailTindakan);
+        // END
+
+        logger.info("[CheckupAction.initComboTarif] END process <<<");
+        return "init_detail_per_tarif";
+    }
 }
