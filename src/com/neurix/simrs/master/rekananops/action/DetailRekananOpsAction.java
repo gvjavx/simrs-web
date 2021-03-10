@@ -605,6 +605,9 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         session.removeAttribute("listOfTindakan");
         session.setAttribute("listOfTindakan", listOfTindakan);
 
+        // set success
+        this.response.addResponse("success","Data Berhasil Tersimpan");
+
         logger.info("[CheckupAction.saveAddToSessionTindakan] END process <<<");
         return this.response;
     }
