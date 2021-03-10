@@ -14,19 +14,15 @@ import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.hris.master.department.dao.DepartmentDao;
-import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.department.model.ImDepartmentEntity;
 import com.neurix.hris.master.jamkerja.dao.JamKerjaDao;
 import com.neurix.hris.master.jamkerja.model.ImHrisJamKerja;
-import com.neurix.hris.master.jamkerja.model.JamKerja;
 import com.neurix.hris.master.jenisPegawai.dao.JenisPegawaiDao;
 import com.neurix.hris.master.jenisPegawai.model.ImHrisJenisPegawaiEntity;
-import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
 import com.neurix.hris.master.libur.dao.LiburDao;
 import com.neurix.hris.master.libur.model.ImLiburEntity;
 import com.neurix.hris.master.mappingpersengaji.dao.MappingPersenGajiDao;
 import com.neurix.hris.master.mappingpersengaji.model.ImHrisMappingPersenGaji;
-import com.neurix.hris.master.mappingpersengaji.model.MappingPersenGaji;
 import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
@@ -35,7 +31,6 @@ import com.neurix.hris.master.payrollTunjanganUmk.dao.PayrollTunjanganUmkDao;
 import com.neurix.hris.master.payrollTunjanganUmk.model.ImPayrollTunjanganUmkEntity;
 import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
-import com.neurix.hris.master.strukturJabatan.bo.impl.StrukturJabatanBoImpl;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
 import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
@@ -52,26 +47,24 @@ import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.dao.JamLemburDao;
 import com.neurix.hris.transaksi.lembur.dao.LemburDao;
 import com.neurix.hris.transaksi.lembur.dao.PengaliFaktorLemburDao;
-import com.neurix.hris.transaksi.lembur.model.*;
+import com.neurix.hris.transaksi.lembur.model.JamLemburEntity;
+import com.neurix.hris.transaksi.lembur.model.Lembur;
+import com.neurix.hris.transaksi.lembur.model.LemburEntity;
+import com.neurix.hris.transaksi.lembur.model.PengaliFaktorLemburEntity;
 import com.neurix.hris.transaksi.notifikasi.dao.NotifikasiDao;
 import com.neurix.hris.transaksi.notifikasi.model.ImNotifikasiEntity;
 import com.neurix.hris.transaksi.payroll.dao.PayrollDao;
 import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
-import com.neurix.hris.transaksi.payroll.model.Payroll;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import com.neurix.hris.transaksi.sppd.dao.SppdDao;
-import com.neurix.hris.transaksi.sppd.model.ItSppdPersonEntity;
 import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import com.neurix.hris.transaksi.training.dao.TrainingDao;
 import com.neurix.hris.transaksi.training.dao.TrainingPersonDao;
 import com.neurix.hris.transaksi.training.model.ItHrisTrainingEntity;
 import com.neurix.hris.transaksi.training.model.ItHrisTrainingPersonEntity;
-import com.sun.org.apache.xpath.internal.CachedXPathAPI;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.apache.struts2.jasper.tagplugins.jstl.core.Catch;
 import org.hibernate.HibernateException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -88,7 +81,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.*;
 import java.util.*;
@@ -100,7 +92,7 @@ import java.util.*;
  * Time: 13:55
  * To change this template use File | Settings | File Templates.
  */
-public class AbsensiBoImpl implements AbsensiBo {
+public class AbsensiBoImpl_maintenance implements AbsensiBo {
 
     private AbsensiPegawaiDao absensiPegawaiDao;
     private MesinAbsensiDao mesinAbsensiDao;
@@ -249,7 +241,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         this.payrollTunjanganUmkDao = payrollTunjanganUmkDao;
     }
 
-    protected static transient Logger logger = Logger.getLogger(AbsensiBoImpl.class);
+    protected static transient Logger logger = Logger.getLogger(AbsensiBoImpl_maintenance.class);
 
     public TrainingPersonDao getTrainingPersonDao() {
         return trainingPersonDao;
@@ -424,7 +416,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     public static void setLogger(Logger logger) {
-        AbsensiBoImpl.logger = logger;
+        AbsensiBoImpl_maintenance.logger = logger;
     }
 
     public AbsensiPegawaiDao getAbsensiPegawaiDao() {
@@ -2861,7 +2853,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             throw new GeneralBOException("Found problem when searching data, please info to your admin..." + e.getMessage());
         }
 
-        java.sql.Date tanggalAwal = CommonUtil.convertToDate(tanggal);
+        Date tanggalAwal = CommonUtil.convertToDate(tanggal);
         Calendar cal = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         cal.setTime(tanggalAwal);
@@ -2878,10 +2870,10 @@ public class AbsensiBoImpl implements AbsensiBo {
         cal2.set(Calendar.SECOND, 0);
         cal2.set(Calendar.MILLISECOND, 0);
 
-        java.sql.Date tanggalBesok = new java.sql.Date(cal.getTimeInMillis());
-        tanggalAwal = new java.sql.Date(cal2.getTimeInMillis());
-        java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
-        java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
+        Date tanggalBesok = new Date(cal.getTimeInMillis());
+        tanggalAwal = new Date(cal2.getTimeInMillis());
+        Timestamp tsTanggalAwal = new Timestamp(tanggalAwal.getTime());
+        Timestamp tsTanggalBesok = new Timestamp(tanggalBesok.getTime());
         cal = Calendar.getInstance();
         String branch = branchId;
         cal.setTime(tanggalAwal);
@@ -3141,10 +3133,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                             cal4.set(Calendar.MILLISECOND, 0);
 
 
-                            Date tanggalBesokShift = new java.sql.Date(cal3.getTimeInMillis());
-                            Date tanggalAwalShift = new java.sql.Date(cal4.getTimeInMillis());
-                            Timestamp tsTanggalAwalShift = new java.sql.Timestamp(tanggalAwalShift.getTime());
-                            Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
+                            Date tanggalBesokShift = new Date(cal3.getTimeInMillis());
+                            Date tanggalAwalShift = new Date(cal4.getTimeInMillis());
+                            Timestamp tsTanggalAwalShift = new Timestamp(tanggalAwalShift.getTime());
+                            Timestamp tsTanggalBesokShift = new Timestamp(tanggalBesokShift.getTime());
 
                             List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
                             try{
@@ -3261,10 +3253,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                                         cal6.set(Calendar.MILLISECOND, 0);
 
 
-                                        tanggalBesokShift = new java.sql.Date(cal5.getTimeInMillis());
-                                        tanggalAwalShift = new java.sql.Date(cal6.getTimeInMillis());
-                                        tsTanggalAwalShift = new java.sql.Timestamp(tanggalAwalShift.getTime());
-                                        tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
+                                        tanggalBesokShift = new Date(cal5.getTimeInMillis());
+                                        tanggalAwalShift = new Date(cal6.getTimeInMillis());
+                                        tsTanggalAwalShift = new Timestamp(tanggalAwalShift.getTime());
+                                        tsTanggalBesokShift = new Timestamp(tanggalBesokShift.getTime());
 
                                         mesinAbsensiDetailEntityList = new ArrayList<>();
                                         mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(), tsTanggalAwalShift, tsTanggalBesokShift,branchId);
@@ -3408,10 +3400,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 cal4.set(Calendar.MILLISECOND, 0);
 
 
-                                Date tanggalBesokShift = new java.sql.Date(cal3.getTimeInMillis());
-                                Date tanggalAwalShift = new java.sql.Date(cal4.getTimeInMillis());
-                                Timestamp tsTanggalAwalShift = new java.sql.Timestamp(tanggalAwalShift.getTime());
-                                Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
+                                Date tanggalBesokShift = new Date(cal3.getTimeInMillis());
+                                Date tanggalAwalShift = new Date(cal4.getTimeInMillis());
+                                Timestamp tsTanggalAwalShift = new Timestamp(tanggalAwalShift.getTime());
+                                Timestamp tsTanggalBesokShift = new Timestamp(tanggalBesokShift.getTime());
 
                                 List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
                                 mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
@@ -4352,8 +4344,8 @@ public class AbsensiBoImpl implements AbsensiBo {
         List<AbsensiPegawai> listAbsensi = new ArrayList<>();
         List<AbsensiPegawaiEntity> absensiPegawai = null;
 
-        java.util.Date Awal = java.sql.Date.valueOf(tanggal + "-01");
-        java.util.Date  Akhir = java.sql.Date.valueOf(tanggal + "-31");
+        java.util.Date Awal = Date.valueOf(tanggal + "-01");
+        java.util.Date  Akhir = Date.valueOf(tanggal + "-31");
         if(statusabsensi!=null){
             if(!statusabsensi.equalsIgnoreCase("")){
                 absensiPegawai = absensiPegawaiDao.cariAbsensiSysStatusAbsensi(nip, Awal, Akhir, statusabsensi);
@@ -5184,66 +5176,20 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                         if (jamKerjaList.size()==0){
                             hariLiburKerja = true;
-                        }else{
-                            for (ImHrisJamKerja jamKerja : jamKerjaList){
-                                DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-                                SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
-
-                                String stTanggalMasukKantor = df.format(data.getTanggalUtil());
-                                String stTanggalPulangKantor = df.format(data.getTanggalUtil());
-                                String stTanggalIstirahatAwalKantor = df.format(data.getTanggalUtil());
-                                String stTanggalIstirahatAkhirKantor = df.format(data.getTanggalUtil());
-
-                                stTanggalMasukKantor = stTanggalMasukKantor+" "+jamKerja.getJamAwalKerja()+":00";
-                                stTanggalPulangKantor = stTanggalPulangKantor+" "+jamKerja.getJamAkhirKerja()+":00";
-//                                stTanggalIstirahatAwalKantor = stTanggalIstirahatAwalKantor+" "+jamKerja.getIstirahatAwal()+":00";
-                                stTanggalIstirahatAkhirKantor = stTanggalIstirahatAkhirKantor+" "+jamKerja.getIstirahatAkhir()+":00";
-
-                                try {
-                                    java.util.Date dJamMasukKantor =  sdf.parse(stTanggalMasukKantor);
-                                    java.util.Date dJamPulangKantor =  sdf.parse(stTanggalPulangKantor);
-//                                    java.util.Date dJamIstirahatAwalKantor =  sdf.parse(stTanggalIstirahatAwalKantor);
-                                    java.util.Date dJamIstirahatAkhirKantor =  sdf.parse(stTanggalIstirahatAkhirKantor);
-
-                                    tsJamMasukKantor = new Timestamp(dJamMasukKantor.getTime());
-                                    tsJamPulangKantor = new Timestamp(dJamPulangKantor.getTime());
-//                                    tsJamIstirahatAwalKantor = new Timestamp(dJamIstirahatAwalKantor.getTime());
-                                    tsJamIstirahatAkhirKantor = new Timestamp(dJamIstirahatAkhirKantor.getTime());
-
-                                } catch (ParseException e) {
-                                    String status ="[AbsensiBoImpl.cronInquiry] ERROR : "+e;
-                                    logger.error(status);
-                                    throw new GeneralBOException(status);
-                                }
-                            }
-                        }
-
-                        if (hariLiburKerja){
                             absensiPegawai.setTipeHari("hari_libur");
+                        }else{
+                            Timestamp[] jamKantor = getJamKerja(jamKerjaList, data.getTanggalUtil());
+
+                            tsJamMasukKantor = jamKantor[0];
+                            tsJamIstirahatAkhirKantor = jamKantor[1];
+                            tsJamPulangKantor = jamKantor[2];
                         }
 
-                        Calendar calJamAwalScan = Calendar.getInstance();
-                        Calendar calJamAkhirScan = Calendar.getInstance();
-                        calJamAwalScan.setTime(data.getTanggalUtil());
-                        calJamAkhirScan.setTime(data.getTanggalUtil());
-
-                        calJamAwalScan.set(Calendar.HOUR_OF_DAY, jamBatasAbsen);
-                        calJamAwalScan.set(Calendar.MINUTE, 0);
-                        calJamAwalScan.set(Calendar.SECOND, 0);
-                        calJamAwalScan.set(Calendar.MILLISECOND, 0);
-
-                        calJamAkhirScan.add(Calendar.DAY_OF_YEAR,1);
-                        calJamAkhirScan.set(Calendar.HOUR_OF_DAY, jamBatasAbsen);
-                        calJamAkhirScan.set(Calendar.MINUTE, 0);
-                        calJamAkhirScan.set(Calendar.SECOND, 0);
-                        calJamAkhirScan.set(Calendar.MILLISECOND, 0);
-
-                        java.sql.Date tanggalBesok = new java.sql.Date(calJamAkhirScan.getTimeInMillis());
-                        java.sql.Date tanggalAwal = new java.sql.Date(calJamAwalScan.getTimeInMillis());
-                        java.sql.Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwal.getTime());
-                        java.sql.Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesok.getTime());
-                        java.sql.Timestamp tsJamAwalFinger = null;
-                        java.sql.Timestamp tsJamAkhirFinger = null;
+                        Date[] batasAbsen = getBatasAbsen(data.getTanggalUtil(), jamBatasAbsen);
+                        Timestamp tsTanggalAwal = new Timestamp(batasAbsen[0].getTime());
+                        Timestamp tsTanggalBesok = new Timestamp(batasAbsen[1].getTime());
+                        Timestamp tsJamAwalFinger = null;
+                        Timestamp tsJamAkhirFinger = null;
 
                         //mengambil  data absensi
                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
@@ -5262,17 +5208,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                             if (mesinAbsensiDetailEntityList.size()==0){
                                 absensiPegawai.setStatusAbsensi(cariStatusTidakMasuk(biodata.getNip(), CommonUtil.dateUtiltoDateSql(data.getTanggalUtil())));
                             } else{
-                                for (MesinAbsensiDetailEntity mesinAbsensiDetailEntity : mesinAbsensiDetailEntityList){
-                                    if (mesinAbsensiDetailEntity.getScanDate().compareTo(tsJamIstirahatAkhirKantor)<0){
-                                        if (tsJamAwalFinger==null || mesinAbsensiDetailEntity.getScanDate().compareTo(tsJamAwalFinger)<0){
-                                            tsJamAwalFinger = mesinAbsensiDetailEntity.getScanDate();
-                                        }
-                                    } else {
-                                        if (tsJamAkhirFinger==null || mesinAbsensiDetailEntity.getScanDate().compareTo(tsJamAkhirFinger)>0){
-                                            tsJamAkhirFinger= mesinAbsensiDetailEntity.getScanDate();
-                                        }
-                                    }
-                                }
+
+                                Timestamp jamFinger[] = olahDataMesin(mesinAbsensiDetailEntityList, tsJamIstirahatAkhirKantor);
+                                tsJamAwalFinger = jamFinger[0];
+                                tsJamAkhirFinger = jamFinger[1];
 
                                 //set status masuk
                                 if (tsJamAwalFinger==null||tsJamAkhirFinger==null){
@@ -6004,10 +5943,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     cal4.set(Calendar.SECOND, 0);
                                     cal4.set(Calendar.MILLISECOND, 0);
 
-                                    Date tanggalBesokShift = new java.sql.Date(cal3.getTimeInMillis());
-                                    Date tanggalAwalShift = new java.sql.Date(cal4.getTimeInMillis());
-                                    Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwalShift.getTime());
-                                    Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesokShift.getTime());
+                                    Date tanggalBesokShift = new Date(cal3.getTimeInMillis());
+                                    Date tanggalAwalShift = new Date(cal4.getTimeInMillis());
+                                    Timestamp tsTanggalAwal = new Timestamp(tanggalAwalShift.getTime());
+                                    Timestamp tsTanggalBesok = new Timestamp(tanggalBesokShift.getTime());
 
                                     Calendar calendar = Calendar.getInstance();
                                     calendar.setTime(tanggalAwalShift);
@@ -6054,7 +5993,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             statusA="02";
                                         }else if (tsJamAkhirFinger.compareTo(tsTanggalBesokShift)<0){
                                             statusA="14";
-                                        }else if (tsJamAwalFinger.compareTo(tsTanggalAwalShift)<=0&&tsJamAkhirFinger.compareTo(tsTanggalBesokShift)>=0){
+                                        }else if (tsJamAwalFinger.compareTo(tsTanggalAwalShift)<0&&tsJamAkhirFinger.compareTo(tsTanggalBesokShift)>0){
                                             if (CommonUtil.compareTwoTimeStamps(tsJamAkhirFinger,tsTanggalBesokShift,"jam")>1||CommonUtil.compareTwoTimeStamps(tsTanggalAwalShift,tsJamAwalFinger,"jam")>1){
                                                 statusA="04";
                                             }else{
@@ -6314,10 +6253,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     cal4.set(Calendar.SECOND, 0);
                                     cal4.set(Calendar.MILLISECOND, 0);
 
-                                    Date tanggalBesokShift = new java.sql.Date(cal3.getTimeInMillis());
-                                    Date tanggalAwalShift = new java.sql.Date(cal4.getTimeInMillis());
-                                    Timestamp tsTanggalAwal = new java.sql.Timestamp(tanggalAwalShift.getTime());
-                                    Timestamp tsTanggalBesok = new java.sql.Timestamp(tanggalBesokShift.getTime());
+                                    Date tanggalBesokShift = new Date(cal3.getTimeInMillis());
+                                    Date tanggalAwalShift = new Date(cal4.getTimeInMillis());
+                                    Timestamp tsTanggalAwal = new Timestamp(tanggalAwalShift.getTime());
+                                    Timestamp tsTanggalBesok = new Timestamp(tanggalBesokShift.getTime());
 
                                     Calendar calendar = Calendar.getInstance();
                                     calendar.setTime(tanggalAwalShift);
@@ -7117,4 +7056,90 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
         return list;
     }
+
+    //RAKA-09MAR2021 ==> Pemisahan Method
+    private Date[]  getBatasAbsen(java.util.Date tanggal, Integer jamBatasAbsen){
+        Date[] waktuAbsen = new Date[2];
+
+        Calendar calJamAwalScan = Calendar.getInstance();
+        Calendar calJamAkhirScan = Calendar.getInstance();
+        calJamAwalScan.setTime(tanggal);
+        calJamAkhirScan.setTime(tanggal);
+
+        calJamAwalScan.set(Calendar.HOUR_OF_DAY, jamBatasAbsen);
+        calJamAwalScan.set(Calendar.MINUTE, 0);
+        calJamAwalScan.set(Calendar.SECOND, 0);
+        calJamAwalScan.set(Calendar.MILLISECOND, 0);
+
+        calJamAkhirScan.add(Calendar.DAY_OF_YEAR,1);
+        calJamAkhirScan.set(Calendar.HOUR_OF_DAY, jamBatasAbsen);
+        calJamAkhirScan.set(Calendar.MINUTE, 0);
+        calJamAkhirScan.set(Calendar.SECOND, 0);
+        calJamAkhirScan.set(Calendar.MILLISECOND, 0);
+
+        Date tanggalBesok = new Date(calJamAkhirScan.getTimeInMillis());
+        Date tanggalAwal = new Date(calJamAwalScan.getTimeInMillis());
+
+        waktuAbsen[0] = tanggalAwal;
+        waktuAbsen[1] = tanggalBesok;
+
+        return waktuAbsen;
+    }
+
+    private Timestamp[] getJamKerja(List<ImHrisJamKerja> jamKerjaList, java.util.Date tanggal){
+        Timestamp[] jamKantor = new Timestamp[3];
+        for (ImHrisJamKerja jamKerja : jamKerjaList){
+            DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
+            String stTanggalMasukKantor = df.format(tanggal);
+            String stTanggalPulangKantor = df.format(tanggal);
+            String stTanggalIstirahatAwalKantor = df.format(tanggal);
+            String stTanggalIstirahatAkhirKantor = df.format(tanggal);
+
+            stTanggalMasukKantor = stTanggalMasukKantor+" "+jamKerja.getJamAwalKerja()+":00";
+            stTanggalPulangKantor = stTanggalPulangKantor+" "+jamKerja.getJamAkhirKerja()+":00";
+            stTanggalIstirahatAkhirKantor = stTanggalIstirahatAkhirKantor+" "+jamKerja.getIstirahatAkhir()+":00";
+
+            try {
+                java.util.Date dJamMasukKantor =  sdf.parse(stTanggalMasukKantor);
+                java.util.Date dJamPulangKantor =  sdf.parse(stTanggalPulangKantor);
+                java.util.Date dJamIstirahatAkhirKantor =  sdf.parse(stTanggalIstirahatAkhirKantor);
+
+                jamKantor[0] = new Timestamp(dJamMasukKantor.getTime());
+                jamKantor[1] = new Timestamp(dJamIstirahatAkhirKantor.getTime());
+                jamKantor[2] = new Timestamp(dJamPulangKantor.getTime());
+
+            } catch (ParseException e) {
+                String status ="[AbsensiBoImpl.cronInquiry] ERROR : "+e;
+                logger.error(status);
+                throw new GeneralBOException(status);
+            }
+        }
+
+        return jamKantor;
+    }
+
+    private Timestamp[] olahDataMesin (List<MesinAbsensiDetailEntity> mesinAbsensiList, Timestamp jamIstirahat){
+        Timestamp jamAwalFinger = null;
+        Timestamp jamAkhirFinger = null;
+        for (MesinAbsensiDetailEntity mesinAbsensiDetailEntity : mesinAbsensiList){
+            if (mesinAbsensiDetailEntity.getScanDate().compareTo(jamIstirahat)<0){
+                if (jamAwalFinger==null || mesinAbsensiDetailEntity.getScanDate().compareTo(jamAwalFinger)<0){
+                    jamAwalFinger = mesinAbsensiDetailEntity.getScanDate();
+                }
+            } else {
+                if (jamAkhirFinger==null || mesinAbsensiDetailEntity.getScanDate().compareTo(jamAkhirFinger)>0){
+                    jamAkhirFinger= mesinAbsensiDetailEntity.getScanDate();
+                }
+            }
+        }
+        Timestamp[] jamFinger = new Timestamp[2];
+
+        jamFinger[0] = jamAwalFinger;
+        jamFinger[1] = jamAkhirFinger;
+
+        return jamFinger;
+    }
+
 }

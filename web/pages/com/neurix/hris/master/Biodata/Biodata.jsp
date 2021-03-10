@@ -1134,7 +1134,7 @@
                                                         <s:else>
                                                             <s:textfield cssStyle="text-align: left;"
                                                                          cssClass="form-control" id="tanggalAktif" name="biodata.stTanggalAktif" disabled="true"/>
-                                                            <s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>
+                                                            <%--<s:hidden name="biodata.stTanggalAktif" id="tanggalAktifHid"/>--%>
                                                             <s:hidden id="tanggalAktifTmp"/>
                                                         </s:else>
 
