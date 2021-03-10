@@ -1738,7 +1738,21 @@ public class AbsensiBoImpl implements AbsensiBo {
                     returnAbsensi.setStTanggal(CommonUtil.convertDateToString(absensiPegawaiEntity.getTanggal()));
                     returnAbsensi.setLembur(absensiPegawaiEntity.getLembur());
                     returnAbsensi.setJamMasuk(absensiPegawaiEntity.getJamMasuk());
+
+                    //RAKA-10MAR2021 ==> Set Property yg belum ada
                     returnAbsensi.setJamKeluar(absensiPegawaiEntity.getJamKeluar());
+                    if("Y".equalsIgnoreCase(absensiPegawaiEntity.getLembur())){
+                        AbsensiPegawaiEntity waktuLembur;
+                        try{
+                            waktuLembur = absensiPegawaiDao.getWaktuLembur(absensiPegawaiEntity.getNip(),absensiPegawaiEntity.getTanggal().toString());
+                        }catch (HibernateException e){
+                            logger.error("[AbsensiBoImpl.getByCriteria] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when retrieving Wkatu Lembur, " + e.getMessage());
+                        }
+                        returnAbsensi.setAwalLembur(waktuLembur.getJamAwalLembur());
+                        returnAbsensi.setSelesaiLembur(waktuLembur.getJamSelesaiLembur());
+                    }
+                    //RAKA-end
 
                     returnAbsensi.setJamPulang(absensiPegawaiEntity.getJamKeluar());
                     returnAbsensi.setJamMasuk2(absensiPegawaiEntity.getJamMasuk2());
@@ -1752,10 +1766,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                     returnAbsensi.setJamLembur(absensiPegawaiEntity.getJamLembur());
                     returnAbsensi.setLamaLembur(absensiPegawaiEntity.getLamaLembur());
                     returnAbsensi.setBranchId(absensiPegawaiEntity.getBranchId());
+
+                    //RAKA-10MAR2021 ==>Merubah tampilan format upah lembur
+//                    DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+//                    DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+//
+//                    formatRp.setCurrencySymbol("Rp. ");
+//                    formatRp.setGroupingSeparator('.');
+//
+//                    kursIndonesia.setDecimalFormatSymbols(formatRp);
+//                    String upahLembur = kursIndonesia.format(absensiPegawaiEntity.getBiayaLembur());
+//                    returnAbsensi.setBiayaLembur(upahLembur);
+                    //RAKA-end
+
                     returnAbsensi.setBiayaLembur(absensiPegawaiEntity.getBiayaLembur());
                     returnAbsensi.setKeterangan(absensiPegawaiEntity.getKeterangan());
                     returnAbsensi.setFlagUangMakan(absensiPegawaiEntity.getFlagUangMakan());
-                    returnAbsensi.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawaiEntity.getBiayaLembur()), "###,###"));
+                    returnAbsensi.setStBiayaLembur("Rp." + CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawaiEntity.getBiayaLembur()), "###,###"));
 
                     List<Biodata> biodataList = biodataDao.getBiodataByNip(absensiPegawaiEntity.getNip());
                     for (Biodata biodata : biodataList){
@@ -4400,6 +4427,22 @@ public class AbsensiBoImpl implements AbsensiBo {
                 absensi.setLemburPerJam(absenEntity1.getBiayaLembur()/absenEntity1.getJamLembur());
                 DecimalFormat df = new DecimalFormat("#.##");
                 absensi.setLemburPerJam(Double.valueOf(df.format(absensi.getLemburPerJam())));
+
+                DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+                DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+
+                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setGroupingSeparator('.');
+                kursIndonesia.setDecimalFormatSymbols(formatRp);
+
+                String upahPerJam = "";
+                upahPerJam = kursIndonesia.format(absensi.getLemburPerJam());
+                absensi.setStBiayaLemburPerjam(upahPerJam);
+
+                String upahLembur = "";
+                upahLembur = kursIndonesia.format(absensi.getBiayaLembur());
+                absensi.setStBiayaLembur(upahLembur);
+
                 listAbsensi.add(absensi);
             }
         }

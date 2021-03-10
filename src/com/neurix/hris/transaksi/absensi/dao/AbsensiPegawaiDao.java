@@ -479,6 +479,51 @@ public class AbsensiPegawaiDao extends GenericDao<AbsensiPegawaiEntity, String> 
         return absensiPegawaiList;
     }
 
+    public AbsensiPegawaiEntity getWaktuLembur(String nip, String tanggal){
+        List<Object[]> results = new ArrayList<Object[]>();
+        AbsensiPegawaiEntity waktuLembur = new AbsensiPegawaiEntity();
+        String query = "SELECT absen_peg.nip,\n" +  //0
+                "\tabsen_peg.jam_masuk,\n" +        //1
+                "\tabsen_peg.jam_keluar,\n" +       //2
+                "\tlembur.jam_awal,\n" +            //3
+                "\tlembur.jam_akhir,\n" +           //4
+                "\tabsen_peg.lama_lembur,\n" +      //5
+                "\tlembur.lama_jam\n" +             //6
+                "FROM it_hris_absensi_pegawai absen_peg\n" +
+                "LEFT JOIN it_hris_lembur lembur\n" +
+                "\tON absen_peg.tanggal = lembur.tanggal_awal\n" +
+                "\tAND  absen_peg.nip = lembur.nip\n" +
+                "WHERE\n" +
+                "\tlembur.approval_flag = 'Y'\n" +
+                "\tAND absen_peg.nip = '"+ nip +"'\n" +
+                "\tAND absen_peg.tanggal = '"+ tanggal +"'\n" +
+                "ORDER BY absen_peg.tanggal DESC";
+
+        results = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(query)
+                .list();
+
+        for(Object[] result:results){
+            Date jamMasuk = CommonUtil.convertStringToTime(result[1].toString()+":00");
+            Date jamPulang = CommonUtil.convertStringToTime(result[2].toString()+":00");
+            Date jamAwalLembur = CommonUtil.convertStringToTime(result[3].toString()+":00");
+            Date jamSelesaiLembur = CommonUtil.convertStringToTime(result[4].toString()+":00");
+
+            if(result[5].toString().equalsIgnoreCase(result[6].toString())){
+                waktuLembur.setJamAwalLembur(result[3].toString());
+                waktuLembur.setJamSelesaiLembur(result[4].toString());
+            } else if (jamPulang.after(jamSelesaiLembur)){
+                waktuLembur.setJamAwalLembur(result[1].toString());
+                waktuLembur.setJamSelesaiLembur(result[4].toString());
+            } else {
+                waktuLembur.setJamAwalLembur(result[3].toString());
+                waktuLembur.setJamSelesaiLembur(result[2].toString());
+            }
+        }
+
+        return waktuLembur;
+    }
+
     public List<AbsensiPegawaiEntity> checkDataDelete(String statusAbsensi) throws HibernateException {
 
         List<AbsensiPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(AbsensiPegawaiEntity.class)
