@@ -27,6 +27,15 @@ public class VersionController implements ModelDriven<Object> {
     private String versionName;
     private String flag;
     private String description;
+    private String tipe;
+
+    public String getTipe() {
+        return tipe;
+    }
+
+    public void setTipe(String tipe) {
+        this.tipe = tipe;
+    }
 
     public String getIdVersion() {
         return idVersion;
@@ -127,6 +136,7 @@ public class VersionController implements ModelDriven<Object> {
             bean.setVersionName(versionName);
             bean.setIdVersion(idVersion);
             bean.setFlag(flag);
+            bean.setTipe("zebra");
 
             try {
                result = licenseZebraBoProxy.getVersionByCriteria(bean);
