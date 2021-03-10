@@ -46,6 +46,10 @@ public class Lembur extends BaseModel {
     private Double jamRealisasi;
     private Double lamaHitungan;
 
+    //RAKA-10MAR2021
+    private boolean hakLembur = true;
+    //RAKA-end
+
     private boolean lemburApprove=false;
     private boolean lemburEdit=true;
     private boolean lemburDelete=true;
@@ -477,4 +481,11 @@ public class Lembur extends BaseModel {
         this.nipUserLogin = nipUserLogin;
     }
 
+    public boolean isHakLembur() {
+        return hakLembur;
+    }
+
+    public void setHakLembur(boolean hakLembur) {
+        this.hakLembur = hakLembur;
+    }
 }

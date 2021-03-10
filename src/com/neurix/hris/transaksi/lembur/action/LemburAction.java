@@ -129,8 +129,11 @@ public class LemburAction extends BaseMasterAction {
             String user = CommonUtil.userIdLogin();
             addLembur.setNip(user);
             searchBiodata.setNip(user);
-            listOfsearchBiodata = lemburBoProxy.getBiodatawithCriteria(user);
-
+            try {
+                listOfsearchBiodata = lemburBoProxy.getBiodatawithCriteria(user);
+            }catch (GeneralBOException e){
+                logger.error("[LemburAction.add] Error, " + e.getMessage());
+            }
             session.removeAttribute("listOfResultLemburPersonil");
             session.setAttribute("listOfResultLemburPersonil", listOfsearchBiodata);
             List<Lembur> listOfResultLemburPersonil = (List<Lembur>) session.getAttribute("listOfResultLemburPersonil");
@@ -147,6 +150,7 @@ public class LemburAction extends BaseMasterAction {
                     addLembur.setBranchId(lembur.getBranchId());
                     addLembur.setStatusGiling(lembur.getStatusGiling());
                     addLembur.setSelf("Y");
+                    addLembur.setHakLembur(lembur.isHakLembur());
                     break;
                 }
             } else {

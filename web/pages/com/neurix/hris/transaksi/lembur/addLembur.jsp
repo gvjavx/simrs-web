@@ -181,7 +181,7 @@
                             },
                             updater: function (item) {
                                 var selectedObj = mapped[item];
-                                //RAKA-09MAR2021 ==> Validasi Baru Pengajuan
+                                //RAKA-09MAR2021 ==> Validasi Baru, Pengajuan
                                 var canLembur = false;
 
                                 if (selectedObj.tipePegawai=="TP03"){
