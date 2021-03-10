@@ -130,6 +130,7 @@
                         </td>
                         <td>
                             <table>
+                                <s:hidden id="berhakLembur" name="lembur.hakLembur"/>
                                 <s:textfield  id="check" name="lembur.self" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="lembur.branchId"
@@ -521,6 +522,7 @@
 </html>
 <script>
     $(document).ready(function(){
+
         function change () {
             var tipeLembur = $('#tipeLembur').val();
             var branchAsli;
@@ -558,9 +560,20 @@
             $('#branchId').attr('readonly','true');
             $('#branchId').attr('disabled','true');
             $('#nipId').attr('readonly','true');
+
+            if ($('#berhakLembur').val()==false){
+                $('#save').text("Anda Tidak Berhak Mengajukan Lembur");
+                $('#save').removeClass("btn-primary");
+                $('#save').addClass("btn-danger");
+                $('#save').attr("disabled", "true");
+
+                $('#tipeLembur').attr('disabled','true');
+                $('#keterangan').attr('disabled','true');
+            }
         }else{
             $('#branchId33').attr('disabled','true');
         }
+
         $('body').click(function(){
             var jamawal=$('#jamAwal').val();
             var jamakhir=$('#jamAkhir').val();
