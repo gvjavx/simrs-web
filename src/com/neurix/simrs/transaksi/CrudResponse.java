@@ -12,6 +12,11 @@ public class CrudResponse {
 
     private List list;
 
+    public void addResponse(String status, String msg){
+        this.setStatus(status);
+        this.setMsg(msg);
+    }
+
     public List getList() {
         return list;
     }

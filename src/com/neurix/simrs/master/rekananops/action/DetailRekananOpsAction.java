@@ -14,17 +14,22 @@ import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
+import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DetailRekananOpsAction extends BaseMasterAction {
     protected static transient Logger logger = Logger.getLogger(DetailRekananOpsAction.class);
@@ -36,6 +41,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     private DetailRekananOps detailRekananOps;
     private Branch branch;
     private BranchBo branchBoProxy;
+    private CrudResponse response;
 
     public BranchBo getBranchBoProxy() {
         return branchBoProxy;
@@ -533,5 +539,73 @@ public class DetailRekananOpsAction extends BaseMasterAction {
 
         logger.info("[CheckupAction.initComboTarif] END process <<<");
         return "init_detail_per_tarif";
+    }
+
+    // Sigit 2020-03-10
+    // untuk prosess save add tarif per tindakan pada detail rekanan;
+    public CrudResponse saveAddToSessionTindakan(String stJson) throws JSONException{
+        logger.info("[CheckupAction.saveAddToSessionTindakan] START process >>>");
+
+        // validasi jika data pada json tidak ada
+        if (stJson == null || "".equalsIgnoreCase(stJson)){
+            this.response.addResponse("error","Tidak Bisa Menerima Data Karna Kosong");
+            return this.response;
+        }
+        // END
+
+        // set to detailRekananOps dari stJson
+        JSONObject jsonObject = new JSONObject(stJson);
+        DetailRekananOps detailRekananOps = new DetailRekananOps();
+        detailRekananOps.setIdDetailRekananOps(jsonObject.getString("id_detail_rekanan_ops"));
+        detailRekananOps.setIdItem(jsonObject.getString("id_item"));
+        detailRekananOps.setTarif(new BigDecimal(jsonObject.getString("tarif")));
+        detailRekananOps.setParentId(jsonObject.getString("parent_id"));
+        detailRekananOps.setTipe("add");
+        detailRekananOps.setFlag("Y");
+
+        // validasi jika data dengan idItem yang sama sudah ada pada list
+        // set nilai tarif
+        // selain itu set to session;
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<DetailRekananOps> listOfTindakan = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
+        if (listOfTindakan.size() > 0){
+            List<DetailRekananOps> filteredList = listOfTindakan.stream().filter(
+                    p->p.getIdItem().equalsIgnoreCase(detailRekananOps.getIdItem())
+            ).collect(Collectors.toList());
+
+            if (filteredList.size() > 0){
+
+                DetailRekananOps detail = filteredList.get(0);
+                if ("Y".equalsIgnoreCase(detail.getFlag())){
+
+                    // jika ada dengan flag = Y
+                    // maka return error
+
+                    this.response.addResponse("error","Data Sudah Ada Dalam List");
+                    return this.response;
+                } else {
+
+                    // jika ada id sudah ada maka
+                    // type menjadi "edit"
+                    if (detail.getIdDetailRekananOps() != null && !"".equalsIgnoreCase(detail.getIdDetailRekananOps())){
+                        detailRekananOps.setTipe("edit");
+                    }
+                }
+
+                // update isi list dari session di index yg sama
+                listOfTindakan.remove(detail);
+                listOfTindakan.add(detailRekananOps);
+            } else {
+
+                // insert ke list dari session
+                listOfTindakan.add(detailRekananOps);
+            }
+        }
+
+        session.removeAttribute("listOfTindakan");
+        session.setAttribute("listOfTindakan", listOfTindakan);
+
+        logger.info("[CheckupAction.saveAddToSessionTindakan] END process <<<");
+        return this.response;
     }
 }
