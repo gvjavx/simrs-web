@@ -5206,14 +5206,15 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
-            reportParams.put("sipDokter", periksalb.getSipDokter());
-            reportParams.put("sipPengirim", periksalb.getSipPengirim());
+
+            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
             reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
-            reportParams.put("petugas", periksalb.getNamaPetugas());
-            reportParams.put("dokter", periksalb.getNamaDokter());
-            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+            reportParams.put("idPetugas", periksalb.getIdPetugas());
+            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
+            reportParams.put("idValidator", periksalb.getIdValidator());
+            reportParams.put("namaValidator", periksalb.getNamaValidator());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("ttdPengirim", periksalb.getTtdPengirim());
+            reportParams.put("ttdValidator", periksalb.getTtdValidator());
 
             try {
                 preDownload();

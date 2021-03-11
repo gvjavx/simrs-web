@@ -683,6 +683,18 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 
     } else if (select == 4) {
+        $('#is_luar, #is_pending_lab').prop('checked', false);
+        $('#form_pending, #form_lab_luar').hide();
+        $('#form_lab_dalam').show();
+        $('#lab_luar, #lab_parameter_luar').val('');
+        var par = $('.parameter_luar');
+        $.each(par, function (i, item) {
+            if(i != 0){
+                $('#par_'+i).remove();
+            }
+        });
+        $('#form_is_luar').show();
+        $('#form_is_pending').show();
         $('.jam').timepicker();
         $('.jam').inputmask('hh:mm', {'placeholder': 'hh:mm'});
         $('.tgl').datepicker({
@@ -724,6 +736,7 @@ function showModal(select) {
         $('#load_obat, #warning_obat, #war_ob_jenis_obat, #war_obat, #war_qty_obat').hide();
         $('#modal-obat').modal({show: true, backdrop: 'static'});
     } else if (select == 7) {
+        resetAll();
         $('#resep_jenis_obat').val('').trigger('change');
         $('#resep_apotek').val('').trigger('change').attr('disabled', false);
         $('#resep_nama_obat').val('').trigger('change');
@@ -1271,7 +1284,7 @@ function listSelectParameter(idLab) {
 }
 
 function saveLab(id) {
-    var data = $('#tbl_dokter').tableToJSON();
+    var data = $('#tabel_dokter').tableToJSON();
     var idDokter = "";
     $.each(data, function (i, item) {
         if (i == 0) {
@@ -1281,86 +1294,118 @@ function saveLab(id) {
     var idKategori = $('#lab_kategori').val();
     var idLab = $('#lab_lab').val();
     var idParameter = $('#lab_parameter').val();
-    var pengirim = document.getElementById('ttd_pengirim');
-    var cekTtd = isCanvasBlank(pengirim);
     var cekPending = $('#is_pending_lab').is(':checked');
     var tglPending = $('#tgl_pending').val();
     var jamPending = $('#jam_pending').val();
+
+    var idLabLuar = $('#lab_luar').val();
+    var idParameterLuar = $('#lab_parameter_luar').val();
+
+    var tempLab = "";
+    var tempParams = "";
+    var isLuar = "N";
+
+    var cekLuar = $('#is_luar').is(':checked');
+    if(cekLuar){
+        var tempL = [];
+        var luar = $('.parameter_luar');
+        $.each(luar, function (i, item) {
+            if(item.value != ''){
+                tempL.push(item.value);
+            }
+        });
+        if(idLabLuar != ''){
+            tempLab = idLabLuar;
+        }
+        if(tempL.length > 0){
+            tempParams = tempL
+        }
+        isLuar = "Y";
+
+    }else{
+        if(idLab != ''){
+            tempLab = idLab;
+        }
+        if(idParameter != '' && idParameter != null){
+            tempParams = idParameter;
+        }
+    }
+
     var waktu = "";
-    if (idDetailCheckup != '' && idKategori != '' && idLab != '' && idParameter != null) {
-        if(!cekSession()){
-            if (id != '') {
-                $('#save_lab').hide();
-                $('#load_lab').show();
-                dwr.engine.setAsync(true);
-                PeriksaLabAction.editOrderLab(id, idLab, idParameter, {
-                    callback: function (response) {
-                        if (response.status == "success") {
-                            dwr.engine.setAsync(false);
-                            listLab();
-                            $('#modal-lab').modal('hide');
-                            $('#info_dialog').dialog('open');
-                            $('#close_pos').val(4);
-                        } else {
-                            $('#warning_lab').show().fadeOut(5000);
-                            $('#msg_lab').text(response.msg);
-                        }
-                    }
-                });
+    if(!cekSession()){
+        if (idDetailCheckup != '' && idKategori != '' && tempLab != '' && tempParams != null) {
+            var saveCek = false;
+            if (cekPending) {
+                if (tglPending && jamPending != '') {
+                    saveCek = true;
+                    waktu = tglPending.split("-").reverse().join("-") + " " + jamPending + ":00";
+                }
             } else {
-                if (!cekTtd) {
-                    var saveCek = false;
-                    if (cekPending) {
-                        if (tglPending && jamPending != '') {
-                            saveCek = true;
-                            waktu = tglPending.split("-").reverse().join("-") + " " + jamPending + ":00";
-                        }
-                    } else {
-                        saveCek = true;
-                    }
-                    if (saveCek) {
-                        $('#save_lab').hide();
-                        $('#load_lab').show();
-                        dwr.engine.setAsync(true);
-                        var ttd = convertToDataURL(pengirim);
-                        PeriksaLabAction.saveOrderLab(idDetailCheckup, idLab, idParameter, ttd, idDokter, idKategori, waktu, {
-                            callback: function (response) {
-                                if (response.status == "success") {
-                                    dwr.engine.setAsync(false);
-                                    listLab();
-                                    $('#modal-lab').modal('hide');
-                                    $('#info_dialog').dialog('open');
-                                    $('#close_pos').val(4);
-                                } else {
-                                    $('#warning_lab').show().fadeOut(5000);
-                                    $('#msg_lab').text(response.msg);
-                                }
+                saveCek = true;
+            }
+            if (saveCek) {
+                if(id != ''){
+                    $('#save_lab').hide();
+                    $('#load_lab').show();
+                    dwr.engine.setAsync(true);
+                    PeriksaLabAction.editOrderLab(id, tempLab, tempParams, isLuar, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                dwr.engine.setAsync(false);
+                                listLab();
+                                $('#modal-lab').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#close_pos').val(4);
+                            } else {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text(response.msg);
                             }
-                        })
-                    } else {
-                        $('#warning_lab').show().fadeOut(5000);
-                        $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
-                        if (tglPending == '' || jamPending == '') {
-                            $('#war_pending').show();
                         }
-                    }
-                } else {
-                    $('#warning_lab').show().fadeOut(5000);
-                    $('#msg_lab').text("Silhakan lakukan TTD dulu...!");
+                    });
+                }else{
+                    $('#save_lab').hide();
+                    $('#load_lab').show();
+                    dwr.engine.setAsync(true);
+                    PeriksaLabAction.saveOrderLab(idDetailCheckup, tempLab, tempParams, isLuar, idDokter, idKategori, waktu, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                dwr.engine.setAsync(false);
+                                listLab();
+                                $('#modal-lab').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#close_pos').val(4);
+                            } else {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text(response.msg);
+                            }
+                        }
+                    });
+                }
+            } else {
+                $('#warning_lab').show().fadeOut(5000);
+                $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
+                if (tglPending == '' || jamPending == '') {
+                    $('#war_pending').show();
                 }
             }
-        }
-    } else {
-        $('#warning_lab').show().fadeOut(5000);
-        $('#msg_lab').text("Silahkan cek kembali data inputan!");
-        if (idKategori == '') {
-            $('#war_kategori_lab').show();
-        }
-        if (idLab == '' || idLab == null) {
-            $('#war_lab').show();
-        }
-        if (idParameter == '' || idParameter == null) {
-            $('#war_parameter').show();
+        } else {
+            $('#warning_lab').show().fadeOut(5000);
+            $('#msg_lab').text("Silahkan cek kembali data inputan!");
+            if (idKategori == '') {
+                $('#war_kategori_lab').show();
+            }
+            if (idLab == '' || idLab == null) {
+                $('#war_lab').show();
+            }
+            if (idParameter == '' || idParameter == null) {
+                $('#war_parameter').show();
+            }
+            if (idLabLuar == '') {
+                $('#war_lab_luar').show();
+            }
+            if (idParameterLuar == '') {
+                $('#war_lab_parameter_luar').show();
+            }
         }
     }
 }
@@ -1377,9 +1422,13 @@ function listLab() {
                 var lab = "-";
                 var tanggal = item.createdDate;
                 var dateFormat = converterDate(new Date(tanggal));
-                var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\'' + item.kategoriLabName + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
+                var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\'' + item.kategoriLabName + '\',\''+item.isLuar+'\', \''+item.namaLabLuar+'\',\''+item.statusPeriksaName+'\', \''+tanggal+'\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idPeriksaLab + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 var tipe = "";
+                var dalam = '';
+                var luar = '';
+                var hiddeDalam = "";
+                var hiddeLuar = "";
 
                 if (item.kategoriLabName == "Radiologi") {
                     tipe = "radiologi";
@@ -1390,36 +1439,62 @@ function listLab() {
                 if (item.idLab != null) {
                     pemeriksaan = item.idLab;
                 }
+
                 if (item.statusPeriksaName != null) {
                     status = item.statusPeriksaName;
                 }
-                if (item.labName != null) {
-                    lab = item.labName;
+
+                if(item.uploadDalam.length > 0){
+                    dalam = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idPeriksaLab + '\',\'dalam\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    hiddeDalam = JSON.stringify(item.uploadDalam);
+                }
+                if(item.uploadLuar.length > 0){
+                    luar = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idPeriksaLab + '\',\'luar\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    hiddeLuar = JSON.stringify(item.uploadLuar);
                 }
 
-                if ("Pending" == item.statusPeriksaName) {
-                    btn = '<a target="_blank" href="printLabRadiologi_rawatinap.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + pathImages + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
-                } else {
-                    if (item.approveFlag == "Y") {
-                        if (item.urlImg != null) {
-                            btn = '<img onclick="labLuar(\'' + lab + '\', \'' + item.urlImg + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
-                        } else {
-                            btn = '<a target="_blank" href="printLabRadiologi_rawatinap.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + pathImages + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
-                        }
+                if("Y" == item.isLuar){
+                    lab = item.namaLabLuar +' <span class="span-warning">Luar</span>';
+                }else{
+                    if (item.labName != null) {
+                        lab = item.labName;
                     }
                 }
 
-                table += "<tr>" +
-                    "<td>" + dateFormat + "</td>" +
-                    "<td>" + item.kategoriLabName + "</td>" +
-                    "<td>" + lab + "</td>" +
-                    "<td>" + status + "</td>" +
-                    "<td align='center'>" + btn + crn + "</td>" +
-                    "</tr>"
+                if ("Pending" == item.statusPeriksaName) {
+                    btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                } else {
+                    if("Selesai" == item.statusPeriksaName ){
+                        btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    }else{
+                        btn = '';
+                    }
+                }
+
+                if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
+                    table += "<tr>" +
+                        "<td>" + dateFormat + "</td>" +
+                        "<td>" + item.kategoriLabName + "</td>" +
+                        "<td>" + lab + "</td>" +
+                        "<td>" + status + "</td>" +
+                        "<td align='center'>" + btn + "</td>" +
+                        "</tr>";
+                } else {
+                    table += "<tr>" +
+                        "<td>" +
+                        dateFormat +
+                        '<textarea style="display: none" id="dalam_'+item.idPeriksaLab+'">'+hiddeDalam+'</textarea>' +
+                        '<textarea style="display: none" id="luar_'+item.idPeriksaLab+'">'+hiddeLuar+'</textarea>' +
+                        "</td>" +
+                        "<td>" + item.kategoriLabName + "</td>" +
+                        "<td>" + lab + "</td>" +
+                        "<td>" + status + "</td>" +
+                        "<td align='center'>" + btn + dalam + luar + crn + "</td>" +
+                        "</tr>";
+                }
             });
         }
     });
-
     $('#body_lab').html(table);
 }
 
@@ -1792,7 +1867,7 @@ function listDiet() {
                 } else {
                     if (item.approveFlag == "Y") {
                         btn = '<div class="input-group">' +
-                            '<input class="form-control" onchange="cekBarcode(this.value, \'' + item.idOrderGizi + '\')">' +
+                            '<input placeholder="Scan Barcode & Konfirm Terima" class="form-control" onchange="cekBarcode(this.value, \'' + item.idOrderGizi + '\')">' +
                             '<div class="input-group-addon">' +
                             '<span id="status' + item.idOrderGizi + '"></span>' +
                             '</div>' +
@@ -1887,21 +1962,70 @@ function editDiagnosa(id, idDiagnosa, jenis, ket) {
     $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 }
 
-function editLab(id, idLab, idKategoriLab, kategoriName) {
+function editLab(id, idLab, idKategoriLab, kategoriName, isLuar, namaLabLuar, isPending, tanggal) {
     $('#form_ttd').hide();
     $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
     $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
     $('#lab_kategori').val(idKategoriLab).trigger('change').attr('disabled', true);
-    var idParameter = [];
-    PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-        if (response.length > 0) {
-            $.each(response, function (i, item) {
-                idParameter.push(item.idLabDetail);
-            });
-        }
-    });
-    $('#lab_lab').val(idLab).trigger('change').attr('disabled', true);
-    $('#lab_parameter').val(idParameter).trigger('change');
+    if("Pending" == isPending){
+        $('#form_is_pending').show();
+        var tgl = converterDate(new Date(tanggal));
+        var time = converterTime(new Date(tanggal));
+        $('#tgl_pending').val(tgl);
+        $('#jam_pending').val(time);
+    }else{
+        $('#form_is_pending').hide();
+        $('#tgl_pending').val('');
+        $('#jam_pending').val('');
+    }
+    if("Y" == isLuar){
+        $('#is_luar').attr('disabled', true);
+        $('#is_luar').prop('checked', true);
+        var par = $('.parameter_luar');
+        $.each(par, function (i, item) {
+            if(i != 0){
+                $('#par_'+i).remove();
+            }
+        });
+        $('#form_is_luar').show();
+        $('#form_lab_luar').show();
+        $('#form_lab_dalam').hide();
+        var idParameter = "";
+        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
+            if (response.length > 0) {
+                var temp = "";
+                $.each(response, function (i, item) {
+                    var count = i;
+                    var idROw = 'par_'+count;
+                    temp += '<div class="input-group" style="margin-top: 7px;" id="'+idROw+'">\n' +
+                        '<input id="lab_parameter_luar_'+count+'" class="form-control parameter_luar" value="'+item.namaDetailPeriksa+'" \n' +
+                        '       placeholder="masukkan parameter '+(parseInt(count)+parseInt(1))+'">\n' +
+                        '<div onclick="delParamrs(\''+idROw+'\')" class="input-group-addon" style="background-color: #a94442; color: white; cursor: pointer">\n' +
+                        '    <i class="fa fa-trash"></i>\n' +
+                        '</div>\n' +
+                        '</div>';
+                });
+                $('#params_luar').html(temp);
+            }
+        });
+        $('#lab_luar').val(namaLabLuar);
+    }else{
+        $('#is_luar').attr('disabled', true);
+        $('#is_luar').attr('checked', false);
+        $('#form_is_luar').hide();
+        $('#form_lab_luar').hide();
+        $('#form_lab_dalam').show();
+        var idParameter = [];
+        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    idParameter.push(item.idLabDetail);
+                });
+            }
+        });
+        $('#lab_lab').val(idLab).trigger('change').attr('disabled', true);
+        $('#lab_parameter').val(idParameter).trigger('change');
+    }
     $('#modal-lab').modal({show: true, backdrop: 'static'});
 }
 
@@ -3888,5 +4012,64 @@ function refreshKeterangan(param, set){
         $('#text_area_keterangan option').prop('selected', true);
     }
     $('#param_ket').val('').trigger('change');
+}
+
+function isLuar(id) {
+    var cek = $('#' + id).is(':checked');
+    if (cek) {
+        $('#form_lab_luar').show();
+        $('#form_lab_dalam').hide();
+    } else {
+        $('#form_lab_luar').hide();
+        $('#form_lab_dalam').show();
+    }
+}
+
+function addParameter(){
+    var par = $('.parameter_luar');
+    var count = par.length;
+    var idROw = 'par_'+count;
+    var set = '<div class="input-group" style="margin-top: 7px;" id="'+idROw+'">\n' +
+        '<input id="lab_parameter_luar_'+count+'" class="form-control parameter_luar"\n' +
+        '       placeholder="masukkan parameter '+(parseInt(count)+parseInt(1))+'">\n' +
+        '<div onclick="delParamrs(\''+idROw+'\')" class="input-group-addon" style="background-color: #a94442; color: white; cursor: pointer">\n' +
+        '    <i class="fa fa-trash"></i>\n' +
+        '</div>\n' +
+        '</div>';
+    $('#params_luar').append(set);
+    $('#lab_parameter_luar_'+count).focus();
+}
+
+function delParamrs(id){
+    $('#'+id).remove();
+}
+
+function showHasil(id, tipe, kategori){
+    var data = $('#'+tipe+'_'+id).val();
+    if(data != null && data != ''){
+        var result = JSON.parse(data);
+        if(tipe == 'dalam'){
+            $('#title_hasil_lab').html("Hasil Pemeriksaan "+kategori);
+        }else{
+            $('#title_hasil_lab').html("Hasil Pemeriksaan "+kategori+" Luar");
+        }
+        if(result.length > 0){
+            var set = '';
+            var li = '';
+            $.each(result, function (i, item) {
+                var cla = '';
+                if(i == 0){
+                    cla = 'active';
+                }
+                set += '<div class="item '+cla+'">\n' +
+                    '<img src="'+item.urlImg+'" style="width: 100%">\n' +
+                    '</div>';
+                li += '<li data-target="#carousel-hasil_lab" data-slide-to="'+i+'" class="'+cla+'"></li>';
+            });
+            $('#item_hasil_lab').html(set);
+            $('#li_hasil_lab').html(li);
+        }
+        $('#modal-hasil_lab').modal({show: true, backdrop:'static'});
+    }
 }
 

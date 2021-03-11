@@ -1061,10 +1061,12 @@ public class ObatBoImpl implements ObatBo {
                         obat.setIdPabrikObat(entity.getIdPabrikObat());
                         obat.setNomorProduksi(entity.getNomorProduksi());
                         ImSimrsPabrikObatEntity pabrikObatEntity = pabrikDao.getById("id", entity.getIdPabrikObat());
-                        if(pabrikObatEntity.getNama() != null){
-                            obat.setNamaPabrikObat(pabrikObatEntity.getNama());
-                        }else{
-                            obat.setNamaPabrikObat("");
+                        if(pabrikObatEntity != null){
+                            if(pabrikObatEntity.getNama() != null){
+                                obat.setNamaPabrikObat(pabrikObatEntity.getNama());
+                            }else{
+                                obat.setNamaPabrikObat("");
+                            }
                         }
                         result.add(obat);
                     }
