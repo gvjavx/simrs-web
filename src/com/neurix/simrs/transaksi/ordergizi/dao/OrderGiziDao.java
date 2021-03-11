@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.ordergizi.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -185,6 +186,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     if (obj[4] != null && !"".equalsIgnoreCase(obj[4].toString())) {
                         String tglLahir = new SimpleDateFormat("dd-MM-yyyy").format((Date) obj[4]);
                         rawatInap.setTglLahir(tglLahir);
+                        rawatInap.setUmur(CommonUtil.calculateAge((java.sql.Date) obj[4], true));
                     }
 
                     rawatInap.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());

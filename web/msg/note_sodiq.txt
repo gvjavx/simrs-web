@@ -2016,6 +2016,10 @@ ADD COLUMN is_periksa_luar VARCHAR(50);
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN nama_lab_luar VARCHAR(50);
 
+--MAPPING GIZI ASESMENT
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000247','RMM00000014','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
+
 
 
 
