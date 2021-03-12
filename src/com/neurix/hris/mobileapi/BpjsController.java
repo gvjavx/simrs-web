@@ -49,6 +49,24 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
     private String RegTemp;
     private String result;
     private String tipe;
+    private String statusMesin;
+    private String statusInquiry;
+
+    public String getStatusMesin() {
+        return statusMesin;
+    }
+
+    public void setStatusMesin(String statusMesin) {
+        this.statusMesin = statusMesin;
+    }
+
+    public String getStatusInquiry() {
+        return statusInquiry;
+    }
+
+    public void setStatusInquiry(String statusInquiry) {
+        this.statusInquiry = statusInquiry;
+    }
 
     public String getTipe() {
         return tipe;
@@ -683,10 +701,12 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
         if ("all".equalsIgnoreCase(metode)){
             try {
-                absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
+                String status = absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
+                statusMesin = "{status:" +status+ "}";
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
+//                statusMesin = "{status:0;}";
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
@@ -696,7 +716,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                     notif.setNoRequest("");
                     notif.setTipeNotifId("umum");
                     notif.setTipeNotifName(("Pemberitahuan"));
-                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
+                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + e + ")");
                     notif.setCreatedWho("Cron");
                     notif.setTo("self");
 
@@ -707,7 +727,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             }
         }else {
             try {
-                absensiBoProxy.getDataFromMesin(mesinAbsensi);
+                statusMesin = absensiBoProxy.getDataFromMesin(mesinAbsensi);
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
@@ -720,7 +740,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                     notif.setNoRequest("");
                     notif.setTipeNotifId("umum");
                     notif.setTipeNotifName(("Pemberitahuan"));
-                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual");
+                    notif.setNote("Data mesin absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa di sync secara otomatis lakukan sync manual (" + e + ").");
                     notif.setCreatedWho("Cron");
                     notif.setTo("self");
 
@@ -792,6 +812,10 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 return result;
             case "bpjs-tindakan":
                 return listOfTindakanResponse;
+            case "cron-mesin-absensi":
+                return statusMesin;
+            case "cron-absensi-pegawai":
+                return statusInquiry;
             default: return null;
         }
     }
@@ -826,6 +850,8 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.setBranchId(branchId);
         data.setTanggalUtil(tanggalSekarang);
 
+        statusInquiry = "{status:1;}";
+
         try {
             absensiPegawaiList = absensiBoProxy.cronInquiry(data);
             listOfResultOnCall = (List<AbsensiOnCall>) session.getAttribute("listOfResultOnCall");
@@ -835,6 +861,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             absensiBoProxy.saveAddAbsensi(absensiPegawaiList,listOfResultOnCall,search);
         }catch (Exception e){
             String error = "ERROR WHEN GET ABSENSI PEGAWAI : " + "[" + e + "]";
+            statusInquiry = "{status:0;}";
             absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
 
             //Kirim Notif
@@ -845,7 +872,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 notif.setNoRequest("");
                 notif.setTipeNotifId("umum");
                 notif.setTipeNotifName(("Pemberitahuan"));
-                notif.setNote("Data absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa diinquiry secara otomatis lakukan inquiry manual");
+                notif.setNote("Data absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa diinquiry secara otomatis lakukan inquiry manual.");
                 notif.setCreatedWho("Cron");
                 notif.setTo("self");
 

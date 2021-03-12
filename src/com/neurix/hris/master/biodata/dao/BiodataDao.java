@@ -530,7 +530,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
 
         List<ImBiodataEntity> listOfResult = new ArrayList<ImBiodataEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select\n" +
                 "\titPosisi.branch_id,\n" +
                 "\tdivisi.department_id,\n" +
                 "\titPosisi.position_id,\n" +
@@ -704,11 +704,6 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 result.setNipLama(person.getNipLama());
                 result.setFlagDokterKso(person.getFlagDokterKso());
                 result.setJenisPegawai(person.getJenisPegawai());
-
-                result.setPeralihanGapok(person.getPeralihanGapok());
-                result.setPeralihanSankhus(person.getPeralihanSankhus());
-                result.setPeralihanTunjangan(person.getPeralihanTunjangan());
-
                 result.setFlagPegawaiCutiDiluarTanggungan(person.getFlagPegawaiCutiDiluarTanggungan());
                 result.setTanggalCutiDiluarAwal(person.getTanggalCutiDiluarAwal());
                 result.setTanggalCutiDiluarAkhir(person.getTanggalCutiDiluarAkhir());

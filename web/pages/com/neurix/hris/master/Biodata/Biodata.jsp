@@ -77,7 +77,13 @@
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='') {
+            if(tipePegawai == 'TP01') {
+                var level               = document.getElementById("golongan1").value;
+            } else {
+                var level               = document.getElementById("golongan3").value;
+            }
+
+            if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && level !='') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -95,30 +101,45 @@
                 }
                 if (namaPegawai == '') {
                     msg += 'Field <strong>Nama </strong> is required.' + '<br/>';
+                    $("#namaPegawai1").css("background","lightcoral");
                 }
                 if (noKtp == '') {
                     msg += 'Field <strong>No KTP</strong> is required.' + '<br/>';
+                    $("#noKtp1").css("background","lightcoral");
                 }
                 if (tanggalLahir == '') {
                     msg += 'Field <strong>Tanggal Lahir</strong> is required.' + '<br/>';
+                    $("#tanggalLahir1").css("background","lightcoral");
                 }
                 if (tempatLahir == '') {
                     msg += 'Field <strong>Tempat Lahir</strong> is required.' + '<br/>';
+                    $("#tempatLahir1").css("background","lightcoral");
                 }
                 if (tipePegawai == '') {
                     msg += 'Field <strong>Tipe Pegawai</strong> is required.' + '<br/>';
+                    $("#tipePegawai1").css("background","lightcoral");
+                }
+                if (level == '') {
+                    msg += 'Field <strong>Level</strong> is required.' + '<br/>';
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                    $("#branch1").css("background","lightcoral");
                 }
                 /*if (divisi == '') {
                  msg += 'Field <strong>divisi</strong> is required.' + '<br/>';
                  }*/
                 if (statusPegawai == '') {
                     msg += 'Field <strong>Status Pegawai</strong> is required.' + '<br/>';
+                    $("#statusPegawai1").css("background","lightcoral");
                 }
                 if (tglMasuk == '') {
-                    msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Tanggal Masuk / Kontrak</strong> is required.' + '<br/>';
+                    $("#tanggalMasuk").css("background","lightcoral");
+                }
+                if (level == '') {
+                    msg += 'Field <strong>Level</strong> is required.' + '<br/>';
+                    $("#golongan1").css("background","lightcoral");
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -1041,7 +1062,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label><small>Level :</small></label>
+                                                    <label><small>Level <span style="color:red;">*</span>:</small></label>
                                                 </td>
                                                 <td id="golongan1Group">
                                                     <table>
@@ -1098,7 +1119,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif <span style="color:red;">*</span> :</small></label>
+                                                    <label class="label-tanggal-aktif"><small>Tanggal Aktif  :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -1626,6 +1647,107 @@
 
                                             <tr>
                                                 <td>
+                                                    <label><small>Tunj. Peralihan Gapok :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="peralihanGapok" class="checkZakat" disabled onchange="cekPeralihanGapok()" />
+                                                                <s:hidden id="flagPeralihanGapok" name="biodata.flagTunjPeralihanGapok"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="peralihanGapok" class="checkZakat" onchange="cekPeralihanGapok()"  />
+                                                                <s:hidden id="flagPeralihanGapok" name="biodata.flagTunjPeralihanGapok"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjPeralihanGapok" type="number" name="biodata.stTunjPeralihanGapok" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>Tunj. Peralihan Sankhus :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="peralihanSankhus" class="checkZakat" disabled onchange="cekPeralihanSankhus()" />
+                                                                <s:hidden id="flagPeralihanSankhus" name="biodata.flagTunjPeralihanSankhus"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="peralihanSankhus" class="checkZakat" onchange="cekPeralihanSankhus()"  />
+                                                                <s:hidden id="flagPeralihanSankhus" name="biodata.flagTunjPeralihanSankhus"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjPeralihanSankhus" type="number" name="biodata.stTunjPeralihanSankhus" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label><small>Tunj. Peralihan Tunjangan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="peralihanTunjangan" class="checkZakat" disabled onchange="cekPeralihanTunjangan()" />
+                                                                <s:hidden id="flagPeralihanTunjangan" name="biodata.flagTunjPeralihanTunjangan"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="peralihanTunjangan" class="checkZakat" onchange="cekPeralihanTunjangan()"  />
+                                                                <s:hidden id="flagPeralihanTunjangan" name="biodata.flagTunjPeralihanTunjangan"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjPeralihanTunjangan" type="number" name="biodata.stTunjPeralihanTunjangan" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <label><small>Tunj.Pemondokan :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <s:if test="isDelete()">
+                                                            <input type="checkbox" id="tunjPemondokan" class="checkZakat" disabled onchange="cekTunjPemondokan()" />
+                                                            <s:textfield cssStyle="display: none" id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
+                                                        </s:if>
+                                                        <s:else>
+                                                            <input type="checkbox" id="tunjPemondokan" class="checkZakat" onchange="cekTunjPemondokan()" />
+                                                            <s:hidden id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
                                                     <label><small>Tunj.Rumah :</small></label>
                                                 </td>
                                                 <td>
@@ -1693,40 +1815,6 @@
                                                         <s:else>
                                                             <input type="checkbox" id="tunjBbm" class="checkZakat" onchange="cekTunjBbm()" />
                                                             <s:hidden id="flagTunjBbm" name="biodata.flagTunjBbm"  />
-                                                        </s:else>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label><small>BPJS KS :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:if test="isDelete()">
-                                                            <input type="checkbox" id="bpjsKs" class="checkZakat" disabled onchange="cekBpjsKs()" />
-                                                            <s:textfield cssStyle="display: none" id="flagBpjsKs" name="biodata.flagBpjsKs"  />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <input type="checkbox" id="bpjsKs" class="checkZakat" onchange="cekBpjsKs()" />
-                                                            <s:hidden id="flagBpjsKs" name="biodata.flagBpjsKs"  />
-                                                        </s:else>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <label><small>BPJS TK :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:if test="isDelete()">
-                                                            <input type="checkbox" id="bpjsTk" class="checkZakat" disabled onchange="cekBpjsTk()" />
-                                                            <s:textfield cssStyle="display: none" id="flagBpjsTk" name="biodata.flagBpjsTk"  />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <input type="checkbox" id="bpjsTk" class="checkZakat" onchange="cekBpjsTk()" />
-                                                            <s:hidden id="flagBpjsTk" name="biodata.flagBpjsTk"  />
                                                         </s:else>
                                                     </table>
                                                 </td>
@@ -3132,7 +3220,8 @@
                             <s:action id="initComboBranch" namespace="/admin/branch"
                                       name="initComboBranch_branch"/>
                             <s:select list="#initComboBranch.listOfComboBranch" id="position-branch-id"
-                                      name="biodata.branchId" onchange="listDivisiHistory()"
+                                      name="biodata.branchId"
+                                      onchange="listDivisiJabatan()"
                                       listKey="branchId" listValue="branchName" headerKey=""
                                       headerValue="[Select one]" cssClass="form-control"/>
                         </div>
@@ -3264,8 +3353,21 @@
         });
         listPosisiHistory();
         listPositionJabatan();
-
     };
+    window.listDivisiJabatan= function(){
+        var branch = document.getElementById("position-branch-id").value;
+        $('#department-jabatan').empty();
+        PositionAction.searchDivisi2(branch, function(listdata){
+            $.each(listdata, function (i, item) {
+                $('#department-jabatan').append($("<option></option>")
+                    .attr("value",item.departmentId)
+                    .text(item.departmentName));
+            });
+        });
+        listPosisiHistory();
+        listPositionJabatan();
+    };
+
     function cek(){
         var home    = document.getElementById("home1").value;
         var person    = document.getElementById("person1").value;
@@ -3488,12 +3590,40 @@
         } else {
             document.getElementById("siaga").checked = false;
         }
-        // var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
-        // if (flagTunjProfesional == "Y") {
-        //     document.getElementById("profesional").checked = true;
-        // } else {
-        //     document.getElementById("profesional").checked = false;
-        // }
+
+        var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
+        if (flagTunjProfesional == "Y") {
+            document.getElementById("profesional").checked = true;
+        } else {
+            document.getElementById("profesional").checked = false;
+        }
+
+        var flagTunjPeralihanGapok = document.getElementById("flagPeralihanGapok").value;
+        if (flagTunjPeralihanGapok == "Y") {
+            document.getElementById("peralihanGapok").checked = true;
+            $("#nomTunjPeralihanGapok").show();
+        } else {
+            document.getElementById("peralihanGapok").checked = false;
+            $("#nomTunjPeralihanGapok").hide();
+        }
+
+        var flagTunjPeralihanSankhus = document.getElementById("flagPeralihanSankhus").value;
+        if (flagTunjPeralihanSankhus == "Y") {
+            document.getElementById("peralihanSankhus").checked = true;
+            $("#nomTunjPeralihanSankhus").show();
+        } else {
+            document.getElementById("peralihanSankhus").checked = false;
+            $("#nomTunjPeralihanSankhus").hide();
+        }
+
+        var flagTunjPeralihanTunjangan = document.getElementById("flagPeralihanTunjangan").value;
+        if (flagTunjPeralihanTunjangan == "Y") {
+            document.getElementById("peralihanTunjangan").checked = true;
+            $("#nomTunjPeralihanTunjangan").show();
+        } else {
+            document.getElementById("peralihanTunjangan").checked = false;
+            $("#nomTunjPeralihanTunjangan").hide();
+        }
 
         // var flagMess = document.getElementById("flagMess").value;
         // if (flagMess == "Y") {
@@ -3538,18 +3668,6 @@
             document.getElementById("tunjBbm").checked = false;
         }
 
-        var flagBpjsKs = document.getElementById("flagBpjsKs").value;
-        if (flagBpjsKs == "Y") {
-            document.getElementById("bpjsKs").checked = true;
-        } else {
-            document.getElementById("bpjsKs").checked = false;
-        }
-        var flagBpjsTk = document.getElementById("flagBpjsTk").value;
-        if (flagBpjsTk == "Y") {
-            document.getElementById("bpjsTk").checked = true;
-        } else {
-            document.getElementById("bpjsTk").checked = false;
-        }
         // var flagCutiLuar = document.getElementById("flagCuti").value;
         var flagCutiLuar = $("#flagCuti").val();
         if(flagCutiLuar == "Y") {
@@ -6113,13 +6231,56 @@
             $("#flagTunjSiaga").val("N");
         }
     }
-    // window.cekProfesional = function () {
-    //     if (document.getElementById("profesional").checked == true) {
-    //         $("#flagTunjProfesional").val("Y");
-    //     } else {
-    //         $("#flagTunjProfesional").val("N");
-    //     }
-    // }
+
+    window.cekProfesional = function () {
+        if (document.getElementById("profesional").checked == true) {
+            $("#flagTunjProfesional").val("Y");
+        } else {
+            $("#flagTunjProfesional").val("N");
+        }
+    }
+
+    window.cekPeralihanGapok = function() {
+        if(document.getElementById("peralihanGapok").checked == true) {
+            $("#flagPeralihanGapok").val("Y");
+            $("#nomTunjPeralihanGapok").show();
+        } else {
+            $("#flagPeralihanGapok").val("N");
+            $("#nomTunjPeralihanGapok").val("");
+            $("#nomTunjPeralihanGapok").hide();
+        }
+    }
+
+    window.cekPeralihanSankhus = function() {
+        if(document.getElementById("peralihanSankhus").checked == true) {
+            $("#flagPeralihanSankhus").val("Y");
+            $("#nomTunjPeralihanSankhus").show();
+        } else {
+            $("#flagPeralihanSankhus").val("N");
+            $("#nomTunjPeralihanSankhus").val("");
+            $("#nomTunjPeralihanSankhus").hide();
+
+        }
+    }
+
+    window.cekPeralihanTunjangan = function() {
+        if(document.getElementById("peralihanTunjangan").checked == true) {
+            $("#flagPeralihanTunjangan").val("Y");
+            $("#nomTunjPeralihanTunjangan").show();
+        } else {
+            $("#flagPeralihanTunjangan").val("N");
+            $("#nomTunjPeralihanTunjangan").val("");
+            $("#nomTunjPeralihanTunjangan").hide();
+        }
+    }
+
+    window.cekTunjPemondokan = function () {
+        if (document.getElementById("tunjPemondokan").checked == true) {
+            $("#flagTunjPemondokan").val("Y");
+        } else {
+            $("#flagTunjPemondokan").val("N");
+        }
+    }
 
     // window.cekMess = function () {
     //     if (document.getElementById("mess").checked == true) {
@@ -6171,21 +6332,7 @@
             $("#flagTunjBbm").val("N");
         }
     }
-    window.cekBpjsKs = function () {
-        if (document.getElementById("bpjsKs").checked == true) {
-            $("#flagBpjsKs").val("Y");
-        } else {
-            $("#flagBpjsKs").val("N");
-        }
-    }
 
-    window.cekBpjsTk = function () {
-        if (document.getElementById("bpjsTk").checked == true) {
-            $("#flagBpjsTk").val("Y");
-        } else {
-            $("#flagBpjsTk").val("N");
-        }
-    }
     window.cekDireksi = function () {
         if ($('#direksi').is(":checked")) {
             $("#flagTunjDireksi").val("Y");

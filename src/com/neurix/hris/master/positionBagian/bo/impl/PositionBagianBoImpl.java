@@ -300,6 +300,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return null;
     }
 
+    @Override
     public List<positionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
@@ -361,6 +362,8 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         result.setDivisiId(positionBagianEntity.getDivisiId());
         return result;
     }
+
+    @Override
     public String cekStatus(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
@@ -382,6 +385,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return status;
     }
 
+    @Override
     public String cekStatusEdit(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
@@ -399,6 +403,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return status;
     }
 
+    @Override
     public List<positionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
         List<ImPositionBagianEntity> posisiList = null;
         List<positionBagian> positions = new ArrayList<>();

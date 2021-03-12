@@ -2435,11 +2435,21 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     @Override
-    public List getDataFromMesin(MesinAbsensi bean) throws Exception {
+    public String getDataFromMesin(MesinAbsensi bean) throws Exception {
+
+        String hbStatus = "1";
+        int respCode = 0;
+
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
-        imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
+        try{
+            imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
+        }catch (HibernateException e) {
+            logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " +e.getMessage());
+            hbStatus = "2";
+            throw new GeneralBOException("Found problem when retrieving Mesin using Criteria, " +e.getMessage());
+        }
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
             String urlParameters = mesin.getMesinSn();
             String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
@@ -2464,6 +2474,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             int responseCode = con.getResponseCode();
             System.out.println("\nSending 'POST' request to URL : " + url);
             System.out.println("Response Code : " + responseCode);
+            respCode = responseCode;
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             StringBuffer responseTemp = new StringBuffer();
             while ((inputLine = in.readLine()) != null) {
@@ -2494,7 +2505,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                 //Save To mesin Absensi Detail List
                 for (MesinAbsensiDetail mesinAbsensiDetail : mesinAbsensiDetailList) {
                     MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    String mesinAbsensiDetailId = "";
+                    try{
+                        mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    }catch (HibernateException e) {
+                        logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " +e.getMessage());
+                        hbStatus = "3" ;
+                        throw new GeneralBOException("Found problem when retrieving Sequence, " +e.getMessage());
+                    }
                     mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
                     mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
                     mesinAbsensiDetailEntity.setScanDate(mesinAbsensiDetail.getScanDate());
@@ -2511,14 +2529,34 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
                     mesinAbsensiDetailEntity.setCreatedWho(userLogin);
 
-                    mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                    try{
+                        mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                    }catch (HibernateException e) {
+                        logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " +e.getMessage());
+                        hbStatus = "4" ;
+                        throw new GeneralBOException("Found problem when Add and Save Mesin Absensi Detail, " +e.getMessage());
+                    }
                 }
             }
 
             //jika berhasil maka akan ditaruh di last get
-            ImMesinAbsensiEntity mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            ImMesinAbsensiEntity mesinAbsensiEntity = new ImMesinAbsensiEntity();
+            try{
+                mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            }catch (HibernateException e) {
+                logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " +e.getMessage());
+                hbStatus = "5" ;
+                throw new GeneralBOException("Found problem when Mesin Absensi by ID, " +e.getMessage());
+            }
             mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
-            mesinDao.updateAndSave(mesinAbsensiEntity);
+            try{
+                mesinDao.updateAndSave(mesinAbsensiEntity);
+            }catch (HibernateException e) {
+                logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " +e.getMessage());
+                hbStatus = "6" ;
+                throw new GeneralBOException("Found problem when Update and Save Mesin Absensi, " +e.getMessage());
+            }
+            hbStatus = "1";
         }
         // END OF CODING ASLI //
 
@@ -2588,17 +2626,28 @@ public class AbsensiBoImpl implements AbsensiBo {
         }
 
         // END OF PERCOBAAN DATA DUMMY*/
-        return null;
+
+        String status = respCode +"-"+ hbStatus;
+
+        return status;
     }
 
     @Override
-    public List getAllDataFromMesin(MesinAbsensi bean) throws Exception {
+    public String getAllDataFromMesin(MesinAbsensi bean) throws Exception {
 
+        String hbStatus = "1;";
+        int respCode = 0;
         Map hsCriteriaMesin = new HashMap();
         hsCriteriaMesin.put("flag", "Y");
 
         List<ImMesinAbsensiEntity> imMesinAbsensiEntityList = new ArrayList<>();
-        imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
+        try {
+            imMesinAbsensiEntityList = mesinDao.getByCriteria(hsCriteriaMesin);
+        }catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+            hbStatus = "2;";
+            throw new GeneralBOException("Found problem when retrieving Data Mesin Absensi using criteria, " + e.getMessage());
+        }
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
             String urlParameters = "sn="+mesin.getMesinSn();
             String url = "http://"+mesin.getMesinName()+"/scanlog/all/paging";
@@ -2625,6 +2674,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 int responseCode = con.getResponseCode();
                 System.out.println("\nSending 'POST' request to URL : " + url);
                 System.out.println("Response Code : " + responseCode);
+                respCode = responseCode;
                 BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
                 StringBuffer responseTemp = new StringBuffer();
                 while ((inputLine = in.readLine()) != null) {
@@ -2664,10 +2714,23 @@ public class AbsensiBoImpl implements AbsensiBo {
                 hsCriteria.put("verify_mode", mesinAbsensiDetail.getVerifyMode());
                 hsCriteria.put("work_code", mesinAbsensiDetail.getWorkCode());
                 hsCriteria.put("flag", "Y");
-                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                try {
+                    mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getByCriteria(hsCriteria);
+                }catch (HibernateException e){
+                    logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                    hbStatus = "3;" ;
+                    throw new GeneralBOException("Found problem when retrieving Absensi Detai using Criteria, " + e.getMessage());
+                }
                 if (mesinAbsensiDetailEntityList.size() == 0) {
                     MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
-                    String mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    String mesinAbsensiDetailId;
+                    try{
+                        mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
+                    }catch (HibernateException e){
+                        logger.error("[AbsensiBoImpl.getAlldataFromMesin] Error, " + e.getMessage());
+                        hbStatus = "4;" ;
+                        throw new GeneralBOException("Found problem when retrieving next ID, " + e.getMessage());
+                    }
                     String userLogin = bean.getCreatedWho();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
                     mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
@@ -2683,17 +2746,38 @@ public class AbsensiBoImpl implements AbsensiBo {
                     mesinAbsensiDetailEntity.setCreatedDate(updateTime);
                     mesinAbsensiDetailEntity.setLastUpdateWho(userLogin);
                     mesinAbsensiDetailEntity.setCreatedWho(userLogin);
-                    mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                    try {
+                        mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
+                    }catch (HibernateException e){
+                        logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                        hbStatus = "5;" ;
+                        throw new GeneralBOException("Problem when Add and Save Data to Mesin Absensi Detail, " + e.getMessage());
+                    }
                 }
             }
             //jika berhasil maka akan ditaruh di last get
-            ImMesinAbsensiEntity mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            ImMesinAbsensiEntity mesinAbsensiEntity = new ImMesinAbsensiEntity();
+            try{
+                mesinAbsensiEntity = mesinDao.getById("mesinId",mesin.getMesinId());
+            }catch(HibernateException e){
+                logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                hbStatus = "6;" ;
+                throw new GeneralBOException("Found problem when retrieving Mesin Absensi by ID, " + e.getMessage());
+            }
             mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
-            mesinDao.updateAndSave(mesinAbsensiEntity);
+            try {
+                mesinDao.updateAndSave(mesinAbsensiEntity);
+            }catch (HibernateException e) {
+                logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                hbStatus = "7;" ;
+                throw new GeneralBOException("Problem when Update and Save Mesin Absensi, " + e.getMessage());
+            }
+//            hbStatus = "1;";
         }
 
+        String status = hbStatus;
         // END OF CODING ASLI //
-        return null;
+        return status;
     }
 
     public void getDataInquiryForCronJob() throws Exception{
@@ -2714,7 +2798,15 @@ public class AbsensiBoImpl implements AbsensiBo {
             if(getDataInquiryForCronJob.size() > 0){
                 for(MesinAbsensi mesinLoop: getDataInquiryForCronJob){
                     AbsensiDashboardEntity absensiDashboardEntity = new AbsensiDashboardEntity();
-                    absensiDashboardEntity.setAbsensiDashboardId(absensiDashboardDao.getNextAbsensiDashboard());
+                    String absensiId = "";
+                    try{
+                        absensiId = absensiDashboardDao.getNextAbsensiDashboard();
+                    }catch (HibernateException e){
+                        logger.error("[AbsensiBoImpl.getDataInquiryForCronJob] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when receiving Next Absensi Dashboard ID, " + e.getMessage());
+                    }
+
+                    absensiDashboardEntity.setAbsensiDashboardId(absensiId);
                     absensiDashboardEntity.setPin(mesinLoop.getPin());
                     absensiDashboardEntity.setNip(mesinLoop.getNip());
                     absensiDashboardEntity.setStatus(mesinLoop.getStatus());
@@ -2730,7 +2822,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                     absensiDashboardEntity.setCreatedDate(updateTime);
                     absensiDashboardEntity.setLastUpdateWho(userLogin);
                     absensiDashboardEntity.setCreatedWho(userLogin);
-                    absensiDashboardDao.addAndSave(absensiDashboardEntity);
+                    try {
+                        absensiDashboardDao.addAndSave(absensiDashboardEntity);
+                    }catch(HibernateException e){
+                        logger.error("[AbsensiBoImpl.getDataInquiryForCronJob] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when Saving Absensi Dashboard , " + e.getMessage());
+                    }
                 }
             }
 
@@ -2790,7 +2887,12 @@ public class AbsensiBoImpl implements AbsensiBo {
         hsCriteria2.put("branch_id",branch);
         hsCriteria2.put("hari",day);
         hsCriteria2.put("flag","Y");
-        jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
+        try {
+            jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
+        }catch(HibernateException e){
+            logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get Jam Kerja using Criteria, " + e.getMessage());
+        }
         for (ImHrisJamKerja jamKerja : jamKerjaList){
             jamMasukDB=jamKerja.getJamAwalKerja();
             jamPulangDB=jamKerja.getJamAkhirKerja();
@@ -2805,7 +2907,13 @@ public class AbsensiBoImpl implements AbsensiBo {
 
 
         Date tanggalLibur = CommonUtil.convertToDate(tanggal);
-        List<ImLiburEntity> liburEntityList = liburDao.getListLibur(tanggalLibur);
+        List<ImLiburEntity> liburEntityList = new ArrayList<>();
+        try{
+            liburEntityList = liburDao.getListLibur(tanggalLibur);
+        }catch (HibernateException e){
+            logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving List Libur by Tanggal, " + e.getMessage());
+        }
         //cari hari libur
         if ( liburEntityList.size()!=0) {
             libur = "Y";
@@ -2836,7 +2944,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                         }
                         // get list from database detail
                         List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                        mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwal,tsTanggalBesok,branchId);
+                        try {
+                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(), tsTanggalAwal, tsTanggalBesok, branchId);
+                        }catch (HibernateException e){
+                            logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when receiving data Mesin Absensi Detail using Date and Pin, " + e.getMessage());
+                        }
                         if (mesinAbsensiDetailEntityList.size()!=0){
                             int iJamMasukTmp=9999,iJamKeluarTmp=0,i=1,iJamLibur=0;
                             for (MesinAbsensiDetailEntity mesin : mesinAbsensiDetailEntityList){
@@ -2872,12 +2985,24 @@ public class AbsensiBoImpl implements AbsensiBo {
                             }
                             ijinKeluar = null;
                             ijinKembali=null;
-                            List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
+                            List<IjinKeluarEntity> ijinKeluarEntityList =new ArrayList<>();
+                            try {
+                                ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(), tanggalAwal);
+                            }catch (HibernateException e){
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when retrieving Ijin Keluar personal using NIP, " + e.getMessage());
+                            }
                             for (IjinKeluarEntity ijinKeluarEntity:ijinKeluarEntityList){
                                 ijinKeluar = ijinKeluarEntity.getJamKeluar();
                                 ijinKembali = ijinKeluarEntity.getJamKembali();
                             }
-                            List<ItIndisiplinerEntity> indisiplinerEntityList = indisiplinerDao.getListIndisiplinerFromBlokir(hasilInquiry.getNip(), tanggalAwal);
+                            List<ItIndisiplinerEntity> indisiplinerEntityList = new ArrayList<>();
+                            try{
+                                indisiplinerEntityList = indisiplinerDao.getListIndisiplinerFromBlokir(hasilInquiry.getNip(), tanggalAwal);
+                            }catch (GeneralBOException e){
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when retrieving List Indisipliner From Blokir using NIP and Tanggal Awal, " + e.getMessage());
+                            }
                             String statusAbsensi;
                             if(indisiplinerEntityList.size()!=0){
                                 statusAbsensi="10";
@@ -2916,7 +3041,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     jamPulangLemburAsli = Integer.parseInt(hasilInquiry.getJamKeluar().replace(":",""));
                                 }
                             }
-                            List<LemburEntity> lemburEntityList = lemburDao.getListLemburByNipAndTanggal(hasilInquiry.getNip(),tanggalAwal);
+                            List<LemburEntity> lemburEntityList =new ArrayList<>();
+                            try{
+                                lemburEntityList = lemburDao.getListLemburByNipAndTanggal(hasilInquiry.getNip(),tanggalAwal);
+                            }catch (HibernateException e) {
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when receiving List Lembur by NIP dan Tanggal, " + e.getMessage());
+                            }
                             if (lemburEntityList.size()!=0){
                                 for (LemburEntity lemburEntity : lemburEntityList){
                                     int jamMasukLemburTmp = Integer.parseInt(lemburEntity.getJamAwal().replace(":",""));
@@ -3013,7 +3144,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                             Timestamp tsTanggalBesokShift = new java.sql.Timestamp(tanggalBesokShift.getTime());
 
                             List<MesinAbsensiDetailEntity> mesinAbsensiDetailEntityList = new ArrayList<>();
-                            mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
+                            try{
+                                mesinAbsensiDetailEntityList = mesinAbsensiDetailDao.getAllDetailWithDateAndPin(pegawai.getPin(),tsTanggalAwalShift,tsTanggalBesokShift,branchId);
+                            }catch ( HibernateException e){
+                                logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when receiving All Detail Mesin Absensi, " + e.getMessage());
+                            }
                             if (mesinAbsensiDetailEntityList.size()!=0){
                                 int iJamMasukTmp,iJamKeluarTmp,i,iJamLibur;
                                 if (hari==1){
@@ -3055,7 +3191,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     }
                                 }
 
-                                List<IjinKeluarEntity> ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
+                                List<IjinKeluarEntity> ijinKeluarEntityList = new ArrayList<>();
+                                try{
+                                    ijinKeluarEntityList = ijinKeluarDao.getListPersonalFromNip(hasilInquiry.getNip(),tanggalAwal);
+                                }catch (HibernateException e) {
+                                    logger.error("[AbsensiBoImpl.inquiry] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when receiving Ijin Keluar by NIP, " + e.getMessage());
+                                }
                                 for (IjinKeluarEntity ijinKeluarEntity:ijinKeluarEntityList){
                                     ijinKeluar = ijinKeluarEntity.getJamKeluar();
                                     ijinKembali = ijinKeluarEntity.getJamKembali();
@@ -5066,7 +5208,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     tsJamIstirahatAkhirKantor = new Timestamp(dJamIstirahatAkhirKantor.getTime());
 
                                 } catch (ParseException e) {
-                                    String status ="[AbsensiBoImpl.cronInquiry] ERROR :"+e;
+                                    String status ="[AbsensiBoImpl.cronInquiry] ERROR : "+e;
                                     logger.error(status);
                                     throw new GeneralBOException(status);
                                 }
@@ -5730,7 +5872,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         if (jamKerjaShift.size()!=0){
                             int jadwalke = 1;
                             for (AbsensiPegawai jamKerja : jamKerjaShift){
-                                if (jamKerja.getJamMasuk()!=null&&jamKerja.getJamPulang()!=null) {
+                                if (jamKerja.getJamMasuk()!=null&&jamKerja.getJamPulang()!=null){
                                     boolean lembur=false;
                                     Timestamp tsTanggalAwalShift;
                                     Timestamp tsTanggalBesokShift;
@@ -5738,8 +5880,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                     Timestamp tsTanggalBesokFinalShift;
                                     Timestamp tsTanggalAwalLembur = null;
                                     Timestamp tsTanggalBesokLembur = null;
-                                    Timestamp tsJamAwalFinger =null;
-                                    Timestamp tsJamAkhirFinger=null;
+                                    Timestamp tsJamAwalFinger = null;
+                                    Timestamp tsJamAkhirFinger= null;
 
                                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                                     SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
@@ -5798,7 +5940,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             throw new GeneralBOException(status);
                                         }
 
-                                        if (jadwalke==1){
+                                        //RAKA-08MAR2021 ==> Menonaktifkan IF(jadwalke==1)
+//                                        if (jadwalke==1){
                                             //jika lembur sebelum jadwal
                                             if (tsTanggalAwalLembur.before(tsTanggalAwalShift)){
                                               lembur=true;
@@ -5810,7 +5953,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                               tsTanggalBesokFinalShift = tsTanggalAwalLembur;
                                               jamKerja.setJamPulang(lemburEntity.getJamAkhir());
                                             }
-                                        }else{
+//                                        }else{
                                             //jika lembur sesudah jadwal
                                             if (tsTanggalAwalLembur.after(tsTanggalAwalShift)){
                                                 lembur=true;
@@ -5821,7 +5964,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 tsTanggalAwalFinalShift = tsTanggalAwalLembur;
                                                 jamKerja.setJamMasuk(lemburEntity.getJamAwal());
                                             }
-                                        }
+//                                        }
+                                        //RAKA-end
                                     }
 
                                     int iJamMasukDBShift = Integer.parseInt(jamKerja.getJamMasuk().substring(0,2));
@@ -5829,6 +5973,11 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                                     int jamMasukInquiry=iJamMasukDBShift-2;
                                     int jamPulangInquiry=iJamPulangDBShift+2;
+                                    //RAKA-08MAR2021 ==> Menyesuaikan Range Jam Pulang.
+                                    if(jamPulangInquiry > 24){
+                                        jamPulangInquiry = jamPulangInquiry-24;
+                                    }
+                                    //RAKA-end
 
                                     int iHari=0;
 
@@ -6725,7 +6874,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                 hsCriteria.put("tanggal", dataAbsen.getTanggal());
                 hsCriteria.put("nip", dataAbsen.getNip());
                 hsCriteria.put("flag", "Y");
-                absensiPegawaiEntityList = absensiPegawaiDao.getByCriteria(hsCriteria);
+                try {
+                    absensiPegawaiEntityList = absensiPegawaiDao.getByCriteria(hsCriteria);
+                }catch (HibernateException e){
+                    logger.info("[AbsensiBoImpl.saveAddAbsensi] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Absensi Pegawai using Criteria, " + e.getMessage());
+                }
 
                 if (absensiPegawaiEntityList.size() == 0) {
                     String absensiPegawaiId;
@@ -6778,7 +6932,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     try {
                         absensiPegawaiDao.addAndSave(absensiPegawaiEntity);
                     } catch (HibernateException e) {
-                        logger.error("[AbsensiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                        logger.error("[AbsensiPegawaiBoImpl.saveAddAbsensi] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when saving new data Absensi Pegawai, please info to your admin..." + e.getMessage());
                     }
 
@@ -6821,8 +6975,8 @@ public class AbsensiBoImpl implements AbsensiBo {
                             // insert into database
                             cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
                         } catch (HibernateException e) {
-                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                            logger.error("[CutiPegawaiBoImpl.saveAddAbsensi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving new data Absensi Pegawai, please info to your admin..." + e.getMessage());
                         }
                     }
                 }

@@ -2,6 +2,7 @@ package com.neurix.hris.master.biodata.model;
 
 import com.neurix.common.model.BaseModel;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 
 /**
@@ -18,6 +19,69 @@ public class TunjLainPegawai extends BaseModel {
     private String flagTunjLokasi;
     private String flagTunjSiaga;
     private String flagTunjProfesional;
+    private String flagTunjPeralihanGapok;
+    private String flagTunjPeralihanSankhus;
+    private String flagTunjPeralihanTunjangan;
+    private String flagTunjPemondokan;
+    private BigDecimal tunjPeralihanGapok;
+    private BigDecimal tunjPeralihanSankhus;
+    private BigDecimal tunjPeralihanTunjangan;
+
+    public String getFlagTunjPeralihanGapok() {
+        return flagTunjPeralihanGapok;
+    }
+
+    public void setFlagTunjPeralihanGapok(String flagTunjPeralihanGapok) {
+        this.flagTunjPeralihanGapok = flagTunjPeralihanGapok;
+    }
+
+    public String getFlagTunjPeralihanSankhus() {
+        return flagTunjPeralihanSankhus;
+    }
+
+    public void setFlagTunjPeralihanSankhus(String flagTunjPeralihanSankhus) {
+        this.flagTunjPeralihanSankhus = flagTunjPeralihanSankhus;
+    }
+
+    public String getFlagTunjPeralihanTunjangan() {
+        return flagTunjPeralihanTunjangan;
+    }
+
+    public void setFlagTunjPeralihanTunjangan(String flagTunjPeralihanTunjangan) {
+        this.flagTunjPeralihanTunjangan = flagTunjPeralihanTunjangan;
+    }
+
+    public String getFlagTunjPemondokan() {
+        return flagTunjPemondokan;
+    }
+
+    public void setFlagTunjPemondokan(String flagTunjPemondokan) {
+        this.flagTunjPemondokan = flagTunjPemondokan;
+    }
+
+    public BigDecimal getTunjPeralihanGapok() {
+        return tunjPeralihanGapok;
+    }
+
+    public void setTunjPeralihanGapok(BigDecimal tunjPeralihanGapok) {
+        this.tunjPeralihanGapok = tunjPeralihanGapok;
+    }
+
+    public BigDecimal getTunjPeralihanSankhus() {
+        return tunjPeralihanSankhus;
+    }
+
+    public void setTunjPeralihanSankhus(BigDecimal tunjPeralihanSankhus) {
+        this.tunjPeralihanSankhus = tunjPeralihanSankhus;
+    }
+
+    public BigDecimal getTunjPeralihanTunjangan() {
+        return tunjPeralihanTunjangan;
+    }
+
+    public void setTunjPeralihanTunjangan(BigDecimal tunjPeralihanTunjangan) {
+        this.tunjPeralihanTunjangan = tunjPeralihanTunjangan;
+    }
 
     public String getFlagTunjLokasi() {
         return flagTunjLokasi;

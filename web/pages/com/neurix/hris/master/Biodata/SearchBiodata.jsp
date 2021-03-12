@@ -34,6 +34,12 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        .rowcolorinfo{
+            margin: 3px;
+            padding: 3px;
+            border: black solid 1px;
+            border-radius: 4px;"
+        }
     </style>
     <script type='text/javascript'>
 
@@ -805,8 +811,16 @@
                                 </tr>
                             </table>
                         </div>
-
                         <br>
+                        <br>
+                        <div style="text-align: center;">
+                            <label>
+                                <strong>Ket. Warna Baris :</strong>
+                                <%--<span class="rowcolorinfo">   Biodata Karyawan Kantor   </span>--%>
+                                <%--<span class="rowcolorinfo bg-info">   Biodata Dokter Tamu   </span>--%>
+                                <span class="rowcolorinfo bg-danger">   Sedang Cuti Diluar Tanggungan   </span>
+                            </label>
+                        </div>
                         <br>
                         <center>
                             <table id="showdata" width="90%">
@@ -868,6 +882,51 @@
                                                 <display:column class="bg-danger" property="jumlahAnak" sortable="true" title="Jumlah Anak"/>
                                                 <display:column class="bg-danger" property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>
                                             </s:if>
+                                            <%--<s:elseif test='%{#attr.row.flagDokterKso == "Y"}'>--%>
+                                                <%--&lt;%&ndash;RAKA-14JAN2021 ==> Menu berisi modal tab&ndash;%&gt;--%>
+                                                <%--<display:column class="bg-info" media="html" title="Menu">--%>
+                                                    <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-menu">--%>
+                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Menu--%>
+                                                    <%--</a>--%>
+                                                <%--</display:column>--%>
+                                                <%--<display:column class="bg-info" media="html" title="Edit">--%>
+                                                    <%--<s:if test="#attr.row.flagYes">--%>
+                                                        <%--<s:a action="edit_biodata.action">--%>
+                                                            <%--<s:param name="id"><s:property value="#attr.row.nip" /></s:param>--%>
+                                                            <%--<s:param name="flag"><s:property value="#attr.row.flag" /></s:param>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit"> Edit--%>
+                                                        <%--</s:a>--%>
+                                                    <%--</s:if>--%>
+                                                <%--</display:column>--%>
+                                                <%--<display:column class="bg-info" media="html" title="Detail">--%>
+                                                    <%--<s:if test="#attr.row.flagYes">--%>
+                                                        <%--<s:a action="delete_biodata.action">--%>
+                                                            <%--<s:param name="id"><s:property value="#attr.row.nip"/> </s:param>--%>
+                                                            <%--<s:param name="flag"><s:property value="#attr.row.flag"/> </s:param>--%>
+                                                            <%--<img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup"> Detail--%>
+                                                        <%--</s:a>--%>
+                                                    <%--</s:if>--%>
+                                                <%--</display:column>--%>
+                                                <%--<display:column class="bg-info" media="html" title="Print">--%>
+                                                    <%--<a href="javascript:;" data="<s:property value="%{#attr.row.nip}"/>" class="item-print">--%>
+                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_printer_new.ico"/>" name="icon_lup"> Print--%>
+                                                    <%--</a>--%>
+                                                <%--</display:column>--%>
+                                                <%--&lt;%&ndash;RAKA-end &ndash;%&gt;--%>
+                                                <%--<display:column class="bg-info" property="nip" sortable="true" title="NIP" />--%>
+                                                <%--<display:column class="bg-info" property="nipLama" sortable="true" title="NIP Lama"/>--%>
+                                                <%--<display:column class="bg-info" property="namaPegawai" sortable="true" title="Nama Pegawai" />--%>
+                                                <%--<display:column class="bg-info" property="branchName" sortable="true" title="Unit"/>--%>
+                                                <%--<display:column class="bg-info" property="divisiName" sortable="true" title="Departmen"/>--%>
+                                                <%--<display:column class="bg-info" property="bagianName" sortable="true" title="Bagian"/>--%>
+                                                <%--<display:column class="bg-info" property="positionName" sortable="true" title="Jabatan"/>--%>
+                                                <%--<display:column class="bg-info" property="tipePegawaiName" sortable="true" title="Tipe Pegawai"/>--%>
+                                                <%--<display:column class="bg-info" property="stTanggalLahir" sortable="true" title="Tanggal Lahir"/>--%>
+                                                <%--<display:column class="bg-info" property="stTanggalAktif" sortable="true" title="Tanggal Aktif"/>--%>
+                                                <%--<display:column class="bg-info" property="stTanggalPensiun" sortable="true" title="Tanggal Pensiun"/>--%>
+                                                <%--<display:column class="bg-info" property="jumlahAnak" sortable="true" title="Jumlah Anak"/>--%>
+                                                <%--<display:column class="bg-info" property="pendidikanTerakhir" sortable="true" title="Pendidikan Terakhir"/>--%>
+                                            <%--</s:elseif>--%>
                                             <s:else>
                                                 <%--RAKA-14JAN2021 ==> Menu berisi modal tab--%>
                                                 <display:column media="html" title="Menu">
