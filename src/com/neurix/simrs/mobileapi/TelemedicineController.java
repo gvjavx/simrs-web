@@ -127,6 +127,16 @@ public class TelemedicineController implements ModelDriven<Object> {
 
     private String flag;
 
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getFlag() {
         return flag;
     }
@@ -1002,6 +1012,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setUrlResep(item.getUrlResep());
                 telemedicineMobile.setJenisPembayaran(item.getJenisPembayaran());
                 telemedicineMobile.setBranchId(item.getBranchId());
+                telemedicineMobile.setFlagCall(item.getFlagCall());
 
                 try {
                    Branch branch = branchBoProxy.getBranchById(item.getBranchId(), "Y");
@@ -1515,6 +1526,19 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
 
             model.setMessage(String.valueOf(list.size()));
+        }
+
+        if (action.equalsIgnoreCase("updateFlagCall")) {
+
+            try {
+               CrudResponse response = telemedicBoProxy.updateFlagCall(idTele, flagCall);
+                if ("ok".equalsIgnoreCase(response.getStatus())) {
+                    model.setMessage("ok");
+                } else model.setMessage(response.getMsg());
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");
