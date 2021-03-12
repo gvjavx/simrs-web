@@ -17,6 +17,7 @@
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
 
     <script type='text/javascript'>
 
