@@ -1872,6 +1872,8 @@ function listDiet() {
                             '</div>' +
                             '</div>';
                         label = '<span class="span-success"> telah dikonfirmasi</span>';
+                    } else if(item.approveFlag == "N"){
+                        label = '<span class="span-danger"> ditolak</span>';
                     } else {
                         btn = '<img border="0" class="hvr-grow" onclick="editDiet(\'' + item.idOrderGizi + '\',\'' + item.idDietGizi + '\',\'' + item.waktu + '\')" src="' + pathImages + '/pages/images/icons8-create-25.png" style="cursor: pointer;">' +
                             '<img border="0" class="hvr-grow" onclick="cancelDiet(\'' + item.idOrderGizi + '\')" src="' + pathImages + '/pages/images/cancel-flat-new.png" style="cursor: pointer;">';
@@ -1898,10 +1900,9 @@ function listDiet() {
                     "<td align='center'>" + btn + "</td>" +
                     "</tr>"
             });
+            $('#body_diet').html(table);
         }
     });
-
-    $('#body_diet').html(table);
 }
 
 function cekBarcode(value, idOrderGizi) {

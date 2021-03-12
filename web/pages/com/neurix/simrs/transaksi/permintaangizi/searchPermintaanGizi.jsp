@@ -283,6 +283,9 @@
                                             <s:if test='#row.approveFlag == "Y"'>
                                                 <span class="span-success">telah dikonfirmasi</span>
                                             </s:if>
+                                            <s:elseif test='#row.approveFlag == "N"'>
+                                                <span class="span-danger">ditolak</span>
+                                            </s:elseif>
                                             <s:else>
                                                 <span class="span-warning">menunggu konfirmasi</span>
                                             </s:else>
@@ -306,24 +309,40 @@
                                                          )">
                                         </s:if>
                                         <s:else>
-                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
-                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                                 style="cursor: pointer;"
-                                                 onclick="viewHistory('<s:property value="idPasien"/>',
-                                                         '<s:property value="namaPasien"/>',
-                                                         '<s:property value="jenisKelamin"/>',
-                                                         '<s:property value="umur"/>',
-                                                         '<s:property value="namaRangan"/>',
-                                                         '<s:property value="jenisDiet"/>',
-                                                         '<s:property value="bentukGizi"/>',
-                                                         '<s:property value="alergi"/>',
-                                                         '<s:property value="namaDiagnosa"/>',
-                                                         '<s:property value="idDetailCheckup"/>'
-                                                         )">
                                             <s:if test='#row.approveFlag == "Y"'>
                                                 <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
                                             </s:if>
+                                            <s:elseif test='#row.approveFlag == "N"'>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>'
+                                                             )">
+                                            </s:elseif>
                                             <s:else>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>'
+                                                             )">
                                                 <div class="form-check">
                                                     <input onclick="setSave('id_order_gizi')" type="checkbox"
                                                            name="id_order_gizi"
@@ -799,6 +818,7 @@
                 PermintaanGiziAction.updateGizi(json, {
                     callback: function (res) {
                         if(res.status == "success"){
+                            $('#modal-not-approve').modal('hide');
                             $('#load_not_approve').hide();
                             $('#save_not_approve').show();
                             $('#info_dialog').dialog('open');

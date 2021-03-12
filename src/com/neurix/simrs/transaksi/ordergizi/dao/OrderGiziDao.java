@@ -121,7 +121,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                     ") c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN it_simrs_order_gizi d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "WHERE d.flag = :flag AND c.tipe_pelayanan = 'rawat_jalan'\n" +condition;
+                    "WHERE d.flag = :flag AND c.tipe_pelayanan IN ('rawat_jalan', 'igd')\n" +condition;
 
             if("RI".equalsIgnoreCase(bean.getTipePelayanan())){
                 SQL = "SELECT\n" +
@@ -371,18 +371,9 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 "created_date\n" +
                 "FROM it_simrs_order_gizi\n" +
                 "WHERE waktu LIKE :ket AND flag = 'Y' \n" +
-                "AND diterima_flag NOT LIKE 'R' \n"+
-                condi +"\n" +
-                "UNION ALL \n" +
-                "SELECT \n" +
-                "id_order_gizi,\n" +
-                "id_rawat_inap,\n" +
-                "waktu,\n" +
-                "created_date\n" +
-                "FROM it_simrs_order_gizi\n" +
-                "WHERE waktu LIKE :ket AND flag = 'Y' \n" +
-                "AND diterima_flag IS NULL \n"+
-                condi +"\n";
+                "AND diterima_flag NOT LIKE 'R' \n" +
+                "AND approve_flag NOT LIKE 'N' \n"+
+                condi;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

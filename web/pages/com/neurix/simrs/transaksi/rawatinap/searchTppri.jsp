@@ -1405,11 +1405,11 @@
     function cekUangMuka(id) {
         var cek = $('#' + id).is(':checked');
         if (cek) {
-            $('#form-metode_pembayaran').show();
             $('#form-uang_muka').show();
+            $('#metode_bayar').val('tunai');
         } else {
-            $('#form-metode_pembayaran').hide();
             $('#form-uang_muka').hide();
+            $('#metode_bayar').val('');
         }
     }
 

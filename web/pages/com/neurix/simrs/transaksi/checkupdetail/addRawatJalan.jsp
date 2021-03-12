@@ -2854,13 +2854,13 @@
         listTindakan();
         listDiagnosa();
         listLab();
-        listDiet();
         listResepPasien();
         listAlergi();
         hitungStatusBiaya();
         hitungBmi();
         listSelectTindakanKategori();
         listICD9();
+        listDiet();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaLab" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.610510000000007"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="296"/>
+	<property name="ireport.y" value="214"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -363,7 +363,7 @@ AND b.flag = 'Y']]>
 				<textElement textAlignment="Justified" verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Nilai Rujukan]]></text>
+				<text><![CDATA[Nilai Normal]]></text>
 			</staticText>
 			<staticText>
 				<reportElement mode="Opaque" x="276" y="0" width="105" height="20" backcolor="#FFFFFF" uuid="28d087eb-f228-4484-805d-ed21c2d4815b"/>
@@ -437,24 +437,6 @@ AND b.flag = 'Y']]>
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band height="16">
-			<staticText>
-				<reportElement mode="Opaque" x="0" y="0" width="118" height="16" backcolor="#FFFFFF" uuid="32fddadc-078b-4495-808e-5bf4fe47adce"/>
-				<box leftPadding="3">
-					<topPen lineStyle="Dashed"/>
-					<bottomPen lineStyle="Dashed"/>
-				</box>
-				<textElement verticalAlignment="Middle">
-					<font size="8" isBold="true"/>
-				</textElement>
-				<text><![CDATA[Catatan :]]></text>
-			</staticText>
-		</band>
-	</columnFooter>
-	<pageFooter>
-		<band height="94"/>
-	</pageFooter>
 	<lastPageFooter>
 		<band height="99">
 			<image onErrorType="Blank">
