@@ -4285,6 +4285,13 @@
                 });
             }
         });
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
+
     });
 
     function loadModalRM(jenis) {

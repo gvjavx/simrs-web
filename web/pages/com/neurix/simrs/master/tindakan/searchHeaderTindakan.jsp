@@ -329,7 +329,7 @@
                 </div>
                 <div class="row jarak_atas">
                     <div class="form-group">
-                        <label class="col-md-3">Mobil Jenzah</label>
+                        <label class="col-md-3">Mobil Jenazah</label>
                         <div class="col-md-7">
                             <div class="form-check" style="margin-top: 5px">
                                 <input onclick="setMobilJenazah(this.id)" type="checkbox" id="is_mobil_jenazah" value="Y">

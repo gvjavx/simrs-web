@@ -797,7 +797,6 @@
     var tipeLab = 'laboratorium';
 
     $(document).ready(function () {
-
         $('#penunjang_active, #periksa_lab').addClass('active');
         $('#penunjang_open').addClass('menu-open');
 
@@ -842,6 +841,12 @@
             $('#tabel_lab').show();
             $('#form_params').hide();
         }
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
     });
 
     function listSelectDokter() {
@@ -896,7 +901,7 @@
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
                 $('#warning_rad').show().fadeOut(5000);
-                $('#msg_rad').text("Silahkan cek kembali data hasil Radiologi, data petugas, dan data Validator...!");
+                $('#msg_rad').text("Silahkan cek kembali data hasil Laboratorium, data petugas, dan data Validator...!");
                 $(window).scrollTop( $("#pos_lab").offset().top );
             }
         }else{
@@ -905,7 +910,7 @@
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
                 $('#warning_rad').show().fadeOut(5000);
-                $('#msg_rad').text("Silahkan cek kembali data hasil Radiologi, data petugas, dan data Validator...!");
+                $('#msg_rad').text("Silahkan cek kembali data hasil Laboratorium, data petugas, dan data Validator...!");
                 $(window).scrollTop( $("#pos_lab").offset().top );
             }
         }
@@ -1263,9 +1268,9 @@
 
     function viewUpload(jenis) {
         if (jenis == 'hasil_lab') {
-            $('#title_' + jenis).html("View Radiologi Hasil Radiologi");
+            $('#title_' + jenis).html("View Laboratorium Hasil Laboratorium");
         } else {
-            $('#title_' + jenis).html("View Radiologi Hasil Radiologi Luar");
+            $('#title_' + jenis).html("View Laboratorium Hasil Laboratorium Luar");
         }
         var item = $('.' + jenis);
         $.each(item, function (i, item) {

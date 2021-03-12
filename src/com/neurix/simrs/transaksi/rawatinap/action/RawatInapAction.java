@@ -2262,6 +2262,7 @@ public class RawatInapAction extends BaseMasterAction {
                     if (riwayatTindakanList.isEmpty()) {
 
                         BigDecimal totalTarif = null;
+                        String namaLab = entity.getLabName();
 
                         try {
                             totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
@@ -2272,7 +2273,6 @@ public class RawatInapAction extends BaseMasterAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + entity.getLabName());
 
                         // paket lab
                         if (!"".equalsIgnoreCase(idPaket)) {
@@ -2290,6 +2290,11 @@ public class RawatInapAction extends BaseMasterAction {
                             }
                         } else {
 
+                            if("Y".equalsIgnoreCase(entity.getIsLuar())){
+                                totalTarif = entity.getTarifLabLuar();
+                                namaLab = entity.getNamaLabLuar();
+                            }
+
                             // jika bukan paket maka pakai tarif asli
                             if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                                 if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
@@ -2302,6 +2307,7 @@ public class RawatInapAction extends BaseMasterAction {
                             }
                         }
 
+                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");

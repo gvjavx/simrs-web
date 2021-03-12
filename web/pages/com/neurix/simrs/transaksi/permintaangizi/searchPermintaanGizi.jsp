@@ -276,39 +276,62 @@
                                     </td>
                                     <td><s:property value="namaDiagnosa"/></td>
                                     <td>
-                                        <s:if test='#row.approveFlag == "Y"'>
-                                            <span class="span-success">telah dikonfirmasi</span>
+                                        <s:if test='#row.diterimaFlag == "R"'>
+                                            <span class="span-danger">dibatalkan</span>
                                         </s:if>
                                         <s:else>
-                                            <span class="span-warning">menunggu konfirmasi</span>
+                                            <s:if test='#row.approveFlag == "Y"'>
+                                                <span class="span-success">telah dikonfirmasi</span>
+                                            </s:if>
+                                            <s:else>
+                                                <span class="span-warning">menunggu konfirmasi</span>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
-                                             src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                             style="cursor: pointer;"
-                                             onclick="viewHistory('<s:property value="idPasien"/>',
-                                                     '<s:property value="namaPasien"/>',
-                                                     '<s:property value="jenisKelamin"/>',
-                                                     '<s:property value="umur"/>',
-                                                     '<s:property value="namaRangan"/>',
-                                                     '<s:property value="jenisDiet"/>',
-                                                     '<s:property value="bentukGizi"/>',
-                                                     '<s:property value="alergi"/>',
-                                                     '<s:property value="namaDiagnosa"/>',
-                                                     '<s:property value="idDetailCheckup"/>'
-                                                     )">
-                                        <s:if test='#row.approveFlag == "Y"'>
-                                            <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
+                                        <s:if test='#row.diterimaFlag == "R"'>
+                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                 style="cursor: pointer;"
+                                                 onclick="viewHistory('<s:property value="idPasien"/>',
+                                                         '<s:property value="namaPasien"/>',
+                                                         '<s:property value="jenisKelamin"/>',
+                                                         '<s:property value="umur"/>',
+                                                         '<s:property value="namaRangan"/>',
+                                                         '<s:property value="jenisDiet"/>',
+                                                         '<s:property value="bentukGizi"/>',
+                                                         '<s:property value="alergi"/>',
+                                                         '<s:property value="namaDiagnosa"/>',
+                                                         '<s:property value="idDetailCheckup"/>'
+                                                         )">
                                         </s:if>
                                         <s:else>
-                                            <div class="form-check">
-                                                <input onclick="setSave('id_order_gizi')" type="checkbox"
-                                                       name="id_order_gizi"
-                                                       id="id_order_gizi_<s:property value="idOrderGizi"/>"
-                                                       value="<s:property value="idOrderGizi"/>">
-                                                <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
-                                            </div>
+                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                 style="cursor: pointer;"
+                                                 onclick="viewHistory('<s:property value="idPasien"/>',
+                                                         '<s:property value="namaPasien"/>',
+                                                         '<s:property value="jenisKelamin"/>',
+                                                         '<s:property value="umur"/>',
+                                                         '<s:property value="namaRangan"/>',
+                                                         '<s:property value="jenisDiet"/>',
+                                                         '<s:property value="bentukGizi"/>',
+                                                         '<s:property value="alergi"/>',
+                                                         '<s:property value="namaDiagnosa"/>',
+                                                         '<s:property value="idDetailCheckup"/>'
+                                                         )">
+                                            <s:if test='#row.approveFlag == "Y"'>
+                                                <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
+                                            </s:if>
+                                            <s:else>
+                                                <div class="form-check">
+                                                    <input onclick="setSave('id_order_gizi')" type="checkbox"
+                                                           name="id_order_gizi"
+                                                           id="id_order_gizi_<s:property value="idOrderGizi"/>"
+                                                           value="<s:property value="idOrderGizi"/>">
+                                                    <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
+                                                </div>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                 </tr>

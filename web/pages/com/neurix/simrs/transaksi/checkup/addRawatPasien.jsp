@@ -1470,28 +1470,6 @@
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px"> Metode
-                                                        Pembayaran</label>
-                                                    <div class="col-md-8">
-                                                        <s:select
-                                                                list="#{'tunai':'Tunai','non_tunai':'Transfer'}"
-                                                                cssStyle="margin-top: 7px"
-                                                                id="pembayaran"
-                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
-                                                                name="headerCheckup.metodePembayaran"
-                                                                headerKey="" headerValue="[Select one]"
-                                                                cssClass="form-control"/>
-                                                        <span style="color: red; display: none" id="war_pembayaran"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_pembayaran"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
                                                     <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group" style="margin-top: 7px">
@@ -1506,6 +1484,28 @@
                                                         <span style="color: red; display: none" id="war_uang_muka"><i
                                                                 class="fa fa-times"></i> required</span>
                                                         <span style="color: green; display: none" id="con_uang_muka"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row" style="display: none">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px"> Metode
+                                                        Pembayaran</label>
+                                                    <div class="col-md-8">
+                                                        <s:select
+                                                                list="#{'tunai':'Tunai','non_tunai':'Transfer'}"
+                                                                cssStyle="margin-top: 7px"
+                                                                id="pembayaran"
+                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
+                                                                name="headerCheckup.metodePembayaran"
+                                                                headerKey="" headerValue="[Select one]"
+                                                                cssClass="form-control"/>
+                                                        <span style="color: red; display: none" id="war_pembayaran"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pembayaran"><i
                                                                 class="fa fa-check"></i> correct</span>
                                                     </div>
                                                 </div>
@@ -3177,6 +3177,7 @@
             $('#form-rujukan').hide();
             $('#poli').attr('disabled', false);
             $('#form_eksekutif').show();
+            $('#pembayaran').val('tunai');
         } else if (jenis == "bpjs" || jenis == "bpjs_rekanan") {
             if (jenis == "bpjs_rekanan") {
                 listSelectRekanan("Y");
@@ -3194,6 +3195,7 @@
             $('#form-asuransi').hide();
             $('#poli').attr('disabled', false);
             $('#form_eksekutif').hide();
+            $('#pembayaran').val('');
         }else if (jenis == "rekanan") {
             listSelectRekanan("N");
             $('#form_pg').hide();
@@ -3206,6 +3208,7 @@
             $('#form-asuransi').hide();
             $('#poli').attr('disabled', false);
             $('#form_eksekutif').hide();
+            $('#pembayaran').val('');
         } else if (jenis == "paket_perusahaan") {
             listSelectPaket();
             $('#form-paket-perusahaan').show();
@@ -3217,6 +3220,7 @@
             $('#form-paket').hide();
             $('#poli').attr('disabled', true);
             $('#form_eksekutif').hide();
+            $('#pembayaran').val('');
         } else if (jenis == "paket_individu") {
             listSelectPaket();
             $('#form-paket').show();
@@ -3228,6 +3232,7 @@
             $('#form-uang-muka').hide();
             $('#poli').attr('disabled', true);
             $('#form_eksekutif').hide();
+            $('#pembayaran').val('');
         } else if (jenis == "asuransi") {
             listSelectAsuransi();
             $('#form-asuransi').show();
@@ -3239,6 +3244,7 @@
             $('#form-rekanan').hide();
             $('#poli').attr('disabled', false);
             $('#form_eksekutif').hide();
+            $('#pembayaran').val('');
         }
 
         if (online == "Y") {

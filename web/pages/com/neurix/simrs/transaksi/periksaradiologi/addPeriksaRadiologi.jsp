@@ -816,6 +816,12 @@
             $('#tabel_radiologi').show();
             $('#form_params').hide();
         }
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
     });
 
     function showModal(select) {

@@ -684,6 +684,7 @@ function showModal(select) {
 
     } else if (select == 4) {
         $('#is_luar, #is_pending_lab').prop('checked', false);
+        $('#is_luar, #is_pending_lab').attr('disabled', false);
         $('#form_pending, #form_lab_luar').hide();
         $('#form_lab_dalam').show();
         $('#lab_luar, #lab_parameter_luar').val('');
@@ -1422,7 +1423,7 @@ function listLab() {
                 var lab = "-";
                 var tanggal = item.createdDate;
                 var dateFormat = converterDate(new Date(tanggal));
-                var btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\'' + item.kategoriLabName + '\',\''+item.isLuar+'\', \''+item.namaLabLuar+'\',\''+item.statusPeriksaName+'\', \''+tanggal+'\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
+                var btn = '';
                 var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idPeriksaLab + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 var tipe = "";
                 var dalam = '';
@@ -1463,12 +1464,10 @@ function listLab() {
 
                 if ("Pending" == item.statusPeriksaName) {
                     btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
-                } else {
-                    if("Selesai" == item.statusPeriksaName ){
-                        btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
-                    }else{
-                        btn = '';
-                    }
+                } else if("Selesai" == item.statusPeriksaName){
+                    btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                } else if ("Antrian" == item.statusPeriksaName) {
+                    btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\'' + item.kategoriLabName + '\',\''+item.isLuar+'\', \''+item.namaLabLuar+'\',\''+item.statusPeriksaName+'\', \''+tanggal+'\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 }
 
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
@@ -1493,9 +1492,9 @@ function listLab() {
                         "</tr>";
                 }
             });
+            $('#body_lab').html(table);
         }
     });
-    $('#body_lab').html(table);
 }
 
 function labLuar(kategori, url) {
@@ -1997,12 +1996,17 @@ function editLab(id, idLab, idKategoriLab, kategoriName, isLuar, namaLabLuar, is
                 $.each(response, function (i, item) {
                     var count = i;
                     var idROw = 'par_'+count;
+                    var onclick = '<div onclick="delParamrs(\''+idROw+'\')" class="input-group-addon" style="background-color: #a94442; color: white; cursor: pointer">\n' +
+                        '<i class="fa fa-trash"></i>\n' +
+                        '</div>\n';
+                    if(i == 0){
+                        onclick = '<div onclick="addParameter()" class="input-group-addon" style="background-color: #5cb85c; color: white; cursor: pointer">\n' +
+                            '<i class="fa fa-plus"></i>\n' +
+                            '</div>';
+                    }
                     temp += '<div class="input-group" style="margin-top: 7px;" id="'+idROw+'">\n' +
                         '<input id="lab_parameter_luar_'+count+'" class="form-control parameter_luar" value="'+item.namaDetailPeriksa+'" \n' +
-                        '       placeholder="masukkan parameter '+(parseInt(count)+parseInt(1))+'">\n' +
-                        '<div onclick="delParamrs(\''+idROw+'\')" class="input-group-addon" style="background-color: #a94442; color: white; cursor: pointer">\n' +
-                        '    <i class="fa fa-trash"></i>\n' +
-                        '</div>\n' +
+                        'placeholder="masukkan parameter '+(parseInt(count)+parseInt(1))+'">\n' + onclick +
                         '</div>';
                 });
                 $('#params_luar').html(temp);
@@ -4046,6 +4050,8 @@ function delParamrs(id){
 
 function showHasil(id, tipe, kategori){
     var data = $('#'+tipe+'_'+id).val();
+    $('#item_hasil_lab').html('');
+    $('#li_hasil_lab').html('');
     if(data != null && data != ''){
         var result = JSON.parse(data);
         if(tipe == 'dalam'){
@@ -4057,14 +4063,16 @@ function showHasil(id, tipe, kategori){
             var set = '';
             var li = '';
             $.each(result, function (i, item) {
-                var cla = '';
+                var cla = 'class="item"';
+                var claLi = '';
                 if(i == 0){
-                    cla = 'active';
+                    cla = 'class="item active"';
+                    claLi = 'class="active"';
                 }
-                set += '<div class="item '+cla+'">\n' +
+                set += '<div '+cla+'>\n' +
                     '<img src="'+item.urlImg+'" style="width: 100%">\n' +
                     '</div>';
-                li += '<li data-target="#carousel-hasil_lab" data-slide-to="'+i+'" class="'+cla+'"></li>';
+                li += '<li data-target="#carousel-hasil_lab" data-slide-to="'+i+'" '+claLi+'></li>';
             });
             $('#item_hasil_lab').html(set);
             $('#li_hasil_lab').html(li);

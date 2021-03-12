@@ -928,6 +928,9 @@
                         <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
                                 onclick="showModal(7)"><i class="fa fa-plus"></i> Tambah Resep
                         </button>
+                        <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
+                        </button>
                         <table class="table table-bordered table-striped" >
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -1249,21 +1252,6 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Alergi</label>
-                        <div class="col-md-7">
-                            <input class="form-control" id="alergi" autocomplete="off"
-                                   oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}">
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_alergi">
-                                <i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_alergi"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="row jarak">
-                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Jenis</label>
                         <div class="col-md-7">
                             <select class="form-control" id="jenis_alergi" onchange="var warn =$('#war_jenis_alergi').is(':visible'); if (warn){$('#cor_jenis_alergi').show().fadeOut(3000);$('#war_jenis_alergi').hide()}">
@@ -1278,6 +1266,21 @@
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_jenis_alergi"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Alergi</label>
+                        <div class="col-md-7">
+                            <input class="form-control" id="alergi" autocomplete="off"
+                                   oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_alergi">
+                                <i class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                               id="cor_alergi"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
                 </div>
@@ -2689,7 +2692,7 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="col-md-12">
-                            <div id="carousel-hasil_lab" class="carousel slide" data-ride="carousel">
+                            <div id="carousel-hasil_lab" class="carousel slide">
                                 <ol class="carousel-indicators" id="li_hasil_lab">
 
                                 </ol>
@@ -2922,6 +2925,13 @@
             showDetailPaket();
         }
         setKeteranganPeriksa();
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
+
     });
 
     function loadModalRM(jenis) {

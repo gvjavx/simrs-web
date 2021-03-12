@@ -155,6 +155,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
 
                     periksaLab.setNamaLabLuar(periksaLabEntity.getNamaLabLuar());
                     periksaLab.setIsLuar(periksaLabEntity.getIsPeriksaLuar());
+                    periksaLab.setTarifLabLuar(periksaLabEntity.getTarifLabLuar());
 
                     periksaLabList.add(periksaLab);
                 }
