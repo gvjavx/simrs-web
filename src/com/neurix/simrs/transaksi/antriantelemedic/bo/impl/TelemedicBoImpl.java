@@ -1967,4 +1967,39 @@ public class TelemedicBoImpl implements TelemedicBo {
         String stDate = CommonUtil.stDateSeq();
         return "NTF"+ branchId + stDate + notifikasiAdminTelemedicDao.getNextSeq();
     }
+
+    @Override
+    public CrudResponse updateFlagCall(String idAntrianTelemedic, String flagCall) {
+        CrudResponse response = new CrudResponse();
+        List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
+        AntrianTelemedic bean = new AntrianTelemedic();
+        bean.setId(idAntrianTelemedic);
+        try {
+            result = getListEntityByCriteria(bean);
+        } catch (GeneralBOException e) {
+            response.setStatus("Fail");
+            response.setMsg(e.getMessage());
+            logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+        }
+
+        if (result.size() == 1) {
+            ItSimrsAntrianTelemedicEntity item = result.get(0);
+
+            item.setFlagCall(flagCall);
+            item.setLastUpdate(new Timestamp(System.currentTimeMillis()));
+
+            try {
+                telemedicDao.updateAndSave(item);
+                response.setStatus("OK");
+            } catch (GeneralBOException e) {
+                response.setStatus("Fail");
+                response.setMsg(e.getMessage());
+                logger.error("[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+                throw new GeneralBOException("[[TelemedicBoImpl.insertVideoRm] ERROR. ", e);
+            }
+        }
+
+        return response;
+    }
 }

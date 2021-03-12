@@ -404,3 +404,7 @@ ALTER SEQUENCE public.seq_version_mobile
 --2021-02-25
 ALTER TABLE it_simrs_antian_online ADD id_paket character varying(50)
 
+--2021-03-10
+ALTER TABLE it_simrs_antrian_telemedic ADD COLUMN flag_call VARCHAR(1)
+
+

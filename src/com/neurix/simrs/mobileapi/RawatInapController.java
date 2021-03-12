@@ -1057,7 +1057,7 @@ public class RawatInapController implements ModelDriven<Object> {
                     orderGiziMobile.setKeterangan(item.getKeterangan());
 
                     if (item.getTglOrder() != null) {
-                        orderGiziMobile.setTglOrder(item.getTglOrder().toString());
+                        orderGiziMobile.setTglOrder(CommonUtil.convertDateToString(item.getTglOrder()));
                     }
 
                     listOfOrderGizi.add(orderGiziMobile);
