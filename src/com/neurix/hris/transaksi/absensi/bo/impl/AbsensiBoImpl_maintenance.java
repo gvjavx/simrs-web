@@ -5367,16 +5367,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                         String statusAbsensi = cariStatusTidakMasuk(biodata.getNip(), CommonUtil.dateUtiltoDateSql(data.getTanggalUtil()));
                                         absensiPegawai.setStatusAbsensiOnCall(statusAbsensi);
                                     } else {
-                                        for (ItHrisMesinAbsensiDetailOnCallEntity mesinAbsensiDetailOnCallEntity : mesinAbsensiDetailOnCallEntityList) {
-                                            if (tsJamAwalFinger == null || mesinAbsensiDetailOnCallEntity.getScanDate().compareTo(tsJamAwalFinger) < 0) {
-                                                tsJamAwalFinger = mesinAbsensiDetailOnCallEntity.getScanDate();
-                                            } else if (tsJamAkhirFinger == null || mesinAbsensiDetailOnCallEntity.getScanDate().compareTo(tsJamAkhirFinger) > 0) {
-                                                tsJamAkhirFinger = mesinAbsensiDetailOnCallEntity.getScanDate();
-                                            }
-                                        }
-                                        jamFinger.put("awalFinger", tsJamAwalFinger);
-                                        jamFinger.put("akhirFinger", tsJamAkhirFinger);
-
+                                        jamFinger = olahDataMesinOnCall(mesinAbsensiDetailOnCallEntityList);
                                         //set status masuk
                                         String statusA = getStatusMasuk(jamFinger, jadwalOnCall);
                                         if ("02".equalsIgnoreCase(statusA)) {
@@ -5856,9 +5847,9 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
         calJamAwalScan.setTime(tanggal);
         calJamAkhirScan.setTime(tanggal);
 
-        int batasHari = 1;
+        int batasHari = 0;
         if (jamBatasAbsen2 < jamBatasAbsen1) {
-            batasHari = 0;
+            batasHari = 1;
         }
         calJamAwalScan.set(Calendar.HOUR_OF_DAY, jamBatasAbsen1);
         calJamAwalScan.set(Calendar.MINUTE, 0);
@@ -5933,6 +5924,23 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                     jamAkhirFinger = mesinAbsensiDetailEntity.getScanDate();
                 }
             }
+        }
+        jamFinger.put("awalFinger", jamAwalFinger);
+        jamFinger.put("akhirFinger", jamAkhirFinger);
+
+        return jamFinger;
+    }
+
+    private Map<String, Timestamp> olahDataMesinOnCall(List<ItHrisMesinAbsensiDetailOnCallEntity> mesinAbsensiList) {
+        Map jamFinger = new HashMap<String, Timestamp>();
+        Timestamp jamAwalFinger = null;
+        Timestamp jamAkhirFinger = null;
+        for (ItHrisMesinAbsensiDetailOnCallEntity mesinAbsensiDetailEntity : mesinAbsensiList) {
+                if (jamAwalFinger == null || mesinAbsensiDetailEntity.getScanDate().compareTo(jamAwalFinger) < 0) {
+                    jamAwalFinger = mesinAbsensiDetailEntity.getScanDate();
+                } else if (jamAkhirFinger == null || mesinAbsensiDetailEntity.getScanDate().compareTo(jamAkhirFinger) > 0) {
+                    jamAkhirFinger = mesinAbsensiDetailEntity.getScanDate();
+                }
         }
         jamFinger.put("awalFinger", jamAwalFinger);
         jamFinger.put("akhirFinger", jamAkhirFinger);
@@ -6434,21 +6442,6 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             int jLembur = 1;
             if (finalLamaLembur > 0) {
                 do {
-//                    if (finalLamaLembur > 0 && finalLamaLembur < 1) {
-//                        Map hsCriteria5 = new HashMap();
-//                        hsCriteria5.put("tipe_hari", tipeHari);
-//                        hsCriteria5.put("jam_lembur", jLembur);
-//                        hsCriteria5.put("flag", "Y");
-//                        List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-//                        try {
-//                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-//                        } catch (HibernateException e) {
-//                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-//                            throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
-//                        }
-//                        for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-//                            jamLembur = jamLembur + (finalLamaLembur * 2);
-//                        }
                     //RAKA-12MAR2021 ==> Langsung tambah 0.5 untuk sisa Lembur < 1 Jam
                     if (finalLamaLembur > 0 && finalLamaLembur < 1) {
                         if (finalLamaLembur >= 0.5) {
