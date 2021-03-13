@@ -1047,6 +1047,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
 //                            peralihan=itPayrollEntity.getTunjanganPeralihan().doubleValue();
 //                        }
                         upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1275,6 +1276,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                         Double peralihan = 0d;
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
                         upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1371,6 +1373,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                         peralihan = getTunjPeralihan(absensiPegawaiEntity.getNip(), bean.getTanggal()).doubleValue();
 
                         upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+                        upahLembur = Math.floor(upahLembur);
 
                         absensiPegawaiEntity.setLembur("Y");
                         absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -1485,6 +1488,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                 payrollSkalaGajiList = payrollSkalaGajiDao.getByCriteria(hsCriteria4);
                 for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
                     upahLembur = imPayrollSkalaGajiEntity.getNilai().doubleValue();
+                    upahLembur = Math.floor(upahLembur);
                 }
                 double jamLembur = 15.50;
                 Double umk = 0d;
@@ -3824,6 +3828,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                         peralihan = itPayrollEntity.getTunjanganPeralihan().doubleValue();
                     }
                     upahLembur = (upahLembur + umk + peralihan) * faktor * jamLembur;
+                    upahLembur = Math.floor(upahLembur);
 
                     absensiPegawaiEntity.setLembur("Y");
                     absensiPegawaiEntity.setJamLembur(jamLembur);
@@ -5136,7 +5141,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                     absensiPegawai.setPengajuanLembur(detailLembur.getLamaJam());
                                     absensiPegawai.setRealisasiJamLembur(detailLembur.getJamRealisasi());
                                     absensiPegawai.setJamLembur(detailLembur.getLamaHitungan());
-//                                        absensiPegawai.setLamaLembur(finalLamaLembur2);
+                                    absensiPegawai.setLamaLembur(detailLembur.getFinalLamaLembur());
                                     absensiPegawai.setBiayaLembur(detailLembur.getUpahLembur());
                                     absensiPegawai.setStBiayaLembur(detailLembur.getStUpahLembur());
                                     absensiPegawai.setJenisLembur(detailLembur.getTipeLembur());
@@ -5177,7 +5182,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                     absensiPegawai.setPengajuanLembur(detailLembur.getLamaJam());
                                     absensiPegawai.setRealisasiJamLembur(detailLembur.getJamRealisasi());
                                     absensiPegawai.setJamLembur(detailLembur.getLamaHitungan());
-//                                        absensiPegawai.setLamaLembur(finalLamaLembur2);
+                                    absensiPegawai.setLamaLembur(detailLembur.getFinalLamaLembur());
                                     absensiPegawai.setBiayaLembur(detailLembur.getUpahLembur());
                                     absensiPegawai.setStBiayaLembur(detailLembur.getStUpahLembur());
                                     absensiPegawai.setJenisLembur(detailLembur.getTipeLembur());
@@ -5221,7 +5226,8 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                     int iJamMasukDBShift = Integer.parseInt(jamKerja.getJamMasuk().substring(0, 2));
                                     int iJamPulangDBShift = Integer.parseInt(jamKerja.getJamPulang().substring(0, 2));
                                     int jamMasukInquiry = iJamMasukDBShift - 2;
-                                    int jamPulangInquiry = iJamPulangDBShift + 2;
+//                                    int jamPulangInquiry = iJamPulangDBShift + 2;
+                                    int jamPulangInquiry = iJamPulangDBShift + 10;
                                     //RAKA-08MAR2021 ==> Menyesuaikan Range Jam Pulang.
                                     if (jamPulangInquiry > 24) {
                                         jamPulangInquiry = jamPulangInquiry - 24;
@@ -5300,7 +5306,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                             absensiPegawai.setPengajuanLembur(lemburShift.getLamaJam());
                                             absensiPegawai.setRealisasiJamLembur(lemburShift.getJamRealisasi());
                                             absensiPegawai.setJamLembur(lemburShift.getLamaHitungan());
-                                            absensiPegawai.setLamaLembur(lemburShift.getJamRealisasi());
+                                            absensiPegawai.setLamaLembur(lemburShift.getFinalLamaLembur());
                                             absensiPegawai.setBiayaLembur(lemburShift.getUpahLembur());
                                             absensiPegawai.setStBiayaLembur(lemburShift.getStUpahLembur());
                                             absensiPegawai.setJenisLembur(lemburShift.getTipeLembur());
@@ -5482,10 +5488,10 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                             Lembur lemburOC = lemburOnCall(realisasiLembur, biodata, tanggalInquiry, jadwalOnCall, jamKerja, jamFinger, absensiPegawai.getTipeHari(), tahunGaji);
                                             if (lemburOC.isAdaAbsen()) {
                                                 absensiPegawai.setLembur("Y");
-                                                absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
+                                                absensiPegawai.setPengajuanLembur(lemburOC.getLamaJam());
                                                 absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
                                                 absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
-                                                absensiPegawai.setLamaLembur(lemburOC.getLamaJam());
+                                                absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
                                                 absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
                                                 absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
                                                 absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
@@ -5500,7 +5506,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                         absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
                                         absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
                                         absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
-                                        absensiPegawai.setLamaLembur(lemburOC.getLamaJam());
+                                        absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
                                         absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
                                         absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
                                         absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
@@ -5848,7 +5854,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
         calJamAkhirScan.setTime(tanggal);
 
         int batasHari = 0;
-        if (jamBatasAbsen2 < jamBatasAbsen1) {
+        if (jamBatasAbsen2 <= jamBatasAbsen1) {
             batasHari = 1;
         }
         calJamAwalScan.set(Calendar.HOUR_OF_DAY, jamBatasAbsen1);
@@ -6128,12 +6134,17 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                 }
 
                 double finalLamaLembur = 0;
+                double finalLamaLembur2 = 0;
 
                 if (lamaLembur < realisasiLembur) {
                     finalLamaLembur = lamaLembur;
+                    finalLamaLembur2 = lamaLembur;
                 } else {
                     finalLamaLembur = realisasiLembur;
+                    finalLamaLembur2 = realisasiLembur;
                 }
+
+                returnLembur.setFinalLamaLembur(finalLamaLembur2);
 
                 //hitung poin lembur / perhitungan lembur
                 int jLembur = 1;
@@ -6194,13 +6205,13 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                 BigDecimal bJamLembur = new BigDecimal(pointLembur);
 
                 BigDecimal bUpahLembur = bGapokPeralihan.multiply(prosentase).multiply(bFaktor).multiply(bJamLembur);
-                upahLembur = bUpahLembur.doubleValue();
+                upahLembur = Math.floor(bUpahLembur.doubleValue());
                 // END
 
                 DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
                 DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-                formatRp.setCurrencySymbol("Rp. ");
+                formatRp.setCurrencySymbol(""); //Menghilangkan currency symbol u/ hemat space tampilan
                 formatRp.setGroupingSeparator('.');
 
                 kursIndonesia.setDecimalFormatSymbols(formatRp);
@@ -6473,12 +6484,13 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
 //            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
             upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
             DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
             DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-            formatRp.setCurrencySymbol("Rp. ");
+            formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
             formatRp.setGroupingSeparator('.');
 
             kursIndonesia.setDecimalFormatSymbols(formatRp);
@@ -6487,7 +6499,8 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             returnLembur.setTsAwalLembur(finalAwalLembur);
             returnLembur.setTsAkhirLembur(finalAkhirLembur);
 
-            returnLembur.setJamRealisasi(finalLamaLembur2); //
+            returnLembur.setJamRealisasi(realisasiFinger); //
+            returnLembur.setFinalLamaLembur(finalLamaLembur2);
             returnLembur.setLamaJam(lamaLembur); //
             returnLembur.setLamaHitungan(jamLembur); //
             returnLembur.setTipeLembur(jenisLembur);
@@ -6602,19 +6615,21 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-
+//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
             DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
             DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-            formatRp.setCurrencySymbol("Rp. ");
+            formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
             formatRp.setGroupingSeparator('.');
 
             kursIndonesia.setDecimalFormatSymbols(formatRp);
             stUpahLembur = kursIndonesia.format(upahLembur);
 
+            returnLembur.setJamRealisasi(realisasiLembur);
             returnLembur.setJamRealisasi(finalLamaLembur);
             returnLembur.setLamaJam(realisasiLembur);
             returnLembur.setLamaHitungan(jamLembur);
@@ -6719,14 +6734,15 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             }
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-
+//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
             DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
             DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-            formatRp.setCurrencySymbol("Rp. ");
+            formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
             formatRp.setGroupingSeparator('.');
 
             kursIndonesia.setDecimalFormatSymbols(formatRp);
@@ -6837,19 +6853,22 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             } while (finalLamaLembur > 0);
             Double peralihan = 0d;
             peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
+            upahLembur = (gapok + peralihan) * faktor * jamLembur;
+            upahLembur = Math.floor(upahLembur);
 
             String stUpahLembur = "";
             DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
             DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-            formatRp.setCurrencySymbol("Rp. ");
+            formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
             formatRp.setGroupingSeparator('.');
 
             kursIndonesia.setDecimalFormatSymbols(formatRp);
             stUpahLembur = kursIndonesia.format(upahLembur);
 
             returnLembur.setJamRealisasi(onCall);
+            returnLembur.setFinalLamaLembur(onCall);
             returnLembur.setLamaJam(onCall);
             returnLembur.setLamaHitungan(jamLembur);
             returnLembur.setTipeLembur("OC");

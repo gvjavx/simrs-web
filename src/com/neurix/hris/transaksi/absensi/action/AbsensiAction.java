@@ -496,7 +496,11 @@ public class AbsensiAction extends BaseMasterAction {
         data.setAction("C");
         data.setFlag("Y");
 
-        absensiBo.saveAddAbsensi(listOfResult, listOfResultOnCall, data);
+        try{
+            absensiBo.saveAddAbsensi(listOfResult, listOfResultOnCall, data);
+        }catch(GeneralBOException e){
+            logger.error("[AbsensiAction.saveAdd] Error, " + e.getMessage());
+        }
 
         session.removeAttribute("listOfResultAbsensiPegawai");
     }

@@ -52,6 +52,7 @@ public class Lembur extends BaseModel {
     private Timestamp tsAkhirLembur;
     private String stUpahLembur;
     private Double upahLembur;
+    private Double finalLamaLembur;
     //RAKA-end
 
     private boolean lemburApprove=false;
@@ -523,5 +524,13 @@ public class Lembur extends BaseModel {
 
     public void setUpahLembur(Double upahLembur) {
         this.upahLembur = upahLembur;
+    }
+
+    public Double getFinalLamaLembur() {
+        return finalLamaLembur;
+    }
+
+    public void setFinalLamaLembur(Double finalLamaLembur) {
+        this.finalLamaLembur = finalLamaLembur;
     }
 }
