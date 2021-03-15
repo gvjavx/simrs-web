@@ -38,6 +38,11 @@ function setDataPasien() {
         var namaRuangan = $('.nama_ruangan').length;
         var masukRS = $('.tanggal_masuk_rs').length;
 
+        var dokterAnestesi = $('.dokter_anestesi').length;
+        var perawatAnestesi = $('.perawat_anestesi').length;
+        var dokterBedah = $('.dokter_bedah').length;
+        var asistenInts = $('.asisten_instrumen').length;
+
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
             dwr.engine.setAsync(true);
             CheckupAction.getDataPemeriksaanFisik(noCheckup, {
@@ -266,6 +271,47 @@ function setDataPasien() {
 
         if(masukRS > 0){
             $('.tanggal_masuk_rs').val(tanggalMasuk);
+        }
+
+        if(dokterAnestesi > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "dokter_anestesi", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.dokter_anestesi').val(res);
+                    }
+                }
+            });
+        }
+        if(perawatAnestesi > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "perawat_anestesi", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.perawat_anestesi').val(res);
+                    }
+                }
+            });
+        }
+        if(dokterBedah > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "dokter_bedah", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.dokter_bedah').val(res);
+                    }
+                }
+            });
+        }
+        if(asistenInts > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getDataByKey(idDetailCheckup, "asisten_instrumen", {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.asisten_instrumen').val(res);
+                    }
+                }
+            });
         }
     }
 }

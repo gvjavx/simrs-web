@@ -197,6 +197,17 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
         return response;
     }
 
+    @Override
+    public String getDataByKey(String id, String params) throws GeneralBOException {
+        String res = "";
+        try {
+            res = asesmenOperasiDao.getPraInduksiDataByKey(id, params);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return res;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

@@ -221,10 +221,10 @@
                         <div class="form-group">
                             <label class="col-md-3">Kehamilan dan Persalinan dulu</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb18" type="number" placeholder="P">
+                                <input class="form-control" id="rb18" type="number" placeholder="G">
                             </div>
                             <div class="col-md-3">
-                                <input class="form-control" id="rb19" type="number" placeholder="G">
+                                <input class="form-control" id="rb19" type="number" placeholder="P">
                             </div>
                             <div class="col-md-3">
                                 <input class="form-control" id="rb20" type="number" placeholder="Ab">
