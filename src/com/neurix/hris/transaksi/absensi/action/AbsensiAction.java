@@ -2468,19 +2468,54 @@ public class AbsensiAction extends BaseMasterAction {
         BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-        List<Biodata> biodataList = biodataBo.getBiodataforAbsensi(getBranchId(), "", getBagian(), getNip());
-
+        List<Biodata> biodataList = new ArrayList<>();
+        try {
+            biodataList = biodataBo.getBiodataforAbsensi(getBranchId(), "", getBagian(), getNip());
+        }catch(GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "BiodataBO.getBiodataforAbsensi");
+            } catch (GeneralBOException e1) {
+                logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+            }
+            logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching biodata for absensi," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+        }
         positionBagian positionBagian = new positionBagian();
         if (bagian != null) {
             if (!bagian.equalsIgnoreCase("")) {
-                positionBagian = positionBagianBo.getBagianById(getBagian(), "Y");
+                try {
+                    positionBagian = positionBagianBo.getBagianById(getBagian(), "Y");
+                }catch(GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "PositionBagianiodataBO.getBagianById");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+                    }
+                    logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching bagian by ID," + "[" + logId + "] Found problem when searching data by ID, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching bagian by ID, please inform to your admin");
+                }
                 bagian = positionBagian.getBagianName();
             }
         }
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(getBranchId());
-        List<Branch> branchList = branchBo.getByCriteria(searchBranch);
+
+        List<Branch> branchList = new ArrayList<>();
+        try{
+            branchList = branchBo.getByCriteria(searchBranch);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "BranchBo.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+            }
+            logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching branch list by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching branch by criteria, please inform to your admin");
+        }
         for (Branch branch : branchList) {
             unit = branch.getBranchName();
             unitId = branch.getBranchId();
@@ -2514,7 +2549,6 @@ public class AbsensiAction extends BaseMasterAction {
                 absensiPegawai.setBagian(biodata.getBagianName());
                 absensiPegawaiList.add(absensiPegawai);
             }
-
             listDataFinal.addAll(absensiPegawaiList);
         }
 
@@ -2545,9 +2579,19 @@ public class AbsensiAction extends BaseMasterAction {
                 } else {
                     realisasi = absensiPegawai.getRealisasiJamLembur();
                 }
-                AbsensiPegawai resultSetHari;
-                resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
-
+                AbsensiPegawai resultSetHari = new AbsensiPegawai();
+                try {
+                    resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
+                }catch (GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.getJamLembur");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+                    }
+                    logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching jam lembur by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+                }
                 hasilLamaLembur = hasilLamaLembur + realisasi;
                 hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
                 hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
@@ -2675,15 +2719,15 @@ public class AbsensiAction extends BaseMasterAction {
                     tmp.setNo("");
                     tmp.setNip("JUMLAH");
                     tmp.setNama("");
-                    tmp.setStLamaLembur(String.valueOf(jJumlahJamSeluruhnya));
-                    tmp.setStHariKerja15(String.valueOf(jJamKerja15));
-                    tmp.setStHariKerja20(String.valueOf(jJamKerja20));
-                    tmp.setsJumlahHariKerja(String.valueOf(jJumlahJamKerja));
-                    tmp.setStHariLibur20(String.valueOf(jJamlibur20));
-                    tmp.setStHariLibur30(String.valueOf(jJamlibur30));
-                    tmp.setStHariLibur40(String.valueOf(jJamlibur40));
-                    tmp.setsJumlahHariLibur(String.valueOf(jJumlahLibur));
-                    tmp.setStJamLembur(String.valueOf(jJumlahJamLemburPerhitungan));
+                    tmp.setStLamaLembur(df.format(jJumlahJamSeluruhnya));
+                    tmp.setStHariKerja15(df.format(jJamKerja15));
+                    tmp.setStHariKerja20(df.format(jJamKerja20));
+                    tmp.setsJumlahHariKerja(df.format(jJumlahJamKerja));
+                    tmp.setStHariLibur20(df.format(jJamlibur20));
+                    tmp.setStHariLibur30(df.format(jJamlibur30));
+                    tmp.setStHariLibur40(df.format(jJamlibur40));
+                    tmp.setsJumlahHariLibur(df.format(jJumlahLibur));
+                    tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitungan));
                     tmp.setStBiayaLemburPerjam("");
                     tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur), "###,###"));
                     forReport.add(tmp);
@@ -2727,7 +2771,8 @@ public class AbsensiAction extends BaseMasterAction {
                 bagianPegawai = absensiPegawai.getBagian();
             }
             forReport.add(absensiPegawai);
-            NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY);
+//            NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY);
+            NumberFormat nf = NumberFormat.getInstance();
             NumberFormat nf1 = NumberFormat.getInstance(Locale.US);
 //            DecimalFormat df1 =  new DecimalFormat("#.00",DecimalFormatSymbols.getInstance(Locale.US));
             jJumlahJamSeluruhnya += nf.parse(absensiPegawai.getStLamaLembur()).doubleValue();

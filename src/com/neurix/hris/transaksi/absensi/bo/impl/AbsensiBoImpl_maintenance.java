@@ -4842,26 +4842,33 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                             tidakAbsenPulang = tidakAbsenPulang + 1;
                         }
                     } else if (("02").equalsIgnoreCase(hasilAbsensi.getStatusAbsensi())) {
-                        List<ImHrisJamKerja> jamKerjaList;
-                        String jamMasukDB = null;
-                        Double selisih = null;
-                        Calendar cal = Calendar.getInstance();
-                        cal.setTime(hasilAbsensi.getTanggal());
-                        String branch = CommonConstant.ID_KANPUS;
-                        int day = cal.get(Calendar.DAY_OF_WEEK);
-                        Map hsCriteria2 = new HashMap();
-                        hsCriteria2.put("branch_id", branch);
-                        hsCriteria2.put("hari", day);
-                        hsCriteria2.put("flag", "Y");
-                        jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
-                        for (ImHrisJamKerja jamKerja : jamKerjaList) {
-                            jamMasukDB = jamKerja.getJamAwalKerja();
-                        }
-                        try {
-                            selisih = CommonUtil.SubtractJam(jamMasukDB, hasilAbsensi.getJamMasuk());
-                        } catch (ParseException e) {
-                            e.printStackTrace();
-                        }
+//                        List<ImHrisJamKerja> jamKerjaList;
+//                        String jamMasukDB = null;
+//                        Double selisih = null;
+//                        Calendar cal = Calendar.getInstance();
+//                        cal.setTime(hasilAbsensi.getTanggal());
+//                        String branch = CommonConstant.ID_KANPUS;
+//                        int day = cal.get(Calendar.DAY_OF_WEEK);
+//                        Map hsCriteria2 = new HashMap();
+//                        hsCriteria2.put("branch_id", branch);
+//                        hsCriteria2.put("hari", day);
+//                        hsCriteria2.put("flag", "Y");
+//                        jamKerjaList = jamKerjaDao.getByCriteria(hsCriteria2);
+//                        for (ImHrisJamKerja jamKerja : jamKerjaList) {
+//                            jamMasukDB = jamKerja.getJamAwalKerja();
+//                        }
+//                        try {
+//                            selisih = CommonUtil.SubtractJam(jamMasukDB, hasilAbsensi.getJamMasuk());
+//                        } catch (ParseException e) {
+//                            e.printStackTrace();
+//                        }
+//                        if (selisih >= 1) {
+//                            terlambatLebih60 = terlambatLebih60 + 1;
+//                        } else {
+//                            terlambatKurang60 = terlambatKurang60 + 1;
+//                        }
+                        BigInteger terlambat= hasilAbsensi.getTelat();
+                        int selisih = terlambat.compareTo(new BigInteger("60"));
                         if (selisih >= 1) {
                             terlambatLebih60 = terlambatLebih60 + 1;
                         } else {
@@ -5374,6 +5381,8 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                         absensiPegawai.setStatusAbsensiOnCall(statusAbsensi);
                                     } else {
                                         jamFinger = olahDataMesinOnCall(mesinAbsensiDetailOnCallEntityList);
+                                        tsJamAwalFinger = jamFinger.get("awalFinger");
+                                        tsJamAkhirFinger = jamFinger.get("akhirFinger");
                                         //set status masuk
                                         String statusA = getStatusMasuk(jamFinger, jadwalOnCall);
                                         if ("02".equalsIgnoreCase(statusA)) {
