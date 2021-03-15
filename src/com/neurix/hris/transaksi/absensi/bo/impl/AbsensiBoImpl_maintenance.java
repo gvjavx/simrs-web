@@ -5494,7 +5494,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                             HttpSession session = ServletActionContext.getRequest().getSession();
                                             session.setAttribute("listOfResultOnCall", onCallFinal);
 
-                                            Lembur lemburOC = lemburOnCall(realisasiLembur, biodata, tanggalInquiry, jadwalOnCall, jamKerja, jamFinger, absensiPegawai.getTipeHari(), tahunGaji);
+                                            Lembur lemburOC = lemburOnCall(realisasiLembur, biodata, tanggalInquiry, tahunGaji);
                                             if (lemburOC.isAdaAbsen()) {
                                                 absensiPegawai.setLembur("Y");
                                                 absensiPegawai.setPengajuanLembur(lemburOC.getLamaJam());
@@ -5510,7 +5510,16 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                         }
                                     } else {
                                         //jika lembur on call tapi tidak dipanggil
-                                        Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, jadwalOnCall, jamKerja, jamFinger, absensiPegawai.getTipeHari(), tahunGaji);
+//                                        Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, jadwalOnCall, jamKerja, jamFinger, absensiPegawai.getTipeHari(), tahunGaji);
+//                                        absensiPegawai.setLembur("Y");
+//                                        absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
+//                                        absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
+//                                        absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
+//                                        absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
+//                                        absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
+//                                        absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
+//                                        absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
+                                        Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, tahunGaji);
                                         absensiPegawai.setLembur("Y");
                                         absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
                                         absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
@@ -5580,6 +5589,9 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                     }
                     if (absensiPegawai.getStatusAbsensi() != null) {
                         absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
+                        if(absensiPegawai.getStatusAbsensi2() != null){
+                            absensiPegawai.setStatusName2(CommonUtil.statusName(absensiPegawai.getStatusAbsensi2()));
+                        }
                         if ("hari_kerja".equalsIgnoreCase(absensiPegawai.getTipeHari())) {
                             absensiPegawai.setTipeHariName("Kerja");
                         } else if ("hari_libur".equalsIgnoreCase(absensiPegawai.getTipeHari())) {
@@ -6520,7 +6532,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
         return returnLembur;
     }
 
-    private Lembur lemburOnCall(double realisasiLembur, ImBiodataEntity biodata, Date tanggalInquiry, Map<String, Timestamp> jadwalShift, AbsensiPegawai jamKerja, Map<String, Timestamp> finger, String tipeHari, String tahunGaji) {
+    private Lembur lemburOnCall(double realisasiLembur, ImBiodataEntity biodata, Date tanggalInquiry, String tahunGaji) {
         Lembur returnLembur = new Lembur();
         boolean boolOnCall = false;
         if (realisasiLembur != 0) {
@@ -6549,7 +6561,7 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
 
             hsCriteria4 = new HashMap();
             hsCriteria4.put("golongan_id", biodata.getGolongan());
-            hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
+//            hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
             hsCriteria4.put("tahun", tahunGaji);
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
@@ -6587,20 +6599,26 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             if (finalLamaLembur > 0) {
                 do {
                     if (finalLamaLembur > 0 && finalLamaLembur < 1) {
-                        Map hsCriteria5 = new HashMap();
-                        hsCriteria5.put("tipe_hari", tipeHari);
-                        hsCriteria5.put("jam_lembur", jLembur);
-                        hsCriteria5.put("flag", "Y");
-                        List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                        try {
-                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-                        } catch (HibernateException e) {
-                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                            throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+//                        Map hsCriteria5 = new HashMap();
+//                        hsCriteria5.put("tipe_hari", tipeHari);
+//                        hsCriteria5.put("jam_lembur", jLembur);
+//                        hsCriteria5.put("flag", "Y");
+//                        List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
+//                        try {
+//                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
+//                        } catch (HibernateException e) {
+//                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
+//                            throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
+//                        }
+//                        for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
+//                            jamLembur = jamLembur + (finalLamaLembur * 2);
+//                        }
+//                        finalLamaLembur = (double) 0;
+                        //RAKA-18FEB2021==>Perhitungan langsung sisa jam lembur < 1 jam
+                        if (finalLamaLembur >= 0.5) {
+                            jamLembur = jamLembur + 0.5;
                         }
-                        for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-                            jamLembur = jamLembur + (finalLamaLembur * 2);
-                        }
+                        //RAKA-end
                         finalLamaLembur = (double) 0;
                     } else {
                         Map hsCriteria5 = new HashMap();
@@ -6638,8 +6656,9 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
             kursIndonesia.setDecimalFormatSymbols(formatRp);
             stUpahLembur = kursIndonesia.format(upahLembur);
 
+            returnLembur.setAdaAbsen(true);
             returnLembur.setJamRealisasi(realisasiLembur);
-            returnLembur.setJamRealisasi(finalLamaLembur);
+//            returnLembur.setJamRealisasi(finalLamaLembur);
             returnLembur.setLamaJam(realisasiLembur);
             returnLembur.setLamaHitungan(jamLembur);
             returnLembur.setTipeLembur("OC");
@@ -6648,129 +6667,22 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
         } else {
             //jika ada yg null
             // menghitung upah lembur
-            double onCall = 3;
-            List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
-            Map hsCriteria4 = new HashMap();
-            hsCriteria4.put("tipe_pegawai_id", biodata.getTipePegawai());
-            hsCriteria4.put("flag", "Y");
-            double faktor = 0;
-            Double upahLembur = 0d;
-            Double gapok = 0d;
-            Double sankhus = 0d;
-            try {
-                pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
-            } catch (HibernateException e) {
-                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                throw new HibernateException("Found problem when retrieving Pengali Faktor Lembur by criteria, " + e.getMessage());
-            }
-            for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
-                faktor = pengaliFaktorLemburEntity.getFaktor();
-            }
+            Lembur noCall = lemburOC_noCall(biodata, tanggalInquiry, tahunGaji);
 
-            hsCriteria4 = new HashMap();
-            hsCriteria4.put("golongan_id", biodata.getGolongan());
-            hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
-            hsCriteria4.put("tahun", tahunGaji);
-            hsCriteria4.put("flag", "Y");
-            List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
-            List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase("TP01")) {
-                try {
-                    payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
-                } catch (HibernateException e) {
-                    logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                    throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
-                }
-                for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                    gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
-                    sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
-                }
-            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
-                try {
-                    payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
-                } catch (HibernateException e) {
-                    logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                    throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
-                }
-                for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop : payrollSkalaGajiPkwtEntityList) {
-                    gapok = skalaGajiLoop.getGajiPokok().doubleValue();
-                    sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
-                }
-            }
-
-            double jamLembur = 0;
-            double finalLamaLembur = onCall;
-
-
-            int j = 1;
-            if (finalLamaLembur > 0) {
-                do {
-                    if (finalLamaLembur > 0 && finalLamaLembur < 1) {
-                        Map hsCriteria5 = new HashMap();
-                        hsCriteria5.put("tipe_hari", tipeHari);
-                        hsCriteria5.put("jam_lembur", j);
-                        hsCriteria5.put("flag", "Y");
-                        List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                        try {
-                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-                        } catch (HibernateException e) {
-                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                            throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
-                        }
-                        for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-                            jamLembur = jamLembur + (finalLamaLembur * 2);
-                        }
-                        finalLamaLembur = (double) 0;
-                    } else {
-                        Map hsCriteria5 = new HashMap();
-                        hsCriteria5.put("tipe_hari", tipeHari);
-                        hsCriteria5.put("jam_lembur", j);
-                        hsCriteria5.put("flag", "Y");
-                        List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                        try {
-                            jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-                        } catch (HibernateException e) {
-                            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                            throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
-                        }
-                        for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-                            jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
-                        }
-                        finalLamaLembur = finalLamaLembur - 1;
-                    }
-                    j = j + 1;
-                } while (finalLamaLembur > 0);
-            }
-            Double peralihan = 0d;
-            peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-            upahLembur = (gapok + peralihan) * faktor * jamLembur;
-            upahLembur = Math.floor(upahLembur);
-
-            String stUpahLembur = "";
-            DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
-            DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
-
-            formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
-            formatRp.setGroupingSeparator('.');
-
-            kursIndonesia.setDecimalFormatSymbols(formatRp);
-            stUpahLembur = kursIndonesia.format(upahLembur);
-
-            returnLembur.setJamRealisasi(onCall);
-            returnLembur.setLamaJam(realisasiLembur);
-            returnLembur.setLamaHitungan(jamLembur);
+            returnLembur.setAdaAbsen(true);
+            returnLembur.setJamRealisasi(noCall.getJamRealisasi());
+            returnLembur.setLamaJam(noCall.getLamaJam());
+            returnLembur.setLamaHitungan(noCall.getLamaHitungan());
             returnLembur.setTipeLembur("OC");
-            returnLembur.setUpahLembur(upahLembur);
-            returnLembur.setStUpahLembur(stUpahLembur);
+            returnLembur.setUpahLembur(noCall.getUpahLembur());
+            returnLembur.setStUpahLembur(noCall.getStUpahLembur());
         }
         return returnLembur;
     }
 
-    private Lembur lemburOC_noCall(ImBiodataEntity biodata, Date tanggalInquiry, Map<String, Timestamp> jadwalShift, AbsensiPegawai jamKerja, Map<String, Timestamp> finger, String tipeHari, String tahunGaji) {
+    private Lembur lemburOC_noCall(ImBiodataEntity biodata, Date tanggalInquiry, String tahunGaji) {
         Lembur returnLembur = new Lembur();
 
-        double onCall = 3;
         List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
         Map hsCriteria4 = new HashMap();
         hsCriteria4.put("tipe_pegawai_id", biodata.getTipePegawai());
@@ -6819,71 +6731,33 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                 sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
             }
         }
-        double jamLembur = 0;
-        double finalLamaLembur = onCall;
+        double jamLembur = 3;
 
-        int j = 1;
-        if (finalLamaLembur > 0) {
-            do {
-                if (finalLamaLembur > 0 && finalLamaLembur < 1) {
-                    Map hsCriteria5 = new HashMap();
-                    hsCriteria5.put("tipe_hari", tipeHari);
-                    hsCriteria5.put("jam_lembur", j);
-                    hsCriteria5.put("flag", "Y");
-                    List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                    try {
-                        jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-                    } catch (HibernateException e) {
-                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                        throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
-                    }
-                    for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-                        jamLembur = jamLembur + (finalLamaLembur * 2);
-                    }
-                    finalLamaLembur = (double) 0;
-                } else {
-                    Map hsCriteria5 = new HashMap();
-                    hsCriteria5.put("tipe_hari", tipeHari);
-                    hsCriteria5.put("jam_lembur", j);
-                    hsCriteria5.put("flag", "Y");
-                    List<JamLemburEntity> jamLemburEntityList = new ArrayList<>();
-                    try {
-                        jamLemburEntityList = jamLemburDao.getByCriteria(hsCriteria5);
-                    } catch (HibernateException e) {
-                        logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                        throw new HibernateException("Found problem when retrieving Jam Lembur by criteria, " + e.getMessage());
-                    }
-                    for (JamLemburEntity jamLemburEntity : jamLemburEntityList) {
-                        jamLembur = jamLembur + (jamLemburEntity.getPengaliJamLembur());
-                    }
-                    finalLamaLembur = finalLamaLembur - 1;
-                }
-                j = j + 1;
-            } while (finalLamaLembur > 0);
-            Double peralihan = 0d;
-            peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
+        Double peralihan = 0d;
+        peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
 //            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-            upahLembur = (gapok + peralihan) * faktor * jamLembur;
-            upahLembur = Math.floor(upahLembur);
+        upahLembur = (gapok + peralihan) * faktor * jamLembur;
+        upahLembur = Math.floor(upahLembur);
 
-            String stUpahLembur = "";
-            DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
-            DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
+        String stUpahLembur = "";
+        DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
+        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
 
-            formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
-            formatRp.setGroupingSeparator('.');
+        formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
+        formatRp.setGroupingSeparator('.');
 
-            kursIndonesia.setDecimalFormatSymbols(formatRp);
-            stUpahLembur = kursIndonesia.format(upahLembur);
+        kursIndonesia.setDecimalFormatSymbols(formatRp);
+        stUpahLembur = kursIndonesia.format(upahLembur);
 
-            returnLembur.setJamRealisasi(onCall);
-            returnLembur.setFinalLamaLembur(onCall);
-            returnLembur.setLamaJam(onCall);
-            returnLembur.setLamaHitungan(jamLembur);
-            returnLembur.setTipeLembur("OC");
-            returnLembur.setUpahLembur(upahLembur);
-            returnLembur.setStUpahLembur(stUpahLembur);
-        }
+        //[Pribadi] On Call tanpa dipanggil, jam lembur jadikan 0 tapi perhitungan lembur (jamLembur) diberikan 3. agar upah on Call bervariasi berdasarkan Gapok+Peralihan (seperti Lembur).
+        returnLembur.setJamRealisasi(0.0);
+        returnLembur.setFinalLamaLembur(0.0);
+        returnLembur.setLamaJam(0.0);
+        returnLembur.setLamaHitungan(jamLembur);
+        returnLembur.setTipeLembur("OC");
+        returnLembur.setUpahLembur(upahLembur);
+        returnLembur.setStUpahLembur(stUpahLembur);
+
         return returnLembur;
     }
 }
