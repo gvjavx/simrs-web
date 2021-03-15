@@ -1,3 +1,11 @@
+------ 2021-03-15 ===> Master Branch Nilai Beberapa Tunjnagan
+-- Menambahkan field nilai tunjangan
+    ALTER TABLE im_branches
+    --ADD COLUMN tunj_pemondokan numeric(15,2),
+    ADD COLUMN tunj_supervisi numeric(15,2),
+    ADD COLUMN tunj_lokasi numeric(15,2),
+    ADD COLUMN tunj_siaga numeric(15,2);
+
 ------ 2021-03-01 ===> Master Kelompok Position & Transaksi Tunjangan Lain
 -- Menambahkan field Tunj. Telekomunikasi
 
