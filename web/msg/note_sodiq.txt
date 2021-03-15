@@ -1986,6 +1986,40 @@ WHERE parent = 2074;
 ALTER TABLE it_simrs_order_gizi
 ADD COLUMN id_detail_checkup VARCHAR(50);
 
+--RABU, 10.03.2021
+CREATE TABLE it_simrs_upload_hasil_pemeriksaan(
+id_upload_hasil_pemeriksaan VARCHAR(30) PRIMARY KEY NOT NULL,
+id_periksa_lab VARCHAR(30),
+url_img VARCHAR(100),
+tipe VARCHAR(50),
+action character varying(1),
+flag character(1),
+last_update timestamp without time zone,
+created_date timestamp without time zone,
+created_who VARCHAR(100),
+last_update_who VARCHAR(100)
+);
+
+CREATE SEQUENCE seq_upload_hasil_pemeriksaan;
+
+ALTER TABLE it_simrs_periksa_lab
+RENAME COLUMN ttd_dokter TO ttd_validator;
+
+ALTER TABLE it_simrs_periksa_lab
+DROP ttd_pengirim,
+DROP id_dokter,
+DROP id_pemeriksa;
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN is_periksa_luar VARCHAR(50);
+
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN nama_lab_luar VARCHAR(50);
+
+--MAPPING GIZI ASESMENT
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000247','RMM00000014','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
+
 
 
 

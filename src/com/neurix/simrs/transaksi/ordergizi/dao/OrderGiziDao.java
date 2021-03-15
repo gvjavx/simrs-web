@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.ordergizi.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
@@ -120,7 +121,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                     ") c ON b.id_pelayanan = c.id_pelayanan\n" +
                     "INNER JOIN it_simrs_order_gizi d ON b.id_detail_checkup = d.id_detail_checkup\n" +
-                    "WHERE d.flag = :flag AND c.tipe_pelayanan = 'rawat_jalan'\n" +condition;
+                    "WHERE d.flag = :flag AND c.tipe_pelayanan IN ('rawat_jalan', 'igd')\n" +condition;
 
             if("RI".equalsIgnoreCase(bean.getTipePelayanan())){
                 SQL = "SELECT\n" +
@@ -185,6 +186,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                     if (obj[4] != null && !"".equalsIgnoreCase(obj[4].toString())) {
                         String tglLahir = new SimpleDateFormat("dd-MM-yyyy").format((Date) obj[4]);
                         rawatInap.setTglLahir(tglLahir);
+                        rawatInap.setUmur(CommonUtil.calculateAge((java.sql.Date) obj[4], true));
                     }
 
                     rawatInap.setIdDetailCheckup(obj[5] == null ? "" : obj[5].toString());
@@ -368,7 +370,10 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                 "waktu,\n" +
                 "created_date\n" +
                 "FROM it_simrs_order_gizi\n" +
-                "WHERE waktu LIKE :ket AND flag = 'Y' \n" + condi;
+                "WHERE waktu LIKE :ket AND flag = 'Y' \n" +
+                "AND diterima_flag NOT LIKE 'R' \n" +
+                "AND approve_flag NOT LIKE 'N' \n"+
+                condi;
 
         List<Object[]> results = new ArrayList<>();
         results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

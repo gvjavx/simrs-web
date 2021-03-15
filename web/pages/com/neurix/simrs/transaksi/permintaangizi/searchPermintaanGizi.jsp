@@ -12,6 +12,12 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanGiziAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -270,28 +276,81 @@
                                     </td>
                                     <td><s:property value="namaDiagnosa"/></td>
                                     <td>
-                                        <s:if test='#row.approveFlag == "Y"'>
-                                            <span class="span-success">telah dikonfirmasi</span>
+                                        <s:if test='#row.diterimaFlag == "R"'>
+                                            <span class="span-danger">dibatalkan</span>
                                         </s:if>
                                         <s:else>
-                                            <span class="span-warning">menunggu konfirmasi</span>
+                                            <s:if test='#row.approveFlag == "Y"'>
+                                                <span class="span-success">telah dikonfirmasi</span>
+                                            </s:if>
+                                            <s:elseif test='#row.approveFlag == "N"'>
+                                                <span class="span-danger">ditolak</span>
+                                            </s:elseif>
+                                            <s:else>
+                                                <span class="span-warning">menunggu konfirmasi</span>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                     <td align="center">
-                                        <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
-                                             src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                             style="cursor: pointer;" onclick="viewHistory('<s:property value="idPasien"/>', '<s:property value="namaPasien"/>')">
-                                        <s:if test='#row.approveFlag == "Y"'>
-                                            <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
+                                        <s:if test='#row.diterimaFlag == "R"'>
+                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                 style="cursor: pointer;"
+                                                 onclick="viewHistory('<s:property value="idPasien"/>',
+                                                         '<s:property value="namaPasien"/>',
+                                                         '<s:property value="jenisKelamin"/>',
+                                                         '<s:property value="umur"/>',
+                                                         '<s:property value="namaRangan"/>',
+                                                         '<s:property value="jenisDiet"/>',
+                                                         '<s:property value="bentukGizi"/>',
+                                                         '<s:property value="alergi"/>',
+                                                         '<s:property value="namaDiagnosa"/>',
+                                                         '<s:property value="idDetailCheckup"/>'
+                                                         )">
                                         </s:if>
                                         <s:else>
-                                            <div class="form-check">
-                                                <input onclick="setSave('id_order_gizi')" type="checkbox"
-                                                       name="id_order_gizi"
-                                                       id="id_order_gizi_<s:property value="idOrderGizi"/>"
-                                                       value="<s:property value="idOrderGizi"/>">
-                                                <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
-                                            </div>
+                                            <s:if test='#row.approveFlag == "Y"'>
+                                                <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
+                                            </s:if>
+                                            <s:elseif test='#row.approveFlag == "N"'>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>'
+                                                             )">
+                                            </s:elseif>
+                                            <s:else>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>'
+                                                             )">
+                                                <div class="form-check">
+                                                    <input onclick="setSave('id_order_gizi')" type="checkbox"
+                                                           name="id_order_gizi"
+                                                           id="id_order_gizi_<s:property value="idOrderGizi"/>"
+                                                           value="<s:property value="idOrderGizi"/>">
+                                                    <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
+                                                </div>
+                                            </s:else>
                                         </s:else>
                                     </td>
                                 </tr>
@@ -404,12 +463,74 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History Penunjang Medis <span id="label_pasien"></span>
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> All History Penunjang Medis</span>
                 </h4>
             </div>
             <div class="modal-body" style="height: 450px;overflow-y: scroll;">
                 <div class="box-body">
-                    <table class="table table-bordered" style="font-size: 12px;">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-striped" style="font-size: 12px">
+                                <tr>
+                                    <td width="30%">NO RM</td>
+                                    <td><span id="det_no_rm"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama</td>
+                                    <td><span id="det_nama"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Jenis Kelamin</td>
+                                    <td><span id="det_jk"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Umur</td>
+                                    <td><span id="det_umur"></span></td>
+                                </tr>
+                                <tr>
+                                    <td >Ruangan</td>
+                                    <td><span id="det_ruangan"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-striped" style="font-size: 12px">
+                                <tr>
+                                    <td width="30%">Jenis Diet</td>
+                                    <td><span id="det_jenis_diet"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Bentuk Diet</td>
+                                    <td><span id="det_bentuk_diet"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Alergi</td>
+                                    <td><span id="det_alergi"></span></td>
+                                </tr>
+                                <tr>
+                                    <td>Diagnosa</td>
+                                    <td><span id="det_diagnosa"></span></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group dropdown" style="margin-top: -20px">
+                                <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen
+                                </button>
+                                <button id="btn_ases" type="button" class="btn btn-primary dropdown-toggle"
+                                        data-toggle="dropdown" style="height: 34px">
+                                    <span class="caret"></span>
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <ul class="dropdown-menu" role="menu" id="asesmen_rj">
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <hr>
+                    <table class="table table-bordered" style="font-size: 12px; margin-top: 20px">
                         <thead>
                         <tr style="font-weight: bold">
                             <td width="30%">Pelayanan</td>
@@ -455,8 +576,27 @@
     </div>
 </div>
 
+<div id="modal-temp"></div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+
+    var idDetailCheckup = "";
+    var contextPath = '<%= request.getContextPath() %>';
+    var isReadRM = false;
+    var noCheckup = "";
+    var umur = "";
+    var namaRuanganPasien = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempTensi = "";
+    var tempSuhu = "";
+    var tempNadi = "";
+    var tempRr = "";
+    var tempBerat = "";
+    var tempTinggi = "";
+    var tempAnmnesa = "";
+    var idPasien = "";
 
     function listOrderGizi(idRawatInap, noCheckup) {
         $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
@@ -678,6 +818,7 @@
                 PermintaanGiziAction.updateGizi(json, {
                     callback: function (res) {
                         if(res.status == "success"){
+                            $('#modal-not-approve').modal('hide');
                             $('#load_not_approve').hide();
                             $('#save_not_approve').show();
                             $('#info_dialog').dialog('open');
@@ -721,12 +862,25 @@
         }
     }
 
-    function viewHistory(idPasien, namaPasien) {
+    function viewHistory(idPas, namaPasien, jenisKelamin, um, ruangan, jenisDiet, betukDiet, alergi, diagnosa, iddetail) {
         if(!cekSession()){
+            $('#btn_ases').attr('onclick', 'getListRekamMedis(\'gizi\',\'\',\''+iddetail+'\')');
+            idDetailCheckup = iddetail;
+            umur = um;
+            idPasien = idPas;
             $('#label_pasien').text(namaPasien);
             $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
             var table = "";
-            PeriksaLabAction.getListHistoryLabRadiologi(idPasien, function (res) {
+            $('#det_no_rm').html(idPas);
+            $('#det_nama').html(namaPasien);
+            $('#det_jk').html(jenisKelamin);
+            $('#det_umur').html(um);
+            $('#det_ruangan').html(ruangan);
+            $('#det_jenis_diet').html(jenisDiet);
+            $('#det_bentuk_diet').html(betukDiet);
+            $('#det_alergi').html(alergi);
+            $('#det_diagnosa').html(diagnosa);
+            PeriksaLabAction.getListHistoryLabRadiologi(idPas, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var btn = "";
@@ -786,13 +940,6 @@
                                     '<td>' + cekDataNull(item.keterangan) + '</td>' +
                                     '</tr>';
                             }
-                            if (keterangan == "resep") {
-                                body += '<tr>' +
-                                    '<td>' + cekDataNull(item.namaObat) + '</td>' +
-                                    '<td>' + cekDataNull(item.qty) + ' ' + cekDataNull(item.satuan) + '</td>' +
-                                    '<td>' + cekDataNull(item.keterangan) + '</td>' +
-                                    '</tr>';
-                            }
                         });
                     }
 
@@ -807,15 +954,8 @@
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                             '<td>Pemeriksaan</td>' +
                             '<td>Satuan</td>' +
-                            '<td>Keterangan Acuan</td>' +
+                            '<td>Nilai Normal</td>' +
                             '<td>Hasil</td>' +
-                            '<td>Keterangan</td>' +
-                            '</tr>';
-                    }
-                    if (keterangan == "resep") {
-                        head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                            '<td>Nama Obat</td>' +
-                            '<td>Qty</td>' +
                             '<td>Keterangan</td>' +
                             '</tr>';
                     }
@@ -855,6 +995,87 @@
         $('#img_lab_luar').attr('src',url);
         $('#modal-lab_luar').modal({show:true, backdrop:'static'});
     }
+
+    function loadModalRM(jenis) {
+        var context = contextPath + '/pages/modal/modal-default.jsp';
+        if (jenis != "") {
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
+        }
+        $('#modal-temp').load(context, function (res, status, xhr) {
+        });
+    }
+
+    function getListRekamMedis(tipePelayanan, jenis, id) {
+        var li = "";
+        var jenisRm = "";
+        if (jenis == "igd") {
+            if (umur >= 0 && umur <= 17) {
+                jenisRm = 'ugd_anak';
+            } else if (umur >= 18 && umur <= 55) {
+                jenisRm = 'ugd_dewasa';
+            } else if (umur > 56) {
+                jenisRm = 'ugd_geriatri';
+            }
+        } else {
+            jenisRm = jenis;
+        }
+        CheckupAction.getListRekammedisPasien(tipePelayanan, jenisRm, id, function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+                    labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
+
+                    if (item.jenis == 'ringkasan_rj') {
+                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                    } else {
+                        if (item.function == 'addMonitoringFisioterapi') {
+                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
+                        } else {
+                            if (item.keterangan == 'form') {
+                                li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            } else if (item.keterangan == "surat") {
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                            }
+                        }
+                    }
+                });
+                $('#asesmen_rj').html(li);
+            }
+        });
+    }
+
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>
