@@ -3853,6 +3853,7 @@
         }else{
             $('#form-uang-muka').show();
             $('#cek_poli_eksekutif').val('N');
+            $('#pembayaran').val('tunai');
         }
     }
 

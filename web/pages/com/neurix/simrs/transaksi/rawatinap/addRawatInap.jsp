@@ -296,6 +296,14 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>No Telp. Penanggung Jawab</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="rawatInap.noTelp"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <s:if test='rawatInap.idJenisPeriksa == "umum"'>
                                         <tr>
                                             <td>
@@ -752,6 +760,9 @@
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px" onclick="showModal(7)"><i class="fa fa-plus hvr-icon"></i> Tambah Resep</button>
+                        <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
+                        </button>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -2030,7 +2041,7 @@
                     <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                     <div class="col-md-9">
                         <s:action id="initApotek" namespace="/checkup"
-                                  name="getComboApotek_checkup"/>
+                                  name="getComboApotekRi_checkup"/>
                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                   list="#initApotek.listOfApotek" id="resep_apotek"
                                   listKey="idPelayanan + '|' + namaPelayanan"

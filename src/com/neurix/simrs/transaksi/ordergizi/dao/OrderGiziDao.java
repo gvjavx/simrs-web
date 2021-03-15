@@ -65,6 +65,9 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
             String condition = "";
             String khsusus = "";
 
+            if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
+                condition += "AND a.branch_id = '"+bean.getBranchId()+"' \n";
+            }
             if (bean.getIdPasien() != null && !"".equalsIgnoreCase(bean.getIdPasien())) {
                 condition += "AND a.id_pasien LIKE '%"+bean.getIdPasien()+"%' \n";
             }
@@ -139,7 +142,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                         "d.id_order_gizi,\n" +
                         "d.tgl_order,\n" +
                         "d.approve_flag,\n" +
-                        "d.diterima_flag\n" +
+                        "d.diterima_flag,\n" +
                         "c.no_ruangan\n" +
                         "FROM it_simrs_header_checkup a\n" +
                         "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
@@ -159,7 +162,7 @@ public class OrderGiziDao extends GenericDao<ItSimrsOrderGiziEntity, String> {
                         "INNER JOIN im_simrs_kelas_ruangan d ON c.id_kelas_ruangan = d.id_kelas_ruangan \n" + khsusus +
                         ") c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                         "INNER JOIN it_simrs_order_gizi d ON c.id_rawat_inap = d.id_rawat_inap\n" +
-                        "WHERE d.flag = 'Y' \n" +condition;
+                        "WHERE d.flag = :flag \n" +condition;
             }
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
