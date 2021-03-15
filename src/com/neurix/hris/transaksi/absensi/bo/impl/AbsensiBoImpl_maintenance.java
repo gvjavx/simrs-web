@@ -5550,6 +5550,19 @@ public class AbsensiBoImpl_maintenance implements AbsensiBo {
                                             } else {
                                                 absensiPegawai.setLembur("N");
                                             }
+                                        }else{
+                                            //TIDAK HADIR /TIDAK ABSEN ketika DIPANGGIL
+                                            Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, tahunGaji);
+                                            absensiPegawai.setLembur("Y");
+                                            absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
+                                            absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
+                                            absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
+                                            absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
+                                            absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
+                                            absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
+                                            absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
+
+                                            absensiPegawai.setStatusAbsensi("17");
                                         }
                                     } else {
                                         //jika lembur on call tapi tidak dipanggil
