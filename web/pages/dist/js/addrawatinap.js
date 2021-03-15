@@ -1285,7 +1285,7 @@ function listSelectParameter(idLab) {
 }
 
 function saveLab(id) {
-    var data = $('#tabel_dokter').tableToJSON();
+    var data = $('#tbl_dokter').tableToJSON();
     var idDokter = "";
     $.each(data, function (i, item) {
         if (i == 0) {
@@ -1788,11 +1788,7 @@ function saveDiet(id) {
         var bentukDiet = $('#bentuk_diet').val();
         var jenisDiet = $('#jenis_diet').val();
         var ketData = $('[name=ket_diet]');
-        var isBesok = $('#besok_diet').is(':checked');
-        var besok = "N";
-        if (isBesok) {
-            besok = "Y";
-        }
+        var untukKapan = $('[name=untuk]:checked').val();
         var keteranganDiet = "";
         $.each(ketData, function (i, item) {
             if (item.checked) {
@@ -1806,10 +1802,11 @@ function saveDiet(id) {
             var jenis = $('#jenis_' + i).val();
             var bentukText = $('#bentuk_text_' + i).val();
             data.push({
-                'id_rawat_inap': idRawatInap,
+                'id_detail_checkup': idDetailCheckup,
                 'waktu': waktu,
                 'id_diet_gizi': bentuk,
-                'id_jenis_diet': jenis
+                'id_jenis_diet': jenis,
+                'id_rawat_inap': idRawatInap
             });
         });
         if (bentukDiet != '' && keteranganDiet != '' && jenisDiet != '') {
@@ -1817,7 +1814,7 @@ function saveDiet(id) {
             $('#load_diet').show();
             dwr.engine.setAsync(true);
             var result = JSON.stringify(data);
-            OrderGiziAction.saveOrderGizi(result, besok, function (response) {
+            OrderGiziAction.saveOrderGizi(result, untukKapan, "RI", function (response) {
                 if (response.status == "success") {
                     dwr.engine.setAsync(false);
                     listDiet();
@@ -1848,6 +1845,7 @@ function saveDiet(id) {
         }
     }
 }
+
 
 function listDiet() {
     var table = "";
@@ -1893,7 +1891,7 @@ function listDiet() {
 
                 table += "<tr>" +
                     "<td>" + dateFormat + "</td>" +
-                    "<td>" + item.idDietGizi + "</td>" +
+                    "<td>" + item.jenisDiet + "</td>" +
                     "<td>" + item.bentukDiet + "</td>" +
                     "<td>" + item.waktu + "</td>" +
                     "<td align='center'>" + label + "</td>" +
@@ -3745,6 +3743,9 @@ function refreshTable(id, tipe) {
         }
         if ("lab" == tipe) {
             listLab();
+        }
+        if ("resep" == tipe) {
+            listResepPasien();
         }
         $('#' + id).removeClass("fa-spin");
     }, 500);
