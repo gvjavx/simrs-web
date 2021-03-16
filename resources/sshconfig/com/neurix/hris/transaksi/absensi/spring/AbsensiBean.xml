@@ -14,8 +14,7 @@
     <bean id="historyPegawaiController" class="com.neurix.hris.mobileapi.HistoryPegawaiController"
           p:absensiBoProxy-ref="absensiBoProxy" />
 
-    <!--<bean id="absensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.AbsensiBoImpl"-->
-    <bean id="absensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.AbsensiBoImpl_maintenance"
+    <bean id="absensiBo" class="com.neurix.hris.transaksi.absensi.bo.impl.AbsensiBoImpl"
           p:absensiPegawaiDao-ref="absensiPegawaiDao"
           p:biodataDao-ref="biodataDao"
           p:jamKerjaDao-ref="jamKerjaDao"
