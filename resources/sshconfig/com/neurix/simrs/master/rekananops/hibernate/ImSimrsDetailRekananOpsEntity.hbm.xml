@@ -51,6 +51,18 @@
                 <column name="tarif"/>
             </basic>
 
+            <!--Sigit Tambahan table per 2021-03-16 -->
+            <basic name="tarifBpjs">
+                <column name="tarif_bpjs"/>
+            </basic>
+            <basic name="diskonNonBpjs">
+                <column name="diskon_non_bpjs"/>
+            </basic>
+            <basic name="diskonBpjs">
+                <column name="diskon_bpjs"/>
+            </basic>
+
+
         </attributes>
     </entity>
 </entity-mappings>

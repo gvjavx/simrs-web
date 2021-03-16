@@ -19,5 +19,6 @@ public interface RekananOpsBo {
     public ImSimrsRekananOpsEntity getRekananEntityById(String id) throws GeneralBOException;
     public List<DetailRekananOps> getSearchByCriteria (RekananOps bean) throws GeneralBOException;
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException;
+    public void saveAllListTarifRekanan(RekananOps bean, List<DetailRekananOps> listDetailRekanan) throws GeneralBOException;
 
 }

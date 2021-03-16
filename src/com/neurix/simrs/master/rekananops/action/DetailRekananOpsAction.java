@@ -611,4 +611,171 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[CheckupAction.saveAddToSessionTindakan] END process <<<");
         return this.response;
     }
+
+    // Sigit 2020-03-16
+    // untuk prosess save edit tarif per tindakan pada detail rekanan;
+    public CrudResponse saveEditToSessionTindakan(String stJson) throws JSONException{
+        logger.info("[CheckupAction.saveEditToSessionTindakan] START process >>>");
+
+        // validasi jika data pada json tidak ada
+        if (stJson == null || "".equalsIgnoreCase(stJson)){
+            this.response.addResponse("error","Tidak Bisa Menerima Data Karna Kosong");
+            return this.response;
+        }
+        // END
+
+        // mendapatkan id item untuk mencari data pada list pada session
+        JSONObject jsonObject = new JSONObject(stJson);
+        String idItem = jsonObject.getString("id_item");
+        if (idItem == null || "".equalsIgnoreCase(idItem)){
+            this.response.addResponse("error","Tidak Bisa Data Id Item");
+            return this.response;
+        }
+        // END
+
+        // set nilai tarif
+        // set to session;
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<DetailRekananOps> listOfTindakan = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
+
+        if (listOfTindakan.size() > 0){
+            List<DetailRekananOps> filteredList = listOfTindakan.stream().filter(
+                    p->p.getIdItem().equalsIgnoreCase(idItem)
+            ).collect(Collectors.toList());
+
+            if (filteredList.size() == 0){
+
+                this.response.addResponse("error","Tidak Bisa Data List dengan Id Item Dikirim");
+                return this.response;
+
+            } else {
+
+                DetailRekananOps detail = filteredList.get(0);
+                detail.setTarif(new BigDecimal(jsonObject.getString("tarif")));
+                detail.setFlag("Y");
+
+                // jika tidak ada id detail rekanan ops tetap status menjadi add;
+                // karna meningindikasikan data baru;
+                if (detail.getIdDetailRekananOps() != null && !"".equalsIgnoreCase(detail.getIdDetailRekananOps())){
+                    detail.setTipe("edit");
+                } else {
+                    detail.setTipe("add");
+                }
+                // END
+
+
+                // update isi list dari session di index yg sama
+                listOfTindakan.remove(detail);
+                listOfTindakan.add(detail);
+
+            }
+        }
+
+        session.removeAttribute("listOfTindakan");
+        session.setAttribute("listOfTindakan", listOfTindakan);
+
+        // set success
+        this.response.addResponse("success","Data Berhasil Diupdate");
+
+        logger.info("[CheckupAction.saveEditToSessionTindakan] END process <<<");
+        return this.response;
+    }
+
+    // Sigit 2020-03-16
+    // untuk prosess save delete tarif per tindakan pada detail rekanan;
+    public CrudResponse saveDeleteToSessionTindakan(String stJson) throws JSONException{
+        logger.info("[CheckupAction.saveDeleteToSessionTindakan] START process >>>");
+
+        // validasi jika data pada json tidak ada
+        if (stJson == null || "".equalsIgnoreCase(stJson)){
+            this.response.addResponse("error","Tidak Bisa Menerima Data Karna Kosong");
+            return this.response;
+        }
+        // END
+
+        // mendapatkan id item untuk mencari data pada list pada session
+        JSONObject jsonObject = new JSONObject(stJson);
+        String idItem = jsonObject.getString("id_item");
+        if (idItem == null || "".equalsIgnoreCase(idItem)){
+            this.response.addResponse("error","Tidak Bisa Data Id Item");
+            return this.response;
+        }
+        // END
+
+        // set to session;
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<DetailRekananOps> listOfTindakan = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
+        if (listOfTindakan.size() > 0){
+            List<DetailRekananOps> filteredList = listOfTindakan.stream().filter(
+                    p->p.getIdItem().equalsIgnoreCase(idItem)
+            ).collect(Collectors.toList());
+
+            if (filteredList.size() == 0){
+
+                this.response.addResponse("error","Tidak Bisa Data List dengan Id Item Dikirim");
+                return this.response;
+
+            } else {
+
+                DetailRekananOps detail = filteredList.get(0);
+                detail.setTipe("delete");
+                detail.setFlag("N");
+
+                // update isi list dari session di index yg sama
+                listOfTindakan.remove(detail);
+                listOfTindakan.add(detail);
+
+            }
+        }
+
+        session.removeAttribute("listOfTindakan");
+        session.setAttribute("listOfTindakan", listOfTindakan);
+
+        // set success
+        this.response.addResponse("success","Data Berhasil Dihapus");
+
+        logger.info("[CheckupAction.saveDeleteToSessionTindakan] END process <<<");
+        return this.response;
+    }
+
+    // Sigit 2020-03-16
+    // untuk prosess save all tarif per tindakan pada detail rekanan;
+    public CrudResponse saveAllTarif(){
+        logger.info("[CheckupAction.saveAllTarif] START process >>>");
+
+        // mengambil data dari session
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<DetailRekananOps> listOfTindakan = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
+        // END
+
+        // validasi apakah list yg akan disimpan ada
+        if (listOfTindakan == null || listOfTindakan.size() == 0){
+            this.response.addResponse("error","Tidak ada data yg bisa di save");
+            return this.response;
+        }
+        // END
+
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+
+        RekananOps rekananOps = new RekananOps();
+        rekananOps.setCreatedDate(time);
+        rekananOps.setLastUpdate(time);
+        rekananOps.setCreatedWho(userLogin);
+        rekananOps.setLastUpdateWho(userLogin);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+
+        try {
+            rekananOpsBo.saveAllListTarifRekanan(rekananOps, listOfTindakan);
+        } catch (GeneralBOException e){
+            logger.info("[CheckupAction.saveAllTarif] ERROR "+e);
+            this.response.addResponse("error", e.getMessage());
+            return this.response;
+        }
+
+        logger.info("[CheckupAction.saveAllTarif] END process <<<");
+        return this.response;
+    }
 }
