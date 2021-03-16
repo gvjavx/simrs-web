@@ -306,8 +306,8 @@
                     $('#pengajuanLembur').val(item.lamaLembur);
                     $('#realisasiLembur').val(item.realisasiJamLembur);
                     $('#jamLembur').val(item.jamLembur).change();
-                    $('#lemburPerJam').val(item.lemburPerJam).change();
-                    $('#jumlahUpahLembur').val(item.biayaLembur).change();
+                    $('#lemburPerJam').val(item.stBiayaLemburPerjam).change();
+                    $('#jumlahUpahLembur').val(item.stBiayaLembur).change();
                 });
             });
             $('#modal-view-lembur').find('.modal-title').text('View Lembur');

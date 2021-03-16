@@ -46,8 +46,13 @@ public class Lembur extends BaseModel {
     private Double jamRealisasi;
     private Double lamaHitungan;
 
-    //RAKA-10MAR2021
+    //RAKA-10MAR2021 ==> cek hak lembur dan tampung keperluan pecah method cronInquiry
     private boolean hakLembur = true;
+    private Timestamp tsAwalLembur;
+    private Timestamp tsAkhirLembur;
+    private String stUpahLembur;
+    private Double upahLembur;
+    private Double finalLamaLembur;
     //RAKA-end
 
     private boolean lemburApprove=false;
@@ -487,5 +492,45 @@ public class Lembur extends BaseModel {
 
     public void setHakLembur(boolean hakLembur) {
         this.hakLembur = hakLembur;
+    }
+
+    public Timestamp getTsAwalLembur() {
+        return tsAwalLembur;
+    }
+
+    public void setTsAwalLembur(Timestamp tsAwalLembur) {
+        this.tsAwalLembur = tsAwalLembur;
+    }
+
+    public Timestamp getTsAkhirLembur() {
+        return tsAkhirLembur;
+    }
+
+    public void setTsAkhirLembur(Timestamp tsAkhirLembur) {
+        this.tsAkhirLembur = tsAkhirLembur;
+    }
+
+    public String getStUpahLembur() {
+        return stUpahLembur;
+    }
+
+    public void setStUpahLembur(String stUpahLembur) {
+        this.stUpahLembur = stUpahLembur;
+    }
+
+    public Double getUpahLembur() {
+        return upahLembur;
+    }
+
+    public void setUpahLembur(Double upahLembur) {
+        this.upahLembur = upahLembur;
+    }
+
+    public Double getFinalLamaLembur() {
+        return finalLamaLembur;
+    }
+
+    public void setFinalLamaLembur(Double finalLamaLembur) {
+        this.finalLamaLembur = finalLamaLembur;
     }
 }
