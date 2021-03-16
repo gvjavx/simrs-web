@@ -1617,6 +1617,18 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     	nip VARCHAR(100) PRIMARY KEY,
     	branch_id VARCHAR(5),
     	id_pelayanan VARCHAR(100)
-    )
+
+--
+
+--2021-03-10
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN id_item VARCHAR(100),
+    ADD COLUMN jenis_item VARCHAR(100),
+    ADD COLUMN tarif NUMERIC;
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN parent_id VARCHAR(100),
+    ADD COLUMN flag_parent VARCHAR(1);
 
 --

@@ -69,6 +69,8 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                     orderGiziEntity.setIdDietGizi(bean.getIdDietGizi());
                     orderGiziEntity.setWaktu(bean.getWaktu());
                     orderGiziEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    orderGiziEntity.setApproveFlag("P");
+                    orderGiziEntity.setDiterimaFlag("P");
 
                     HashMap hsCrite = new HashMap();
                     ImSimrsDietGizi dietEntity = new ImSimrsDietGizi();
@@ -164,6 +166,8 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                     orderGiziEntity.setIdDietGizi(bean.getIdDietGizi());
                     orderGiziEntity.setWaktu(bean.getWaktu());
                     orderGiziEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                    orderGiziEntity.setApproveFlag("P");
+                    orderGiziEntity.setDiterimaFlag("P");
 
                     HashMap hsCrite = new HashMap();
                     ImSimrsDietGizi dietEntity = new ImSimrsDietGizi();

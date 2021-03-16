@@ -1544,27 +1544,6 @@
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px"> Metode Pembayaran</label>
-                                                    <div class="col-md-8">
-                                                        <s:select
-                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
-                                                                cssStyle="margin-top: 7px"
-                                                                id="pembayaran"
-                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
-                                                                name="headerCheckup.metodePembayaran"
-                                                                headerKey="" headerValue="[Select one]"
-                                                                cssClass="form-control"/>
-                                                        <span style="color: red; display: none" id="war_pembayaran"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_pembayaran"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
                                                     <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group" style="margin-top: 7px">
@@ -1579,6 +1558,27 @@
                                                         <span style="color: red; display: none" id="war_uang_muka"><i
                                                                 class="fa fa-times"></i> required</span>
                                                         <span style="color: green; display: none" id="con_uang_muka"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row" style="display: none">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px"> Metode Pembayaran</label>
+                                                    <div class="col-md-8">
+                                                        <s:select
+                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                                cssStyle="margin-top: 7px"
+                                                                id="pembayaran"
+                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
+                                                                name="headerCheckup.metodePembayaran"
+                                                                headerKey="" headerValue="[Select one]"
+                                                                cssClass="form-control"/>
+                                                        <span style="color: red; display: none" id="war_pembayaran"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pembayaran"><i
                                                                 class="fa fa-check"></i> correct</span>
                                                     </div>
                                                 </div>
@@ -3802,8 +3802,10 @@
     function isUangMuka(id){
         if($('#'+id).is(':checked')){
             $('#form-uang-muka').show();
+            $('#pembayaran').val('tunai');
         }else{
             $('#form-uang-muka').hide();
+            $('#pembayaran').val('');
         }
     }
 

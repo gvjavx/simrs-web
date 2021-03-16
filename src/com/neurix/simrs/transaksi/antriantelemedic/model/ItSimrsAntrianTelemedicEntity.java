@@ -45,6 +45,15 @@ public class ItSimrsAntrianTelemedicEntity {
     private String idDiagnosa;
     private String ketDiagnosa;
     private String idRekening;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     public String getIdRekening() {
         return idRekening;

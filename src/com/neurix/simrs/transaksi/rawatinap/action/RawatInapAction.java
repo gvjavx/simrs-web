@@ -1154,14 +1154,15 @@ public class RawatInapAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
-            reportParams.put("sipDokter", periksalb.getSipDokter());
-            reportParams.put("sipPengirim", periksalb.getSipPengirim());
+
+            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
             reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
-            reportParams.put("petugas", periksalb.getNamaPetugas());
-            reportParams.put("dokter", periksalb.getNamaDokter());
-            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+            reportParams.put("idPetugas", periksalb.getIdPetugas());
+            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
+            reportParams.put("idValidator", periksalb.getIdValidator());
+            reportParams.put("namaValidator", periksalb.getNamaValidator());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("ttdPengirim", periksalb.getTtdPengirim());
+            reportParams.put("ttdValidator", periksalb.getTtdValidator());
 
             try {
                 preDownload();
@@ -2194,7 +2195,7 @@ public class RawatInapAction extends BaseMasterAction {
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
                         riwayatTindakan.setNamaTindakan(entity.getNamaTindakan());
 
-                        if (!"".equalsIgnoreCase(idPaket)) {
+                        if (!"".equalsIgnoreCase(idPaket) && idPaket != null) {
 
                             // mengambil berdasarkan idPaket dan idTindakan;
                             MtSimrsItemPaketEntity itemPaketEntity = riwayatTindakanBo.getItemPaketEntity(idPaket, entity.getIdTindakan());
@@ -2261,6 +2262,7 @@ public class RawatInapAction extends BaseMasterAction {
                     if (riwayatTindakanList.isEmpty()) {
 
                         BigDecimal totalTarif = null;
+                        String namaLab = entity.getLabName();
 
                         try {
                             totalTarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
@@ -2271,10 +2273,9 @@ public class RawatInapAction extends BaseMasterAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + entity.getLabName());
 
                         // paket lab
-                        if (!"".equalsIgnoreCase(idPaket)) {
+                        if (!"".equalsIgnoreCase(idPaket) && idPaket != null) {
 
                             // mencari berdasarkan id paket dan id lab
                             ItemPaket itemPaket = riwayatTindakanBo.getTarifPaketLab(idPaket, entity.getIdLab());
@@ -2289,6 +2290,11 @@ public class RawatInapAction extends BaseMasterAction {
                             }
                         } else {
 
+                            if("Y".equalsIgnoreCase(entity.getIsLuar())){
+                                totalTarif = entity.getTarifLabLuar();
+                                namaLab = entity.getNamaLabLuar();
+                            }
+
                             // jika bukan paket maka pakai tarif asli
                             if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                                 if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
@@ -2301,6 +2307,7 @@ public class RawatInapAction extends BaseMasterAction {
                             }
                         }
 
+                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");

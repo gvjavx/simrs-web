@@ -75,6 +75,16 @@ public class TelemedicineMobile {
 
     private String branchName;
 
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getBranchName() {
         return branchName;
     }

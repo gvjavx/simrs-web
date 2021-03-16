@@ -15,6 +15,7 @@ import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 
+import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -247,7 +248,7 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
 
     @Override
     public CrudResponse saveDelete(DetailRekananOps bean) throws GeneralBOException {
-        logger.info("[saveDelete.saveDelete] start process >>>");
+        logger.info("[DetailRekananOpsBoImpl.saveDelete] start process >>>");
         if (bean != null) {
 
             String idDetailRekananOps = bean.getIdDetailRekananOps();
@@ -292,6 +293,38 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
         }
         logger.info("[DetailRekananOpsBoImpl.saveDelete] end process <<<");
         return null;
+    }
+
+    @Override
+    public List<DetailRekananOps> getParentDataById(String id) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getParentDataById] start process >>>");
+
+        List<DetailRekananOps> detailRekananOps = new ArrayList<>();
+        try {
+            detailRekananOps = detailRekananOpsDao.getParentRekananOpsById(id);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getParentDataById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data DetailRekananOps, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getParentDataById] end process <<<");
+        return detailRekananOps;
+    }
+
+    @Override
+    public List<DetailRekananOps> getDetailDataByIdParent(String idParent) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getDetailDataByIdParent] start process >>>");
+
+        List<DetailRekananOps> detailRekananOps = new ArrayList<>();
+        try {
+            detailRekananOps = detailRekananOpsDao.getListDetailRekananOpsByIdParent(idParent);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getParentDataById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data DetailRekananOps, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getDetailDataByIdParent] end process <<<");
+        return detailRekananOps;
     }
 }
 
