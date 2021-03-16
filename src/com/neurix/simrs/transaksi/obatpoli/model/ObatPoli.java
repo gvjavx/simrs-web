@@ -36,6 +36,24 @@ public class ObatPoli {
 
     private String harga;
     private String idJenisObat;
+    private String namaPabrikObat;
+    private String merk;
+
+    public String getNamaPabrikObat() {
+        return namaPabrikObat;
+    }
+
+    public void setNamaPabrikObat(String namaPabrikObat) {
+        this.namaPabrikObat = namaPabrikObat;
+    }
+
+    public String getMerk() {
+        return merk;
+    }
+
+    public void setMerk(String merk) {
+        this.merk = merk;
+    }
 
     public String getIdJenisObat() {
         return idJenisObat;

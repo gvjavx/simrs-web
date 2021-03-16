@@ -12,7 +12,7 @@
     <script>
         function formatRupiah(angka) {
             var reverse = angka.toString().split('').reverse().join(''),
-                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
             return ribuan;
         }
@@ -63,7 +63,8 @@
                                     <table>
                                         <s:label name="vendor.idVendor"></s:label>
                                         <s:hidden name="permintaanVendor.idApprovalObat" id="id_approval"></s:hidden>
-                                        <s:hidden name="permintaanVendor.idPermintaanVendor" id="id_permintaan_vendor"></s:hidden>
+                                        <s:hidden name="permintaanVendor.idPermintaanVendor"
+                                                  id="id_permintaan_vendor"></s:hidden>
                                     </table>
                                 </td>
                             </tr>
@@ -88,7 +89,9 @@
                             <tr>
                                 <td><b>Scan DO</b></td>
                                 <td>
-                                    <table><input type="text" onchange="searchDo(this.value)" placeholder="Scan No. DO Here !" class="form-control" style="width: 30%;"/></table>
+                                    <table><input type="text" onchange="searchDo(this.value)"
+                                                  placeholder="Scan No. DO Here !" class="form-control"
+                                                  style="width: 30%;"/></table>
                                 </td>
                             </tr>
                         </table>
@@ -156,19 +159,24 @@
                             <p id="msg_po"></p>
                         </div>
                         <div class="row">
-                            <div class="col-md-offset-2 col-md-8" >
+                            <div class="col-md-offset-2 col-md-8">
                                 <div class="box-header with-border">
                                     <div class="row">
                                         <div class="col-md-6">
                                             <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar Batch</h3>
                                         </div>
                                         <div class="col-md-6">
-                                            <a class="btn btn-success pull-right" onclick="addBatch()"><i class="fa fa-plus"></i> Tambah Batch</a>
+                                            <a class="btn btn-success pull-right" onclick="addBatch()"><i
+                                                    class="fa fa-plus"></i> Tambah Batch</a>
                                             <s:if test='tipe == "reture"'>
-                                                <a href="<%= request.getContextPath() %>/returobat/initForm_returobat.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                                <a href="<%= request.getContextPath() %>/returobat/initForm_returobat.action"
+                                                   class="btn btn-warning pull-right" style="margin-right: 5px"><i
+                                                        class="fa fa-arrow-left"></i> Back</a>
                                             </s:if>
                                             <s:else>
-                                                <a href="<%= request.getContextPath() %>/permintaanpo/initForm_permintaanpo.action" class="btn btn-warning pull-right" style="margin-right: 5px"><i class="fa fa-arrow-left"></i> Back</a>
+                                                <a href="<%= request.getContextPath() %>/permintaanpo/initForm_permintaanpo.action"
+                                                   class="btn btn-warning pull-right" style="margin-right: 5px"><i
+                                                        class="fa fa-arrow-left"></i> Back</a>
                                             </s:else>
                                         </div>
                                     </div>
@@ -193,15 +201,21 @@
                                             <td><s:property value="stLastUpdateWho"/></td>
                                             <td>
                                                 <s:if test='#row.isApprove == "Y"'><span class="label label-warning">Prosess Approve</span></s:if>
-                                                <s:else><span class="label label-success">Telah di Approve</span></s:else>
+                                                <s:else><span
+                                                        class="label label-success">Telah di Approve</span></s:else>
                                             </td>
                                             <td align="center">
                                                 <s:if test='#row.isApprove == "Y"'>
                                                     <a onclick="updateBatch('<s:property value="noBatch"/>')">
-                                                        <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                                        <img class="hvr-grow"
+                                                             src="<s:url value="/pages/images/icons8-create-25.png"/>"
+                                                             style="cursor: pointer;">
                                                     </a>
-                                                    <a id='app<s:property value="noBatch"/>' onclick="confirmBatch('<s:property value="noBatch"/>')">
-                                                        <img class="hvr-grow" src="<s:url value="/pages/images/icons8-test-passed-23.png"/>" style="cursor: pointer;">
+                                                    <a id='app<s:property value="noBatch"/>'
+                                                       onclick="confirmBatch('<s:property value="noBatch"/>')">
+                                                        <img class="hvr-grow"
+                                                             src="<s:url value="/pages/images/icons8-test-passed-23.png"/>"
+                                                             style="cursor: pointer;">
                                                     </a>
                                                 </s:if>
                                                 <s:else>
@@ -212,11 +226,15 @@
                                                             '<s:property value="noInvoice"/>',
                                                             '<s:property value="noDo"/>',
                                                             '<s:property value="stTglInvoice"/>',
-                                                            '<s:property value="stTglDo" />'
+                                                            '<s:property value="stTglDo"/>'
                                                             )"
-                                                         class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer;">
+                                                         class="hvr-grow"
+                                                         src="<s:url value="/pages/images/icons8-print-25.png"/>"
+                                                         style="cursor: pointer;">
                                                 </s:else>
-                                                <img id='load<s:property value="noBatch"/>' src="<s:url value="/pages/images/spinner.gif"/>" style="height: 35px; width: 35px; display: none">
+                                                <img id='load<s:property value="noBatch"/>'
+                                                     src="<s:url value="/pages/images/spinner.gif"/>"
+                                                     style="height: 35px; width: 35px; display: none">
                                             </td>
                                         </tr>
                                     </s:iterator>
@@ -239,30 +257,33 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Approve Permintaan PO dengan No Batch <span id="mod_batch"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Approve Permintaan PO
+                    dengan No Batch <span id="mod_batch"></span>
                 </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="back_top">
                 <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_app">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_app"></p>
                 </div>
-                <div class="box">
+                <div class="box-body">
                     <table class="table table-striped table-bordered" id="tabel_approve">
                         <thead>
                         <td>Nama Obat</td>
                         <td align="center">Qty Request</td>
                         <td align="center">Qty Approve</td>
                         <td>Jenis Satuan</td>
-                        <td align="center">Diskon</td>
-                        <td align="center">Bruto</td>
-                        <td align="center">Netto</td>
+                        <td align="center">Diskon (%)</td>
+                        <td align="center">Bruto (Rp.)</td>
+                        <td align="center">Netto (Rp.)</td>
                         </thead>
                         <tbody id="body_approve">
                         </tbody>
                         <input id="app_no_batch" type="hidden">
                     </table>
-                    <p id="loading_data" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                    <p id="loading_data" style="color: #00a65a; display: none"><img
+                            src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang
+                        mengambil data...</p>
                 </div>
                 <div class="box-header with-border"></div>
                 <div class="box-body">
@@ -271,16 +292,28 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. Faktur Pajak</td>
-                                    <td><input type="text" class="form-control" id="app_no_faktur" onchange="checkAvail(this.value, 'faktur')"/></td>
+                                    <td><input type="text" class="form-control" id="app_no_faktur"
+                                               onchange="checkAvail(this.value, 'faktur')"/></td>
                                     <input type="hidden" id="avail-no-faktur" value=""/>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Faktur</td>
-                                    <td><input type="date" class="form-control" id="app_tgl_faktur"/></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input readonly placeholder="yyyy-mm-dd *klik untuk tgl"
+                                                   style="cursor: pointer" class="form-control datepicker"
+                                                   id="app_tgl_faktur"/>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><div class="alert alert-danger" id="alert-faktur" style="display: none">No Faktur Telah Dipakai</div></td>
+                                    <td>
+                                        <div class="alert alert-danger" id="alert-faktur" style="display: none">No
+                                            Faktur Telah Dipakai
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -288,9 +321,11 @@
                             <div class="form-group">
                                 <div>Upload Faktur</div>
                                 <div class="input-group">
-                                    <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0" onchange="uploadDoc('faktur', '0')"/>
+                                    <input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-0"
+                                           onchange="uploadDoc('faktur', '0')"/>
                                     <div class="input-group-btn">
-                                        <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('faktur')"><i class="fa fa-plus"></i></a>
+                                        <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('faktur')"><i
+                                                class="fa fa-plus"></i></a>
                                     </div>
                                 </div>
                                 <canvas id="canvas-faktur-0" class="faktur" style="display: none"></canvas>
@@ -304,25 +339,39 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. Invoice</td>
-                                    <td><input type="text" class="form-control" id="app_no_invoice" onchange="checkAvail(this.value, 'invoice')" /></td>
+                                    <td><input type="text" class="form-control" id="app_no_invoice"
+                                               onchange="checkAvail(this.value, 'invoice')"/></td>
                                     <input type="hidden" id="avail-no-invoice" value=""/>
                                 </tr>
                                 <tr>
                                     <td width="40%">Tgl Jatuh Tempo</td>
-                                    <td><input type="date" class="form-control" id="tgl-invoice"/></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input readonly placeholder="yyyy-mm-dd *klik untuk tgl"
+                                                   style="cursor: pointer" class="form-control datepicker"
+                                                   id="tgl-invoice"/>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><div class="alert alert-danger" id="alert-invoice" style="display: none">No Invoice Telah Dipakai</div></td>
+                                    <td>
+                                        <div class="alert alert-danger" id="alert-invoice" style="display: none">No
+                                            Invoice Telah Dipakai
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="col-md-6">
                             <div>Upload Invoice</div>
                             <div class="input-group">
-                                <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0" onchange="uploadDoc('invoice', '0')"/>
+                                <input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-0"
+                                       onchange="uploadDoc('invoice', '0')"/>
                                 <div class="input-group-btn">
-                                    <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('invoice')"><i class="fa fa-plus"></i></a>
+                                    <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('invoice')"><i
+                                            class="fa fa-plus"></i></a>
                                 </div>
                             </div>
                             <canvas id="canvas-invoice-0" class="invoice" style="display: none"></canvas>
@@ -335,25 +384,38 @@
                             <table class="table table-striped">
                                 <tr>
                                     <td width="40%">No. DO</td>
-                                    <td><input type="text" class="form-control" id="app_no_do" onchange="checkAvail(this.value, 'do')"/></td>
+                                    <td><input type="text" class="form-control" id="app_no_do"
+                                               onchange="checkAvail(this.value, 'do')"/></td>
                                     <input type="hidden" id="avail-no-do" value=""/>
                                 </tr>
                                 <tr>
                                     <td width="40%">Tgl Do</td>
-                                    <td><input type="date" class="form-control" id="tgl-do"/></td>
+                                    <td>
+                                        <div class="input-group">
+                                            <div class="input-group-addon"><i class="fa fa-calendar"></i></div>
+                                            <input readonly placeholder="yyyy-mm-dd *klik untuk tgl"
+                                                   style="cursor: pointer" class="form-control datepicker" id="tgl-do"/>
+                                        </div>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td></td>
-                                    <td><div class="alert alert-danger" id="alert-do" style="display: none">No DO Telah Dipakai</div></td>
+                                    <td>
+                                        <div class="alert alert-danger" id="alert-do" style="display: none">No DO Telah
+                                            Dipakai
+                                        </div>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="col-md-6">
                             <div>Upload DO</div>
                             <div class="input-group">
-                                <input type="file" class="form-control" name="uploadDo" id="upload-do-0" onchange="uploadDoc('do', '0')"/>
+                                <input type="file" class="form-control" name="uploadDo" id="upload-do-0"
+                                       onchange="uploadDoc('do', '0')"/>
                                 <div class="input-group-btn">
-                                    <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('do')"><i class="fa fa-plus"></i></a>
+                                    <a class="btn btn-warning" style="padding: 9px" onclick="addUpload('do')"><i
+                                            class="fa fa-plus"></i></a>
                                 </div>
                             </div>
                             <canvas id="canvas-do-0" class="do" style="display: none"></canvas>
@@ -366,7 +428,10 @@
                                 <tr>
                                     <td width="40%"></td>
                                     <td>
-                                        <button class="btn btn-sm btn-info" style="float: right;" onclick="viewUpload('mod_batch')"><i class="fa fa-image"></i> View Uploaded Document</button>
+                                        <button class="btn btn-sm btn-info" style="float: right;"
+                                                onclick="viewUpload('mod_batch')"><i class="fa fa-image"></i> View
+                                            Uploaded Document
+                                        </button>
                                     </td>
                                 </tr>
                             </table>
@@ -379,10 +444,12 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_approve" onclick="confirmDialog()"><i class="fa fa-check"></i> Konfirmasi
+                <button type="button" class="btn btn-success" id="save_approve" onclick="confirmDialog()"><i
+                        class="fa fa-check"></i> Konfirmasi
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_approve"><i
-                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_approve">
+                    <i
+                            class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
         </div>
@@ -395,7 +462,8 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Print List Obat Permintaan dengan No Batch <span id="detail_batch"></span>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Print List Obat Permintaan
+                    dengan No Batch <span id="detail_batch"></span>
                 </h4>
             </div>
             <div class="modal-body">
@@ -437,7 +505,10 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">View Upload Foto</td>
-                                    <td><button onclick="viewUpload('detail_batch')" class="btn btn-sm btn-info"><i class="fa fa-image"></i></button></td>
+                                    <td>
+                                        <button onclick="viewUpload('detail_batch')" class="btn btn-sm btn-info"><i
+                                                class="fa fa-image"></i></button>
+                                    </td>
                                 </tr>
                             </table>
                         </div>
@@ -455,7 +526,9 @@
                         <tbody id="body_detail">
                         </tbody>
                     </table>
-                    <p id="loading_detail" style="color: #00a65a; display: none"><img src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang mengambil data...</p>
+                    <p id="loading_detail" style="color: #00a65a; display: none"><img
+                            src="<s:url value="/pages/images/spinner.gif"/>" style="height: 40px; width: 40px;"> Sedang
+                        mengambil data...</p>
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
@@ -502,7 +575,8 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
+                </button>
             </div>
         </div>
     </div>
@@ -536,7 +610,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success"  onclick="saveUpload()"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" onclick="saveUpload()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -552,108 +626,68 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-info"></i> View Uplaoded Documment
                 </h4>
             </div>
-
-
-            <div class="modal-body" id="body-img">
-                <%--<div id="body-img">--%>
-                    <%--<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">--%>
-                        <%--<ol class="carousel-indicators">--%>
-                            <%--<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>--%>
-                            <%--<li data-target="#carousel-example-generic" data-slide-to="1" class=""></li>--%>
-                            <%--<li data-target="#carousel-example-generic" data-slide-to="2" class=""></li>--%>
-                        <%--</ol>--%>
-                        <%--<div class="carousel-inner">--%>
-                            <%--<div class="item active">--%>
-                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/08888-0121.png" alt="First slide">--%>
-
-                                <%--<div class="carousel-caption">--%>
-                                    <%--First Slide--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="item">--%>
-                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/28668-0121.png" alt="Second slide">--%>
-
-                                <%--<div class="carousel-caption">--%>
-                                    <%--Second Slide--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="item">--%>
-                                <%--<img src="<%= request.getContextPath() %>/images/upload/surat_po/47865-0121.png" alt="Third slide">--%>
-
-                                <%--<div class="carousel-caption">--%>
-                                    <%--Third Slide--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">--%>
-                            <%--<span class="fa fa-angle-left"></span>--%>
-                        <%--</a>--%>
-                        <%--<a class="right carousel-control" href="#carousel-example-generic" data-slide="next">--%>
-                            <%--<span class="fa fa-angle-right"></span>--%>
-                        <%--</a>--%>
-                    <%--</div>--%>
-
-
-
-            <%--<div class="modal-body">--%>
-                <%--<div id="body-img">--%>
-                <%--</div>--%>
-            <%--</div>--%>
-
-            <div class="modal-footer">
+            <div class="modal-body">
+                <div class="box-body" id="body-img"></div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
-
         </div>
     </div>
 </div>
-</div>
 
 
-
-<%--bostrap--%>
-<%--<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">--%>
-    <%--<div class="carousel-inner">--%>
-        <%--<div class="carousel-item active">--%>
-            <%--<img class="d-block w-100" src="..." alt="First slide">--%>
-        <%--</div>--%>
-        <%--<div class="carousel-item">--%>
-            <%--<img class="d-block w-100" src="..." alt="Second slide">--%>
-        <%--</div>--%>
-        <%--<div class="carousel-item">--%>
-            <%--<img class="d-block w-100" src="..." alt="Third slide">--%>
-        <%--</div>--%>
-    <%--</div>--%>
-    <%--<a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">--%>
-        <%--<span class="carousel-control-prev-icon" aria-hidden="true"></span>--%>
-        <%--<span class="sr-only">Previous</span>--%>
-    <%--</a>--%>
-    <%--<a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">--%>
-        <%--<span class="carousel-control-next-icon" aria-hidden="true"></span>--%>
-        <%--<span class="sr-only">Next</span>--%>
-    <%--</a>--%>
-<%--</div>--%>
-
-
-
+<li class="treeview active">
+    <a href="#">
+        <i class="fa fa-share"></i> <span>Multilevel</span>
+        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+    </a>
+    <ul class="treeview-menu">
+        <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+        <li class="active">
+            <a href="#"><i class="fa fa-circle-o"></i> Level One
+                <span class="pull-right-container">
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
+            </a>
+            <ul class="treeview-menu">
+                <li><a href="#"><i class="fa fa-circle-o"></i> Level Two</a></li>
+                <li>
+                    <a href="#"><i class="fa fa-circle-o"></i> Level Two
+                        <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                        <li><a href="#"><i class="fa fa-circle-o"></i> Level Three</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </li>
+        <li><a href="#"><i class="fa fa-circle-o"></i> Level One</a></li>
+    </ul>
+</li>
 
 
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
-    var idApprovalObat  = $('#id_approval').val();
-    var idpermintaanPo  = $('#id_permintaan_vendor').val();
-    var noPo            = '<s:property value="id" />';
-    var jenis           = '<s:property value="tipe" />';
-    var nFaktur         = 0;
-    var nInvoice        = 0;
-    var nDo             = 0;
-    var n               = 0;
+    var idApprovalObat = $('#id_approval').val();
+    var idpermintaanPo = $('#id_permintaan_vendor').val();
+    var noPo = '<s:property value="id" />';
+    var jenis = '<s:property value="tipe" />';
+    var nFaktur = 0;
+    var nInvoice = 0;
+    var nDo = 0;
+    var n = 0;
 
     $(document).ready(function () {
 
-        if (jenis == "reture"){
+        if (jenis == "reture") {
             $("#label-head").text("List Batch Pengganti Barang Reture");
         } else {
             jenis = "req";
@@ -662,9 +696,9 @@
         $("#no_po").text(noPo);
 
         var tipe = '<s:property value="tipe"/>';
-        if(tipe == "reture"){
+        if (tipe == "reture") {
             $('#retur_obat').addClass('active');
-        }else{
+        } else {
             $('#permintaan_po').addClass('active');
         }
 
@@ -673,7 +707,7 @@
     });
 
     function formatRupiah(angka) {
-        if (angka != null){
+        if (angka != null) {
             var reverse = angka.toString().split('').reverse().join(''),
                 ribuan = reverse.match(/\d{1,3}/g);
             ribuan = ribuan.join('.').split('').reverse().join('');
@@ -684,32 +718,32 @@
 
     }
 
-    function addBatch(){
+    function addBatch() {
         var tipe = '<s:property value="tipe"/>';
-        if(tipe == "reture"){
-            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y&tipe=reture';
-        }else{
-            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=Y';
+        if (tipe == "reture") {
+            window.location.href = 'edit_permintaanpo.action?id=' + idpermintaanPo + '&isBatch=Y&newBatch=Y&tipe=reture';
+        } else {
+            window.location.href = 'edit_permintaanpo.action?id=' + idpermintaanPo + '&isBatch=Y&newBatch=Y';
         }
     }
 
-    function updateBatch(noBatch){
+    function updateBatch(noBatch) {
         var tipe = '<s:property value="tipe"/>';
-        if(tipe == "reture"){
-            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch+'&tipe=reture';
-        }else{
-            window.location.href = 'edit_permintaanpo.action?id='+idpermintaanPo+'&isBatch=Y&newBatch=N&noBatch='+noBatch;
+        if (tipe == "reture") {
+            window.location.href = 'edit_permintaanpo.action?id=' + idpermintaanPo + '&isBatch=Y&newBatch=N&noBatch=' + noBatch + '&tipe=reture';
+        } else {
+            window.location.href = 'edit_permintaanpo.action?id=' + idpermintaanPo + '&isBatch=Y&newBatch=N&noBatch=' + noBatch;
         }
     }
 
     function listDocument() {
-        PermintaanVendorAction.getListPermintaanVendorDoc(idpermintaanPo, function(response){
+        PermintaanVendorAction.getListPermintaanVendorDoc(idpermintaanPo, function (response) {
             var str = "";
-            if (response.length > 0){
-                $.each(response, function(i, item){
-                    str += '<tr>'+
-                        '<td>'+item.notaVendor+'</td>'+
-                        '<td align="center"><a href="#"><img src="<s:url value="/pages/images/icons8-search-25.png"/>"></a>'+
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    str += '<tr>' +
+                        '<td>' + item.notaVendor + '</td>' +
+                        '<td align="center"><a href="#"><img src="<s:url value="/pages/images/icons8-search-25.png"/>"></a>' +
                         '</td></tr>';
                 });
 
@@ -721,7 +755,7 @@
     function saveUpload() {
         var file = $("#file-doc")[0].files[0];
         var notaVendor = $("#nota-vendor").val();
-        PermintaanVendorAction.uploadDocVendor(file, notaVendor, idpermintaanPo, function(response){
+        PermintaanVendorAction.uploadDocVendor(file, notaVendor, idpermintaanPo, function (response) {
         })
     }
 
@@ -730,22 +764,22 @@
     }
 
     function searchDo(noDo) {
-        n           = 0;
-        nFaktur     = 0;
-        nInvoice    = 0;
-        nDo         = 0;
+        n = 0;
+        nFaktur = 0;
+        nInvoice = 0;
+        nDo = 0;
 
         $("#avail-no-faktur").val("");
         $("#avail-no-invoice").val("");
         $("#avail-no-do").val("");
 
-        $('#modal-approve').modal({show:true, backdrop:'static'});
+        $('#modal-approve').modal({show: true, backdrop: 'static'});
         var table = [];
         var noBatch = null;
         $('#body_approve').html('');
         $('#app_no_batch').val('');
-        $('#app'+noBatch).hide();
-        $('#load'+noBatch).show();
+        $('#app' + noBatch).hide();
+        $('#load' + noBatch).show();
         $('#loading_data').show();
         dwr.engine.setAsync(true);
         PermintaanVendorAction.initApprovalByNoDo(idpermintaanPo, noDo, {
@@ -758,26 +792,26 @@
                     var totalPpn = 0;
                     $.each(response, function (i, item) {
 
-                        if (noBatch == null){
+                        if (noBatch == null) {
                             noBatch = item.noBatch;
                             $('#app_no_batch').val(item.noBatch);
                         }
 
-                        var netto = (parseInt(item.bruto) - parseInt(item.diskon)) * parseInt(item.qtyApprove);
+                        var netto = parseInt(item.netto) * parseInt(item.qtyApprove);
 
                         table += "<tr>" +
                             "<td>" + item.namaObat + "</td>" +
                             "<td align='center'>" + item.qty + "</td>" +
                             "<td align='center'>" + item.qtyApprove + "</td>" +
                             "<td>" + item.jenisSatuan + "</td>" +
-                            "<td align='right'>" + formatRupiah(item.diskon) + "</td>" +
+                            "<td align='right'>" + item.diskon + "</td>" +
                             "<td align='right'>" + formatRupiah(item.bruto) + "</td>" +
                             "<td align='right'>" + formatRupiah(netto) + "</td>" +
                             "</tr>";
 
-                        if (dataDo == null){
+                        if (dataDo == null) {
                             PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
-                                if (res != null){
+                                if (res != null) {
                                     $("#app_no_faktur").val(res.noFaktur);
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
@@ -788,7 +822,7 @@
                             });
                         }
 
-                        total = parseInt(total) + parseInt( nullEscape(netto) );
+                        total = parseInt(total) + parseInt(nullEscape(netto));
                     });
 
                     totalPpn = parseInt(total) * parseFloat(ppn);
@@ -796,21 +830,21 @@
 
                     table += "<tr>" +
                         "<td colspan='6' align='right'>Total</td>" +
-                        "<td align='right'>"+formatRupiah(total)+"</td>" +
+                        "<td align='right'>" + formatRupiah(total) + "</td>" +
                         "</tr>";
 
                     table += "<tr>" +
                         "<td colspan='6' align='right'>PPN Masukan</td>" +
-                        "<td align='right'>"+formatRupiah(totalPpn)+"</td>" +
+                        "<td align='right'>" + formatRupiah(totalPpn) + "</td>" +
                         "</tr>";
 
                     table += "<tr>" +
                         "<td colspan='6' align='right'>Sub Total</td>" +
-                        "<td align='right'>"+formatRupiah(subTotal)+"</td>" +
+                        "<td align='right'>" + formatRupiah(subTotal) + "</td>" +
                         "</tr>";
 
-                    $('#app'+noBatch).show();
-                    $('#load'+noBatch).hide();
+                    $('#app' + noBatch).show();
+                    $('#load' + noBatch).hide();
                     $('#loading_data').hide();
                 } else {
                     alert("Data Tidak Ditemukan");
@@ -826,24 +860,24 @@
         var idTransakasi = $("#no_po").text();
 
         PermintaanVendorAction.getListBatchByJenisItem(idItem, jenis, idTransakasi, batch, function (res) {
-            if (res != null && res.length > 0){
-                $.each(res, function (i,item) {
+            if (res != null && res.length > 0) {
+                $.each(res, function (i, item) {
 
-                    if (jenis == "faktur"){
+                    if (jenis == "faktur") {
                         $("#avail-no-faktur").val(item.noFaktur);
                         $("#alert-faktur").show();
                     } else {
                         $("#avail-no-faktur").val("");
                         $("#alert-faktur").hide();
                     }
-                    if (jenis == "invoice"){
+                    if (jenis == "invoice") {
                         $("#avail-no-invoice").val(item.noInvoice);
                         $("#alert-invoice").show();
                     } else {
                         $("#avail-no-invoice").val("");
                         $("#alert-invoice").hide();
                     }
-                    if (jenis == "do"){
+                    if (jenis == "do") {
                         $("#avail-no-do").val(item.noDo);
                         $("#alert-do").show();
                     } else {
@@ -852,15 +886,15 @@
                     }
                 });
             } else {
-                if (jenis == "faktur"){
+                if (jenis == "faktur") {
                     $("#avail-no-faktur").val("");
                     $("#alert-faktur").hide();
                 }
-                if (jenis == "invoice"){
+                if (jenis == "invoice") {
                     $("#avail-no-invoice").val("");
                     $("#alert-invoice").hide();
                 }
-                if (jenis == "do"){
+                if (jenis == "do") {
                     $("#avail-no-do").val("");
                     $("#alert-do").hide();
                 }
@@ -868,22 +902,22 @@
         });
     }
 
-    function confirmBatch(noBatch){
-        n           = 0;
-        nFaktur     = 0;
-        nInvoice    = 0;
-        nDo         = 0;
+    function confirmBatch(noBatch) {
+        n = 0;
+        nFaktur = 0;
+        nInvoice = 0;
+        nDo = 0;
 
         $("#avail-no-faktur").val("");
         $("#avail-no-invoice").val("");
         $("#avail-no-do").val("");
 
-        $('#modal-approve').modal({show:true, backdrop:'static'});
+        $('#modal-approve').modal({show: true, backdrop: 'static'});
         var table = [];
         $('#body_approve').html('');
         $('#app_no_batch').val('');
-        $('#app'+noBatch).hide();
-        $('#load'+noBatch).show();
+        $('#app' + noBatch).hide();
+        $('#load' + noBatch).show();
         $('#loading_data').show();
         dwr.engine.setAsync(true);
         PermintaanVendorAction.initApproval(idpermintaanPo, noBatch, {
@@ -897,20 +931,20 @@
                     var totalPpn = 0;
                     $.each(response, function (i, item) {
 
-                        var netto = (parseInt(item.bruto) - parseInt(item.diskon)) * parseInt(item.qtyApprove);
+                        var netto = parseInt(item.netto) * parseInt(item.qtyApprove);
 
                         table += "<tr>" +
-                                "<td>" + item.namaObat + "</td>" +
-                                "<td align='center'>" + item.qty + "</td>" +
-                                "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "<td>" + item.jenisSatuan + "</td>" +
-                                "<td align='right'>" + formatRupiah(item.diskon) + "</td>" +
-                                "<td align='right'>" + formatRupiah(item.bruto) + "</td>" +
-                                "<td align='right'>" + formatRupiah(netto) + "</td>" +
-                                "</tr>";
-                        if (dataDo == null){
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + item.qty + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td>" + item.jenisSatuan + "</td>" +
+                            "<td align='right'>" + formatRupiah(item.diskon) + "</td>" +
+                            "<td align='right'>" + formatRupiah(item.bruto) + "</td>" +
+                            "<td align='right'>" + formatRupiah(netto) + "</td>" +
+                            "</tr>";
+                        if (dataDo == null) {
                             PermintaanVendorAction.getTransaksiObatByIdTrans(item.idTransaksiObatDetail, noBatch, function (res) {
-                                if (res != null){
+                                if (res != null) {
                                     $("#app_no_faktur").val(res.noFaktur);
                                     $("#app_tgl_faktur").val(res.stTglFaktur);
                                     $("#app_no_invoice").val(res.noInvoice);
@@ -921,7 +955,7 @@
                             });
                         }
 
-                        total = parseInt(total) + parseInt( nullEscape(netto) );
+                        total = parseInt(total) + parseInt(nullEscape(netto));
                     });
 
                     totalPpn = parseInt(total) * parseFloat(ppn);
@@ -929,25 +963,25 @@
 
                     table += "<tr>" +
                         "<td colspan='6' align='right'>Total</td>" +
-                        "<td align='right'>"+formatRupiah(total)+"</td>" +
-                            "</tr>";
+                        "<td align='right'>" + formatRupiah(total) + "</td>" +
+                        "</tr>";
 
                     table += "<tr>" +
                         "<td colspan='6' align='right'>PPN Masukan</td>" +
-                        "<td align='right'>"+formatRupiah(totalPpn)+"</td>" +
+                        "<td align='right'>" + formatRupiah(totalPpn) + "</td>" +
                         "</tr>";
 
                     table += "<tr>" +
                         "<td colspan='6' align='right'>Sub Total</td>" +
-                        "<td align='right'>"+formatRupiah(subTotal)+"</td>" +
+                        "<td align='right'>" + formatRupiah(subTotal) + "</td>" +
                         "</tr>";
 
-                    $('#app'+noBatch).show();
-                    $('#load'+noBatch).hide();
+                    $('#app' + noBatch).show();
+                    $('#load' + noBatch).hide();
                     $('#loading_data').hide();
                 } else {
-                    $('#app'+noBatch).show();
-                    $('#load'+noBatch).hide();
+                    $('#app' + noBatch).show();
+                    $('#load' + noBatch).hide();
                     $('#loading_data').hide();
                 }
                 $('#mod_batch').html(noBatch);
@@ -956,28 +990,28 @@
         });
     }
 
-    function nullEscape(val){
+    function nullEscape(val) {
         if (val == null)
             return 0;
         return val;
     }
 
-    function confirmDialog(){
-        var noBatch     = $('#app_no_batch').val();
-        var noFaktur    = $('#app_no_faktur').val();
-        var tgl         = $('#app_tgl_faktur').val();
-        var tglFaktur   = tgl.split("-").reverse().join("-");
-        var noInvoice   = $('#app_no_invoice').val();
-        var noDo        = $('#app_no_do').val();
+    function confirmDialog() {
+        var noBatch = $('#app_no_batch').val();
+        var noFaktur = $('#app_no_faktur').val();
+        var tgl = $('#app_tgl_faktur').val();
+        var tglFaktur = tgl.split("-").reverse().join("-");
+        var noInvoice = $('#app_no_invoice').val();
+        var noDo = $('#app_no_do').val();
 
-        var tglInvoice  = $('#tgl-invoice').val();
-        var tglDo       = $('#tgl-do').val();
+        var tglInvoice = $('#tgl-invoice').val();
+        var tglDo = $('#tgl-do').val();
 
-        var availFaktur     = $("#avail-no-faktur").val();
-        var availInvoice    = $("#avail-no-invoice").val();
-        var availDo         = $("#avail-no-do").val();
+        var availFaktur = $("#avail-no-faktur").val();
+        var availInvoice = $("#avail-no-invoice").val();
+        var availDo = $("#avail-no-do").val();
 
-        if (availDo != "" || availFaktur != "" || availInvoice != ""){
+        if (availDo != "" || availFaktur != "" || availInvoice != "") {
             $("#alert-panel").show().fadeOut(5000);
             $("#alert-panel").html("Nomor Telah Ada.");
             return false;
@@ -985,120 +1019,109 @@
 
         var data = "";
         var listOfimg = [];
-        if(noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != ''){
+        if (noFaktur != '' && tglFaktur != '' && noInvoice != '' && noDo != '') {
             data = {
-                'no_batch':noBatch,
-                'no_faktur':noFaktur,
-                'tgl_faktur':tgl,
-                'no_invoice':noInvoice,
-                'no_do':noDo,
-                'img_url':"",
-                'tgl_invoice':tglInvoice,
-                'tgl_do':tglDo
+                'no_batch': noBatch,
+                'no_faktur': noFaktur,
+                'tgl_faktur': tgl,
+                'no_invoice': noInvoice,
+                'no_do': noDo,
+                'img_url': "",
+                'tgl_invoice': tglInvoice,
+                'tgl_do': tglDo
             }
 
-            for (i=0 ; i <= nFaktur ; i++) {
-                var canvas = document.getElementById('canvas-faktur-' + i);
-                var input = document.getElementById('upload-faktur-' + i);
-                if (input.files.length != 0) {
-                    var dataURL = canvas.toDataURL("image/png"),
-                        dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
-                    listOfimg.push({"jenisnomor": "faktur", "batch": noBatch, "iditem": noFaktur, "img": dataURL});
-                }
+            var cekFaktur = $('.faktur');
+            var cekInvoice = $('.invoice');
+            var cekDo = $('.do');
 
-                var cekFaktur = $('.faktur');
-                var cekInvoice = $('.invoice');
-                var cekDo = $('.do');
-
-                if (cekFaktur.length > 0) {
-                    $.each(cekFaktur, function (i, item) {
-                        if (!cekFile('upload-faktur-' + i)) {
-                            var canvas = document.getElementById('canvas-faktur-' + i);
-                            listOfimg.push({
-                                "jenisnomor": "faktur",
-                                "batch": noBatch,
-                                "iditem": noFaktur,
-                                "img": convertToDataURLAtas(canvas)
-                            });
-                        }
-                    });
-
-                }
-
-                if (cekInvoice.length > 0) {
-                    $.each(cekInvoice, function (i, item) {
-                        if (!cekFile('upload-invoice-' + i)) {
-                            var canvas = document.getElementById('canvas-invoice-' + i);
-                            listOfimg.push({
-                                "jenisnomor": "invoice",
-                                "batch": noBatch,
-                                "iditem": noInvoice,
-                                "img": convertToDataURLAtas(canvas)
-                            });
-                        }
-                    });
-                }
-
-                if (cekDo.length > 0) {
-                    $.each(cekDo, function (i, item) {
-                        if (!cekFile('upload-do-' + i)) {
-                            var canvas = document.getElementById('canvas-do-' + i);
-                            listOfimg.push({
-                                "jenisnomor": "do",
-                                "batch": noBatch,
-                                "iditem": noDo,
-                                "img": convertToDataURLAtas(canvas)
-                            });
-                        }
-                    });
-                }
-
+            if (cekFaktur.length > 0) {
+                $.each(cekFaktur, function (i, item) {
+                    if (!cekFile('upload-faktur-' + i)) {
+                        var canvas = document.getElementById('canvas-faktur-' + i);
+                        listOfimg.push({
+                            "jenisnomor": "faktur",
+                            "batch": noBatch,
+                            "iditem": noFaktur,
+                            "img": convertToDataURLAtas(canvas)
+                        });
+                    }
+                });
             }
+
+            if (cekInvoice.length > 0) {
+                $.each(cekInvoice, function (i, item) {
+                    if (!cekFile('upload-invoice-' + i)) {
+                        var canvas = document.getElementById('canvas-invoice-' + i);
+                        listOfimg.push({
+                            "jenisnomor": "invoice",
+                            "batch": noBatch,
+                            "iditem": noInvoice,
+                            "img": convertToDataURLAtas(canvas)
+                        });
+                    }
+                });
+            }
+
+            if (cekDo.length > 0) {
+                $.each(cekDo, function (i, item) {
+                    if (!cekFile('upload-do-' + i)) {
+                        var canvas = document.getElementById('canvas-do-' + i);
+                        listOfimg.push({
+                            "jenisnomor": "do",
+                            "batch": noBatch,
+                            "iditem": noDo,
+                            "img": convertToDataURLAtas(canvas)
+                        });
+                    }
+                });
+            }
+
             var result = JSON.stringify(data);
             var listimg = JSON.stringify(listOfimg);
             $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'approveBatch(\''+result+'\', \''+listimg+'\')');
-        }else{
+            $('#save_con').attr('onclick', 'approveBatch(\'' + result + '\', \'' + listimg + '\')');
+        } else {
             $('#warning_app').show().fadeOut(5000);
             $('#msg_app').text("Silahkan cek kembali data inputan anda...!");
         }
     }
 
-    function cekFile(id){
-        return $('#'+id).get(0).files.length === 0;
+    function cekFile(id) {
+        return $('#' + id).get(0).files.length === 0;
     }
 
-    function approveBatch(data, listimg){
+    function approveBatch(data, listimg) {
         $('#modal-confirm-dialog').modal('hide');
         $('#save_approve').hide();
         $('#load_approve').show();
-
         dwr.engine.setAsync(true);
         PermintaanVendorAction.saveApproveBatch(idpermintaanPo, data, jenis, listimg, {
             callback: function (response) {
-                if(response.status = "success"){
+                if (response.status = "success") {
                     $('#info_dialog').dialog('open');
                     $('#modal-approve').modal('hide');
                     $('#save_approve').show();
                     $('#load_approve').hide();
                     $('body').scrollTop(0);
-                }else{
+                } else {
                     $('#warning_app').show().fadeOut(5000);
                     $('#msg_app').text(response.message);
                     $('#save_approve').show();
                     $('#load_approve').hide();
+                    $('#back_top').scrollTop(0);
                 }
-            }});
+            }
+        });
     }
 
-    function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo, tglInvoice, tglDo){
-
-        $('#det_img').attr('onclick','showDoc(\''+img+'\')');
+    function showDetailListObat(noBatch, img, noFaktur, tglFaktur, noInvoice, noDo, tglInvoice, tglDo) {
+        $('#det_img').attr('onclick', 'showDoc(\'' + img + '\')');
         $('#det_no_faktur').text(noFaktur);
         $('#det_tlg_faktur').text(tglFaktur);
         $('#det_no_invoice').text(noInvoice);
         $('#det_no_do').text(noDo);
-        $('#modal-detail').modal({show:true, backdrop:'static'});
+        $('#modal-detail').modal({show: true, backdrop: 'static'});
         $('#loading_detail').show();
         $('#detail_batch').text(noBatch);
         $('#view-tgl-invoice').text(tglInvoice);
@@ -1112,14 +1135,14 @@
                 if (response != null) {
                     $.each(response, function (i, item) {
                         table += "<tr>" +
-                                "<td>" + item.idBarang + "</td>" +
-                                "<td>" + item.namaObat + "</td>" +
-                                "<td align='center'>" + item.qtyApprove + "</td>" +
-                                "<td align='center'>" + item.jenisSatuan + "</td>" +
-                                "<td align='center'>" + '<a target="_blank" href="printBarcodeBarang_permintaanpo.action?id='+item.idBarang+'">' +
-                                '<img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;"></a>'+
-                                "</td>" +
-                                "</tr>";
+                            "<td>" + item.idBarang + "</td>" +
+                            "<td>" + item.namaObat + "</td>" +
+                            "<td align='center'>" + item.qtyApprove + "</td>" +
+                            "<td align='center'>" + item.jenisSatuan + "</td>" +
+                            "<td align='center'>" + '<a target="_blank" href="printBarcodeBarang_permintaanpo.action?id=' + item.idBarang + '">' +
+                            '<img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;"></a>' +
+                            "</td>" +
+                            "</tr>";
                     });
                     $('#loading_detail').hide();
                 } else {
@@ -1130,49 +1153,22 @@
         });
     }
 
-    function showDoc(img){
-        $('#img_surat_po').attr('src',img);
+    function showDoc(img) {
+        $('#img_surat_po').attr('src', img);
         $('#modal-doc').modal('show');
     }
 
-    function addUploadFaktur() {
-        nFaktur ++;
-        str = '<input type="file" class="form-control" name="uploadFaktur" id="upload-faktur-'+nFaktur+'" onchange="uploadDoc(\'faktur\', \''+nFaktur+'\')"/>' +
-            '<canvas id="canvas-faktur-'+nFaktur+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
-            '<div id="body-upload-faktur-'+nFaktur+'"></div>';
-        var i = nFaktur - 1;
-        $("#body-upload-faktur-"+i).html(str);
-    }
-
-    function addUploadInvoice() {
-        nInvoice ++;
-        str = '<input type="file" class="form-control" name="uploadInvoice" id="upload-invoice-'+nInvoice+'"  onchange="uploadDoc(\'invoice\', \''+nInvoice+'\')"/>' +
-            '<canvas id="canvas-invoice-'+nInvoice+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
-            '<div id="body-upload-invoice-'+nInvoice+'"></div>';
-        var i = nInvoice - 1;
-        $("#body-upload-invoice-"+i).html(str);
-    }
-
-    function addUploadDo() {
-        nDo ++;
-        str = '<input type="file" class="form-control" name="uploadDo" id="upload-do-'+nDo+'" onchange="uploadDoc(\'do\', \''+nDo+'\')"/>' +
-            '<canvas id="canvas-do-'+nDo+'" style="border: solid 1px #ccc; display: none" ></canvas>' +
-            '<div id="body-upload-do-'+nDo+'"></div>';
-        var i = nDo - 1;
-        $("#body-upload-do-"+i).html(str);
-    }
-
-    function uploadDoc(tipe, ind){
-        var canvas = document.getElementById("canvas-"+tipe+"-"+ind);
+    function uploadDoc(tipe, ind) {
+        var canvas = document.getElementById("canvas-" + tipe + "-" + ind);
         var ctx = canvas.getContext('2d');
         var reader = new FileReader();
-        reader.onload = function(event){
+        reader.onload = function (event) {
             var img = new Image();
-            img.onload = function(){
+            img.onload = function () {
                 canvas.width = img.width;
                 canvas.height = img.height;
-                ctx.clearRect(0,0,canvas.width,canvas.height);
-                ctx.drawImage(img,0,0);
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
             }
             img.src = event.target.result;
         }
@@ -1181,237 +1177,77 @@
 
     function viewUpload(idBatch) {
         $("#modal-view-img").modal('show');
-        var batch = $("#mod_batch").text();
+        var batch = $("#" + idBatch).text();
         $("#body-img").html("");
         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
-            var temp = '';
+            var str = '';
+            if (list.length > 0) {
+                $.each(list, function (i, item) {
+                    var id = 'carousel-example-generic_' + item.idItem;
+                    str += '<h5>' + item.jenisNomor.toUpperCase() + ' - ' + item.idItem + '</h5><div id="' + id + '" class="carousel slide" data-ride="carousel">\n' +
+                        '<ol class="carousel-indicators" id="li_' + item.idItem +'_'+item.jenisNomor+'">\n' +
+                        '</ol>\n' +
+                        '<div class="carousel-inner" id="item_' + item.idItem +'_'+item.jenisNomor+'">\n' +
+                        '</div>\n' +
+                        '<a class="left carousel-control" href="#' + id + '" data-slide="prev">\n' +
+                        '    <span class="fa fa-angle-left"></span>\n' +
+                        '</a>\n' +
+                        '<a class="right carousel-control" href="#' + id + '" data-slide="next">\n' +
+                        '    <span class="fa fa-angle-right"></span>\n' +
+                        '</a>\n' +
+                        '</div><hr>';
+                    showImg(item.idItem, item.jenisNomor);
+                });
+            } else {
+                str = '<b style="text-align: center">Foto tidak ada..!</b>'
+            }
+            $("#body-img").html(str);
 
-            $.each(list, function (i, item) {
-                console.log(item.idItem);
-                var id = 'carousel-example-generic' + item.idItem;
-                temp += '<div id="' + id + '" class="carousel slide" data-ride="carousel">\n' +
-                    '                    <ol class="carousel-indicators">\n' +
-                    '                        <li data-target="#' + id + '" data-slide-to="0" class="active"></li>\n' +
-                    '                        <li data-target="#' + id + '" data-slide-to="1" class=""></li>\n' +
-                    '                        <li data-target="#' + id + '" data-slide-to="2" class=""></li>\n' +
-                    '                    </ol>\n' +
-                    '                    <div class="carousel-inner" id="text">\n' +
-                    '                    </div>\n' +
-                    '                    <a class="left carousel-control" href="#' + id + '" data-slide="prev">\n' +
-                    '                        <span class="fa fa-angle-left"></span>\n' +
-                    '                    </a>\n' +
-                    '                    <a class="right carousel-control" href="#' + id + '" data-slide="next">\n' +
-                    '                        <span class="fa fa-angle-right"></span>\n' +
-                    '                    </a>\n' +
-                    '                </div>\n<br>';
-                showImg(item.idItem);
-            });
-            $("#body-img").html(temp);
-
-            var batch = $("#" + idBatch).text();
-            $("#body-img").html("");
-            PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
-                var str = '';
-                if (list.length > 0) {
-                    $.each(list, function (i, item) {
-                        var id = 'carousel-example-generic_' + item.idItem;
-                        str += '<h5>' + item.jenisNomor.toUpperCase() + ' - ' + item.idItem + '</h5><div id="' + id + '" class="carousel slide" data-ride="carousel">\n' +
-                            '<ol class="carousel-indicators" id="li_' + item.idItem + '">\n' +
-                            '</ol>\n' +
-                            '<div class="carousel-inner" id="item_' + item.idItem + '">\n' +
-                            '</div>\n' +
-                            '<a class="left carousel-control" href="#' + id + '" data-slide="prev">\n' +
-                            '    <span class="fa fa-angle-left"></span>\n' +
-                            '</a>\n' +
-                            '<a class="right carousel-control" href="#' + id + '" data-slide="next">\n' +
-                            '    <span class="fa fa-angle-right"></span>\n' +
-                            '</a>\n' +
-                            '</div><hr>';
-                        showImg(item.idItem);
-                    });
-                } else {
-                    str = '<b style="text-align: center">Foto tidak ada..!</b>'
-                }
-                $("#body-img").html(str);
-
-            });
-        })
+        });
     }
 
-
-            function showImg(idItem) {
-
-                var first = firstpath();
-                var indicator = "";
-
-                PermintaanVendorAction.getListImg(idItem, function (listimg) {
-                    var temp = '';
-                    // console.log(listimg);
-                    $.each(listimg, function (n, img) {
-                        temp += '<img src="' + contextPathHeader + '>/images/upload/surat_po/' + img.urlImg + '">';
-                    });
-                    $("#text_" + idItem).html(temp);
-                });
-            }
-
-
-//     function viewUpload() {
-//         $("#modal-view-img").modal('show');
-// //        $("#modal-detail-rekam-medic-lama").modal("show");
-//         var batch = $("#mod_batch").text();
-//         $("#body-img").html("");
-//         PermintaanVendorAction.getListItemDoc(idpermintaanPo, batch, function (list) {
-//
-//             var str = '';
-//             $.each(list, function (i, item) {
-//
-//                 str += '<div class="row">' +
-//                         '<div class="col-md-12" align="center"> ' +
-//                         '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5>' +
-//                             '<div class="bungkus">'+
-//                                 '<div class="carousel">' +
-//                                     '<button onclick="carouselSwipe(\'carousel-arrow-prev\', \''+item.idItem+'\')" type="button" id="carousel-arrow-prev" class="carousel-arrow carousel-arrow-prev" arial-label="Image précédente"></button>'+
-//                                     '<button onclick="carouselSwipe(\'carousel-arrow-next\', \''+item.idItem+'\')" type="button" id="carousel-arrow-next" class="carousel-arrow carousel-arrow-next" arial-label="Image suivante"></button>'+
-//                                     '<div id="body-img-'+item.idItem+'"></div>'+
-//                                 '</div>'+
-//                         '</div>' +
-//                     '</div>' +
-//                     '</div>';
-//                 showImg(item.idItem);
-//             });
-//          $("#body-img").html(str);
-//         });
-//     }
-
-//     function showImg(idItem){
-//         var first = firstpath();
-//         var indicator = "";
-//         PermintaanVendorAction.getListImg(idItem, function (listimg) {
-// //            var str = '<div class="row">';
-//             var str = '';
-//             console.log(listimg);
-//             $.each(listimg, function (n, img) {
-//
-// //                str += '<div class="col-md-4" align="center">' +
-// //                    '<img src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" style="width: 300px"/>' +
-// //                    '</div>';
-//                 if(n == 0){
-//                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-displayed" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
-//                 }else{
-//                     str += '<img id="carousel-'+n+'-'+idItem+'" class="iditem-'+idItem+' carousel-img carousel-img-noDisplay" src="'+ first + '/images/upload/surat_po/'+img.urlImg+'" alt="Foto Document PO" />';
-//                 }
-//             });
-// //            str += '</div>' +
-// //                '<br>';
-// //            $("#body-img-"+idItem).html(str);
-//             $("#indicator-img").html(indicator);
-//             $("#body-img-"+idItem).html(str);
-//         });
-//     }
-
-            function carouselSwipe(id, idItem) {
-
-                var currentImg = document.getElementsByClassName('iditem-' + idItem + ' carousel-img-displayed')[0].id.substring(9);
-
-                var splitId = currentImg.split("-");
-
-
-                //var newImg = parseInt(currentImg);
-                var newImg = parseInt(splitId[0]);
-                if (id == 'carousel-arrow-next') {
-                    newImg++;
-//            if (newImg >= document.getElementsByClassName('carousel-img').length) {
-//                newImg = 0;
-//            }
-
-                    if (newImg >= document.getElementsByClassName('iditem-' + splitId[1]).length) {
-                        newImg = 0;
-                    }
-                } else if (id == 'carousel-arrow-prev') {
-                    newImg--;
-//            if (newImg<0) {
-//                newImg = document.getElementsByClassName('carousel-img').length-1;
-//            }
-                    if (newImg < 0) {
-                        newImg = document.getElementsByClassName('iditem-' + splitId[1]).length - 1;
-                    }
+    function showImg(idItem, jenis) {
+        PermintaanVendorAction.getListImg(idItem, function (listimg) {
+            var str = '';
+            var li = '';
+            $.each(listimg, function (n, img) {
+                var aktive = '';
+                var liAcktive = '';
+                if (n == 0) {
+                    aktive = 'active';
+                    liAcktive = 'class="active"';
                 }
-
-                document.getElementById('carousel-' + currentImg).className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-hidden';
-                var displayedCarousel = document.getElementById('carousel-' + newImg + '-' + idItem);
-//        console.log("id caurosel hidden --> " + 'carousel-'+newImg+'-'+idItem );
-//        console.log("display carousel --> ");
-//        console.log(displayedCarousel);
-                displayedCarousel.className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-hidden';
-                setTimeout(function () {
-                    displayedCarousel.className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-displayed';
-                }, 20);
-
-                setTimeout(function () {
-                    document.getElementById('carousel-' + currentImg).className = 'iditem-' + splitId[1] + ' carousel-img carousel-img-noDisplay';
-                }, 520);
-            }
-
-            function viewDetailRekamMedicLama(headId) {
-                var str = "";
-                var indicator = "";
-                CheckupAction.getListUploadRekamMedic(headId, function (response) {
-                    if (response.length > 0) {
-                        $.each(response, function (i, item) {
-                            if (i == 0) {
-                                str += '<img id="carousel-' + i + '" class="carousel-img carousel-img-displayed" src="' + item.urlImg + '" alt="Foto Rekam Medik" />';
-                            } else {
-                                str += '<img id="carousel-' + i + '" class="carousel-img carousel-img-noDisplay" src="' + item.urlImg + '" alt="Foto Rekam Medik" />';
-                            }
-                        });
-                        $("#modal-detail-rekam-medic-lama").modal("show");
-                        $("#indicator-img").html(indicator);
-                        $("#body-img-rm").html(str);
-                    }
-                })
-
-                PermintaanVendorAction.getListImg(idItem, function (listimg) {
-                    var str = '';
-                    var li = '';
-                    $.each(listimg, function (n, img) {
-                        var aktive = '';
-                        var liAcktive = '';
-                        if (n == 0) {
-                            aktive = 'active';
-                            liAcktive = 'class="active"';
-                        }
-                        str += '<div class="item ' + aktive + '">\n' +
-                            '<img style="height: 300px; width: 100%" src="' + contextPathHeader + '/images/upload/surat_po/' + img.urlImg + '" alt="Slide' + img.urlImg + '">\n' +
-                            '<div class="carousel-caption">\n' + img.urlImg +
-                            '</div>\n' +
-                            '</div>';
-                        li += '<li data-target="#carousel-example-generic_' + idItem + '" data-slide-to="' + n + '" ' + liAcktive + '></li>';
-                    });
-                    $("#item_" + idItem).html(str);
-                    $("#li_" + idItem).html(li);
-                });
-            }
-
-            function addUpload(tipe) {
-                var cekTipe = $('.' + tipe).length;
-                var remove = 'remove_' + tipe + cekTipe;
-                var set = '<div id="' + remove + '">' +
-                    '<div class="input-group" style="margin-top: 7px">\n' +
-                    '<input type="file" class="form-control" id="upload-' + tipe + '-' + cekTipe + '" onchange="uploadDoc(\'' + tipe + '\', \'' + cekTipe + '\')"/>\n' +
-                    '<div class="input-group-btn">\n' +
-                    '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\'' + remove + '\')"><i class="fa fa-trash"></i></a>\n' +
+                str += '<div class="item ' + aktive + '">\n' +
+                    '<img style="height: 300px; width: 100%" src="' + contextPathHeader + '/images/upload/surat_po/' + img.urlImg + '" alt="Slide' + img.urlImg + '">\n' +
+                    '<div class="carousel-caption">\n' + img.urlImg +
                     '</div>\n' +
-                    '</div>' +
-                    '<canvas id="canvas-' + tipe + '-' + cekTipe + '" class="' + tipe + '" style="display: none"></canvas>' +
                     '</div>';
-                $('#set_' + tipe).append(set);
-            }
+                li += '<li data-target="#carousel-example-generic_' + idItem + '" data-slide-to="' + n + '" ' + liAcktive + '></li>';
+            });
+            $("#item_" + idItem+'_'+jenis).html(str);
+            $("#li_" + idItem+'_'+jenis).html(li);
+        });
+    }
 
-            function delUpload(id) {
-                $('#' + id).remove();
+    function addUpload(tipe) {
+        var cekTipe = $('.' + tipe).length;
+        var remove = 'remove_' + tipe + cekTipe;
+        var set = '<div id="' + remove + '">' +
+            '<div class="input-group" style="margin-top: 7px">\n' +
+            '<input type="file" class="form-control" id="upload-' + tipe + '-' + cekTipe + '" onchange="uploadDoc(\'' + tipe + '\', \'' + cekTipe + '\')"/>\n' +
+            '<div class="input-group-btn">\n' +
+            '    <a class="btn btn-danger" style="padding: 9px" onclick="delUpload(\'' + remove + '\')"><i class="fa fa-trash"></i></a>\n' +
+            '</div>\n' +
+            '</div>' +
+            '<canvas id="canvas-' + tipe + '-' + cekTipe + '" class="' + tipe + '" style="display: none"></canvas>' +
+            '</div>';
+        $('#set_' + tipe).append(set);
+    }
 
-            }
+    function delUpload(id) {
+        $('#' + id).remove();
 
+    }
 
 
 </script>

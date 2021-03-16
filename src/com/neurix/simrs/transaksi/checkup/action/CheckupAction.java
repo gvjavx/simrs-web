@@ -57,6 +57,7 @@ import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckup
 import com.neurix.simrs.transaksi.diagnosarawat.model.ItSimrsDiagnosaRawatEntity;
 import com.neurix.simrs.transaksi.hargaobat.model.HargaObat;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
+import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsPaketEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.PaketPeriksa;
 import com.neurix.simrs.transaksi.patrus.model.ItSImrsPatrusEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
@@ -470,6 +471,7 @@ public class CheckupAction extends BaseMasterAction {
         AntrianOnlineBo antrianOnlineBo = (AntrianOnlineBo) ctx.getBean("antrianOnlineBoProxy");
         PasienBo pasienBo = (PasienBo) ctx.getBean("pasienBoProxy");
         CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        PaketPeriksaBo paketPeriksaBo = (PaketPeriksaBo) ctx.getBean("paketPeriksaBoProxy");
         HeaderCheckup checkup = new HeaderCheckup();
         RegistrasiOnline online = new RegistrasiOnline();
         List<RegistrasiOnline> registrasiOnlineList = new ArrayList<>();
@@ -525,7 +527,7 @@ public class CheckupAction extends BaseMasterAction {
                 try {
                     pasienList = pasienBo.getByCriteria(pasien);
                 } catch (GeneralBOException e) {
-                    logger.error("FOund Error " + e.getMessage());
+                    logger.error("FOund Errore " + e.getMessage());
                 }
 
                 if (pasienList.size() > 0) {
@@ -550,6 +552,31 @@ public class CheckupAction extends BaseMasterAction {
                 checkup.setNamaProvinsi(online.getNamaProvinsi());
                 checkup.setAgama(online.getAgama());
                 checkup.setNoCheckupOnline(online.getNoCheckupOnline());
+                checkup.setIdPaket(antianOnline.getIdPaket());
+
+                String tarif = "";
+
+                if(antianOnline.getIdPaket() != null && !"".equalsIgnoreCase(antianOnline.getIdPaket())){
+                    MtSimrsPaketEntity entity = paketPeriksaBo.getPaketEntityById(antianOnline.getIdPaket());
+                    if(entity.getNamaPaket() != null){
+                        checkup.setNamaPaket(entity.getNamaPaket());
+                        tarif = String.valueOf(entity.getTarif());
+                        checkup.setTarif(tarif);
+                    }
+                }
+
+                if("paket_perusahaan".equalsIgnoreCase(online.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(online.getIdJenisPeriksaPasien())){
+                    if(antianOnline.getIdPaket() != null && !"".equalsIgnoreCase(antianOnline.getIdPaket())){
+                        MtSimrsPaketEntity entity = paketPeriksaBo.getPaketEntityById(antianOnline.getIdPaket());
+                        if(entity.getNamaPaket() != null){
+                            if("paket_perusahaan".equalsIgnoreCase(online.getIdJenisPeriksaPasien())){
+                                checkup.setNamaPaket(entity.getNamaPaket());
+                            }
+                            tarif = String.valueOf(entity.getTarif());
+                            checkup.setTarif(tarif);
+                        }
+                    }
+                }
 
                 List<HeaderCheckup> checkups = new ArrayList<>();
                 HeaderCheckup header = new HeaderCheckup();
@@ -1523,7 +1550,7 @@ public class CheckupAction extends BaseMasterAction {
         pelayanan.setBranchId(CommonUtil.userBranchLogin());
 
         try {
-            pelayananList = pelayananBo.getByCriteria(pelayanan);
+            pelayananList = pelayananBo.getListPelayananByTipe("gudang_obat", CommonUtil.userBranchLogin());
         } catch (HibernateException e) {
             logger.error("[CheckupAction.getComboPelayanan] Error when get data for combo listOfPelayanan", e);
             addActionError(" Error when get data for combo listOfPelayanan" + e.getMessage());

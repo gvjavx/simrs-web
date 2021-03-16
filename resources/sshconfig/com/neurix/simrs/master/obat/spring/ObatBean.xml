@@ -36,6 +36,7 @@
           p:headerObatDao-ref="headerObatDao"
           p:kategoriPersedianDao-ref="kategoriPersedianDao"
           p:marginObatDao-ref="marginObatDao"
+          p:pabrikDao-ref="pabrikDao"
     />
 
     <bean id="obatBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -88,6 +89,9 @@
           p:sessionFactory-ref="sessionFactory" />
 
     <bean id="marginObatDao" class="com.neurix.simrs.master.marginobat.dao.MarginObatDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="pabrikDao" class="com.neurix.simrs.master.obat.dao.PabrikDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

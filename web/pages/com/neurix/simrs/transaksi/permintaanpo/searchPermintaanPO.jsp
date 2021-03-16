@@ -184,7 +184,6 @@
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:else></td>
                                     <td align="center">
-                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
                                         <s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                             <%--<s:url var="print_po" namespace="/permintaanpo" action="printPermintaanPO_permintaanpo" escapeAmp="false">--%>
                                                 <%--<s:param name="id"><s:property value="idPermintaanVendor"/></s:param>--%>
@@ -207,6 +206,8 @@
                                                 <img class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                             </s:a>
                                         </s:else>
+                                        <img class="hvr-grow" style="cursor: pointer" src="<s:url value="/pages/images/icons8-print-25.png"/>" onclick="printPo('<s:property value="idPermintaanVendor"/>','<s:property value="idApprovalObat"/>')">
+
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -372,7 +373,7 @@
                 <div id="body-img">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
@@ -418,16 +419,18 @@
                         '<td align="center">'+item.noBatch+'</td>' +
                         '<td>'+item.stLastUpdateWho+'</td>' +
                         '<td align="center">' +
+                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>">'+
                         '<a target="_blank" href="printPermintaanPO_permintaanpo?id='+idPermintaan+'&noBatch='+item.noBatch+'">' +
                         '<img src="<s:url value="/pages/images/icons8-print-25.png"/>">'+
                         '</a>'+
-                        '<img style="cursor: pointer" onclick="showDetailListObat(\''+idPermintaan+'\',\''+item.noBatch+'\',\''+item.noFaktur+'\',\''+tgl+'\',\''+item.noInvoice+'\',\''+item.noDo+'\',\''+item.urlDoc+'\')" src="<s:url value="/pages/images/icons8-search-25.png"/>"></td>' +
+                        '</td>' +
                         '</tr>';
                 });
                 $('#body_bat').html(table);
             }
         })
     }
+
     function showDetailListObat(idpermintaanPo, noBatch, noFaktur, tglFaktur, noInvoice, noDo, img){
         $('#modal-detail').modal({show:true, backdrop:'static'});
         $('#det_no_faktur').text(noFaktur);
@@ -548,9 +551,9 @@
                 $.each(list, function (i, item) {
                     var id = 'carousel-example-generic_'+item.idItem;
                     str += '<h5>'+item.jenisNomor.toUpperCase()+' - '+item.idItem+'</h5><div id="'+id+'" class="carousel slide" data-ride="carousel">\n' +
-                        '<ol class="carousel-indicators" id="li_'+item.idItem+'">\n' +
+                        '<ol class="carousel-indicators" id="li_'+item.idItem+item.jenisNomor+'">\n' +
                         '</ol>\n' +
-                        '<div class="carousel-inner" id="item_'+item.idItem+'">\n' +
+                        '<div class="carousel-inner" id="item_'+item.idItem+item.jenisNomor+'">\n' +
                         '</div>\n' +
                         '<a class="left carousel-control" href="#'+id+'" data-slide="prev">\n' +
                         '    <span class="fa fa-angle-left"></span>\n' +
@@ -559,7 +562,7 @@
                         '    <span class="fa fa-angle-right"></span>\n' +
                         '</a>\n' +
                         '</div><hr>';
-                    showImg(item.idItem);
+                    showImg(item.idItem, item.jenisNomor);
                 });
             }else{
                 str = '<b style="text-align: center">Foto tidak ada..!</b>'
@@ -568,7 +571,7 @@
         });
     }
 
-    function showImg(idItem){
+    function showImg(idItem, jenis){
         PermintaanVendorAction.getListImg(idItem, function (listimg) {
             var str = '';
             var li = '';
@@ -586,8 +589,8 @@
                     '</div>';
                 li += '<li data-target="#carousel-example-generic_'+idItem+'" data-slide-to="'+n+'" '+liAcktive+'></li>';
             });
-            $("#item_"+idItem).html(str);
-            $("#li_"+idItem).html(li);
+            $("#item_"+idItem+jenis).html(str);
+            $("#li_"+idItem+jenis).html(li);
         });
     }
 

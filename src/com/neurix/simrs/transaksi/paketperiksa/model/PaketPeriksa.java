@@ -39,11 +39,30 @@ public class PaketPeriksa {
 
     private String idItemPaket;
 
+    private BigDecimal tarifAwal;
     private BigDecimal tarif;
     private String namaLab;
     private String idLab;
     private String namaPelayanan;
     private BigInteger urutan;
+
+    private String namaItem;
+
+    public BigDecimal getTarifAwal() {
+        return tarifAwal;
+    }
+
+    public void setTarifAwal(BigDecimal tarifAwal) {
+        this.tarifAwal = tarifAwal;
+    }
+
+    public String getNamaItem() {
+        return namaItem;
+    }
+
+    public void setNamaItem(String namaItem) {
+        this.namaItem = namaItem;
+    }
 
     public BigInteger getUrutan() {
         return urutan;

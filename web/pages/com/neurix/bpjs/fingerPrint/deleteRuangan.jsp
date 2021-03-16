@@ -261,11 +261,15 @@
                                                    resizable="false"
                                                    height="350" width="600" autoOpen="false" title="Saving ...">
                                             Please don't close this window, server is processing your request ...
-                                            </br>
-                                            </br>
-                                            </br>
+                                            <br>
                                             <center>
-                                                <img border="0" src="<s:url value="/pages/images/indicator-write.gif"/>" name="image_indicator_write">
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
                                             </center>
                                         </sj:dialog>
 

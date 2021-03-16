@@ -25,7 +25,7 @@
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_pelayanan'/>";
+            window.location.href="<s:url action='initForm_detailrekananops'/>";
         }
 
     </script>
@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Pelayanan
+            Detail Rekanan Operasional
         </h1>
     </section>
     <!-- Main content -->
@@ -50,17 +50,17 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Pelayanan</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Detail Rekanan Operasional</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="pelayananForm" method="post"  theme="simple"
-                                            namespace="/pelayanan" action="search_pelayanan.action" cssClass="form-horizontal">
+                                    <s:form id="detailRekananOpsForm" method="post"  theme="simple"
+                                            namespace="/detailrekananops" action="search_detailrekananops.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
-                                                <td width="10%" align="center">
+                                                <td align="center">
                                                     <%@ include file="/pages/common/message.jsp" %>
                                                 </td>
                                             </tr>
@@ -68,85 +68,53 @@
                                         <table>
 
                                             <tr>
-                                                <td width="18%">
-                                                    <label class="control-label"><small>Pelayanan ID :</small></label>
+                                                <td width="30%">
+                                                    <label class="control-label"><small>Nama Rekanan </small></label>
                                                 </td>
-                                                <td>
+                                                <td width="90%">
                                                     <table>
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="idPelayanans"
-                                                                     name="pelayanan.idPelayanan"
-                                                                     required="false"
-                                                                     readonly="false" cssClass="form-control"/>
+                                                        <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
+                                                        <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
+                                                        listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
+                                                        cssClass="form-control select2" cssStyle="width: 100%"/>
                                                     </table>
                                                 </td>
                                             </tr>
 
+                                            <%--<tr>--%>
+                                                <%--<td width="18%">--%>
+                                                    <%--<label class="control-label"><small>RekananOps ID :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:textfield cssStyle="margin-top: 7px"--%>
+                                                                     <%--id="idRekananOps"--%>
+                                                                     <%--name="detailRekananOps.idDetailRekananOps"--%>
+                                                                     <%--required="false"--%>
+                                                                     <%--readonly="false" cssClass="form-control"/>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Pelayanan :</small></label>
+                                                    <label class="control-label"><small>Cover BPJS </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield cssStyle="margin-top: 7px"
-                                                                     id="namaPelayanan"
-                                                                     name="pelayanan.namaPelayanan"
-                                                                     required="true" disabled="false" cssClass="form-control"/>
+                                                        <s:select list="#{'Y':'Ya','N':'Tidak'}" id="flag2" name="detailRekananOps.isBpjs"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control select2"  cssStyle="width: 100%"/>
                                                     </table>
+
                                                 </td>
                                             </tr>
-
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Unit :</small></label>
+                                                    <label class="control-label"><small>Flag </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                            <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
-                                                            <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                        <s:if test='pelayanan.branchUser == "KP"'>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pelayanan.branchId"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                                                      cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:else>
-                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pelayanan.branchId" disabled="true"
-                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
-                                                                      cssClass="form-control select2"/>
-                                                            <s:hidden id="branchId" name="pelayanan.branchId" />
-                                                        </s:else>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Tipe :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <%--<s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',--%>
-                                                                <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
-                                                                  <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                        <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
-                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
-                                                                  id="tipePelayanan" name="pelayanan.tipePelayanan"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
-                                                    </table>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="pelayanan.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="detailRekananOps.flag"
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" cssStyle="width: 100%" />
                                                     </table>
 
                                                 </td>
@@ -158,22 +126,24 @@
                                             <table align="center">
                                                 <tr>
                                                     <td >
-                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="pelayananForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="detailRekananOpsForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd" namespace="/pelayanan" action="add_pelayanan" escapeAmp="false">
+                                                        <s:url var="urlAdd" namespace="/detailrekananops" action="add_detailrekananops" escapeAmp="false">
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Pelayanan
+                                                            Add Detail Rekanan OPS
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px" onclick="window.location.href='<s:url action="initForm_pelayanan"/>'">
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px"
+                                                                onclick="window.location.href='<s:url
+                                                                action="initForm_detailrekananops"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -206,7 +176,7 @@
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
                                                                    height="440" width="600" autoOpen="false"
-                                                                   title="Pelayanan ">
+                                                                   title="Detail Rekanan Ops ">
                                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
@@ -219,16 +189,15 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchPelayanan" value="#session.listOfResultPelayanan" scope="request" />
-                                                        <display:table name="listOfsearchPelayanan"
-                                                                       class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_pelayanan.action" export="true" id="row"
+                                                        <s:set name="listOfsearchRekananOps" value="#session.listOfResultRekananOps" scope="request" />
+                                                        <display:table name="listOfsearchRekananOps" class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_detailRekananOps.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/pelayanan" action="edit_pelayanan" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idPelayanan"/></s:param>
+                                                                    <s:url var="urlEdit" namespace="/detailrekananops" action="edit_detailrekananops" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -239,8 +208,8 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/pelayanan" action="delete_pelayanan" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idPelayanan" /></s:param>
+                                                                    <s:url var="urlViewDelete" namespace="/detailrekananops" action="delete_detailrekananops" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -248,18 +217,18 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="idPelayanan" sortable="true" title="ID Pelayanan" />
-                                                            <display:column property="namaPelayanan" sortable="true" title="Nama Pelayanan"  />
-                                                            <display:column property="tipePelayanan" sortable="true" title="Tipe Pelayanan"  />
-                                                            <display:column property="branchName" sortable="true" title="Unit"  />
-                                                            <%--<display:column property="kodering" sortable="true" title="Kode"  />--%>
-                                                            <display:column property="divisiName" sortable="true" title="ID Divisi"  />
-                                                            <display:column property="isEksekutif" sortable="true" title="Ekseskutif"  />
-                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
-                                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
-                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
+                                                            <%--<display:column property="idRekananOps" sortable="true" title="ID RekananOps" />--%>
+                                                            <display:column property="idDetailRekananOps" sortable="true" title="id DetailRekananOps" />
+                                                            <display:column property="isBpjs" sortable="true" title="is Bpjs" />
+                                                            <display:column property="namaRekanan" sortable="true" title="nama rekanan Ops" />
+                                                            <display:column property="diskon" sortable="true" title="diskon" />
+                                                            <display:column property="branchName" sortable="true" title=" nama branch" />
+                                                            <display:column property="flag" sortable="true" title="flag"  />
+
+                                                            <display:column property="action" sortable="true" title="action"  />
+                                                            <display:column property="createdDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
+                                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
                                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                         </display:table>
                                                     </td>

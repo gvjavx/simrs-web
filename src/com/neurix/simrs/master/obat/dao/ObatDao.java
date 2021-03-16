@@ -378,26 +378,56 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             //stok obat digudang ditambah dengan stok di apotek
             String SQLMaster = "SELECT  \n" +
-                    "\tid_obat,  \n" +
-                    "\tSUM(qty_box) as qty_box,  \n" +
-                    "\tSUM(qty_lembar) as qty_lembar, \n" +
-                    "\tSUM(qty_biji) as qty_biji \n" +
+                    "id_obat,  \n" +
+                    "a.qty_box,  \n" +
+                    "a.qty_lembar, \n" +
+                    "a.qty_biji,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\tqty_biji, \n" +
+                    "\tqty_lembar, \n" +
+                    "\tqty_box, \n" +
+                    "\tlembar_per_box, \n" +
+                    "\tbiji_per_lembar,\n" +
+                    "\tid_obat,\n" +
+                    "\tbranch_id\n" +
                     "\tFROM im_simrs_obat\n" +
                     "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND id_obat = :id1\n" +
-                    "\tAND branch_id = :branchId1\n" +
-                    "\tGROUP BY id_obat";
+                    ") a\n" +
+                    "WHERE a.id_obat = :id1 \n" +
+                    "AND a.branch_id = :branchId1 ";
 
-            String SQLPoli = "SELECT \n" +
-                    "\tid_obat, \n" +
-                    "\tSUM(qty_box) as jml_box, \n" +
-                    "\tSUM(qty_lembar) as jml_lembar, \n" +
-                    "\tSUM(qty_biji) as jml_biji\n" +
-                    "\tFROM mt_simrs_obat_poli\n" +
-                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND id_obat = :id2\n" +
-                    "\tAND branch_id = :branchId2\n" +
-                    "\tGROUP BY id_obat";
+            String SQLPoli = "\n" +
+                    "SELECT  \n" +
+                    "aa.id_obat,  \n" +
+                    "aa.qty_box,  \n" +
+                    "aa.qty_lembar, \n" +
+                    "aa.qty_biji,\n" +
+                    "aa.lembar_per_box,\n" +
+                    "aa.biji_per_lembar\n" +
+                    "FROM (\n" +
+                    "\tSELECT \n" +
+                    "\ta.lembar_per_box, \n" +
+                    "\ta.biji_per_lembar,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.branch_id,\n" +
+                    "\tSUM(b.qty_box) as qty_box,\n" +
+                    "\tSUM(b.qty_lembar) as qty_lembar,\n" +
+                    "\tSUM(b.qty_biji) as qty_biji\n" +
+                    "\tFROM im_simrs_obat a\n" +
+                    "\tINNER JOIN ( \n" +
+                    "\t\tSELECT id_barang, qty_box, qty_lembar, qty_biji FROM mt_simrs_obat_poli\n" +
+                    "\t\t) b ON b.id_barang = a.id_barang\n" +
+                    "\tGROUP BY \n" +
+                    "\ta.lembar_per_box, \n" +
+                    "\ta.biji_per_lembar,\n" +
+                    "\ta.id_obat,\n" +
+                    "\ta.branch_id\n" +
+                    ") aa\n" +
+                    "WHERE aa.id_obat = :id2 \n" +
+                    "AND aa.branch_id = :branchId2 ";
 
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
@@ -413,21 +443,51 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             BigInteger totalBox1 = new BigInteger(String.valueOf(0));
             BigInteger totalLembar1 = new BigInteger(String.valueOf(0));
             BigInteger totalBiji1 = new BigInteger(String.valueOf(0));
+            BigInteger jumlahBijiAll = new BigInteger(String.valueOf(0));
 
+            System.out.println(" ====== Obat Gudang : ");
+            int i = 1;
             if (results1.size() > 0) {
                 for (Object[] obj : results1) {
                     idObat = obj[0].toString();
+
+                    BigInteger totalBox = new BigInteger(String.valueOf(0));
+                    BigInteger totalLembar = new BigInteger(String.valueOf(0));
+                    BigInteger totalBiji = new BigInteger(String.valueOf(0));
+
                     if(obj[1] != null){
-                        totalBox1 = new BigInteger(obj[1].toString());
+                        totalBox = new BigInteger(obj[1].toString());
+                        totalBox1 = totalBox1.add(totalBox);
+//                        totalBox1 = new BigInteger(obj[1].toString());
                     }
                     if(obj[2] != null){
-                        totalLembar1 = new BigInteger(obj[2].toString());
+                        totalLembar = new BigInteger(obj[2].toString());
+                        totalLembar1 = totalLembar1.add(totalLembar);
+//                        totalLembar1 = new BigInteger(obj[2].toString());
                     }
                     if(obj[3] != null){
-                        totalBiji1 = new BigInteger(obj[3].toString());
+                        totalBiji = new BigInteger(obj[3].toString());
+                        totalBiji1 = totalBiji1.add(totalBiji);
+//                        totalBiji1 = new BigInteger(obj[3].toString());
                     }
+
+                    BigInteger lembarPerBox = new BigInteger(obj[4].toString());
+                    BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
+                    BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
+
+                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+                    System.out.println("    -> lembar / box : "+lembarPerBox+" biji / lembar : "+bijiPerLembar);
+
+                    BigInteger boxToBiji = totalBiji.multiply(consBox);
+                    BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
+
+                    // jumlah Biji all
+                    jumlahBijiAll = jumlahBijiAll.add(boxToBiji.add(lembarToBiji).add(totalBiji));
+
                 }
             }
+
+            System.out.println(" ====== Obat Poli : ");
 
             BigInteger totalBox2 = new BigInteger(String.valueOf(0));
             BigInteger totalLembar2 = new BigInteger(String.valueOf(0));
@@ -435,15 +495,39 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
             if (results2.size() > 0) {
                 for (Object[] obj : results2) {
+
+                    BigInteger totalBox = new BigInteger(String.valueOf(0));
+                    BigInteger totalLembar = new BigInteger(String.valueOf(0));
+                    BigInteger totalBiji = new BigInteger(String.valueOf(0));
+
                     if(obj[1] != null){
-                        totalBox2 = new BigInteger(obj[1].toString());
+                        totalBox = new BigInteger(obj[1].toString());
+                        totalBox2 = totalBox2.add(totalBox);
+//                        totalBox2 = totalBox2.add(new BigInteger(obj[1].toString()));
                     }
                     if(obj[2] != null){
-                        totalLembar2 = new BigInteger(obj[2].toString());
+                        totalLembar = new BigInteger(obj[2].toString());
+                        totalLembar2 = totalLembar2.add(totalLembar);
+//                        totalLembar2 = totalLembar2.add(new BigInteger(obj[2].toString()));
                     }
                     if(obj[3] != null){
-                        totalBiji2 = new BigInteger(obj[3].toString());
+                        totalBiji = new BigInteger(obj[3].toString());
+                        totalBiji2 = totalBiji2.add(totalBiji);
+//                        totalBiji2 = totalBiji2.add(new BigInteger(obj[3].toString()));
                     }
+
+                    BigInteger lembarPerBox = new BigInteger(obj[4].toString());
+                    BigInteger bijiPerLembar = new BigInteger(obj[5].toString());
+                    BigInteger consBox = lembarPerBox.multiply(bijiPerLembar);
+
+                    System.out.println("loop ke : "+ i++ +" idobat : "+idObat+" box : "+totalBox+" lembar : "+totalLembar+" biji : "+totalBiji);
+                    System.out.println("    -> lembar / box : "+obj[4].toString()+" biji / lembar : "+obj[5].toString());
+
+                    BigInteger boxToBiji = totalBox.multiply(consBox);
+                    BigInteger lembarToBiji = totalLembar.multiply(bijiPerLembar);
+
+                    // jumlah Biji all
+                    jumlahBijiAll = jumlahBijiAll.add(boxToBiji.add(lembarToBiji).add(totalBiji));
                 }
             }
 
@@ -452,6 +536,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 obat.setQtyBox(totalBox1.add(totalBox2));
                 obat.setQtyLembar(totalLembar1.add(totalLembar2));
                 obat.setQtyBiji(totalBiji1.add(totalBiji2));
+                obat.setQtyAllBiji(jumlahBijiAll);
             }
         }
 
@@ -507,126 +592,86 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
     public List<Obat> getListObatGroup(Obat bean) {
 
         List<Obat> list = new ArrayList<>();
-        String idPabrik = "%";
-        String idJenis = "%";
-        String idObat = "%";
-        String branchId = "%";
+        String condition = "";
         String flag = "%";
+        String branch = "";
 
         if (bean != null) {
-
-            if (bean.getIdPabrik() != null && !"".equalsIgnoreCase(bean.getIdPabrik())) {
-                idPabrik = bean.getIdPabrik();
-            }
-            if (bean.getIdJenisObat() != null && !"".equalsIgnoreCase(bean.getIdJenisObat())) {
-                idJenis = bean.getIdJenisObat();
-            }
-            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
-                idObat = bean.getIdObat();
-            }
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 flag = bean.getFlag();
             }
+            if (bean.getIdObat() != null && !"".equalsIgnoreCase(bean.getIdObat())) {
+                condition += "AND a.id_obat ILIKE '%"+bean.getIdObat()+"%'";
+            }
+            if (bean.getNamaObat() != null && !"".equalsIgnoreCase(bean.getNamaObat())) {
+                condition += "AND a.nama_obat ILIKE '%"+bean.getNamaObat()+"%'";
+            }
+            if (bean.getIdBentuk() != null && !"".equalsIgnoreCase(bean.getIdBentuk())) {
+                condition += "AND a.id_bentuk = '"+bean.getIdBentuk()+"'\n";
+            }
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId()) && !CommonConstant.BRANCH_KP.equalsIgnoreCase(bean.getBranchId())) {
-                branchId = bean.getBranchId();
+                branch = "WHERE branch_id = '"+bean.getBranchId()+"'\n";
             }
 
-            String SQL = "SELECT \n" +
-                    "a.id_pabrik,\n" +
-                    "a.id_obat,\n" +
-                    "a.nama_obat, \n" +
-                    "a.lembar_per_box, \n" +
-                    "a.biji_per_lembar, \n" +
-                    "SUM(a.qty_box) as box,\n" +
-                    "SUM(a.qty_lembar) as lembar, \n" +
-                    "SUM(a.qty_biji) as biji, \n" +
-                    "a.merk, \n" +
-                    "a.flag, \n" +
-                    "c.min_stok, \n" +
-                    "c.flag_kronis, \n" +
-                    "c.flag_generic, \n" +
-                    "c.flag_bpjs, \n" +
-                    "d.standar_margin, \n" +
-                    "c.id_kategori_persediaan,\n" +
-                    "c.flag_parenteral, \n" +
-                    "c.flag_is_formularium, \n" +
-                    "c.id_jenis_obat,\n" +
-                    "c.id_sub_jenis,\n" +
-                    "c.id_bentuk\n" +
-                    "FROM im_simrs_obat a\n" +
-                    "LEFT JOIN (\n" +
-                    "\tSELECT id_obat \n" +
-                    "\tFROM im_simrs_obat_gejala \n" +
-                    "\tWHERE id_jenis_obat LIKE :idJenis \n" +
-                    "\tGROUP BY id_obat\n" +
-                    ") b ON a.id_obat = b.id_obat\n" +
-                    "LEFT JOIN im_simrs_header_obat c ON a.id_obat = c.id_obat\n" +
-                    "LEFT JOIN im_simrs_margin_obat d ON a.id_obat = d.id_obat\n" +
-                    "WHERE a.branch_id LIKE :branchId \n" +
-                    "AND a.id_pabrik LIKE :idPabrik \n" +
-                    "AND a.id_obat LIKE :idObat \n" +
-                    "AND a.flag LIKE :flag\n" +
-                    "GROUP BY \n" +
-                    "a.id_pabrik,\n" +
+            String SQL = "SELECT\n" +
                     "a.id_obat,\n" +
                     "a.nama_obat,\n" +
+                    "a.id_kategori_persediaan,\n" +
+                    "a.id_bentuk,\n" +
+                    "a.id_jenis_obat,\n" +
+                    "a.id_sub_jenis,\n" +
+                    "a.flag_kronis,\n" +
+                    "a.flag_generic,\n" +
+                    "a.flag_is_formularium,\n" +
+                    "a.flag_bpjs,\n" +
+                    "a.flag_parenteral,\n"+
+                    "a.min_stok,\n" +
+                    "b.sum_biji,\n" +
+                    "c.standar_margin,\n" +
                     "a.lembar_per_box,\n" +
-                    "a.biji_per_lembar,a.merk,\n" +
-                    "a.flag,\n" +
-                    "c.min_stok,\n" +
-                    "c.flag_kronis,\n" +
-                    "c.flag_generic,\n" +
-                    "c.flag_bpjs,\n" +
-                    "d.standar_margin,\n" +
-                    "c.id_kategori_persediaan,\n" +
-                    "c.flag_parenteral, \n" +
-                    "c.flag_is_formularium, \n" +
-                    "c.id_jenis_obat,\n" +
-                    "c.id_sub_jenis,\n" +
-                    "c.id_bentuk";
+                    "a.biji_per_lembar\n" +
+                    "FROM im_simrs_header_obat a\n" +
+                    "INNER JOIN (\n" +
+                    "SELECT\n" +
+                    "id_obat,\n" +
+                    "SUM(qty_biji) as sum_biji\n" +
+                    "FROM im_simrs_obat\n" + branch +
+                    "GROUP BY id_obat\n" +
+                    ") b ON a.id_obat = b.id_obat\n" +
+                    "LEFT JOIN im_simrs_margin_obat c ON a.id_obat = c.id_obat\n" +
+                    "WHERE a.flag = :flag \n" +condition;
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                    .setParameter("branchId", branchId)
-                    .setParameter("idPabrik", idPabrik)
-                    .setParameter("idObat", idObat)
                     .setParameter("flag", flag)
-                    .setParameter("idJenis", idJenis)
                     .list();
 
             if (resuts.size() > 0) {
                 for (Object[] obj : resuts) {
                     Obat obat = new Obat();
-                    obat.setIdPabrik(obj[0] == null ? "" : obj[0].toString());
-                    obat.setIdObat(obj[1] == null ? "" : obj[1].toString());
-                    obat.setNamaObat(obj[2] == null ? "" : obj[2].toString());
-                    obat.setLembarPerBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[3].toString()));
-                    obat.setBijiPerLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
-                    obat.setQtyBox(obj[5] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[5].toString()));
-                    obat.setQtyLembar(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
-                    obat.setQtyBiji(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
-                    obat.setMerk(obj[8] == null ? "" : obj[8].toString());
-                    obat.setFlag(obj[9] == null ? "" : obj[9].toString());
-                    obat.setMinStok(obj[10] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[10].toString())));
-                    obat.setFlagKronis(obj[11] == null ? "N" : obj[11].toString());
-                    obat.setFlagGeneric(obj[12] == null ? "N" : obj[12].toString());
-                    obat.setFlagBpjs(obj[13] == null ? "N" : obj[13].toString());
-                    obat.setMargin(obj[14] == null ? 0 : (Integer) obj[14]);
-                    obat.setIdKategoriPersediaan(obj[15] == null ? "" : (String) obj[15]);
-                    obat.setFlagParenteral(obj[16] == null ? "" : (String) obj[16]);
-                    obat.setFlagFormula(obj[17] == null ? "" : (String) obj[17]);
-                    obat.setIdJenisBentuk(obj[18] == null ? "" : (String) obj[18]);
-                    obat.setIdJenisSub(obj[19] == null ? "" : (String) obj[19]);
-                    obat.setIdBentuk(obj[20] == null ? "" : (String) obj[20]);
-                    obat.setJenisObat(getObatGejalaByIdObat(obj[1].toString()));
-
-                    if (obat.getQtyBox() != null && obat.getMinStok() != null) {
-                        if (obat.getQtyBox().intValue() >= obat.getMinStok().intValue()) {
+                    obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
+                    obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
+                    obat.setIdKategoriPersediaan(obj[2] == null ? "" : (String) obj[2]);
+                    obat.setIdBentuk(obj[3] == null ? "" : (String) obj[3]);
+                    obat.setIdJenisBentuk(obj[4] == null ? "" : (String) obj[4]);
+                    obat.setIdJenisSub(obj[5] == null ? "" : (String) obj[5]);
+                    obat.setFlagKronis(obj[6] == null ? "N" : obj[6].toString());
+                    obat.setFlagGeneric(obj[7] == null ? "N" : obj[7].toString());
+                    obat.setFlagFormula(obj[8] == null ? "N" : (String) obj[8]);
+                    obat.setFlagBpjs(obj[9] == null ? "N" : obj[9].toString());
+                    obat.setFlagParenteral(obj[10] == null ? "N" : (String) obj[10]);
+                    obat.setMinStok(obj[11] == null ? new BigInteger(String.valueOf("0")) : new BigInteger(String.valueOf(obj[11].toString())));
+                    obat.setQtyBiji(obj[12] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[12].toString()));
+                    obat.setMargin(obj[13] == null ? 0 : (Integer) obj[13]);
+                    obat.setLembarPerBox(obj[14] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[14].toString()));
+                    obat.setBijiPerLembar(obj[15] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[15].toString()));
+                    obat.setJenisObat(getObatGejalaByIdObat(obj[0].toString()));
+                    if (obat.getQtyBiji() != null && obat.getMinStok() != null) {
+                        if (obat.getQtyBiji().intValue() >= obat.getMinStok().intValue()) {
                             obat.setIsMinStok("N");
                         } else {
                             obat.setIsMinStok("Y");
                         }
                     }
-
                     list.add(obat);
                 }
             }
@@ -683,17 +728,22 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 branchId = bean.getBranchId();
             }
 
-            String SQL = "SELECT id_barang, \n" +
-                    "expired_date, \n" +
-                    "id_obat, \n" +
-                    "nama_obat, \n" +
-                    "qty_box, \n" +
-                    "qty_lembar, \n" +
-                    "qty_biji\n" +
-                    "FROM im_simrs_obat\n" +
-                    "WHERE id_obat LIKE :idObat\n" +
-                    "AND id_barang LIKE :idBarang\n" +
-                    "AND branch_id LIKE :branchId\n ORDER BY expired_date ASC";
+            String SQL = "SELECT\n" +
+                    "a.id_barang, \n" +
+                    "a.expired_date, \n" +
+                    "a.id_obat, \n" +
+                    "a.nama_obat, \n" +
+                    "a.qty_biji,\n" +
+                    "a.merk,\n" +
+                    "a.id_pabrik_obat,\n" +
+                    "b.nama,\n" +
+                    "a.nomor_produksi\n" +
+                    "FROM im_simrs_obat a\n" +
+                    "LEFT JOIN im_simrs_pabrik_obat b ON a.id_pabrik_obat = b.id\n" +
+                    "WHERE a.id_obat LIKE :idObat\n" +
+                    "AND a.id_barang LIKE :idBarang\n" +
+                    "AND a.branch_id LIKE :branchId\n" +
+                    "ORDER BY a.expired_date ASC \n";
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branchId", branchId)
@@ -710,15 +760,15 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     }
                     obat.setIdObat(obj[2] == null ? "" : obj[2].toString());
                     obat.setNamaObat(obj[3] == null ? "" : obj[3].toString());
-                    obat.setQtyBox(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
-                    obat.setQtyLembar(obj[5] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[5].toString()));
-                    obat.setQtyBiji(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
+                    obat.setQtyBiji(obj[4] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[4].toString()));
+                    obat.setMerk(obj[5] == null ? "" : obj[5].toString());
+                    obat.setIdPabrikObat(obj[6] == null ? "" : obj[6].toString());
+                    obat.setNamaPabrikObat(obj[7] == null ? "" : obj[7].toString());
+                    obat.setNomorProduksi(obj[8] == null ? "" : obj[8].toString());
                     list.add(obat);
                 }
             }
-
         }
-
         return list;
     }
 
@@ -726,33 +776,24 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         List<Obat> obatList = new ArrayList<>();
         if (query != null && branch != null) {
             String param = "%" + query + "%";
-//            String SQL = "SELECT id_obat, nama_obat, id_pabrik\n" +
-//                    "FROM im_simrs_obat\n" +
-//                    "WHERE nama_obat ILIKE :id AND branch_id = :branchId\n" +
-//                    "GROUP BY id_obat, nama_obat, id_pabrik\n" +
-//                    "UNION\n" +
-//                    "SELECT id_obat, nama_obat, id_pabrik\n" +
-//                    "FROM im_simrs_obat\n" +
-//                    "WHERE id_pabrik ILIKE :id AND branch_id = :branchId\n" +
-//                    "GROUP BY id_obat, nama_obat, id_pabrik\n";
 
-            String SQL = "SELECT \n" +
-                    "id_obat,\n" +
+            String SQL = "SELECT  \n" +
+                    "id_obat, \n" +
                     "nama_obat,\n" +
-                    "id_pabrik,\n" +
-                    "lembar_per_box,\n" +
-                    "biji_per_lembar,\n" +
-                    "flag_generic,\n" +
-                    "min_stok,\n" +
-                    "merk,\n" +
-                    "flag_bpjs\n" +
-                    "FROM im_simrs_header_obat WHERE flag = 'Y'\n" +
-                    "AND nama_obat ILIKE :id \n" +
-                    "OR id_pabrik ILIKE :id ";
+                    "lembar_per_box, \n" +
+                    "biji_per_lembar, \n" +
+                    "flag_generic, \n" +
+                    "min_stok, \n" +
+                    "merk, \n" +
+                    "flag_bpjs \n" +
+                    "FROM im_simrs_header_obat\n" +
+                    "WHERE flag = 'Y' \n" +
+                    "AND nama_obat ILIKE :id\n" +
+                    "OR id_obat ILIKE :id\n" +
+                    "LIMIT 10";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", param)
-//                    .setParameter("branchId", branch)
                     .list();
 
             if (results.size() > 0) {
@@ -760,19 +801,12 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     Obat obat = new Obat();
                     obat.setIdObat(obj[0] == null ? "" : obj[0].toString());
                     obat.setNamaObat(obj[1] == null ? "" : obj[1].toString());
-                    obat.setIdPabrik(obj[2] == null ? "" : obj[2].toString());
-                    obat.setLembarPerBox(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
-                    obat.setBijiPerLembar(obj[4] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[4]);
-                    obat.setFlagGeneric(obj[5] == null ? "" : obj[5].toString());
-                    obat.setMinStok(obj[6] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[6]);
-                    obat.setMerk(obj[7] == null ? "" : obj[7].toString());
-                    obat.setFlagBpjs(obj[8] == null ? "" : obj[8].toString());
-
-//                    Obat obt = getEntityObatById(obj[0].toString());
-//                    obat.setLembarPerBox(obt.getLembarPerBox());
-//                    obat.setBijiPerLembar(obt.getBijiPerLembar());
-//                    obat.setFlagKronis(obt.getFlagKronis());
-//                    obat.setFlagBpjs(obt.getFlagBpjs());
+                    obat.setLembarPerBox(obj[2] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[2]);
+                    obat.setBijiPerLembar(obj[3] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[3]);
+                    obat.setFlagGeneric(obj[4] == null ? "" : obj[4].toString());
+                    obat.setMinStok(obj[5] == null ? new BigInteger(String.valueOf(0)) : (BigInteger) obj[5]);
+                    obat.setMerk(obj[6] == null ? "" : obj[6].toString());
+                    obat.setFlagBpjs(obj[7] == null ? "" : obj[7].toString());
                     obatList.add(obat);
                 }
             }

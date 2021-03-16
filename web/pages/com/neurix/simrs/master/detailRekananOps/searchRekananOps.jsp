@@ -41,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Detail Rekanan Oprasional
+            Detail Rekanan Operasional
         </h1>
     </section>
     <!-- Main content -->
@@ -50,7 +50,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Detail Rekanan Oprasional</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Detail Rekanan Operasional</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
@@ -60,7 +60,7 @@
                                             namespace="/detailrekananops" action="search_detailrekananops.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
-                                                <td width="10%" align="center">
+                                                <td align="center">
                                                     <%@ include file="/pages/common/message.jsp" %>
                                                 </td>
                                             </tr>
@@ -68,15 +68,15 @@
                                         <table>
 
                                             <tr>
-                                                <td>
-                                                    <label class="control-label"><small>Nama rekanan :</small></label>
+                                                <td width="30%">
+                                                    <label class="control-label"><small>Nama Rekanan </small></label>
                                                 </td>
-                                                <td>
+                                                <td width="90%">
                                                     <table>
                                                         <s:action id="initComboRekanan" namespace="/detailrekananops" name="initComboRekanan_detailrekananops"/>
                                                         <s:select list="#initComboRekanan.listOfComboRekananOps" id="positionId1" name="detailRekananOps.idRekananOps"
                                                         listKey="idRekananOps" listValue="namaRekanan" headerKey="" headerValue="[Select one]"
-                                                        cssClass="form-control" cssStyle="margin-top: 5px"/>
+                                                        cssClass="form-control select2" cssStyle="width: 100%"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -97,24 +97,24 @@
                                             <%--</tr>--%>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>isbpjs :</small></label>
+                                                    <label class="control-label"><small>Cover BPJS </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag2" name="detailRekananOps.isBpjs"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
+                                                        <s:select list="#{'Y':'Ya','N':'Tidak'}" id="flag2" name="detailRekananOps.isBpjs"
+                                                                  headerKey="" headerValue="[Select One]" cssClass="form-control select2"  cssStyle="width: 100%"/>
                                                     </table>
 
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
+                                                    <label class="control-label"><small>Flag </small></label>
                                                 </td>
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'N':'Non-Active'}" id="flag" name="detailRekananOps.flag"
-                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" />
+                                                                  headerKey="Y" headerValue="Active" cssClass="form-control select2" cssStyle="width: 100%" />
                                                     </table>
 
                                                 </td>
@@ -137,7 +137,7 @@
                                                         </s:url>
                                                         <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Detail RekananOps
+                                                            Add Detail Rekanan OPS
                                                         </sj:a>
                                                     </td>
                                                     <td>

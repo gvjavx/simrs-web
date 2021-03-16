@@ -67,10 +67,10 @@
                                         </table>
                                         <table>
                                             <tr>
-                                                <td width="16%">
-                                                    <label class="control-label"><small>Asuransi ID :</small></label>
+                                                <td width="30%">
+                                                    <label class="control-label"><small>Asuransi ID </small></label>
                                                 </td>
-                                                <td>
+                                                <td width="60%">
                                                     <table>
                                                         <s:textfield id="idAsuransi"
                                                                      name="asuransi.idAsuransi"
@@ -83,7 +83,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Asuransi :</small></label>
+                                                    <label class="control-label"><small>Nama Asuransi</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -103,11 +103,11 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>isLaka :</small></label>
+                                                    <label class="control-label"><small>Laka Lantas</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Tidak Aktif' ,'Y':'aktif'}" id="isLaka"
+                                                        <s:select list="#{'N':'Tidak Aktif' ,'Y':'Aktif'}" id="isLaka"
                                                                   name="asuransi.isLaka"
                                                                   headerKey=""  headerValue="[Select one]"
                                                                   cssClass="form-control select2" />
@@ -118,13 +118,13 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Flag :</small></label>
+                                                    <label class="control-label"><small>Flag</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Tidak Aktif'}" id="flag"
+                                                        <s:select list="#{'N':'Non Active'}" id="flag"
                                                                   name="asuransi.flag"
-                                                                  headerKey="Y" headerValue="Aktif"
+                                                                  headerKey="Y" headerValue="Active"
                                                                   cssClass="form-control select2" />
                                                     </table>
 

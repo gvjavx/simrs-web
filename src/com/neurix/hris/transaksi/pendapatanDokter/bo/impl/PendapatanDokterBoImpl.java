@@ -671,7 +671,12 @@ public class PendapatanDokterBoImpl implements PendapatanDokterBo {
                     Double pph50Lebih = 0.0, komulatifLebih=0.0, pph21Lebih = 0.0, tarifLebih = 0.0, pphDipungutLebih = 0.0, pphLebihAwal = 0.0, pphLebih = 0.0, pphFinalAwal = 0.0, pphFinal=0.0;
 
                     dokterId = simrsDokterKso.getNip();
-                    results = pendapatanDokterDao.getDataPendapatan(bean.getBranchId(), bean.getBulan(), bean.getTahun(), dokterId);
+
+                    // Sigit 2021-03-16, Prubahan menghitung pendapatan dari dokter
+                    // results = pendapatanDokterDao.getDataPendapatan(bean.getBranchId(), bean.getBulan(), bean.getTahun(), dokterId);
+                    results = pendapatanDokterDao.getDataPendapatanKSO(bean.getBranchId(), bean.getBulan(), bean.getTahun(), dokterId);
+                    // END
+
                     komulatifLastMonth = pendapatanDokterDao.getPphKomulatif(dokterId, bean.getBulan(), bean.getTahun()).doubleValue();
                     level = pendapatanDokterDao.getLevel(dokterId, bean.getBulan(), bean.getTahun());
                     int id = 0;

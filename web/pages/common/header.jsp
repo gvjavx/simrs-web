@@ -496,6 +496,22 @@ apply the skin class to the body tag so the changes take effect.
         });
 
         $('.select2').css('width', '100%');
+
+        $(".tgl_lahir_validasi").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'yy-mm-dd',
+            maxDate: new Date()
+        });
+
+        $(".tgl_maju").datepicker({
+            autoclose: true,
+            changeMonth: true,
+            changeYear:true,
+            dateFormat:'dd-mm-yy',
+            minDate: new Date()
+        });
     });
 
     $(function () {
@@ -842,7 +858,6 @@ apply the skin class to the body tag so the changes take effect.
     }
 
     function setKabAtas(id, idHidden, idProv){
-        var prov = $('#'+idProv).val();
         var functions, mapped;
         $('#'+id).typeahead({
             minLength: 1,
@@ -850,6 +865,7 @@ apply the skin class to the body tag so the changes take effect.
                 functions = [];
                 mapped = {};
                 var data = [];
+                var prov = $('#'+idProv).val();
                 dwr.engine.setAsync(false);
                 ProvinsiAction.initComboKota(query, prov, function (listdata) {
                     data = listdata;
@@ -872,13 +888,13 @@ apply the skin class to the body tag so the changes take effect.
 
     function setKecAtas(id, idHidden, idKab){
         var functions, mapped;
-        var kab = $('#'+idKab).val();
         $('#'+id).typeahead({
             minLength: 1,
             source: function (query, process) {
                 functions = [];
                 mapped = {};
                 var data = [];
+                var kab = $('#'+idKab).val();
                 dwr.engine.setAsync(false);
                 ProvinsiAction.initComboKecamatan(query, kab, function (listdata) {
                     data = listdata;
@@ -900,7 +916,6 @@ apply the skin class to the body tag so the changes take effect.
     }
 
     function setDesAtas(id, idHidden, idKec){
-        var kec = $('#'+idKec).val();
         var functions, mapped;
         $('#'+id).typeahead({
             minLength: 1,
@@ -908,6 +923,7 @@ apply the skin class to the body tag so the changes take effect.
                 functions = [];
                 mapped = {};
                 var data = [];
+                var kec = $('#'+idKec).val();
                 dwr.engine.setAsync(false);
                 ProvinsiAction.initComboDesa(query, kec, function (listdata) {
                     data = listdata;

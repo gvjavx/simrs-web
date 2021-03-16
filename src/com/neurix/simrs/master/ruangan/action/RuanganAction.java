@@ -235,16 +235,14 @@ public class RuanganAction extends BaseMasterAction {
         }
 
         String branchId = CommonUtil.userBranchLogin();
-        Ruangan data = new Ruangan();
         if (branchId != null){
-            data.setBranchUser(branchId);
+            searchRuangan.setBranchUser(branchId);
         }else {
-            data.setBranchUser("");
+            searchRuangan.setBranchUser("");
         }
-        ruangan = data;
 
+        setRuangan(searchRuangan);
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResultRuangan");
         session.setAttribute("listOfResultRuangan", listOfRuangan);
 
@@ -411,8 +409,7 @@ public class RuanganAction extends BaseMasterAction {
             data.setBranchUser("");
             data.setBranchId("");
         }
-        ruangan = data;
-
+        setRuangan(data);
         session.removeAttribute("listOfResultRuangan");
         logger.info("[RuanganAction.initForm] end process >>>");
 

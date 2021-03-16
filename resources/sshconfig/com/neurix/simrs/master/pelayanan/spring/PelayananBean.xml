@@ -21,6 +21,7 @@
           p:dokterBoProxy-ref="dokterBoProxy"
           p:antrianOnlineBoProxy-ref="antrianOnlineBoProxy"
           p:jadwalShiftKerjaBoProxy-ref="jadwalShiftKerjaBoProxy"
+          p:paketPeriksaBoProxy-ref="paketPeriksaBoProxy"
     />
 
     <!--setting untuk action-->
