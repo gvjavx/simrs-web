@@ -530,9 +530,9 @@ public class TelemedicineController implements ModelDriven<Object> {
 
 
             try {
-                telemedicBoProxy.saveEdit(bean, branchId, "");
-
                 if (this.status.equalsIgnoreCase("PD")) {
+
+                    bean.setFlagCall("Y");
 
                     //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
                     List<NotifikasiFcm> result = new ArrayList<>();
@@ -552,6 +552,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 }
 
                 if (this.status.equalsIgnoreCase("SL")) {
+                    bean.setFlagCall("N");
 
                     //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
                     List<NotifikasiFcm> result = new ArrayList<>();
@@ -569,6 +570,13 @@ public class TelemedicineController implements ModelDriven<Object> {
                     result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
                     FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Menutup Panggilan", "SL", result.get(0).getOs(), sendData);
                 }
+
+                if (this.status.equalsIgnoreCase("SK")) {
+                    bean.setFlagCall("N");
+                }
+
+                telemedicBoProxy.saveEdit(bean, branchId, "");
+
 
                 if (jenisStruk != null) {
                     List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
