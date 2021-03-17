@@ -62,6 +62,24 @@ public class PermintaanVendor{
     private String branchName;
     private Date tglDo;
     private Date tglInvoice;
+    private String stJumlahItem;
+    private String jenisPo;
+
+    public String getStJumlahItem() {
+        return stJumlahItem;
+    }
+
+    public void setStJumlahItem(String stJumlahItem) {
+        this.stJumlahItem = stJumlahItem;
+    }
+
+    public String getJenisPo() {
+        return jenisPo;
+    }
+
+    public void setJenisPo(String jenisPo) {
+        this.jenisPo = jenisPo;
+    }
 
     public Date getTglDo() {
         return tglDo;

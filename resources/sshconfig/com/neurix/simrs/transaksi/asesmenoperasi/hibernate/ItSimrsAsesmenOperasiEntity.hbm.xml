@@ -53,6 +53,12 @@
         <property name="tipe">
             <column name="tipe" sql-type="varchar" length="100" not-null="false" />
         </property>
+        <property name="namaterang">
+            <column name="nama_terang" sql-type="varchar" length="100" not-null="false" />
+        </property>
+        <property name="sip">
+            <column name="sip" sql-type="varchar" length="100" not-null="false" />
+        </property>
 
     </class>
 </hibernate-mapping>

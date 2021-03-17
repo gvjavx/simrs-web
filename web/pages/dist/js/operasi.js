@@ -1569,7 +1569,21 @@ function saveDataOperasi(jenis, ket) {
             }
         });
 
-        if (!cekTtd1 && nama && sip && v1 && v2 && v3 && va9 != '' && va3 && va4 && va5 && va7 && va8 && va10 && va11 && va12 != undefined) {
+        if (!cekTtd1 && nama && sip != '') {
+
+            v1 == "" ? v1 = "|" : v1 = v1;
+            v2 == "" ? v2 = "-" : v2 = v2;
+            v3 == "" ? v3 = "-" : v3 = v3;
+            va9 == "" ? va9 = "-" : va9 = va9;
+
+            va3 == undefined ? va3 = "-" : va3 = va3;
+            va4 == undefined ? va4 = "-" : va4 = va4;
+            va5 == undefined ? va5 = "-" : va5 = va5;
+            va7 == undefined ? va7 = "-" : va7 = va7;
+            va8 == undefined ? va8 = "-" : va8 = va8;
+            va10 == undefined ? va10 = "-" : va10 = va10;
+            va11 == undefined ? va11 = "-" : va11 = va11;
+            va12 == undefined ? va12 = "-" : va12 = va12;
 
             data.push({
                 'parameter': 'Pre medikasi',
@@ -1580,7 +1594,7 @@ function saveDataOperasi(jenis, ket) {
             });
 
             data.push({
-                'parameter': 'Diagnosa Medis',
+                'parameter': 'General Anestesi',
                 'jawaban1': v2 + '|Induksi dengan : ' + va3 + '|Muscle relaksan : ' + va4 + '|Maintenance : ' + va5,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -2573,6 +2587,7 @@ function saveDataOperasi(jenis, ket) {
         if(!cekSession()){
             var result = JSON.stringify(data);
             var pasienData = JSON.stringify(dataPasien);
+            delRowOperasi(jenis);
             $('#save_op_' + jenis).hide();
             $('#load_op_' + jenis).show();
             dwr.engine.setAsync(true);
@@ -2588,6 +2603,7 @@ function saveDataOperasi(jenis, ket) {
                         $('#warning_op_' + ket).show().fadeOut(5000);
                         $('#msg_op_' + ket).text("Berhasil menambahkan data operasi...");
                         $('#modal-op-' + jenis).scrollTop(0);
+                        detailOperasi(jenis);
                     } else {
                         $('#save_op_' + jenis).show();
                         $('#load_op_' + jenis).hide();
@@ -2659,7 +2675,11 @@ function detailOperasi(jenis) {
                             if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td colspan="2"><img src="' + item.jawaban1 + '" style="width: 100px; height: 70px"></td>' +
+                                    '<td colspan="2">' +
+                                    '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">' +
+                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
+                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                    '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +
@@ -2689,6 +2709,8 @@ function detailOperasi(jenis) {
                                     '<td align="right">' +
                                     '<p style="margin-top: -113px">TTD Dokter</p>' +
                                     '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px;">' +
+                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
+                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
                                     '</td>' +
                                     '</tr>';
                             }
@@ -2706,7 +2728,11 @@ function detailOperasi(jenis) {
                             } else if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '<td>' +
+                                    '<img src="' + item.jawaban1 + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
+                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                    '</td>' +
                                     '</tr>';
                             } else if ("bold" == item.tipe) {
                                 body += '<tr style="font-weight: bold">' +
@@ -2729,7 +2755,11 @@ function detailOperasi(jenis) {
                             if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '<td>' +
+                                    '<img src="' + item.jawaban1 + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
+                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                    '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +
@@ -2774,7 +2804,11 @@ function detailOperasi(jenis) {
                             } else if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td>' + p + '</td>' +
-                                    '<td colspan="2">' + '<img src="' + j1 + '" style="height: 80px">' + '</td>' +
+                                    '<td colspan="2">' +
+                                    '<img src="' + j1 + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
+                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                    '</td>' +
                                     '</tr>';
                             } else if ("bold" == item.tipe) {
                                 body += '<tr style="font-weight: bold">' +
@@ -2804,7 +2838,7 @@ function detailOperasi(jenis) {
                                 body += '<tr>' +
                                     '<td colspan="2">' + item.parameter + '</td>' +
                                     '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
-                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaterang)+'</p>' +
                                     '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
                                     '</tr>';
                             } else if ("bold" == item.tipe) {
@@ -2827,7 +2861,11 @@ function detailOperasi(jenis) {
                             if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td colspan="2"><img src="' + jwb1 + '" style="width: 100px; height: 70px"></td>' +
+                                    '<td colspan="2">' +
+                                    '<img src="' + jwb1 + '" style="width: 100px; height: 70px">' +
+                                    '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
+                                    '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
+                                    '</td>' +
                                     '</tr>';
                             } else if ("li" == item.tipe) {
                                 var val = jwb1.split("|");
@@ -3618,6 +3656,7 @@ function delOP(jenis, ket) {
             'id_pasien': idPasien,
             'id_rm': tempidRm
         }
+        delRowOperasi(jenis);
         var result = JSON.stringify(dataPasien);
         startSpin('delete_' + jenis);
         dwr.engine.setAsync(true);
@@ -3628,6 +3667,7 @@ function delOP(jenis, ket) {
                     $('#modal-op-' + ket).scrollTop(0);
                     $('#warning_op_' + ket).show().fadeOut(5000);
                     $('#msg_op_' + ket).text("Berhasil menghapus data...");
+                    detailOperasi(jenis);
                 } else {
                     stopSpin('delete_' + jenis);
                     $('#modal-op-' + ket).scrollTop(0);

@@ -22,6 +22,33 @@ public class ImSimrsDetailRekananOpsEntity {
     private String flagParent;
     private String jenisItem;
     private BigDecimal tarif;
+    private BigDecimal tarifBpjs;
+    private BigDecimal diskonNonBpjs;
+    private BigDecimal diskonBpjs;
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public BigDecimal getDiskonNonBpjs() {
+        return diskonNonBpjs;
+    }
+
+    public void setDiskonNonBpjs(BigDecimal diskonNonBpjs) {
+        this.diskonNonBpjs = diskonNonBpjs;
+    }
+
+    public BigDecimal getDiskonBpjs() {
+        return diskonBpjs;
+    }
+
+    public void setDiskonBpjs(BigDecimal diskonBpjs) {
+        this.diskonBpjs = diskonBpjs;
+    }
 
     public String getIdItem() {
         return idItem;

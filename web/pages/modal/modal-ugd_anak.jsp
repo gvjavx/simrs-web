@@ -2533,3 +2533,66 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-ina-ttd_dpjp">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a; color: white">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> TTD DPJP
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none"
+                     id="warning_ina_ttd_dpjp">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_ina_ttd_dpjp"></p>
+                </div>
+                <div class="modal-body">
+                    <div class="box-body">
+                        <div class="form-group" style="display: none">
+                            <div class="col-md-1">
+                                <input type="color" style="margin-left: -6px; margin-top: -8px"
+                                       class="js-color-picker  color-picker pull-left">
+                            </div>
+                            <div class="col-md-9">
+                                <input type="range" style="margin-top: -8px" class="js-line-range" min="1" max="72"
+                                       value="1">
+                            </div>
+                            <div class="col-md-2">
+                                <div style="margin-top: -8px;" class="js-range-value">1 px</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group">
+                                <div class="col-md-offset-2 col-md-8">
+                                    <label>TTD DPJP</label>
+                                    <canvas class="paint-canvas-ttd del-canvas" id="ttd_edit" width="300"
+                                            onmouseover="paintTtd('ttd_edit')"></canvas>
+                                    <input class="form-control nama_dokter" id="nama_dpjp_edit" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control sip_dokter" id="sip_dpjp_edit" placeholder="SIP">
+                                    <button style="margin-left: 8px" type="button" class="btn btn-danger"
+                                            onclick="removePaint('ttd_edit')"><i
+                                            class="fa fa-trash"></i> Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button id="save_ttd_dpjp" class="btn btn-success pull-right"><i class="fa fa-check"></i>
+                    Save
+                </button>
+                <button id="load_ttd_dpjp" style="display: none; cursor: no-drop" type="button"
+                        class="btn btn-success"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
