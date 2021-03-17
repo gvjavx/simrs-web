@@ -1229,7 +1229,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                             response.setMsg("When insert to riwayat unutk kamar...!, "+e.getMessage());
                         }
 
-                        if("rekanan".equalsIgnoreCase(bean.getIdJenisPeriksa()) && "Y".equalsIgnoreCase(ops.getIsBpjs())){
+                        if("rekanan_bpjs".equalsIgnoreCase(bean.getIdJenisPeriksa()) || "bpjs".equalsIgnoreCase(bean.getIdJenisPeriksa())){
                             entity.setJenisPasien("bpjs");
                         }else{
                             entity.setJenisPasien(bean.getIdJenisPeriksa());

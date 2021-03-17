@@ -122,17 +122,19 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "e.id_pasien,\n" +
                     "a.approve_flag, \n" +
                     "a.keterangan,\n" +
-                    "d.id_jenis_periksa_pasien,\n"+
-                    "um.id, \n"+
-                    "um.status_bayar, \n"+
-                    "a.is_pending \n"+
+                    "d.id_jenis_periksa_pasien,\n" +
+                    "um.id, \n" +
+                    "um.status_bayar, \n" +
+                    "a.is_pending,\n" +
+                    "a.is_periksa_luar,\n" +
+                    "a.nama_lab_luar\n" +
                     "FROM it_simrs_periksa_lab a\n" +
-                    "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                     "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
                     "INNER JOIN it_simrs_header_detail_checkup d ON a.id_detail_checkup = d.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup e ON d.no_checkup = e.no_checkup\n" +
+                    "LEFT JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
                     "LEFT JOIN it_simrs_uang_muka_pendaftaran um ON um.id_detail_checkup = a.id_detail_checkup\n" +
-                    "WHERE a.flag = :flag \n" + condition +
+                    "WHERE a.flag = :flag \n"+ condition +
                     "ORDER BY a.created_date ASC";
 
             List<Object[]> results = new ArrayList<>();
@@ -162,6 +164,8 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     dataLab.setKeterangan(obj[12] != null ? obj[12].toString() : null);
                     dataLab.setIdJenisPeriksa(obj[13] != null ? obj[13].toString() : "");
                     dataLab.setIsPending(obj[16] != null ? obj[16].toString() : "");
+                    dataLab.setIsLuar(obj[17] != null ? obj[17].toString() : "");
+                    dataLab.setNamaLabLuar(obj[18] != null ? obj[18].toString() : "");
                     if(obj[14] != null){
                         if("umum".equalsIgnoreCase(dataLab.getIdJenisPeriksa())){
                             String bayar = (obj[15] != null ? obj[15].toString() : "");
@@ -318,24 +322,24 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     "a.id_periksa_lab, \n" +
                     "a.id_lab,\n" +
                     "b.nama_lab,\n" +
-                    "c.sip,\n" +
-                    "c.id_dokter,\n" +
-                    "c.nama_dokter,\n" +
-                    "a.ttd_dokter,\n" +
-                    "a.id_pemeriksa,\n" +
-                    "d.user_name,\n" +
+                    "a.id_petugas,\n" +
+                    "a.nama_petugas,\n" +
+                    "a.id_validator,\n" +
+                    "a.nama_validator,\n" +
                     "a.ttd_petugas,\n" +
-                    "e.sip as sip_pengirim,\n" +
+                    "a.ttd_validator,\n" +
                     "a.id_dokter_pengirim,\n" +
-                    "e.nama_dokter as pengirim,\n" +
-                    "a.ttd_pengirim, \n" +
-                    "a.created_date\n" +
+                    "d.nama_dokter,\n" +
+                    "a.created_date,\n" +
+                    "c.kategori,\n" +
+                    "a.is_periksa_luar,\n" +
+                    "a.nama_lab_luar\n" +
                     "FROM it_simrs_periksa_lab a\n" +
-                    "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
-                    "LEFT JOIN im_simrs_dokter c ON a.id_dokter = c.id_dokter\n" +
-                    "LEFT JOIN im_users d ON a.id_pemeriksa = d.user_id\n" +
-                    "LEFT JOIN im_simrs_dokter e ON a.id_dokter_pengirim = e.id_dokter\n" +
-                    "WHERE id_periksa_lab = :idPeriksaLab";
+                    "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
+                    "LEFT JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                    "LEFT JOIN im_simrs_dokter d ON a.id_dokter_pengirim = d.id_dokter\n" +
+                    "WHERE a.id_periksa_lab = :idPeriksaLab\n";
+
             List<Objects[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPeriksaLab", idPeriksa)
@@ -345,18 +349,22 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setIdPeriksaLab(objects[0] == null ? "" : objects[0].toString());
                 lab.setIdLab(objects[1] == null ? "" : objects[1].toString());
                 lab.setLabName(objects[2] == null ? "" : objects[2].toString());
-                lab.setSipDokter(objects[3] == null ? "" : objects[3].toString());
-                lab.setIdDokter(objects[4] == null ? "" : objects[4].toString());
-                lab.setNamaDokter(objects[5] == null ? "" : objects[5].toString());
-                lab.setTtdDokter(objects[6] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[6].toString());
-                lab.setIdPemeriksa(objects[7] == null ? "" : objects[7].toString());
-                lab.setNamaPetugas(objects[8] == null ? "" : objects[8].toString());
-                lab.setTtdPetugas(objects[9] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[9].toString());
-                lab.setSipPengirim(objects[10] == null ? "" : objects[10].toString());
-                lab.setIdPengirim(objects[11] == null ? "" : objects[11].toString());
-                lab.setDokterPengirim(objects[12] == null ? "" : objects[12].toString());
-                lab.setTtdPengirim(objects[13] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[13].toString());
-                lab.setCreatedDate(objects[14] == null ? null : (Timestamp) objects[14]);
+                lab.setIdPetugas(objects[3] == null ? "" : objects[3].toString());
+                lab.setNamaPetugas(objects[4] == null ? "" : objects[4].toString());
+                lab.setIdValidator(objects[5] == null ? "" : objects[5].toString());
+                lab.setNamaValidator(objects[6] == null ? "" : objects[6].toString());
+                if(objects[7] != null){
+                    lab.setTtdPetugas(objects[7] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[7].toString());
+                }
+                if(objects[8] != null){
+                    lab.setTtdValidator(objects[8] == null ? "" : CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + objects[8].toString());
+                }
+                lab.setIdDokterPengirim(objects[9] == null ? "" : objects[9].toString());
+                lab.setDokterPengirim(objects[10] == null ? "" : objects[10].toString());
+                lab.setCreatedDate(objects[11] == null ? null : (Timestamp) objects[11]);
+                lab.setKategoriLabName(objects[12] == null ? "" : objects[12].toString());
+                lab.setIsLuar(objects[13] == null ? "" : objects[13].toString());
+                lab.setNamaLabLuar(objects[14] == null ? "" : objects[14].toString());
             }
         }
         return lab;
@@ -454,6 +462,63 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setIsRead(obj[3] == null ? "" : obj[3].toString());
                 lab.setKategori(obj[4] == null ? "" : obj[4].toString());
                 lab.setNamaPasien(obj[5] == null ? "" : obj[5].toString());
+                labList.add(lab);
+            }
+        }
+        return labList;
+    }
+
+    public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) {
+        List<PeriksaLab> labList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "c.tanggal_masuk_lab,\n" +
+                "a.id_pasien,\n" +
+                "b.id_detail_checkup,\n" +
+                "b.id_pelayanan,\n" +
+                "e.nama_pelayanan,\n" +
+                "c.id_periksa_lab,\n" +
+                "d.nama_lab,\n" +
+                "c.url_img,\n" +
+                "f.kategori,\n" +
+                "a.created_date \n"+
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN it_simrs_periksa_lab c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_lab d ON c.id_lab = d.id_lab\n" +
+                "INNER JOIN (\n" +
+                "\tSELECT\n" +
+                "\ta.id_pelayanan,\n" +
+                "\ta.nama_pelayanan\n" +
+                "\tFROM im_simrs_pelayanan a\n" +
+                "\tINNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") e ON b.id_pelayanan = e.id_pelayanan\n" +
+                "INNER JOIN im_simrs_kategori_lab f ON c.id_kategori_lab = f.id_kategori_lab\n" +
+                "WHERE a.id_pasien = '"+idPasien+"'\n" +
+                "ORDER BY c.tanggal_masuk_lab, b.id_pelayanan DESC";
+
+        List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .list();
+
+        if (result.size() > 0) {
+            String namaPelayanan = "";
+            for (Object[] obj : result) {
+                PeriksaLab lab = new PeriksaLab();
+                if(!namaPelayanan.equalsIgnoreCase(obj[4].toString())){
+                    namaPelayanan = obj[4].toString();
+                    lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
+                }
+                lab.setTanggalMasukLab(obj[0] == null ? null : (java.sql.Date) obj[0]);
+                lab.setIdPasien(obj[1] == null ? "" : obj[1].toString());
+                lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
+                lab.setNamaPelayanan(namaPelayanan);
+                lab.setIdPeriksaLab(obj[5] == null ? "" : obj[5].toString());
+                lab.setLabName(obj[6] == null ? "" : obj[6].toString());
+                if(obj[7] != null){
+                    lab.setUrlImg(obj[7] == null ? null : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+obj[7].toString());
+                }
+
+                lab.setKeterangan(obj[8] == null ? "" : obj[8].toString());
                 labList.add(lab);
             }
         }

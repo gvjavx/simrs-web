@@ -1624,6 +1624,26 @@ public class CheckupDetailAction extends BaseMasterAction {
                         }
                     }
                 }
+            }else{
+                OrderGizi orderGizi = new OrderGizi();
+                orderGizi.setIdDetailCheckup(idDetailCheckup);
+                List<OrderGizi> giziList = new ArrayList<>();
+
+                try {
+                    giziList = orderGiziBo.getByCriteria(orderGizi);
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error, " + e.getMessage());
+                    response.setStatus("error");
+                    response.setMsg("Found Error, " + e.getMessage());
+                }
+
+                if (giziList.size() > 0) {
+                    for (OrderGizi gizi : giziList) {
+                        if (!"Y".equalsIgnoreCase(gizi.getDiterimaFlag())) {
+                            cekGizi = "N";
+                        }
+                    }
+                }
             }
         }
 
@@ -4364,6 +4384,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                     if (riwayatTindakanList.isEmpty()) {
 
                         BigDecimal totaltarif = null;
+                        String namaLab = entity.getLabName();
 
                         try {
                             totaltarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
@@ -4374,7 +4395,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                         riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
-                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + entity.getLabName());
 
                         // paket lab
                         if (!"".equalsIgnoreCase(idPaket) && idPaket != null) {
@@ -4392,6 +4412,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
                         } else {
 
+                            if("Y".equalsIgnoreCase(entity.getIsLuar())){
+                                totaltarif = entity.getTarifLabLuar();
+                                namaLab = entity.getNamaLabLuar();
+                            }
+
                             // jika bukan paket maka pakai tarif asli
                             if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
                                 if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
@@ -4404,6 +4429,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
                         }
 
+                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
@@ -4569,6 +4595,65 @@ public class CheckupDetailAction extends BaseMasterAction {
                                 } catch (GeneralBOException e) {
                                     logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
                                 }
+                            }
+                        }
+                    }
+                }
+            }else{
+
+                OrderGizi orderGizi = new OrderGizi();
+                orderGizi.setIdDetailCheckup(idDetail);
+                orderGizi.setDiterimaFlag("Y");
+                List<OrderGizi> giziList = new ArrayList<>();
+
+                try {
+                    giziList = orderGiziBo.getByCriteria(orderGizi);
+                } catch (GeneralBOException e) {
+                    logger.error("Found Error" + e.getMessage());
+                }
+                if (giziList.size() > 0) {
+                    for (OrderGizi gizi : giziList) {
+
+                        List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+                        RiwayatTindakan tindakan = new RiwayatTindakan();
+                        tindakan.setIdTindakan(gizi.getIdOrderGizi());
+
+                        try {
+                            riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
+                        } catch (HibernateException e) {
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+                        }
+
+                        if (riwayatTindakanList.isEmpty()) {
+
+                            RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                            riwayatTindakan.setIdTindakan(gizi.getIdOrderGizi());
+                            riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
+                            riwayatTindakan.setNamaTindakan("Tarif Gizi dengan No. Gizi " + gizi.getIdOrderGizi());
+                            if ("rekanan".equalsIgnoreCase(jenisPasien) || "bpjs_rekanan".equalsIgnoreCase(jenisPasien)) {
+                                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                                    riwayatTindakan.setTotalTarif(gizi.getTarifTotal().multiply(ops.getDiskon()));
+                                } else {
+                                    riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
+                                }
+                            } else {
+                                riwayatTindakan.setTotalTarif(gizi.getTarifTotal());
+                            }
+
+                            riwayatTindakan.setKeterangan("gizi");
+                            riwayatTindakan.setJenisPasien(jenPasien);
+                            riwayatTindakan.setAction("C");
+                            riwayatTindakan.setFlag("Y");
+                            riwayatTindakan.setCreatedWho(user);
+                            riwayatTindakan.setCreatedDate(updateTime);
+                            riwayatTindakan.setLastUpdate(updateTime);
+                            riwayatTindakan.setLastUpdateWho(user);
+                            riwayatTindakan.setTanggalTindakan(gizi.getCreatedDate());
+
+                            try {
+                                riwayatTindakanBo.saveAdd(riwayatTindakan);
+                            } catch (GeneralBOException e) {
+                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
                             }
                         }
                     }
@@ -5140,7 +5225,6 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public String printLabRadiologi() {
-
         HeaderCheckup checkup = new HeaderCheckup();
         String lab = getLab();
         String id = getId();
@@ -5206,14 +5290,15 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
-            reportParams.put("sipDokter", periksalb.getSipDokter());
-            reportParams.put("sipPengirim", periksalb.getSipPengirim());
+
+            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
             reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
-            reportParams.put("petugas", periksalb.getNamaPetugas());
-            reportParams.put("dokter", periksalb.getNamaDokter());
-            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+            reportParams.put("idPetugas", periksalb.getIdPetugas());
+            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
+            reportParams.put("idValidator", periksalb.getIdValidator());
+            reportParams.put("namaValidator", periksalb.getNamaValidator());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("ttdPengirim", periksalb.getTtdPengirim());
+            reportParams.put("ttdValidator", periksalb.getTtdValidator());
 
             try {
                 preDownload();

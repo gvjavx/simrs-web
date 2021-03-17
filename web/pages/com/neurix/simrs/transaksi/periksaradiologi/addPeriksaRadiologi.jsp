@@ -18,6 +18,10 @@
         .garis {
             color: #ddd;
         }
+
+        .top_jarak{
+            margin-top: 7px;
+        }
     </style>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
@@ -186,8 +190,15 @@
                                     <tr>
                                         <td><b>Radiologi</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.labName"
-                                                            class="label label-success"></s:label></table>
+                                            <table>
+                                                <s:if test='periksaLab.isLuar == "Y"'>
+                                                    <s:property value="periksaLab.namaLabLuar"></s:property>
+                                                    <label class="span-warning">Luar</label>
+                                                </s:if>
+                                                <s:else>
+                                                    <s:property value="periksaLab.labName"></s:property>
+                                                </s:else>
+                                            </table>
                                         </td>
                                     </tr>
                                     <tr>
@@ -250,39 +261,36 @@
 
                             </div>
                         </div>
+                    </div>
+                    <div class="box-body">
                         <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <span class="btn btn-default btn-file">
-                                                 Browse… <input id="url_img" accept=".jpg" type="file">
-                                            </span>
-                                        </span>
-                                        <input type="text" class="form-control" readonly id="label_img">
-                                    </div>
-                                    <span style="color: red">* Upload hasil radiologi luar</span>
-                                    <canvas id="temp_canvas" style="display: none"></canvas>
-                                </div>
+                            <div class="col-md-12">
+                                <button id="btn-add-parameter" class="btn btn-success" style="margin-bottom: -20px; display: none" onclick="showModal(1)"><i class="fa fa-plus"></i>
+                                    Tambah Parameter
+                                </button>
+                                <button class="btn btn-primary" onclick="printPeriksaLab()" style="margin-bottom: -20px;"><i class="fa fa-print"></i> Print Label
+                                </button>
                             </div>
-                        </div>
-                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
-                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                            <p id="msg_rad"></p>
                         </div>
                     </div>
                     <div class="box-header with-border" id="pos_lab">
                     </div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h3 class="box-title"><i class="fa fa-hospital-o"></i> Catatan Pemeriksaan</h3>
+                            </div>
+                            <div class="col-md-6" id="form_lab_luar_title" style="display: none">
+                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi Luar</h3>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
-                        <button id="btn-add-parameter" class="btn btn-success" style="margin-bottom: 10px; display: none" onclick="showModal(1)"><i class="fa fa-plus"></i>
-                            Tambah Parameter
-                        </button>
-                        <button class="btn btn-primary" onclick="printPeriksaLab()" style="margin-bottom: 10px;"><i class="fa fa-print"></i> Print Label
-                        </button>
-                        <table class="table table-bordered table-striped" id="tabel_radiologi">
+                        <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_rad">
+                            <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                            <p id="msg_rad"></p>
+                        </div>
+                        <table style="display: none" class="table table-bordered table-striped" id="tabel_radiologi">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td width="40%">Pemeriksaan</td>
@@ -294,6 +302,92 @@
 
                             </tbody>
                         </table>
+                        <div class="row" id="form_params" style="display: none">
+                            <div class="form-group">
+                                <div class="col-md-6">
+                                    <p>List Parameter Pemeriksaan</p>
+                                    <ul style="margin-left: 20px; margin-top: -6px" id="params">
+                                    </ul>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            <div class="col-md-10">
+                                                <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                 Browse… <input accept="image/*" onchange="setCanvasWithText('hasil_luar_0', 'label_hasil_luar_0', 'img_hasil_luar_0')" type="file">
+                                            </span>
+                                        </span>
+                                                    <input type="text" class="form-control" readonly id="label_hasil_luar_0">
+                                                </div>
+                                                <canvas id="hasil_luar_0" class="hasil_luar" style="display: none"></canvas>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <button onclick="addUpload('hasil_luar', 'set_luar')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="set_luar">
+
+                                    </div>
+                                    <div class="row top_jarak">
+                                        <div class="col-md-3">
+                                            <a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i class="fa fa-image"></i> View Upload</a>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <div class="input-group">
+                                                <div class="input-group-addon">
+                                                    Rp.
+                                                </div>
+                                                <input oninput="convertRpAtas(this.id, this.value, 'h_total_tarif')" id="total_tarif" class="form-control" placeholder="Total Tarif">
+                                                <input type="hidden" id="h_total_tarif">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-md-6" id="form_hasil_lab_title">
+                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi <small>(Optional)</small></h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-6" id="form_hasil_lab_isi" style="display: none">
+                                <div class="row">
+                                    <div class="form-group">
+                                        <div class="col-md-10">
+                                            <div class="input-group">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                 Browse… <input accept="image/*" onchange="setCanvasWithText('hasil_lab_0', 'label_hasil_lab_0', 'img_hasil_lab_0')" type="file">
+                                            </span>
+                                        </span>
+                                                <input type="text" class="form-control" readonly id="label_hasil_lab_0">
+                                            </div>
+                                            <canvas id="hasil_lab_0" class="hasil_lab" style="display: none"></canvas>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <button onclick="addUpload('hasil_lab', 'set_hasil')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="set_hasil">
+
+                                </div>
+                                <div class="row top_jarak">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-success" onclick="viewUpload('hasil_lab')"><i class="fa fa-image"></i> View Upload</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <hr class="garis">
                     <div class="box-body">
@@ -306,7 +400,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-3">
-                                    <span>TTD Dokter</span>
+                                    <span>TTD Validator</span>
                                     <button class="btn btn-danger" onclick="removePaint('ttd_dokter')">
                                         <i class="fa fa-trash"></i>
                                     </button>
@@ -316,21 +410,17 @@
                         <div class="row">
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-3">
-                                    <canvas class="paint-canvas-ttd" id="ttd_petugas" width="250"
-                                            onmouseover="paintTtd('ttd_petugas')"></canvas>
+                                    <canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"
+                                            onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>
+                                    <input class="form-control" placeholder="Nama Petugas" id="nama_petugas">
+                                    <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_petugas">
                                 </div>
                                 <div class="col-md-3">
-                                    <canvas class="paint-canvas-ttd" id="ttd_dokter" width="250"
-                                            onmouseover="paintTtd('ttd_dokter')"></canvas>
+                                    <canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"
+                                            onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>
+                                    <input class="form-control" placeholder="Nama Validator" id="nama_validator">
+                                    <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_validator">
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-offset-6 col-md-3">
-                                <select class="form-control select2" id="id_dokter" style="width: 100%;"
-                                        onchange="var warn =$('#war_catatan').is(':visible'); if (warn){$('#cor_catatan').show().fadeOut(3000);$('#war_catatan').hide()};">
-                                    <option value=''>[Select One]</option>
-                                </select>
                             </div>
                         </div>
                         <hr class="garis">
@@ -351,7 +441,6 @@
     <!-- /.content -->
 </div>
 <div class="mask"></div>
-
 
 <div class="modal fade" id="modal-edit-parameter">
     <div class="modal-dialog modal-flat">
@@ -387,7 +476,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_par"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_par"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -433,7 +522,7 @@
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_lab" onclick="saveLab()"><i
-                        class="fa fa-arrow-right"></i> Save
+                        class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_lab">
                     <i class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
@@ -458,7 +547,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes
                 </button>
             </div>
         </div>
@@ -587,6 +676,86 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+                                    <li data-target="#carousel-hasil_lab" data-slide-to="0" class="active"></li>
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+                                    <div class="item active" id="item_hasil_lab_0">
+                                        <img id="img_hasil_lab_0" style="width: 100%">
+                                    </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hasil_luar">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span id="title_hasil_luar"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_luar" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators" id="li_hasil_luar">
+                                    <li data-target="#carousel-hasil_luar" data-slide-to="0" class="active"></li>
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_luar">
+                                    <div class="item active" id="item_hasil_luar_0">
+                                        <img id="img_hasil_luar_0" style="width: 100%">
+                                    </div>
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_luar" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_luar" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -606,7 +775,6 @@
         $('#penunjang_active, #periksa_radiologi').addClass('active');
         $('#penunjang_open').addClass('menu-open');
         listSelectDokter();
-        getIdRadiologi();
 
         $('#img_ktp').on('click', function (e) {
             e.preventDefault();
@@ -624,41 +792,6 @@
                     });
                 });
             }
-
-        });
-
-        $(document).on('change', '.btn-file :file', function () {
-            var input = $(this),
-                label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-            input.trigger('fileselect', [label]);
-        });
-
-        var canvas = document.getElementById('temp_canvas');
-        var ctx = canvas.getContext('2d');
-
-        $('.btn-file :file').on('fileselect', function (event, label) {
-
-            var input = $(this).parents('.input-group').find(':text'),
-                log = label;
-
-            if (input.length) {
-                input.val(log);
-                var reader = new FileReader();
-                reader.onload = function (event) {
-                    var img = new Image();
-                    img.onload = function () {
-                        canvas.width = img.width;
-                        canvas.height = img.height;
-                        ctx.clearRect(0, 0, canvas.width, canvas.height);
-                        ctx.drawImage(img, 0, 0);
-                    }
-                    img.src = event.target.result;
-                }
-                reader.readAsDataURL(event.target.files[0]);
-            } else {
-                if (log) alert(log);
-            }
-
         });
 
         if (keterangan == "just_lab") {
@@ -666,6 +799,29 @@
         } else {
             $('#btn-add-parameter').hide();
         }
+
+        var isLuar = '<s:property value="periksaLab.isLuar"/>';
+        if("Y" == isLuar){
+            getlistParams();
+            $('#form_hasil_lab_title').hide();
+            $('#form_lab_luar_title').show();
+            $('#form_hasil_lab_isi').hide();
+            $('#tabel_radiologi').hide();
+            $('#form_params').show();
+        }else{
+            getIdRadiologi();
+            $('#form_hasil_lab_title').show();
+            $('#form_lab_luar_title').hide();
+            $('#form_hasil_lab_isi').show();
+            $('#tabel_radiologi').show();
+            $('#form_params').hide();
+        }
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
     });
 
     function showModal(select) {
@@ -722,7 +878,6 @@
     }
 
     function saveRadiologi(id) {
-
         var idDokter = $('#id_dokter').val();
         var kesimpulan = $('#par_hasil').val();
         var ket = "";
@@ -823,13 +978,17 @@
     }
 
     function conSavePeriksaLab() {
-        var idDokter = $('#id_dokter').val();
         var data = $('#tabel_radiologi').tableToJSON();
-        var img = $('#url_img').val();
+        var nama1 = $('#nama_petugas').val();
+        var nip1 = $('#nip_petugas').val();
+        var nama2 = $('#nama_validator').val();
+        var nip2 = $('#nip_validator').val();
         var petugas = document.getElementById("ttd_petugas");
         var dokter = document.getElementById("ttd_dokter");
         var cekPetugas = isCanvasBlank(petugas);
         var cekDokter = isCanvasBlank(dokter);
+        var totalTarif = $('#h_total_tarif').val();
+        var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
 
         var cek = false;
         $.each(data, function (i, item) {
@@ -838,31 +997,57 @@
                 cek = true;
             }
         });
-        if (!cek && idDokter != '' && !cekPetugas && !cekDokter || img != '' && data.length > 0) {
-            $('#modal-confirm-dialog').modal('show');
-            $('#save_con').attr('onclick', 'savePeriksaLab(\'' + idDokter + '\')');
-        } else {
-            $('#warning_rad').show().fadeOut(5000);
-            $('#msg_rad').text("Silahkan cek kembali data hasil radiologi dan nama dokter...!");
+
+        var tempHasilLuar = $('.hasil_luar');
+        var cekLabLuar = false;
+        $.each(tempHasilLuar, function (i, item) {
+            var canvas = document.getElementById('hasil_luar_'+i);
+            var cekCanvas = isCanvasBlank(canvas);
+            var toDecode = canvas.toDataURL("image/png");
+            if(!cekCanvas){
+                cekLabLuar = true;
+            }
+        });
+
+        if("Y" == cekIsKeluar){
+            if (cekLabLuar && totalTarif != '') {
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick', 'savePeriksaLab()');
+            } else {
+                $('#warning_rad').show().fadeOut(5000);
+                $('#msg_rad').text("Silahkan cek kembali data hasil Radiologi, data petugas, dan data Validator...!");
+                $(window).scrollTop( $("#pos_lab").offset().top );
+            }
+        }else{
+            if (nama1 && nama2 && nip1 && nip2 != '' && !cek && !cekPetugas && !cekDokter || cekLabLuar && data.length > 0) {
+                $('#modal-confirm-dialog').modal('show');
+                $('#save_con').attr('onclick', 'savePeriksaLab()');
+            } else {
+                $('#warning_rad').show().fadeOut(5000);
+                $('#msg_rad').text("Silahkan cek kembali data hasil Radiologi, data petugas, dan data Validator...!");
+                $(window).scrollTop( $("#pos_lab").offset().top );
+            }
         }
     }
 
-    function savePeriksaLab(idDokter) {
+    function savePeriksaLab() {
         $('#modal-confirm-dialog').modal('hide');
-
         var idPeriksaLab = '<s:property value="periksaLab.idPeriksaLab"/>';
-        var url = document.getElementById("temp_canvas");
         var petugas = document.getElementById("ttd_petugas");
         var dokter = document.getElementById("ttd_dokter");
-        var hasil = url.toDataURL("image/png"),
-            hasil = hasil.replace(/^data:image\/(png|jpg);base64,/, "");
         var idPasien = '<s:property value="periksaLab.idPasien"/>';
         var idPelayanan = '<s:property value="periksaLab.idPelayanan"/>';
         var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
         var jenisPasien = '<s:property value="periksaLab.idJenisPeriksa"/>';
         var idDetailCheckup = '<s:property value="periksaLab.idDetailCheckup"/>';
         var noCheckup = '<s:property value="periksaLab.noCheckup"/>';
+        var nama1 = $('#nama_petugas').val();
+        var nip1 = $('#nip_petugas').val();
+        var nama2 = $('#nama_validator').val();
+        var nip2 = $('#nip_validator').val();
         var isiParam = $('#tabel_radiologi').tableToJSON();
+        var totalTarif = $('#h_total_tarif').val();
+
         var jsonData = [];
         $.each(isiParam, function (i, item) {
             var idLab = $('#id_periksa_lab_'+i).val();
@@ -873,34 +1058,70 @@
                     'id_periksa_lab':idLab,
                     'hasil':hasil,
                     'kesan':kesan,
-                })
+                });
+            }
+        });
+
+        var finalPetugas = convertToDataURL(petugas);
+        var finalDokter = convertToDataURL(dokter);
+
+        var tempHasilLab = $('.hasil_lab');
+        var tempImgHasilLab = [];
+        $.each(tempHasilLab, function (i, item) {
+            var canvas = document.getElementById('hasil_lab_'+i);
+            var cekCanvas = isCanvasBlank(canvas);
+            var toDecode = canvas.toDataURL("image/png");
+            if(!cekCanvas){
+                tempImgHasilLab.push({
+                    'img_hasil_lab': convertToDataURLAtas(canvas)
+                });
+            }
+        });
+
+        var tempHasilLuar = $('.hasil_luar');
+        var tempImgHasilLuar = [];
+        $.each(tempHasilLuar, function (i, item) {
+            var canvas = document.getElementById('hasil_luar_'+i);
+            var cekCanvas = isCanvasBlank(canvas);
+            var toDecode = canvas.toDataURL("image/png");
+            if(!cekCanvas){
+                tempImgHasilLuar.push({
+                    'img_hasil_luar': convertToDataURLAtas(canvas)
+                });
             }
         });
 
         var data = {
-            'no_checkup':noCheckup,
+            'no_checkup': noCheckup,
             'id_pasien': idPasien,
             'id_detail_checkup': idDetailCheckup,
             'jenis_pasien': jenisPasien,
             'id_pelayanan': idPelayanan,
             'metode_bayar': metodePembayaran,
-            'is_resep':'N',
+            'is_resep': 'N',
             'just_lab': "Y"
         }
 
-        var img = $("#url_img").val();
-        var finalImg = "";
-        var finalPetugas = convertToDataURL(petugas);
-        var finalDokter = convertToDataURL(dokter);
-
-        if (img != '') {
-            finalImg = hasil;
+        var tempDataFinal = {
+            'id_periksa_lab': idPeriksaLab,
+            'keterangan': keterangan,
+            'data': JSON.stringify(data),
+            'nama_petugas': nama1,
+            'nip_petugas': nip1,
+            'nama_validator': nama2,
+            'nip_validator': nip2,
+            'ttd_petugas': finalPetugas,
+            'ttd_validator': finalDokter,
+            'hasil_pemeriksaan': JSON.stringify(jsonData),
+            'upload_hasil': JSON.stringify(tempImgHasilLab),
+            'upload_hasil_luar': JSON.stringify(tempImgHasilLuar),
+            'total_tarif': totalTarif
         }
-        var result = JSON.stringify(data);
-        var jsonResult = JSON.stringify(jsonData);
+
+        var result = JSON.stringify(tempDataFinal);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(idPeriksaLab, idDokter, finalImg, keterangan, result, finalDokter, finalPetugas, jsonResult, {
+        PeriksaLabAction.saveEditDokterLab(result, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
@@ -910,9 +1131,12 @@
                     $('#close_pos').val(1);
                     $('body').scrollTop(0);
                 } else {
-                    $('#warning_rad').show().fadeOut(5000);
-                    $('#msg_rad').text(res.message);
+                    $('#save_ket').show();
+                    $('#load_ket').hide();
                     $('#waiting_dialog').dialog('close');
+                    $('#warning_rad').show().fadeOut(5000);
+                    $('#msg_rad').text(response.message);
+                    $(window).scrollTop( $("#pos_lab").offset().top );
                 }
             }
         });
@@ -920,6 +1144,97 @@
 
     function printPeriksaLab(){
         window.open('printRadiologi_radiologi.action?id='+idDetailCheckup+'&lab='+idPeriksaLab+'&ket=label', "_blank");
+    }
+
+    function addUpload(jen, idset){
+        var valJen = $('.'+jen);
+        var count = valJen.length;
+        var idRow = jen+count;
+        var jenis = jen+"_"+count;
+        var label = 'label_'+jen+"_"+count;
+        var set = '<div class="row top_jarak" id="'+idRow+'">\n' +
+            '<div class="form-group">\n' +
+            '    <div class="col-md-10">\n' +
+            '        <div class="input-group">\n' +
+            '<span class="input-group-btn">\n' +
+            '    <span class="btn btn-default btn-file">\n' +
+            '         Browse… <input accept="image/*" onchange="setCanvasWithText(\''+jenis+'\', \''+label+'\', \'img_'+jenis+'\')" type="file">\n' +
+            '    </span>\n' +
+            '</span>\n' +
+            '            <input type="text" class="form-control" readonly id="'+label+'">\n' +
+            '        </div>\n' +
+            '        <canvas id="'+jenis+'" class="'+jen+'" style="display: none"></canvas>\n' +
+            '    </div>\n' +
+            '    <div class="col-md-2">\n' +
+            '        <button onclick="delUpload(\''+idRow+'\',\'item_'+jenis+'\', \'li_'+jenis+'\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-trash"></i></button>\n' +
+            '    </div>\n' +
+            '</div>\n' +
+            '</div>';
+        var imgCanvas = '<div class="item" id="item_'+jenis+'">\n' +
+            '<img id="img_'+jenis+'" style="width: 100%">\n' +
+            '</div>';
+        $('#item_'+jen).append(imgCanvas);
+        $('#li_'+jen).append('<li id="li_'+jenis+'" data-target="#carousel-'+jen+'" data-slide-to="'+count+'"></li>');
+        $('#'+idset).append(set);
+    }
+
+    function delUpload(id, hidden, li){
+        $('#'+id).remove();
+        $('#'+hidden).remove();
+        $('#'+li).remove();
+    }
+
+    function viewUpload(jenis){
+        if(jenis == 'hasil_lab'){
+            $('#title_'+jenis).html("View Radiologi Hasil Radiologi");
+        }else{
+            $('#title_'+jenis).html("View Radiologi Hasil Radiologi Luar");
+        }
+        var item = $('.'+jenis);
+        $.each(item, function (i, item) {
+            if(i == 0){
+                $('#item_'+jenis+'_'+i).addClass("active");
+            }else{
+                $('#item_'+jenis+'_'+i).removeClass("active");
+            }
+        });
+        $('#modal-'+jenis).modal({show:true, backdrop:'static'});
+    }
+
+    function setCanvasWithText(id, tujuan, idHidden) {
+        var canvas = document.getElementById(id);
+        var ctx = canvas.getContext('2d');
+        var reader = new FileReader();
+        reader.onload = function (event) {
+            var img = new Image();
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.drawImage(img, 0, 0);
+            }
+            img.src = event.target.result;
+        }
+        reader.readAsDataURL(event.target.files[0]);
+        $('#'+tujuan).val(event.target.files[0].name);
+
+        var fr = new FileReader();
+        fr.onload = function (event) {
+            document.getElementById(idHidden).src = event.target.result;
+        }
+        fr.readAsDataURL(event.target.files[0]);
+    }
+
+    function getlistParams(){
+        PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
+            if (response.length > 0) {
+                var set = "";
+                $.each(response, function (i, item) {
+                    set += '<li>'+item.namaDetailPeriksa+'</li>';
+                });
+                $('#params').html(set);
+            }
+        });
     }
 
 </script>

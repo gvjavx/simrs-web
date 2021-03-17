@@ -79,19 +79,6 @@
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
-                                <%--<div class="form-group">--%>
-                                    <%--<label class="control-label col-sm-4">Radiologi</label>--%>
-                                    <%--<div class="col-sm-4">--%>
-                                        <%--<s:action id="comboRadiologi" namespace="/lab"--%>
-                                                  <%--name="getListRadiologi_lab"/>--%>
-                                        <%--<s:select cssStyle="margin-top: 7px; width: 100%"--%>
-                                                  <%--list="#comboRadiologi.lisOfRadiologi" id="lab"--%>
-                                                  <%--name="periksaLab.idLab" listKey="idLab"--%>
-                                                  <%--listValue="namaLab"--%>
-                                                  <%--headerKey="" headerValue="[Select one]"--%>
-                                                  <%--cssClass="form-control select2" theme="simple"/>--%>
-                                    <%--</div>--%>
-                                <%--</div>--%>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Status</label>
                                     <div class="col-sm-4">
@@ -188,7 +175,14 @@
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="labName"/></td>
+                                    <td>
+                                        <s:if test='#row.isLuar == "Y"'>
+                                            <s:property value="namaLabLuar"/>
+                                        </s:if>
+                                        <s:else>
+                                            <s:property value="labName"/>
+                                        </s:else>
+                                    </td>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa == "3"'>
                                             <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
