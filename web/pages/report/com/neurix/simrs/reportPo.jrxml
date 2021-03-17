@@ -15,7 +15,8 @@
 	<queryString>
 		<![CDATA[SELECT
 a.*,
-a.qty * a.harga as sub_total
+a.qty * a.harga as sub_total,
+a.jenis
 FROM
 (
 	SELECT
@@ -23,6 +24,7 @@ FROM
 	ob.nama_obat,
 	odt.qty,
 	odt.jenis_satuan,
+	CASE WHEN odt.flag_obat_bpjs = 'Y' THEN 'BPJS' ELSE 'UMUM' END AS jenis,
 	CASE WHEN odt.average_harga_biji is null THEN 0 ELSE  odt.average_harga_biji END AS harga
 	FROM mt_simrs_transaksi_obat_detail odt
 	INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) ob ON ob.id_obat = odt.id_obat
@@ -34,6 +36,7 @@ FROM
 	<field name="nama_obat" class="java.lang.String"/>
 	<field name="qty" class="java.lang.Long"/>
 	<field name="jenis_satuan" class="java.lang.String"/>
+	<field name="jenis" class="java.lang.String"/>
 	<field name="harga" class="java.math.BigDecimal"/>
 	<field name="sub_total" class="java.math.BigDecimal"/>
 	<background>
@@ -81,13 +84,14 @@ FROM
 					<jr:codeExpression><![CDATA[$P{reportParams.idPermintaanVendor}]]></jr:codeExpression>
 				</jr:Code128>
 			</componentElement>
-			<staticText>
-				<reportElement x="161" y="17" width="248" height="22" uuid="891a5535-44ef-4845-b8a0-4d70b9b53dde"/>
-				<textElement textAlignment="Center">
-					<font size="16" isBold="true"/>
+			<textField>
+				<reportElement x="110" y="17" width="339" height="28" uuid="b20bce69-6ee3-4aa8-baff-f485ef335998"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
 				</textElement>
-				<text><![CDATA[Report Purchase Order]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["Daftar Permintaan Obat "+$F{jenis}]]></textFieldExpression>
+			</textField>
 		</band>
 	</title>
 	<pageHeader>
