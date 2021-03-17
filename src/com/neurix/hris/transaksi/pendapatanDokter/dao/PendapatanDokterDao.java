@@ -121,6 +121,77 @@ public class PendapatanDokterDao extends GenericDao<ItHrisPendapatanDokterEntity
         return results;
     }
 
+    // Sigit 2021-03-16, Menhitung Pendapatan dokter kso konect dengan master dan riwayat tindakan
+    public List<Object[]> getDataPendapatanKSO(String unit, String bulan, String tahun, String dokterId){
+        List<Object[]> results = new ArrayList<Object[]>();
+
+        int month = Integer.parseInt(bulan);
+        String paramTglStart = tahun+"-"+month+"-01";
+        int monthEnd = Integer.parseInt(bulan)+1;
+        String paramTglEnd = tahun+"-"+monthEnd+"-01";
+
+        // Mencari data tindakan
+        String SQLTindakan = "SELECT \n" +
+                "jda.jumlah as bruto,\n" +
+                "dkso.jenis_kso,\n" +
+                "dkso.master_id,\n" +
+                "dkso.persen_kso,\n" +
+                "dkso.persen_ks,\n" +
+                "dksot.persen_kso AS persen_kso_tindakan,\n" +
+                "d.nama_dokter\n" +
+                "FROM it_akun_jurnal_detail_activity jda\n" +
+                "INNER JOIN im_simrs_dokter_kso dkso ON dkso.nip = jda.person_id\n" +
+                "INNER JOIN im_simrs_dokter_kso_tindakan dksot ON dksot.dokter_kso_id = dkso.dokter_kso_id AND dksot.tindakan_id = jda.activity_id\n" +
+                "INNER JOIN it_simrs_riwayat_tindakan rt ON rt.id_tindakan = dksot.tindakan_id AND rt.jenis_pasien = dkso.master_id AND rt.keterangan = dkso.jenis_kso\n" +
+                "INNER JOIN it_akun_jurnal_detail jd ON jd.jurnal_detail_id = jda.jurnal_detail_id\n" +
+                "INNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
+                "INNER JOIN it_simrs_tindakan_rawat tr ON tr.id_tindakan = rt.id_tindakan AND tr.id_detail_checkup = rt.id_detail_checkup\n" +
+                "INNER JOIN im_simrs_tindakan t ON t.id_tindakan = tr.id_tindakan\n" +
+                "INNER JOIN im_simrs_dokter d ON d.id_dokter = jda.person_id\n" +
+                "WHERE jda.person_id = '"+dokterId+"'\n" +
+                "AND j.branch_id = '"+unit+"'\n" +
+                "AND j.tanggal_jurnal >= '"+paramTglStart+"'\n" +
+                "AND j.tanggal_jurnal < '"+paramTglEnd+"'\n";
+
+
+        List<Object[]> listTindakan = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(SQLTindakan)
+                .list();
+
+        results.addAll(listTindakan);
+        // END
+
+        // mencari selain tindakan (ruangan, obat)
+        String SQLSelainTindakan = "SELECT \n" +
+                "jda.jumlah as bruto,\n" +
+                "dkso.jenis_kso,\n" +
+                "dkso.master_id,\n" +
+                "dkso.persen_kso,\n" +
+                "dkso.persen_ks,\n" +
+                "dkso.persen_kso AS persen_kso_tindakan,\n" +
+                "d.nama_dokter\n" +
+                "FROM it_akun_jurnal_detail_activity jda\n" +
+                "INNER JOIN (SELECT * FROM im_simrs_dokter_kso WHERE jenis_kso != 'tindakan') dkso ON dkso.nip = jda.person_id\n" +
+                "INNER JOIN it_simrs_riwayat_tindakan rt ON rt.jenis_pasien = dkso.master_id AND rt.keterangan = dkso.jenis_kso\n" +
+                "INNER JOIN it_akun_jurnal_detail jd ON jd.jurnal_detail_id = jda.jurnal_detail_id\n" +
+                "INNER JOIN it_akun_jurnal j ON j.no_jurnal = jd.no_jurnal\n" +
+                "INNER JOIN im_simrs_dokter d ON d.id_dokter = jda.person_id\n" +
+                "WHERE jda.person_id = '"+dokterId+"'\n" +
+                "AND j.branch_id = '"+unit+"'\n" +
+                "AND j.tanggal_jurnal >= '"+paramTglStart+"'\n" +
+                "AND j.tanggal_jurnal < '"+paramTglEnd+"'";
+
+
+        List<Object[]> listSelainTindakan = this.sessionFactory.getCurrentSession()
+                .createSQLQuery(SQLSelainTindakan)
+                .list();
+
+        results.addAll(listSelainTindakan);
+        // END
+
+        return results;
+    }
+
     public String getLevel(String dokterId, String bulan, String tahun){
         List<Object[]> pendapatanDokterEntityList = new ArrayList<>();
         String level = "";
