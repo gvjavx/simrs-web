@@ -104,6 +104,25 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setTipeTransaksi(permintaanVendorEntity.getTipeTransaksi());
                     permintaanVendor.setBranchId(permintaanVendorEntity.getBranchId());
 
+                    String jenisPo = "";
+                    try {
+                        jenisPo = permintaanVendorDao.getJenisPo(permintaanVendorEntity.getIdPermintaanVendor());
+                    } catch (HibernateException e){
+                        logger.error("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                        throw new GeneralBOException("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                    }
+
+                    String stJumlahItem = "";
+                    try {
+                        stJumlahItem = permintaanVendorDao.countJumlahItemPo(permintaanVendorEntity.getIdPermintaanVendor());
+                    } catch (HibernateException e){
+                        logger.error("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                        throw new GeneralBOException("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                    }
+
+                    permintaanVendor.setJenisPo(jenisPo);
+                    permintaanVendor.setStJumlahItem(stJumlahItem);
+
                     if (permintaanVendorEntity.getBranchId() != null){
                         ImBranchesPK branchesPK = new ImBranchesPK();
                         branchesPK.setId(permintaanVendorEntity.getBranchId());
