@@ -204,7 +204,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 // Get data from database by ID
                 imSimrsDokterKso = dokterKsoDao.getById("dokterKsoId", dokterKsoId);
             } catch (HibernateException e) {
-                logger.error("[DokterBoImpl.saveEdit] Error, " + e.getMessage());
+                logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data Dokter by IdDokter, please inform to your admin...," + e.getMessage());
             }
 
@@ -214,12 +214,25 @@ public class DokterKsoBoImpl implements DokterKsoBo {
 
             Map map = new HashMap<>();
             map.put("position_id", bean.getPositionId());
-            String koderingPosition = positionDao.getKodringPosition(map);
+            String koderingPosition;
+            try{
+                koderingPosition = positionDao.getKodringPosition(map);
+            }catch (HibernateException e) {
+                logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Dokter by IdDokter, please inform to your admin...," + e.getMessage());
+            }
 
-            String branchId = CommonUtil.userBranchLogin();
+//            String branchId = CommonUtil.userBranchLogin();
+            String branchId = bean.getBranchId();
             Map map1 = new HashMap<>();
             map1.put("branch_id", branchId);
-            String koderingBranch = branchDao.getKodringBranches(map1);
+            String koderingBranch;
+            try{
+                koderingBranch = branchDao.getKodringBranches(map1);
+            }catch (HibernateException e) {
+                logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Dokter by IdDokter, please inform to your admin...," + e.getMessage());
+            }
 
             String kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
 
@@ -248,59 +261,111 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                     throw new GeneralBOException("Found problem when saving update data Dokter, please info to your admin..." + e.getMessage());
                 }
 
-                if (listOfResult != null) {
-                    for (int i = 0; i < listOfResult.size(); i++) {
-                        if (listOfResult.get(i).getDokterKsoTindakanId() != null) {
-                            ImSimrsDokterKsoTindakan entity = null;
-                            String dokterKsoTindakanId = listOfResult.get(i).getDokterKsoTindakanId();
+                if ("tindakan".equalsIgnoreCase(bean.getJenisKso())) {
+                    if (listOfResult != null && listOfResult.size() > 0) {
+                        for (int i = 0; i < listOfResult.size(); i++) {
+                            if (listOfResult.get(i).getDokterKsoTindakanId() != null) {
+                                ImSimrsDokterKsoTindakan entity = null;
+                                String dokterKsoTindakanId = listOfResult.get(i).getDokterKsoTindakanId();
 
-                            try {
-                                entity = dokterKsoTindakanDao.getById("dokterKsoTindakanId", dokterKsoTindakanId);
-                            } catch (HibernateException e) {
-                                logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when searching data Dokter KSO Tindakan by ID reportKonsolId, please inform to your admin...," + e.getMessage());
-                            }
+                                try {
+                                    entity = dokterKsoTindakanDao.getById("dokterKsoTindakanId", dokterKsoTindakanId);
+                                } catch (HibernateException e) {
+                                    logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data Dokter KSO Tindakan by ID reportKonsolId, please inform to your admin...," + e.getMessage());
+                                }
 
-                            if (entity != null) {
+                                if (entity != null) {
+                                    entity.setDokterKsoTindakanId(dokterKsoTindakanId);
+                                    entity.setDokterKsoId(bean.getDokterKsoId());
+                                    entity.setTindakanId(listOfResult.get(i).getTindakanId());
+                                    entity.setPersenKso(listOfResult.get(i).getPersenKso());
+                                    entity.setFlag(listOfResult.get(i).getFlag());
+                                    entity.setAction(bean.getAction());
+                                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    entity.setLastUpdate(bean.getLastUpdate());
+
+                                    try {
+                                        dokterKsoTindakanDao.updateAndSave(entity);
+                                    } catch (HibernateException e) {
+                                        logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                                        throw new GeneralBOException("Found problem when saving new data Dokter Kso Tindakan, please info to your admin..." + e.getMessage());
+                                    }
+                                }
+                            } else {
+                                ImSimrsDokterKsoTindakan entity = new ImSimrsDokterKsoTindakan();
+                                String dokterKsoTindakanId = dokterKsoDao.getNextDokterKsoTindakanId();
+
                                 entity.setDokterKsoTindakanId(dokterKsoTindakanId);
                                 entity.setDokterKsoId(bean.getDokterKsoId());
                                 entity.setTindakanId(listOfResult.get(i).getTindakanId());
                                 entity.setPersenKso(listOfResult.get(i).getPersenKso());
-                                entity.setFlag(listOfResult.get(i).getFlag());
+                                if (listOfResult.get(i).getFlag() != null)
+                                    entity.setFlag(listOfResult.get(i).getFlag());
+                                else
+                                    entity.setFlag(bean.getFlag());
+                                entity.setAction(bean.getAction());
+                                entity.setCreatedWho(bean.getCreatedWho());
+                                entity.setCreatedDate(bean.getCreatedDate());
+                                entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                entity.setLastUpdate(bean.getLastUpdate());
+
+                                try {
+                                    dokterKsoTindakanDao.addAndSave(entity);
+                                } catch (HibernateException e) {
+                                    logger.error("[DokterKsoTindakanBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when saving new data Dokter Kso Tindakan, please info to your admin..." + e.getMessage());
+                                }
+                            }
+                        }
+                    }else{
+                        throw new GeneralBOException("Maaf, Data Dokter Kso Tindakan tidak ada. Harus ada Tindakan untuk Jenis KSO Tindakan.");
+                    }
+                } else {
+                    //PENDING
+                    if (listOfResult != null) {
+                        for (int i = 0; i < listOfResult.size(); i++) {
+                            if (listOfResult.get(i).getDokterKsoTindakanId() != null) {
+                                ImSimrsDokterKsoTindakan entity = null;
+                                String dokterKsoTindakanId = listOfResult.get(i).getDokterKsoTindakanId();
+
+                                try {
+                                    entity = dokterKsoTindakanDao.getById("dokterKsoTindakanId", dokterKsoTindakanId);
+                                } catch (HibernateException e) {
+                                    logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when searching data Dokter KSO Tindakan by ID reportKonsolId, please inform to your admin...," + e.getMessage());
+                                }
+
+                                if (entity != null) {
+                                    entity.setDokterKsoTindakanId(dokterKsoTindakanId);
+                                    entity.setFlag("N");
+                                    entity.setAction("U");
+                                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    entity.setLastUpdate(bean.getLastUpdate());
+
+                                    try {
+                                        dokterKsoTindakanDao.updateAndSave(entity);
+                                    } catch (HibernateException e) {
+                                        logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                                        throw new GeneralBOException("Found problem when saving new data Dokter Kso Tindakan, please info to your admin..." + e.getMessage());
+                                    }
+                                }
+                            } else {
+                                ImSimrsDokterKsoTindakan entity = new ImSimrsDokterKsoTindakan();
+                                String dokterKsoTindakanId = dokterKsoDao.getNextDokterKsoTindakanId();
+
+                                entity.setDokterKsoTindakanId(dokterKsoTindakanId);
+                                entity.setFlag(bean.getFlag());
                                 entity.setAction(bean.getAction());
                                 entity.setLastUpdateWho(bean.getLastUpdateWho());
                                 entity.setLastUpdate(bean.getLastUpdate());
 
                                 try {
-                                    dokterKsoTindakanDao.updateAndSave(entity);
+                                    dokterKsoTindakanDao.addAndSave(entity);
                                 } catch (HibernateException e) {
-                                    logger.error("[DokterKsoBoImpl.saveEdit] Error, " + e.getMessage());
+                                    logger.error("[DokterKsoTindakanBoImpl.saveAdd] Error, " + e.getMessage());
                                     throw new GeneralBOException("Found problem when saving new data Dokter Kso Tindakan, please info to your admin..." + e.getMessage());
                                 }
-                            }
-                        } else {
-                            ImSimrsDokterKsoTindakan entity = new ImSimrsDokterKsoTindakan();
-                            String dokterKsoTindakanId = dokterKsoDao.getNextDokterKsoTindakanId();
-
-                            entity.setDokterKsoTindakanId(dokterKsoTindakanId);
-                            entity.setDokterKsoId(bean.getDokterKsoId());
-                            entity.setTindakanId(listOfResult.get(i).getTindakanId());
-                            entity.setPersenKso(listOfResult.get(i).getPersenKso());
-                            if (listOfResult.get(i).getFlag() != null)
-                                entity.setFlag(listOfResult.get(i).getFlag());
-                            else
-                                entity.setFlag(bean.getFlag());
-                            entity.setAction(bean.getAction());
-                            entity.setCreatedWho(bean.getCreatedWho());
-                            entity.setCreatedDate(bean.getCreatedDate());
-                            entity.setLastUpdateWho(bean.getLastUpdateWho());
-                            entity.setLastUpdate(bean.getLastUpdate());
-
-                            try {
-                                dokterKsoTindakanDao.addAndSave(entity);
-                            } catch (HibernateException e) {
-                                logger.error("[DokterKsoTindakanBoImpl.saveAdd] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when saving new data Dokter Kso Tindakan, please info to your admin..." + e.getMessage());
                             }
                         }
                     }
