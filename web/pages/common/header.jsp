@@ -727,6 +727,7 @@ apply the skin class to the body tag so the changes take effect.
         if(val != ''){
             res = val.replace(/[.]/g, '');
         }
+        return res;
     }
 
     function replaceStrip(val, id){
