@@ -4671,7 +4671,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                 absensi.setBiayaLembur(absenEntity1.getBiayaLembur());
                 absensi.setLemburPerJam(absenEntity1.getBiayaLembur() / absenEntity1.getJamLembur());
                 DecimalFormat df = new DecimalFormat("#.##");
-                absensi.setLemburPerJam(Double.valueOf(df.format(absensi.getLemburPerJam())));
+
+                Double biayaPerJam = Math.floor(Double.valueOf(df.format(absensi.getLemburPerJam())));
+                Double biayaLembur = Math.floor(absenEntity1.getBiayaLembur());
+
+                absensi.setLemburPerJam(biayaPerJam);
 
                 DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
                 DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
@@ -4680,10 +4684,12 @@ public class AbsensiBoImpl implements AbsensiBo {
                 kursIndonesia.setDecimalFormatSymbols(formatRp);
 
                 String upahPerJam = "";
-                upahPerJam = kursIndonesia.format(absensi.getLemburPerJam());
+//                upahPerJam = kursIndonesia.format(absensi.getLemburPerJam());
+                upahPerJam = kursIndonesia.format(biayaPerJam);
                 absensi.setStBiayaLemburPerjam(upahPerJam);
                 String upahLembur = "";
-                upahLembur = kursIndonesia.format(absensi.getBiayaLembur());
+//                upahLembur = kursIndonesia.format(absensi.getBiayaLembur());
+                upahLembur = kursIndonesia.format(biayaLembur);
                 absensi.setStBiayaLembur(upahLembur);
 
                 listAbsensi.add(absensi);
