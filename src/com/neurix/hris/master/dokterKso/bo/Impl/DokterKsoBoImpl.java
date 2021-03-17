@@ -388,7 +388,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 }
 
                 if ("tindakan".equalsIgnoreCase(bean.getJenisKso())) {
-                    if (listOfResult != null) {
+                    if (listOfResult != null && listOfResult.size() >0) {
                         for (DokterKsoTindakan ksoTindakanEntity : listOfResult) {
                             ImSimrsDokterKsoTindakan ksoTindakan = new ImSimrsDokterKsoTindakan();
                             try {

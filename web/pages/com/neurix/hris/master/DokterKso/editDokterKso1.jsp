@@ -198,7 +198,8 @@
                                                                             var labelItem = item.idDokter + " | " + item.namaDokter;
                                                                             mapped[labelItem] = {
                                                                                 id: item.idDokter,
-                                                                                nama: item.namaDokter
+                                                                                nama: item.namaDokter,
+                                                                                branch: item.branchId
                                                                             };
                                                                             functions.push(labelItem);
                                                                         });
@@ -207,6 +208,7 @@
                                                                     updater: function (item) {
                                                                         var selectedObj = mapped[item];
                                                                         $('#namaDokter2').val(selectedObj.nama);
+                                                                        $('#branchId2').val(selectedObj.branch);
                                                                         return selectedObj.id;
                                                                     }
                                                                 });
@@ -251,7 +253,7 @@
                                                             <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                                         <s:if test='dokterKso.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId2" name="dokterKso.branchId"
+                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId2" name="dokterKso.branchId" readonly="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
@@ -284,7 +286,7 @@
                                                 <td>
                                                     <table>
                                                         <s:select list="#{'tindakan':'Tindakan', 'obat' : 'Obat', 'kamar' : 'Kamar'}"
-                                                                  id="jenisKso2" name="dokterKso.jenisKso"
+                                                                  id="jenisKso2" name="dokterKso.jenisKso" onchange="jenisKso()"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>
                                                 </td>
@@ -327,10 +329,10 @@
                                         </table>
                                         <br>
                                         <br>
-                                        <h3>
+                                        <h3 id="addTindakan">
                                             Add Dokter KSO Tindakan
                                             <button
-                                                    id="btnAddDetail" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
+                                                    id="btnAddDetail" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah" onclick="listPelayanan()"><i class="fa fa-plus"></i>
                                             </button>
                                         </h3>
                                         <br>
@@ -450,52 +452,22 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm-offset-2 col-sm-3">
-                                <label class="control-label">Riwayat Tindakan ID</label>
+                                <label class="control-label">Pelayanan</label>
                             </div>
                             <div class="col-sm-4">
-                                <s:textfield id="modRiwayatTindakanId" cssClass="form-control"
-                                             maxlength="12"
-                                />
-                                <script>
-                                    $(document).ready(function() {
-                                        var functions, mapped;
-                                        $('#modRiwayatTindakanId').typeahead({
-                                            minLength: 1,
-                                            source: function (query, process) {
-                                                functions = [];
-                                                mapped = {};
-                                                var data = [];
-                                                dwr.engine.setAsync(false);
-                                                DokterKsoAction.initTypeaheadRiwayatTindakan(query,function (listdata) {
-                                                    data = listdata;
-                                                });
-                                                $.each(data, function (i, item) {
-                                                    var labelItem = item.idTindakan + " | " + item.namaTindakan;
-                                                    mapped[labelItem] = {
-                                                        id: item.idTindakan,
-                                                        nama: item.namaTindakan
-                                                    };
-                                                    functions.push(labelItem);
-                                                });
-                                                process(functions);
-                                            },
-                                            updater: function (item) {
-                                                var selectedObj = mapped[item];
-                                                $('#modRiwayatTindakanName').val(selectedObj.nama);
-                                                return selectedObj.id;
-                                            }
-                                        });
-                                    });
-                                </script>
+                                <select id="modPelayanan" style="width: 100%" class="form-control select2" onchange="listTindakan()">
+                                    <option value="">[Select One]</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
                             <div class="col-sm-offset-2 col-sm-3">
-                                <label class="control-label">Nama Riwayat Tindakan</label>
+                                <label class="control-label">Tindakan</label>
                             </div>
                             <div class="col-sm-4">
-                                <s:textfield id="modRiwayatTindakanName" cssClass="form-control" readonly="true"
-                                />
+                                <select id="modTindakan" style="width: 100%" class="form-control select2">
+                                    <option value="">[Select One]</option>
+                                </select>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -503,7 +475,7 @@
                                 <label class="control-label">Persen KSO Tindakan</label>
                             </div>
                             <div class="col-sm-4">
-                                <s:textfield id="modPersenKsoTindakan" cssClass="form-control"
+                                <s:textfield type='number' id="modPersenKsoTindakan" cssClass="form-control"
                                 />
                             </div>
                         </div>
@@ -598,5 +570,53 @@
                 alert(msg);
             }
         });
+
+        jenisKso();
     })
+
+    function jenisKso() {
+        var jenis = $('#jenisKso2').val();
+
+        if(jenis != 'tindakan'){
+            $('#addTindakan').hide();
+            $('#showdata').hide();
+        } else{
+            $('#addTindakan').show();
+            $('#showdata').show();
+        }
+
+    }
+
+    function listPelayanan(){
+        var idDokter = $('#nip2').val();
+        console.log(idDokter);
+        var option = '<option value="">[Select One]</option>';
+        DokterKsoAction.initComboPelayananDokter(idDokter, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+                $('#modPelayanan').html(option);
+            } else {
+                $('#modPelayanan').html(option);
+            }
+        });
+    }
+
+    function listTindakan(){
+        var idPelayanan = $('#modPelayanan').val();
+        var idDokter = $('#nip2').val();
+        console.log(idPelayanan);
+        var option = '<option value="">[Select One]</option>';
+        DokterKsoAction.initComboTindakanDokter(idPelayanan, idDokter, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
+                });
+                $('#modTindakan').html(option);
+            } else {
+                $('#modTindakan').html(option);
+            }
+        });
+    }
 </script>

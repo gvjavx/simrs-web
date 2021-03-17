@@ -371,6 +371,7 @@ public class DokterKsoAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultDokterKso");
+        session.removeAttribute("listOfResultDokterKsoTindakan");
 
         logger.info("[DokterKsoAction.saveAdd] end process >>>");
         return "success_save_add";
