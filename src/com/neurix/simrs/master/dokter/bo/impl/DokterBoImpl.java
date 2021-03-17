@@ -4,6 +4,9 @@ import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.biodata.dao.BiodataDao;
+import com.neurix.hris.master.biodata.model.Biodata;
+import com.neurix.hris.master.biodata.model.ImBiodataEntity;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.dao.DokterPelayananDao;
@@ -31,8 +34,13 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
     private DokterDao dokterDao;
     private PositionDao positionDao;
     private BranchDao branchDao;
+    private BiodataDao biodataDao;
     private PelayananSpesialisDao pelayananSpesialisDao;
     private DokterPelayananDao dokterPelayananDao;
+
+    public void setBiodataDao(BiodataDao biodataDao) {
+        this.biodataDao = biodataDao;
+    }
 
     public void setBranchDao(BranchDao branchDao) {
         this.branchDao = branchDao;
@@ -243,19 +251,40 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                 try {
                     // Generating ID, get from postgre sequence
                     dokterId = dokterDao.getNextDokter();
-                    seqKodering = dokterDao.getNextKodering();
                 } catch (HibernateException e) {
                     logger.error("[DokterBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence DokterId id, please info to your admin..." + e.getMessage());
                 }
+                try {
+                    // Generating ID, get from postgre sequence
+                    seqKodering = dokterDao.getNextKodering();
+                } catch (HibernateException e) {
+                    logger.error("[DokterBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence Kodering, please info to your admin..." + e.getMessage());
+                }
                 Map map = new HashMap<>();
                 map.put("position_id", bean.getPositionId());
-                String koderingPosition = positionDao.getKodringPosition(map).split("\\.")[2];
+
+                String koderingPositionRaw;
+                try{
+                    koderingPositionRaw = positionDao.getKodringPosition(map);
+                }catch (HibernateException e) {
+                    logger.error("[DokterBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting Kodering Position, please info to your admin..." + e.getMessage());
+                }
+
+                String koderingPosition = koderingPositionRaw.split("\\.")[2];
 
                 String branchId = CommonUtil.userBranchLogin();
                 Map map1 = new HashMap<>();
                 map1.put("branch_id", branchId);
-                String koderingBranch = branchDao.getKodringBranches(map1);
+                String koderingBranch;
+                try{
+                    koderingBranch = branchDao.getKodringBranches(map1);
+                }catch (HibernateException e) {
+                    logger.error("[DokterBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting Kodering Branches, please info to your admin..." + e.getMessage());
+                }
 
                 String kodering = koderingBranch+"."+koderingPosition+"."+seqKodering;
 
@@ -626,36 +655,47 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
 
     @Override
     public List<Dokter> typeaheadDokter(String dokterName) throws GeneralBOException {
-        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] start process >>>");
+        logger.info("[DokterBoImpl.typeaheadDokter] start process >>>");
 
         // Mapping with collection and put
         List<Dokter> listOfResult = new ArrayList();
         List<ImSimrsDokterEntity> imDokterEntityList = null;
         try {
-
             imDokterEntityList = dokterDao.getDokterListByLikeDokterName(dokterName);
         } catch (HibernateException e) {
-            logger.error("[KodeRekeningBoImpl.typeaheadKodeRekening] Error, " + e.getMessage());
+            logger.error("[DokterBoImpl.typeaheadDokter] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
         if(imDokterEntityList != null){
+            ImBiodataEntity biodata;
             Dokter returnDokter;
             // Looping from dao to object and save in collection
-            for(ImSimrsDokterEntity imSimrsDokterEntity : imDokterEntityList){
+            for(ImSimrsDokterEntity imSimrsDokterEntity : imDokterEntityList) {
                 returnDokter = new Dokter();
-                returnDokter.setIdDokter(imSimrsDokterEntity.getIdDokter());
-                returnDokter.setNamaDokter(imSimrsDokterEntity.getNamaDokter());
+                //RAKA-17MAR2021==>Hanya Dokter KSO
+                try {
+                    biodata = biodataDao.getById("nip", imSimrsDokterEntity.getIdDokter());
+                } catch (HibernateException e) {
+                    logger.error("[DokterBoImpl.typeaheadDokter] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+                if (biodata != null) {
+                    if ("Y".equalsIgnoreCase(biodata.getFlagDokterKso())) {
+                        returnDokter.setIdDokter(imSimrsDokterEntity.getIdDokter());
+                        returnDokter.setNamaDokter(imSimrsDokterEntity.getNamaDokter());
 
-                returnDokter.setCreatedWho(imSimrsDokterEntity.getCreatedWho());
-                returnDokter.setCreatedDate(imSimrsDokterEntity.getCreatedDate());
-                returnDokter.setLastUpdate(imSimrsDokterEntity.getLastUpdate());
-                returnDokter.setAction(imSimrsDokterEntity.getAction());
-                returnDokter.setFlag(imSimrsDokterEntity.getFlag());
-                listOfResult.add(returnDokter);
+                        returnDokter.setCreatedWho(imSimrsDokterEntity.getCreatedWho());
+                        returnDokter.setCreatedDate(imSimrsDokterEntity.getCreatedDate());
+                        returnDokter.setLastUpdate(imSimrsDokterEntity.getLastUpdate());
+                        returnDokter.setAction(imSimrsDokterEntity.getAction());
+                        returnDokter.setFlag(imSimrsDokterEntity.getFlag());
+                        listOfResult.add(returnDokter);
+                    }
+                }
             }
         }
-        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] end process <<<");
+        logger.info("[DokterBoImpl.typeaheadDokter] end process <<<");
 
         return listOfResult;
     }

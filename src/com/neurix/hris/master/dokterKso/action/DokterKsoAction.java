@@ -354,12 +354,12 @@ public class DokterKsoAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "tindakanBO.saveAdd");
+                logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "dokterKsoBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[tindakanAction.saveAdd] Error when saving error,", e1);
+                logger.error("[DokterKsoAction.saveAdd] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[tindakanAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[DokterKsoAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
@@ -368,7 +368,7 @@ public class DokterKsoAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultDokterKso");
 
-        logger.info("[tindakanAction.saveAdd] end process >>>");
+        logger.info("[DokterKsoAction.saveAdd] end process >>>");
         return "success_save_add";
     }
 
