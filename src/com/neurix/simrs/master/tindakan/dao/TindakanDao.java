@@ -256,7 +256,8 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 "f.branch_id,\n" +
                 "f.branch_name,\n" +
                 "b.is_ina,\n" +
-                "b.is_elektif\n" +
+                "b.is_elektif,\n" +
+                "a.flag_konsul_gizi\n" +
                 "FROM im_simrs_header_tindakan a\n" +
                 "INNER JOIN im_simrs_tindakan b ON  a.id_header_tindakan = b.id_header_tindakan\n" +
                 "INNER JOIN im_simrs_kategori_tindakan c ON b.id_kategori_tindakan = c.id_kategori_tindakan\n" +
@@ -297,6 +298,7 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
                 tindakan.setBranchName(obj[13] != null ? obj[13].toString() : null);
                 tindakan.setIsIna(obj[14] != null ? obj[14].toString() : null);
                 tindakan.setIsElektif(obj[15] != null ? obj[15].toString() : null);
+                tindakan.setFlagKonsulGizi(obj[16] != null ? obj[16].toString() : null);
                 tindakanList.add(tindakan);
             }
         }

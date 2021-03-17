@@ -3327,6 +3327,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
     }
 
+    @Override
+    public String fisrtCheckup(String noCheckup) throws GeneralBOException {
+        String res = "";
+        try{
+            res = headerCheckupDao.firstCheckup(noCheckup);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return res;
+    }
+
     private CrudResponse saveRawatInap(RawatInap bean) {
         logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
         CrudResponse response = new CrudResponse();

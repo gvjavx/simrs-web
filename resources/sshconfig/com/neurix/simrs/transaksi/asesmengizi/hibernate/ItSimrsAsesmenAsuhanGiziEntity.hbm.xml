@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.asesmengizi.model.ItSimrsAsesmenAsuhanGiziEntity">
+        <table name="it_simrs_asesmen_asuhan_gizi" schema="public"/>
+        <attributes>
+            <id name="idAsuhanGizi">
+                <column name="id_asuhan_gizi"/>
+            </id>
+            <basic name="noCheckup">
+                <column name="no_checkup"/>
+            </basic>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"/>
+            </basic>
+            <basic name="asesmen">
+                <column name="asesmen"/>
+            </basic>
+            <basic name="diagnosa">
+                <column name="diagnosa"/>
+            </basic>
+            <basic name="intervensi">
+                <column name="intervensi"/>
+            </basic>
+            <basic name="rencana">
+                <column name="rencana"/>
+            </basic>
+            <basic name="edukasi">
+                <column name="edukasi"/>
+            </basic>
+            <basic name="ttdPasien">
+                <column name="ttd_pasien"/>
+            </basic>
+            <basic name="ttdDokter">
+                <column name="ttd_dokter"/>
+            </basic>
+            <basic name="namaPasien">
+                <column name="nama_pasien"/>
+            </basic>
+            <basic name="namaDokter">
+                <column name="nama_dokter"/>
+            </basic>
+            <basic name="sipDokter">
+                <column name="sip_dokter"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

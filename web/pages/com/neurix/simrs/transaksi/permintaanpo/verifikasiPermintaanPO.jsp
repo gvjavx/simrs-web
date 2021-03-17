@@ -540,9 +540,8 @@
                         <label class="col-md-3" style="margin-top: 7px">Qty Approve</label>
                         <div class="col-md-7">
                             <div class="input-group" style="margin-top: 7px; width: 100%">
-                                <s:textfield type="number" min="1" cssClass="form-control"
-                                             id="app_qty_app"
-                                             onkeypress="var warn =$('#war_app_qty_app').is(':visible'); if (warn){$('#cor_app_qty_app').show().fadeOut(3000);$('#war_app_qty_app').hide()}"></s:textfield>
+                                <input type="number" min="1" class="form-control" id="app_qty_app"
+                                             oninput="var warn =$('#war_app_qty_app').is(':visible'); if (warn){$('#cor_app_qty_app').show().fadeOut(3000);$('#war_app_qty_app').hide()} hitungNetto()">
                                 <div class="input-group-addon" style="width: 15%">biji</div>
                             </div>
                         </div>
@@ -1285,11 +1284,16 @@
     function hitungNetto(){
         var diskon = $('#app_diskon').val();
         var bruto = $('#val_bruto').val();
+        var qtyApprove = $('#app_qty_app').val();
         var temp = 0;
-        if(diskon != '' && parseInt(diskon) > 0 &&
-            bruto != '' && parseInt(bruto) > 0 ){
-            var dis = (100 - parseInt(diskon))/100;
-            temp = bruto * dis;
+        if(diskon != '' && parseInt(diskon) >= 0 &&
+            bruto != '' && parseInt(bruto) > 0 &&
+            qtyApprove != '' && parseInt(qtyApprove) > 0 ){
+
+            var dis     = (100 - parseInt(diskon))/100;
+            var hasil   = bruto * dis;
+            temp = hasil * qtyApprove;
+
         }
         $('#app_netto').val(formatRupiahAtas(temp));
         $('#val_netto').val(temp);

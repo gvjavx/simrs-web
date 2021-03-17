@@ -1357,6 +1357,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_tindakan"></p>
                 </div>
+                <div class="alert alert-warning alert-dismissible" style="display: none" id="warning_konsul">
+                    <h4><i class="icon fa fa-ban"></i> Info!</h4>
+                    <p id="msg_konsul"></p>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Dokter</label>

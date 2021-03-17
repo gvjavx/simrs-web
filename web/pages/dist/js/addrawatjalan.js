@@ -3631,6 +3631,13 @@ function setDiskonHarga(id) {
                     $('#form_elektif').hide();
                     $('#is_elektif').val("N");
                 }
+
+                if("Y" == res.flagKonsulGizi){
+                    $('#warning_konsul').fadeIn(1000);
+                    $('#msg_konsul').text("Anda memilih tindakan konsultasi Gizi. Silahkan ke Unit Gizi untuk melakukan konsultasi gizi...!");
+                }else{
+                    $('#warning_konsul').hide();
+                }
             }
         });
     }

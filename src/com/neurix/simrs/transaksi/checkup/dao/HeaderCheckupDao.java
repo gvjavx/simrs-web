@@ -2464,6 +2464,27 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         return response;
     }
 
+    public String firstCheckup(String noCheckup){
+        String res = "";
+        String SQL = "SELECT\n" +
+                "a.no_checkup,\n" +
+                "b.id_detail_checkup,\n" +
+                "d.nama_pelayanan\n" +
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan d ON c.id_header_pelayanan = d.id_header_pelayanan\n" +
+                "WHERE a.no_checkup = '"+noCheckup+"'\n" +
+                "AND d.tipe_pelayanan IN ('rawat_jalan', 'igd')\n" +
+                "ORDER BY b.created_date ASC LIMIT 1;";
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if(result.size() > 0){
+            Object[] obj = result.get(0);
+            res = obj[2].toString();
+        }
+        return res;
+    }
+
     public String getNextSeq() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_pembayaran_online')");
         Iterator<BigInteger> iter = query.list().iterator();

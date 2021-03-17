@@ -2023,6 +2023,111 @@ ADD COLUMN tarif_lab_luar numeric;
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000247','RMM00000014','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
 
+--UPDATE UNTUK RM TERBRU YA TOLONG DI EXECUTE
+UPDATE im_simrs_rekam_medis_pasien
+SET parameter = 'ringkasan_pulang'
+WHERE id_rekam_medis_pasien = 'RMM00000042';
+
+CREATE TABLE it_simrs_asesmen_gizi(
+id_asesmen_gizi character varying(50) NOT NULL PRIMARY KEY,
+no_checkup character varying(30),
+id_detail_checkup character varying(30),
+parameter text,
+jawaban text,
+keterangan character varying(100),
+jenis character varying(100),
+ttd_pasien character varying(100),
+ttd_dokter character varying(100),
+nama_pasien character varying(100),
+nama_dokter character varying(100),
+sip_dokter character varying(100),
+flag character varying(1),
+action character varying(1),
+created_who character varying(100),
+created_date timestamp without time zone,
+last_update timestamp without time zone,
+last_update_who character varying(100)
+);
+
+CREATE SEQUENCE seq_asesmen_gizi;
+
+CREATE TABLE it_simrs_asesmen_asuhan_gizi(
+id_asuhan_gizi character varying(50) NOT NULL PRIMARY KEY,
+no_checkup character varying(30),
+id_detail_checkup character varying(30),
+asesmen text,
+diagnosa text,
+intervensi text,
+rencana text,
+edukasi text,
+ttd_pasien character varying(100),
+ttd_dokter character varying(100),
+nama_pasien character varying(100),
+nama_dokter character varying(100),
+sip_dokter character varying(100),
+flag character varying(1),
+action character varying(1),
+created_who character varying(100),
+created_date timestamp without time zone,
+last_update timestamp without time zone,
+last_update_who character varying(100)
+);
+
+CREATE SEQUENCE seq_asesmen_asuhan_gizi;
+
+CREATE TABLE it_simrs_asesmen_monitoring_gizi(
+id_monitoring_gizi character varying(50) NOT NULL PRIMARY KEY,
+no_checkup character varying(30),
+id_detail_checkup character varying(30),
+tanggal character varying(100),
+berat_badan character varying(100),
+status_gizi character varying(100),
+intake character varying(100),
+fisik character varying(100),
+biokimia character varying(100),
+intervensi character varying(100),
+lain_lain character varying(100),
+ttd_pasien character varying(100),
+ttd_dokter character varying(100),
+nama_pasien character varying(100),
+nama_dokter character varying(100),
+sip_dokter character varying(100),
+flag character varying(1),
+action character varying(1),
+created_who character varying(100),
+created_date timestamp without time zone,
+last_update timestamp without time zone,
+last_update_who character varying(100)
+);
+
+CREATE SEQUENCE seq_asesmen_monitoring_gizi;
+
+
+--Tindakan Header
+ALTER TABLE im_simrs_header_tindakan
+ADD COLUMN flag_konsul_gizi VARCHAR(1);
+
+--Konsultasi Gizi
+CREATE TABLE it_simrs_konsultasi_gizi(
+id_konsultasi_gizi character varying(50) NOT NULL PRIMARY KEY,
+no_checkup character varying(30),
+id_detail_checkup character varying(30),
+status character varying(100),
+is_read character varying(1),
+flag character varying(1),
+action character varying(1),
+created_who character varying(100),
+created_date timestamp without time zone,
+last_update timestamp without time zone,
+last_update_who character varying(100)
+);
+
+CREATE SEQUENCE seq_konsultasi_gizi;
+
+
+
+
+
 
 
 

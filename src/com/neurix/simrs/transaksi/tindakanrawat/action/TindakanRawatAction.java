@@ -231,6 +231,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setAction("C");
             tindakanRawat.setFlag("Y");
             tindakanRawat.setIdPelayanan(idPelayanan);
+            tindakanRawat.setFlagKonsulGizi(tindakanResult.getFlagKonsulGizi());
 
             response = tindakanRawatBo.saveAdd(tindakanRawat);
 

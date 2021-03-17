@@ -988,6 +988,10 @@
                 <value>sshconfig/com/neurix/simrs/master/obat/hibernate/ImSimrsPabrikObatEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/periksalab/hibernate/ItSimrsUploadHasilPemeriksaanEntity.hbm.xml</value>
 
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmengizi/hibernate/ItSimrsAsesmenGiziEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmengizi/hibernate/ItSimrsAsesmenAsuhanGiziEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/asesmengizi/hibernate/ItSimrsAsesmenMonitoringGiziEntity.hbm.xml</value>
+
             </list>
 
         </property>
