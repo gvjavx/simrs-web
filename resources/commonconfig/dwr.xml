@@ -787,6 +787,8 @@
                  match="com.neurix.simrs.transaksi.riwayattindakan.model.ItSimrsRiwayatTindakanEntity"/>
         <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan"/>
         <convert converter="bean" match="com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan"/>
+        <convert converter="bean" match="com.neurix.simrs.master.pelayanan.model.Pelayanan"/>
+        <convert converter="bean" match="com.neurix.simrs.master.dokter.model.ImSimrsDokterPelayananEntity"/>
 
         <create creator="new">
             <param name="class" value="com.neurix.simrs.transaksi.asesmenspesialis.action.AsesmenSpesialisAction"/>
