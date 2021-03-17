@@ -190,9 +190,15 @@
                                     </td>
                                     <td>
                                             <s:if test='#row.isFullOfQty == "Y"'>
+                                                <div class="input-group">
+                                                    <input class="form-control" readonly>
+                                                    <div class="input-group-addon">
+                                                        <img src="<s:url value="/pages/images/icon_success.ico"/>" style="height: 20px; width: 20px;">
+                                                    </div>
+                                                </div>
 
-                                                <input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"
-                                                       disabled id='pabrik<s:property value="idObat"/>'>
+                                                <%--<input onchange="verify('<s:property value="idObat"/>', this.value,'<s:property value="qty"/>', '<s:property value="idTransaksiObatDetail"/>','<s:property value="namaObat"/>', '<s:property value="jenisSatuan"/>', '<s:property value="hargaPo"/>', '<s:property value="idApprovalObat"/>', '<s:property value="lembarPerBox"/>', '<s:property value="bijiPerLembar"/>', '<s:property value="noBatch"/>')" class="form-control"--%>
+                                                       <%--disabled id='pabrik<s:property value="idObat"/>'>--%>
                                             </s:if>
                                             <s:else>
                                             <div class="input-group">
@@ -413,7 +419,7 @@
                     <h4><i class="icon fa fa-warning"></i> Warning!</h4>
                     <p id="msg_app"></p>
                 </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none;" id="warning_app_save">
+                <div class="alert alert-warning alert-dismissible" style="display: none;" id="warning_app_save">
                     <h4><i class="icon fa fa-warning"></i> Warning!</h4>
                     <p id="msg_app_save"></p>
                 </div>
@@ -540,9 +546,8 @@
                         <label class="col-md-3" style="margin-top: 7px">Qty Approve</label>
                         <div class="col-md-7">
                             <div class="input-group" style="margin-top: 7px; width: 100%">
-                                <s:textfield type="number" min="1" cssClass="form-control"
-                                             id="app_qty_app"
-                                             onkeypress="var warn =$('#war_app_qty_app').is(':visible'); if (warn){$('#cor_app_qty_app').show().fadeOut(3000);$('#war_app_qty_app').hide()}"></s:textfield>
+                                <input type="number" min="1" class="form-control" id="app_qty_app"
+                                             oninput="var warn =$('#war_app_qty_app').is(':visible'); if (warn){$('#cor_app_qty_app').show().fadeOut(3000);$('#war_app_qty_app').hide()}; hitungNetto()">
                                 <div class="input-group-addon" style="width: 15%">biji</div>
                             </div>
                         </div>
@@ -927,7 +932,7 @@
             limitQty = parseInt(qtyReq) - parseInt(qtyApprove);
         }
 
-        if(qty != '' && parseInt(qty) > 0 && lembarPerBox != '' && parseInt(lembarPerBox) > 0 && bijiPerLembar != '' && parseInt(bijiPerLembar) > 0 && expired != '' && diskon != '' && parseInt(diskon) > 0 && bruto != '' && parseInt(bruto) > 0 ){
+        if(qty != '' && parseInt(qty) > 0 && lembarPerBox != '' && parseInt(lembarPerBox) > 0 && bijiPerLembar != '' && parseInt(bijiPerLembar) > 0 && expired != '' && diskon != '' && parseInt(diskon) >= 0 && bruto != '' && parseInt(bruto) > 0 ){
             if(parseInt(qty) <= parseInt(limitQty)) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick','saveApprove()');
@@ -952,7 +957,7 @@
             if(bijiPerLembar == '' || parseInt(lembarPerBox) <= 0){
                 $('#war_app_biji_perlembar').show();
             }
-            if(diskon == '' || parseInt(diskon) <= 0){
+            if(diskon == '' || parseInt(diskon) < 0){
                 $('#war_app_diskon').show();
             }
             if(bruto == '' || parseInt(bruto) <= 0){
@@ -1210,7 +1215,7 @@
                 $('#app_merek').val(res.merk);
                 $('#combo-pabrik').val(res.idPabrik);
                 $('#warning_approve').show();
-                $('#warning_app').hide();
+                $('#warning_app_save').hide();
                 $('#msg_app2').text("No. Produksi "+no+ " terverifikasi, silahkan masukkan data dibawah ini...!");
             }else{
                 showAllPabrik(res.idObat);
@@ -1219,8 +1224,8 @@
                 $('#app_merek').val('');
                 $('#combo-pabrik').val('');
                 $('#warning_approve').hide();
-                $('#warning_app').show();
-                $('#msg_app').text("No. Produksi "+no+ " baru, silahkan masukkan data dibawah ini...!");
+                $('#warning_app_save').show();
+                $('#msg_app_save').text("No. Produksi "+no+ " baru, silahkan masukkan data dibawah ini...!");
             }
             $('#h_id_obat').val(idObat);
             $('#h_id_detail_obat').val(idDetailObat);
@@ -1285,11 +1290,16 @@
     function hitungNetto(){
         var diskon = $('#app_diskon').val();
         var bruto = $('#val_bruto').val();
+        var qtyApprove = $('#app_qty_app').val();
         var temp = 0;
-        if(diskon != '' && parseInt(diskon) > 0 &&
-            bruto != '' && parseInt(bruto) > 0 ){
-            var dis = (100 - parseInt(diskon))/100;
-            temp = bruto * dis;
+        if(diskon != '' && parseInt(diskon) >= 0 &&
+            bruto != '' && parseInt(bruto) > 0 &&
+            qtyApprove != '' && parseInt(qtyApprove) > 0 ){
+
+            var dis     = (100 - parseInt(diskon))/100;
+            var hasil   = bruto * dis;
+            temp = hasil * qtyApprove;
+
         }
         $('#app_netto').val(formatRupiahAtas(temp));
         $('#val_netto').val(temp);
