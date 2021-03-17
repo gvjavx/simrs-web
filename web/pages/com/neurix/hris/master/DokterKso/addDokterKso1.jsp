@@ -191,7 +191,8 @@
                                                                             var labelItem = item.idDokter + " | " + item.namaDokter;
                                                                             mapped[labelItem] = {
                                                                                 id: item.idDokter,
-                                                                                nama: item.namaDokter
+                                                                                nama: item.namaDokter,
+                                                                                branch: item.branchId
                                                                             };
                                                                             functions.push(labelItem);
                                                                         });
@@ -200,6 +201,8 @@
                                                                     updater: function (item) {
                                                                         var selectedObj = mapped[item];
                                                                         $('#namaDokter1').val(selectedObj.nama);
+                                                                        $('#branchId1').val(selectedObj.branch);
+                                                                        console.log(selectedObj.branch);
                                                                         return selectedObj.id;
                                                                     }
                                                                 });
@@ -239,12 +242,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                            <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
-                                                            <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                                         <s:if test='dokterKso.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId1" name="dokterKso.branchId"
+                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId1" name="dokterKso.branchId" readonly="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
@@ -442,7 +442,7 @@
                                 <label class="control-label">Pelayanan</label>
                             </div>
                             <div class="col-sm-4">
-                                <select id="pelayanan" style="width: 100%" class="form-control select2" onchange="listTindakan()">
+                                <select id="modPelayanan" style="width: 100%" class="form-control select2" onchange="listTindakan()">
                                     <option value="">[Select One]</option>
                                 </select>
                             </div>
@@ -452,7 +452,7 @@
                                 <label class="control-label">Tindakan</label>
                             </div>
                             <div class="col-sm-4">
-                                <select id="tindakan" style="width: 100%" class="form-control select2">
+                                <select id="modTindakan" style="width: 100%" class="form-control select2">
                                     <option value="">[Select One]</option>
                                 </select>
                                 <%--<script>--%>
@@ -550,8 +550,8 @@
             $('#modal-edit').find('.modal-title').text('Add Dokter KSO Tindakan');
         });
         $('#modBtnSave').click(function () {
-            var tindakanId = $('#modTindakanId').val();
-            var tindakanName = $('#modTindakanName').val();
+            var tindakanId = $('#modTindakan').val();
+            var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
 
             dwr.engine.setAsync(false);
@@ -610,15 +610,15 @@
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
                 });
-                $('#pelayanan').html(option);
+                $('#modPelayanan').html(option);
             } else {
-                $('#pelayanan').html(option);
+                $('#modPelayanan').html(option);
             }
         });
     }
 
     function listTindakan(){
-        var idPelayanan = $('#pelayanan').val();
+        var idPelayanan = $('#modPelayanan').val();
         var idDokter = $('#nip1').val();
         console.log(idPelayanan);
         var option = '<option value="">[Select One]</option>';
@@ -627,9 +627,9 @@
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
                 });
-                $('#tindakan').html(option);
+                $('#modTindakan').html(option);
             } else {
-                $('#tindakan').html(option);
+                $('#modTindakan').html(option);
             }
         });
     }

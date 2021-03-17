@@ -7,6 +7,7 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.biodata.model.ImBiodataEntity;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.dao.DokterPelayananDao;
@@ -673,7 +674,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
             // Looping from dao to object and save in collection
             for(ImSimrsDokterEntity imSimrsDokterEntity : imDokterEntityList) {
                 returnDokter = new Dokter();
-                //RAKA-17MAR2021==>Hanya Dokter KSO
+                //RAKA-17MAR2021==>Hanya Dokter KSO (Tamu)
                 try {
                     biodata = biodataDao.getById("nip", imSimrsDokterEntity.getIdDokter());
                 } catch (HibernateException e) {
@@ -682,6 +683,18 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                 }
                 if (biodata != null) {
                     if ("Y".equalsIgnoreCase(biodata.getFlagDokterKso())) {
+                        //RAKA-17MAR2021 ==> mendapatkan Branch ID
+                        List<PersonilPosition> positionList = new ArrayList<>();
+                        try{
+                            positionList = biodataDao.getListPersonilPositionByNip(imSimrsDokterEntity.getIdDokter());
+                        }catch (HibernateException e) {
+                            logger.error("[DokterBoImpl.typeaheadDokter] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                        }
+                        for(PersonilPosition position : positionList){
+                            returnDokter.setBranchId(position.getBranchId());
+                        }
+                        //RAKA-end
                         returnDokter.setIdDokter(imSimrsDokterEntity.getIdDokter());
                         returnDokter.setNamaDokter(imSimrsDokterEntity.getNamaDokter());
 
@@ -693,6 +706,7 @@ public class DokterBoImpl extends DokterSpesialisModuls implements DokterBo {
                         listOfResult.add(returnDokter);
                     }
                 }
+                //RAKA-end
             }
         }
         logger.info("[DokterBoImpl.typeaheadDokter] end process <<<");

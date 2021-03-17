@@ -350,7 +350,11 @@ public class DokterKsoAction extends BaseMasterAction {
             dokterKso.setAction("C");
             dokterKso.setFlag("Y");
 
-            dokterKsoBoProxy.saveAdd(dokterKso);
+            try{
+                dokterKsoBoProxy.saveAdd(dokterKso);
+            }catch (GeneralBOException e){
+                logger.error("[DokterKsoAction.saveAdd] Error, " + e.getMessage());
+            }
         } catch (GeneralBOException e) {
             Long logId = null;
             try {

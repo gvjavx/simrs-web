@@ -61,9 +61,11 @@ public class DokterKsoDao extends GenericDao<ImSimrsDokterKso, String> {
         return sId;
     }
 
-    public List<ImSimrsDokterKso> getDataDokterKso(String nip) throws HibernateException {
+    public List<ImSimrsDokterKso> getDataDokterKso(String nip, String jenis, String masterId) throws HibernateException {
         List<ImSimrsDokterKso> results = this.sessionFactory.getCurrentSession().createCriteria(ImSimrsDokterKso.class)
                 .add(Restrictions.eq("nip", nip))
+                .add(Restrictions.eq("jenisKso", jenis))
+                .add(Restrictions.eq("masterId", masterId))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();
 

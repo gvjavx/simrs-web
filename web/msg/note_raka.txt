@@ -1,3 +1,7 @@
+------ 2021-03-17 ===> Ubah Length kodering pada Master Dokter KSO
+-- Menambahkan Length dari 11 ke 20
+    ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+
 ------ 2021-03-15 ===> Master Branch Nilai Beberapa Tunjnagan
 -- Menambahkan field nilai tunjangan
     ALTER TABLE im_branches

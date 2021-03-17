@@ -317,7 +317,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
     public DokterKso saveAdd(DokterKso bean) throws GeneralBOException {
         logger.info("[DokterKsoBoImpl.BoImpl.saveAdd] start process >>>");
         if (bean != null) {
-            String status = cekStatus(bean.getNip());
+            String status = cekStatus(bean.getNip(), bean.getJenisKso(), bean.getMasterId());
             String dokterKsoId, seqKodering, dokterKsoTindakanId;
             if (!status.equalsIgnoreCase("exist")) {
                 HttpSession session = ServletActionContext.getRequest().getSession();
@@ -347,7 +347,8 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                     throw new GeneralBOException("Problem when retrieving Kodering Position, " + e.getMessage());
                 }
 
-                String branchId = CommonUtil.userBranchLogin();
+//                String branchId = CommonUtil.userBranchLogin();
+                String branchId = bean.getBranchId();
                 Map map1 = new HashMap<>();
                 map1.put("branch_id", branchId);
                 String koderingBranch;
@@ -416,14 +417,14 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                             }
                         }
                     } else {
-                        throw new GeneralBOException("Maaf Data Dokter Kso Tindakan tidak ada");
+                        throw new GeneralBOException("Maaf, Data Dokter Kso Tindakan tidak ada. Harus ada Tindakan untuk Jenis KSO Tindakan.");
                     }
                 }
 //                }else {
 //                    throw new GeneralBOException("Maaf Data Dokter Kso Tindakan tidak ada");
 //                }
             } else {
-                throw new GeneralBOException("Maaf Data dengan NIP Tersebut Sudah Ada");
+                throw new GeneralBOException("Maaf, Data dengan ID Dokter, Jenis KSO, dan Master tersebut sudah ada.");
             }
         }
 
@@ -548,11 +549,11 @@ public class DokterKsoBoImpl implements DokterKsoBo {
         return null;
     }
 
-    private String cekStatus(String nip) throws GeneralBOException {
+    private String cekStatus(String nip, String jenis, String masterId) throws GeneralBOException {
         String status = "";
         List<ImSimrsDokterKso> entities = new ArrayList<>();
         try {
-            entities = dokterKsoDao.getDataDokterKso(nip);
+            entities = dokterKsoDao.getDataDokterKso(nip, jenis, masterId);
         } catch (HibernateException e) {
             logger.error("[DokterBoImpl.cekStatus] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
