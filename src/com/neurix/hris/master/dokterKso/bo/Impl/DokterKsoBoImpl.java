@@ -14,8 +14,19 @@ import com.neurix.hris.master.dokterKsoTindakan.bo.DokterKsoTindakanBo;
 import com.neurix.hris.master.dokterKsoTindakan.dao.DokterKsoTindakanDao;
 import com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan;
 import com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan;
+import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
+import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.dokter.model.DokterPelayanan;
+import com.neurix.simrs.master.dokter.dao.DokterPelayananDao;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterPelayananEntity;
+import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
+import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -33,8 +44,28 @@ public class DokterKsoBoImpl implements DokterKsoBo {
     protected static transient Logger logger = Logger.getLogger(DokterKsoBoImpl.class);
     DokterKsoDao dokterKsoDao;
     DokterKsoTindakanDao dokterKsoTindakanDao;
+    DokterPelayananDao dokterPelayananDao;
+    PelayananDao pelayananDao;
+    TindakanDao tindakanDao;
+    PersonilPositionDao personilPositionDao;
     private BranchDao branchDao;
     private PositionDao positionDao;
+
+    public void setPersonilPositionDao(PersonilPositionDao personilPositionDao) {
+        this.personilPositionDao = personilPositionDao;
+    }
+
+    public void setTindakanDao(TindakanDao tindakanDao) {
+        this.tindakanDao = tindakanDao;
+    }
+
+    public void setPelayananDao(PelayananDao pelayananDao) {
+        this.pelayananDao = pelayananDao;
+    }
+
+    public void setDokterPelayananDao(DokterPelayananDao dokterPelayananDao) {
+        this.dokterPelayananDao = dokterPelayananDao;
+    }
 
     public DokterKsoTindakanDao getDokterKsoTindakanDao() {
         return dokterKsoTindakanDao;
@@ -488,7 +519,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
         return null;
     }
 
-    public String cekStatus(String nip)throws GeneralBOException{
+    private String cekStatus(String nip)throws GeneralBOException{
         String status ="";
         List<ImSimrsDokterKso> entities = new ArrayList<>();
         try {
@@ -503,5 +534,60 @@ public class DokterKsoBoImpl implements DokterKsoBo {
             status="notExits";
         }
         return status;
+    }
+
+    @Override
+    public List<Pelayanan> getPelayananDokter(String idDokter) throws GeneralBOException {
+        logger.info("[DokterKsoBoImpl.getPelayananDokter] start process >>>");
+        List<Pelayanan> listOfResult = new ArrayList<>();
+        List<ImSimrsDokterPelayananEntity> dokterPelayananEntities = new ArrayList<>();
+
+        HashMap hsCriteria = new HashMap<>();
+        hsCriteria.put("id_dokter", idDokter);
+        hsCriteria.put("flag", "Y");
+
+        try{
+            dokterPelayananEntities = dokterPelayananDao.getByCriteria(hsCriteria);
+        }catch (HibernateException e){
+            logger.error("[DokterKsoBoImpl.getPelayananDokter] Error, " + e.getMessage());
+            throw new GeneralBOException("Problem when retrieving Dokter Pelayanan using Criteria, " + e.getMessage());
+        }
+
+        for(ImSimrsDokterPelayananEntity dokterPelayanan : dokterPelayananEntities){
+            Pelayanan pelayanan;
+            try {
+                pelayanan = pelayananDao.getPelayananById("idPelayanan", dokterPelayanan.getIdPelayanan());
+            }catch (HibernateException e){
+                logger.error("[DokterKsoBoImpl.getPelayananDokter] Error, " + e.getMessage());
+                throw new GeneralBOException("Problem when retrieving Pelayanan By ID, " + e.getMessage());
+            }
+            listOfResult.add(pelayanan);
+        }
+
+        logger.info("[DokterKsoBoImpl.getPelayananDokter] end process <<<");
+        return listOfResult;
+    }
+
+    @Override
+    public List<Tindakan> getTindakanPelayanan(String idPelayanan, String idDokter) throws GeneralBOException {
+        List<Tindakan> tindakanList = new ArrayList<>();
+
+        ItPersonilPositionEntity personil;
+
+        try{
+            personil = personilPositionDao.getById("nip", idDokter);
+        }catch (HibernateException e){
+            logger.error("[DokterKsoBoImpl.getTindakanPelayanan] Error, " + e.getMessage());
+            throw new GeneralBOException("Problem when retrieving Personil Position ID, " + e.getMessage());
+        }
+
+        try{
+            tindakanList = tindakanDao.getTindakanPelayanan(idPelayanan, personil.getBranchId());
+        }catch (HibernateException e){
+            logger.error("[DokterKsoBoImpl.getTindakanPelayanan] Error, " + e.getMessage());
+            throw new GeneralBOException("Problem when retrieving Tindakan by Pelayanan ID, " + e.getMessage());
+        }
+
+        return tindakanList;
     }
 }

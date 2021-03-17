@@ -411,4 +411,29 @@ public class TindakanDao extends GenericDao<ImSimrsTindakanEntity, String> {
         }
         return tindakanList;
     }
+
+    public List<Tindakan> getTindakanPelayanan(String idPelayanan, String branchId) throws HibernateException{
+        List<Tindakan> tindakanList = new ArrayList<>();
+        String SQL = "SELECT\n" +
+                "a.id_tindakan,\n" +
+                "b.nama_tindakan\n" +
+                "FROM im_simrs_tindakan a\n" +
+                "INNER JOIN im_simrs_header_tindakan b ON a.id_header_tindakan = b.id_header_tindakan\n" +
+                "WHERE a.id_pelayanan = '" + idPelayanan + "'\n" +
+                "AND a.branch_id = '" + branchId + "'\n" +
+                "AND a.flag = 'Y'";
+
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (result.size() > 0) {
+            Tindakan tindakan;
+            for (Object[] obj : result) {
+                tindakan = new Tindakan();
+                tindakan.setIdTindakan(obj[0] == null ? "" : obj[0].toString());
+                tindakan.setTindakan(obj[1] == null ? "" : obj[1].toString());
+                tindakanList.add(tindakan);
+            }
+        }
+        return tindakanList;
+    }
 }
