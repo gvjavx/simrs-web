@@ -63,6 +63,16 @@ public class PermintaanObatPoli{
     private String flagOtherBranch;
     private String flagReqPelayanan;
 
+    private BigInteger jumlahObat;
+
+    public BigInteger getJumlahObat() {
+        return jumlahObat;
+    }
+
+    public void setJumlahObat(BigInteger jumlahObat) {
+        this.jumlahObat = jumlahObat;
+    }
+
     public String getFlagReqPelayanan() {
         return flagReqPelayanan;
     }

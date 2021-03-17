@@ -215,6 +215,19 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
                 permintaanObatPoli.setRequest(bean.getRequest());
 
+                TransaksiObatDetail beanDetail = new TransaksiObatDetail();
+                beanDetail.setIdApprovalObat(permintaanObatPoliEntity.getIdApprovalObat());
+                List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetails = new ArrayList<>();
+
+                try{
+                   transaksiObatDetails = obatDetailDao.getListEntityTransObatDetails(beanDetail);
+                } catch (GeneralBOException e) {
+                    logger.error("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
+                    throw new GeneralBOException("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
+                }
+
+                permintaanObatPoli.setJumlahObat(BigInteger.valueOf(transaksiObatDetails.size()));
+
                 permintaanObatPoliList.add(permintaanObatPoli);
             }
         }
