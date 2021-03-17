@@ -40,7 +40,7 @@ public class OrderGiziAction extends BaseTransactionAction {
         this.orderGiziBoProxy = orderGiziBoProxy;
     }
 
-    public CheckResponse saveOrderGizi(String data, String isTomorrow) {
+    public CheckResponse saveOrderGizi(String data, String forWhen, String type) {
         logger.info("[OrderGiziAction.saveOrderGizi] start process >>>");
         CheckResponse response = new CheckResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -59,7 +59,15 @@ public class OrderGiziAction extends BaseTransactionAction {
                     for (int i = 0; i < json.length(); i++) {
                         JSONObject obj = json.getJSONObject(i);
                         OrderGizi orderGizi = new OrderGizi();
-                        orderGizi.setIdRawatInap(obj.getString("id_rawat_inap"));
+                        if(obj.has("id_rawat_inap")){
+                            orderGizi.setIdRawatInap(obj.getString("id_rawat_inap"));
+                        }
+                        if(obj.has("id_detail_checkup")){
+                            orderGizi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
+                        }
+                        if(obj.has("id_pelayanan")){
+                            orderGizi.setIdRawatInap(obj.getString("id_pelayanan"));
+                        }
                         orderGizi.setIdDietGizi(obj.getString("id_diet_gizi"));
                         orderGizi.setWaktu(obj.getString("waktu"));
                         orderGizi.setTglOrder(updateTime);
@@ -81,17 +89,25 @@ public class OrderGiziAction extends BaseTransactionAction {
                                 }
                             }
                         }
-                        List<OrderGizi> cekList = orderGiziBo.cekOrderGizi(orderGizi.getIdRawatInap(), orderGizi.getWaktu());
+                        String id = orderGizi.getIdRawatInap();
+                        if("RJ".equalsIgnoreCase(type)){
+                            id = orderGizi.getIdDetailCheckup();
+                        }
+                        List<OrderGizi> cekList = orderGiziBo.cekOrderGizi(id, orderGizi.getWaktu(), type, forWhen);
                         if(cekList.size() > 0){
+                            String msg = "Hari Ini";
+                            if("2".equalsIgnoreCase(forWhen)){
+                                msg = "Besok";
+                            }
                             response.setStatus("error");
-                            response.setMessage("Gizi pada waktu "+orderGizi.getWaktu().toUpperCase()+" hari ini sudah ada...!");
+                            response.setMessage("Gizi pada waktu "+orderGizi.getWaktu().toUpperCase()+" "+msg +" Sudah Ada...!");
                             return response;
                         }else{
                             orderGiziList.add(orderGizi);
                         }
                     }
                     if(orderGiziList.size() > 0){
-                        response = orderGiziBo.saveAdd(orderGiziList, isTomorrow);
+                        response = orderGiziBo.saveAdd(orderGiziList, forWhen);
                     }
                 } catch (GeneralBOException e) {
                     response.setStatus("error");
@@ -148,6 +164,7 @@ public class OrderGiziAction extends BaseTransactionAction {
             orderGizi.setLastUpdate(updateTime);
             orderGizi.setLastUpdateWho(userLogin);
             orderGizi.setAction("U");
+            orderGizi.setFlag("Y");
             orderGizi.setIdDietGizi(idDietGizi);
             response = orderGiziBo.saveEdit(orderGizi, list);
         } catch (GeneralBOException e) {
@@ -207,6 +224,31 @@ public class OrderGiziAction extends BaseTransactionAction {
             }
         }
         return response;
+    }
+
+    public List<OrderGizi> listOrderGiziRJ(String idDetailCheckup) {
+
+        logger.info("[OrderGiziAction.listOrderGizi] start process >>>");
+        List<OrderGizi> orderGiziList = new ArrayList<>();
+
+        OrderGizi orderGizi = new OrderGizi();
+        orderGizi.setIdDetailCheckup(idDetailCheckup);
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+
+        if (!"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                orderGiziList = orderGiziBo.getByCriteria(orderGizi);
+            } catch (GeneralBOException e) {
+                logger.info("[OrderGiziAction.listOrderGizi] error when search list of obat inap, " + e.getMessage());
+            }
+            logger.info("[OrderGiziAction.listOrderGizi] end process >>>");
+            return orderGiziList;
+
+        } else {
+            return null;
+        }
     }
 
     @Override

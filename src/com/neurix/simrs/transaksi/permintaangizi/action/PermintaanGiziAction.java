@@ -95,7 +95,6 @@ public class PermintaanGiziAction extends BaseMasterAction {
     @Override
     public String search() {
         logger.info("[PermintaanGiziAction.search] start process >>>");
-
         RawatInap rawatInap = getRawatInap();
         rawatInap.setBranchId(CommonUtil.userBranchLogin());
         List<RawatInap> listOfRawatInap = new ArrayList();
@@ -103,17 +102,13 @@ public class PermintaanGiziAction extends BaseMasterAction {
         try {
             listOfRawatInap = permintaanGiziBoProxy.getListOrderGizi(rawatInap);
         } catch (GeneralBOException e) {
-            Long logId = null;
-            logger.error("[PermintaanGiziAction.save] Error when searching rawat inap by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
-            return ERROR;
+            logger.error("[PermintaanGiziAction.save] Error when searching rawat inap by criteria," + "Found problem when searching data by criteria, please inform to your admin.", e);
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
-
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listOfRawatInap);
-
+        setRawatInap(rawatInap);
         logger.info("[PermintaanGiziAction.search] end process <<<");
         return "search";
     }
@@ -174,7 +169,11 @@ public class PermintaanGiziAction extends BaseMasterAction {
 
                         reportParams.put("idOrderGizi",idOrder);
                         reportParams.put("nama",rawatInap.getNamaPasien());
-                        reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        if(rawatInap.getNoRuangan() != null && !"".equalsIgnoreCase(rawatInap.getNoRuangan())){
+                            reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");
+                        }else{
+                            reportParams.put("ruang",rawatInap.getNamaRangan());
+                        }
                         break;
                     }
                 }

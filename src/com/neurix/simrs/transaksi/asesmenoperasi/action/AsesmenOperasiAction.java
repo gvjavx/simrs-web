@@ -329,6 +329,32 @@ public class AsesmenOperasiAction {
         return response;
     }
 
+    public String getDataByKey(String id, String key) {
+        String responses = "";
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        if (!"".equalsIgnoreCase(id) && id != null) {
+            try {
+                String params = "";
+                if("dokter_anestesi".equalsIgnoreCase(key)){
+                    params = "Dokter Spesialis Anestesi";
+                }else if("perawat_anestesi".equalsIgnoreCase(key)){
+                    params = "Perawat Anestesi";
+                }else if("dokter_bedah".equalsIgnoreCase(key)){
+                    params = "Dokter Bedah";
+                }else if("asisten_instrumen".equalsIgnoreCase(key)){
+                    params = "Asisten dan Instrumen";
+                }
+                responses = asesmenOperasiBo.getDataByKey(id, params);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+        }
+        return responses;
+    }
+
     public static Logger getLogger() {
         return logger;
     }

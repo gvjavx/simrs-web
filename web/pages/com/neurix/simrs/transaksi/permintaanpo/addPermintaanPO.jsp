@@ -137,6 +137,16 @@
                                            id="cor_po_vendor"><i class="fa fa-check"></i> correct</span>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="col-md-4" style="margin-top: 7px">Nama Obat</label>
+                                    <div class="col-md-8">
+                                        <input placeholder="masukkan minimal 3 karakter nama obat" class="form-control" style="margin-top: 7px" id="nama_obat" oninput="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this.value);">
+                                        <span style="color: red; display: none;"
+                                              id="war_po_obat"><i class="fa fa-times"></i> required</span>
+                                        <span style="color: green; display: none;"
+                                              id="cor_po_obat"><i class="fa fa-check"></i> correct</span>
+                                    </div>
+                                </div>
                                 <input id="id_obat" type="hidden">
                                 <input id="id_pabrik" type="hidden">
                                 <input id="lb_bx" type="hidden">
@@ -255,14 +265,19 @@
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
-                                    <label class="col-md-4" style="margin-top: 7px">Nama Obat</label>
-                                    <div class="col-md-8">
-                                        <input placeholder="masukkan minimal 3 karakter nama obat" class="form-control" style="margin-top: 7px" id="nama_obat" oninput="var warn =$('#war_po_obat').is(':visible'); if (warn){$('#cor_po_obat').show().fadeOut(3000);$('#war_po_obat').hide()}; resetField(this.value);">
-                                        <span style="color: red; display: none;"
-                                              id="war_po_obat"><i class="fa fa-times"></i> required</span>
-                                        <span style="color: green; display: none;"
-                                              id="cor_po_obat"><i class="fa fa-check"></i> correct</span>
-                                    </div>
+                                <label class="col-md-4" style="margin-top: 7px">Tipe Obat</label>
+                                <div class="col-md-8">
+                                <s:select list="#{'bpjs':'BPJS','umum':'UMUM'}"
+                                cssStyle="margin-top: 7px; width: 100%"
+                                onchange="var warn =$('#war_po_tipe').is(':visible'); if (warn){$('#cor_po_tipe').show().fadeOut(3000);$('#war_po_tipe').hide()};"
+                                id="tipe_obat"
+                                headerKey="" headerValue="[Select one]"
+                                cssClass="form-control select2"/>
+                                <span style="color: red; display: none;"
+                                id="war_po_tipe"><i class="fa fa-times"></i> required</span>
+                                <span style="color: green; display: none;"
+                                id="cor_po_tipe"><i class="fa fa-check"></i> correct</span>
+                                </div>
                                 </div>
                                 <%--<div class="form-group">--%>
                                     <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
@@ -399,7 +414,7 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO</h3>
+                        <h3 class="box-title"><i class="fa fa-file-text-o"></i> Daftar PO <span id="title_tipe_obat"></span></h3>
                     </div>
                     <div class="box-body">
                         <table class="table table-bordered table-striped" id="tabel_po">
@@ -411,7 +426,8 @@
                                 <td align="center">Jenis Satuan</td>
                                 <%--<td align="center">Jml Lembar/Box</td>--%>
                                 <%--<td align="center">Jml Biji/Lembar</td>--%>
-                                <td align="center">Harga (Rp.)</td>
+                                <td align="center">Harga Awal/Item (Rp.)</td>
+                                <td align="center">Total Harga (Rp.)</td>
                                 <%--<td align="center">Tipe</td>--%>
                                 <%--<td align="center">Pabrik Obat</td>--%>
                                 <td align="center" width="10%">Action</td>
@@ -508,11 +524,11 @@
                 $('#cor_po_biji_perlembar').show().fadeOut(3000);
                 $('#war_po_biji_perlembar').hide()
             }
-            if(selectedObj.isBpjs == "Y"){
-                $('#tipe_obat').val('bpjs').trigger('change').attr('disabled', true);
-            }else{
-                $('#tipe_obat').val('umum').trigger('change').attr('disabled', true);
-            }
+            // if(selectedObj.isBpjs == "Y"){
+            //     $('#tipe_obat').val('bpjs').trigger('change').attr('disabled', true);
+            // }else{
+            //     $('#tipe_obat').val('umum').trigger('change').attr('disabled', true);
+            // }
             $('#lembar_perbox, #lb_bx').val(selectedObj.lb);
             $('#biji_perlembar, #bj_lb').val(selectedObj.bj);
             $('#jumlah, #harga').val('');
@@ -592,7 +608,7 @@
 
         var cek = false;
 
-        if (namaObat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && lembarPerBox != '' && bijiPerLembar != '' && tipe != '' && tgl != '' && kodeProduksi != '') {
+        if (namaObat != '' && vendor != '' && jenis != '' && parseInt(jumlah) > 0 && harga != '' && tipe != '' && tgl != '') {
             $.each(data, function (i, item) {
                 if(data[i]["ID Obat"] == idObat){
                     cek = true;
@@ -605,6 +621,11 @@
             } else {
                 $('#imgInp').attr('disabled',false).removeAttr('style');
                 $('#id_vendor').val(vendor);
+
+                var tempTotal = replaceTitik(harga);
+                var total = tempTotal * jumlah;
+                var valTotal = formatRupiahAtas(total);
+
                 var row = '<tr id=' + idObat + "-"+nilai_n+'>' +
                         '<td>' + idObat + '' +
                             '<input type="hidden" id="ind-'+nilai_n+'" value="'+nilai_n+'"/>' +
@@ -617,7 +638,7 @@
                         // '<td align="center">' + lembarPerBox + '<input type="hidden" id="lembar-per-box-'+nilai_n+'" value="'+lembarPerBox+'"></td>' +
                         // '<td align="center">' + bijiPerLembar + '<input type="hidden" id="biji-per-lembar-'+nilai_n+'" value="'+bijiPerLembar+'"></td>' +
                         '<td align="right">' + harga + '<input type="hidden" id="harga-'+nilai_n+'" value="'+harga+'"></td>' +
-                        // '<td align="center">' + tipe + '<input type="hidden" id="tipe-'+nilai_n+'" value="'+tipe+'"></td>' +
+                        '<td align="center">' + valTotal + '<input type="hidden" id="harga-total-'+nilai_n+'" value="'+valTotal+'"></td>' +
                         // '<td align="center">' + namapabrik + '<input type="hidden" id="id-pabrik-'+nilai_n+'" value="'+idpabrik+'"></td>' +
                         '<td align="center"><img border="0" onclick="delRowObat(\'' + idObat + '\', \''+nilai_n+'\')" class="hvr-grow" src="<s:url value="/pages/images/cancel-flat-new.png"/>" style="cursor: pointer;"></td>' +
                         '</tr>';
@@ -627,8 +648,18 @@
                         nilai_n = nilai_n + 1;
 
                 $('#body_po').append(row);
+                if(tipe == "bpjs"){
+                    $('#title_tipe_obat').text("dengan tipe Obat BPJS");
+                }else{
+                    $('#title_tipe_obat').text("dengan tipe Obat UMUM");
+                }
                 $('#nama_vendor').attr('disabled', true);
                 $('#tgl_cair').attr('disabled',true);
+                $('#tipe_obat').attr('disabled',true);
+
+                $('#nama_obat').val('');
+                $('#jumlah').val('');
+                $('#harga').val('');
             }
         } else {
             if (namaObat == '') {
@@ -679,6 +710,13 @@
     function delRowObat(id, ind) {
         updateStatusForDelete(ind);
         $('#' + id + "-" + ind).remove();
+        var cek = $('#tabel_po').tableToJSON();
+        if(cek == 0){
+            $('#nama_vendor').attr('disabled', false);
+            $('#tgl_cair').attr('disabled', false);
+            $('#tipe_obat').attr('disabled', false);
+            $('#title_tipe_obat').text("");
+        }
     }
 
     function savePermintaanPO() {
@@ -699,7 +737,8 @@
                     tipeObat = "N";
                 }
                 var hargaRaw = $("#harga-"+i).val();
-                var harga = hargaRaw.replace(/[.]/g, '');
+                var harga = replaceTitik(hargaRaw);
+                var totalHarga = replaceTitik($("#harga-total-"+i).val());
                 var idObat = $("#id-obat-"+i).val();
                 var namaObat = $("#nama-obat-"+i).val();
                 var qty = $("#jumlah-"+i).val();

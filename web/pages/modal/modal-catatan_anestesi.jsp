@@ -99,7 +99,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Dokter Spesialis Anestesi</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="pra4">
+                                <input class="form-control nama_dokter_ri" id="pra4">
                             </div>
                         </div>
                     </div>
@@ -221,7 +221,7 @@
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>Tensi</span>
-                                <input class="form-control" placeholder="mmHg" id="pra14">
+                                <input class="form-control tensi-pasien" placeholder="mmHg" id="pra14" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <div class="col-md-3">
                                 <span>Nadi</span>
@@ -468,11 +468,14 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">General Anestesi</label>
-                            <div class="col-md-9">
+                            <div class="col-md-5">
                                 <div class="form-check">
                                     <input type="checkbox" name="per2" id="per21">
-                                    <label for="per21"></label> Intubasi Oral / Nasal ETT no.
+                                    <label for="per21"></label> Intubasi Oral / Nasal ETT No.
                                 </div>
+                            </div>
+                            <div class="col-md-4">
+                                <input class="form-control" onchange="$('#per21').val(''); $('#per21').val('Intubasi Oral / Nasal ETT No. '+this.value)">
                             </div>
                         </div>
                     </div>
@@ -480,7 +483,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
                                 <div class="form-check">
-                                    <input type="checkbox" name="per2" id="per22">
+                                    <input type="checkbox" name="per2" id="per22" value="Facemaak">
                                     <label for="per22"></label> Facemaak
                                 </div>
                             </div>
@@ -490,7 +493,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
                                 <div class="form-check">
-                                    <input type="checkbox" name="per2" id="per23">
+                                    <input type="checkbox" name="per2" id="per23" value="Lanngeal Mask Airway">
                                     <label for="per23"></label> Lanngeal Mask Airway
                                 </div>
                             </div>
@@ -500,7 +503,7 @@
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">
                                 <div class="form-check">
-                                    <input type="checkbox" name="per2" id="per24">
+                                    <input type="checkbox" name="per2" id="per24" value="Total Intra Venous Anestesi">
                                     <label for="per24"></label> Total Intra Venous Anestesi
                                 </div>
                             </div>

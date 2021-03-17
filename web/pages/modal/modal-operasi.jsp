@@ -2212,7 +2212,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Ahli Bedah</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="lap2">
+                                <input class="form-control dokter_bedah" id="lap2">
                             </div>
                         </div>
                     </div>
@@ -2220,7 +2220,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Asisten Bedah</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="lap3">
+                                <input class="form-control perawat_anestesi" id="lap3">
                             </div>
                         </div>
                     </div>
@@ -2228,7 +2228,7 @@
                         <div class="form-group">
                             <label class="col-md-4">Nama Perawat Instrumen</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="lap4">
+                                <input class="form-control asisten_instrumen" id="lap4">
                             </div>
                         </div>
                     </div>

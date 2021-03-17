@@ -32,6 +32,24 @@ public class OrderGizi {
     private String bentukDiet;
     private List<String> listJenisGizi;
     private String waktu;
+    private String idDetailCheckup;
+    private String jenisDiet;
+
+    public String getJenisDiet() {
+        return jenisDiet;
+    }
+
+    public void setJenisDiet(String jenisDiet) {
+        this.jenisDiet = jenisDiet;
+    }
+
+    public String getIdDetailCheckup() {
+        return idDetailCheckup;
+    }
+
+    public void setIdDetailCheckup(String idDetailCheckup) {
+        this.idDetailCheckup = idDetailCheckup;
+    }
 
     public String getWaktu() {
         return waktu;

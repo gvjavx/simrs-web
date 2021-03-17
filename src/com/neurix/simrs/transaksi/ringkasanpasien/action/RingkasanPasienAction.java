@@ -80,7 +80,9 @@ public class RingkasanPasienAction {
                     }
                     ringkasanPasien.setTipe(obj.getString("tipe"));
                 }else{
-                    ringkasanPasien.setJawaban(obj.getString("jawaban"));
+                    if(obj.has("jawaban")){
+                        ringkasanPasien.setJawaban(obj.getString("jawaban"));
+                    }
                 }
 
                 if (obj.has("jenis")) {

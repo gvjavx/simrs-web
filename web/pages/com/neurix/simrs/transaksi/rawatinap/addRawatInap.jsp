@@ -37,7 +37,6 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TeamDokterAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/DiagnosaRawatAction.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
@@ -49,6 +48,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/ObatPoliAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PlanKegiatanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -293,6 +293,14 @@
                                                     var umurLengkap = umur+' Tahun';
                                                     document.write(umurLengkap);
                                                 </script>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>No Telp. Penanggung Jawab</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="rawatInap.noTelp"></s:label>
                                             </table>
                                         </td>
                                     </tr>
@@ -752,6 +760,9 @@
                     </div>
                     <div class="box-body">
                         <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px" onclick="showModal(7)"><i class="fa fa-plus hvr-icon"></i> Tambah Resep</button>
+                        <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                onclick="refreshTable('resep_ref', 'resep')"><i class="fa fa-refresh" id="resep_ref"></i> Refresh
+                        </button>
                         <table class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
@@ -1431,7 +1442,7 @@
             <div class="modal-body">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
-                    <p id="msg_lab"></pid>
+                    <p id="msg_lab"></p>
                 </div>
                 <div class="row">
                     <div class="form-group">
@@ -1454,90 +1465,141 @@
                                id="cor_kategori_lab"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
+                </div>
+                <div class="row" id="form_is_luar">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
-                                    onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
-                                <option value=''>[Select One]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i
-                                    class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i
-                                    class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Parameter</label>
-                        <div class="col-md-7">
-                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%"
-                                    id="lab_parameter"
-                                    onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()}">
-                                <option value=''>[Select One]</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_parameter"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_parameter"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-offset-3 col-md-7">
+                        <div class="col-md-offset-3 col-md-9">
                             <div class="form-check jarak">
-                                <input onclick="isPemeriksaan(this.id, 'form_pending')" type="checkbox" id="is_pending_lab" value="yes">
-                                <label for="is_pending_lab"></label> Is Pending?
+                                <input onclick="isLuar(this.id)" type="checkbox" id="is_luar" value="yes">
+                                <label for="is_luar"></label>
+                                Centang Jika Pemeriksaan Luar
+                                <i class="fa fa-question-circle box-rm" style="font-size: 18px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Centang untuk melakukan order penunjang medis diluar
+                                    </span></i>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group" style="display: none" id="form_pending">
-                        <label class="col-md-3">Tanggal Jam</label>
+                </div>
+                <hr>
+                <div id="form_lab_dalam">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
+                            <div class="col-md-7">
+                                <select class="form-control select2" style="margin-top: 7px; width: 100%" id="lab_lab"
+                                        onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#cor_lab').show().fadeOut(3000);$('#war_lab').hide()}; listSelectParameter(this.value);">
+                                    <option value=''>[Select One]</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab"><i
+                                        class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab"><i
+                                        class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input type="hidden" id="jenis_lab">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Parameter</label>
+                            <div class="col-md-7">
+                                <select class="form-control select2 parameter" multiple style="margin-top: 7px; width: 100%"
+                                        id="lab_parameter"
+                                        onchange="var warn =$('#war_parameter').is(':visible'); if (warn){$('#cor_parameter').show().fadeOut(3000);$('#war_parameter').hide()};">
+                                    <option value=''>[Select One]</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_parameter"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_parameter"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="form_lab_luar" style="display: none">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
+                            <div class="col-md-7">
+                                <input class="form-control" style="margin-top: 7px; width: 100%" id="lab_luar" placeholder="masukkan jenis pemeriksaan"
+                                       oninput="var warn =$('#war_lab_luar').is(':visible'); if (warn){$('#cor_lab_luar').show().fadeOut(3000);$('#war_lab_luar').hide()};">
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_lab_luar"><i
+                                        class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_lab_luar"><i
+                                        class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 7px">Parameter</label>
+                            <div class="col-md-7" id="params_luar">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <input class="form-control parameter_luar"
+                                           id="lab_parameter_luar" placeholder="masukkan parameter 1"
+                                           oninput="var warn =$('#war_lab_parameter_luar').is(':visible'); if (warn){$('#cor_lab_parameter_luar').show().fadeOut(3000);$('#war_lab_parameter_luar').hide()};">
+                                    <div onclick="addParameter()" class="input-group-addon" style="background-color: #5cb85c; color: white; cursor: pointer">
+                                        <i class="fa fa-plus"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="war_lab_parameter_luar"><i class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
+                                   id="cor_lab_parameter_luar"><i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" id="form_is_pending">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <div class="form-check jarak">
+                                <input onclick="isPemeriksaan(this.id, 'form_pending')" type="checkbox" id="is_pending_lab" value="yes">
+                                <label for="is_pending_lab"></label> Input hasil untuk waktu yg ditentukan <i class="fa fa-question-circle box-rm" style="font-size: 18px"><span class="box-rmtext" style="font-size: 12px; font-family: Calibri">Centang pilihan tersebut jika penginputan nilai hasil pemeriksaan lab atau radiologi,  tidak bisa langsung. yang berarti pasien bisa menyelesaikan adminstrasi dahulu</span></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group" style="display: none;" id="form_pending">
+                        <label class="col-md-3" style="margin-top: 7px">Tanggal & Jam</label>
                         <div class="col-md-4">
-                            <div class="input-group">
-                                <div class="input-group-addon">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon" >
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <input class="form-control tgl" id="tgl_pending" readonly style="cursor: pointer"
+                                       placeholder="mm-dd-yyyy"
                                        onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
                             </div>
                         </div>
                         <div class="col-md-3">
-                            <div class="input-group">
+                            <div class="input-group" style="margin-top: 7px">
                                 <div class="input-group-addon">
                                     <i class="fa fa-clock-o"></i>
                                 </div>
                                 <input class="form-control jam" id="jam_pending"
+                                       placeholder="hh:mm"
                                        onchange="var warn =$('#war_pending').is(':visible'); if (warn){$('#cor_pending').show().fadeOut(3000);$('#war_pending').hide()};">
                             </div>
                         </div>
                         <div class="col-md-2">
+                            <i class="fa fa-question-circle box-rm" style="font-size: 18px; margin-left: -25px; margin-top: 15px">
+                                <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                    Isi waktu perkiraan minimal dokter lab / radiologi dapat menginputkan hasil pemeriksaan. perkiraan waktu selalu default pada saat user akan order lab pada form ini
+                                </span></i>
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
                                id="war_pending"><i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_pending"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
-                <div style="display: none" id="form_ttd">
-                    <hr class="garis">
-                    <div class="row">
-                        <div class="form-group">
-                            <div class="col-md-3">
-                                <span>Tanda Tangan</span>
-                            </div>
-                            <div class="col-md-7">
-                                <canvas style="margin-left: 0px" class="paint-canvas-ttd" id="ttd_pengirim" width="310"
-                                        onmouseover="paintTtd('ttd_pengirim')"></canvas>
-                            </div>
-                            <div class="col-md-2">
-                                <button class="btn btn-danger" style="margin-left: -20px"
-                                        onclick="removePaint('ttd_pengirim')"><i
-                                        class="fa fa-trash"></i> Clear
-                                </button>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -1570,6 +1632,23 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
+                        <div class="col-md-7">
+                            <select id="jenis_diet" class="form-control select2" multiple style="width: 100%"
+                                    onchange="var warn =$('#war_jenis_diet').is(':visible'); if (warn){$('#cor_jenis_diet').show().fadeOut(3000);$('#war_jenis_diet').hide()}">
+
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_jenis_diet"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_jenis_diet">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 10px">Bentuk Diet</label>
                         <div class="col-md-7">
                             <s:action id="comboDiet1" namespace="/rawatinap"
@@ -1587,39 +1666,22 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 10px">Jenis Diet</label>
-                        <div class="col-md-7">
-                            <select id="jenis_diet" class="form-control select2" multiple style="width: 100%"
-                                    onchange="var warn =$('#war_jenis_diet').is(':visible'); if (warn){$('#cor_jenis_diet').show().fadeOut(3000);$('#war_jenis_diet').hide()}">
-
-                            </select>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_jenis_diet"><i
-                                    class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_jenis_diet">
-                                <i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
-                </div>
                 <div class="row jarak">
                     <div class="form-group">
                         <label class="col-md-3">Keterangan</label>
                         <div class="col-md-7">
                             <div class="form-check">
-                                <input type="checkbox" name="ket_diet" id="ket_diet1" value="pagi"
+                                <input type="checkbox" name="ket_diet" id="ket_diet1" value="pagi" checked class="remove_cek"
                                        onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
                                 <label for="ket_diet1"></label> Pagi
                             </div>
                             <div class="form-check" style="margin-left: 10px">
-                                <input type="checkbox" name="ket_diet" id="ket_diet2" value="siang"
+                                <input type="checkbox" name="ket_diet" id="ket_diet2" value="siang" class="remove_cek"
                                        onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
                                 <label for="ket_diet2"></label> Siang
                             </div>
                             <div class="form-check" style="margin-left: 10px">
-                                <input type="checkbox" name="ket_diet" id="ket_diet3" value="malam"
+                                <input type="checkbox" name="ket_diet" id="ket_diet3" value="malam" class="remove_cek"
                                        onclick="var warn =$('#war_ket_diet').is(':visible'); if (warn){$('#cor_ket_diet').show().fadeOut(3000);$('#war_ket_diet').hide()}; setDiet(this.id)">
                                 <label for="ket_diet3"></label> Malam
                             </div>
@@ -1639,8 +1701,8 @@
                             <thead>
                             <tr>
                                 <td>Waktu</td>
-                                <td>Bentuk</td>
                                 <td>Jenis</td>
+                                <td>Bentuk</td>
                             </tr>
                             </thead>
                             <tbody id="body_add_diet"></tbody>
@@ -1650,11 +1712,10 @@
                 <hr class="garis">
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-4">Order Untuk Besok?</label>
+                        <label class="col-md-3">Order Gizi Untuk ?</label>
                         <div class="col-md-6">
-                            <div class="form-check">
-                                <input type="checkbox" name="besok_diet" id="besok_diet" value="Y">
-                                <label for="besok_diet"></label>
+                            <div class="custom02">
+                                <input checked type="radio" value="1" id="untuk1" name="untuk" /><label for="untuk1" >Order Untuk Hari Ini</label>
                             </div>
                         </div>
                         <div class="col-md-2">
@@ -1662,6 +1723,20 @@
                                     class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_besok_diet">
                                 <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-6">
+                            <div class="custom02">
+                                <input type="radio" value="2" id="untuk2" name="untuk" /><label for="untuk2" >Order Untuk Besok</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-6">
+                            <div class="custom02">
+                                <input type="radio" value="12" id="untuk3" name="untuk" /><label for="untuk3" >Order Untuk Hari Ini dan Besok</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1966,7 +2041,7 @@
                     <label class="col-md-3" style="margin-top: 7px">Apotek</label>
                     <div class="col-md-9">
                         <s:action id="initApotek" namespace="/checkup"
-                                  name="getComboApotek_checkup"/>
+                                  name="getComboApotekRi_checkup"/>
                         <s:select cssStyle="margin-top: 7px; width: 100%"
                                   list="#initApotek.listOfApotek" id="resep_apotek"
                                   listKey="idPelayanan + '|' + namaPelayanan"
@@ -3924,6 +3999,45 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span
+                        id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide" data-ride="carousel">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="modal fade" id="modal-telemedic">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -3989,7 +4103,6 @@
     </div>
 </div>
 
-<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/MonitoringTransfusiDarahAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AppendecitomyAction.js"/>'></script>
@@ -4182,6 +4295,13 @@
                 });
             }
         });
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
+
     });
 
     function loadModalRM(jenis) {

@@ -181,8 +181,6 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
                 }
 
-
-
                 Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getIdPelayanan());
                 if (pelayananEntity != null) {
                     permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
@@ -208,26 +206,17 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
                 }
 
-                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
-
-                permintaanObatPoli.setStCreatedDate(formatDate);
-
+                if(permintaanObatPoliEntity.getCreatedDate() != null){
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
+                    permintaanObatPoli.setStCreatedDate(formatDate);
+                }
                 permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
                 permintaanObatPoli.setRequest(bean.getRequest());
 
-                TransaksiObatDetail beanDetail = new TransaksiObatDetail();
-                beanDetail.setIdApprovalObat(permintaanObatPoliEntity.getIdApprovalObat());
-                List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetails = new ArrayList<>();
-
-                try{
-                   transaksiObatDetails = obatDetailDao.getListEntityTransObatDetails(beanDetail);
-                } catch (GeneralBOException e) {
-                    logger.error("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
-                    throw new GeneralBOException("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
-                }
-
-                permintaanObatPoli.setJumlahObat(BigInteger.valueOf(transaksiObatDetails.size()));
-
+                TransaksiObatDetail detail = new TransaksiObatDetail();
+                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+                List<ImtSimrsTransaksiObatDetailEntity> entityList = getListEntityObatDetail(detail);
+                permintaanObatPoli.setJumlahObat(String.valueOf(entityList.size()));
                 permintaanObatPoliList.add(permintaanObatPoli);
             }
         }

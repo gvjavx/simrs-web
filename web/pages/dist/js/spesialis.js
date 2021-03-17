@@ -2381,54 +2381,79 @@ function saveSPS(jenis, ket) {
         var va27 = $('#v27').val();
         var va28 = $('#v28').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10
-            && va11 && va12 && va13 && va14 && va15 && va16 && va17 && va18 && va19 && va20 && va21 &&
-            va22 && va23 && va24 && va25 && va26 && va27 && va28 != '') {
-            data.push({
-                'parameter': 'Jenis Optalmologist',
-                'jawaban': 'OD|OS',
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe':'colspan',
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Visual Aquality',
-                'jawaban': va1 +', Sph: '+va2+', Cyl: '+va3+', X: '+va4+', Visual Akhir: '+va5+'|'+va15 +', Sph: '+va16+', Cyl: '+va17+', X: '+va18+', Visual Akhir: '+va19,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'KML',
-                'jawaban': 'Sph: '+va6+', Cyl: '+va7+', X: '+va8+', Visual Akhir: '+va9+'|'+'Sph: '+va20+', Cyl: '+va21+', X: '+va22+', Visual Akhir: '+va23,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Addisi',
-                'jawaban': va10+'|'+va24,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Keratometri',
-                'jawaban': 'K1: '+va11+', K2: '+va12+'|'+'K1: '+va25+', K2: '+va26,
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'Tonometri',
-                'jawaban': 'Non-Contact: '+va13+' mmHg, Schiotz: '+va14+' mmHg|'+'Non-Contact: '+va13+' mmHg, Schiotz: '+va14+' mmHg',
-                'keterangan': jenis,
-                'jenis': ket,
-                'id_detail_checkup': idDetailCheckup
-            });
-            cek = true;
-        }
+        va1 == "" ? va1 = "-" : va1 = va1;
+        va2 == "" ? va2 = "-" : va2 = va2;
+        va3 == "" ? va3 = "-" : va3 = va3;
+        va4 == "" ? va4 = "-" : va4 = va4;
+        va5 == "" ? va5 = "-" : va5 = va5;
+        va6 == "" ? va6 = "-" : va6 = va6;
+        va7 == "" ? va7 = "-" : va7 = va7;
+        va8 == "" ? va8 = "-" : va8 = va8;
+        va9 == "" ? va9 = "-" : va9 = va9;
+        va10 == "" ? va10 = "-" : va10 = va10;
+        va11 == "" ? va11 = "-" : va11 = va11;
+        va12 == "" ? va12 = "-" : va12 = va12;
+        va13 == "" ? va13 = "-" : va13 = va13;
+        va14 == "" ? va14 = "-" : va14 = va14;
+        va15 == "" ? va15 = "-" : va15 = va15;
+        va16 == "" ? va16 = "-" : va16 = va16;
+        va17 == "" ? va17 = "-" : va17 = va17;
+        va18 == "" ? va18 = "-" : va18 = va18;
+        va19 == "" ? va19 = "-" : va19 = va19;
+        va20 == "" ? va20 = "-" : va20 = va20;
+        va21 == "" ? va21 = "-" : va21 = va21;
+        va22 == "" ? va22 = "-" : va22 = va22;
+        va23 == "" ? va23 = "-" : va23 = va23;
+        va24 == "" ? va24 = "-" : va24 = va24;
+        va25 == "" ? va25 = "-" : va25 = va25;
+        va26 == "" ? va26 = "-" : va26 = va26;
+        va27 == "" ? va27 = "-" : va27 = va27;
+        va28 == "" ? va28 = "-" : va28 = va28;
+
+        data.push({
+            'parameter': 'Jenis Optalmologist',
+            'jawaban': 'OD|OS',
+            'keterangan': jenis,
+            'jenis': ket,
+            'tipe':'colspan',
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'Visual Aquality',
+            'jawaban': va1 +', Sph: '+va2+', Cyl: '+va3+', X: '+va4+', Visual Akhir: '+va5+'|'+va15 +', Sph: '+va16+', Cyl: '+va17+', X: '+va18+', Visual Akhir: '+va19,
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'KML',
+            'jawaban': 'Sph: '+va6+', Cyl: '+va7+', X: '+va8+', Visual Akhir: '+va9+'|'+'Sph: '+va20+', Cyl: '+va21+', X: '+va22+', Visual Akhir: '+va23,
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'Addisi',
+            'jawaban': va10+'|'+va24,
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'Keratometri',
+            'jawaban': 'K1: '+va11+', K2: '+va12+'|'+'K1: '+va25+', K2: '+va26,
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+        data.push({
+            'parameter': 'Tonometri',
+            'jawaban': 'Non-Contact: '+va13+' mmHg, Schiotz: '+va14+' mmHg|'+'Non-Contact: '+va13+' mmHg, Schiotz: '+va14+' mmHg',
+            'keterangan': jenis,
+            'jenis': ket,
+            'id_detail_checkup': idDetailCheckup
+        });
+        cek = true;
     }
 
     if ("ophtal" == jenis) {
@@ -2482,19 +2507,25 @@ function saveSPS(jenis, ket) {
         });
 
         $.each(va2, function (i, item) {
+            var jawaban = '-|-';
             if(item.value != '' && va3[i].value != ''){
-                data.push({
-                    'parameter': va1[i].innerHTML,
-                    'jawaban': item.value+'|'+va3[i].value,
-                    'keterangan': jenis,
-                    'jenis': ket,
-                    'id_detail_checkup': idDetailCheckup
-                });
+                jawaban = item.value+'|'+va3[i].value;
                 c3 = "Y";
+            }else if(item.value != ''){
+                jawaban = item.value+'|-';
+            }else if(va3[i].value != ''){
+                jawaban = '-|'+va3[i].value;
             }
+            data.push({
+                'parameter': va1[i].innerHTML,
+                'jawaban': jawaban,
+                'keterangan': jenis,
+                'jenis': ket,
+                'id_detail_checkup': idDetailCheckup
+            });
         });
 
-        if (c3 == "Y" && cekCanvas == "Y" && !cektts) {
+        if (!cektts) {
             var tad = convertToDataURL(tts);
             data.push({
                 'parameter': 'TTD Spesialis Mata',
@@ -2640,6 +2671,7 @@ function saveSPS(jenis, ket) {
             var pasienData = JSON.stringify(dataPasien);
             $('#save_sps_' + jenis).hide();
             $('#load_sps_' + jenis).show();
+            delRowSPS(jenis);
             dwr.engine.setAsync(true);
             AsesmenSpesialisAction.save(result, pasienData, {
                 callback: function (res) {
@@ -2651,7 +2683,7 @@ function saveSPS(jenis, ket) {
                         $('#msg_sps_' + ket).text("Berhasil menambahkan data...");
                         $('#modal-sps-' + jenis).scrollTop(0);
                         getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-
+                        detailSPS(jenis);
                     } else {
                         $('#save_sps_' + jenis).show();
                         $('#load_sps_' + jenis).hide();
@@ -2877,6 +2909,7 @@ function delSPS(jenis, ket) {
         'id_pasien': idPasien,
         'id_rm': tempidRm
     }
+    delRowSPS(jenis);
     var result = JSON.stringify(dataPasien);
     startSpin('delete_'+jenis);
     dwr.engine.setAsync(true);
@@ -2886,6 +2919,7 @@ function delSPS(jenis, ket) {
                 stopSpin('delete_'+jenis);
                 $('#warning_sps_' + ket).show().fadeOut(5000);
                 $('#msg_sps_' + ket).text("Berhasil menghapus data...");
+                detailSPS(jenis);
             } else {
                 stopSpin('delete_'+jenis);
                 $('#modal_warning').show().fadeOut(5000);

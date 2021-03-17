@@ -77,7 +77,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Tanggal Foto]]></text>
+				<text><![CDATA[Tanggal Periksa]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="92" width="58" height="15" uuid="d83734c6-e1c4-4c72-9b88-54261b052155"/>
