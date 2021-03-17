@@ -534,23 +534,27 @@
             $('#modal-edit').find('.modal-title').text('Edit Dokter KSO Tindakan');
         });
         $('#modBtnSave').click(function () {
-            var riwayatTindakanId = $('#modRiwayatTindakanId').val();
-            var riwayatTindakanName = $('#modRiwayatTindakanName').val();
+            var pelayanan = $('#modPelayanan').val();
+            var tindakanId = $('#modTindakan').val();
+            var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
 
             dwr.engine.setAsync(false);
-            if(riwayatTindakanId!='' && persenKsoTindakan!=''){
-                DokterKsoAction.saveRiwayatKsoTindakanSession(riwayatTindakanId,riwayatTindakanName,persenKsoTindakan,function() {
+            if(tindakanId!='' && persenKsoTindakan!='' && pelayanan!=''){
+                DokterKsoAction.saveRiwayatKsoTindakanSession(tindakanId,tindakanName,persenKsoTindakan,function() {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');
             }else {
                 var msg="";
-                if (riwayatTindakanId==""){
-                    msg+="Riwayat Tindakan Id masih kosong \n";
+                if (tindakanId==""){
+                    msg+="Tindakan masih kosong \n";
                 }
                 if (persenKsoTindakan==""){
                     msg+="Persen Kso Tindakan tidak ditemukan\n";
+                }
+                if (pelayanan==""){
+                    msg+="Pelayanan masih kosong\n";
                 }
                 alert(msg);
             }

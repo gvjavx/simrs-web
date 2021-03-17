@@ -66,7 +66,7 @@
                         && persenKso != '' && persenKs != '' && positionId != '') {
                     var status ="";
                     dwr.engine.setAsync(false);
-                    DokterKsoAction.cekBeforeSave(nip,"add",function (listData) {
+                    DokterKsoAction.cekBeforeSave(nip, jenisKso, masterId,"add",function (listData) {
                         status=listData;
                     });
                     if (status==""){
@@ -550,12 +550,13 @@
             $('#modal-edit').find('.modal-title').text('Add Dokter KSO Tindakan');
         });
         $('#modBtnSave').click(function () {
+            var pelayanan = $('#modPelayanan').val();
             var tindakanId = $('#modTindakan').val();
             var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
 
             dwr.engine.setAsync(false);
-            if(tindakanId!='' && persenKsoTindakan!=''){
+            if(tindakanId!='' && persenKsoTindakan!='' && pelayanan!=''){
                 DokterKsoAction.saveRiwayatKsoTindakanSession(tindakanId,tindakanName,persenKsoTindakan,function() {
                     listResult();
                 });
@@ -563,10 +564,13 @@
             }else {
                 var msg="";
                 if (tindakanId==""){
-                    msg+="Riwayat Tindakan Id masih kosong \n";
+                    msg+="Tindakan masih kosong \n";
                 }
                 if (persenKsoTindakan==""){
                     msg+="Persen Kso Tindakan tidak ditemukan\n";
+                }
+                if (pelayanan==""){
+                    msg+="Pelayanan masih kosong\n";
                 }
                 alert(msg);
             }
@@ -595,8 +599,10 @@
 
         if(jenis != 'tindakan'){
             $('#addTindakan').hide();
+            $('#showdata').hide();
         } else{
             $('#addTindakan').show();
+            $('#showdata').show();
         }
 
     }

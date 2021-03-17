@@ -196,15 +196,11 @@ public class DokterKsoAction extends BaseMasterAction {
             edit.setNamaDokter(dokterKso.getNamaDokter());
             edit.setMasterId(dokterKso.getMasterId());
             edit.setBranchId(dokterKso.getBranchId());
+            edit.setPositionId(dokterKso.getPositionId());
             edit.setJenisKso(dokterKso.getJenisKso());
             edit.setPersenKso(dokterKso.getPersenKso());
             edit.setPersenKs(dokterKso.getPersenKs());
             edit.setTarifIna(dokterKso.getTarifIna());
-
-            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
-            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
-            edit.setPositionId(biodata.getPositionId());
 
             break;
         }
@@ -252,15 +248,11 @@ public class DokterKsoAction extends BaseMasterAction {
             delete.setNamaDokter(dokterKso.getNamaDokter());
             delete.setMasterId(dokterKso.getMasterId());
             delete.setBranchId(dokterKso.getBranchId());
+            delete.setPositionId(dokterKso.getPositionId());
             delete.setJenisKso(dokterKso.getJenisKso());
             delete.setPersenKso(dokterKso.getPersenKso());
             delete.setPersenKs(dokterKso.getPersenKs());
             delete.setTarifIna(dokterKso.getTarifIna());
-
-            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
-            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
-            delete.setPositionId(biodata.getPositionId());
 
             break;
         }
@@ -583,20 +575,22 @@ public class DokterKsoAction extends BaseMasterAction {
         return riwayatTindakanList;
     }
 
-    public String cekBeforeSave(String nip, String metode) {
+    public String cekBeforeSave(String nip, String jenisKso, String masterId, String metode) {
         String status = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DokterKsoBo dokterKsoBo = (DokterKsoBo) ctx.getBean("dokterKsoBoProxy");
         List<DokterKso> dokterKsoList = new ArrayList<>();
         DokterKso search = new DokterKso();
         search.setNip(nip);
+        search.setJenisKso(jenisKso);
+        search.setMasterId(masterId);
         search.setFlag("Y");
         try {
             if (("add").equalsIgnoreCase(metode)) {
                 dokterKsoList = dokterKsoBo.getByCriteria(search);
             }
         } catch (GeneralBOException e1) {
-            logger.error("[MappingJurnalAction.initComboMappingJurnal] Error when saving error,", e1);
+            logger.error("[DokterKsoAction.cekBeforeSave] Error when saving error,", e1);
         }
         if (dokterKsoList.size() == 0) {
             HttpSession session = ServletActionContext.getRequest().getSession();

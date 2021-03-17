@@ -245,6 +245,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 imSimrsDokterKso.setPersenKso(bean.getPersenKso());
                 imSimrsDokterKso.setPersenKs(bean.getPersenKs());
                 imSimrsDokterKso.setBranchId(bean.getBranchId());
+                imSimrsDokterKso.setPositionId(bean.getPositionId());
                 imSimrsDokterKso.setKodering(kodering);
                 imSimrsDokterKso.setFlag(bean.getFlag());
                 imSimrsDokterKso.setAction(bean.getAction());
@@ -322,7 +323,6 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                         throw new GeneralBOException("Maaf, Data Dokter Kso Tindakan tidak ada. Harus ada Tindakan untuk Jenis KSO Tindakan.");
                     }
                 } else {
-                    //PENDING
                     if (listOfResult != null) {
                         for (int i = 0; i < listOfResult.size(); i++) {
                             if (listOfResult.get(i).getDokterKsoTindakanId() != null) {
@@ -436,6 +436,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                 entity.setPersenKso(bean.getPersenKso());
                 entity.setPersenKs(bean.getPersenKs());
                 entity.setBranchId(bean.getBranchId());
+                entity.setPositionId(bean.getPositionId());
                 entity.setKodering(kodering);
                 entity.setFlag(bean.getFlag());
                 entity.setAction(bean.getAction());
@@ -519,6 +520,9 @@ public class DokterKsoBoImpl implements DokterKsoBo {
             if (bean.getBranchId() != null && !"".equalsIgnoreCase(bean.getBranchId())) {
                 hsCriteria.put("branch_id", bean.getBranchId());
             }
+            if (bean.getJenisKso() != null && !"".equalsIgnoreCase(bean.getJenisKso())) {
+                hsCriteria.put("jenis_kso", bean.getBranchId());
+            }
 
             if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag())) {
                 if ("N".equalsIgnoreCase(bean.getFlag())) {
@@ -550,6 +554,7 @@ public class DokterKsoBoImpl implements DokterKsoBo {
                     dokterKso.setPersenKso(entity.getPersenKso());
                     dokterKso.setPersenKs(entity.getPersenKs());
                     dokterKso.setBranchId(entity.getBranchId());
+                    dokterKso.setPositionId(entity.getPositionId());
                     dokterKso.setKodering(entity.getKodering());
                     dokterKso.setAction(entity.getAction());
                     dokterKso.setFlag(entity.getFlag());
