@@ -969,7 +969,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         // END
 
         // data dari master pabrik obat;
-        String merk = pabrikObat.getNama();
+        //        String merk = "";
+        //        if (pabrikObat != null){
+        //            merk = pabrikObat.getNama() == null ? "" : pabrikObat.getNama();
+        //        }
         // END
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();

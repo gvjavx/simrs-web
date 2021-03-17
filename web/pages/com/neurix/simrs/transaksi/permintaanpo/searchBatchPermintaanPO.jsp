@@ -797,7 +797,7 @@
                             $('#app_no_batch').val(item.noBatch);
                         }
 
-                        var netto = parseInt(item.netto) * parseInt(item.qtyApprove);
+                        var netto = parseInt(item.bruto) * parseInt(item.qtyApprove);
 
                         table += "<tr>" +
                             "<td>" + item.namaObat + "</td>" +
@@ -931,7 +931,7 @@
                     var totalPpn = 0;
                     $.each(response, function (i, item) {
 
-                        var netto = parseInt(item.netto) * parseInt(item.qtyApprove);
+                        var netto = parseInt(item.bruto) * parseInt(item.qtyApprove);
 
                         table += "<tr>" +
                             "<td>" + item.namaObat + "</td>" +
