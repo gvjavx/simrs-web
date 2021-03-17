@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="reportPo" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a519167-419f-4da6-aa9e-cbfe1137f46d">
 	<property name="ireport.zoom" value="1.5"/>
-	<property name="ireport.x" value="0"/>
+	<property name="ireport.x" value="115"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="reportParams.idApproval" class="java.lang.String"/>
 	<parameter name="reportParams.noPo" class="java.lang.String"/>
@@ -23,7 +23,7 @@ FROM
 	ob.nama_obat,
 	odt.qty,
 	odt.jenis_satuan,
-	CASE WHEN odt.average_harga_box is null THEN 0 ELSE  odt.average_harga_box END AS harga
+	CASE WHEN odt.average_harga_biji is null THEN 0 ELSE  odt.average_harga_biji END AS harga
 	FROM mt_simrs_transaksi_obat_detail odt
 	INNER JOIN (SELECT id_obat, nama_obat FROM im_simrs_obat GROUP BY id_obat, nama_obat) ob ON ob.id_obat = odt.id_obat
 	INNER JOIN mt_simrs_approval_transaksi_obat ato ON ato.id_approval_obat = odt.id_approval_obat
@@ -42,7 +42,7 @@ FROM
 	<title>
 		<band height="96" splitType="Stretch">
 			<textField>
-				<reportElement x="10" y="45" width="173" height="20" uuid="26bf2676-a24e-47ec-900a-837bfe5647bf"/>
+				<reportElement x="0" y="45" width="173" height="20" uuid="26bf2676-a24e-47ec-900a-837bfe5647bf"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="true"/>
@@ -50,7 +50,7 @@ FROM
 				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="10" y="62" width="173" height="15" uuid="327504d1-831b-4d72-b901-0a4739dda40a"/>
+				<reportElement x="0" y="62" width="173" height="15" uuid="327504d1-831b-4d72-b901-0a4739dda40a"/>
 				<box leftPadding="0"/>
 				<textElement verticalAlignment="Top">
 					<font size="8" isBold="true"/>
@@ -58,7 +58,7 @@ FROM
 				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="10" y="10" width="94" height="39" uuid="6148f775-f809-4a66-a988-b49d7b4583e9"/>
+				<reportElement x="0" y="10" width="94" height="39" uuid="6148f775-f809-4a66-a988-b49d7b4583e9"/>
 				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
 			</image>
 			<textField pattern="dd/MM/yyyy HH.mm.ss">
