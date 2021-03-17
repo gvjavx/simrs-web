@@ -165,6 +165,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                         // transaksi obat detail
                         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(transaksiObatDetail);
+                        permintaanVendor.setJumlahObat(BigInteger.valueOf(transaksiObatDetailEntities.size()));
                         if (transaksiObatDetailEntities.size() > 0) {
                             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                             TransaksiObatDetail transaksiObatDetail1;
