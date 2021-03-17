@@ -45,6 +45,24 @@ public class AsesmenOperasiDao extends GenericDao<ItSimrsAsesmenOperasiEntity, S
         return results;
     }
 
+    public String getPraInduksiDataByKey(String id, String params){
+        String res = "";
+        String SQL = "SELECT\n" +
+                "id_detail_checkup,\n" +
+                "jawaban1\n" +
+                "FROM it_simrs_asesmen_operasi\n" +
+                "WHERE keterangan = 'pra_induksi'\n" +
+                "AND flag = 'Y'\n" +
+                "AND parameter = '"+params+"'\n" +
+                "AND id_detail_checkup = '"+id+"'";
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if(result.size() > 0){
+            Object[] objects = result.get(0);
+            res = objects[1].toString();
+        }
+        return res;
+    }
+
     public String getNextSeq(){
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_asesmen_operasi')");
         Iterator<BigInteger> iter=query.list().iterator();
