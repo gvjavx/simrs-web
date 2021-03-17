@@ -104,6 +104,25 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                     permintaanVendor.setTipeTransaksi(permintaanVendorEntity.getTipeTransaksi());
                     permintaanVendor.setBranchId(permintaanVendorEntity.getBranchId());
 
+                    String jenisPo = "";
+                    try {
+                        jenisPo = permintaanVendorDao.getJenisPo(permintaanVendorEntity.getIdPermintaanVendor());
+                    } catch (HibernateException e){
+                        logger.error("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                        throw new GeneralBOException("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                    }
+
+                    String stJumlahItem = "";
+                    try {
+                        stJumlahItem = permintaanVendorDao.countJumlahItemPo(permintaanVendorEntity.getIdPermintaanVendor());
+                    } catch (HibernateException e){
+                        logger.error("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                        throw new GeneralBOException("[PermintaanVendorBoImpl.getByCriteria] ERROR when get data. " + e.getMessage());
+                    }
+
+                    permintaanVendor.setJenisPo(jenisPo);
+                    permintaanVendor.setStJumlahItem(stJumlahItem);
+
                     if (permintaanVendorEntity.getBranchId() != null){
                         ImBranchesPK branchesPK = new ImBranchesPK();
                         branchesPK.setId(permintaanVendorEntity.getBranchId());
@@ -970,7 +989,10 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         // END
 
         // data dari master pabrik obat;
-        String merk = pabrikObat.getNama();
+        //        String merk = "";
+        //        if (pabrikObat != null){
+        //            merk = pabrikObat.getNama() == null ? "" : pabrikObat.getNama();
+        //        }
         // END
 
         ImSimrsObatEntity newObatEntity = new ImSimrsObatEntity();
@@ -1096,7 +1118,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 if(obat.getLembarPerBox() != null && !"".equalsIgnoreCase(obat.getLembarPerBox().toString())){
                     headerObatEntity.setBijiPerLembar(obat.getBijiPerLembar());
                 }
-                headerObatEntity.setFlag("U");
+                headerObatEntity.setAction("U");
                 headerObatEntity.setLastUpdate(obat.getLastUpdate());
                 headerObatEntity.setLastUpdateWho(obat.getLastUpdateWho());
                 try {

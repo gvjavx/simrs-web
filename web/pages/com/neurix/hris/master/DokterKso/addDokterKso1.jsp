@@ -274,7 +274,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'tindakan':'Tindakan', 'obat' : 'Obat', 'kamar' : 'Kamar'}"
+                                                        <s:select list="#{'tindakan':'Tindakan', 'resep' : 'Resep', 'kamar' : 'Ruangan'}"
                                                                   id="jenisKso1" name="dokterKso.jenisKso"
                                                                   headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                     </table>

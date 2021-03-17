@@ -1,5 +1,6 @@
 package com.neurix.simrs.master.rekananops.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.Objects;
@@ -20,6 +21,60 @@ public class DetailRekananOps  {
     private String namaRekanan;
     private String nomorMaster;
     private String tipe;
+    private String idItem;
+    private String namaTindakan;
+    private String parentId;
+    private String flagParent;
+    private String jenisItem;
+    private BigDecimal tarif;
+
+    public String getJenisItem() {
+        return jenisItem;
+    }
+
+    public void setJenisItem(String jenisItem) {
+        this.jenisItem = jenisItem;
+    }
+
+    public String getIdItem() {
+        return idItem;
+    }
+
+    public void setIdItem(String idItem) {
+        this.idItem = idItem;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
+    }
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getFlagParent() {
+        return flagParent;
+    }
+
+    public void setFlagParent(String flagParent) {
+        this.flagParent = flagParent;
+    }
+
+    public BigDecimal getTarif() {
+        return tarif;
+    }
+
+    public void setTarif(BigDecimal tarif) {
+        this.tarif = tarif;
+    }
 
     public String getNomorMaster() {
         return nomorMaster;
