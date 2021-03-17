@@ -379,6 +379,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                     telemedic.setIdRekening(entity.getIdRekening());
                     telemedic.setJumlahCover(entity.getJumlahCover());
                     telemedic.setStCreatedDate(entity.getCreatedDate() == null ? "" : entity.getCreatedDate().toString());
+                    telemedic.setFlagCall(entity.getFlagCall());
                     antrianTelemedicList.add(telemedic);
                 }
 

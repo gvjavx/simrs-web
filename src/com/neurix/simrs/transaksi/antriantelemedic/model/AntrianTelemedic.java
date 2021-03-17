@@ -84,6 +84,15 @@ public class AntrianTelemedic {
     private String shiftId;
     private String namaBank;
     private String stLastUpdate;
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
 
     public String getStLastUpdate() {
         return stLastUpdate;

@@ -127,6 +127,16 @@ public class TelemedicineController implements ModelDriven<Object> {
 
     private String flag;
 
+    private String flagCall;
+
+    public String getFlagCall() {
+        return flagCall;
+    }
+
+    public void setFlagCall(String flagCall) {
+        this.flagCall = flagCall;
+    }
+
     public String getFlag() {
         return flag;
     }
@@ -520,9 +530,9 @@ public class TelemedicineController implements ModelDriven<Object> {
 
 
             try {
-                telemedicBoProxy.saveEdit(bean, branchId, "");
-
                 if (this.status.equalsIgnoreCase("PD")) {
+
+                    bean.setFlagCall("Y");
 
                     //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
                     List<NotifikasiFcm> result = new ArrayList<>();
@@ -538,10 +548,11 @@ public class TelemedicineController implements ModelDriven<Object> {
                     sendData.put("isStruk", isStruk);
 
                     result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
-                    FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil ...", "PD", result.get(0).getOs(), sendData);
+                    FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Memanggil. Harap Membuka Aplikasi", "PD", result.get(0).getOs(), sendData);
                 }
 
                 if (this.status.equalsIgnoreCase("SL")) {
+                    bean.setFlagCall("N");
 
                     //KIRIM PUSH NOTIF JIKA STATUS MENJADI PD
                     List<NotifikasiFcm> result = new ArrayList<>();
@@ -559,6 +570,13 @@ public class TelemedicineController implements ModelDriven<Object> {
                     result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
                     FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Menutup Panggilan", "SL", result.get(0).getOs(), sendData);
                 }
+
+                if (this.status.equalsIgnoreCase("SK")) {
+                    bean.setFlagCall("N");
+                }
+
+                telemedicBoProxy.saveEdit(bean, branchId, "");
+
 
                 if (jenisStruk != null) {
                     List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
@@ -1002,6 +1020,7 @@ public class TelemedicineController implements ModelDriven<Object> {
                 telemedicineMobile.setUrlResep(item.getUrlResep());
                 telemedicineMobile.setJenisPembayaran(item.getJenisPembayaran());
                 telemedicineMobile.setBranchId(item.getBranchId());
+                telemedicineMobile.setFlagCall(item.getFlagCall());
 
                 try {
                    Branch branch = branchBoProxy.getBranchById(item.getBranchId(), "Y");
@@ -1515,6 +1534,42 @@ public class TelemedicineController implements ModelDriven<Object> {
             }
 
             model.setMessage(String.valueOf(list.size()));
+        }
+
+        if (action.equalsIgnoreCase("updateFlagCall")) {
+
+            try {
+               CrudResponse response = telemedicBoProxy.updateFlagCall(idTele, flagCall);
+                if ("ok".equalsIgnoreCase(response.getStatus())) {
+                    model.setMessage("ok");
+                } else model.setMessage(response.getMsg());
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+        }
+
+        if (action.equalsIgnoreCase("stopCall")) {
+
+            List<NotifikasiFcm> result = new ArrayList<>();
+            NotifikasiFcm beanNotif = new NotifikasiFcm();
+            beanNotif.setUserId(idPasien);
+
+            try {
+                org.json.JSONObject sendData = new JSONObject();
+                sendData.put("namaDokter", namaDokter);
+                sendData.put("idDokter", idDokter);
+                sendData.put("idPasien", idPasien);
+                sendData.put("noCheckup", noCheckup);
+                sendData.put("branchId", branchId);
+                sendData.put("isStruk", isStruk);
+
+                result = notifikasiFcmBoProxy.getByCriteria(beanNotif);
+                FirebasePushNotif.sendNotificationFirebase(result.get(0).getTokenFcm(), "Telemedic", "Dokter Menutup Panggilan", "RJ", result.get(0).getOs(), sendData);
+            } catch (org.json.JSONException e) {
+                logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");

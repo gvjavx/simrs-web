@@ -57,5 +57,5 @@ public interface TelemedicBo {
     public String cobaGabung(String path1, String path2);
     public List <ItSimrsVideoRmEntity> getVideoRm(String idDetailCheckup);
 
-
+    public CrudResponse updateFlagCall(String idAntrianTelemedic, String flagCall) throws GeneralBOException;
 }
