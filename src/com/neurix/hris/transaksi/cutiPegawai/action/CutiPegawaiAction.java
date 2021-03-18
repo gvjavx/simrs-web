@@ -668,9 +668,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         List<CutiPegawai> listOfSearchCutiPegawai = new ArrayList();
         String role = CommonUtil.roleAsLogin();
         searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
-        if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
-        }
-        else{
+        if (!"ADMIN".equalsIgnoreCase(role)&&!"Admin bagian".equalsIgnoreCase(role)) {
             searchAlat.setNip(CommonUtil.userIdLogin());
         }
 
