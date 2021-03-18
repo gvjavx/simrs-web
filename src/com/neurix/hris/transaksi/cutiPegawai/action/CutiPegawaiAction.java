@@ -458,7 +458,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setFlag("Y");
 
 //            Edit sisa cuti jika cancel
-            if ("normal".equalsIgnoreCase(cancelCutiPegawai.getJenisCuti()))
+            if (!"CT007".equalsIgnoreCase(cancelCutiPegawai.getCutiId()) && cancelCutiPegawai.getCutiId() != null)
                 cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
 
                 List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
@@ -668,9 +668,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         List<CutiPegawai> listOfSearchCutiPegawai = new ArrayList();
         String role = CommonUtil.roleAsLogin();
         searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
-        if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
-        }
-        else{
+        if (!"ADMIN".equalsIgnoreCase(role)&&!"Admin bagian".equalsIgnoreCase(role)) {
             searchAlat.setNip(CommonUtil.userIdLogin());
         }
 
@@ -742,13 +740,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public List initComboSisaCutiPegawaiId(String query,String cutiId,String branchId) {
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] start process >>>");
 
-        List<CutiPegawai> listOfAlat = new ArrayList();
+        List<CutiPegawai> listOfCombo = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfAlat = cutiPegawaiBo.getComboSisaCutiPegawaiWithCriteria(query,cutiId,branchId);
+            listOfCombo = cutiPegawaiBo.getComboSisaCutiPegawaiWithCriteria(query,cutiId,branchId);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -761,7 +759,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] end process <<<");
 
-        return listOfAlat;
+        return listOfCombo;
     }
 
     public String cekTahunCuti(String tglAwal, String tglAkhir, String nip){
@@ -1286,13 +1284,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public List initComboCutiPegawaiId(String query) {
         logger.info("[CutiPegawaiAction.initComboCutiPegawaiId] start process >>>");
 
-        List<CutiPegawai> listOfAlat = new ArrayList();
+        List<CutiPegawai> listOfCuti = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfAlat = cutiPegawaiBo.getComboCutiPegawaiWithCriteria(query);
+            listOfCuti = cutiPegawaiBo.getComboCutiPegawaiWithCriteria(query);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1305,7 +1303,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
 
-        return listOfAlat;
+        return listOfCuti;
     }
 
     public List initComboAlat(String query) {
@@ -2019,7 +2017,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 //        return listOfCuti;
 //    }
 
-    public List initComboSetCuti(String nip, String jenisCuti) {
+    public List initComboSetCuti(String nip, String cutiId) {
         logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
 
         List<CutiPegawai> listOfCuti= new ArrayList();
@@ -2028,7 +2026,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, jenisCuti);
+            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, cutiId);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
