@@ -1933,7 +1933,7 @@ public class NotifikasiBoImpl implements NotifikasiBo {
         if (bean != null){
             Map hsCriteria = new HashMap();
 
-            if (!"".equalsIgnoreCase(bean.getCutiId())){
+            if (!"".equalsIgnoreCase(bean.getCutiPegawaiId())){
                 hsCriteria.put("cuti_pegawai_id", bean.getCutiPegawaiId());
             }
 
@@ -1965,20 +1965,44 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                     addData.setApprovalFlag(listData.getApprovalFlag());
                     addData.setCutiId(listData.getCutiId());
 
-                    ImCutiEntity cutiEntity = cutiDao.getById("cutiId",listData.getCutiId(),"Y");
+                    ImCutiEntity cutiEntity;
+                    try{
+                        cutiEntity = cutiDao.getById("cutiId",listData.getCutiId(),"Y");
+                    }catch (HibernateException e){
+                        logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when receiving Cuti by ID, " + e.getMessage());
+                    }
                     addData.setCutiName(cutiEntity.getCutiName());
 
-                    List<ItPersonilPositionEntity> personilPositionEntityListAsli = personilPositionDao.getListPersonilPosition(listData.getNip());
+                    List<ItPersonilPositionEntity> personilPositionEntityListAsli =new ArrayList<>();
+                    try{
+                        personilPositionEntityListAsli = personilPositionDao.getListPersonilPosition(listData.getNip());
+                    }catch (HibernateException e){
+                        logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when receiving Personil Position by NIP, " + e.getMessage());
+                    }
 
                     if (personilPositionEntityListAsli!=null){
                         for (ItPersonilPositionEntity personilPosition : personilPositionEntityListAsli){
-                            ImPosition imPosition = positionDao.getById("positionId",personilPosition.getPositionId());
+                            ImPosition imPosition;
+                            try{
+                                imPosition = positionDao.getById("positionId",personilPosition.getPositionId());
+                            }catch (HibernateException e){
+                                logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                                throw new GeneralBOException("Problem when receiving Position by ID, " + e.getMessage());
+                            }
                             if (imPosition!=null){
                                 addData.setPosisiName(imPosition.getPositionName());
                                 addData.setPosisiId(imPosition.getPositionId());
                                 addData.setDivisiId(imPosition.getDepartmentId());
                                 addData.setUnitId(personilPosition.getBranchId());
-                                ImDepartmentEntity imDepartmentEntity = departmentDao.getById("departmentId",imPosition.getDepartmentId());
+                                ImDepartmentEntity imDepartmentEntity;
+                                try{
+                                    imDepartmentEntity = departmentDao.getById("departmentId",imPosition.getDepartmentId());
+                                }catch (HibernateException e){
+                                    logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Problem when receiving Department by NIP, " + e.getMessage());
+                                }
                                 if (imDepartmentEntity!=null){
                                     addData.setDivisiName(imDepartmentEntity.getDepartmentName());
                                 }
@@ -1986,7 +2010,13 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                             hsCriteria = new HashMap();
                             hsCriteria.put("branch_id",personilPosition.getBranchId());
                             hsCriteria.put("flag","Y");
-                            List<ImBranches> branchesList = branchDao.getByCriteria(hsCriteria);
+                            List<ImBranches> branchesList = new ArrayList<>();
+                            try{
+                                branchesList = branchDao.getByCriteria(hsCriteria);
+                            }catch (HibernateException e){
+                                logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                                throw new GeneralBOException("Problem when receiving Branch using Criteria, " + e.getMessage());
+                            }
                             if (branchesList!=null){
                                 for(ImBranches imBranches : branchesList){
                                     addData.setUnitName(imBranches.getBranchName());
@@ -2007,7 +2037,13 @@ public class NotifikasiBoImpl implements NotifikasiBo {
                     DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                     addData.setStTanggalDari(df.format(listData.getTanggalDari()));
                     addData.setStTanggalSelesai(df.format(listData.getTanggalSelesai()));
-                    ImBiodataEntity biodataEntity = biodataDao.getById("nip",listData.getNip(),"Y");
+                    ImBiodataEntity biodataEntity;
+                    try{
+                        biodataEntity = biodataDao.getById("nip",listData.getNip(),"Y");
+                    }catch (HibernateException e){
+                        logger.error("[NotifikasiBoImpl.searchCutiPegawaiPerson] Error, " + e.getMessage());
+                        throw new GeneralBOException("Problem when receiving Biodata by ID, " + e.getMessage());
+                    }
                     addData.setNamaPegawai(biodataEntity.getNamaPegawai());
                     addData.setNote(listData.getNote());
                     addData.setNoteApproval(listData.getNoteApproval());

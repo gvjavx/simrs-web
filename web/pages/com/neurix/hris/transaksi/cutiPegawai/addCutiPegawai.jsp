@@ -497,6 +497,7 @@
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
                                 <s:select list="#comboCuti.listComboCuti" id="cutiId" name="cutiPegawai.cutiId"
                                           listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="false" />
+
                                 <s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
@@ -504,13 +505,14 @@
                     </tr>
                     <tr id="cuti2" style="display: none">
                         <td>
-                            <label class="control-label"><small>Cuti :</small></label>
+                            <label class="control-label"><small>Detaail Cuti :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti2_cuti"/>
                                 <s:select list="#comboCuti.listComboCuti2" id="cutiIdTanggungan" name="cutiPegawai.cutiTanggunganId"
                                           listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="false" />
+
                                 <s:textfield  id="cutiId15Tanggungan" name="cutiPegawai.cutiTanggunganId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:textfield  id="jenisCutiTanggungan" name="cutiPegawai.cutiTanggunganName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
@@ -530,16 +532,6 @@
                                 <td>
                                     hari
                                 </td>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr style="display: none;">
-                        <td>
-                            <label class="control-label"><small>Cuti Max :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="cutiMax" name="" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -739,59 +731,6 @@
             });
         }
 
-//        function jeniscuti(){
-//            namacuti= $('#cutiId').val();
-//            branchid =$('#unitId12').val();
-//            jenisCuti1 = $('#jenisCuti1').val();
-//            nip=$('#nipId').val();
-//            golonganid=document.getElementById("golonganId12").value;
-//            if (jenisCuti1 == 'normal'){
-//                dwr.engine.setAsync(false);
-//                console.log("Test");
-//                CutiAction.initComboCutiTipe(namacuti, function (listdata) {
-//                    data = listdata;
-//                });
-//                $.each(data, function (i, item) {
-//                    $('#jenisCuti').val(item.tipeHari).change();
-//                    $('#cutiMax').val(item.jumlahCuti);
-//                });
-//            }else {
-//                dwr.engine.setAsync(false);
-//                console.log("Tes");
-//                namacuti = 'CT007';
-//                dwr.engine.setAsync(false);
-//                CutiAction.initComboCutiTipe(namacuti, function (listdata) {
-//                    data = listdata;
-//                });
-//                $.each(data, function (i, item) {
-//                    $('#jenisCuti').val(item.tipeHari).change();
-//                    $('#cutiMax').val(item.jumlahCuti);
-//                    console.log(item.tipeHari);
-//                    console.log(item.jumlahCuti);
-//                });
-//            }
-//        }
-
-//        if ($('#check').val()=="Y"){
-//            $('#unitId12').attr({ readonly:"true", disabled:"true" });
-//            $('#nipId').attr('readonly','true');
-//            var nip=$('#nipId').val();
-//            var data2=[];
-//            dwr.engine.setAsync(false);
-//            CutiPegawaiAction.initComboSetCuti(nip, function (listdata) {
-//                data2 = listdata;
-//            });
-//            $.each(data2, function (i, item) {
-//                $('#cutiId').val(item.cutiId).change();
-//                $('#cutiId15').val(item.cutiId);
-//                $('#sisaCuti').val(item.sisaCutiHari);
-//
-//            });
-//            jeniscuti();
-//        }else{
-//            $('#unitId33').attr('disabled','true');
-//        }
-
         if ($('#check').val()=="Y"){
             $('#unitId12').attr({ readonly:"true", disabled:"true" });
             $('#nipId').attr('readonly','true');
@@ -827,24 +766,7 @@
                 $('#sisaCuti').val(labelItem).change();
             });
         }
-        // $('#cutiId').change(function() {
-        //     var nip=document.getElementById("nipId").value;
-        //     var cutiid = document.getElementById("cutiId").value;
-        //     var branchid = document.getElementById("unitId12").value;
-        //     if (nip==""){
-        //         alert("Tolong isi NIP dahulu");
-        //         $('#cutiId').val("");
-        //     } else if (nip!=""&&cutiid!=""){
-        //         dwr.engine.setAsync(false);
-        //         CutiPegawaiAction.initComboSisaCutiPegawaiId(nip,cutiid,branchid, function (listdata) {
-        //             data = listdata;
-        //         });
-        //         $.each(data, function (i, item) {
-        //             var labelItem = item.sisaCutiHari;
-        //             $('#sisaCuti').val(labelItem).change();
-        //         });
-        //     }
-        // });
+
         function callSearch2() {
             window.location.reload(true);
             $('#waiting_dialog').dialog('close');

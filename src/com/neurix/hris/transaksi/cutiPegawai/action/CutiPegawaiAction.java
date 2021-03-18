@@ -594,13 +594,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
             return ERROR;
         }
 
-        logger.info("[AlatAction.saveDelete] end process <<<");
+        logger.info("[CutiPegawaiAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[CutiPegawaiAction.saveAdd] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -657,7 +657,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
 
-        logger.info("[cutiPegawaiAction.saveAdd] end process >>>");
+        logger.info("[CutiPegawaiAction.saveAdd] end process >>>");
         return "success_save_add";
     }
 

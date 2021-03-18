@@ -547,7 +547,13 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         String nip=bean.getNip(),cutiPegawaiId;
 
         //validasi
-        ImBiodataEntity biodataEntity = biodataDao.getById("nip",bean.getNip());
+        ImBiodataEntity biodataEntity;
+        try{
+            biodataEntity = biodataDao.getById("nip",bean.getNip());
+        }catch (HibernateException e){
+            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Problem when receiving Biodata by ID, " + e.getMessage());
+        }
         bean.setTanggalAktif(biodataEntity.getTanggalAktif());
 
         Calendar c = Calendar.getInstance();
@@ -636,7 +642,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
                             hsCriteria.put("nip", bean.getNip());
                         }
-                        cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
+                        try{
+                            cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
+                        }catch (HibernateException e){
+                            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when receiving Next Cuti ID, " + e.getMessage());
+                        }
 
                         // creating object entity serializable
                         ItCutiPegawaiEntity itCutiPegawaiEntity1 = new ItCutiPegawaiEntity();

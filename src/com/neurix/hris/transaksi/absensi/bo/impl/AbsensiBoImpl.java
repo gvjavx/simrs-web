@@ -190,7 +190,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         this.payrollTunjanganUmkDao = payrollTunjanganUmkDao;
     }
 
-    protected static transient Logger logger = Logger.getLogger(AbsensiBoImpl_maintenance.class);
+    protected static transient Logger logger = Logger.getLogger(AbsensiBoImpl.class);
 
     public void setTrainingPersonDao(TrainingPersonDao trainingPersonDao) {
         this.trainingPersonDao = trainingPersonDao;
@@ -281,7 +281,7 @@ public class AbsensiBoImpl implements AbsensiBo {
     }
 
     public static void setLogger(Logger logger) {
-        AbsensiBoImpl_maintenance.logger = logger;
+        AbsensiBoImpl.logger = logger;
     }
 
     public void setAbsensiPegawaiDao(AbsensiPegawaiDao absensiPegawaiDao) {
@@ -5810,8 +5810,6 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             absensiPegawai.setJenisLembur(lemburShift.getTipeLembur());
                                             absensiPegawai.setAwalLembur(absensiPegawai.getJamMasuk());
                                             absensiPegawai.setSelesaiLembur(absensiPegawai.getJamPulang());
-                                        } else {
-                                            absensiPegawai.setLembur("N");
                                         }
                                     }
                                     if (jadwalke == 1) {
@@ -5995,44 +5993,13 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
                                                 absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
                                                 absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
-                                            } else {
-                                                absensiPegawai.setLembur("N");
                                             }
                                         }else{
-                                            //TIDAK HADIR /TIDAK ABSEN ketika DIPANGGIL
-                                            Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, tahunGaji);
-                                            absensiPegawai.setLembur("Y");
-                                            absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
-                                            absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
-                                            absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
-                                            absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
-                                            absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
-                                            absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
-                                            absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
-
+                                            //STATUS [STAND BY ON CALL]
                                             absensiPegawai.setStatusAbsensi("17");
                                         }
                                     } else {
-                                        //jika lembur on call tapi tidak dipanggil
-//                                        Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, jadwalOnCall, jamKerja, jamFinger, absensiPegawai.getTipeHari(), tahunGaji);
-//                                        absensiPegawai.setLembur("Y");
-//                                        absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
-//                                        absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
-//                                        absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
-//                                        absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
-//                                        absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
-//                                        absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
-//                                        absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
-                                        Lembur lemburOC = lemburOC_noCall(biodata, tanggalInquiry, tahunGaji);
-                                        absensiPegawai.setLembur("Y");
-                                        absensiPegawai.setPengajuanLembur(lemburOC.getJamRealisasi());
-                                        absensiPegawai.setRealisasiJamLembur(lemburOC.getJamRealisasi());
-                                        absensiPegawai.setJamLembur(lemburOC.getLamaHitungan());
-                                        absensiPegawai.setLamaLembur(lemburOC.getFinalLamaLembur());
-                                        absensiPegawai.setBiayaLembur(lemburOC.getUpahLembur());
-                                        absensiPegawai.setStBiayaLembur(lemburOC.getStUpahLembur());
-                                        absensiPegawai.setJenisLembur(lemburOC.getTipeLembur());
-
+                                        //STATUS [STAND BY ON CALL]
                                         absensiPegawai.setStatusAbsensi("17");
                                     }
                                 }
@@ -7200,100 +7167,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             returnLembur.setUpahLembur(upahLembur);
             returnLembur.setStUpahLembur(stUpahLembur);
             returnLembur.setFinalLamaLembur(realisasiLembur);
-        } else {
-            //jika ada yg null
-            // menghitung upah lembur
-            Lembur noCall = lemburOC_noCall(biodata, tanggalInquiry, tahunGaji);
-
-            returnLembur.setAdaAbsen(true);
-            returnLembur.setJamRealisasi(noCall.getJamRealisasi());
-            returnLembur.setLamaJam(noCall.getLamaJam());
-            returnLembur.setLamaHitungan(noCall.getLamaHitungan());
-            returnLembur.setTipeLembur("OC");
-            returnLembur.setUpahLembur(noCall.getUpahLembur());
-            returnLembur.setStUpahLembur(noCall.getStUpahLembur());
         }
-        return returnLembur;
-    }
-
-    private Lembur lemburOC_noCall(ImBiodataEntity biodata, Date tanggalInquiry, String tahunGaji) {
-        Lembur returnLembur = new Lembur();
-
-        List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
-        Map hsCriteria4 = new HashMap();
-        hsCriteria4.put("tipe_pegawai_id", biodata.getTipePegawai());
-        hsCriteria4.put("flag", "Y");
-        double faktor = 0;
-        Double upahLembur = 0d;
-        Double gapok = 0d;
-        Double sankhus = 0d;
-        try {
-            pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
-        } catch (HibernateException e) {
-            logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-            throw new HibernateException("Found problem when retrieving Pengali Faktor Lembur by criteria, " + e.getMessage());
-        }
-        for (PengaliFaktorLemburEntity pengaliFaktorLemburEntity : pengaliFaktorLemburEntityList) {
-            faktor = pengaliFaktorLemburEntity.getFaktor();
-        }
-
-        hsCriteria4 = new HashMap();
-        hsCriteria4.put("golongan_id", biodata.getGolongan());
-        hsCriteria4.put("point", (int) Math.round(biodata.getPoint()));
-        hsCriteria4.put("tahun", tahunGaji);
-        hsCriteria4.put("flag", "Y");
-        List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
-        List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-        if (biodata.getTipePegawai().equalsIgnoreCase("TP01")) {
-            try {
-                payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
-            } catch (HibernateException e) {
-                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
-            }
-            for (ImPayrollSkalaGajiEntity imPayrollSkalaGajiEntity : payrollSkalaGajiList) {
-                gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
-                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
-            }
-        } else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
-            try {
-                payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
-            } catch (HibernateException e) {
-                logger.error("[AbsensiBoImpl.cronInquiry] Error, " + e.getMessage());
-                throw new HibernateException("Found problem when retrieving Data Skala Gaji by criteria, " + e.getMessage());
-            }
-            for (ImPayrollSkalaGajiPkwtEntity skalaGajiLoop : payrollSkalaGajiPkwtEntityList) {
-                gapok = skalaGajiLoop.getGajiPokok().doubleValue();
-                sankhus = skalaGajiLoop.getSantunanKhusus().doubleValue();
-            }
-        }
-        double jamLembur = 3;
-
-        Double peralihan = 0d;
-        peralihan = getTunjPeralihan(biodata.getNip(), tanggalInquiry).doubleValue();
-//            upahLembur = (gapok + sankhus + peralihan) * faktor * jamLembur;
-        upahLembur = (gapok + peralihan) * faktor * jamLembur;
-        upahLembur = Math.floor(upahLembur);
-
-        String stUpahLembur = "";
-        DecimalFormat kursIndonesia = (DecimalFormat) DecimalFormat.getCurrencyInstance();
-        DecimalFormatSymbols formatRp = new DecimalFormatSymbols();
-
-        formatRp.setCurrencySymbol("");     //Menghilangkan currency symbol u/ menghemat space tampilan
-        formatRp.setGroupingSeparator('.');
-
-        kursIndonesia.setDecimalFormatSymbols(formatRp);
-        stUpahLembur = kursIndonesia.format(upahLembur);
-
-        //[Pribadi] On Call tanpa dipanggil, jam lembur jadikan 0 tapi perhitungan lembur (jamLembur) diberikan 3. agar upah on Call bervariasi berdasarkan Gapok+Peralihan (seperti Lembur).
-        returnLembur.setJamRealisasi(0.0);
-        returnLembur.setFinalLamaLembur(0.0);
-        returnLembur.setLamaJam(0.0);
-        returnLembur.setLamaHitungan(jamLembur);
-        returnLembur.setTipeLembur("OC");
-        returnLembur.setUpahLembur(upahLembur);
-        returnLembur.setStUpahLembur(stUpahLembur);
-
         return returnLembur;
     }
 }
