@@ -5513,6 +5513,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             throw new GeneralBOException(e.getMessage());
         }
 
+        List<AbsensiOnCall> onCallFinal = new ArrayList<>();
         //mengambil absensi per orang
         for (ImBiodataEntity biodata : biodataList) {
             AbsensiPegawai absensiPegawai = new AbsensiPegawai();
@@ -5933,7 +5934,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                             // looping on call untuk ambil absensi on call
                                             int jmlOnCall = 1;
                                             double realisasiLembur = 0;
-                                            List<AbsensiOnCall> onCallFinal = new ArrayList<>();
+
                                             for (AbsensiOnCall call : absensiOnCallList) {
                                                 AbsensiOnCall newOnCall = new AbsensiOnCall();
                                                 //set jam masuk dan jam pulang
@@ -5964,7 +5965,11 @@ public class AbsensiBoImpl implements AbsensiBo {
                                                 newOnCall.setNip(biodata.getNip());
                                                 newOnCall.setTanggal(absensiPegawai.getTanggal());
                                                 newOnCall.setJamMasuk(jamMasuk);
-                                                newOnCall.setJamPulang(jamPulang);
+                                                if(jamPulang != null) {
+                                                    newOnCall.setJamPulang(jamPulang);
+                                                }else{
+                                                    newOnCall.setJamPulang("-");
+                                                }
 
                                                 if (jmlOnCall == 1) {
                                                     absensiPegawai.setJamMasuk(jamMasuk);
