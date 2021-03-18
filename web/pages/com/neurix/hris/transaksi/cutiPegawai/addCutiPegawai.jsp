@@ -363,76 +363,7 @@
                                 <%--<s:select list="#{'diluar_tanggungan':'Diluar Tanggungan'}" id="jenisCuti1" name="cutiPegawai.jenisCuti"--%>
                                           <%--headerKey="normal" headerValue="Normal" cssClass="form-control" />--%>
                             <%--</table>--%>
-                            <script>
-                                $(document).ready(function() {
-                                   // $('#cutiId').change(function() {
-                                    $('#cutiId').change(function() {
-                                        var cuti= $('#cutiId').val();
 
-                                        //("TES ONCHANGE");
-                                            function jeniscuti(){
-                                                namacuti= $('#cutiId').val();
-                                                branchid =$('#unitId12').val();
-                                                nip=$('#nipId').val();
-                                                golonganid=document.getElementById("golonganId12").value;
-                                                dwr.engine.setAsync(false);
-                                                CutiAction.initComboCutiTipe(namacuti, function (listdata) {
-                                                    data = listdata;
-                                                });
-                                                $.each(data, function (i, item) {
-                                                    $('#jenisCuti').val(item.tipeHari).change();
-                                                    $('#cutiMax').val(item.jumlahCuti);
-                                                });
-                                            }
-
-                                            if ($('#check').val()=="Y"){
-                                                $('#unitId12').attr({ readonly:"true", disabled:"true" });
-                                                $('#nipId').attr('readonly','true');
-                                                var cuti = $('#cutiId').val();
-                                                var nip=$('#nipId').val();
-                                                var data2=[];
-
-                                                dwr.engine.setAsync(false);
-                                                CutiPegawaiAction.initComboSetCuti(nip, cuti,function (listdata) {
-                                                    data2 = listdata;
-                                                });
-                                                $.each(data2, function (i, item) {
-                                                    // $('#cutiId').val(item.cutiId).change();
-                                                    $('#cutiId15').val(item.cutiId);
-                                                    if(item.cutiId === "CT007") {
-                                                        $('#sisaCuti').attr("value","1095");
-                                                        console.log(item.cutiId + "   " +item.sisaCutiHari);
-                                                    } else {
-                                                        $('#sisaCuti').val(item.sisaCutiHari);
-                                                    }
-
-                                                });
-                                                jeniscuti();
-                                            }else{
-                                                $('#unitId33').attr('disabled','true');
-                                            }
-
-                                            var nip = document.getElementById("nipId").value;
-                                            var cutiId= document.getElementById("cutiId").value;
-                                            var branchid = document.getElementById("unitId33").value;
-                                            if (nip!=null){
-                                                dwr.engine.setAsync(false);
-                                                CutiPegawaiAction.initComboSisaCutiPegawaiId(nip,cutiId,branchid, function (listdata) {
-                                                    data = listdata;
-                                                });
-                                                $.each(data, function (i, item) {
-                                                    if(item.cutiId === "CT007") {
-                                                        var labelItem = "1095";
-                                                        $('#sisaCuti').attr("value", labelItem).change();
-                                                    } else {
-                                                        var labelItem = item.sisaCutiHari;
-                                                        $('#sisaCuti').val(labelItem).change();
-                                                    }
-                                                });
-                                            }
-                                    })
-                                });
-                            </script>
                         <%--</td>--%>
                     <%--</tr>--%>
                     <tr id="cuti1">
@@ -444,10 +375,82 @@
                                 <s:action id="comboCuti" namespace="/cuti" name="initComboCuti_cuti"/>
                                 <s:select list="#comboCuti.listComboCuti" id="cutiId" name="cutiPegawai.cutiId"
                                           listKey="cutiId" listValue="cutiName" headerKey="" headerValue="[Select one]" required="true" cssClass="form-control" disabled="false" />
-                                <s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
+                                <%--<s:textfield  id="cutiId15" name="cutiPegawai.cutiId" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>--%>
                                 <s:textfield  id="jenisCuti" name="cutiPegawai.cutiName" required="false" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                             </table>
                         </td>
+
+                        <script>
+                            $(document).ready(function() {
+                                // $('#cutiId').change(function() {
+                                $('#cutiId').change(function() {
+                                    var cuti= $('#cutiId').val();
+
+                                    //("TES ONCHANGE");
+                                    function jeniscuti(){
+                                        namacuti= $('#cutiId').val();
+                                        branchid =$('#unitId12').val();
+                                        nip=$('#nipId').val();
+                                        golonganid=document.getElementById("golonganId12").value;
+                                        dwr.engine.setAsync(false);
+                                        CutiAction.initComboCutiTipe(namacuti, function (listdata) {
+                                            data = listdata;
+                                        });
+                                        $.each(data, function (i, item) {
+                                            $('#jenisCuti').val(item.tipeHari).change();
+                                            $('#cutiMax').val(item.jumlahCuti);
+                                        });
+                                    }
+
+                                    if ($('#check').val()=="Y"){
+                                        $('#unitId12').attr({ readonly:"true", disabled:"true" });
+                                        $('#nipId').attr('readonly','true');
+                                        var cuti = $('#cutiId').val();
+                                        var nip=$('#nipId').val();
+                                        var data2=[];
+
+                                        dwr.engine.setAsync(false);
+                                        CutiPegawaiAction.initComboSetCuti(nip, cuti,function (listdata) {
+                                            data2 = listdata;
+                                        });
+                                        $.each(data2, function (i, item) {
+                                            // $('#cutiId').val(item.cutiId).change();
+                                            $('#cutiId15').val(item.cutiId);
+                                            if(item.cutiId === "CT007") {
+                                                $('#sisaCuti').val(item.sisaCutiHari).change();
+                                            } else {
+                                                $('#sisaCuti').val(item.sisaCutiHari).change();
+                                            }
+
+                                        });
+                                        jeniscuti();
+                                    }else{
+                                        $('#unitId33').attr('disabled','true');
+                                    }
+
+                                    var nip = document.getElementById("nipId").value;
+                                    var cutiId= document.getElementById("cutiId").value;
+                                    var branchid = document.getElementById("unitId33").value;
+                                    var data=[];
+                                    if (nip!=null && nip!=""){
+                                        dwr.engine.setAsync(false);
+                                        CutiPegawaiAction.initComboSisaCutiPegawaiId(nip,cutiId,branchid, function (listdata) {
+                                            data = listdata;
+                                        });
+                                        $.each(data, function (i, item) {
+                                            console.log("cuti id = " + item.cutiId);
+                                            if(item.cutiId === "CT007") {
+                                                var labelItem= item.sisaCutiHari;
+                                                $('#sisaCuti').val(labelItem).change();
+                                            } else {
+                                                var labelItem = item.sisaCutiHari;
+                                                $('#sisaCuti').val(labelItem).change();
+                                            }
+                                        });
+                                    }
+                                })
+                            });
+                        </script>
                     </tr>
 
                     <tr>
@@ -656,6 +659,7 @@
             namacuti= $('#cutiId').val();
             branchid =$('#unitId12').val();
             nip=$('#nipId').val();
+            var data=[];
             golonganid=document.getElementById("golonganId12").value;
             dwr.engine.setAsync(false);
             CutiAction.initComboCutiTipe(namacuti, function (listdata) {
@@ -696,7 +700,8 @@
         var nip = document.getElementById("nipId").value;
         var cutiId= document.getElementById("cutiId").value;
         var branchid = document.getElementById("unitId33").value;
-        if (nip!=null){
+        var data=[];
+        if (nip!=null&&nip!=""){
             dwr.engine.setAsync(false);
             CutiPegawaiAction.initComboSisaCutiPegawaiId(nip,cutiId,branchid, function (listdata) {
                 data = listdata;
@@ -706,24 +711,6 @@
                 $('#sisaCuti').val(labelItem).change();
             });
         }
-        // $('#cutiId').change(function() {
-        //     var nip=document.getElementById("nipId").value;
-        //     var cutiid = document.getElementById("cutiId").value;
-        //     var branchid = document.getElementById("unitId12").value;
-        //     if (nip==""){
-        //         alert("Tolong isi NIP dahulu");
-        //         $('#cutiId').val("");
-        //     } else if (nip!=""&&cutiid!=""){
-        //         dwr.engine.setAsync(false);
-        //         CutiPegawaiAction.initComboSisaCutiPegawaiId(nip,cutiid,branchid, function (listdata) {
-        //             data = listdata;
-        //         });
-        //         $.each(data, function (i, item) {
-        //             var labelItem = item.sisaCutiHari;
-        //             $('#sisaCuti').val(labelItem).change();
-        //         });
-        //     }
-        // });
         function callSearch2() {
             window.location.reload(true);
             $('#waiting_dialog').dialog('close');
@@ -853,6 +840,7 @@
             namacuti= $('#cutiId').val();
             branchid =$('#unitId12').val();
             nip=$('#nipId').val();
+            var data=[];
             golonganid=document.getElementById("golonganId12").value;
 
             dwr.engine.setAsync(false);

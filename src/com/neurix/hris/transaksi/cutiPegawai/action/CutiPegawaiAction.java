@@ -742,13 +742,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public List initComboSisaCutiPegawaiId(String query,String cutiId,String branchId) {
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] start process >>>");
 
-        List<CutiPegawai> listOfAlat = new ArrayList();
+        List<CutiPegawai> listOfCombo = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfAlat = cutiPegawaiBo.getComboSisaCutiPegawaiWithCriteria(query,cutiId,branchId);
+            listOfCombo = cutiPegawaiBo.getComboSisaCutiPegawaiWithCriteria(query,cutiId,branchId);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -761,7 +761,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] end process <<<");
 
-        return listOfAlat;
+        return listOfCombo;
     }
 
     public String cekTahunCuti(String tglAwal, String tglAkhir, String nip){
@@ -1286,13 +1286,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public List initComboCutiPegawaiId(String query) {
         logger.info("[CutiPegawaiAction.initComboCutiPegawaiId] start process >>>");
 
-        List<CutiPegawai> listOfAlat = new ArrayList();
+        List<CutiPegawai> listOfCuti = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfAlat = cutiPegawaiBo.getComboCutiPegawaiWithCriteria(query);
+            listOfCuti = cutiPegawaiBo.getComboCutiPegawaiWithCriteria(query);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1305,7 +1305,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
 
-        return listOfAlat;
+        return listOfCuti;
     }
 
     public List initComboAlat(String query) {
