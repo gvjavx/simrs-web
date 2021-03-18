@@ -2198,8 +2198,8 @@
                     var icon = "";
                     var val = "";
                     if (response.status == "200") {
-                        $('#idPelayananBpjs').val('IGD');
-                        // $('#idPelayananBpjs').val(response.kodePoliRujukan);
+                        // $('#idPelayananBpjs').val('IGD');
+                        $('#idPelayananBpjs').val(response.kodePoliRujukan);
                         $('#ppk_rujukan').val(response.kdProviderProvUmum);
                         $('#intansi_perujuk').val(response.namaProvPerujuk);
                         $('#tgl_rujukan').val(response.tglKunjungan);

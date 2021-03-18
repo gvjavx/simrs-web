@@ -979,5 +979,12 @@
         <convert converter="bean" match="com.neurix.simrs.master.pabrikobat.model.PabrikObat"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan"/>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.transaksi.asesmengizi.action.AsesmenGiziAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.asesmengizi.model.AsesmenGizi"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.asesmengizi.model.AsesmenAsuhanGizi"/>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.asesmengizi.model.AsesmenMonitoringGizi"/>
+
     </allow>
 </dwr>

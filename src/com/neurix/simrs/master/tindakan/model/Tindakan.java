@@ -43,6 +43,15 @@ public class Tindakan {
     private BigDecimal bDTarif;
     private BigDecimal bDTarifBpjs;
     private String isVaksin;
+    private String flagKonsulGizi;
+
+    public String getFlagKonsulGizi() {
+        return flagKonsulGizi;
+    }
+
+    public void setFlagKonsulGizi(String flagKonsulGizi) {
+        this.flagKonsulGizi = flagKonsulGizi;
+    }
 
     public String getIsVaksin() {
         return isVaksin;

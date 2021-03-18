@@ -558,7 +558,7 @@
                             <label class="col-md-4" style="margin-top: 7px">Tekanan Darah</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input oninput="setSideValue('kps6', this.value)" class="form-control" id="kps5" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input oninput="setSideValue('kps6', this.value)" class="form-control tensi-pasien" id="kps5" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         mmHg
                                     </div>
@@ -566,7 +566,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" id="kps6" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input class="form-control tensi-pasien" id="kps6" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         mmHg
                                     </div>
@@ -579,7 +579,7 @@
                             <label class="col-md-4" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input oninput="setSideValue('kps8', this.value)" type="number" class="form-control" id="kps7">
+                                    <input oninput="setSideValue('kps8', this.value)" type="number" class="form-control suhu-pasien" id="kps7">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         &#8451
                                     </div>
@@ -587,7 +587,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="kps8">
+                                    <input type="number" class="form-control suhu-pasien" id="kps8">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         &#8451
                                     </div>
@@ -600,7 +600,7 @@
                             <label class="col-md-4" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input oninput="setSideValue('kps10', this.value)" type="number" class="form-control" id="kps9">
+                                    <input oninput="setSideValue('kps10', this.value)" type="number" class="form-control nadi-pasien" id="kps9">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         x/mnt
                                     </div>
@@ -608,7 +608,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="kps10">
+                                    <input type="number" class="form-control nadi-pasien" id="kps10">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         x/mnt
                                     </div>
@@ -621,7 +621,7 @@
                             <label class="col-md-4" style="margin-top: 7px">RR</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input oninput="setSideValue('kps12', this.value)" type="number" class="form-control" id="kps11">
+                                    <input oninput="setSideValue('kps12', this.value)" type="number" class="form-control rr-pasien" id="kps11">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         x/mnt
                                     </div>
@@ -629,7 +629,7 @@
                             </div>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input type="number" class="form-control" id="kps12">
+                                    <input type="number" class="form-control rr-pasien" id="kps12">
                                     <div class="input-group-addon" style="font-size: 10px; width: 35%">
                                         x/mnt
                                     </div>
