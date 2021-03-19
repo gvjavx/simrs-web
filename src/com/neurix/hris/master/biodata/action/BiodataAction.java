@@ -52,6 +52,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.taglibs.standard.lang.jpath.example.Person;
+import org.hibernate.HibernateException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
@@ -266,6 +267,7 @@ public class BiodataAction extends BaseMasterAction{
                 setBiodata(biodata);
             }
         }catch (GeneralBOException e){
+            logger.error("[BiodataAction.init] Error, " +e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
 
@@ -770,9 +772,17 @@ public class BiodataAction extends BaseMasterAction{
                     // END
 
                     if ("Y".equalsIgnoreCase(editBiodata.getFlagDokterKso())){
-                        biodataBoProxy.saveEditDokterKso(editBiodata);
+                        try {
+                            biodataBoProxy.saveEditDokterKso(editBiodata);
+                        }catch (GeneralBOException e){
+                            logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                        }
                     } else {
-                        biodataBoProxy.saveEdit(editBiodata);
+                        try {
+                            biodataBoProxy.saveEdit(editBiodata);
+                        }catch (GeneralBOException e){
+                            logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                        }
                     }
 
                 } catch (GeneralBOException e) {
