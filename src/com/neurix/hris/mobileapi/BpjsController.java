@@ -707,8 +707,9 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
-                String[] getStatus =  e.getMessage().split("-");
-                statusMesin = getStatus[0];
+                String status =  e.getMessage();
+                String stJson = status.substring(status.indexOf("{")+1,status.indexOf("}"));
+                statusMesin = "{"+stJson+"}";
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);

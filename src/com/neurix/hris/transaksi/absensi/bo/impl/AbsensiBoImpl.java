@@ -2716,6 +2716,10 @@ public class AbsensiBoImpl implements AbsensiBo {
                 con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
                 try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
                     wr.write(postData);
+                }catch (Exception e){
+                    logger.error("[AbsensiBoImpl.getAlldataFromMesin] Error, " + e.getMessage());
+                    hbStatus = "8";
+                    throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Data From Mesin Absensi, " + e.getMessage());
                 }
                 int responseCode = con.getResponseCode();
                 System.out.println("\nSending 'POST' request to URL : " + url);
