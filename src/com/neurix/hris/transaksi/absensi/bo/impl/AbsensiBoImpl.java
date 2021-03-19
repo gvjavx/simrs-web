@@ -2494,7 +2494,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         } catch (HibernateException e) {
             logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
             hbStatus = "2";
-            throw new GeneralBOException("Found problem when retrieving Mesin using Criteria, " + e.getMessage());
+            throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Mesin using Criteria, " + e.getMessage());
         }
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
             String urlParameters = mesin.getMesinSn();
@@ -2557,7 +2557,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     } catch (HibernateException e) {
                         logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
                         hbStatus = "3";
-                        throw new GeneralBOException("Found problem when retrieving Sequence, " + e.getMessage());
+                        throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Sequence, " + e.getMessage());
                     }
                     mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
                     mesinAbsensiDetailEntity.setVerifyMode(mesinAbsensiDetail.getVerifyMode());
@@ -2580,7 +2580,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     } catch (HibernateException e) {
                         logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
                         hbStatus = "4";
-                        throw new GeneralBOException("Found problem when Add and Save Mesin Absensi Detail, " + e.getMessage());
+                        throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when Add and Save Mesin Absensi Detail, " + e.getMessage());
                     }
                 }
             }
@@ -2592,7 +2592,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
                 hbStatus = "5";
-                throw new GeneralBOException("Found problem when Mesin Absensi by ID, " + e.getMessage());
+                throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when Mesin Absensi by ID, " + e.getMessage());
             }
             mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
             try {
@@ -2600,7 +2600,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
                 hbStatus = "6";
-                throw new GeneralBOException("Found problem when Update and Save Mesin Absensi, " + e.getMessage());
+                throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when Update and Save Mesin Absensi, " + e.getMessage());
             }
             hbStatus = "1";
         }
@@ -2673,7 +2673,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
         // END OF PERCOBAAN DATA DUMMY*/
 
-        String status = respCode + "-" + hbStatus;
+        String status = "{status:" + hbStatus + "; response:"+ respCode +";}";
 
         return status;
     }
@@ -2692,7 +2692,7 @@ public class AbsensiBoImpl implements AbsensiBo {
         } catch (HibernateException e) {
             logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
             hbStatus = "2";
-            throw new GeneralBOException("Found problem when retrieving Data Mesin Absensi using criteria, " + e.getMessage());
+            throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Data Mesin Absensi using criteria, " + e.getMessage());
         }
         for (ImMesinAbsensiEntity mesin : imMesinAbsensiEntityList) {
             String urlParameters = "sn=" + mesin.getMesinSn();
@@ -2765,7 +2765,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 } catch (HibernateException e) {
                     logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
                     hbStatus = "3";
-                    throw new GeneralBOException("Found problem when retrieving Absensi Detai using Criteria, " + e.getMessage());
+                    throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Absensi Detai using Criteria, " + e.getMessage());
                 }
                 if (mesinAbsensiDetailEntityList.size() == 0) {
                     MesinAbsensiDetailEntity mesinAbsensiDetailEntity = new MesinAbsensiDetailEntity();
@@ -2775,7 +2775,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     } catch (HibernateException e) {
                         logger.error("[AbsensiBoImpl.getAlldataFromMesin] Error, " + e.getMessage());
                         hbStatus = "4";
-                        throw new GeneralBOException("Found problem when retrieving next ID, " + e.getMessage());
+                        throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving next ID, " + e.getMessage());
                     }
                     String userLogin = bean.getCreatedWho();
                     Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -2797,7 +2797,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     } catch (HibernateException e) {
                         logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
                         hbStatus = "5";
-                        throw new GeneralBOException("Problem when Add and Save Data to Mesin Absensi Detail, " + e.getMessage());
+                        throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Problem when Add and Save Data to Mesin Absensi Detail, " + e.getMessage());
                     }
                 }
             }
@@ -2808,7 +2808,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
                 hbStatus = "6";
-                throw new GeneralBOException("Found problem when retrieving Mesin Absensi by ID, " + e.getMessage());
+                throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Mesin Absensi by ID, " + e.getMessage());
             }
             mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
             try {
@@ -2816,13 +2816,13 @@ public class AbsensiBoImpl implements AbsensiBo {
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
                 hbStatus = "7";
-                throw new GeneralBOException("Problem when Update and Save Mesin Absensi, " + e.getMessage());
+                throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Problem when Update and Save Mesin Absensi, " + e.getMessage());
             }
 //            hbStatus = "1;";
         }
 
         String status = hbStatus;
-        String jsonStatus = "{status:" + status + ";}";
+        String jsonStatus = "{status:" + status + "; response:"+ respCode +";}";
         // END OF CODING ASLI //
         return jsonStatus;
     }
