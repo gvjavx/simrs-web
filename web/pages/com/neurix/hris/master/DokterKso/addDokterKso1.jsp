@@ -66,7 +66,7 @@
                         && persenKso != '' && persenKs != '' && positionId != '') {
                     var status ="";
                     dwr.engine.setAsync(false);
-                    DokterKsoAction.cekBeforeSave(nip,"add",function (listData) {
+                    DokterKsoAction.cekBeforeSave(nip, jenisKso, masterId,"add",function (listData) {
                         status=listData;
                     });
                     if (status==""){
@@ -191,7 +191,8 @@
                                                                             var labelItem = item.idDokter + " | " + item.namaDokter;
                                                                             mapped[labelItem] = {
                                                                                 id: item.idDokter,
-                                                                                nama: item.namaDokter
+                                                                                nama: item.namaDokter,
+                                                                                branch: item.branchId
                                                                             };
                                                                             functions.push(labelItem);
                                                                         });
@@ -200,6 +201,8 @@
                                                                     updater: function (item) {
                                                                         var selectedObj = mapped[item];
                                                                         $('#namaDokter1').val(selectedObj.nama);
+                                                                        $('#branchId1').val(selectedObj.branch);
+                                                                        console.log(selectedObj.branch);
                                                                         return selectedObj.id;
                                                                     }
                                                                 });
@@ -239,12 +242,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                            <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                            <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
-                                                            <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
                                                         <s:if test='dokterKso.branchUser == "KP"'>
                                                             <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
-                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId1" name="dokterKso.branchId"
+                                                            <s:select list="#initComboBranch.listOfComboBranches" id="branchId1" name="dokterKso.branchId" readonly="true"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
@@ -274,9 +274,9 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'tindakan':'Tindakan', 'obat' : 'Obat', 'kamar' : 'Kamar'}"
+                                                        <s:select list="#{'tindakan':'Tindakan', 'resep' : 'Resep', 'kamar' : 'Ruangan'}"
                                                                   id="jenisKso1" name="dokterKso.jenisKso"
-                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="jenisKso()"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -316,10 +316,10 @@
                                         </table>
                                         <br>
                                         <br>
-                                        <h3>
+                                        <h3 id="addTindakan">
                                             Add Tindakan
                                             <button
-                                                    id="btnAddTindakan" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah"><i class="fa fa-plus"></i>
+                                                    id="btnAddTindakan" type="button" class="btn btn-default btn-info" data-toggle="modal" data-target="#modal-tambah" onclick="listPelayanan()"><i class="fa fa-plus"></i>
                                             </button>
                                         </h3>
                                         <br>
@@ -437,54 +437,55 @@
             <div class="modal-body">
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
-                        <div class="row">
-                            <div class="col-sm-offset-2 col-sm-3">
-                                <label class="control-label">Riwayat Tindakan ID</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <s:textfield id="modRiwayatTindakanId" cssClass="form-control"
-                                             maxlength="12"
-                                />
-                                <script>
-                                    $(document).ready(function() {
-                                        var functions, mapped;
-                                        $('#modRiwayatTindakanId').typeahead({
-                                            minLength: 1,
-                                            source: function (query, process) {
-                                                functions = [];
-                                                mapped = {};
-                                                var data = [];
-                                                dwr.engine.setAsync(false);
-                                                DokterKsoAction.initTypeaheadRiwayatTindakan(query,function (listdata) {
-                                                    data = listdata;
-                                                });
-                                                $.each(data, function (i, item) {
-                                                    var labelItem = item.idTindakan + " | " + item.namaTindakan;
-                                                    mapped[labelItem] = {
-                                                        id: item.idTindakan,
-                                                        nama: item.namaTindakan
-                                                    };
-                                                    functions.push(labelItem);
-                                                });
-                                                process(functions);
-                                            },
-                                            updater: function (item) {
-                                                var selectedObj = mapped[item];
-                                                $('#modRiwayatTindakanName').val(selectedObj.nama);
-                                                return selectedObj.id;
-                                            }
-                                        });
-                                    });
-                                </script>
-                            </div>
-                        </div>
                         <div class="row" style="margin-top: 7px">
                             <div class="col-sm-offset-2 col-sm-3">
-                                <label class="control-label">Nama Riwayat Tindakan</label>
+                                <label class="control-label">Pelayanan</label>
                             </div>
                             <div class="col-sm-4">
-                                <s:textfield id="modRiwayatTindakanName" cssClass="form-control" readonly="true"
-                                />
+                                <select id="modPelayanan" style="width: 100%" class="form-control select2" onchange="listTindakan()">
+                                    <option value="">[Select One]</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-offset-2 col-sm-3">
+                                <label class="control-label">Tindakan</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <select id="modTindakan" style="width: 100%" class="form-control select2">
+                                    <option value="">[Select One]</option>
+                                </select>
+                                <%--<script>--%>
+                                    <%--$(document).ready(function() {--%>
+                                        <%--var functions, mapped;--%>
+                                        <%--$('#modRiwayatTindakanId').typeahead({--%>
+                                            <%--minLength: 1,--%>
+                                            <%--source: function (query, process) {--%>
+                                                <%--functions = [];--%>
+                                                <%--mapped = {};--%>
+                                                <%--var data = [];--%>
+                                                <%--dwr.engine.setAsync(false);--%>
+                                                <%--DokterKsoAction.initTypeaheadRiwayatTindakan(query,function (listdata) {--%>
+                                                    <%--data = listdata;--%>
+                                                <%--});--%>
+                                                <%--$.each(data, function (i, item) {--%>
+                                                    <%--var labelItem = item.idTindakan + " | " + item.namaTindakan;--%>
+                                                    <%--mapped[labelItem] = {--%>
+                                                        <%--id: item.idTindakan,--%>
+                                                        <%--nama: item.namaTindakan--%>
+                                                    <%--};--%>
+                                                    <%--functions.push(labelItem);--%>
+                                                <%--});--%>
+                                                <%--process(functions);--%>
+                                            <%--},--%>
+                                            <%--updater: function (item) {--%>
+                                                <%--var selectedObj = mapped[item];--%>
+                                                <%--$('#modRiwayatTindakanName').val(selectedObj.nama);--%>
+                                                <%--return selectedObj.id;--%>
+                                            <%--}--%>
+                                        <%--});--%>
+                                    <%--});--%>
+                                <%--</script>--%>
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
@@ -492,8 +493,7 @@
                                 <label class="control-label">Persen KSO Tindakan</label>
                             </div>
                             <div class="col-sm-4">
-                                <s:textfield id="modPersenKsoTindakan" cssClass="form-control"
-                                />
+                                <s:textfield type="number" id="modPersenKsoTindakan" cssClass="form-control" />
                             </div>
                         </div>
                         <br>
@@ -550,23 +550,27 @@
             $('#modal-edit').find('.modal-title').text('Add Dokter KSO Tindakan');
         });
         $('#modBtnSave').click(function () {
-            var riwayatTindakanId = $('#modRiwayatTindakanId').val();
-            var riwayatTindakanName = $('#modRiwayatTindakanName').val();
+            var pelayanan = $('#modPelayanan').val();
+            var tindakanId = $('#modTindakan').val();
+            var tindakanName = $('#modTindakan :selected').text();
             var persenKsoTindakan = $('#modPersenKsoTindakan').val();
 
             dwr.engine.setAsync(false);
-            if(riwayatTindakanId!='' && persenKsoTindakan!=''){
-                DokterKsoAction.saveRiwayatKsoTindakanSession(riwayatTindakanId,riwayatTindakanName,persenKsoTindakan,function() {
+            if(tindakanId!='' && persenKsoTindakan!='' && pelayanan!=''){
+                DokterKsoAction.saveRiwayatKsoTindakanSession(tindakanId,tindakanName,persenKsoTindakan,function() {
                     listResult();
                 });
                 $('#modal-edit').modal('hide');
             }else {
                 var msg="";
-                if (riwayatTindakanId==""){
-                    msg+="Riwayat Tindakan Id masih kosong \n";
+                if (tindakanId==""){
+                    msg+="Tindakan masih kosong \n";
                 }
                 if (persenKsoTindakan==""){
                     msg+="Persen Kso Tindakan tidak ditemukan\n";
+                }
+                if (pelayanan==""){
+                    msg+="Pelayanan masih kosong\n";
                 }
                 alert(msg);
             }
@@ -586,5 +590,54 @@
                 alert(msg);
             }
         });
+
+        $('#addTindakan').hide();
     })
+
+    function jenisKso() {
+        var jenis = $('#jenisKso1').val();
+
+        if(jenis != 'tindakan'){
+            $('#addTindakan').hide();
+            $('#showdata').hide();
+        } else{
+            $('#addTindakan').show();
+            $('#showdata').show();
+        }
+
+    }
+
+    function listPelayanan(){
+        var idDokter = $('#nip1').val();
+        console.log(idDokter);
+        var option = '<option value="">[Select One]</option>';
+        DokterKsoAction.initComboPelayananDokter(idDokter, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idPelayanan + "'>" + item.namaPelayanan + "</option>";
+                });
+                $('#modPelayanan').html(option);
+            } else {
+                $('#modPelayanan').html(option);
+            }
+        });
+    }
+
+    function listTindakan(){
+        var idPelayanan = $('#modPelayanan').val();
+        var idDokter = $('#nip1').val();
+        console.log(idPelayanan);
+        var option = '<option value="">[Select One]</option>';
+        DokterKsoAction.initComboTindakanDokter(idPelayanan, idDokter, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
+                });
+                $('#modTindakan').html(option);
+            } else {
+                $('#modTindakan').html(option);
+            }
+        });
+    }
+
 </script>

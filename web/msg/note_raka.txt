@@ -1,3 +1,19 @@
+------ 2021-03-17 ===> Master Dokter KSO
+-- Menambahkan Length Kodering dari 11 ke 20
+    ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+-- Menambahkan column Position ID
+    ALTER TABLE im_simrs_dokter_kso
+    ADD COLUMN position_id VARCHAR(10);
+
+
+------ 2021-03-15 ===> Master Branch Nilai Beberapa Tunjnagan
+-- Menambahkan field nilai tunjangan
+    ALTER TABLE im_branches
+    --ADD COLUMN tunj_pemondokan numeric(15,2),
+    ADD COLUMN tunj_supervisi numeric(15,2),
+    ADD COLUMN tunj_lokasi numeric(15,2),
+    ADD COLUMN tunj_siaga numeric(15,2);
+
 ------ 2021-03-01 ===> Master Kelompok Position & Transaksi Tunjangan Lain
 -- Menambahkan field Tunj. Telekomunikasi
 

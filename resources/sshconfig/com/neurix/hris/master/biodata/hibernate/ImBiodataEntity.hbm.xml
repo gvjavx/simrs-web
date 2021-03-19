@@ -145,9 +145,9 @@
         <property name="gaji">
             <column name="gaji" sql-type="numeric" length="10" precision="2"/>
         </property>
-        <property name="poinLebih">
-            <column name="poin_lebih" sql-type="integer" not-null="false" />
-        </property>
+        <!--<property name="poinLebih">-->
+            <!--<column name="poin_lebih" sql-type="integer" not-null="false" />-->
+        <!--</property>-->
         <!--<property name="agama">-->
             <!--<column name="agama" sql-type="integer" not-null="false" />-->
         <!--</property>-->

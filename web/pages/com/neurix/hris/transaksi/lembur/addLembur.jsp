@@ -8,6 +8,7 @@
 <head>
     <script type='text/javascript' src='<s:url value="/dwr/interface/UserAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LemburAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/ProfesiAction.js"/>'></script>
     <script type='text/javascript' src="<s:url value="/pages/plugins/daterangepicker/moment.js"/>"></script>
     <style type="text/css">
         #tglAwal{z-index: 2000!important}
@@ -129,6 +130,7 @@
                         </td>
                         <td>
                             <table>
+                                <s:hidden id="berhakLembur" name="lembur.hakLembur"/>
                                 <s:textfield  id="check" name="lembur.self" required="true" readonly="true" cssStyle="display: none" cssClass="form-control"/>
                                 <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                 <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="lembur.branchId"
@@ -170,7 +172,9 @@
 
                                     $.each(data, function (i, item) {
                                         var labelItem = item.nip+" "+item.namaPegawai;
-                                        mapped[labelItem] = {id: item.nip,nama:item.namaPegawai, label: labelItem, divisi:item.divisi,jabatan:item.positionId,golongan:item.golonganId,tipePegawai:item.tipePegawai,statusGiling:item.masaGiling,statusPegawai:item.statusPegawai};
+                                        mapped[labelItem] = {id: item.nip,nama:item.namaPegawai, label: labelItem, divisi:item.divisi,
+                                            jabatan:item.positionId,golongan:item.golonganId,tipePegawai:item.tipePegawai,statusGiling:item.masaGiling,
+                                            statusPegawai:item.statusPegawai,profesiPegawai:item.profesiId};
                                         functions.push(labelItem);
                                     });
                                     process(functions);
@@ -178,7 +182,24 @@
                             },
                             updater: function (item) {
                                 var selectedObj = mapped[item];
-                                if (selectedObj.tipePegawai=="TP03" ||selectedObj.statusPegawai=="KNS"){
+                                //RAKA-09MAR2021 ==> Validasi Baru, Pengajuan
+                                var canLembur = false;
+
+                                if (selectedObj.tipePegawai=="TP03"){
+                                    ProfesiAction.getTipeProfesi(selectedObj.profesiPegawai, function(tipeProfesi){
+                                        console.log(selectedObj.profesiPegawai + " - " + tipeProfesi);
+                                        if(tipeProfesi != "apoteker" && tipeProfesi != "dokter") canLembur = true;
+                                    })
+                                }
+
+                                if (selectedObj.tipePegawai=="TP01"){
+                                    LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
+                                        canLembur = hakLembur;
+                                        console.log(canLembur + " - " + hakLembur);
+                                    })
+                                }
+
+                                if (canLembur){
                                     $('#divisiId').val(selectedObj.divisi).change();
                                     $('#divisiId1').val(selectedObj.divisi).change();
                                     $('#namaAddId').val(selectedObj.nama).change();
@@ -198,9 +219,38 @@
                                     $('#tipePegawai1').val(selectedObj.tipePegawai).change();
                                     return selectedObj.id;
                                 } else {
-                                    alert("Pimpinan tidak bisa mengambil Lembur");
+                                    alert("Pegawai tersebut tidak berhak Lembur");
                                     $('#nipId').val("");
                                 }
+                                //RAKA-end
+
+                                // if (selectedObj.tipePegawai=="TP03" && selectedObj.statusPegawai=="KNS"){
+                                //     $('#divisiId').val(selectedObj.divisi).change();
+                                //     $('#divisiId1').val(selectedObj.divisi).change();
+                                //     $('#namaAddId').val(selectedObj.nama).change();
+                                //     $('#positionId').val(selectedObj.jabatan).change();
+                                //     $('#positionId1').val(selectedObj.jabatan).change();
+                                //     $('#golonganId').val(selectedObj.golongan).change();
+                                //     $('#golonganIdPkwt').val(selectedObj.golongan).change();
+                                //     $('#golonganId1').val(selectedObj.golongan).change();
+                                //     $('#tipePegawai').val(selectedObj.tipePegawai).change();
+                                //     if ("TP03"==selectedObj.tipePegawai){
+                                //         $('#golonganId').hide();
+                                //         $('#golonganIdPkwt').show();
+                                //     }else{
+                                //         $('#golonganId').show();
+                                //         $('#golonganIdPkwt').hide();
+                                //     }
+                                //     $('#tipePegawai1').val(selectedObj.tipePegawai).change();
+                                //     return selectedObj.id;
+                                // } else {
+                                //     if(selectedObj.tipePegawai!="TP03"){
+                                //         alert("Hanya PKWT yang bisa mengambil Lembur");
+                                //     } else {
+                                //         alert("Pimpinan tidak bisa mengambil Lembur");
+                                //     }
+                                //     $('#nipId').val("");
+                                // }
                             }
                         });
                     </script>
@@ -472,6 +522,7 @@
 </html>
 <script>
     $(document).ready(function(){
+
         function change () {
             var tipeLembur = $('#tipeLembur').val();
             var branchAsli;
@@ -509,9 +560,20 @@
             $('#branchId').attr('readonly','true');
             $('#branchId').attr('disabled','true');
             $('#nipId').attr('readonly','true');
+
+            if ($('#berhakLembur').val()==false){
+                $('#save').text("Anda Tidak Berhak Mengajukan Lembur");
+                $('#save').removeClass("btn-primary");
+                $('#save').addClass("btn-danger");
+                $('#save').attr("disabled", "true");
+
+                $('#tipeLembur').attr('disabled','true');
+                $('#keterangan').attr('disabled','true');
+            }
         }else{
             $('#branchId33').attr('disabled','true');
         }
+
         $('body').click(function(){
             var jamawal=$('#jamAwal').val();
             var jamakhir=$('#jamAkhir').val();

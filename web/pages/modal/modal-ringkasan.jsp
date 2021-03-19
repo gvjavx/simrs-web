@@ -14,6 +14,10 @@
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
                         <p id="msg_ring_ringkasan_pulang"></p>
                     </div>
+                    <div class="alert alert-danger alert-dismissible" style="display: none" id="warn_ringkasan_pulang">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_ringkasan_pulang"></p>
+                    </div>
                     <div class="btn-group">
                         <button type="button" onclick="showModalRingkasanPasien('ringkasan_pulang_pasien')" class="btn btn-success"><i class="fa fa-plus"></i> Ringkasan Pulang
                         </button>
@@ -28,6 +32,8 @@
                                 <img id="btn_ring_ringkasan_pulang_pasien" class="hvr-grow"
                                      onclick="detailRingkasanPasien('ringkasan_pulang_pasien')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+
+                                <img id="delete_ringkasan_pulang_pasien" class="hvr-grow btn-hide" onclick="conRing('ringkasan_pulang_pasien', 'ringkasan_pulang')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
                         </tbody>
@@ -106,10 +112,10 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Suhu</label>
-                            <div class="col-md-3">
+                            <label class="col-md-2" style="margin-top: 7px">Suhu</label>
+                            <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps5">
+                                    <input class="form-control suhu-pasien" type="number" id="rps5">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -118,7 +124,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps6">
+                                    <input class="form-control nadi-pasien" type="number" id="rps6">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/mnt
                                     </div>
@@ -128,10 +134,10 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">RR</label>
-                            <div class="col-md-3">
+                            <label class="col-md-2" style="margin-top: 7px">RR</label>
+                            <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps7">
+                                    <input class="form-control rr-pasien" type="number" id="rps7">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/mnt
                                     </div>
@@ -140,7 +146,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps8" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input class="form-control tensi-pasien" id="rps8" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -150,9 +156,9 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">GCS</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="number" id="rps9" style="margin-top: 7px">
+                            <label class="col-md-2" style="margin-top: 7px">GCS</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="rps9" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -161,7 +167,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Pemeriksaan Penunjang/Diagnotik Terpeing</label>
                             <div class="col-md-8">
-                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="rps10"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control penunjang-medis" rows="3" id="rps10"></textarea>
                             </div>
                         </div>
                     </div>
@@ -169,7 +175,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Terapi atau pengobatan selama di Rumah Sakit</label>
                             <div class="col-md-8">
-                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="rps11"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control tindakan-pasien" rows="3" id="rps11"></textarea>
                             </div>
                         </div>
                     </div>
@@ -185,7 +191,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Diagnosa Utama</label>
                             <div class="col-md-8">
-                                <textarea style="margin-top: 7px" class="form-control" rows="3" id="rps13"></textarea>
+                                <textarea style="margin-top: 7px" class="form-control diagnosa-pasien" rows="3" id="rps13"></textarea>
                             </div>
                         </div>
                     </div>
@@ -213,10 +219,10 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">Suhu</label>
-                            <div class="col-md-3">
+                            <label class="col-md-2" style="margin-top: 7px">Suhu</label>
+                            <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps16">
+                                    <input class="form-control suhu-pasien" type="number" id="rps16">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -225,7 +231,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps17">
+                                    <input class="form-control nadi-pasien" type="number" id="rps17">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/mnt
                                     </div>
@@ -235,10 +241,10 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">RR</label>
-                            <div class="col-md-3">
+                            <label class="col-md-2" style="margin-top: 7px">RR</label>
+                            <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps18">
+                                    <input class="form-control rr-pasien" type="number" id="rps18">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/mnt
                                     </div>
@@ -247,7 +253,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control" type="number" id="rps19">
+                                    <input class="form-control tensi-pasien" id="rps19" data-inputmask="'mask': ['999/999']" data-mask="">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -257,9 +263,9 @@
                     </div>
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-3" style="margin-top: 7px">GCS</label>
-                            <div class="col-md-3">
-                                <input class="form-control" type="number" id="rps20" style="margin-top: 7px">
+                            <label class="col-md-2" style="margin-top: 7px">GCS</label>
+                            <div class="col-md-4">
+                                <input class="form-control" id="rps20" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>
@@ -554,7 +560,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">GCS</label>
                             <div class="col-md-3">
-                                <input class="form-control" type="number" id="rem16" style="margin-top: 7px">
+                                <input class="form-control" id="rem16" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>

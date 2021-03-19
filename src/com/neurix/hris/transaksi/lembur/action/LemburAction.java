@@ -21,6 +21,7 @@ import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -128,8 +129,11 @@ public class LemburAction extends BaseMasterAction {
             String user = CommonUtil.userIdLogin();
             addLembur.setNip(user);
             searchBiodata.setNip(user);
-            listOfsearchBiodata = lemburBoProxy.getBiodatawithCriteria(user);
-
+            try {
+                listOfsearchBiodata = lemburBoProxy.getBiodatawithCriteria(user);
+            }catch (GeneralBOException e){
+                logger.error("[LemburAction.add] Error, " + e.getMessage());
+            }
             session.removeAttribute("listOfResultLemburPersonil");
             session.setAttribute("listOfResultLemburPersonil", listOfsearchBiodata);
             List<Lembur> listOfResultLemburPersonil = (List<Lembur>) session.getAttribute("listOfResultLemburPersonil");
@@ -146,6 +150,7 @@ public class LemburAction extends BaseMasterAction {
                     addLembur.setBranchId(lembur.getBranchId());
                     addLembur.setStatusGiling(lembur.getStatusGiling());
                     addLembur.setSelf("Y");
+                    addLembur.setHakLembur(lembur.isHakLembur());
                     break;
                 }
             } else {
@@ -770,6 +775,18 @@ public class LemburAction extends BaseMasterAction {
             hasil = hasil+lembur.getLamaJam();
         }
         return hasil;
+    }
+
+    public Boolean cekHakLembur (String nip){
+        Boolean hakLembur = false;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LemburBo lemburBo = (LemburBo) ctx.getBean("lemburBoProxy");
+        try{
+            hakLembur = lemburBo.cekHakLembur(nip);
+        }catch (GeneralBOException e){
+            logger.error("[LemburAction.cekHakLembur] Error, " + e.getMessage());
+        }
+        return hakLembur;
     }
 
 }

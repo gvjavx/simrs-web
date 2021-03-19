@@ -15,6 +15,7 @@ import com.neurix.hris.master.golongan.dao.GolonganDao;
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 import com.neurix.hris.master.jamkerja.dao.JamKerjaDao;
 import com.neurix.hris.master.libur.dao.LiburDao;
+import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
 import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
@@ -76,6 +77,7 @@ public class LemburBoImpl implements LemburBo {
     private LiburDao liburDao;
     private JamKerjaDao jamKerjaDao;
     private NotifikasiFcmDao notifikasiFcmDao;
+    private ProfesiDao profesiDao;
 //    private String ACTION_CLICK = "TASK_LEMBUR";
     private String ACTION_CLICK = null;
 
@@ -482,12 +484,12 @@ public class LemburBoImpl implements LemburBo {
         List<ImBiodataEntity> imBiodataEntity = null;
         ItPersonilPositionEntity itPersonilPositionEntity = null;
         try {
-
             imBiodataEntity = biodataDao.getByCriteria(hsCriteria);
         } catch (HibernateException e) {
             logger.error("[BiodataBoImpl.getSearchPersonalByCriteria] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
+
 
         if(imBiodataEntity != null) {
             Lembur returnLembur;
@@ -499,7 +501,13 @@ public class LemburBoImpl implements LemburBo {
                 returnLembur.setStatusGiling(personalEntity.getMasaGiling());
                 returnLembur.setGolonganId(personalEntity.getGolongan());
                 returnLembur.setTipePegawaiId(personalEntity.getTipePegawai());
-                itPersonilPositionEntity = personilPositionDao.getById("nip",personalEntity.getNip(),"Y" );
+
+                try {
+                    itPersonilPositionEntity = personilPositionDao.getById("nip", personalEntity.getNip(), "Y");
+                }catch (HibernateException e) {
+                    logger.error("[LemburBoImpl.getBiodatawithCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Personil Position using ID, " + e.getMessage());
+                }
                 if(itPersonilPositionEntity != null){
                     returnLembur.setBranchId(itPersonilPositionEntity.getBranchId());
                 }
@@ -508,7 +516,23 @@ public class LemburBoImpl implements LemburBo {
                 }else{
                     returnLembur.setPositionId("");
                 }
-                ImPosition imPosition = positionDao.getById("positionId",returnLembur.getPositionId());
+                ImPosition imPosition = new ImPosition();
+                try{
+                    imPosition = positionDao.getById("positionId",returnLembur.getPositionId());
+                }catch (HibernateException e){
+                    logger.error("[LemburBoImpl.getBiodatawithCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retrieving Personil Position using ID, " + e.getMessage());
+                }
+
+                //RAKA-10MAR2021==> Validasi Hak Lembur Pegawai
+                if("TP01".equalsIgnoreCase(personalEntity.getTipePegawai())){
+                    Boolean hakLembur = cekHakLembur(personalEntity.getNip());
+                    returnLembur.setHakLembur(hakLembur);
+                }else if("TP03".equalsIgnoreCase(personalEntity.getTipePegawai())){
+                    Boolean hakLembur = cekHakLembur(personalEntity.getNip());
+                    hakLembur = profesiDao.cekHakLemburByProfesi(personalEntity.getProfesiId());
+                    returnLembur.setHakLembur(hakLembur);
+                }
 
                 if (imPosition!=null){
                     returnLembur.setDivisiId(imPosition.getDepartmentId());
@@ -1254,5 +1278,17 @@ public class LemburBoImpl implements LemburBo {
     @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
         return null;
+    }
+
+    @Override
+    public Boolean cekHakLembur(String nip) throws GeneralBOException {
+        Boolean hakLembur;
+        try{
+            hakLembur = lemburDao.cekHakLembur(nip);
+        }catch(HibernateException e){
+            logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
+        }
+        return hakLembur;
     }
 }

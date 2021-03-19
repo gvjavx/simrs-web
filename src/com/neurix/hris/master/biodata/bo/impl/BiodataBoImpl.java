@@ -1237,7 +1237,7 @@ public class BiodataBoImpl implements BiodataBo {
                                     historyJabatanPegawai.setPoint("0");
                                     historyJabatanPegawai.setPointLebih("0");
                                     historyJabatanPegawai.setNilaiSmk(BigDecimal.valueOf(0));
-                                    if(bean.getStTanggalAktif() != null) {
+                                    if(bean.getStTanggalAktif() != null && !"".equalsIgnoreCase(bean.getStTanggalAktif())) {
                                         historyJabatanPegawai.setTahun(bean.getStTanggalAktif().split("-")[2]);
                                     }else{
                                         historyJabatanPegawai.setTahun(bean.getStTanggalMasuk().split("-")[2]);

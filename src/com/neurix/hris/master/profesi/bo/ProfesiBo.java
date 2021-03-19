@@ -18,4 +18,6 @@ public interface ProfesiBo extends BaseMasterBo<Profesi>{
 
     public List<Profesi> getComboProfesiWithCriteria(String query) throws GeneralBOException;
 
+    public String getTipeProfesi(String profesiId) throws GeneralBOException;
+
 }

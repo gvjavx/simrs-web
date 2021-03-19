@@ -2011,18 +2011,23 @@ DROP id_dokter,
 DROP id_pemeriksa;
 
 ALTER TABLE it_simrs_periksa_lab
-ADD COLUMN is_periksa_luar VARCHAR(50);
-
-ALTER TABLE it_simrs_periksa_lab
-ADD COLUMN nama_lab_luar VARCHAR(50);
+ADD COLUMN id_validator character varying(50)
+ADD COLUMN nama_validator character varying(100),
+ADD COLUMN id_petugas character varying(50),
+ADD COLUMN nama_petugas character varying(100),
+ADD COLUMN is_periksa_luar character varying(50),
+ADD COLUMN nama_lab_luar character varying(50),
+ADD COLUMN tarif_lab_luar numeric;
 
 --MAPPING GIZI ASESMENT
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000247','RMM00000014','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
 
-
-
-
+ALTER TABLE it_simrs_periksa_lab ADD COLUMN id_validator VARCHAR(50);
+ALTER TABLE it_simrs_periksa_lab ADD COLUMN nama_validator character varying(100);
+ALTER TABLE it_simrs_periksa_lab ADD COLUMN id_petugas character varying(100);
+ALTER TABLE it_simrs_periksa_lab ADD COLUMN nama_petugas character varying(100);
+ALTER TABLE it_simrs_periksa_lab ADD COLUMN tarif_lab_luar numeric;
 
 
 

@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.461537825000002"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="17"/>
+	<property name="ireport.y" value="113"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -234,8 +234,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="147" height="14" uuid="e1cf9379-2bda-4e93-a9a6-8865db152244"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="7"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7" isUnderline="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 							</textField>
@@ -270,7 +270,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="142" height="14" uuid="1c9fdba2-99d1-4a8d-b3d0-3c7a9f400e57"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{jabatan}]]></textFieldExpression>
@@ -363,7 +363,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
-								<text><![CDATA[Masuk <07:00]]></text>
+								<text><![CDATA[Masuk <08:00]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
@@ -791,7 +791,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 							<jr:detailCell height="14" rowSpan="1">
 								<textField>
 									<reportElement x="0" y="0" width="64" height="14" uuid="74787a85-6df8-4a35-8f04-37633e5485a7"/>
-									<textElement textAlignment="Center" verticalAlignment="Middle">
+									<textElement textAlignment="Left" verticalAlignment="Middle">
 										<font size="8"/>
 									</textElement>
 									<textFieldExpression><![CDATA[$F{ketLain2}]]></textFieldExpression>

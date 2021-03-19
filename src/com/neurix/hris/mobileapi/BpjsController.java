@@ -701,12 +701,12 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
         if ("all".equalsIgnoreCase(metode)){
             try {
-                String status = absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
-                statusMesin = "{status:" +status+ "}";
+                statusMesin = absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
+//                statusMesin = "{status:" +status+ "}";
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
-//                statusMesin = "{status:0;}";
+//                statusMesin = "{status:0; message:\"" + e +"\";}";
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);

@@ -1606,3 +1606,38 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN id_pabrik_obat VARCHAR(50);
 
 --
+
+-- 2021-03-02
+
+    CREATE TABLE migrasi_dokter (
+    	status VARCHAR(1),
+    	nama_pelayanan TEXT,
+    	nama_dokter TEXT,
+    	dpjp VARCHAR(100),
+    	nip VARCHAR(100) PRIMARY KEY,
+    	branch_id VARCHAR(5),
+    	id_pelayanan VARCHAR(100)
+
+--
+
+--2021-03-10
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN id_item VARCHAR(100),
+    ADD COLUMN jenis_item VARCHAR(100),
+    ADD COLUMN tarif NUMERIC;
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN parent_id VARCHAR(100),
+    ADD COLUMN flag_parent VARCHAR(1);
+
+--
+
+--2021-03-16
+
+    ALTER TABLE im_simrs_detail_rekanan_ops
+    ADD COLUMN tarif_bpjs numeric(10,2),
+    ADD COLUMN diskon_non_bpjs numeric(10,2),
+    ADD COLUMN diskon_bpjs numeric(10,2);
+
+--

@@ -78,6 +78,28 @@ public class AbsensiPegawaiEntity implements Serializable {
     private String flagPanggil;
     private String flagCutiGantiHari;
 
+    //RAKA-10MAR2021 ==> Menampung info jam lembur
+    private String jamAwalLembur;
+    private String jamSelesaiLembur;
+    //RAKA-end
+
+
+    public String getJamAwalLembur() {
+        return jamAwalLembur;
+    }
+
+    public void setJamAwalLembur(String jamAwalLembur) {
+        this.jamAwalLembur = jamAwalLembur;
+    }
+
+    public String getJamSelesaiLembur() {
+        return jamSelesaiLembur;
+    }
+
+    public void setJamSelesaiLembur(String jamSelesaiLembur) {
+        this.jamSelesaiLembur = jamSelesaiLembur;
+    }
+
     private BigInteger telat;
 
     public BigInteger getTelat() {

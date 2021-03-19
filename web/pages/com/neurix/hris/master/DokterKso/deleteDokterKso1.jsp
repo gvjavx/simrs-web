@@ -123,7 +123,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Edit Dokter KSO
+            Delete Dokter KSO
         </h1>
     </section>
     <!-- Main content -->
@@ -132,7 +132,7 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-pencil"></i> Edit Dokter KSO</h3>
+                        <h3 class="box-title"><i class="fa fa-pencil"></i> Delete Dokter KSO</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">

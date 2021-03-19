@@ -774,7 +774,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
     public List<Obat> getSearchObat(String query, String branch) {
         List<Obat> obatList = new ArrayList<>();
-        if (query != null && branch != null) {
+        if (query != null) {
             String param = "%" + query + "%";
 
             String SQL = "SELECT  \n" +
@@ -787,7 +787,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "merk, \n" +
                     "flag_bpjs \n" +
                     "FROM im_simrs_header_obat\n" +
-                    "WHERE flag = 'Y' \n" +
+                    "WHERE flag NOT LIKE 'N'\n" +
                     "AND nama_obat ILIKE :id\n" +
                     "OR id_obat ILIKE :id\n" +
                     "LIMIT 10";

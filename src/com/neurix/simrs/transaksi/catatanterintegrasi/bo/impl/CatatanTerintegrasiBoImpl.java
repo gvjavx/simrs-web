@@ -53,7 +53,9 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
                     catatan.setSubjective(entity.getSubjective());
                     catatan.setIntruksi(entity.getIntruksi());
                     catatan.setTtdPetugas(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdPetugas());
-                    catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdDpjp());
+                    if(entity.getTtdDpjp() != null && !"".equalsIgnoreCase(entity.getTtdDpjp())){
+                        catatan.setTtdDpjp(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getTtdDpjp());
+                    }
                     catatan.setKeterangan(entity.getKeterangan());
                     catatan.setAction(entity.getAction());
                     catatan.setFlag(entity.getFlag());
@@ -157,6 +159,39 @@ public class CatatanTerintegrasiBoImpl implements CatatanTerintegrasiBo {
             response.setMsg("Found Error, Data yang dicari tidak ditemukan...!");
         }
         return response;
+    }
+
+    @Override
+    public void saveEdit(CatatanTerintegrasi bean) throws GeneralBOException {
+        ItSimrsCatatanTerintegrasiEntity entity = new ItSimrsCatatanTerintegrasiEntity();
+        try {
+            entity = catatanTerintegrasiDao.getById("idCatatanTerintegrasi", bean.getIdCatatanTerintegrasi());
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+            throw new GeneralBOException("Error when get id cppt, "+e.getMessage());
+        }
+        if (entity != null) {
+            entity.setTtdDpjp(bean.getTtdDpjp());
+            if(bean.getNamaDokter() != null && !"".equalsIgnoreCase(bean.getNamaDokter())){
+                entity.setNamaDokter(bean.getNamaDokter());
+            }
+            if(bean.getSipDokter() != null && !"".equalsIgnoreCase(bean.getSipDokter())){
+                entity.setSipDokter(bean.getSipDokter());
+            }
+            entity.setFlag("Y");
+            entity.setAction("U");
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            try {
+                catatanTerintegrasiDao.updateAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error(e.getMessage());
+                throw new GeneralBOException("Error when saveedit cppt, "+e.getMessage());
+            }
+        } else {
+            logger.error("Data cppt tidak ditemukan");
+            throw new GeneralBOException("Data cppt tidak ditemukan");
+        }
     }
 
     public static Logger getLogger() {

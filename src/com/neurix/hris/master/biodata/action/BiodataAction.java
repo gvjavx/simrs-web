@@ -273,27 +273,30 @@ public class BiodataAction extends BaseMasterAction{
     }
 
     public List<HistoryJabatanPegawai> historyJabatan(String nip){
+        logger.info("[BiodataAction.historyJabatan] start process >>>");
         ImtHrisHistoryJabatanPegawaiEntity imtJabatan = null;
         List<HistoryJabatanPegawai> historyJabatan = null;
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         historyJabatan = userBo.historyJabatanSys(nip);
+        logger.info("[BiodataAction.historyJabatan] end process >>>");
         return historyJabatan;
     }
 
-    public List<Payroll>
-    searchPayroll(String nip){
+    public List<Payroll> searchPayroll(String nip){
+        logger.info("[BiodataAction.searchPayroll] start process >>>");
         List <Payroll> imPayroll = null;
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BiodataBo userBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         imPayroll = userBo.searchPayrollSys(nip);
+        logger.info("[BiodataAction.searchPayroll] end process >>>");
         return imPayroll;
     }
 
     public List initComboUser(String query) {
-        logger.info("[UserAction.initComboUser] start process >>>");
+        logger.info("[BiodataAction.initComboUser] start process >>>");
 
         List<Biodata> biodataList = new ArrayList();
 
@@ -312,7 +315,7 @@ public class BiodataAction extends BaseMasterAction{
             logger.error("[UserAction.initComboUser] Error when get combo User," + "[" + logId + "] Found problem when retrieving combo User data, please inform to your admin.", e);
         }
 
-        logger.info("[UserAction.initComboUser] end process <<<");
+        logger.info("[BiodataAction.initComboUser] end process <<<");
 
         return biodataList;
     }
@@ -459,7 +462,7 @@ public class BiodataAction extends BaseMasterAction{
 
     @Override
     public String view() {
-        logger.info("[BiodataAction.saveUpload] start process >>>");
+        logger.info("[BiodataAction.view] start process >>>");
         try {
             Biodata editBiodata = getBiodata();
             if (this.fileUpload!=null) {
@@ -509,7 +512,7 @@ public class BiodataAction extends BaseMasterAction{
             return ERROR;
         }
 
-        logger.info("[BiodataAction.saveUpload] end process <<<");
+        logger.info("[BiodataAction.view] end process <<<");
 
         return "success_save_edit";
     }
@@ -3717,11 +3720,11 @@ public class BiodataAction extends BaseMasterAction{
         try {
             jenisPegawais = biodataBo.getAllJenisPegawai();
         } catch (GeneralBOException e){
-            logger.info("[BiodataAction.checkIsJenisPegawaiDefault] ERROR. ",e);
+            logger.error("[BiodataAction.checkIsJenisPegawaiDefault] ERROR. ",e);
         }
 
 
-        logger.info("[BiodataAction.getJenisPegawaiDefault] END <<<");
+        logger.info("[BiodataAction.getAllJenisPegawai] END <<<");
         return jenisPegawais;
     }
 
