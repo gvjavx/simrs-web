@@ -82,13 +82,13 @@
                         msg += 'Field <strong>Dokter KSO ID </strong> is required.' + '<br/>';
                     }
                     if (nip == '') {
-                        msg += 'Field <strong>Nip </strong> is required.' + '<br/>';
+                        msg += 'Field <strong>ID Dokter</strong> is required.' + '<br/>';
                     }
                     if (branchId == '') {
                         msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
                     }
                     if (masterId == '') {
-                        msg += 'Field <strong>Master ID </strong> is required.' + '<br/>';
+                        msg += 'Field <strong>Jenis Pasien </strong> is required.' + '<br/>';
                     }
                     if (jenisKso == '') {
                         msg += 'Field <strong>Jenis KSO </strong> is required.' + '<br/>';
@@ -174,7 +174,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>NIP Dokter :</small></label>
+                                                    <label class="control-label"><small>ID Dokter :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -229,7 +229,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Master Id :</small></label>
+                                                    <label class="control-label"><small>Jenis Pasien :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -294,7 +294,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Persen KSO:</small></label>
+                                                    <label class="control-label"><small>Persen KSO (%):</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -305,7 +305,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Persen KS:</small></label>
+                                                    <label class="control-label"><small>Persen KS (%):</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
