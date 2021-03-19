@@ -132,7 +132,7 @@ public class ImBiodataHistoryEntity implements Serializable {
     private String flagDokterKso;
 
     private Date tanggalKeluar;
-    private String flagPegawaiCutiDiluarTanggungan;
+    private String flagCutiDiluarTanggungan;
     private Date tanggalCutiDiluarAwal;
     private Date tanggalCutiDiluarAkhir;
     //RAKA-end
@@ -162,12 +162,12 @@ public class ImBiodataHistoryEntity implements Serializable {
         this.tanggalKeluar = tanggalKeluar;
     }
 
-    public String getFlagPegawaiCutiDiluarTanggungan() {
-        return flagPegawaiCutiDiluarTanggungan;
+    public String getFlagCutiDiluarTanggungan() {
+        return flagCutiDiluarTanggungan;
     }
 
-    public void setFlagPegawaiCutiDiluarTanggungan(String flagPegawaiCutiDiluarTanggungan) {
-        this.flagPegawaiCutiDiluarTanggungan = flagPegawaiCutiDiluarTanggungan;
+    public void setFlagCutiDiluarTanggungan(String flagCutiDiluarTanggungan) {
+        this.flagCutiDiluarTanggungan = flagCutiDiluarTanggungan;
     }
 
     public Date getTanggalCutiDiluarAwal() {

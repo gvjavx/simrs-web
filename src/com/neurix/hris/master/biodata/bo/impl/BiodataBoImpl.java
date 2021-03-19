@@ -842,7 +842,14 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setLastUpdateWho(imBiodataEntity.getLastUpdateWho());
                                 imBiodataHistoryEntity.setFlag("Y");
                                 imBiodataHistoryEntity.setAction(imBiodataEntity.getAction());
-
+                                //RAKA-19MAR2021 ==> Menambahkan
+                                imBiodataHistoryEntity.setNipLama(imBiodataEntity.getNipLama());
+                                imBiodataHistoryEntity.setFlagDokterKso(imBiodataEntity.getFlagDokterKso());
+                                imBiodataHistoryEntity.setTanggalKeluar(imBiodataEntity.getTanggalKeluar());
+                                imBiodataHistoryEntity.setFlagCutiDiluarTanggungan(imBiodataEntity.getFlagPegawaiCutiDiluarTanggungan());
+                                imBiodataHistoryEntity.setTanggalCutiDiluarAwal(imBiodataEntity.getTanggalCutiDiluarAwal());
+                                imBiodataHistoryEntity.setTanggalCutiDiluarAkhir(imBiodataEntity.getTanggalCutiDiluarAkhir());
+                                //RAKA-end
 
                                 //SAVE HISTORY DI AKHIR
 
@@ -1100,10 +1107,16 @@ public class BiodataBoImpl implements BiodataBo {
                                 try {
                                     // Update into database
                                     biodataDao.updateAndSave(imBiodataEntity);
-                                    biodataDao.addAndSaveHistory(imBiodataHistoryEntity);
                                 } catch (HibernateException e) {
                                     logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
                                     throw new GeneralBOException("Found problem when saving update data Biodata, please info to your admin..." + e.getMessage());
+                                }
+
+                                try{
+                                    biodataDao.addAndSaveHistory(imBiodataHistoryEntity);
+                                }catch (HibernateException e) {
+                                    logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when saving Biodata History, please info to your admin..." + e.getMessage());
                                 }
 
                             } else {
@@ -1711,10 +1724,16 @@ public class BiodataBoImpl implements BiodataBo {
                             try {
                                 // Update into database
                                 biodataDao.updateAndSave(imBiodataEntity);
-                                biodataDao.addAndSaveHistory(imBiodataHistoryEntity);
                             } catch (HibernateException e) {
                                 logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
                                 throw new GeneralBOException("Found problem when saving update data Biodata, please info to your admin..." + e.getMessage());
+                            }
+                            try {
+                                // Update into database
+                                biodataDao.addAndSaveHistory(imBiodataHistoryEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when saving Biodata History, please info to your admin..." + e.getMessage());
                             }
                         } else {
                             logger.error("[BiodataBoImpl.saveEdit] Error, not found data Biodata with request id, please check again your data ...");
