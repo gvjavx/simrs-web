@@ -24,6 +24,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
+import javax.xml.soap.Detail;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -502,7 +503,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     }
 
     // Sigit 2020-03-10
-    public String initComboTarif(){
+    public String initDetailTarif(){
         logger.info("[CheckupAction.initComboTarif] START process >>>");
 
         String id = this.id;
@@ -778,4 +779,38 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[CheckupAction.saveAllTarif] END process <<<");
         return this.response;
     }
+
+    public List<DetailRekananOps> refreshSessionDetailRekanan(){
+        logger.info("[CheckupAction.getSessionByIdItem] START >>>");
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<DetailRekananOps> detailRekananOps = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
+
+        session.removeAttribute("listOfTindakan");
+        session.setAttribute("listOfTindakan", detailRekananOps);
+
+        logger.info("[CheckupAction.getSessionByIdItem] END <<<");
+        return detailRekananOps;
+    }
+
+
+    public DetailRekananOps getSessionByIdItem(String idItem){
+        logger.info("[CheckupAction.getSessionByIdItem] START >>>");
+
+        DetailRekananOps detailRekananOps = new DetailRekananOps();
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        List<DetailRekananOps> listOfTindakan = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
+
+        if (listOfTindakan.size() > 0){
+            List<DetailRekananOps> filteredList = listOfTindakan.stream().filter(p->p.getIdItem().equalsIgnoreCase(idItem)).collect(Collectors.toList());
+            if (filteredList.size() > 0){
+                detailRekananOps = filteredList.get(0);
+            }
+        }
+
+        logger.info("[CheckupAction.getSessionByIdItem] END <<<");
+        return detailRekananOps;
+    }
+
+
 }

@@ -35,6 +35,9 @@
             <basic name="lastUpdate">
                 <column name="last_update"/>
             </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
             <basic name="idItem">
                 <column name="id_item"/>
             </basic>
