@@ -1612,7 +1612,8 @@ public class BiodataBoImpl implements BiodataBo {
                                 try {
                                     personilPositionDao.updateAndSave(itPersonilPositionEntity);
                                 } catch (HibernateException e) {
-
+                                    logger.error("[BiodataBoImpl.saveEdit] Error : " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when update data Personil Position. " + e.getMessage());
                                 }
                             }
                             //RAKA-end
