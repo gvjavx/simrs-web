@@ -27,6 +27,69 @@ public class DetailRekananOps  {
     private String flagParent;
     private String jenisItem;
     private BigDecimal tarif;
+    private BigDecimal tarifBpjs;
+    private BigDecimal diskonNonBpjs;
+    private BigDecimal diskonBpjs;
+    private BigDecimal tarifNormalNonBpjs;
+    private BigDecimal tarifNormalBpjs;
+    private String idPelayanan;
+    private String namaPelayanan;
+
+    public String getIdPelayanan() {
+        return idPelayanan;
+    }
+
+    public void setIdPelayanan(String idPelayanan) {
+        this.idPelayanan = idPelayanan;
+    }
+
+    public String getNamaPelayanan() {
+        return namaPelayanan;
+    }
+
+    public void setNamaPelayanan(String namaPelayanan) {
+        this.namaPelayanan = namaPelayanan;
+    }
+
+    public BigDecimal getTarifBpjs() {
+        return tarifBpjs;
+    }
+
+    public void setTarifBpjs(BigDecimal tarifBpjs) {
+        this.tarifBpjs = tarifBpjs;
+    }
+
+    public BigDecimal getDiskonNonBpjs() {
+        return diskonNonBpjs;
+    }
+
+    public void setDiskonNonBpjs(BigDecimal diskonNonBpjs) {
+        this.diskonNonBpjs = diskonNonBpjs;
+    }
+
+    public BigDecimal getDiskonBpjs() {
+        return diskonBpjs;
+    }
+
+    public void setDiskonBpjs(BigDecimal diskonBpjs) {
+        this.diskonBpjs = diskonBpjs;
+    }
+
+    public BigDecimal getTarifNormalNonBpjs() {
+        return tarifNormalNonBpjs;
+    }
+
+    public void setTarifNormalNonBpjs(BigDecimal tarifNormalNonBpjs) {
+        this.tarifNormalNonBpjs = tarifNormalNonBpjs;
+    }
+
+    public BigDecimal getTarifNormalBpjs() {
+        return tarifNormalBpjs;
+    }
+
+    public void setTarifNormalBpjs(BigDecimal tarifNormalBpjs) {
+        this.tarifNormalBpjs = tarifNormalBpjs;
+    }
 
     public String getJenisItem() {
         return jenisItem;

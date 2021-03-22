@@ -209,7 +209,7 @@
                                                             <display:column media="html" title="detail" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
                                                                     <s:url var="viewDetail" namespace="/detailrekananops" action="initDetailTarif_detailrekananops" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.idItem" /></s:param>
+                                                                        <s:param name="id"><s:property value="#attr.row.idDetailRekananOps" /></s:param>
                                                                     </s:url>
                                                                     <s:a href="%{viewDetail}" target="_blank">
                                                                         <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_detail">

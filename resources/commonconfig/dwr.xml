@@ -979,5 +979,13 @@
         <convert converter="bean" match="com.neurix.simrs.master.pabrikobat.model.PabrikObat"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan"/>
 
+
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.master.rekananops.action.DetailRekananOpsAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.master.rekananops.model.DetailRekananOps"/>
+        <convert converter="bean" match="com.neurix.simrs.master.rekananops.model.RekananOps"/>
+
+
     </allow>
 </dwr>

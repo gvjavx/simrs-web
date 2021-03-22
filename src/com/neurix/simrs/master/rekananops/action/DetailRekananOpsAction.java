@@ -10,10 +10,12 @@ import com.neurix.common.util.CommonUtil;
 //import com.neurix.simrs.master.rekananOps.bo.RekananOpsBo;
 //import com.neurix.simrs.master.rekananOps.model.RekananOps;
 import com.neurix.hris.master.payrollPtkp.model.PayrollPtkp;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -43,6 +45,15 @@ public class DetailRekananOpsAction extends BaseMasterAction {
     private Branch branch;
     private BranchBo branchBoProxy;
     private CrudResponse response;
+    private String transTipe;
+
+    public String getTransTipe() {
+        return transTipe;
+    }
+
+    public void setTransTipe(String transTipe) {
+        this.transTipe = transTipe;
+    }
 
     public BranchBo getBranchBoProxy() {
         return branchBoProxy;
@@ -366,6 +377,7 @@ public class DetailRekananOpsAction extends BaseMasterAction {
 //        rekananOps = data;
 
         session.removeAttribute("listOfResultRekananOps");
+        session.removeAttribute("listOfTindakan");
         logger.info("[DetailRekananOpsAction.initForm] end process >>>");
         return INPUT;
     }
@@ -507,6 +519,13 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         logger.info("[CheckupAction.initComboTarif] START process >>>");
 
         String id = this.id;
+        String tipe = this.transTipe;
+
+        // jika refresh tidak mengambil session lagi
+        if ("refresh".equalsIgnoreCase(tipe)){
+            logger.info("[CheckupAction.initComboTarif] refresh END process <<<");
+            return "init_detail_per_tarif";
+        }
 
         // mendapatkan data parent yg di set ke object DetailRekananOps;
         try {
@@ -557,12 +576,29 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         // set to detailRekananOps dari stJson
         JSONObject jsonObject = new JSONObject(stJson);
         DetailRekananOps detailRekananOps = new DetailRekananOps();
-        detailRekananOps.setIdDetailRekananOps(jsonObject.getString("id_detail_rekanan_ops"));
         detailRekananOps.setIdItem(jsonObject.getString("id_item"));
-        detailRekananOps.setTarif(new BigDecimal(jsonObject.getString("tarif")));
+        detailRekananOps.setTarif(nullEscapeBigDecimalString(jsonObject.getString("tarif")));
+        detailRekananOps.setTarifBpjs(nullEscapeBigDecimalString(jsonObject.getString("tarif_pbjs")));
+        detailRekananOps.setDiskonNonBpjs(nullEscapeBigDecimalString(jsonObject.getString("diskon_non_bpjs")));
+        detailRekananOps.setDiskonBpjs(nullEscapeBigDecimalString(jsonObject.getString("diskon_bpjs")));
         detailRekananOps.setParentId(jsonObject.getString("parent_id"));
+        detailRekananOps.setBranchId(jsonObject.getString("branch_id"));
         detailRekananOps.setTipe("add");
         detailRekananOps.setFlag("Y");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DetailRekananOpsBo detailRekananOpsBo = (DetailRekananOpsBo) ctx.getBean("detailRekananOpsBoProxy");
+
+        Pelayanan pelayanan = new Pelayanan();
+        try {
+            pelayanan = detailRekananOpsBo.getPelayananByIdItem(detailRekananOps.getIdItem());
+        } catch (GeneralBOException e){
+            logger.error("[DetailRekananOpsAction.saveEditToSessionTindakan] ERROR get Detail ", e);
+            throw new GeneralBOException("ERROR get Detail ", e);
+        }
+
+        detailRekananOps.setIdPelayanan(pelayanan.getIdPelayanan());
+        detailRekananOps.setNamaPelayanan(pelayanan.getNamaPelayanan());
 
         // validasi jika data dengan idItem yang sama sudah ada pada list
         // set nilai tarif
@@ -609,14 +645,14 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         // set success
         this.response.addResponse("success","Data Berhasil Tersimpan");
 
-        logger.info("[CheckupAction.saveAddToSessionTindakan] END process <<<");
+        logger.info("[DetailRekananOpsAction.saveAddToSessionTindakan] END process <<<");
         return this.response;
     }
 
     // Sigit 2020-03-16
     // untuk prosess save edit tarif per tindakan pada detail rekanan;
     public CrudResponse saveEditToSessionTindakan(String stJson) throws JSONException{
-        logger.info("[CheckupAction.saveEditToSessionTindakan] START process >>>");
+        logger.info("[DetailRekananOpsAction.saveEditToSessionTindakan] START process >>>");
 
         // validasi jika data pada json tidak ada
         if (stJson == null || "".equalsIgnoreCase(stJson)){
@@ -652,8 +688,27 @@ public class DetailRekananOpsAction extends BaseMasterAction {
             } else {
 
                 DetailRekananOps detail = filteredList.get(0);
-                detail.setTarif(new BigDecimal(jsonObject.getString("tarif")));
+                detail.setTarif(nullEscapeBigDecimalString(jsonObject.getString("tarif")));
+                detail.setTarifBpjs(nullEscapeBigDecimalString(jsonObject.getString("tarif_bpjs")));
+                detail.setDiskonNonBpjs(nullEscapeBigDecimalString(jsonObject.getString("diskon_non_bpjs")));
+                detail.setDiskonBpjs(nullEscapeBigDecimalString(jsonObject.getString("diskon_bpjs")));
+                detail.setNamaTindakan(jsonObject.getString("nama_tindakan"));
                 detail.setFlag("Y");
+
+
+                ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                DetailRekananOpsBo detailRekananOpsBo = (DetailRekananOpsBo) ctx.getBean("detailRekananOpsBoProxy");
+
+                Pelayanan pelayanan = new Pelayanan();
+                try {
+                    pelayanan = detailRekananOpsBo.getPelayananByIdItem(idItem);
+                } catch (GeneralBOException e){
+                    logger.error("[DetailRekananOpsAction.saveEditToSessionTindakan] ERROR get Detail ", e);
+                    throw new GeneralBOException("ERROR get Detail ", e);
+                }
+
+                detail.setIdPelayanan(pelayanan.getIdPelayanan());
+                detail.setNamaPelayanan(pelayanan.getNamaPelayanan());
 
                 // jika tidak ada id detail rekanan ops tetap status menjadi add;
                 // karna meningindikasikan data baru;
@@ -678,14 +733,14 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         // set success
         this.response.addResponse("success","Data Berhasil Diupdate");
 
-        logger.info("[CheckupAction.saveEditToSessionTindakan] END process <<<");
+        logger.info("[DetailRekananOpsAction.saveEditToSessionTindakan] END process <<<");
         return this.response;
     }
 
     // Sigit 2020-03-16
     // untuk prosess save delete tarif per tindakan pada detail rekanan;
     public CrudResponse saveDeleteToSessionTindakan(String stJson) throws JSONException{
-        logger.info("[CheckupAction.saveDeleteToSessionTindakan] START process >>>");
+        logger.info("[DetailRekananOpsAction.saveDeleteToSessionTindakan] START process >>>");
 
         // validasi jika data pada json tidak ada
         if (stJson == null || "".equalsIgnoreCase(stJson)){
@@ -735,14 +790,14 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         // set success
         this.response.addResponse("success","Data Berhasil Dihapus");
 
-        logger.info("[CheckupAction.saveDeleteToSessionTindakan] END process <<<");
+        logger.info("[DetailRekananOpsAction.saveDeleteToSessionTindakan] END process <<<");
         return this.response;
     }
 
     // Sigit 2020-03-16
     // untuk prosess save all tarif per tindakan pada detail rekanan;
     public CrudResponse saveAllTarif(){
-        logger.info("[CheckupAction.saveAllTarif] START process >>>");
+        logger.info("[DetailRekananOpsAction.saveAllTarif] START process >>>");
 
         // mengambil data dari session
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -771,17 +826,17 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         try {
             rekananOpsBo.saveAllListTarifRekanan(rekananOps, listOfTindakan);
         } catch (GeneralBOException e){
-            logger.info("[CheckupAction.saveAllTarif] ERROR "+e);
+            logger.info("[DetailRekananOpsAction.saveAllTarif] ERROR "+e);
             this.response.addResponse("error", e.getMessage());
             return this.response;
         }
 
-        logger.info("[CheckupAction.saveAllTarif] END process <<<");
+        logger.info("[DetailRekananOpsAction.saveAllTarif] END process <<<");
         return this.response;
     }
 
     public List<DetailRekananOps> refreshSessionDetailRekanan(){
-        logger.info("[CheckupAction.getSessionByIdItem] START >>>");
+        logger.info("[DetailRekananOpsAction.getSessionByIdItem] START >>>");
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<DetailRekananOps> detailRekananOps = (List<DetailRekananOps>) session.getAttribute("listOfTindakan");
@@ -789,13 +844,13 @@ public class DetailRekananOpsAction extends BaseMasterAction {
         session.removeAttribute("listOfTindakan");
         session.setAttribute("listOfTindakan", detailRekananOps);
 
-        logger.info("[CheckupAction.getSessionByIdItem] END <<<");
+        logger.info("[DetailRekananOpsAction.getSessionByIdItem] END <<<");
         return detailRekananOps;
     }
 
 
     public DetailRekananOps getSessionByIdItem(String idItem){
-        logger.info("[CheckupAction.getSessionByIdItem] START >>>");
+        logger.info("[DetailRekananOpsAction.getSessionByIdItem] START >>>");
 
         DetailRekananOps detailRekananOps = new DetailRekananOps();
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -808,9 +863,74 @@ public class DetailRekananOpsAction extends BaseMasterAction {
             }
         }
 
-        logger.info("[CheckupAction.getSessionByIdItem] END <<<");
+        logger.info("[DetailRekananOpsAction.getSessionByIdItem] END <<<");
         return detailRekananOps;
     }
 
+    private BigDecimal nullEscapeBigDecimalString(String item){
+        if (item == null)
+            return new BigDecimal(0);
+        else
+            return new BigDecimal(item);
+    }
 
+    public List<Pelayanan> getListPelayananByBranchId(String branchId){
+        logger.info("[DetailRekananOpsAction.getListPelayananByBranchId] START >>>");
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DetailRekananOpsBo detailRekananOpsBo = (DetailRekananOpsBo) ctx.getBean("detailRekananOpsBoProxy");
+
+        try {
+            pelayanans = detailRekananOpsBo.getListPelayananByBranchId(branchId);
+        } catch (GeneralBOException e){
+            logger.error("[DetailRekananOpsAction.getListPelayananByBranchId] ERROR get Detail ", e);
+            throw new GeneralBOException("ERROR get Detail ", e);
+        }
+
+
+        logger.info("[DetailRekananOpsAction.getListPelayananByBranchId] END <<<");
+        return pelayanans;
+    }
+
+    public List<Tindakan> getListTindakanByPelayanan(String idPelayanan){
+        logger.info("[DetailRekananOpsAction.getListTindakanByPelayanan] START >>>");
+
+        List<Tindakan> tindakans = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DetailRekananOpsBo detailRekananOpsBo = (DetailRekananOpsBo) ctx.getBean("detailRekananOpsBoProxy");
+
+        try {
+            tindakans = detailRekananOpsBo.getListTindakanByPelayanan(idPelayanan);
+        } catch (GeneralBOException e){
+            logger.error("[DetailRekananOpsAction.getListTindakanByPelayanan] ERROR get Detail ", e);
+            throw new GeneralBOException("ERROR get Detail ", e);
+        }
+
+
+        logger.info("[DetailRekananOpsAction.getListTindakanByPelayanan] END <<<");
+        return tindakans;
+    }
+
+    public Tindakan getTindakanById(String idTindakan){
+        logger.info("[DetailRekananOpsAction.getTindakanById] START >>>");
+
+        Tindakan tindakan = new Tindakan();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DetailRekananOpsBo detailRekananOpsBo = (DetailRekananOpsBo) ctx.getBean("detailRekananOpsBoProxy");
+
+        try {
+            tindakan = detailRekananOpsBo.getTindakanById(idTindakan);
+        } catch (GeneralBOException e){
+            logger.error("[DetailRekananOpsAction.getTindakanById] ERROR get Detail ", e);
+            throw new GeneralBOException("ERROR get Detail ", e);
+        }
+
+
+        logger.info("[DetailRekananOpsAction.getTindakanById] END <<<");
+        return tindakan;
+    }
 }

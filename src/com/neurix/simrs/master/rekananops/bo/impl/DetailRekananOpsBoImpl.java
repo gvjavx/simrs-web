@@ -7,7 +7,7 @@ import com.neurix.authorization.company.model.ImBranches;
 import com.neurix.common.exception.GeneralBOException;
 
 
-
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekananops.bo.DetailRekananOpsBo;
 import com.neurix.simrs.master.rekananops.dao.DetailRekananOpsDao;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
@@ -16,6 +16,7 @@ import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 
 import com.neurix.simrs.master.rekananops.model.RekananOps;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
@@ -74,6 +75,8 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
             } else {
                 hsCriteria.put("tipe", "ptpn");
             }
+
+            hsCriteria.put("flag_parent", "Y");
 
             List<ImSimrsDetailRekananOpsEntity> listOfDetail = null;
             try {
@@ -325,6 +328,74 @@ public class DetailRekananOpsBoImpl implements DetailRekananOpsBo {
 
         logger.info("[DetailRekananOpsBoImpl.getDetailDataByIdParent] end process <<<");
         return detailRekananOps;
+    }
+
+    @Override
+    public Pelayanan getPelayananByIdItem(String idItem) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getPelayananByIdItem] start process >>>");
+
+        Pelayanan pelayanan = new Pelayanan();
+        try {
+            pelayanan = detailRekananOpsDao.getPelayananByIdItem(idItem);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getPelayananByIdItem] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+
+        logger.info("[DetailRekananOpsBoImpl.getPelayananByIdItem] end process <<<");
+        return pelayanan;
+    }
+
+    @Override
+    public List<Pelayanan> getListPelayananByBranchId(String branchId) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getListPelayananByBranchId] start process >>>");
+
+        List<Pelayanan> pelayananList = new ArrayList<>();
+
+        try {
+            pelayananList = detailRekananOpsDao.getListPelayananByBranchId(branchId);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getListPelayananByBranchId] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getListPelayananByBranchId] end process <<<");
+        return pelayananList;
+    }
+
+    @Override
+    public List<Tindakan> getListTindakanByPelayanan(String idPelayanan) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getListTindakanByPelayanan] start process >>>");
+
+        List<Tindakan> tindakanList = new ArrayList<>();
+
+        try {
+            tindakanList = detailRekananOpsDao.getListTindakanByIdPelayanan(idPelayanan);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getListTindakanByPelayanan] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getListTindakanByPelayanan] end process <<<");
+        return tindakanList;
+    }
+
+    @Override
+    public Tindakan getTindakanById(String idTindakan) throws GeneralBOException {
+        logger.info("[DetailRekananOpsBoImpl.getTindakanById] start process >>>");
+
+        Tindakan tindakan = new Tindakan();
+
+        try {
+            tindakan = detailRekananOpsDao.getTindakanById(idTindakan);
+        } catch (HibernateException e){
+            logger.error("[DetailRekananOpsBoImpl.getTindakanById] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when gate data, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[DetailRekananOpsBoImpl.getTindakanById] end process <<<");
+        return tindakan;
     }
 }
 
