@@ -9,4 +9,5 @@ public interface KonsultasiGiziBo {
     public List<KonsultasiGizi> getByCriteria(KonsultasiGizi bean) throws GeneralBOException;
     public void saveEdit(KonsultasiGizi bean) throws GeneralBOException;
     public List<KonsultasiGizi> pushNotif(String branchId) throws GeneralBOException;
+    public List<KonsultasiGizi> getDataKonsultasiGizi(KonsultasiGizi bean) throws GeneralBOException;
 }

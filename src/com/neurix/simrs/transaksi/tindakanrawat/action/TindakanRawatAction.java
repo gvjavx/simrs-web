@@ -348,6 +348,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             tindakanRawat.setLastUpdateWho(userLogin);
             tindakanRawat.setAction("U");
             tindakanRawat.setIdPelayanan(idPelayanan);
+            tindakanRawat.setFlagKonsulGizi(tindakanResult.getFlagKonsulGizi());
 
             response = tindakanRawatBo.saveEdit(tindakanRawat);
 

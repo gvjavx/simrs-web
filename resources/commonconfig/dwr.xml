@@ -986,5 +986,10 @@
         <convert converter="bean" match="com.neurix.simrs.transaksi.asesmengizi.model.AsesmenAsuhanGizi"/>
         <convert converter="bean" match="com.neurix.simrs.transaksi.asesmengizi.model.AsesmenMonitoringGizi"/>
 
+        <create creator="new">
+            <param name="class" value="com.neurix.simrs.transaksi.konsultasigizi.action.KonsultasiGiziAction"/>
+        </create>
+        <convert converter="bean" match="com.neurix.simrs.transaksi.konsultasigizi.model.KonsultasiGizi"/>
+
     </allow>
 </dwr>

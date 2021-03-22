@@ -991,6 +991,10 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmengizi/hibernate/ItSimrsAsesmenGiziEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmengizi/hibernate/ItSimrsAsesmenAsuhanGiziEntity.hbm.xml</value>
                 <value>sshconfig/com/neurix/simrs/transaksi/asesmengizi/hibernate/ItSimrsAsesmenMonitoringGiziEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/konsultasigizi/hibernate/ItSimrsKonsultasiGiziEntity.hbm.xml</value>
+
+                <value>sshconfig/com/neurix/simrs/master/dietgizi/hibernate/ImSimrsPendampingGiziEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/ordergizi/hibernate/ItSimrsPendampingGiziEntity.hbm.xml</value>
 
             </list>
 

@@ -18,6 +18,24 @@ public class KonsultasiGizi {
     private String nama;
     private String idPasien;
     private String namaPelayanan;
+    private String tipePelayanan;
+    private String jenisKelamin;
+
+    public String getJenisKelamin() {
+        return jenisKelamin;
+    }
+
+    public void setJenisKelamin(String jenisKelamin) {
+        this.jenisKelamin = jenisKelamin;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
 
     public String getNama() {
         return nama;

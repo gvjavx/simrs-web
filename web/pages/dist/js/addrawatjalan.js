@@ -2707,6 +2707,29 @@ function setStokObatApotek(select, tipe) {
             ObatAction.getHeaderObatById(id, function (res) {
                 if(res != null){
                     getComboParameterObat(res.idSubJenis);
+                    if(res.flagIsFormularium == "Y"){
+                        $('#set_formula').text("Ya");
+                    }else{
+                        $('#set_formula').text("Tidak");
+                    }
+
+                    if(res.flagParenteral == "Y"){
+                        $('#set_teral').text("Ya");
+                        $('#set_noretal').text("Tidak");
+                    }else{
+                        $('#set_teral').text("Tidak");
+                        $('#set_noretal').text("Ya");
+                    }
+                }
+            });
+
+            ObatAction.getListKandunganObat(idObat, function (res) {
+                var body = "";
+                if (res.length > 0){
+                    $.each(res, function (i, item) {
+                        body += '<li>'+item.satuanSediaan+'</li>';
+                    });
+                    $('#set_js').html('<ul>'+body+'</ul>');
                 }
             });
         }
@@ -2755,6 +2778,12 @@ function resetAll() {
     $('#body_keterangan').html('');
     removePaint('ttd_canvas');
     $('#body_keterangan').html('');
+
+    $('#set_js').html('');
+    $('#set_formula').text('');
+    $('#set_teral').text('');
+    $('#set_noretal').text('');
+
     resetComboObat();
 }
 
@@ -3634,7 +3663,7 @@ function setDiskonHarga(id) {
 
                 if("Y" == res.flagKonsulGizi){
                     $('#warning_konsul').fadeIn(1000);
-                    $('#msg_konsul').text("Anda memilih tindakan konsultasi Gizi. Silahkan ke Unit Gizi untuk melakukan konsultasi gizi...!");
+                    $('#msg_konsul').text("Anda memilih tindakan konsultasi Gizi. Setelah menambahkan tindakan ini silahkan ke Unit Gizi untuk melakukan konsultasi gizi...!");
                 }else{
                     $('#warning_konsul').hide();
                 }

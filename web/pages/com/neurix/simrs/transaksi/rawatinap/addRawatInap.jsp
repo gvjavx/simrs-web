@@ -487,7 +487,7 @@
                                            <li><a onclick="showModalCairan('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
                                                    class="fa fa-file-o"></i> Observasi Cairan</a></li>
                                            <li><a onclick="showModalMonVitalSign('<s:property value="rawatInap.idDetailCheckup"/>')" style="cursor: pointer"><i
-                                                   class="fa fa-file-o"></i> Vital Sign</a></li>
+                                                   class="fa fa-file-o"></i> Chart Vital Sign</a></li>
                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','parenteral')" style="cursor: pointer"><i
                                                    class="fa fa-file-o"></i> Pemberian Obat Parenteral</a></li>
                                            <li><a onclick="showModalPemberianObat('<s:property value="rawatInap.idDetailCheckup"/>','nonparenteral')" style="cursor: pointer"><i
@@ -713,7 +713,7 @@
                             <thead>
                             <tr bgcolor="#90ee90" style="height: 20px">
                                 <td >Tanggal</td>
-                                <td >ID Diet Gizi</td>
+                                <td >Jenis Diet</td>
                                 <td >Bentuk Diet</td>
                                 <td >Keterangan</td>
                                 <td align="center">Status</td>
@@ -1627,6 +1627,10 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Gizi</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-info alert-dismissible" style="display: none" id="info_diet">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_info"></p>
+                </div>
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_diet">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_diet"></p>
@@ -1655,7 +1659,7 @@
                             <s:action id="comboDiet1" namespace="/rawatinap"
                                       name="getComboBoxDietGizi_rawatinap"/>
                             <s:select list="#comboDiet1.listOfDietGizi" listKey="idDietGizi" listValue="namaDietGizi" id="bentuk_diet"
-                                      onchange="var warn =$('#war_bentuk_diet').is(':visible'); if (warn){$('#cor_bentuk_diet').show().fadeOut(3000);$('#war_bentuk_diet').hide()}"
+                                      onchange="var warn =$('#war_bentuk_diet').is(':visible'); if (warn){$('#cor_bentuk_diet').show().fadeOut(3000);$('#war_bentuk_diet').hide()}; dataDiet(this.value)"
                                       headerKey="" headerValue="[Select One]" cssClass="form-control select2" cssStyle="width: 100%"/>
 
                         </div>
@@ -1667,7 +1671,50 @@
                         </div>
                     </div>
                 </div>
-                <div class="row jarak">
+                <div id="form_snack">
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 10px">Snack & Minuman</label>
+                            <div class="col-md-7">
+                                <select id="snack" class="form-control select2" multiple style="width: 100%"
+                                        onchange="inputWarning('war_snack', 'cor_snack')">
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_snack"><i
+                                        class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_snack">
+                                    <i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <label class="col-md-3" style="margin-top: 10px">Makanan Luar</label>
+                            <div class="col-md-7">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <input id="makan_luar" class="form-control makanan_luar" placeholder="Makanan Luar 1"
+                                           onchange="inputWarning('war_makan_luar', 'cor_makan_luar')">
+                                    <div class="input-group-btn">
+                                        <a onclick="addMakanLuar()" class="btn btn-success" style="height: 34px; margin-top: 0px">
+                                            <i class="fa fa-plus" style="margin-top: 3px"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div id="temp_luar"></div>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_makan_luar"><i
+                                        class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_makan_luar">
+                                    <i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="h_is_sonde">
+                <input type="hidden" id="h_is_melebihi">
+                <div class="row jarak" id="form_keterangan_diet">
                     <div class="form-group">
                         <label class="col-md-3">Keterangan</label>
                         <div class="col-md-7">
@@ -1695,6 +1742,44 @@
                         </div>
                     </div>
                 </div>
+                <div id="form_pemberian_diet" style="display: none">
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Jam Awal</label>
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-clock-o"></i>
+                                    </div>
+                                    <input id="jam_awal" class="form-control jam" placeholder="hh:mm" onchange="inputWarning('war_jam_awal', 'cor_jam_awal')">
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 6px; display: none; margin-left: -20px" id="war_jam_awal"><i
+                                        class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 6px; display: none; margin-left: -20px" id="cor_jam_awal">
+                                    <i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <label class="col-md-3">Jumlah Pemberian</label>
+                            <div class="col-md-4">
+                                <input type="number" id="jumlah_pemberian" class="form-control" oninput="inputWarning('war_jml_pemberian', 'cor_jml_pemberian'); generateSonde(this.value)">
+                            </div>
+                            <div class="col-md-3">
+                                <input type="number" id="jumlah_satuan" class="form-control" oninput="inputWarning('war_jml_pemberian', 'cor_jml_pemberian');">
+                            </div>
+                            <div class="col-md-2">
+                                <p style="color: red; margin-top: 6px; display: none; margin-left: -20px" id="war_jml_pemberian"><i
+                                        class="fa fa-times"></i> required</p>
+                                <p style="color: green; margin-top: 6px; display: none; margin-left: -20px" id="cor_jml_pemberian">
+                                    <i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <hr class="garis">
                 <div class="row">
                     <div class="col-md-12">
@@ -1704,6 +1789,8 @@
                                 <td>Waktu</td>
                                 <td>Jenis</td>
                                 <td>Bentuk</td>
+                                <td>Snack</td>
+                                <td>Makanan Luar</td>
                             </tr>
                             </thead>
                             <tbody id="body_add_diet"></tbody>
@@ -1711,7 +1798,7 @@
                     </div>
                 </div>
                 <hr class="garis">
-                <div class="row">
+                <div class="row" id="form_order">
                     <div class="form-group">
                         <label class="col-md-3">Order Gizi Untuk ?</label>
                         <div class="col-md-6">
@@ -2084,10 +2171,31 @@
                         <input type="hidden" id="val-kronis"/>
                     </div>
                 </div>
-                <div class="row">
-                    <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
+                <div class="row jarak">
+                    <label class="col-md-3">Informasi Obat</label>
                     <div class="col-md-9">
-                        <div class="input-group" style="margin-top: 7px;">
+                        <table class="table" style="font-size: 12px; border: solid 1px #ddd">
+                            <tr>
+                                <td width="30%">- Formularium</td>
+                                <td align="left"><span id="set_formula"></span></td>
+                                <td width="20%"></td>
+                                <td width="30%">- Parenteral</td>
+                                <td align="left"><span id="set_teral"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="30%">- Jenis Satuan</td>
+                                <td align="left"><span id="set_js"></span></td>
+                                <td width="20%"></td>
+                                <td width="30%">- Non Parenteral</td>
+                                <td align="left"><span id="set_noretal"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <label class="col-md-3" style="margin-top: -13px;">Stok Obat</label>
+                    <div class="col-md-9">
+                        <div class="input-group" style="margin-top: -13px;">
                             <input class="form-control" type="number" min="1" id="resep_stok_biji" readonly>
                             <div class="input-group-addon">
                                 Biji
@@ -2125,7 +2233,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                     <div class="col-md-9">
                         <s:select list="#{'lembar':'Lembar','box':'Box'}"
@@ -2143,9 +2251,14 @@
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                     <div class="col-md-9">
-                        <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
-                               style="margin-top: 7px;" value="1" class="form-control" type="number" min="1"
-                               id="resep_qty">
+                        <div class="input-group" style="margin-top: 7px;">
+                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
+                                   value="1" class="form-control" type="number" min="1"
+                                   id="resep_qty">
+                            <div class="input-group-addon">
+                                Biji
+                            </div>
+                        </div>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_qty"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
@@ -2748,14 +2861,22 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Cairan </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_cairan">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_war_cairan"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_cairan">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_suc_cairan"></p>
+                </div>
                 <div style="margin-bottom:7px">
                     <button type="button" class="btn btn-success" onclick="addObCairan()">
-                        <i class="fa fa-plus"></i> Add
+                        <i class="fa fa-plus"></i> Tambah
                     </button>
                 </div>
                 <table class="table table-bordered" style="font-size:11px;">
                     <thead>
-                    <td align="center" width="10%" style="vertical-align: middle">Tgl</td>
+                    <td align="center" width="10%" style="vertical-align: middle">Tanggal</td>
                     <td align="center" style="vertical-align: middle">Macam Cairan</td>
                     <td align="center" style="vertical-align: middle">Melalui</td>
                     <td align="center" style="vertical-align: middle"> Jumlah</td>
@@ -2768,6 +2889,7 @@
                     <td align="center" style="vertical-align: middle">Balance Cairan</td>
                     <td align="center" style="vertical-align: middle">Keterangan</td>
                     <td align="center" style="vertical-align: middle">Created Who</td>
+                    <td align="center" style="vertical-align: middle">Action</td>
                     </thead>
                     <tbody id="body-list-cairan">
 
@@ -2791,13 +2913,22 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi Cairan</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_add_cairan">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id=msg_add_cairan"></p>
+                </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-4">
                             <label>Created Date</label>
                         </div>
                         <div class="col-md-4">
-                            <input type="date" name="" value="" class="date form-control" id="mcr_date">
+                            <div class="input-group" style="cursor: pointer">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input style="background-color: white;" type="text" class="form-control datepicker2" id="mcr_date" readonly placeholder="dd-mm-yyyy">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2837,11 +2968,21 @@
                         </div>
                         <div class="col-md-4">
                             <label style="margin-top: 7px">Jam mulai</label>
-                            <input type="text" name="" value="" class="time form-control" id="mcr_mulai">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" class="time form-control" id="mcr_mulai" placeholder="hh:ii">
+                            </div>
                         </div>
                         <div class="col-md-4">
                             <label style="margin-top: 7px">Jam selesai</label>
-                            <input type="text" name="" value="" class="time form-control" id="mcr_selesai">
+                            <div class="input-group">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" name="" value="" class="time form-control" id="mcr_selesai" placeholder="hh:ii">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2874,7 +3015,12 @@
                             <label style="margin-top: 7px">Jam ukur buang</label>
                         </div>
                         <div class="col-md-4">
-                            <input style="margin-top: 7px" type="text" name="" value="" class="time form-control" id="mcr_buang">
+                            <div class="input-group" style="margin-top: 7px">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-clock-o"></i>
+                                </div>
+                                <input type="text" name="" value="" class="time form-control" id="mcr_buang" placeholder="hh:ii">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -2913,23 +3059,13 @@
                         </div>
                     </div>
                 </div>
-
-                <br>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                    <h4><i class="icon fa fa-info"></i> Success!</h4>
-                    <p>Data Berhasil Tersimpan</p>
-                </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
-                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
-                    <p id="error_ket_asesmen"></p>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="saveObCairan('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" id="save_add_cairan" onclick="saveObCairan('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_add_cairan"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -2946,9 +3082,17 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi pemberian obat <span id="label_kat_pemberian"></span> </h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_pemberian">
+                    <h4><i class="icon fa fa-ban"></i> Warning !</h4>
+                    <p id="msg_war_pemberian"></p>
+                </div>
+                <div class="alert alert-success alert-dismissible" style="display: none" id="success_pemberian">
+                    <h4><i class="icon fa fa-info"></i> Info !</h4>
+                    <p id="msg_suc_pemberian"></p>
+                </div>
                 <div style="margin-bottom:7px">
                     <button type="button" class="btn btn-success" onclick="addPemberianObat()">
-                        <i class="fa fa-plus"></i> Add
+                        <i class="fa fa-plus"></i> Tambah
                     </button>
                 </div>
                 <table class="table table-bordered" style="font-size: 12px">
@@ -2977,13 +3121,22 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi pemberian obat non parenteral</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_non-parenteral">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="msg_non-parenteral"></p>
+                </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-4">
                             <label>Created Date</label>
                         </div>
                         <div class="col-md-4">
-                            <input type="date" name="" value="" class="date form-control" id="nonpar_date"/>
+                            <div class="input-group" style="cursor: pointer">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input style="background-color: white;" type="text" class="form-control datepicker2" id="nonpar_date" readonly placeholder="dd-mm-yyyy">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3037,22 +3190,13 @@
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                    <h4><i class="icon fa fa-info"></i> Success!</h4>
-                    <p>Data Berhasil Tersimpan</p>
-                </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
-                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
-                    <p id="error_ket_asesmen"></p>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" id="save_non-parenteral" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_non-parenteral"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -3069,13 +3213,22 @@
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Observasi pemberian obat parenteral</h4>
             </div>
             <div class="modal-body">
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_parenteral">
+                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
+                    <p id="msg_parenteral"></p>
+                </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-md-4">
                             <label>Created Date</label>
                         </div>
                         <div class="col-md-4">
-                            <input type="date" name="" value="" class="date form-control" id="par_date"/>
+                            <div class="input-group" style="cursor: pointer">
+                                <div class="input-group-addon">
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <input style="background-color: white;" type="text" class="form-control datepicker2" id="par_date" readonly placeholder="dd-mm-yyyy">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -3147,22 +3300,13 @@
                         </div>
                     </div>
                 </div>
-                <br>
-                <div class="alert alert-success alert-dismissible" style="display: none" id="success_save_asesmen">
-                    <h4><i class="icon fa fa-info"></i> Success!</h4>
-                    <p>Data Berhasil Tersimpan</p>
-                </div>
-                <div class="alert alert-danger alert-dismissible" style="display: none" id="error_save_asesmen">
-                    <h4><i class="icon fa fa-ban"></i> Error !</h4>
-                    <p id="error_ket_asesmen"></p>
-                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_asesmen" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" id="save_parenteral" onclick="savePemberianObat('<s:property value="rawatInap.noCheckup"/>', '<s:property value="rawatInap.idDetailCheckup"/>')"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_asesmen"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_parenteral"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>

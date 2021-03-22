@@ -54,18 +54,17 @@ public class DietGiziBoImpl implements DietGiziBo {
         if (imSimrsDietGizi.size() > 0) {
             for (ImSimrsDietGizi DietGizi : imSimrsDietGizi){
                     DietGizi dietGizi = new DietGizi();
-
                     dietGizi.setIdDietGizi(DietGizi.getIdDietGizi());
                     dietGizi.setNamaDietGizi(DietGizi.getNamaDietGizi());
                     dietGizi.setTarif(DietGizi.getTarif());
                     dietGizi.setBranchId(DietGizi.getBranchId());
-
                     dietGizi.setAction(DietGizi.getAction());
                     dietGizi.setFlag(DietGizi.getFlag());
                     dietGizi.setCreatedDate(DietGizi.getCreatedDate());
                     dietGizi.setCreatedWho(DietGizi.getCreatedWho());
                     dietGizi.setLastUpdate(DietGizi.getLastUpdate());
                     dietGizi.setLastUpdateWho(DietGizi.getLastUpdateWho());
+                    dietGizi.setIsSonde(DietGizi.getIsSonde());
                     listOfResultDietGizi.add(dietGizi);
                 }
             }

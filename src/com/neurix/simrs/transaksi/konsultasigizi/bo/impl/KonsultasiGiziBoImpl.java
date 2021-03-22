@@ -71,7 +71,10 @@ public class KonsultasiGiziBoImpl implements KonsultasiGiziBo {
                 ItSimrsKonsultasiGiziEntity entity = konsultasiGiziDao.getById("idKonsultasiGizi", bean.getIdKonsultasiGizi());
                 if(entity != null){
                     entity.setFlag("Y");
-                    entity.setStatus("2");
+                    if(entity.getIsRead() != null && !"".equalsIgnoreCase(entity.getIsRead())){
+                        entity.setIsRead(bean.getIsRead());
+                    }
+                    entity.setStatus(bean.getStatus());
                     entity.setAction("U");
                     entity.setLastUpdate(bean.getLastUpdate());
                     entity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -91,7 +94,28 @@ public class KonsultasiGiziBoImpl implements KonsultasiGiziBo {
 
     @Override
     public List<KonsultasiGizi> pushNotif(String branchId) throws GeneralBOException {
-        return null;
+        logger.info("[KonsultasiGiziBoImpl.pushNotif] start >>>>>>>");
+        List<KonsultasiGizi> konsultasiGizis = new ArrayList<>();
+        try {
+            konsultasiGizis = konsultasiGiziDao.pushNotif(branchId);
+        }catch (HibernateException e){
+            logger.error("[KonsultasiGiziBoImpl.pushNotif] Error, "+e.getMessage());
+        }
+        logger.info("[KonsultasiGiziBoImpl.pushNotif] end >>>>>>>");
+        return konsultasiGizis;
+    }
+
+    @Override
+    public List<KonsultasiGizi> getDataKonsultasiGizi(KonsultasiGizi bean) throws GeneralBOException {
+        logger.info("[KonsultasiGiziBoImpl.getDataKonsultasiGizi] start >>>>>>>");
+        List<KonsultasiGizi> konsultasiGizis = new ArrayList<>();
+        try {
+            konsultasiGizis = konsultasiGiziDao.getDataKonsultasiGizi(bean);
+        }catch (HibernateException e){
+            logger.error("[KonsultasiGiziBoImpl.getDataKonsultasiGizi] Error, "+e.getMessage());
+        }
+        logger.info("[KonsultasiGiziBoImpl.getDataKonsultasiGizi] end >>>>>>>");
+        return konsultasiGizis;
     }
 
     public void setKonsultasiGiziDao(KonsultasiGiziDao konsultasiGiziDao) {
