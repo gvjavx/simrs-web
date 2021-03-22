@@ -1776,10 +1776,10 @@
                                                         </td>
                                                         <td style="padding-left: 10px;">
                                                             <s:if test="isDelete()">
-                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                                <s:textfield id="nomTunjPemondokan" type="number" name="biodata.stTunjPemondokan" required="true" disabled="false" cssClass="form-control" readonly="true"/>
                                                             </s:if>
                                                             <s:else>
-                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" cssClass="form-control"/>
+                                                                <s:textfield id="nomTunjPemondokan" type="number" name="biodata.stTunjPemondokan" required="true" cssClass="form-control"/>
                                                             </s:else>
                                                         </td>
                                                     </table>
@@ -3606,30 +3606,39 @@
         } else {
             document.getElementById("aktif").checked = false;
         }
-        var aktif = document.getElementById("flagAktif").value;
-        if (aktif == "Y") {
-            document.getElementById("aktif").checked = true;
+        var pemondokan = document.getElementById("flagTunjPemondokan").value;
+        if (pemondokan == "Y") {
+            document.getElementById("tunjPemondokan").checked = true;
+            $("#nomTunjPemondokan").show();
         } else {
-            document.getElementById("aktif").checked = false;
+            document.getElementById("tunjPemondokan").checked = false;
+            $("#nomTunjPemondokan").hide();
         }
         var flagTunjSupervisi = document.getElementById("flagTunjSupervisi").value;
         if (flagTunjSupervisi == "Y") {
             document.getElementById("supervisi").checked = true;
+            $("#nomTunjSupervisi").hide();
         } else {
             document.getElementById("supervisi").checked = false;
+            $("#nomTunjSupervisi").hide();
         }
         var flagTunjLokasi = document.getElementById("flagTunjLokasi").value;
         if (flagTunjLokasi == "Y") {
             document.getElementById("lokasi").checked = true;
+            $("#nomTunjLokasi").show();
         } else {
             document.getElementById("lokasi").checked = false;
+            $("#nomTunjLokasi").hide();
         }
         var flagTunjSiaga = document.getElementById("flagTunjSiaga").value;
         if (flagTunjSiaga == "Y") {
             document.getElementById("siaga").checked = true;
+            $("#nomTunjSiaga").show();
         } else {
             document.getElementById("siaga").checked = false;
+            $("#nomTunjSiaga").hide();
         }
+
 
         var flagTunjProfesional = document.getElementById("flagTunjProfesional").value;
         if (flagTunjProfesional == "Y") {
@@ -6326,8 +6335,11 @@
     window.cekTunjPemondokan = function () {
         if (document.getElementById("tunjPemondokan").checked == true) {
             $("#flagTunjPemondokan").val("Y");
+            $("#nomTunjPemondokan").show();
         } else {
             $("#flagTunjPemondokan").val("N");
+            $("#nomTunjPemondokan").val("");
+            $("#nomTunjPemondokan").hide();
         }
     }
 
