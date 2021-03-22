@@ -3799,6 +3799,12 @@ public class BiodataAction extends BaseMasterAction {
         return "init_add_user";
     }
 
+    public void createUser (){
+        logger.info("[BiodataAction.createUser] start process >>>");
+
+        logger.info("[BiodataAction.createUser] end process >>>");
+    }
+
     public String paging() {
         return SUCCESS;
     }
