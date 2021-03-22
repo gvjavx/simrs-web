@@ -1581,14 +1581,24 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isDelete()">
-                                                            <input type="checkbox" id="supervisi" class="checkZakat" disabled onchange="cekSupervisi()" />
-                                                            <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()"  />
-                                                            <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
-                                                        </s:else>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="supervisi" class="checkZakat" disabled onchange="cekSupervisi()" />
+                                                                <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="supervisi" class="checkZakat" onchange="cekSupervisi()"  />
+                                                                <s:hidden id="flagTunjSupervisi" name="biodata.flagTunjSupervisi"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjSupervisi" type="number" name="biodata.stTunjSupervisi" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjSupervisi" type="number" name="biodata.stTunjSupervisi" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -1599,14 +1609,24 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isDelete()">
-                                                            <input type="checkbox" id="lokasi" class="checkZakat" disabled onchange="cekLokasi()" />
-                                                            <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <input type="checkbox" id="lokasi" class="checkZakat" onchange="cekLokasi()" />
-                                                            <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
-                                                        </s:else>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="lokasi" class="checkZakat" disabled onchange="cekLokasi()" />
+                                                                <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="lokasi" class="checkZakat" onchange="cekLokasi()" />
+                                                                <s:hidden id="flagTunjLokasi" name="biodata.flagTunjLokasi"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -1616,14 +1636,24 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isDelete()">
-                                                            <input type="checkbox" id="siaga" class="checkZakat" disabled onchange="cekSiaga()" />
-                                                            <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <input type="checkbox" id="siaga" class="checkZakat" onchange="cekSiaga()" />
-                                                            <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
-                                                        </s:else>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="siaga" class="checkZakat" disabled onchange="cekSiaga()" />
+                                                                <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="siaga" class="checkZakat" onchange="cekSiaga()" />
+                                                                <s:hidden id="flagTunjSiaga" name="biodata.flagTunjSiaga"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjSiaga" type="number" name="biodata.stTunjSiaga" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjSiaga" type="number" name="biodata.stTunjSiaga" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -1734,14 +1764,24 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test="isDelete()">
-                                                            <input type="checkbox" id="tunjPemondokan" class="checkZakat" disabled onchange="cekTunjPemondokan()" />
-                                                            <s:textfield cssStyle="display: none" id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
-                                                        </s:if>
-                                                        <s:else>
-                                                            <input type="checkbox" id="tunjPemondokan" class="checkZakat" onchange="cekTunjPemondokan()" />
-                                                            <s:hidden id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
-                                                        </s:else>
+                                                        <td>
+                                                            <s:if test="isDelete()">
+                                                                <input type="checkbox" id="tunjPemondokan" class="checkZakat" disabled onchange="cekTunjPemondokan()" />
+                                                                <s:textfield cssStyle="display: none" id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
+                                                            </s:if>
+                                                            <s:else>
+                                                                <input type="checkbox" id="tunjPemondokan" class="checkZakat" onchange="cekTunjPemondokan()" />
+                                                                <s:hidden id="flagTunjPemondokan" name="biodata.flagTunjPemondokan"  />
+                                                            </s:else>
+                                                        </td>
+                                                        <td style="padding-left: 10px;">
+                                                            <s:if test="isDelete()">
+                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" disabled="false" cssClass="form-control" readonly="true"/>
+                                                            </s:if>
+                                                            <s:else>
+                                                                <s:textfield id="nomTunjLokasi" type="number" name="biodata.stTunjLokasi" required="true" cssClass="form-control"/>
+                                                            </s:else>
+                                                        </td>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -6211,24 +6251,33 @@
     window.cekSupervisi = function () {
         if (document.getElementById("supervisi").checked == true) {
             $("#flagTunjSupervisi").val("Y");
+            $("#nomTunjSupervisi").show();
         } else {
             $("#flagTunjSupervisi").val("N");
+            $("#nomTunjSupervisi").val("");
+            $("#nomTunjSupervisi").hide();
         }
     }
 
     window.cekLokasi = function () {
         if (document.getElementById("lokasi").checked == true) {
             $("#flagTunjLokasi").val("Y");
+            $("#nomTunjLokasi").show();
         } else {
             $("#flagTunjLokasi").val("N");
+            $("#nomTunjLokasi").val("");
+            $("#nomTunjLokasi").hide();
         }
     }
 
     window.cekSiaga = function () {
         if (document.getElementById("siaga").checked == true) {
             $("#flagTunjSiaga").val("Y");
+            $("#nomTunjSiaga").show();
         } else {
             $("#flagTunjSiaga").val("N");
+            $("#nomTunjSiaga").val("");
+            $("#nomTunjSiaga").hide();
         }
     }
 

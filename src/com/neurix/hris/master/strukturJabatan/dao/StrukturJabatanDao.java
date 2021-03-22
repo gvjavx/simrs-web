@@ -49,9 +49,6 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             if (mapCriteria.get("level")!=null) {
                 criteria.add(Restrictions.eq("level", mapCriteria.get("level")));
             }
-
-
-
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
@@ -663,7 +660,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
 //                "\tjabatan.flag = 'Y'\n" +
 //                "\tand jabatan.branch_id = '"+branchId+"'\n " + strPosisi + strParent + strNip;
 
-        String SQL = "select --distinct \n" +
+        String SQL = "select  \n" +
                 "     jabatan.*,\n" +
                 "     itPosisi.nip,\n" +
                 "     pegawai.nama_pegawai, \n" +

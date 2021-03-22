@@ -1088,6 +1088,21 @@ public class BiodataBoImpl implements BiodataBo {
                                             itTunjLainPegawaiEntity.setTunjPeralihanTunjangan(new BigDecimal(bean.getStTunjPeralihanTunjangan()));
                                         }
                                         //RAKA-end
+                                        //RAKA-22MAR2021 ==> Nominal Tunjangan di pindah ke Tunj_Lain
+                                        if (bean.getStTunjSiaga() != null && !"".equalsIgnoreCase(bean.getStTunjSiaga())) {
+                                            itTunjLainPegawaiEntity.setTunjSiaga(new BigDecimal(bean.getStTunjSiaga()));
+                                        }
+                                        if (bean.getStTunjSupervisi() != null && !"".equalsIgnoreCase(bean.getStTunjSupervisi())) {
+                                            itTunjLainPegawaiEntity.setTunjSupervisi(new BigDecimal(bean.getStTunjSupervisi()));
+                                        }
+                                        if (bean.getStTunjLokasi() != null && !"".equalsIgnoreCase(bean.getStTunjLokasi())) {
+                                            itTunjLainPegawaiEntity.setTunjLokasi(new BigDecimal(bean.getStTunjLokasi()));
+                                        }
+                                        if (bean.getStTunjPemondokan() != null && !"".equalsIgnoreCase(bean.getStTunjPemondokan())) {
+                                            itTunjLainPegawaiEntity.setTunjPemondokan(new BigDecimal(bean.getStTunjPemondokan()));
+                                        }
+                                        //RAKA-end
+
 
                                         itTunjLainPegawaiEntity.setFlag(bean.getFlag());
                                         itTunjLainPegawaiEntity.setAction(bean.getAction());
@@ -1850,7 +1865,12 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                 }
 
-                personPosition = personilPositionDao.getNextPersonilPositionId();
+                try{
+                    personPosition = personilPositionDao.getNextPersonilPositionId();
+                }catch (HibernateException e){
+                    logger.error("[BiodataBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when retrieving Next Personil Position ID, " + e.getMessage());
+                }
                 // creating object entity serializable
                 ImBiodataEntity imBiodataEntity = new ImBiodataEntity();
                 ItPersonilPositionEntity itPersonilPositionEntity = new ItPersonilPositionEntity();
@@ -2228,6 +2248,21 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                     if (bean.getStTunjPeralihanTunjangan() != null && !"".equalsIgnoreCase(bean.getStTunjPeralihanTunjangan())) {
                         tunjanganentity.setTunjPeralihanTunjangan(new BigDecimal(bean.getStTunjPeralihanTunjangan()));
+                    }
+                    //RAKA-end
+
+                    //RAKA-22MAR2021 ==> Nominal Tunjangan di pindah ke Tunj_Lain
+                    if (bean.getStTunjSiaga() != null && !"".equalsIgnoreCase(bean.getStTunjSiaga())) {
+                        tunjanganentity.setTunjSiaga(new BigDecimal(bean.getStTunjSiaga()));
+                    }
+                    if (bean.getStTunjSupervisi() != null && !"".equalsIgnoreCase(bean.getStTunjSupervisi())) {
+                        tunjanganentity.setTunjSupervisi(new BigDecimal(bean.getStTunjSupervisi()));
+                    }
+                    if (bean.getStTunjLokasi() != null && !"".equalsIgnoreCase(bean.getStTunjLokasi())) {
+                        tunjanganentity.setTunjLokasi(new BigDecimal(bean.getStTunjLokasi()));
+                    }
+                    if (bean.getStTunjPemondokan() != null && !"".equalsIgnoreCase(bean.getStTunjPemondokan())) {
+                        tunjanganentity.setTunjPemondokan(new BigDecimal(bean.getStTunjPemondokan()));
                     }
                     //RAKA-end
 
@@ -3097,6 +3132,21 @@ public class BiodataBoImpl implements BiodataBo {
                                     (itTunjLainPegawaiEntity.getTunjPeralihanSankhus() != null) ? itTunjLainPegawaiEntity.getTunjPeralihanSankhus().toString() : "");
                             returnBiodata.setStTunjPeralihanTunjangan(
                                     (itTunjLainPegawaiEntity.getTunjPeralihanTunjangan() != null) ? itTunjLainPegawaiEntity.getTunjPeralihanTunjangan().toString() : "");
+                            //RAKA-end
+
+                            //RAKA-20MAR2021
+                            returnBiodata.setTunjSiaga(itTunjLainPegawaiEntity.getTunjSiaga());
+                            returnBiodata.setTunjSupervisi(itTunjLainPegawaiEntity.getTunjSupervisi());
+                            returnBiodata.setTunjLokasi(itTunjLainPegawaiEntity.getTunjLokasi());
+                            returnBiodata.setTunjPemondokan(itTunjLainPegawaiEntity.getTunjPemondokan());
+                            returnBiodata.setStTunjSiaga(
+                                    (itTunjLainPegawaiEntity.getTunjSiaga() != null) ? itTunjLainPegawaiEntity.getTunjSiaga().toString() : "");
+                            returnBiodata.setStTunjSupervisi(
+                                    (itTunjLainPegawaiEntity.getTunjSupervisi() != null) ? itTunjLainPegawaiEntity.getTunjSupervisi().toString() : "");
+                            returnBiodata.setStTunjLokasi(
+                                    (itTunjLainPegawaiEntity.getTunjLokasi() != null) ? itTunjLainPegawaiEntity.getTunjLokasi().toString() : "");
+                            returnBiodata.setStTunjPemondokan(
+                                    (itTunjLainPegawaiEntity.getTunjPemondokan() != null) ? itTunjLainPegawaiEntity.getTunjPemondokan().toString() : "");
                             //RAKA-end
                         }
                     }
