@@ -442,9 +442,15 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
 
     //recursiv
     private String getListStruktur(String branchId, String positionId, String parentId, String nip){
+        logger.info("[StrukturJabatanBoImpl.getListStruktur] start >>>>>>");
         List<StrukturJabatan> strukturJabatans = null;
         String hasil = "";
-        strukturJabatans = strukturJabatanDao.getStrukturJabatanSearch(branchId, positionId, parentId, nip);
+        try {
+            strukturJabatans = strukturJabatanDao.getStrukturJabatanSearch(branchId, positionId, parentId, nip);
+        }catch (HibernateException e){
+            logger.error("[StrukturJabatanBoImpl.getListStruktur] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Struktur Jabatan, " + e.getMessage());
+        }
         if(strukturJabatans.size() > 0){
             for(StrukturJabatan imStrukturJabatanEntity : strukturJabatans){
                 StrukturJabatan itemComboStrukturJabatan = new StrukturJabatan();
@@ -456,6 +462,7 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
                 itemComboStrukturJabatan.setParentId(imStrukturJabatanEntity.getParentId());
                 itemComboStrukturJabatan.setJenisPegawai(imStrukturJabatanEntity.getJenisPegawai());
                 itemComboStrukturJabatan.setFlagDefault(imStrukturJabatanEntity.getFlagDefault());
+                itemComboStrukturJabatan.setKodering(imStrukturJabatanEntity.getKodering());
                 if(imStrukturJabatanEntity.getNip() == null){
                     itemComboStrukturJabatan.setNip("-");
                     itemComboStrukturJabatan.setName("-");
@@ -480,6 +487,7 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
                 getListStruktur(branchId, "", hasil, "");
             }
         }
+        logger.info("[StrukturJabatanBoImpl.getListStruktur] end >>>>>>");
         return hasil;
     }
 

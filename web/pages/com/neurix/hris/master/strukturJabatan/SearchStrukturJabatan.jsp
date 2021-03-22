@@ -230,7 +230,7 @@
                 $.each(data, function(i,item){
                     data2.push({_id : item.strukturJabatanId, level : item.level,  nama : item.positionName, parent : item.parentId, branchId : item.branchId,
                         branchName : item.branchName, status : 'Y', jabatan : item.positionName, nip  : item.nip, namaPegawai : item.name,
-                        positionId : item.positionId, jenisPegawai : item.jenisPegawai, flagDefault : item.flagDefault});
+                        positionId : item.positionId, jenisPegawai : item.jenisPegawai, flagDefault : item.flagDefault, kodering : item.kodering});
                 });
 
 
@@ -278,6 +278,7 @@
                         "<th style='text-align: center; background-color:  #30d196'>Struktur Id</th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Nama Jabatan</th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Kodering</th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Nip </th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Nama </th>"+
                         "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
@@ -290,6 +291,7 @@
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level+ '</td>' +
+                                '<td align="center">' + data2[i].kodering+ '</td>' +
                                 '<td align="center">' + data2[i].nip + '</td>' +
                                 '<td align="center">' + data2[i].namaPegawai;
 
@@ -315,6 +317,7 @@
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level + '</td>' +
+                                '<td align="center">' + data2[i].kodering + '</td>' +
                                 '<td align="center">' + data2[i].nip + '</td>' +
                                 '<td align="center">' + data2[i].namaPegawai;
 

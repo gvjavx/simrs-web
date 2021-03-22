@@ -667,6 +667,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
                 "     posisi.position_name,\n" +
                 "\t jenis.flag_default,\n" +
                 "\t jenis.jenis_pegawai_name\n" +
+                "\t posisi.kodering\n" +
                 " from \n" +
                 "     im_hris_struktur_jabatan jabatan\n" +
                 "     left join it_hris_pegawai_position itPosisi on itPosisi.position_id = jabatan.position_id and itPosisi.flag = 'Y' and jabatan.branch_id = itPosisi.branch_id\n" +
@@ -713,6 +714,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             result.setPositionName((String) row[13]);
             result.setFlagDefault(row[14] == null ? "N" : row[14].toString());
             result.setJenisPegawai(row[15] == null ? "" : row[15].toString());
+            result.setKodering((String) row[16]);
             listOfResult.add(result);
         }
         return listOfResult;
