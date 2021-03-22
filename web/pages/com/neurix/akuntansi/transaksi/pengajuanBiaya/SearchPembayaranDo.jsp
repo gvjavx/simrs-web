@@ -137,7 +137,7 @@
                                                 <td>
                                                     <table>
                                                         <s:hidden name="pengajuanBiayaRk.branchIdUser" id="branchIdUser" />
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchSelainKp_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiayaRk.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -227,7 +227,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "01"'>
                                                             <s:select list="#{'K' : 'Menunggu Kantor Pusat','R' : 'Sudah Di RK ( Belum Dibayar )','D' : 'Sudah Dibayar'}"
                                                                       id="statusPembayaran" name="pengajuanBiayaRk.status"
                                                                       headerKey="" headerValue="Semua Status" cssClass="form-control" />
@@ -733,7 +733,7 @@
                     ln++
             }
             if(ln > 0){
-                if (branchIdUser!="KP"){
+                if (branchIdUser!="01"){
                     $('#btn_create').show();
                     $('#btn_bayar').hide();
                 } else{
@@ -768,7 +768,7 @@
                     ln++
             }
             if(ln > 0){
-                if (branchIdUser!="KP"){
+                if (branchIdUser!="01"){
                     $('#btn_create').show();
                     $('#btn_bayar').hide();
                 } else{
@@ -791,7 +791,7 @@
     });
     function createRk() {
         var branchId = $('#branchIdUser').val();
-        if (branchId!="KP"){
+        if (branchId!="01"){
             var data = $('#tablePengajuanBiaya').tableToJSON();
             var result = [];
             $.each(data, function (i, item) {

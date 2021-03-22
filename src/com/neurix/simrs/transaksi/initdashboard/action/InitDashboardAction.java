@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.initdashboard.action;
 
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
@@ -68,7 +69,7 @@ public class InitDashboardAction {
             branch.setBranchId(CommonUtil.userBranchLogin());
         }
         branch.setFlag("Y");
-        branch.setNotLike("KP");
+        branch.setNotLike(CommonConstant.BRANCH_KP);
 
         try {
             branchList = branchBo.getByCriteria(branch);

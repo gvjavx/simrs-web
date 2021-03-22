@@ -137,7 +137,7 @@
                                                 <td>
                                                     <table>
                                                         <s:hidden name="pengajuanBiayaRk.branchIdUser" id="branchIdUser" />
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranchSelainKp_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiayaRk.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -227,7 +227,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "01"'>
                                                             <s:select list="#{'R' : 'Sudah Di RK ( Belum Dibayar )'}"
                                                                       id="statusPembayaran" name="pengajuanBiayaRk.status"
                                                                       headerKey="K" headerValue="Menunggu Kantor Pusat" cssClass="form-control" />
@@ -253,7 +253,7 @@
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "01"'>
                                                             <a class="btn btn-success" id="btn_create" style="display: none" onclick="createRk()"><i class="fa fa-plus"></i>
                                                                 Create RK</a>
                                                             <a class="btn btn-success" id="btn_bayar" style="display: none" onclick="bayarRk()"><i class="fa fa-plus"></i>
@@ -304,7 +304,7 @@
                                                     </thead>
                                                     <tbody>
                                                     <s:iterator value="#session.listOfResult" var="row">
-                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaRk.branchIdUser == "01"'>
                                                             <td align="center">
                                                                 <s:if test='#row.status == "D"'>
                                                                 </s:if>
@@ -767,7 +767,7 @@
                     ln++
             }
             if(ln > 0){
-                if (branchIdUser!="KP"){
+                if (branchIdUser!="01"){
                     $('#btn_create').show();
                     $('#btn_bayar').hide();
                 } else{
@@ -802,7 +802,7 @@
                     ln++
             }
             if(ln > 0){
-                if (branchIdUser!="KP"){
+                if (branchIdUser!="01"){
                     $('#btn_create').show();
                     $('#btn_bayar').hide();
                 } else{
@@ -825,7 +825,7 @@
     });
     function createRk() {
         var branchId = $('#branchIdUser').val();
-        if (branchId!="KP"){
+        if (branchId!="01"){
             var data = $('#tablePengajuanBiaya').tableToJSON();
             var result = [];
             $.each(data, function (i, item) {

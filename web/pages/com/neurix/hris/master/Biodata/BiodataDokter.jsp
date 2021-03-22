@@ -426,7 +426,7 @@
                                                                 <%--<s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"--%>
                                                                 <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
 
-                                                                <s:if test='biodata.branch == "KP"'>
+                                                                <s:if test='biodata.branch == "01"'>
                                                                     <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
                                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                                 </s:if>
@@ -449,7 +449,7 @@
                                                     <td>
                                                         <table>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
-                                                            <s:if test='biodata.branch == "KP"'>
+                                                            <s:if test='biodata.branch == "01"'>
                                                                 <s:select list="#initComboBranch.listOfComboBranch" id="branch1" name="biodata.branch" onchange="listPosisi()"
                                                                           listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             </s:if>

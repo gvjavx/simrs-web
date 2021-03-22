@@ -81,9 +81,21 @@ To change this template use File | Settings | File Templates.
                                         </tr>
                                     </table>
                                     <table>
+                                        <%--<tr >--%>
+                                            <%--<td width="18%">--%>
+                                                <%--<label class="control-label"><small>ID Ruangan :</small></label>--%>
+                                            <%--</td>--%>
+                                            <%--<td>--%>
+                                                <%--<table >--%>
+                                                    <%--<s:textfield cssStyle="margin-top: 7px" id="id_ruangan"--%>
+                                                                 <%--name="ruangan.idRuangan" required="false"--%>
+                                                                 <%--readonly="false" cssClass="form-control"/>--%>
+                                                <%--</table>--%>
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
                                         <tr>
-                                            <td width="25%">
-                                                <label class="control-label"><small>Nama Ruangan &nbsp;&nbsp;&nbsp;</small></label>
+                                            <td width="18%">
+                                                <label class="control-label"><small>Nama Ruangan :</small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -93,7 +105,7 @@ To change this template use File | Settings | File Templates.
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>No Ruangan </small></label>
+                                                <label class="control-label"><small>No Ruangan :</small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -103,11 +115,14 @@ To change this template use File | Settings | File Templates.
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Unit </small></label>
+                                                <label class="control-label"><small>Unit :</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:if test='pelayanan.branchUser == "KP"'>
+                                                        <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                        <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
+                                                        <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                    <s:if test='pelayanan.branchUser == "01"'>
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="ruangan.branchId"
                                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
@@ -124,7 +139,7 @@ To change this template use File | Settings | File Templates.
 
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Kelas </small></label>
+                                                <label class="control-label"><small>Kelas :</small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -136,9 +151,22 @@ To change this template use File | Settings | File Templates.
                                             </td>
                                         </tr>
 
+                                        <%--<tr>--%>
+                                            <%--<td>--%>
+                                                <%--<label class="control-label"><small>Status Ruangan :</small></label>--%>
+                                            <%--</td>--%>
+                                            <%--<td>--%>
+                                                <%--<table>--%>
+                                                    <%--<s:select list="#{'N':'Tidak Tersedia'}" id="statusRuangan" name="ruangan.statusRuangan"--%>
+                                                              <%--headerKey="Y" headerValue="Tersedia" cssClass="form-control" />--%>
+                                                <%--</table>--%>
+
+                                            <%--</td>--%>
+                                        <%--</tr>--%>
+
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Flag </small></label>
+                                                <label class="control-label"><small>Flag :</small></label>
                                             </td>
                                             <td>
                                                 <table>
@@ -165,7 +193,7 @@ To change this template use File | Settings | File Templates.
                                                     </s:url>
                                                     <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                         <i class="fa fa-plus"></i>
-                                                        Add Ruangan
+                                                        Add Pelayanan
                                                     </sj:a>
                                                 </td>
                                                 <td>

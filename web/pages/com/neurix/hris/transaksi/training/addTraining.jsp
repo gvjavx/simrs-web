@@ -294,7 +294,7 @@
                                                 <td>
                                                     <table>
                                                         <s:url var="urlAdd" namespace="/training" action="addPerson_training" escapeAmp="false">
-                                                            <s:param name="unit">KP</s:param>
+                                                            <s:param name="unit">01</s:param>
                                                         </s:url>
                                                         <sj:a id="btnAdd" cssClass="btn btn-success" onClickTopics="showDialogMenuEdit" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
