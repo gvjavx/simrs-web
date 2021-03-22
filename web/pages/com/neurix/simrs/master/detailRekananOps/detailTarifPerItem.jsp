@@ -374,7 +374,7 @@
 
         var obj = {
             id_item : idItem, nama_tindakan: namaTindakan, tarif_non_bpjs : tarifNonBpjs,
-            tarif_bpjs : tarifBpjsm, diskon_non_bpjs : diskonNonBpjs, diskon_bpjs : diskonBpjs,
+            tarif_bpjs : tarifBpjs, diskon_non_bpjs : diskonNonBpjs, diskon_bpjs : diskonBpjs,
             parent_id : parentId
         }
 
