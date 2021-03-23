@@ -283,6 +283,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "pindah_poli") {
             $('#poli_lain').attr('disabled', false);
@@ -312,6 +313,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').show();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -324,6 +326,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
@@ -336,6 +339,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "lanjut_paket") {
             var idpel = $('#h_id_pelayanan_paket_pilih').val();
@@ -351,6 +355,7 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else {
             $('#form-selesai').hide();
@@ -360,6 +365,7 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pindah_poli').hide();
             $('#form-metode_pembayaran').hide();
+            $('#form_eksekutif').hide();
             if ("rujuk_internal" == idKtg) {
                 $('#form-rujuk_internal').show();
                 $('#form-asesmen').hide();
@@ -381,6 +387,7 @@ function selectKeterangan(idKtg) {
         $('#form-metode_pembayaran').hide();
         $('#form-asesmen').hide();
         $('#form-rujuk_internal').hide();
+        $('#form_eksekutif').hide();
     }
 }
 
@@ -2707,6 +2714,29 @@ function setStokObatApotek(select, tipe) {
             ObatAction.getHeaderObatById(id, function (res) {
                 if(res != null){
                     getComboParameterObat(res.idSubJenis);
+                    if(res.flagIsFormularium == "Y"){
+                        $('#set_formula').text("Ya");
+                    }else{
+                        $('#set_formula').text("Tidak");
+                    }
+
+                    if(res.flagParenteral == "Y"){
+                        $('#set_teral').text("Ya");
+                        $('#set_noretal').text("Tidak");
+                    }else{
+                        $('#set_teral').text("Tidak");
+                        $('#set_noretal').text("Ya");
+                    }
+                }
+            });
+
+            ObatAction.getListKandunganObat(idObat, function (res) {
+                var body = "";
+                if (res.length > 0){
+                    $.each(res, function (i, item) {
+                        body += '<li>'+item.satuanSediaan+'</li>';
+                    });
+                    $('#set_js').html('<ul>'+body+'</ul>');
                 }
             });
         }
@@ -2755,6 +2785,12 @@ function resetAll() {
     $('#body_keterangan').html('');
     removePaint('ttd_canvas');
     $('#body_keterangan').html('');
+
+    $('#set_js').html('');
+    $('#set_formula').text('');
+    $('#set_teral').text('');
+    $('#set_noretal').text('');
+
     resetComboObat();
 }
 
@@ -3127,7 +3163,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
                         } else if (item.keterangan == "surat") {
                             li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
                         }
@@ -3630,6 +3666,13 @@ function setDiskonHarga(id) {
                 } else {
                     $('#form_elektif').hide();
                     $('#is_elektif').val("N");
+                }
+
+                if("Y" == res.flagKonsulGizi){
+                    $('#warning_konsul').fadeIn(1000);
+                    $('#msg_konsul').text("Anda memilih tindakan konsultasi Gizi. Setelah menambahkan tindakan ini silahkan ke Unit Gizi untuk melakukan konsultasi gizi...!");
+                }else{
+                    $('#warning_konsul').hide();
                 }
             }
         });

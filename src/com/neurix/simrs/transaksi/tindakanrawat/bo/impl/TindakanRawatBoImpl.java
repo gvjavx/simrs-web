@@ -16,6 +16,8 @@ import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.checkupdetail.dao.CheckupDetailDao;
 import com.neurix.simrs.transaksi.checkupdetail.model.ItSimrsHeaderDetailCheckupEntity;
+import com.neurix.simrs.transaksi.konsultasigizi.dao.KonsultasiGiziDao;
+import com.neurix.simrs.transaksi.konsultasigizi.model.ItSimrsKonsultasiGiziEntity;
 import com.neurix.simrs.transaksi.tindakanrawat.bo.TindakanRawatBo;
 import com.neurix.simrs.transaksi.tindakanrawat.dao.TindakanRawatDao;
 import com.neurix.simrs.transaksi.tindakanrawat.model.ItSimrsTindakanRawatEntity;
@@ -38,6 +40,7 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
     private CheckupDetailDao checkupDetailDao;
     private DokterDao dokterDao;
     private TindakanDao tindakanDao;
+    private KonsultasiGiziDao konsultasiGiziDao;
 
     @Override
     public List<TindakanRawat> getByCriteria(TindakanRawat bean) throws GeneralBOException {
@@ -86,6 +89,27 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
 
                 try {
                     tindakanRawatDao.addAndSave(tindakanRawatEntity);
+
+                    //sodiq, trigger menuju ke unit konsultasi gizi ketika flag gizi Y, 18,03,2021
+                    if("Y".equalsIgnoreCase(bean.getFlagKonsulGizi())){
+                        ItSimrsKonsultasiGiziEntity entity = new ItSimrsKonsultasiGiziEntity();
+                        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                        if(detailCheckupEntity != null){
+                            entity.setIdKonsultasiGizi(konsultasiGiziDao.getNextSeq());
+                            entity.setNoCheckup(detailCheckupEntity.getNoCheckup());
+                            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                            entity.setStatus("0");
+                            entity.setAction("C");
+                            entity.setFlag("Y");
+                            entity.setCreatedWho(bean.getCreatedWho());
+                            entity.setCreatedDate(bean.getCreatedDate());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            insertKonsultasiGizi(entity);
+                        }else{
+                            throw new GeneralBOException("No Checkup tidak ditemukan...!");
+                        }
+                    }
                     response.setStatus("success");
                     response.setMsg("Berhasil");
                 } catch (HibernateException e) {
@@ -95,10 +119,19 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
                 }
             }
         }
-        // update total biaya pada di detail checkup
-//        updateDetailCheckup(bean);
         logger.info("[TindakanRawatBoImpl.saveAdd] End <<<<<<");
         return response;
+    }
+
+    private void insertKonsultasiGizi(ItSimrsKonsultasiGiziEntity bean){
+        if(bean != null){
+            try {
+                konsultasiGiziDao.addAndSave(bean);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                throw new GeneralBOException("[TindakanRawatBoImpl.insertKonsultasiGizi] Error, "+e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -128,6 +161,26 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
 
                 try {
                     tindakanRawatDao.updateAndSave(tindakanRawatEntity);
+                    //sodiq, trigger menuju ke unit konsultasi gizi ketika flag gizi Y, 18,03,2021
+                    if("Y".equalsIgnoreCase(bean.getFlagKonsulGizi())){
+                        ItSimrsKonsultasiGiziEntity entity = new ItSimrsKonsultasiGiziEntity();
+                        ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = checkupDetailDao.getById("idDetailCheckup", bean.getIdDetailCheckup());
+                        if(detailCheckupEntity != null){
+                            entity.setIdKonsultasiGizi(konsultasiGiziDao.getNextSeq());
+                            entity.setNoCheckup(detailCheckupEntity.getNoCheckup());
+                            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+                            entity.setStatus("0");
+                            entity.setAction("C");
+                            entity.setFlag("Y");
+                            entity.setCreatedWho(bean.getCreatedWho());
+                            entity.setCreatedDate(bean.getCreatedDate());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            insertKonsultasiGizi(entity);
+                        }else{
+                            throw new GeneralBOException("No Checkup tidak ditemukan...!");
+                        }
+                    }
                     response.setStatus("success");
                     response.setMsg("Berhasil");
                 }catch (HibernateException e){
@@ -381,5 +434,9 @@ public class TindakanRawatBoImpl implements TindakanRawatBo {
 
     public void setTindakanDao(TindakanDao tindakanDao) {
         this.tindakanDao = tindakanDao;
+    }
+
+    public void setKonsultasiGiziDao(KonsultasiGiziDao konsultasiGiziDao) {
+        this.konsultasiGiziDao = konsultasiGiziDao;
     }
 }

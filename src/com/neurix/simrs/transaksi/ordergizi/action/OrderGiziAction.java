@@ -22,9 +22,7 @@ import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
+import java.util.*;
 
 public class OrderGiziAction extends BaseTransactionAction {
 
@@ -40,7 +38,7 @@ public class OrderGiziAction extends BaseTransactionAction {
         this.orderGiziBoProxy = orderGiziBoProxy;
     }
 
-    public CheckResponse saveOrderGizi(String data, String forWhen, String type) {
+    public CheckResponse saveOrderGizi(String data, String dataObj, String type) {
         logger.info("[OrderGiziAction.saveOrderGizi] start process >>>");
         CheckResponse response = new CheckResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -55,17 +53,32 @@ public class OrderGiziAction extends BaseTransactionAction {
             JSONArray json = new JSONArray(data);
             if (json != null) {
                 try {
+                    OrderGizi giziOrder = new OrderGizi();
+                    String ket = "";
+                    String isSonde = "";
+                    JSONObject object = new JSONObject(dataObj);
+                    if (object.has("is_sonde")) {
+                        isSonde = object.getString("is_sonde");
+                    }
+                    if (object.has("keterangan")) {
+                        if ("Y".equalsIgnoreCase(isSonde)) {
+                            ket = "sonde";
+                        }else{
+                            ket = object.getString("keterangan");
+                        }
+                    }
+                    giziOrder.setKeterangan(ket);
                     List<OrderGizi> orderGiziList = new ArrayList<>();
                     for (int i = 0; i < json.length(); i++) {
                         JSONObject obj = json.getJSONObject(i);
                         OrderGizi orderGizi = new OrderGizi();
-                        if(obj.has("id_rawat_inap")){
+                        if (obj.has("id_rawat_inap")) {
                             orderGizi.setIdRawatInap(obj.getString("id_rawat_inap"));
                         }
-                        if(obj.has("id_detail_checkup")){
+                        if (obj.has("id_detail_checkup")) {
                             orderGizi.setIdDetailCheckup(obj.getString("id_detail_checkup"));
                         }
-                        if(obj.has("id_pelayanan")){
+                        if (obj.has("id_pelayanan")) {
                             orderGizi.setIdRawatInap(obj.getString("id_pelayanan"));
                         }
                         orderGizi.setIdDietGizi(obj.getString("id_diet_gizi"));
@@ -78,8 +91,8 @@ public class OrderGiziAction extends BaseTransactionAction {
                         orderGizi.setAction("C");
                         orderGizi.setFlag("Y");
                         if (obj.has("id_jenis_diet")) {
-                            if (!"".equalsIgnoreCase(obj.getString("id_jenis_diet"))) {
-                                String[] list = obj.getString("id_jenis_diet").split(",");
+                            if (obj.getString("id_jenis_diet") != null && !"".equalsIgnoreCase(obj.getString("id_jenis_diet"))) {
+                                String[] list = obj.getString("id_jenis_diet").split("#");
                                 if (list.length > 0) {
                                     List<String> stringList = new ArrayList<>();
                                     for (String jenis : list) {
@@ -89,25 +102,51 @@ public class OrderGiziAction extends BaseTransactionAction {
                                 }
                             }
                         }
+                        if (obj.has("makanan_luar")) {
+                            if (obj.getString("makanan_luar") != null && !"".equalsIgnoreCase(obj.getString("makanan_luar"))) {
+                                String[] list = obj.getString("makanan_luar").split("#");
+                                if (list.length > 0) {
+                                    List<String> stringList = new ArrayList<>();
+                                    for (String jenis : list) {
+                                        stringList.add(jenis);
+                                    }
+                                    orderGizi.setListMakananLuar(stringList);
+                                }
+                            }
+                        }
+                        if (obj.has("snack")) {
+                            if (obj.getString("snack") != null && !"".equalsIgnoreCase(obj.getString("snack"))) {
+                                String[] list = obj.getString("snack").split("#");
+                                if (list.length > 0) {
+                                    List<String> stringList = new ArrayList<>();
+                                    for (String jenis : list) {
+                                        stringList.add(jenis);
+                                    }
+                                    orderGizi.setListSnack(stringList);
+                                }
+                            }
+                        }
+
                         String id = orderGizi.getIdRawatInap();
-                        if("RJ".equalsIgnoreCase(type)){
+                        if ("RJ".equalsIgnoreCase(type)) {
                             id = orderGizi.getIdDetailCheckup();
                         }
-                        List<OrderGizi> cekList = orderGiziBo.cekOrderGizi(id, orderGizi.getWaktu(), type, forWhen);
-                        if(cekList.size() > 0){
+
+                        List<OrderGizi> cekList = orderGiziBo.cekOrderGizi(id, orderGizi.getWaktu(), type, ket);
+                        if (cekList.size() > 0) {
                             String msg = "Hari Ini";
-                            if("2".equalsIgnoreCase(forWhen)){
+                            if ("2".equalsIgnoreCase(ket)) {
                                 msg = "Besok";
                             }
                             response.setStatus("error");
-                            response.setMessage("Gizi pada waktu "+orderGizi.getWaktu().toUpperCase()+" "+msg +" Sudah Ada...!");
+                            response.setMessage("Gizi pada waktu " + orderGizi.getWaktu().toUpperCase() + " " + msg + " Sudah Ada...!");
                             return response;
-                        }else{
+                        } else {
                             orderGiziList.add(orderGizi);
                         }
                     }
-                    if(orderGiziList.size() > 0){
-                        response = orderGiziBo.saveAdd(orderGiziList, forWhen);
+                    if (orderGiziList.size() > 0) {
+                        response = orderGiziBo.saveAdd(orderGiziList, giziOrder);
                     }
                 } catch (GeneralBOException e) {
                     response.setStatus("error");
@@ -249,6 +288,20 @@ public class OrderGiziAction extends BaseTransactionAction {
         } else {
             return null;
         }
+    }
+
+    public List<OrderGizi> listPendampingGizi() {
+        logger.info("[OrderGiziAction.listPendampingGizi] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
+        List<OrderGizi> orderGiziList = new ArrayList<>();
+        try {
+            orderGiziList = orderGiziBo.getPendampingGizi(CommonUtil.userBranchLogin());
+        } catch (GeneralBOException e) {
+            logger.info("[OrderGiziAction.listPendampingGizi] error, " + e.getMessage());
+        }
+        logger.info("[OrderGiziAction.listPendampingGizi] end process >>>");
+        return orderGiziList;
     }
 
     @Override

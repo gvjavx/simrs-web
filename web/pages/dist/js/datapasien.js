@@ -43,6 +43,9 @@ function setDataPasien() {
         var dokterBedah = $('.dokter_bedah').length;
         var asistenInts = $('.asisten_instrumen').length;
 
+        var jenisPasien = $('.nama_jenis_pasien').length;
+        var asalMasuk = $('.asal_masuk').length;
+
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
             dwr.engine.setAsync(true);
             CheckupAction.getDataPemeriksaanFisik(noCheckup, {
@@ -309,6 +312,23 @@ function setDataPasien() {
                 callback: function (res) {
                     if (res != '') {
                         $('.asisten_instrumen').val(res);
+                    }
+                }
+            });
+        }
+
+        if(jenisPasien > 0){
+            if(namaJenisPasien != undefined){
+                $('.nama_jenis_pasien').val(namaJenisPasien);
+            }
+        }
+
+        if(asalMasuk > 0){
+            dwr.engine.setAsync(true);
+            CheckupAction.fistCheckup(noCheckup, {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.asal_masuk').val(res);
                     }
                 }
             });

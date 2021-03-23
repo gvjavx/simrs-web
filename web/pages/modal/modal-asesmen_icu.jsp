@@ -200,7 +200,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Jaminan</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="id3">
+                                <input class="form-control nama_jenis_pasien" id="id3">
                             </div>
                         </div>
                     </div>
@@ -208,7 +208,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Asal Masuk</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="id4">
+                                <input class="form-control asal_masuk" id="id4">
                             </div>
                         </div>
                     </div>
@@ -220,7 +220,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control tgl" id="id5">
+                                    <input class="form-control tanggal_masuk_rs" id="id5" disabled>
                                 </div>
                             </div>
                         </div>
@@ -249,7 +249,7 @@
                         <div class="form-group">
                             <label class="col-md-3">DPJP ICU</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="id9">
+                                <input class="form-control nama_dokter_ri" id="id9">
                             </div>
                         </div>
                     </div>

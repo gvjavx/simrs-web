@@ -703,12 +703,10 @@ public class RawatInapAction extends BaseMasterAction {
     }
 
     public String getComboBoxDietGizi() {
-
         List<DietGizi> dietGiziArrayList = new ArrayList<>();
         DietGizi dietGizi = new DietGizi();
         dietGizi.setBranchId(CommonUtil.userBranchLogin());
         dietGizi.setFlag("Y");
-
         try {
             dietGiziArrayList = dietGiziBoProxy.getByCriteria(dietGizi);
         } catch (GeneralBOException e) {
@@ -3300,5 +3298,46 @@ public class RawatInapAction extends BaseMasterAction {
         java.sql.Date date = new java.sql.Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
         return df.format(date);
+    }
+
+    public CrudResponse deleteMon(String id, String tipe){
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+        if(id != null && !"".equalsIgnoreCase(id)){
+            try {
+                MonCairan monCairan = new MonCairan();
+                monCairan.setId(id);
+                monCairan.setKeterangan(tipe);
+                rawatInapBo.deleteMon(monCairan);
+                response.setStatus("success");
+                response.setMsg("OK");
+            }catch (Exception e){
+                response.setStatus("error");
+                response.setMsg(e.getMessage());
+            }
+        }else{
+            response.setStatus("error");
+            response.setMsg("Data Tidak ditemukan...!");
+        }
+        return response;
+    }
+
+    public DietGizi getDataDietGizi(String id) {
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DietGiziBo dietGiziBo = (DietGiziBo) ctx.getBean("dietGiziBoProxy");
+        List<DietGizi> dietGiziArrayList = new ArrayList<>();
+        DietGizi dietGizi = new DietGizi();
+        dietGizi.setIdDietGizi(id);
+        dietGizi.setFlag("Y");
+        try {
+            dietGiziArrayList = dietGiziBo.getByCriteria(dietGizi);
+        } catch (GeneralBOException e) {
+            logger.error("[RawatInapAction.getDataDietGizi] Error when get data for combo list of diet gizi", e);
+        }
+        if(dietGiziArrayList.size() > 0){
+            dietGizi = dietGiziArrayList.get(0);
+        }
+        return dietGizi;
     }
 }

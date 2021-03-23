@@ -501,7 +501,6 @@
     }
 
     function showDoc(img){
-        console.log(img);
         $('#img_surat_po').attr('src',img);
         $('#modal-doc').modal('show');
     }

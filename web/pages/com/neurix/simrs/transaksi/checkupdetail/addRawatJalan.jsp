@@ -1357,6 +1357,10 @@
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_tindakan"></p>
                 </div>
+                <div class="alert alert-info alert-dismissible" style="display: none" id="warning_konsul">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_konsul"></p>
+                </div>
                 <div class="row">
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Dokter</label>
@@ -1952,6 +1956,27 @@
                         <input type="hidden" id="val-kronis"/>
                     </div>
                 </div>
+                <div class="row jarak">
+                    <label class="col-md-3">Informasi Obat</label>
+                    <div class="col-md-9">
+                        <table class="table" style="font-size: 12px; border: solid 1px #ddd">
+                            <tr>
+                                <td width="30%">- Formularium</td>
+                                <td align="left"><span id="set_formula"></span></td>
+                                <td width="20%"></td>
+                                <td width="30%">- Parenteral</td>
+                                <td align="left"><span id="set_teral"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="30%">- Jenis Satuan</td>
+                                <td align="left"><span id="set_js"></span></td>
+                                <td width="20%"></td>
+                                <td width="30%">- Non Parenteral</td>
+                                <td align="left"><span id="set_noretal"></span></td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Stok Obat</label>
                     <div class="col-md-9">
@@ -1993,7 +2018,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <div class="row" style="display: none;">
                     <label class="col-md-3" style="margin-top: 7px">Jenis Satuan</label>
                     <div class="col-md-9">
                         <s:select list="#{'lembar':'Lembar','box':'Box'}"
@@ -2011,9 +2036,14 @@
                 <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Jumlah</label>
                     <div class="col-md-9">
-                        <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
-                               style="margin-top: 7px;" value="1" class="form-control" type="number" min="1"
-                               id="resep_qty">
+                        <div class="input-group" style="margin-top: 7px;">
+                            <input oninput="var warn =$('#war_rep_qty').is(':visible'); if (warn){$('#cor_rep_qty').show().fadeOut(3000);$('#war_rep_qty').hide()}"
+                                   value="1" class="form-control" type="number" min="1"
+                                   id="resep_qty">
+                            <div class="input-group-addon">
+                                Biji
+                            </div>
+                        </div>
                         <span style="color: red; margin-top: 12px; display: none;"
                               id="war_rep_qty"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
@@ -2931,15 +2961,18 @@
             ride: false,
             pause: false
         });
-
     });
 
-    function loadModalRM(jenis) {
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 

@@ -3956,4 +3956,16 @@ public class CheckupAction extends BaseMasterAction {
         }
         return response;
     }
+
+    public String fistCheckup(String noCheckup){
+        String response = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            response = checkupBo.fisrtCheckup(noCheckup);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return response;
+    }
 }

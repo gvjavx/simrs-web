@@ -1118,7 +1118,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 if(obat.getLembarPerBox() != null && !"".equalsIgnoreCase(obat.getLembarPerBox().toString())){
                     headerObatEntity.setBijiPerLembar(obat.getBijiPerLembar());
                 }
-                headerObatEntity.setFlag("U");
+                headerObatEntity.setAction("U");
                 headerObatEntity.setLastUpdate(obat.getLastUpdate());
                 headerObatEntity.setLastUpdateWho(obat.getLastUpdateWho());
                 try {
