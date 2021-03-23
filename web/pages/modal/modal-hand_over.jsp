@@ -106,7 +106,7 @@
                         <div class="form-group">
                             <label class="col-md-3">DPJP</label>
                             <div class="col-md-9">
-                                <input class="form-control" id="ho4">
+                                <input class="form-control nama_dokter_ri" id="ho4">
                             </div>
                         </div>
                     </div>
@@ -177,11 +177,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Tensi <span style="font-size: 11px; font-weight: bold">(mmHg)</span></label>
                             <div class="col-md-3">
-                                <input class="form-control" id="ho11">
+                                <input class="form-control tensi-pasien" id="ho11" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <label class="col-md-3">Nadi <span style="font-size: 11px; font-weight: bold">(x/menit)</span></label>
                             <div class="col-md-3">
-                                <input class="form-control" id="ho12">
+                                <input class="form-control nadi-pasien" id="ho12" type="number">
                             </div>
                         </div>
                     </div>
@@ -189,11 +189,11 @@
                         <div class="form-group">
                             <label class="col-md-3">Suhu <span style="font-size: 11px; font-weight: bold">(&#8451)</span></label>
                             <div class="col-md-3">
-                                <input class="form-control" id="ho13">
+                                <input class="form-control suhu-pasien" id="ho13">
                             </div>
                             <label class="col-md-3">RR <span style="font-size: 11px; font-weight: bold">(x/menit)</span></label>
                             <div class="col-md-3">
-                                <input class="form-control" id="ho14">
+                                <input class="form-control rr-pasien" id="ho14">
                             </div>
                         </div>
                     </div>

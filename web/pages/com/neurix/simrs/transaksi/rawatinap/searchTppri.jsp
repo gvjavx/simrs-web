@@ -1382,7 +1382,7 @@
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
                         } else if (item.keterangan == "surat") {
                             li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
                         }
@@ -1393,12 +1393,16 @@
         });
     }
 
-    function loadModalRM(jenis) {
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
-            context = contextPath + '/pages/modal/modal-' + jenis + '.jsp';
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 
