@@ -58,6 +58,7 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 /**
@@ -1570,6 +1571,72 @@ public class TelemedicineController implements ModelDriven<Object> {
                 logger.error("[TelemedicineController.approveAsuransi] Error, " + e.getMessage());
                 throw new GeneralBOException(e.getMessage());
             }
+        }
+
+        if (action.equalsIgnoreCase("getRiwayatTeleDokter")) {
+
+            listOfTelemedic = new ArrayList<>();
+            List<ItSimrsAntrianTelemedicEntity> result = new ArrayList<>();
+
+            Date nowDate = new Date(now.getTime());
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(nowDate);
+
+            LocalDate date = LocalDate.now();
+            String bulan = String.valueOf(date.getMonthValue());
+            String formattedBulan = bulan.length() == 1 ? "0" + bulan: bulan;
+            String tahun = String.valueOf(cal.get(Calendar.YEAR));
+            String tanggalAwal = tahun + "-" +formattedBulan+"-01";
+
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            String tanggalAkhir = CommonUtil.convertDateToString2(cal.getTime());
+
+            AntrianTelemedic bean = new AntrianTelemedic();
+            bean.setIdDokter(idDokter);
+            bean.setStDateFrom(tanggalAwal);
+            bean.setStDateTo(tanggalAkhir);
+
+            try {
+               result = telemedicBoProxy.getListEntityByCriteria(bean);
+            } catch (GeneralBOException e) {
+                logger.error("[TelemedicineController.getRiwayatDokterTele] Error, " + e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+
+            if(result.size() > 0) {
+                for (ItSimrsAntrianTelemedicEntity item : result) {
+                    TelemedicineMobile telemedicineMobile = new TelemedicineMobile();
+                    telemedicineMobile.setId(item.getId());
+                    telemedicineMobile.setFlagResep(item.getFlagResep());
+                    telemedicineMobile.setFlagEresep(item.getFlagEresep());
+                    telemedicineMobile.setIdPasien(item.getIdPasien());
+//                    telemedicineMobile.setNamaDokter(item.getNamaDokter());
+                    telemedicineMobile.setIdDokter(item.getIdDokter());
+//                    telemedicineMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    telemedicineMobile.setIdPelayanan(item.getIdPelayanan());
+                    telemedicineMobile.setStatus(item.getStatus());
+                    telemedicineMobile.setFlagBayarKonsultasi(item.getFlagBayarKonsultasi());
+                    telemedicineMobile.setFlagBayarResep(item.getFlagBayarResep());
+//                    telemedicineMobile.setIdPembayaran(item.getIdPembayaran());
+//                    telemedicineMobile.setNominal(item.getNominal().toString());
+                    telemedicineMobile.setNoKartu(item.getNoKartu());
+                    telemedicineMobile.setIdJenisPeriksaPasien(item.getIdJenisPeriksaPasien());
+                    telemedicineMobile.setIdAsuransi(item.getIdAsuransi());
+                    telemedicineMobile.setKodeBank(item.getKodeBank());
+                    telemedicineMobile.setJenisPembayaran(item.getJenisPembayaran());
+                    telemedicineMobile.setCreatedDate(item.getCreatedDate().toLocaleString());
+//                    telemedicineMobile.setKeterangan(item.getKeterangan());
+//                    telemedicineMobile.setApprovedFlag(item.getApprovedFlag());
+//                    telemedicineMobile.setFlag(item.getFlag());
+//                    telemedicineMobile.setFlagBatalDokter(item.getFlagBatalDokter());
+//                    telemedicineMobile.setIdBatalDokterTelemedic(item.getIdBatalDokterTelemedic());
+//                    telemedicineMobile.setAlasan(item.getAlasan());
+
+                    listOfTelemedic.add(telemedicineMobile);
+                }
+            }
+
+
         }
 
         logger.info("[TelemedicineController.create] end process POST / <<<");
