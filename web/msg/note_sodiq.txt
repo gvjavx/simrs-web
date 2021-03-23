@@ -2189,8 +2189,11 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000248','RMM00000106','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000249','RMM00000107','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000250','RMM00000108','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000251','RMM00000109','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
+('RMP000000251','RMM00000109','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000252','RMM00000110','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
 
+ALTER TABLE it_simrs_asesmen_gizi
+ADD COLUMN skor INTEGER;
 
 
 

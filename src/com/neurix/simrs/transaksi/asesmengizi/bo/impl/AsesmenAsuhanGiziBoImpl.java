@@ -52,6 +52,8 @@ public class AsesmenAsuhanGiziBoImpl implements AsesmenAsuhanGiziBo {
                     asesmenGizi.setAsesmen(entity.getAsesmen());
                     asesmenGizi.setDiagnosa(entity.getDiagnosa());
                     asesmenGizi.setIntervensi(entity.getIntervensi());
+                    asesmenGizi.setRencana(entity.getRencana());
+                    asesmenGizi.setEdukasi(entity.getEdukasi());
                     if(entity.getTtdPasien() != null){
                         asesmenGizi.setTtdPasien(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getTtdPasien());
                     }
@@ -86,6 +88,8 @@ public class AsesmenAsuhanGiziBoImpl implements AsesmenAsuhanGiziBo {
             asesmenGizi.setAsesmen(bean.getAsesmen());
             asesmenGizi.setDiagnosa(bean.getDiagnosa());
             asesmenGizi.setIntervensi(bean.getIntervensi());
+            asesmenGizi.setRencana(bean.getRencana());
+            asesmenGizi.setEdukasi(bean.getEdukasi());
             asesmenGizi.setTtdPasien(bean.getTtdPasien());
             asesmenGizi.setTtdDokter(bean.getTtdDokter());
             asesmenGizi.setNamaPasien(bean.getNamaPasien());

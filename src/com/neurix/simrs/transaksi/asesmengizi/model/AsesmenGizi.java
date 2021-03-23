@@ -19,6 +19,15 @@ public class AsesmenGizi {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String tipe;
+    private Integer skor;
+
+    public Integer getSkor() {
+        return skor;
+    }
+
+    public void setSkor(Integer skor) {
+        this.skor = skor;
+    }
 
     public String getTipe() {
         return tipe;

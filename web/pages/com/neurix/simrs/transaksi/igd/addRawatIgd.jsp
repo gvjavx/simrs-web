@@ -2778,19 +2778,16 @@
 
     });
 
-    function loadModalRM(jenis){
-        var context = "";
-        if(jenis != ''){
-            if(jenis == 'ugd_anak'){
-                title = "Asesmen Awal Gawat Darurat Anak";
-            }else if(jenis == 'ugd_dewasa'){
-                title = "Asesmen Awal Gawat Darurat Dewasa";
-            }else if(jenis == 'ugd_geriatri'){
-                title = "Asesmen Awal Gawat Darurat Geriatri";
-            }
-            context = contextPath+'/pages/modal/modal-'+jenis+'.jsp';
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
+        var context = contextPath + '/pages/modal/modal-default.jsp';
+        if (jenis != "") {
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
-        $('#modal-temp').load(context, function (res) {
+        $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 

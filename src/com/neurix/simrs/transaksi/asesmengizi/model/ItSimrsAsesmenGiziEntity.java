@@ -20,6 +20,15 @@ public class ItSimrsAsesmenGiziEntity {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private Integer skor;
+
+    public Integer getSkor() {
+        return skor;
+    }
+
+    public void setSkor(Integer skor) {
+        this.skor = skor;
+    }
 
     public String getTipe() {
         return tipe;

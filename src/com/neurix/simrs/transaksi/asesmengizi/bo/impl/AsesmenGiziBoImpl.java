@@ -61,6 +61,8 @@ public class AsesmenGiziBoImpl implements AsesmenGiziBo {
                     if(entity.getTipe() != null && !"".equalsIgnoreCase(entity.getTipe())){
                         if("ttd".equalsIgnoreCase(entity.getTipe())){
                             asesmenGizi.setJawaban(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_TTD_RM+entity.getJawaban());
+                        }else{
+                            asesmenGizi.setJawaban(entity.getJawaban());
                         }
                     }else{
                         asesmenGizi.setJawaban(entity.getJawaban());
@@ -73,6 +75,8 @@ public class AsesmenGiziBoImpl implements AsesmenGiziBo {
                     asesmenGizi.setCreatedWho(entity.getCreatedWho());
                     asesmenGizi.setLastUpdate(entity.getLastUpdate());
                     asesmenGizi.setLastUpdateWho(entity.getLastUpdateWho());
+                    asesmenGizi.setSkor(entity.getSkor());
+                    asesmenGizi.setTipe(entity.getTipe());
                     asesmenGiziList.add(asesmenGizi);
                 }
             }
@@ -102,6 +106,8 @@ public class AsesmenGiziBoImpl implements AsesmenGiziBo {
                 asesmenGizi.setCreatedWho(list.getCreatedWho());
                 asesmenGizi.setLastUpdate(list.getLastUpdate());
                 asesmenGizi.setLastUpdateWho(list.getLastUpdateWho());
+                asesmenGizi.setTipe(list.getTipe());
+                asesmenGizi.setSkor(list.getSkor());
                 try {
                     asesmenGiziDao.addAndSave(asesmenGizi);
                 }catch (HibernateException e){

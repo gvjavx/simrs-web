@@ -53,6 +53,9 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="skor">
+                <column name="skor"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

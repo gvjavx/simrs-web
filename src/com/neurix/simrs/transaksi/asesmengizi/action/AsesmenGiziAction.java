@@ -61,6 +61,11 @@ public class AsesmenGiziAction {
                 if(obj.has("sip")){
                     asesmenGizi.setSip(obj.getString("sip"));
                 }
+                if(obj.has("skor")){
+                    if(obj.getString("skor") != null && !"".equalsIgnoreCase(obj.getString("skor"))){
+                        asesmenGizi.setSkor(Integer.valueOf(obj.getString("skor")));
+                    }
+                }
                 if(obj.has("tipe")){
                     if("ttd".equalsIgnoreCase(obj.getString("tipe")) || "gambar".equalsIgnoreCase(obj.getString("tipe"))){
                         try {
@@ -195,7 +200,7 @@ public class AsesmenGiziAction {
                         byte[] decodedBytes = decoder.decodeBuffer(obj.getString("ttd_dokter"));
                         String wkt = time.toString();
                         String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                        String fileName = obj.getString("id_detail_checkup") + "-ttd_pasien-" + patten + ".png";
+                        String fileName = obj.getString("id_detail_checkup") + "-ttd_dokter-" + patten + ".png";
                         String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
                         if (image == null) {
@@ -310,7 +315,7 @@ public class AsesmenGiziAction {
                         byte[] decodedBytes = decoder.decodeBuffer(obj.getString("ttd_dokter"));
                         String wkt = time.toString();
                         String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                        String fileName = obj.getString("id_detail_checkup") + "-ttd_pasien-" + patten + ".png";
+                        String fileName = obj.getString("id_detail_checkup") + "-ttd_dokter-" + patten + ".png";
                         String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
                         BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
                         if (image == null) {
@@ -474,7 +479,7 @@ public class AsesmenGiziAction {
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        AsesmenAsuhanGiziBo asesmenAsuhanGiziBo = (AsesmenAsuhanGiziBo) ctx.getBean("asesmenGiziBoProxy");
+        AsesmenAsuhanGiziBo asesmenAsuhanGiziBo = (AsesmenAsuhanGiziBo) ctx.getBean("asesmenAsuhanGiziBoProxy");
         if (!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(id)) {
             try {
                 AsesmenAsuhanGizi asesmenGizi = new AsesmenAsuhanGizi();
