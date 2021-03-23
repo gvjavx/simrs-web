@@ -666,7 +666,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
                 "     pegawai.nama_pegawai, \n" +
                 "     posisi.position_name,\n" +
                 "\t jenis.flag_default,\n" +
-                "\t jenis.jenis_pegawai_name\n" +
+                "\t jenis.jenis_pegawai_name,\n" +
                 "\t posisi.kodering\n" +
                 " from \n" +
                 "     im_hris_struktur_jabatan jabatan\n" +
@@ -676,7 +676,8 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
                 "\t LEFT JOIN im_hris_jenis_pegawai jenis ON jenis.jenis_pegawai_id = itPosisi.jenis_pegawai\n" +
                 " where \n" +
                 "     jabatan.flag = 'Y'\n"+
-                "\tand jabatan.branch_id = '"+branchId+"'\n " + strPosisi + strParent + strNip;
+                "\tand jabatan.branch_id = '"+branchId+"'\n " + strPosisi + strParent + strNip + "\n" +
+                "ORDER BY posisi.kodering ASC\n";
 
 
         results = this.sessionFactory.getCurrentSession()
@@ -714,7 +715,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
             result.setPositionName((String) row[13]);
             result.setFlagDefault(row[14] == null ? "N" : row[14].toString());
             result.setJenisPegawai(row[15] == null ? "" : row[15].toString());
-            result.setKodering((String) row[16]);
+            result.setKodering(row[16] == null ? "" : row[16].toString());
             listOfResult.add(result);
         }
         return listOfResult;
