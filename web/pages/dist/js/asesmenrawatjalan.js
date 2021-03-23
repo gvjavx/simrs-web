@@ -21,9 +21,7 @@ function showModalRJ(jenis, idRM, isSetIdRM) {
 function saveRJ(jenis, ket) {
     var data = [];
     var cek = false;
-    var dataPasien = "";
-
-    dataPasien = {
+    var dataPasien = {
         'no_checkup' : noCheckup,
         'id_detail_checkup' : idDetailCheckup,
         'id_pasien' : idPasien,
@@ -246,7 +244,33 @@ function saveRJ(jenis, ket) {
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
             });
+
+            var total = (parseInt(skor1) + parseInt(skor2) + parseInt(skor3));
+            console.log(total);
+            data.push({
+                'parameter': 'Total',
+                'jawaban': '',
+                'skor': total.toString(),
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'total',
+                'id_detail_checkup': idDetailCheckup
+            });
+
+            var kesimpulan = "Beresiko sedang, ulangi skrining setiap 7 hari";
+            if (total >= 2) {
+                kesimpulan = "Beresiko tinggi, lakukan asuhan gizi terstandart";
+            }
+            data.push({
+                'parameter': 'Kesimpulan',
+                'jawaban': kesimpulan,
+                'keterangan': jenis,
+                'jenis': ket,
+                'tipe': 'kesimpulan',
+                'id_detail_checkup': idDetailCheckup
+            });
             cek = true;
+            console.log(data);
         }
     }
 
@@ -430,7 +454,8 @@ function saveRJ(jenis, ket) {
                         $('#msg_rj_' + ket).text("Berhasil menambahkan data...");
                         $('#modal-rj-' + jenis).scrollTop(0);
                         getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
-
+                        delRowRJ(jenis);
+                        detailRJ(jenis);
                     } else {
                         $('#save_rj_' + jenis).show();
                         $('#load_rj_' + jenis).hide();
@@ -489,7 +514,7 @@ function detailRJ(jenis) {
                             if("total" == item.tipe){
                                 body += '<tr>' +
                                     '<td width="40%" colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + jwb + '</td>' +
+                                    '<td>' + cekItemIsNull(item.score) + '</td>' +
                                     '</tr>';
                             }else if("kesimpulan" == item.tipe){
                                 body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
@@ -587,6 +612,8 @@ function delKepRJ(jenis, ket) {
                     $('#modal_warning').show().fadeOut(5000);
                     $('#msg_warning').text(res.msg);
                 }
+                delRowRJ(jenis);
+                detailRJ(jenis);
             }
         });
     }

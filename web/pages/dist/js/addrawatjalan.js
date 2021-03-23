@@ -283,6 +283,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "pindah_poli") {
             $('#poli_lain').attr('disabled', false);
@@ -312,6 +313,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').show();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -324,6 +326,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
@@ -336,6 +339,7 @@ function selectKeterangan(idKtg) {
             $('#form-metode_pembayaran').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else if (idKtg == "lanjut_paket") {
             var idpel = $('#h_id_pelayanan_paket_pilih').val();
@@ -351,6 +355,7 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_eksekutif').hide();
 
         } else {
             $('#form-selesai').hide();
@@ -360,6 +365,7 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-pindah_poli').hide();
             $('#form-metode_pembayaran').hide();
+            $('#form_eksekutif').hide();
             if ("rujuk_internal" == idKtg) {
                 $('#form-rujuk_internal').show();
                 $('#form-asesmen').hide();
@@ -381,6 +387,7 @@ function selectKeterangan(idKtg) {
         $('#form-metode_pembayaran').hide();
         $('#form-asesmen').hide();
         $('#form-rujuk_internal').hide();
+        $('#form_eksekutif').hide();
     }
 }
 

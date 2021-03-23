@@ -213,7 +213,7 @@ function saveSPS(jenis, ket) {
         var va8 = $('#pt8').val();
         var va9 = $('#pt9').val();
 
-        if (va1 && va3 && va4 && va5 && va6 && va7 && va8 && va9 != '') {
+        if (va1 && va3 && va4 && va5 && va6 && va7 && va9 != '') {
             data.push({
                 'parameter': 'Kepala',
                 'jawaban': va1,
@@ -650,7 +650,7 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             operesi = "N";
         }
-        if (va2 && va3 && va4 && va5 && va6 && va7 && va8 != '' && operesi == "Y") {
+        if (va2 && va3 && va4 && va5 && va6 && va8 != '' && operesi == "Y") {
 
             var canv = canvasArea.toDataURL("image/png"),
                 canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -967,7 +967,7 @@ function saveSPS(jenis, ket) {
         var va12 = $('#pt12').val();
         var va13 = $('#pt13').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 && va13 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va13 != '') {
 
             data.push({
                 'parameter': 'Pemeriksaan Fisik',
@@ -1283,7 +1283,7 @@ function saveSPS(jenis, ket) {
         }
         if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 &&
             va9 && va10 && va11 && va12 && va13 && va14 && va15 &&
-            va16 && va17 && va18 != '' && cekCanvas == "Y") {
+            va16 && va18 != '' && cekCanvas == "Y") {
 
             var canv = canvasArea.toDataURL("image/png"),
                 canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -1444,7 +1444,7 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             ginjal = "N";
         }
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 != '' && ginjal == "Y") {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '' && ginjal == "Y") {
 
             data.push({
                 'parameter': 'Anamnesa',
@@ -1709,7 +1709,7 @@ function saveSPS(jenis, ket) {
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va7 != '') {
             data.push({
                 'parameter': 'Pemeriksaan Fisik/Lokalis',
                 'jawaban': va1,
