@@ -333,7 +333,7 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').show();
 
         } else if (idKtg == "rr") {
-            getKamar(null, 'ruang_recovery');
+            getKamar(null, 'rr');
             $('#label_kamar').text('Ruangan');
             $('#form-catatan').show();
             $('#form-kamar').show();
