@@ -2,6 +2,7 @@ package com.neurix.simrs.transaksi.konsultasigizi.action;
 
 import com.neurix.common.action.BaseTransactionAction;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.bo.impl.CheckupBoImpl;
 import com.neurix.simrs.transaksi.konsultasigizi.bo.KonsultasiGiziBo;
 import com.neurix.simrs.transaksi.konsultasigizi.model.KonsultasiGizi;
@@ -63,15 +64,36 @@ public class KonsultasiGiziAction extends BaseTransactionAction {
     }
 
     public List<KonsultasiGizi> pushNotif(){
+        logger.info("[KonsultasiGiziAction.pushNotif] Start >>>>>>>");
         List<KonsultasiGizi> konsultasiGiziList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KonsultasiGiziBo konsultasiGiziBo = (KonsultasiGiziBo) ctx.getBean("konsultasiGiziBoProxy");
         try {
             konsultasiGiziList = konsultasiGiziBo.pushNotif(CommonUtil.userBranchLogin());
         }catch (Exception e){
-            logger.error(e.getMessage());
+            logger.error("[KonsultasiGiziAction.pushNotif] Error, "+e.getMessage());
         }
+        logger.info("[KonsultasiGiziAction.pushNotif] End >>>>>>>");
         return konsultasiGiziList;
+    }
+
+    public CrudResponse saveEdit(String id, String status){
+        logger.info("[KonsultasiGiziAction.saveEdit] Start >>>>>>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KonsultasiGiziBo konsultasiGiziBo = (KonsultasiGiziBo) ctx.getBean("konsultasiGiziBoProxy");
+        KonsultasiGizi konsultasiGizi = new KonsultasiGizi();
+        try {
+            konsultasiGizi.setIdKonsultasiGizi(id);
+            konsultasiGizi.setStatus(status);
+            konsultasiGiziBo.saveEdit(konsultasiGizi);
+            response.setStatus("success");
+            response.setMsg("OK");
+        }catch (HibernateException e){
+            logger.error("[KonsultasiGiziAction.saveEdit] Error, "+e.getMessage());
+        }
+        logger.info("[KonsultasiGiziAction.saveEdit] End >>>>>>>");
+        return response;
     }
 
     public String getId() {

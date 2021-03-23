@@ -1,6 +1,7 @@
 package com.neurix.simrs.transaksi.konsultasigizi.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.konsultasigizi.model.ItSimrsKonsultasiGiziEntity;
 import com.neurix.simrs.transaksi.konsultasigizi.model.KonsultasiGizi;
 import org.hibernate.Criteria;
@@ -8,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class KonsultasiGiziDao extends GenericDao<ItSimrsKonsultasiGiziEntity, String> {
@@ -110,7 +112,8 @@ public class KonsultasiGiziDao extends GenericDao<ItSimrsKonsultasiGiziEntity, S
                     "a.id_pasien,\n" +
                     "a.jenis_kelamin,\n" +
                     "a.tgl_lahir,\n" +
-                    "d.nama_pelayanan\n" +
+                    "d.nama_pelayanan,\n" +
+                    "e.id_konsultasi_gizi\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b On a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -127,11 +130,76 @@ public class KonsultasiGiziDao extends GenericDao<ItSimrsKonsultasiGiziEntity, S
                     gizi.setNama(obj[2] != null ? obj[2].toString() : "");
                     gizi.setIdPasien(obj[3] != null ? obj[3].toString() : "");
                     gizi.setJenisKelamin(obj[4] != null ? obj[4].toString() : "");
+                    if (obj[5] != null && !"".equalsIgnoreCase(obj[5].toString())) {
+                        String tglLahir = new SimpleDateFormat("dd-MM-yyyy").format((Date) obj[5]);
+                        gizi.setTglLahir(tglLahir);
+                        gizi.setUmur(CommonUtil.calculateAge((java.sql.Date) obj[5], true));
+                    }
+                    gizi.setAlergi(getAlergi(obj[3].toString()));
+                    gizi.setDiagnosa(getDiagnosa(obj[1].toString()));
                     gizi.setNamaPelayanan(obj[6] != null ? obj[6].toString() : "");
+                    gizi.setIdKonsultasiGizi(obj[7] != null ? obj[7].toString() : "");
                     konsultasiGiziList.add(gizi);
                 }
             }
         }
         return konsultasiGiziList;
+    }
+
+    public String getAlergi(String id) {
+        String res = "";
+        String SQL = "SELECT \n" +
+                "id_alergi, \n"+
+                "alergi\n" +
+                "FROM it_simrs_checkup_alergi\n" +
+                "WHERE id_pasien = :id \n" +
+                "AND flag = 'Y' \n";
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                if(!"".equalsIgnoreCase(res)){
+                    if(obj[1] != null){
+                        res = res +", "+obj[1].toString();
+                    }
+                }else{
+                    if(obj[1] != null){
+                        res = obj[1].toString();
+                    }
+                }
+            }
+        }
+        return res;
+    }
+
+    public String getDiagnosa(String id) {
+        String res = "";
+        String SQL = "SELECT\n" +
+                "id_diagnosa,\n" +
+                "keterangan_diagnosa,\n" +
+                "jenis_diagnosa\n" +
+                "FROM it_simrs_diagnosa_rawat\n" +
+                "WHERE flag = 'Y'\n" +
+                "AND id_detail_checkup = :id";
+        List<Object[]> results = new ArrayList<>();
+        results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
+                .setParameter("id", id)
+                .list();
+        if (results.size() > 0) {
+            for (Object[] obj : results) {
+                if(!"".equalsIgnoreCase(res)){
+                    if(obj[1] != null){
+                        res = res +", ["+obj[0].toString()+"]-"+obj[1].toString();
+                    }
+                }else{
+                    if(obj[1] != null){
+                        res = "["+obj[0].toString()+"]-"+obj[1].toString();
+                    }
+                }
+            }
+        }
+        return res;
     }
 }

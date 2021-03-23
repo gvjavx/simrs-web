@@ -20,6 +20,42 @@ public class KonsultasiGizi {
     private String namaPelayanan;
     private String tipePelayanan;
     private String jenisKelamin;
+    private String tglLahir;
+    private String umur;
+    private String diagnosa;
+    private String alergi;
+
+    public String getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(String tglLahir) {
+        this.tglLahir = tglLahir;
+    }
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
+
+    public String getDiagnosa() {
+        return diagnosa;
+    }
+
+    public void setDiagnosa(String diagnosa) {
+        this.diagnosa = diagnosa;
+    }
+
+    public String getAlergi() {
+        return alergi;
+    }
+
+    public void setAlergi(String alergi) {
+        this.alergi = alergi;
+    }
 
     public String getJenisKelamin() {
         return jenisKelamin;
