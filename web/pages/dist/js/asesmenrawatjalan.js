@@ -381,7 +381,7 @@ function saveRJ(jenis, ket) {
         var cvs1 = isCanvasBlank(nyeri);
         var cvs2 = isCanvasBlank(ttd);
 
-        if(va1 && va3 != undefined && va2 && va4 && namaTerang && nip != '' && !cvs1 && !cvs2){
+        if(va1 && va3 != undefined && va2 && va4 && namaTerang && nip != '' && !cvs2){
             data.push({
                 'parameter': 'Apakah terdapat keluhan nyeri',
                 'jawaban': va1,
@@ -411,16 +411,19 @@ function saveRJ(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
 
-            var canv1 = nyeri.toDataURL("image/png"),
-                canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
-            data.push({
-                'parameter': tipe,
-                'jawaban': canv1,
-                'keterangan': jenis,
-                'jenis': ket,
-                'tipe': 'gambar',
-                'id_detail_checkup': idDetailCheckup
-            });
+            if("Ya" == va1){
+                var canv1 = nyeri.toDataURL("image/png"),
+                    canv1 = canv1.replace(/^data:image\/(png|jpg);base64,/, "");
+                data.push({
+                    'parameter': tipe,
+                    'jawaban': canv1,
+                    'keterangan': jenis,
+                    'jenis': ket,
+                    'tipe': 'gambar',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
+
             var canv2 = ttd.toDataURL("image/png"),
                 canv2 = canv2.replace(/^data:image\/(png|jpg);base64,/, "");
             data.push({

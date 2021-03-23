@@ -152,7 +152,7 @@ function setRekamMedis(tipePelayanan, jenis, id) {
                         temp += '<li onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><a style="cursor: pointer"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>';
                     } else {
                         if (item.keterangan == 'form') {
-                            temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')"><a style="cursor: pointer">' + icons + item.namaRm + tolText + '</a></li>';
+                            temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + tolText + '</a></li>';
                         }
                     }
                 });

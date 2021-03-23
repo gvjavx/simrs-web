@@ -40,10 +40,8 @@ function showAsesmenUgd(jenis, idRM, isSetIdRM) {
         tempidRm = idRM;
     }
     if(isReadRM){
-        $('#title').text(jenis);
         $('.btn-hide').hide();
     }else{
-        $('#title').text(title);
         $('.btn-hide').show();
     }
     $('#modal-aud_asesmen-ugd').modal({show: true, backdrop: 'static'});

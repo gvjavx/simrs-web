@@ -1135,9 +1135,17 @@
                                 <div class="row" id="form-asesmen" style="display: none">
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-8">
-                                            <button onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-primary" onclick="showModalAsesmenRawatInap('transfer_pasien')">
-                                                <i class="fa fa-file-o"></i> Asesmen Transfer Pasien
-                                            </button>
+                                            <div class="btn-group dropdown">
+                                                <button type="button" class="btn btn-primary"><i class="fa fa-edit"></i> Asesmen <span id="title_asesmen"></span>
+                                                </button>
+                                                <button id="btn_pindah" type="button" class="btn btn-primary dropdown-toggle"
+                                                        data-toggle="dropdown" style="height: 34px">
+                                                    <span class="caret"></span>
+                                                    <span class="sr-only">Toggle Dropdown</span>
+                                                </button>
+                                                <ul class="dropdown-menu" role="menu" id="asesmen_pindah">
+                                                </ul>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -2624,6 +2632,8 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/KandunganAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
@@ -2634,6 +2644,8 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/kandungan.js"/>'></script>
 
 <script type='text/javascript'>
 

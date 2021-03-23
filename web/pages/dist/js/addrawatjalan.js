@@ -269,6 +269,7 @@ function listSelectDokter(idDokter) {
 }
 
 function selectKeterangan(idKtg) {
+    var keteranganPindah = $('#keterangan option:selected').text();
     var jenisPasien = $('#jenis_pasien').val();
     if (idKtg != '') {
         if (idKtg == "selesai") {
@@ -314,6 +315,8 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').show();
             $('#form-rujuk_internal').hide();
             $('#form_eksekutif').hide();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'\',\'asesmen_pindah\')');
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -375,6 +378,13 @@ function selectKeterangan(idKtg) {
             } else {
                 $('#form-asesmen').show();
                 $('#form-rujuk_internal').hide();
+                if("kamar_operasi" == idKtg){
+                    $('#title_asesmen').html(keteranganPindah);
+                    $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ok\',\'\',\'asesmen_pindah\')');
+                }else{
+                    $('#title_asesmen').html(keteranganPindah);
+                    $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'\',\'asesmen_pindah\')');
+                }
             }
         }
     } else {
@@ -3097,7 +3107,6 @@ function searchICD9(id) {
         },
         updater: function (item) {
             var selectedObj = mapped[item];
-            // insert to textarea diagnosa_ket
             $("#ket_icd9").val(selectedObj.name);
             return selectedObj.id;
         }
@@ -3108,11 +3117,11 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
     var li = "";
     var jenisRm = "";
     if (jenis == "igd") {
-        if (umur >= 0 && umur <= 17) {
+        if (parseInt(umur) >= 0 && parseInt(umur) <= 17) {
             jenisRm = 'ugd_anak';
-        } else if (umur >= 18 && umur <= 55) {
+        } else if (parseInt(umur) >= 18 && parseInt(umur) <= 55) {
             jenisRm = 'ugd_dewasa';
-        } else if (umur > 56) {
+        } else if (parseInt(umur) > 56) {
             jenisRm = 'ugd_geriatri';
         }
     } else {
@@ -3228,13 +3237,6 @@ function confirmPemeriksaanPasien() {
                 } else if (tindakLanjut == "pindah_poli") {
                     if (poliLain != '' && listDokter != '') {
                         cek = true;
-                        // if (jenisPasien == 'umum') {
-                        //     if (metodeBayar != '' && valUangMuka != '') {
-                        //         cek = true;
-                        //     }
-                        // } else {
-                        //     cek = true;
-                        // }
                     }
                 } else if (tindakLanjut == "kontrol_ulang") {
                     if (tglKontrol != '') {
@@ -4296,4 +4298,73 @@ function showHasil(id, tipe, kategori){
         }
         $('#modal-hasil_lab').modal({show: true, backdrop:'static'});
     }
+}
+
+function setRekamMedisPindah(tipePelayanan, jenis, id) {
+    var temp = "";
+    dwr.engine.setAsync(true);
+    CheckupAction.getListRekammedisPasien(tipePelayanan, jenis, idDetailCheckup, {
+        callback: function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+                    labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
+                    if (item.jenis == 'ringkasan_rj') {
+                        temp += '<li onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')"><a style="cursor: pointer"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>';
+                    } else {
+                        if (item.keterangan == 'form') {
+                            if("pindah_ri" == tipePelayanan){
+                                var jenisRm = "";
+                                if (parseInt(umur) >= 0 && parseInt(umur) <= 17) {
+                                    jenisRm = 'ugd_anak';
+                                } else if (parseInt(umur) >= 18 && parseInt(umur) <= 55) {
+                                    jenisRm = 'ugd_dewasa';
+                                } else if (parseInt(umur) > 56) {
+                                    jenisRm = 'ugd_geriatri';
+                                }
+                                if(jenisRm == item.jenis || item.jenis == "transfer_pasien"){
+                                    temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + tolText + '</a></li>';
+                                }
+                            }else {
+                                temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + tolText + '</a></li>';
+                            }
+                        }
+                    }
+                });
+                $('#' + id).html(temp);
+            }
+        }
+    });
 }

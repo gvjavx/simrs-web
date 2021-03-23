@@ -1013,7 +1013,6 @@
     }
 
     $(document).ready(function () {
-
         $('#tableRM').DataTable({
             "order": [[0, "desc"]],
             "pageLength": 5
@@ -1029,10 +1028,6 @@
             '<option value="100">100</option>';
 
         $('[name=tableRM_length]').html(option);
-        // if (idDetailCheckup != null && idDetailCheckup != '') {
-        //     $('[type=search]').val(idDetailCheckup).trigger('input');
-        //     $('#btn-vidio-rm').show();
-        // }
         $('.dropup').on('show.bs.dropdown', function(e){
             $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
         });
@@ -1061,6 +1056,13 @@
             }
 
         });
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
+
     });
 
     function printPernyataan(kode, idRm, flag, namaRm) {
