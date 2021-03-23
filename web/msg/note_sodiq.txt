@@ -2176,6 +2176,9 @@ last_update timestamp without time zone,
 last_update_who character varying(100)
 );
 
+CREATE SEQUENCE seq_im_pendampinng_gizi;
+CREATE SEQUENCE seq_it_pendampinng_gizi;
+
 INSERT INTO im_simrs_rekam_medis_pasien VALUES
 ('RMM00000106','GIZ 001','Skrining Gizi','form','skrining_gizi','skrining_gizi','showModalGizi','Y','C','migrasi',now(),now(),'migrasi','1'),
 ('RMM00000107','GIZ 002','Pengajian Gizi','form','pengkajian_gizi','pengkajian_gizi','showModalGizi','Y','C','migrasi',now(),now(),'migrasi','1'),
@@ -2187,23 +2190,30 @@ INSERT INTO im_simrs_rekam_medis_pasien VALUES
 
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000248','RMM00000106','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000249','RMM00000107','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000250','RMM00000108','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000251','RMM00000109','gizi','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000252','RMM00000110','gizi','1','Y','C','migrasi',now(),now(),'migrasi');
+('RMP000000249','RMM00000107','gizi','2','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000250','RMM00000108','gizi','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000251','RMM00000109','gizi','4','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000252','RMM00000110','gizi','5','Y','C','migrasi',now(),now(),'migrasi');
 
 ALTER TABLE it_simrs_asesmen_gizi
 ADD COLUMN skor INTEGER;
 
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000253','RMM00000046','pindah_ok','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000254','RMM00000089','pindah_ok','1','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000254','RMM00000089','pindah_ok','2','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000255','RMM00000089','pindah_ri','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000256','RMM00000025','pindah_ri','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000257','RMM00000026','pindah_ri','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000258','RMM00000027','pindah_ri','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000259','RMM00000028','pindah_ri','1','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000260','RMM00000095','pindah_ri','1','Y','C','migrasi',now(),now(),'migrasi');
+('RMP000000256','RMM00000025','pindah_ri','2','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000257','RMM00000026','pindah_ri','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000258','RMM00000027','pindah_ri','4','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000259','RMM00000028','pindah_ri','5','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000260','RMM00000095','pindah_ri','6','Y','C','migrasi',now(),now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000261','RMM00000111','rawat_jalan','20','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000262','RMM00000112','rawat_jalan','21','Y','C','migrasi',now(),now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000263','RMM00000059','igd','3','Y','C','migrasi',now(),now(),'migrasi');
 
 
 

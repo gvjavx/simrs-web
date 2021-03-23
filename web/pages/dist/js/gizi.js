@@ -96,7 +96,7 @@ function saveGizi(jenis, ket) {
                 data.push({
                     'parameter': 'Total',
                     'jawaban': '',
-                    'skor': total,
+                    'skor': total.toString(),
                     'keterangan': jenis,
                     'jenis': ket,
                     'tipe': 'total',
@@ -205,7 +205,7 @@ function saveGizi(jenis, ket) {
                 data.push({
                     'parameter': 'Total',
                     'jawaban': '',
-                    'skor': total,
+                    'skor': total.toString(),
                     'keterangan': jenis,
                     'jenis': ket,
                     'tipe': 'total',
@@ -761,7 +761,7 @@ function detailGizi(jenis) {
                                 if ("total" == item.tipe) {
                                     body += '<tr>' +
                                         '<td width="60%" colspan="2">' + item.parameter + '</td>' +
-                                        '<td>' + jwb + '</td>' +
+                                        '<td>' + cekItemIsNull(item.skor) + '</td>' +
                                         '</tr>';
                                 } else if ("kesimpulan" == item.tipe) {
                                     body += '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
