@@ -8,8 +8,7 @@ import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -56,7 +55,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public void saveDelete(positionBagian bean) throws GeneralBOException {
+    public void saveDelete(PositionBagian bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
 
         if (bean!=null) {
@@ -114,7 +113,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public void saveEdit(positionBagian bean) throws GeneralBOException {
+    public void saveEdit(PositionBagian bean) throws GeneralBOException {
         logger.info("[PositionBagianBoImpl.saveEdit] start process >>>");
 
 //        String condition = null;
@@ -173,7 +172,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public positionBagian saveAdd(positionBagian bean) throws GeneralBOException {
+    public PositionBagian saveAdd(PositionBagian bean) throws GeneralBOException {
         logger.info("[PositionBagianBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
@@ -224,11 +223,11 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public List<positionBagian> getByCriteria(positionBagian searchBean) throws GeneralBOException {
+    public List<PositionBagian> getByCriteria(PositionBagian searchBean) throws GeneralBOException {
         logger.info("[PositionBagianBoImpl.getByCriteria] start process >>>");
 
         // Mapping with collection and put
-        List<positionBagian> listOfResult = new ArrayList();
+        List<PositionBagian> listOfResult = new ArrayList();
 
         if (searchBean != null) {
             Map hsCriteria = new HashMap();
@@ -263,10 +262,10 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             }
 
             if(imPositionBagianEntity != null){
-                positionBagian returnPositionBagian;
+                PositionBagian returnPositionBagian;
                 // Looping from dao to object and save in collection
                 for(ImPositionBagianEntity kelompokPositionEntity : imPositionBagianEntity){
-                    returnPositionBagian = new positionBagian();
+                    returnPositionBagian = new PositionBagian();
                     returnPositionBagian.setBagianId(kelompokPositionEntity.getBagianId());
                     returnPositionBagian.setBagianName(kelompokPositionEntity.getBagianName());
                     returnPositionBagian.setDivisiId(kelompokPositionEntity.getDivisiId());
@@ -291,7 +290,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public List<positionBagian> getAll() throws GeneralBOException {
+    public List<PositionBagian> getAll() throws GeneralBOException {
         return null;
     }
 
@@ -300,10 +299,10 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return null;
     }
 
-    public List<positionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException {
+    public List<PositionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
-        List<positionBagian> listComboPositionBagian = new ArrayList();
+        List<PositionBagian> listComboPositionBagian = new ArrayList();
         String criteria = "%" + query + "%";
 
         List<ImPositionBagianEntity> listPositionBagian = null;
@@ -316,7 +315,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
 
         if (listPositionBagian != null) {
             for (ImPositionBagianEntity imPositionBagianEntity : listPositionBagian) {
-                positionBagian itemComboPositionBagian = new positionBagian();
+                PositionBagian itemComboPositionBagian = new PositionBagian();
                 itemComboPositionBagian.setBagianId(imPositionBagianEntity.getBagianId());
                 itemComboPositionBagian.setBagianName(imPositionBagianEntity.getBagianName());
                 listComboPositionBagian.add(itemComboPositionBagian);
@@ -326,8 +325,8 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return listComboPositionBagian;
     }
     @Override
-    public List<positionBagian> getBagian(positionBagian bean){
-        List<positionBagian> listOfResult = new ArrayList<>();
+    public List<PositionBagian> getBagian(PositionBagian bean){
+        List<PositionBagian> listOfResult = new ArrayList<>();
         List<ImPositionBagianEntity> listOfResultQuery = new ArrayList<>();
         logger.info("[UserBoImpl.getBagian] start process >>>");
         try {
@@ -337,7 +336,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
         }
         for (ImPositionBagianEntity positionBagianEntity: listOfResultQuery){
-            positionBagian positionBagian = new positionBagian();
+            PositionBagian positionBagian = new PositionBagian();
             positionBagian.setBagianId(positionBagianEntity.getBagianId());
             positionBagian.setBagianName(positionBagianEntity.getBagianName());
             listOfResult.add(positionBagian);
@@ -345,8 +344,8 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return listOfResult;
     }
     @Override
-    public positionBagian getBagianById(String id , String flag){
-        positionBagian result = new positionBagian();
+    public PositionBagian getBagianById(String id , String flag){
+        PositionBagian result = new PositionBagian();
         ImPositionBagianEntity positionBagianEntity= new ImPositionBagianEntity();
         logger.info("[UserBoImpl.getBagian] start process >>>");
         try {
@@ -399,14 +398,14 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return status;
     }
 
-    public List<positionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
+    public List<PositionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
         List<ImPositionBagianEntity> posisiList = null;
-        List<positionBagian> positions = new ArrayList<>();
+        List<PositionBagian> positions = new ArrayList<>();
 
         posisiList = positionBagianDao.getDataPosisiBagian(divisiId);
         if (posisiList != null) {
             for (ImPositionBagianEntity imPositionBagianEntity : posisiList) {
-                positionBagian position1 = new positionBagian();
+                PositionBagian position1 = new PositionBagian();
                 position1.setBagianId(imPositionBagianEntity.getBagianId());
                 position1.setBagianName(imPositionBagianEntity.getBagianName());
                 positions.add(position1);
@@ -416,14 +415,14 @@ public class PositionBagianBoImpl implements PositionBagianBo {
     }
 
     @Override
-    public List<positionBagian> getDataDevisiId(positionBagian bean) throws GeneralBOException {
-        List<positionBagian> posisiList = new ArrayList<>() ;
+    public List<PositionBagian> getDataDevisiId(PositionBagian bean) throws GeneralBOException {
+        List<PositionBagian> posisiList = new ArrayList<>() ;
         posisiList = positionBagianDao.getDataDevisiId(bean);
         return posisiList;
     }
 
     @Override
-    public List<Department> getHead(positionBagian positionBagian) throws GeneralBOException {
+    public List<Department> getHead(PositionBagian positionBagian) throws GeneralBOException {
         List<Department> departmentList = new ArrayList<>();
         try {
             departmentList = positionBagianDao.getHeadDepartent(positionBagian);
@@ -432,5 +431,23 @@ public class PositionBagianBoImpl implements PositionBagianBo {
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
         return departmentList;
+    }
+
+    @Override
+    public PositionBagian getPositionBagianById(String id) throws GeneralBOException {
+        logger.info("[PositionBagianBoImpl.getPositionBagianById] START >>> ");
+
+        PositionBagian positionBagian = new PositionBagian();
+
+        try {
+            positionBagian = positionBagianDao.getPositionBagianById(id);
+        }catch (HibernateException e) {
+            logger.error("[PayrollSkalaGajiBoImpl.getSearchPayrollSkalaGajiByCriteria] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+        }
+
+
+        logger.info("[PositionBagianBoImpl.getPositionBagianById] END <<< ");
+        return positionBagian;
     }
 }

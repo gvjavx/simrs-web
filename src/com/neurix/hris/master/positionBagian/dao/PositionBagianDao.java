@@ -4,15 +4,13 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.transaksi.payroll.model.ItPayrollEntity;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -596,8 +594,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return listOfResult;
     }
 
-    public List<positionBagian> getDataDevisiId(positionBagian bean) {
-        List<positionBagian> positionBagianList = new ArrayList<>();
+    public List<PositionBagian> getDataDevisiId(PositionBagian bean) {
+        List<PositionBagian> positionBagianList = new ArrayList<>();
         String departementId = "%";
         if (bean.getDivisiId() != null && !"".equalsIgnoreCase(bean.getDivisiId())) {
             departementId = bean.getDivisiId();
@@ -621,7 +619,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         datatree = this.sessionFactory.getCurrentSession().createSQLQuery(sql).setParameter("id", departementId).list();
         if (datatree.size() > 0) {
             for (Object[] obj : datatree) {
-                positionBagian pb = new positionBagian();
+                PositionBagian pb = new PositionBagian();
                 pb.setBagianId(obj[0] != null ? obj[0].toString() : "");
                 pb.setBagianName(obj[1] != null ? obj[1].toString() : "");
                 pb.setDivisiId(obj[2] != null ? obj[2].toString() : "");
@@ -634,7 +632,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         return positionBagianList;
     }
 
-    public List<Department> getHeadDepartent(positionBagian positionBagian) {
+    public List<Department> getHeadDepartent(PositionBagian positionBagian) {
         List<Department> positionBagianList = new ArrayList<>();
 
         String bagianId = "%";
@@ -717,6 +715,23 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 .list();
 
         return results;
+    }
+
+    public PositionBagian getPositionBagianById(String id){
+
+        String SQL = "SELECT bagian_id, nama_bagian, kodering FROM im_hris_position_bagian WHERE bagian_id = '"+id+"' \n";
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            Object[] obj = results.get(0);
+            PositionBagian positionBagian = new PositionBagian();
+            positionBagian.setBagianId(obj[0].toString());
+            positionBagian.setBagianName(obj[1].toString());
+            positionBagian.setKodering(obj[2] == null ? "" : obj[2].toString());
+            return positionBagian;
+        }
+
+        return null;
     }
 
 }

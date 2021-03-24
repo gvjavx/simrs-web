@@ -6,14 +6,13 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.model.PositionBagian;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -666,5 +665,40 @@ public class PositionAction extends BaseMasterAction {
         return response;
     }
 
-    public positionBagian
+    public PositionBagian getBagianById(String id) {
+        logger.info("[PositionAction.getBagianById] START process >>>");
+
+        PositionBagian positionBagian = new PositionBagian();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+        try {
+            positionBagian = positionBagianBo.getPositionBagianById(id);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getBagianById] Found problem when searching data by criteria, please inform to your admin.", e);
+
+        }
+
+        logger.info("[PositionAction.getBagianById] END process <<<");
+        return positionBagian;
+    }
+
+    public List<Position> getUnitCostBySubBid(String bagianId){
+        logger.info("[PositionAction.getUnitCostBySubBid] START process >>>");
+
+        List<Position> positions = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        try {
+            positions = positionBo.getUnitCostByBagian(bagianId);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getBagianById] Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+
+        logger.info("[PositionAction.getUnitCostBySubBid] END process <<<");
+        return positions;
+    }
 }

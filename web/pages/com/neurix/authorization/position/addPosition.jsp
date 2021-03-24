@@ -9,6 +9,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type="text/javascript">
 
+        var error = false;
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
@@ -21,8 +22,11 @@
             var department = document.getElementById("departmentId1").value;
             var bagian = document.getElementById("bagianId1").value;
             var kelompok = document.getElementById("kelompokId1").value;
+            var kodering = $("#kodering-position-final").val();
 
-            if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
+
+
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -48,6 +52,9 @@
                 }
                 if (kelompok == '') {
                     msg += 'Field <strong>Kelompok Jabatan</strong> is required.' + '<br/>';
+                }
+                if (kodering == '') {
+                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage5').innerHTML = msg;
@@ -128,7 +135,7 @@
                         <td>
                             <table>
                                 <s:select list="#{}" id="bagianId1" name="position.bagianId"
-                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - " onchange="cekPosisiLain();showKoderingSubBidang();"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - " onchange="cekPosisiLain();showKoderingSubBidang();setOptionUnitCost()"
                                           cssClass="form-control"/>
                             </table>
                         </td>
@@ -176,9 +183,10 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboPosition" namespace="/admin/position" name="initComboPosition_position"/>
-                                <s:select list="#comboPosition.listOfComboPosition" id="positionId" name="position.koderingCostUnit"
-                                          listKey="kodering" listValue="positionName" headerKey="" headerValue=" - " cssClass="form-control"/>
+                                <s:select list="#{}" id="kodering-cost-unit" name="position.koderingCostUnit"
+                                          headerKey="" headerValue=" - " cssClass="form-control"
+                                          onchange="setKoderingFromUnitCost()"
+                                />
                             </table>
                         </td>
                     </tr>
@@ -198,11 +206,12 @@
                         </td>
                         <td>
                             <table>
-                                <div style="float: left;background-color: sandybrown; padding: 10px" id="kodering-sub-bidang">00.00.</div>
+                                <div style="float: left;background-color: sandybrown; padding: 10px; display: none" id="kodering-sub-bidang"></div>
                                 <s:textfield id="kodering" type="number" required="false" readonly="false" cssClass="form-control"
                                              cssStyle="width: 100px" max="99" min="0"
+                                             onchange="setKodering()"
                                 />
-                                <s:hidden name="position.kodering"/>
+                                <s:hidden name="position.kodering" id="kodering-position-final"/>
                             </table>
                         </td>
                     </tr>
@@ -306,9 +315,9 @@
     window.listPosisiHistory = function (branch, divisi) {
         var divisi = document.getElementById("departmentId1").value;
         $('#bagianId1').empty();
-//        $('#bagianId1').append($("<option></option>")
-//                .attr("value", '')
-//                .text(''));
+        $('#bagianId1').append($("<option></option>")
+                .attr("value", '')
+                .text(' - '));
         PositionBagianAction.searchPositionBagian(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#bagianId1').append($("<option></option>")
@@ -342,21 +351,53 @@
 
     function showKoderingSubBidang() {
         var subbid = $("#bagianId1 option:selected").val();
-        alert(subbid);
+        PositionAction.getBagianById(subbid, function (res) {
+            $("#kodering-sub-bidang").show();
+            $("#kodering-sub-bidang").html(res.kodering + ".");
+        });
     }
 
     function showKodering() {
-
         var isUnitCost = $("#jenis option:selected").val();
 
         // jika bukan unit cost
         if (isUnitCost != 'Y'){
             $("#sec-kodering").hide();
             $("#sec-cost-unit").show();
+
         } else {
             $("#sec-kodering").show();
             $("#sec-cost-unit").hide();
         }
+    }
 
+    function setKodering() {
+        var kodering        = $("#kodering").val();
+        var koderingsubbid  = $("#kodering-sub-bidang").text();
+        $("#kodering-position-final").val(koderingsubbid+kodering);
+        //alert($("#kodering-position-final").val());
+    }
+
+    function setKoderingFromUnitCost() {
+        var koderingCostUnit = $("#kodering-cost-unit option:selected").val();
+        $("#kodering-position-final").val(koderingCostUnit);
+        //alert($("#kodering-position-final").val());
+    }
+
+    function setOptionUnitCost() {
+        var subbid = $("#bagianId1 option:selected").val();
+
+        $('#kodering-cost-unit').empty();
+        $('#kodering-cost-unit').append($("<option></option>")
+            .attr("value", '')
+            .text(' - '));
+
+        PositionAction.getUnitCostBySubBid(subbid, function (res) {
+            $.each(res, function (i, item) {
+                $('#kodering-cost-unit').append($("<option></option>")
+                    .attr("value", item.kodering)
+                    .text(item.positionName));
+            });
+        });
     }
 </script>
