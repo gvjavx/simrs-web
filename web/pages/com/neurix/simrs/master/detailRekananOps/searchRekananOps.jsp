@@ -211,7 +211,7 @@
                                                                     <s:url var="viewDetail" namespace="/detailrekananops" action="initDetailTarif_detailrekananops" escapeAmp="false">
                                                                         <s:param name="id"><s:property value="#attr.row.idDetailRekananOps" /></s:param>
                                                                     </s:url>
-                                                                    <s:a href="%{viewDetail}" target="_blank">
+                                                                    <s:a href="%{viewDetail}">
                                                                         <img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_detail">
                                                                     </s:a>
                                                                 </s:if>

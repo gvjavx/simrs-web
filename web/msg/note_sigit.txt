@@ -1636,8 +1636,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 --2021-03-16
 
     ALTER TABLE im_simrs_detail_rekanan_ops
-    ADD COLUMN tarif_bpjs numeric(10,2),
-    ADD COLUMN diskon_non_bpjs numeric(10,2),
-    ADD COLUMN diskon_bpjs numeric(10,2);
+    ADD COLUMN tarif_bpjs NUMERIC,
+    ADD COLUMN diskon_non_bpjs NUMERIC,
+    ADD COLUMN diskon_bpjs NUMERIC;
 
 --

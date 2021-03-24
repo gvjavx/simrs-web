@@ -143,10 +143,13 @@ public class CommonConstant {
 
     public final static String IMAGE_CARD = "/pages/images/card.png";
 
-    public final static String BRANCH_RS01 = CommonUtil.getPropertyParams("branch.gatoel");
-    public final static String BRANCH_RS02 = CommonUtil.getPropertyParams("branch.toeloengredjo");
-    public final static String BRANCH_RS03 = CommonUtil.getPropertyParams("branch.perkebunan");
-    public final static String BRANCH_KP = CommonUtil.getPropertyParams("branch.kp");
+    public final static String BRANCH_RS01 = "02"; //CommonUtil.getPropertyParams("branch.gatoel");
+    public final static String BRANCH_RS02 = "03"; //CommonUtil.getPropertyParams("branch.toeloengredjo");
+    public final static String BRANCH_RS03 = "04"; //CommonUtil.getPropertyParams("branch.perkebunan");
+    public final static String BRANCH_KP = "01"; //CommonUtil.getPropertyParams("branch.kp");
+    public final static String BRANCH_RS04 = "05"; //RS medika Utama
+    public final static String BRANCH_RS05 = "98"; // Estetika Meditama
+    public final static String BRANCH_RS06 = "99"; // Unit Rawat Jalan
 
     public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
     //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";

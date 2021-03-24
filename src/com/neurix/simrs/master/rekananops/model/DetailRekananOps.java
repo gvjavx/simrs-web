@@ -34,6 +34,42 @@ public class DetailRekananOps  {
     private BigDecimal tarifNormalBpjs;
     private String idPelayanan;
     private String namaPelayanan;
+    private String stDiskonNonBpjs;
+    private String stDiskonBpjs;
+    private String stTarif;
+    private String stTarifBpjs;
+
+    public String getStDiskonNonBpjs() {
+        return stDiskonNonBpjs;
+    }
+
+    public void setStDiskonNonBpjs(String stDiskonNonBpjs) {
+        this.stDiskonNonBpjs = stDiskonNonBpjs;
+    }
+
+    public String getStDiskonBpjs() {
+        return stDiskonBpjs;
+    }
+
+    public void setStDiskonBpjs(String stDiskonBpjs) {
+        this.stDiskonBpjs = stDiskonBpjs;
+    }
+
+    public String getStTarif() {
+        return stTarif;
+    }
+
+    public void setStTarif(String stTarif) {
+        this.stTarif = stTarif;
+    }
+
+    public String getStTarifBpjs() {
+        return stTarifBpjs;
+    }
+
+    public void setStTarifBpjs(String stTarifBpjs) {
+        this.stTarifBpjs = stTarifBpjs;
+    }
 
     public String getIdPelayanan() {
         return idPelayanan;

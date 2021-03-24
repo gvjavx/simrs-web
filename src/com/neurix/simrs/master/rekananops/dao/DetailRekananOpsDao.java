@@ -129,13 +129,13 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 "dro.diskon_non_bpjs,\n" +
                 "dro.diskon_bpjs,\n" +
                 "dro.branch_id \n" +
-                "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag = 'Y' AND flag_parent != 'Y') dro\n" +
-                "INNER JOIN (SELECT * FROM im_simrs_tindakan WHERE flag = 'Y') t ON t.id_tindakan = dro.id_item\n" +
-                "INNER JOIN (SELECT * FROM  im_simrs_header_tindakan WHERE flag = 'Y') ht ON ht.id_header_tindakan = t.id_header_tindakan\n" +
+                "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag = 'Y' AND flag_parent is null) dro\n" +
                 "INNER JOIN (SELECT * FROM im_simrs_tindakan WHERE flag = 'Y') tin ON tin.id_tindakan = dro.id_item AND tin.branch_id = dro.branch_id\n" +
+                "INNER JOIN (SELECT * FROM  im_simrs_header_tindakan WHERE flag = 'Y') ht ON ht.id_header_tindakan = tin.id_header_tindakan\n" +
                 "INNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE flag = 'Y') pel ON pel.id_pelayanan = tin.id_pelayanan \n" +
-                "INNER JOIN (SELECT * FROM im_simrs_header_pelayanan WHERE flag = 'Y') headpel ON headpel.id_header_pelayanan = pel.id_pelayanan\n" +
-                "WHERE parent_id = '"+idParent+"'";
+                "INNER JOIN (SELECT * FROM im_simrs_header_pelayanan WHERE flag = 'Y') headpel ON headpel.id_header_pelayanan = pel.id_header_pelayanan\n" +
+                "WHERE parent_id = '"+idParent+"' \n" +
+                "ORDER BY pel.id_pelayanan, dro.id_item";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
         List<DetailRekananOps> detailRekananOpsList = new ArrayList<>();
@@ -157,6 +157,11 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 detail.setDiskonNonBpjs(nullEscapeBigDecimal(obj[11]));
                 detail.setDiskonBpjs(nullEscapeBigDecimal(obj[12]));
                 detail.setBranchId(obj[13].toString());
+
+                detail.setStTarif(stBigDecimal(detail.getTarif()));
+                detail.setStTarifBpjs(stBigDecimal(detail.getTarifBpjs()));
+                detail.setStDiskonNonBpjs(stBigDecimal(detail.getDiskonNonBpjs()));
+                detail.setStDiskonBpjs(stBigDecimal(detail.getDiskonBpjs()));
                 detailRekananOpsList.add(detail);
             }
         }
@@ -267,5 +272,24 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
             }
         }
         return null;
+    }
+
+    private String stBigDecimal(BigDecimal bilangan){
+        if (bilangan == null)
+            return "0";
+        else
+            return String.valueOf(Integer.valueOf(bilangan.toString()));
+    }
+
+    public Boolean foundSameItem(String idTindakan, String idRekananOps){
+        String SQL = "SELECT id_item, id_rekanan_ops FROM im_simrs_detail_rekanan_ops\n" +
+                "WHERE (id_item, id_rekanan_ops) = ('"+idTindakan+"','"+idRekananOps+"')";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0)
+            return true;
+        else
+            return false;
     }
 }
