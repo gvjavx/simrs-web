@@ -6,6 +6,7 @@
 <html>
 <head>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionBagianAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type="text/javascript">
 
         function callSearch2() {
@@ -104,23 +105,13 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Posisi :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <label class="control-label"><small>Bidang/Devisi :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboMasaTanam1" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId" onchange="listPosisiHistory();cekBidangLain();"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue=" - " cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -136,9 +127,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
-                                <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId1" name="position.bagianId"
-                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" onchange="cekPosisiLain()"
+                                <s:select list="#{}" id="bagianId1" name="position.bagianId"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - " onchange="cekPosisiLain();showKoderingSubBidang();"
                                           cssClass="form-control"/>
                             </table>
                         </td>
@@ -157,7 +147,62 @@
                             <table>
                                 <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
                                 <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId1" name="position.kelompokId"
-                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue=" - " cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table>
+                                <hr/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jenis :</small></label>
+                        </td>
+                        <td>
+                            <table>
+
+                                <s:select list="#{'N':'Jabatan'}" id="jenis" name="position.flagCostUnit"
+                                          headerKey="Y" headerValue="Cost Unit" cssClass="form-control" onchange="showKodering()"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="sec-cost-unit" style="display: none">
+                        <td>
+                            <label class="control-label"><small>Cost Unit :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:action id="comboPosition" namespace="/admin/position" name="initComboPosition_position"/>
+                                <s:select list="#comboPosition.listOfComboPosition" id="positionId" name="position.koderingCostUnit"
+                                          listKey="kodering" listValue="positionName" headerKey="" headerValue=" - " cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama Posisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="sec-kodering">
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <div style="float: left;background-color: sandybrown; padding: 10px" id="kodering-sub-bidang">00.00.</div>
+                                <s:textfield id="kodering" type="number" required="false" readonly="false" cssClass="form-control"
+                                             cssStyle="width: 100px" max="99" min="0"
+                                />
+                                <s:hidden name="position.kodering"/>
                             </table>
                         </td>
                     </tr>
@@ -259,12 +304,11 @@
 </html>
 <script>
     window.listPosisiHistory = function (branch, divisi) {
-//        var branch = document.getElementById("branch1").value;
         var divisi = document.getElementById("departmentId1").value;
         $('#bagianId1').empty();
-        $('#bagianId1').append($("<option></option>")
-                .attr("value", '')
-                .text(''));
+//        $('#bagianId1').append($("<option></option>")
+//                .attr("value", '')
+//                .text(''));
         PositionBagianAction.searchPositionBagian(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#bagianId1').append($("<option></option>")
@@ -295,4 +339,24 @@
             $('#namaJabatanLain').hide();
         }
     };
+
+    function showKoderingSubBidang() {
+        var subbid = $("#bagianId1 option:selected").val();
+        alert(subbid);
+    }
+
+    function showKodering() {
+
+        var isUnitCost = $("#jenis option:selected").val();
+
+        // jika bukan unit cost
+        if (isUnitCost != 'Y'){
+            $("#sec-kodering").hide();
+            $("#sec-cost-unit").show();
+        } else {
+            $("#sec-kodering").show();
+            $("#sec-cost-unit").hide();
+        }
+
+    }
 </script>

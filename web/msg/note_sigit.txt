@@ -1641,3 +1641,8 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN diskon_bpjs NUMERIC;
 
 --
+
+--2021-03-24
+    ALTER TABLE im_position
+    ADD COLUMN flag_cost_unit VARCHAR(1);
+--

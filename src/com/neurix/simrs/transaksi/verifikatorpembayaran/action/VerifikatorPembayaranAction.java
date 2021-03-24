@@ -2840,7 +2840,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
             bean.setUserId(antrianTelemedicList.get(0).getIdPasien());
             notifikasiFcm = notifikasiFcmBo.getByCriteria(bean);
             FirebasePushNotif.sendNotificationFirebase(notifikasiFcm.get(0).getTokenFcm(),"Telemedic", "Struk Asuransi telah di upload", "WL", notifikasiFcm.get(0).getOs(), null);
-
         }
 
 

@@ -6,6 +6,8 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
+import com.neurix.hris.master.positionBagian.model.positionBagian;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
@@ -79,7 +81,7 @@ public class PositionAction extends BaseMasterAction {
         return initPosition;
     }
 
-    private String initComboPosition(){
+    public String initComboPosition(){
         logger.info("[PositionAction.search] start process >>>");
 
         Position searchPosition = new Position();
@@ -663,4 +665,6 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.typeHeadPosition] END process <<<");
         return response;
     }
+
+    public positionBagian
 }
