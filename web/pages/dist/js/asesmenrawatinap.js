@@ -55,6 +55,7 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, idDetailKhusus) {
 
     if ("tindakan_ina" == jenis) {
         selectOptionTM('ina', jenis);
+        $('#form-'+jenis).hide();
     }
     radioEdukasiPasien(jenis);
     $('#modal-ina-' + jenis).modal({show: true, backdrop: 'static'});
