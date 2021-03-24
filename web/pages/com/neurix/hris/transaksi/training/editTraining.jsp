@@ -308,7 +308,7 @@
                                                     <table>
                                                         <s:url var="urlAdd" namespace="/training" action="addPersonEdit_training" escapeAmp="false">
                                                             <s:param name="project">edit</s:param>
-                                                            <s:param name="unit">KP</s:param>
+                                                            <s:param name="unit">01</s:param>
                                                         </s:url>
                                                         <sj:a id="btnAdd" cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>

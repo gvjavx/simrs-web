@@ -83,7 +83,7 @@
                                                 </td>
                                                 <td colspan="5">
                                                     <table>
-                                                        <s:if test='pengajuanSetor.branchId == "KP"'>
+                                                        <s:if test='pengajuanSetor.branchId == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanSetor.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

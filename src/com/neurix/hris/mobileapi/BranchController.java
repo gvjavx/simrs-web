@@ -1,6 +1,7 @@
 package com.neurix.hris.mobileapi;
 
 import com.neurix.authorization.company.bo.BranchBo;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.mobileapi.model.Branch;
 import com.opensymphony.xwork2.ModelDriven;
@@ -62,7 +63,7 @@ public class BranchController implements ModelDriven<Object> {
 
         if(modelBranch != null){
             for(com.neurix.authorization.company.model.Branch branch : modelBranch){
-                if (!branch.getBranchId().equalsIgnoreCase("KP")) {
+                if (!branch.getBranchId().equalsIgnoreCase(CommonConstant.BRANCH_KP)) {
                     Branch model = new Branch();
                     model.setBranchId(branch.getBranchId());
                     model.setBranchAddress(branch.getBranchAddress());

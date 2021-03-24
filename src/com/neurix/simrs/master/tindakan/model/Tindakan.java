@@ -45,12 +45,40 @@ public class Tindakan {
     private String isVaksin;
     private String flagKonsulGizi;
 
+    private String namaTindakan;
+    private BigDecimal bTarifNormal;
+    private BigDecimal bTarifBpjs;
+
     public String getFlagKonsulGizi() {
         return flagKonsulGizi;
     }
 
     public void setFlagKonsulGizi(String flagKonsulGizi) {
         this.flagKonsulGizi = flagKonsulGizi;
+    }
+
+    public BigDecimal getbTarifNormal() {
+        return bTarifNormal;
+    }
+
+    public void setbTarifNormal(BigDecimal bTarifNormal) {
+        this.bTarifNormal = bTarifNormal;
+    }
+
+    public BigDecimal getbTarifBpjs() {
+        return bTarifBpjs;
+    }
+
+    public void setbTarifBpjs(BigDecimal bTarifBpjs) {
+        this.bTarifBpjs = bTarifBpjs;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
     }
 
     public String getIsVaksin() {

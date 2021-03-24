@@ -945,4 +945,20 @@ public class PositionBoImpl implements PositionBo {
         else
             return null;
     }
+
+    @Override
+    public List<Position> getUnitCostByBagian(String bagianId) throws GeneralBOException {
+        logger.info("[PositionBoImpl.getUnitCostByBagian]  START >>>");
+
+        List<Position> positionList = new ArrayList<>();
+        try {
+            positionList = positionDao.getListUnitCost(bagianId);
+        } catch (HibernateException e){
+            logger.error("[PositionBoImpl.getUnitCostByBagian] ERROR, " + e.getMessage());
+            throw new GeneralBOException("[PositionBoImpl.getUnitCostByBagian] Found problem search unit cost ." + e.getMessage());
+        }
+
+        logger.info("[PositionBoImpl.getUnitCostByBagian]  END <<<");
+        return positionList;
+    }
 }

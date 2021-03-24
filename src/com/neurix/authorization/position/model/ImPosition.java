@@ -33,10 +33,19 @@ public class ImPosition implements Serializable {
     private String bagianName;
     private String kodering;
     private String kategori;
+    private String flagCostUnit;
 
     private ImDepartmentEntity imDepartmentEntity;
     private ImKelompokPositionEntity imKelompokPositionEntity;
     private ImPositionBagianEntity imPositionBagianEntity;
+
+    public String getFlagCostUnit() {
+        return flagCostUnit;
+    }
+
+    public void setFlagCostUnit(String flagCostUnit) {
+        this.flagCostUnit = flagCostUnit;
+    }
 
     public String getKodering() {
         return kodering;

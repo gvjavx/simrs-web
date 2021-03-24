@@ -3,9 +3,11 @@ package com.neurix.simrs.master.rekananops.dao;
 import com.neurix.common.dao.GenericDao;
 
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
+import com.neurix.simrs.master.tindakan.model.Tindakan;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -47,6 +49,10 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
+
+            if (mapCriteria.get("flag_parent") != null) {
+                criteria.add(Restrictions.eq("flagParent", mapCriteria.get("flag_parent")));
+            }
         }
         criteria.addOrder(Order.desc("createdDate"));
         List<ImSimrsDetailRekananOpsEntity> results = criteria.list();
@@ -77,11 +83,12 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
 
         String SQL = "SELECT \n" +
                 "dro.id_detail_rekanan_ops, \n" +
-                "ro.nama_rekanan\n" +
+                "ro.nama_rekanan,\n" +
+                "dro.branch_id\n" +
                 "FROM im_simrs_detail_rekanan_ops dro\n" +
                 "INNER JOIN im_simrs_rekanan_ops ro ON ro.id_rekanan_ops = dro.id_rekanan_ops\n" +
-                "WHERE flag_parent = 'Y'\n" +
-                "AND flag = 'Y'\n" +
+                "WHERE dro.flag_parent = 'Y'\n" +
+                "AND dro.flag = 'Y'\n" +
                 "AND dro.id_detail_rekanan_ops = '"+id+"'";
 
         List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
@@ -93,6 +100,7 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 DetailRekananOps detail = new DetailRekananOps();
                 detail.setIdDetailRekananOps(obj[0].toString());
                 detail.setNamaRekanan(obj[1].toString());
+                detail.setBranchId(obj[2].toString());
                 detailRekananOps.add(detail);
 
             }
@@ -112,11 +120,22 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 "ht.nama_tindakan, \n" +
                 "dro.tarif,\n" +
                 "dro.parent_id,\n" +
-                "dro.flag\n" +
-                "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag = 'Y' AND flag_parent != 'Y') dro\n" +
-                "INNER JOIN (SELECT * FROM im_simrs_tindakan WHERE flag = 'Y') t ON t.id_tindakan = dro.id_item\n" +
-                "INNER JOIN (SELECT * FROM  im_simrs_header_tindakan WHERE flag = 'Y') ht ON ht.id_header_tindakan = t.id_header_tindakan\n" +
-                "WHERE parent_id = '"+idParent+"'";
+                "dro.flag,\n" +
+                "pel.id_pelayanan,\n" +
+                "headpel.nama_pelayanan,\n" +
+                "tin.tarif as tarif_normal_non_bpjs,\n" +
+                "tin.tarif_bpjs as tarif_normal_bpjs,\n" +
+                "dro.tarif_bpjs as tarif_bpjs,\n" +
+                "dro.diskon_non_bpjs,\n" +
+                "dro.diskon_bpjs,\n" +
+                "dro.branch_id \n" +
+                "FROM (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag = 'Y' AND flag_parent is null) dro\n" +
+                "INNER JOIN (SELECT * FROM im_simrs_tindakan WHERE flag = 'Y') tin ON tin.id_tindakan = dro.id_item AND tin.branch_id = dro.branch_id\n" +
+                "INNER JOIN (SELECT * FROM  im_simrs_header_tindakan WHERE flag = 'Y') ht ON ht.id_header_tindakan = tin.id_header_tindakan\n" +
+                "INNER JOIN (SELECT * FROM im_simrs_pelayanan WHERE flag = 'Y') pel ON pel.id_pelayanan = tin.id_pelayanan \n" +
+                "INNER JOIN (SELECT * FROM im_simrs_header_pelayanan WHERE flag = 'Y') headpel ON headpel.id_header_pelayanan = pel.id_header_pelayanan\n" +
+                "WHERE parent_id = '"+idParent+"' \n" +
+                "ORDER BY pel.id_pelayanan, dro.id_item";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
         List<DetailRekananOps> detailRekananOpsList = new ArrayList<>();
@@ -127,13 +146,150 @@ public class DetailRekananOpsDao extends GenericDao<ImSimrsDetailRekananOpsEntit
                 detail.setIdDetailRekananOps(obj[0].toString());
                 detail.setIdItem(obj[1].toString());
                 detail.setNamaTindakan(obj[2].toString());
-                detail.setTarif(obj[3] == null ? null : (BigDecimal) obj[3]);
+                detail.setTarif(nullEscapeBigDecimal(obj[3]));
                 detail.setParentId(obj[4].toString());
                 detail.setFlag(obj[5].toString());
+                detail.setIdPelayanan(obj[6] == null ? "" : obj[6].toString());
+                detail.setNamaPelayanan(obj[7] == null ? "" : obj[7].toString());
+                detail.setTarifNormalNonBpjs(nullEscapeBigDecimal(obj[8]));
+                detail.setTarifNormalBpjs(nullEscapeBigDecimal(obj[9]));
+                detail.setTarifBpjs(nullEscapeBigDecimal(obj[10]));
+                detail.setDiskonNonBpjs(nullEscapeBigDecimal(obj[11]));
+                detail.setDiskonBpjs(nullEscapeBigDecimal(obj[12]));
+                detail.setBranchId(obj[13].toString());
+
+                detail.setStTarif(stBigDecimal(detail.getTarif()));
+                detail.setStTarifBpjs(stBigDecimal(detail.getTarifBpjs()));
+                detail.setStDiskonNonBpjs(stBigDecimal(detail.getDiskonNonBpjs()));
+                detail.setStDiskonBpjs(stBigDecimal(detail.getDiskonBpjs()));
                 detailRekananOpsList.add(detail);
             }
         }
 
         return detailRekananOpsList;
+    }
+
+    private BigDecimal nullEscapeBigDecimal(Object obj){
+        if (obj == null)
+            return new BigDecimal(0);
+        else
+            return new BigDecimal(obj.toString());
+    }
+
+    public Pelayanan getPelayananByIdItem(String idItem){
+
+        String SQL = "\n" +
+                "SELECT pel.id_pelayanan, headpel.nama_pelayanan\n" +
+                "FROM (SELECT id_tindakan, id_pelayanan FROM im_simrs_tindakan WHERE flag = 'Y') tin\n" +
+                "INNER JOIN (SELECT id_pelayanan, id_header_pelayanan FROM im_simrs_pelayanan) pel ON pel.id_pelayanan = tin.id_pelayanan\n" +
+                "INNER JOIN (SELECT id_header_pelayanan, nama_pelayanan FROM im_simrs_header_pelayanan) headpel ON headpel.id_header_pelayanan = pel.id_header_pelayanan\n" +
+                "WHERE tin.id_tindakan = '"+idItem+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            Pelayanan pelayanan = new Pelayanan();
+            pelayanan.setIdPelayanan(obj[0].toString());
+            pelayanan.setNamaPelayanan(obj[1].toString());
+            return pelayanan;
+        }
+
+        return null;
+    }
+
+    public List<Pelayanan> getListPelayananByBranchId(String branchId){
+
+        String SQL = "SELECT pel.id_pelayanan, headpel.nama_pelayanan\n" +
+                "FROM (SELECT id_pelayanan, id_header_pelayanan, branch_id FROM im_simrs_pelayanan) pel \n" +
+                "INNER JOIN (SELECT id_header_pelayanan, nama_pelayanan FROM im_simrs_header_pelayanan) headpel ON headpel.id_header_pelayanan = pel.id_header_pelayanan\n" +
+                "WHERE pel.branch_id = '"+branchId+"'\n";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Pelayanan> pelayanans = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Pelayanan pelayanan = new Pelayanan();
+                pelayanan.setIdPelayanan(obj[0].toString());
+                pelayanan.setNamaPelayanan(obj[1].toString());
+                pelayanans.add(pelayanan);
+            }
+        }
+        return pelayanans;
+    }
+
+    public List<Tindakan> getListTindakanByIdPelayanan(String idPelayanan){
+
+
+        String SQL = "SELECT \n" +
+                "tin.id_tindakan, \n" +
+                "headtin.nama_tindakan,\n" +
+                "tin.tarif,\n" +
+                "tin.tarif_bpjs\n" +
+                "FROM (SELECT id_tindakan, id_pelayanan, tarif, tarif_bpjs, id_header_tindakan FROM im_simrs_tindakan WHERE flag = 'Y') tin\n" +
+                "INNER JOIN (SELECT id_header_tindakan, nama_tindakan FROM im_simrs_header_tindakan WHERE flag = 'Y') headtin ON headtin.id_header_tindakan = tin.id_header_tindakan\n" +
+                "WHERE tin.id_pelayanan = '"+idPelayanan+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<Tindakan> tindakans = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Tindakan tindakan = new Tindakan();
+                tindakan.setIdTindakan(obj[0].toString());
+                tindakan.setNamaTindakan(obj[1].toString());
+                tindakan.setbTarifNormal(nullEscapeBigDecimal(obj[2]));
+                tindakan.setbTarifBpjs(nullEscapeBigDecimal(obj[3]));
+                tindakans.add(tindakan);
+            }
+        }
+        return tindakans;
+    }
+
+    public Tindakan getTindakanById(String idTindakan){
+
+
+        String SQL = "SELECT \n" +
+                "tin.id_tindakan, \n" +
+                "headtin.nama_tindakan,\n" +
+                "tin.tarif,\n" +
+                "tin.tarif_bpjs\n" +
+                "FROM (SELECT id_tindakan, id_pelayanan, tarif, tarif_bpjs, id_header_tindakan FROM im_simrs_tindakan WHERE flag = 'Y') tin\n" +
+                "INNER JOIN (SELECT id_header_tindakan, nama_tindakan FROM im_simrs_header_tindakan WHERE flag = 'Y') headtin ON headtin.id_header_tindakan = tin.id_header_tindakan\n" +
+                "WHERE tin.id_tindakan = '"+idTindakan+"'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Tindakan tindakan = new Tindakan();
+                tindakan.setIdTindakan(obj[0].toString());
+                tindakan.setNamaTindakan(obj[1].toString());
+                tindakan.setbTarifNormal(nullEscapeBigDecimal(obj[2]));
+                tindakan.setbTarifBpjs(nullEscapeBigDecimal(obj[3]));
+                return tindakan;
+            }
+        }
+        return null;
+    }
+
+    private String stBigDecimal(BigDecimal bilangan){
+        if (bilangan == null)
+            return "0";
+        else
+            return String.valueOf(Integer.valueOf(bilangan.toString()));
+    }
+
+    public Boolean foundSameItem(String idTindakan, String idRekananOps){
+        String SQL = "SELECT id_item, id_rekanan_ops FROM im_simrs_detail_rekanan_ops\n" +
+                "WHERE (id_item, id_rekanan_ops) = ('"+idTindakan+"','"+idRekananOps+"')";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0)
+            return true;
+        else
+            return false;
     }
 }

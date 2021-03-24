@@ -19,10 +19,7 @@ import com.neurix.hris.master.jamkerja.model.JamKerja;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
-import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.model.*;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
@@ -31,11 +28,8 @@ import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.indisipliner.bo.IndisiplinerBo;
 import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
-import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
-import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
-import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.sppd.bo.SppdBo;
 import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -49,12 +43,6 @@ import org.springframework.web.context.ContextLoader;
 
 import java.io.*;
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import org.json.JSONObject;
-import org.json.JSONArray;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
@@ -1127,7 +1115,7 @@ public class AbsensiAction extends BaseMasterAction {
         BiodataBo biodataBo= (BiodataBo) ctx.getBean("biodataBoProxy");
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
             positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
             stBagian=positionBagian.getBagianName();
@@ -1379,7 +1367,7 @@ public class AbsensiAction extends BaseMasterAction {
             unit=branch.getBranchName();
             uangMakan=branch.getUangMakan().intValue();
         }
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
             positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
             bagianSt=positionBagian.getBagianName();
@@ -2441,7 +2429,7 @@ public class AbsensiAction extends BaseMasterAction {
 
         List<Biodata> biodataList= biodataBo.getBiodataforAbsensi(getBranchId(),"",getBagian(),getNip());
 
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (bagian!=null){
             if (!bagian.equalsIgnoreCase("")){
                 positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
@@ -3633,8 +3621,8 @@ public class AbsensiAction extends BaseMasterAction {
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-        List<positionBagian> positionBagians = new ArrayList<>();
-        positionBagian positionBagian2 = new positionBagian();
+        List<PositionBagian> positionBagians = new ArrayList<>();
+        PositionBagian positionBagian2 = new PositionBagian();
         positionBagian2.setBranchId(getBranchId());
         positionBagians=positionBagianBo.getBagian(positionBagian2);
 
@@ -3642,7 +3630,7 @@ public class AbsensiAction extends BaseMasterAction {
         for (Branch branch:branchList){
             unit=branch.getBranchName();
         }
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
             positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
             bagian=positionBagian.getBagianName();
@@ -3677,7 +3665,7 @@ public class AbsensiAction extends BaseMasterAction {
             char x='A';
             int a =1;
             int z=1;
-            for (positionBagian positionBagian1: positionBagians){
+            for (PositionBagian positionBagian1: positionBagians){
                 for(AbsensiTriwulanDTO absensi: listDataFinal) {
                     if (!bagianPegawai.equalsIgnoreCase(positionBagian1.getBagianName())){
                         AbsensiTriwulanDTO tmp = new AbsensiTriwulanDTO();

@@ -6,8 +6,10 @@
 <html>
 <head>
     <script type='text/javascript' src='<s:url value="/dwr/interface/PositionBagianAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PositionAction.js"/>'></script>
     <script type="text/javascript">
 
+        var error = false;
         function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
@@ -20,8 +22,11 @@
             var department = document.getElementById("departmentId1").value;
             var bagian = document.getElementById("bagianId1").value;
             var kelompok = document.getElementById("kelompokId1").value;
+            var kodering = $("#kodering-position-final").val();
 
-            if (namePosition != '' && department!='' && bagian!='' && kelompok!='') {
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
+
+
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -47,6 +52,9 @@
                 }
                 if (kelompok == '') {
                     msg += 'Field <strong>Kelompok Jabatan</strong> is required.' + '<br/>';
+                }
+                if (kodering == '') {
+                    msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage5').innerHTML = msg;
@@ -104,23 +112,13 @@
 
                     <tr>
                         <td>
-                            <label class="control-label"><small>Posisi :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <label class="control-label"><small>Bidang/Devisi :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboMasaTanam1" namespace="/department" name="initDepartment_department"/>
-                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
-                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                <s:select list="#session.listOfResultDepartment" id="departmentId1" name="position.departmentId" onchange="listPosisiHistory();cekBidangLain();"
+                                          listKey="departmentId" listValue="departmentName" headerKey="" headerValue=" - " cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -136,9 +134,8 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
-                                <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId1" name="position.bagianId"
-                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" onchange="cekPosisiLain()"
+                                <s:select list="#{}" id="bagianId1" name="position.bagianId"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - " onchange="cekPosisiLain();showKoderingSubBidang();setOptionUnitCost()"
                                           cssClass="form-control"/>
                             </table>
                         </td>
@@ -157,7 +154,64 @@
                             <table>
                                 <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
                                 <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId1" name="position.kelompokId"
-                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue=" - " cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2">
+                            <table>
+                                <hr/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Jenis :</small></label>
+                        </td>
+                        <td>
+                            <table>
+
+                                <s:select list="#{'N':'Jabatan'}" id="jenis" name="position.flagCostUnit"
+                                          headerKey="Y" headerValue="Cost Unit" cssClass="form-control" onchange="showKodering()"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="sec-cost-unit" style="display: none">
+                        <td>
+                            <label class="control-label"><small>Cost Unit :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:select list="#{}" id="kodering-cost-unit" name="position.koderingCostUnit"
+                                          headerKey="" headerValue=" - " cssClass="form-control"
+                                          onchange="setKoderingFromUnitCost()"
+                                />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama Posisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="positionName1" name="position.positionName" required="false" readonly="false" cssClass="form-control" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="sec-kodering">
+                        <td>
+                            <label class="control-label"><small>Kodering :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <div style="float: left;background-color: sandybrown; padding: 10px; display: none" id="kodering-sub-bidang"></div>
+                                <s:textfield id="kodering" type="number" required="false" readonly="false" cssClass="form-control"
+                                             cssStyle="width: 100px" max="99" min="0"
+                                             onchange="setKodering()"
+                                />
+                                <s:hidden name="position.kodering" id="kodering-position-final"/>
                             </table>
                         </td>
                     </tr>
@@ -259,12 +313,11 @@
 </html>
 <script>
     window.listPosisiHistory = function (branch, divisi) {
-//        var branch = document.getElementById("branch1").value;
         var divisi = document.getElementById("departmentId1").value;
         $('#bagianId1').empty();
         $('#bagianId1').append($("<option></option>")
                 .attr("value", '')
-                .text(''));
+                .text(' - '));
         PositionBagianAction.searchPositionBagian(divisi, function (listdata) {
             $.each(listdata, function (i, item) {
                 $('#bagianId1').append($("<option></option>")
@@ -295,4 +348,56 @@
             $('#namaJabatanLain').hide();
         }
     };
+
+    function showKoderingSubBidang() {
+        var subbid = $("#bagianId1 option:selected").val();
+        PositionAction.getBagianById(subbid, function (res) {
+            $("#kodering-sub-bidang").show();
+            $("#kodering-sub-bidang").html(res.kodering + ".");
+        });
+    }
+
+    function showKodering() {
+        var isUnitCost = $("#jenis option:selected").val();
+
+        // jika bukan unit cost
+        if (isUnitCost != 'Y'){
+            $("#sec-kodering").hide();
+            $("#sec-cost-unit").show();
+
+        } else {
+            $("#sec-kodering").show();
+            $("#sec-cost-unit").hide();
+        }
+    }
+
+    function setKodering() {
+        var kodering        = $("#kodering").val();
+        var koderingsubbid  = $("#kodering-sub-bidang").text();
+        $("#kodering-position-final").val(koderingsubbid+kodering);
+        //alert($("#kodering-position-final").val());
+    }
+
+    function setKoderingFromUnitCost() {
+        var koderingCostUnit = $("#kodering-cost-unit option:selected").val();
+        $("#kodering-position-final").val(koderingCostUnit);
+        //alert($("#kodering-position-final").val());
+    }
+
+    function setOptionUnitCost() {
+        var subbid = $("#bagianId1 option:selected").val();
+
+        $('#kodering-cost-unit').empty();
+        $('#kodering-cost-unit').append($("<option></option>")
+            .attr("value", '')
+            .text(' - '));
+
+        PositionAction.getUnitCostBySubBid(subbid, function (res) {
+            $.each(res, function (i, item) {
+                $('#kodering-cost-unit').append($("<option></option>")
+                    .attr("value", item.kodering)
+                    .text(item.positionName));
+            });
+        });
+    }
 </script>

@@ -171,7 +171,7 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <s:if test='pendapatanDokter.branchId == "KP"'>
+                                                    <s:if test='pendapatanDokter.branchId == "01"'>
                                                         <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                         <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"
                                                                   listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

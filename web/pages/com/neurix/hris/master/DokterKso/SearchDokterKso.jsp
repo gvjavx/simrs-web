@@ -142,7 +142,7 @@
                                                             <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
                                                             <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
                                                             <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
-                                                                <s:if test='dokterKso.branchUser == "KP"'>
+                                                                <s:if test='dokterKso.branchUser == "01"'>
                                                                     <s:action id="initComboBranch" namespace="/dokterkso" name="initComboBranch_dokterkso"/>
                                                                     <s:select list="#initComboBranch.listOfComboBranches" id="branchId" name="dokterKso.branchId"
                                                                               listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

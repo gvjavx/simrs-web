@@ -14,11 +14,8 @@ import com.neurix.hris.master.jamkerja.model.JamKerja;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
-import com.neurix.hris.transaksi.ijinKeluar.bo.impl.IjinKeluarBoImpl;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluarAnggota;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
@@ -739,10 +736,10 @@ public class IjinKeluarAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 List<IjinKeluar> ijinKeluarList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
@@ -801,10 +798,10 @@ public class IjinKeluarAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 List<IjinKeluar> ijinKeluarList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){

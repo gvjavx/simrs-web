@@ -1,14 +1,12 @@
 package com.neurix.hris.master.positionBagian.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
-import com.neurix.akuntansi.master.kodeRekening.bo.KodeRekeningBo;
-import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.department.model.Department;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -28,15 +26,15 @@ import java.util.List;
 public class PositionBagianAction extends BaseMasterAction{
     protected static transient Logger logger = Logger.getLogger(PositionBagianAction.class);
     private PositionBagianBo positionBagianBoProxy;
-    private positionBagian positionBagian;
+    private PositionBagian positionBagian;
 
-    private List<positionBagian> comboListOfPositionBagian = new ArrayList<positionBagian>();
+    private List<PositionBagian> comboListOfPositionBagian = new ArrayList<PositionBagian>();
 
-    public List<positionBagian> getComboListOfPositionBagian() {
+    public List<PositionBagian> getComboListOfPositionBagian() {
         return comboListOfPositionBagian;
     }
 
-    public void setComboListOfPositionBagian(List<positionBagian> comboListOfPositionBagian) {
+    public void setComboListOfPositionBagian(List<PositionBagian> comboListOfPositionBagian) {
         this.comboListOfPositionBagian = comboListOfPositionBagian;
     }
 
@@ -48,15 +46,15 @@ public class PositionBagianAction extends BaseMasterAction{
         this.positionBagianBoProxy = positionBagianBoProxy;
     }
 
-    public positionBagian getPositionBagian() {
+    public PositionBagian getPositionBagian() {
         return positionBagian;
     }
 
-    public void setPositionBagian(positionBagian positionBagian) {
+    public void setPositionBagian(PositionBagian positionBagian) {
         this.positionBagian = positionBagian;
     }
 
-    private List<positionBagian> initComboPositionBagian;
+    private List<PositionBagian> initComboPositionBagian;
 
     public static Logger getLogger() {
         return logger;
@@ -67,29 +65,29 @@ public class PositionBagianAction extends BaseMasterAction{
     }
 
 
-    public List<positionBagian> getInitComboPositionBagian() {
+    public List<PositionBagian> getInitComboPositionBagian() {
         return initComboPositionBagian;
     }
 
-    public void setInitComboPositionBagian(List<positionBagian> initComboPositionBagian) {
+    public void setInitComboPositionBagian(List<PositionBagian> initComboPositionBagian) {
         this.initComboPositionBagian = initComboPositionBagian;
     }
 
-    public positionBagian init(String kode, String flag){
+    public PositionBagian init(String kode, String flag){
         logger.info("[PositionBagianAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<positionBagian> listOfResult = (List<positionBagian>) session.getAttribute("listOfResult");
+        List<PositionBagian> listOfResult = (List<PositionBagian>) session.getAttribute("listOfResult");
 
         if(kode != null && !"".equalsIgnoreCase(kode)){
             if(listOfResult != null){
-                for (positionBagian positionBagian: listOfResult) {
+                for (PositionBagian positionBagian: listOfResult) {
                     if(kode.equalsIgnoreCase(positionBagian.getBagianId()) && flag.equalsIgnoreCase(positionBagian.getFlag())){
                         setPositionBagian(positionBagian);
                         break;
                     }
                 }
             } else {
-                setPositionBagian(new positionBagian());
+                setPositionBagian(new PositionBagian());
             }
 
             logger.info("[PositionBagianAction.init] end process >>>");
@@ -100,7 +98,7 @@ public class PositionBagianAction extends BaseMasterAction{
     @Override
     public String add() {
         logger.info("[PositionBagianAction.add] start process >>>");
-        positionBagian addPositionBagian = new positionBagian();
+        PositionBagian addPositionBagian = new PositionBagian();
         setPositionBagian(addPositionBagian);
         setAddOrEdit(true);
         setAdd(true);
@@ -118,7 +116,7 @@ public class PositionBagianAction extends BaseMasterAction{
         String itemId = getId();
         String itemFlag = getFlag();
 
-        positionBagian editPositionBagian = new positionBagian();
+        PositionBagian editPositionBagian = new PositionBagian();
 
         if(itemFlag != null){
             try {
@@ -163,7 +161,7 @@ public class PositionBagianAction extends BaseMasterAction{
 
         String itemId = getId();
         String itemFlag = getFlag();
-        positionBagian deletePositionBagian = new positionBagian();
+        PositionBagian deletePositionBagian = new PositionBagian();
 
         if (itemFlag != null ) {
 
@@ -218,7 +216,7 @@ public class PositionBagianAction extends BaseMasterAction{
         logger.info("[PositionBagianAction.saveEdit] start process >>>");
         try {
 
-            positionBagian editPositionBagian = getPositionBagian();
+            PositionBagian editPositionBagian = getPositionBagian();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -251,7 +249,7 @@ public class PositionBagianAction extends BaseMasterAction{
         logger.info("[PositionBagianAction.saveDelete] start process >>>");
         try {
 
-            positionBagian deletePositionBagian = getPositionBagian();
+            PositionBagian deletePositionBagian = getPositionBagian();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -284,7 +282,7 @@ public class PositionBagianAction extends BaseMasterAction{
         logger.info("[PositionBagianAction.saveAdd] start process >>>");
 
         try {
-            positionBagian positionBagian = getPositionBagian();
+            PositionBagian positionBagian = getPositionBagian();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
@@ -321,8 +319,8 @@ public class PositionBagianAction extends BaseMasterAction{
     public String search() {
         logger.info("[PositionBagianAction.search] start process >>>");
 
-        positionBagian searchPositionBagian = getPositionBagian();
-        List<positionBagian> listOfsearchPositionBagian = new ArrayList();
+        PositionBagian searchPositionBagian = getPositionBagian();
+        List<PositionBagian> listOfsearchPositionBagian = new ArrayList();
 
         try {
             listOfsearchPositionBagian = positionBagianBoProxy.getByCriteria(searchPositionBagian);
@@ -352,9 +350,9 @@ public class PositionBagianAction extends BaseMasterAction{
     public void searchPositionBagian() {
         logger.info("[PositionBagianAction.searchPositionBagian] start process >>>");
 
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         positionBagian.setFlag("Y");
-        List<positionBagian> listOfSearchTipePegawai = new ArrayList();
+        List<PositionBagian> listOfSearchTipePegawai = new ArrayList();
 
         try {
             listOfSearchTipePegawai = positionBagianBoProxy.getByCriteria(positionBagian);
@@ -374,10 +372,10 @@ public class PositionBagianAction extends BaseMasterAction{
     public String searchKelompok() {
         logger.info("[PositionBagianAction.search] start process >>>");
 
-        positionBagian searchPositionBagian = new positionBagian();
+        PositionBagian searchPositionBagian = new PositionBagian();
 
         searchPositionBagian.setFlag("Y");
-        List<positionBagian> listOfsearchPositionBagian = new ArrayList();
+        List<PositionBagian> listOfsearchPositionBagian = new ArrayList();
 
         try {
             listOfsearchPositionBagian = positionBagianBoProxy.getByCriteria(searchPositionBagian);
@@ -412,9 +410,9 @@ public class PositionBagianAction extends BaseMasterAction{
     public String initPositionBagian() {
         logger.info("[PositionBagianAction.search] start process >>>");
 
-        positionBagian searchPositionBagian = new positionBagian();
+        PositionBagian searchPositionBagian = new PositionBagian();
         searchPositionBagian.setFlag("Y");
-        List<positionBagian> listOfsearchPositionBagian = new ArrayList();
+        List<PositionBagian> listOfsearchPositionBagian = new ArrayList();
 
         try {
             listOfsearchPositionBagian = positionBagianBoProxy.getByCriteria(searchPositionBagian);
@@ -441,10 +439,10 @@ public class PositionBagianAction extends BaseMasterAction{
         return "";
     }
 
-    public List<positionBagian> searchPositionBagian(String divisiId) {
+    public List<PositionBagian> searchPositionBagian(String divisiId) {
         logger.info("[PositionAction.searchPositionBiodata] start process >>>");
 
-        List<positionBagian> listOfSearchPosition = new ArrayList();
+        List<PositionBagian> listOfSearchPosition = new ArrayList();
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
@@ -466,15 +464,15 @@ public class PositionBagianAction extends BaseMasterAction{
     }
 
 
-    public List<positionBagian> initPositionBagianSearch(String positionBagianId, String comboMasaTanam, String positionBagianName) {
+    public List<PositionBagian> initPositionBagianSearch(String positionBagianId, String comboMasaTanam, String positionBagianName) {
         logger.info("[KodeRekeningAction.initKodeRekeningSearch] start process >>>");
 
-        List<positionBagian> listOfsearchPosisiBagian = new ArrayList();
+        List<PositionBagian> listOfsearchPosisiBagian = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-        positionBagian search = new positionBagian();
+        PositionBagian search = new PositionBagian();
         search.setBagianId(positionBagianId);
         search.setDivisiId(comboMasaTanam);
         search.setBagianName(positionBagianName);
@@ -502,7 +500,7 @@ public class PositionBagianAction extends BaseMasterAction{
         //DWR FOR GET BEAN
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
 
         positionBagian.setBagianId(bagianId);
         positionBagian.setBagianName(bagianName);
@@ -517,12 +515,12 @@ public class PositionBagianAction extends BaseMasterAction{
         return list;
     }
 
-    public List<positionBagian> searchDetail(String id){
-        List<positionBagian> list = new ArrayList<>();
+    public List<PositionBagian> searchDetail(String id){
+        List<PositionBagian> list = new ArrayList<>();
         //DWR FOR GET BEAN
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
-        positionBagian pb = new positionBagian();
+        PositionBagian pb = new PositionBagian();
         pb.setDivisiId(id);
         pb.setFlag("Y");
         try {
@@ -533,12 +531,12 @@ public class PositionBagianAction extends BaseMasterAction{
         return list;
     }
 
-    public positionBagian getDataById(String id){
+    public PositionBagian getDataById(String id){
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-        positionBagian positionBagianObj = new positionBagian();
+        PositionBagian positionBagianObj = new PositionBagian();
 
         try {
             positionBagianObj = positionBagianBo.getBagianById(id, "Y");
@@ -552,7 +550,7 @@ public class PositionBagianAction extends BaseMasterAction{
     public CrudResponse saveEditDwr(String iddevisi, String namadevisi, String bidangId){
         CrudResponse crudResponse = new CrudResponse();
         try {
-            positionBagian editPositionBagian = new positionBagian();
+            PositionBagian editPositionBagian = new PositionBagian();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -583,7 +581,7 @@ public class PositionBagianAction extends BaseMasterAction{
         CrudResponse crudResponse = new CrudResponse();
         try {
 
-            positionBagian deletePositionBagian = new positionBagian();
+            PositionBagian deletePositionBagian = new PositionBagian();
 
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
