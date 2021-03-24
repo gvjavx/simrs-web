@@ -121,7 +121,7 @@ public class StrukturJabatanDao extends GenericDao<ImStrukturJabatanEntity, Stri
     public String getNextStrukturJabatanId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_struktur_jabatan')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%03d", iter.next());
+        String sId = String.format("%04d", iter.next());
         return "SJ"+sId;
     }
 
