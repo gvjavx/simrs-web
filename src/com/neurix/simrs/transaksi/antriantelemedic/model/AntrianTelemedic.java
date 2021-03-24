@@ -85,6 +85,15 @@ public class AntrianTelemedic {
     private String namaBank;
     private String stLastUpdate;
     private String flagCall;
+    private String tipePencarian;
+
+    public String getTipePencarian() {
+        return tipePencarian;
+    }
+
+    public void setTipePencarian(String tipePencarian) {
+        this.tipePencarian = tipePencarian;
+    }
 
     public String getFlagCall() {
         return flagCall;
