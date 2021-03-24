@@ -33,9 +33,7 @@ public class ImPosition implements Serializable {
     private String bagianName;
     private String kodering;
     private String kategori;
-    //RAKA-24MAR2021 ==> identifikasi Unit Cost
     private String flagCostUnit;
-    //RAKA-end
 
     private ImDepartmentEntity imDepartmentEntity;
     private ImKelompokPositionEntity imKelompokPositionEntity;

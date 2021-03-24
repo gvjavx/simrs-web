@@ -68,6 +68,15 @@ public class PermintaanObatMobile implements Serializable {
     private String namaKeterangan;
 
     private String message;
+    private String jumlahObat;
+
+    public String getJumlahObat() {
+        return jumlahObat;
+    }
+
+    public void setJumlahObat(String jumlahObat) {
+        this.jumlahObat = jumlahObat;
+    }
 
     public String getIdKeterangan() {
         return idKeterangan;

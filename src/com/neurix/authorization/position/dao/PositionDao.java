@@ -550,4 +550,31 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         return null;
     }
+
+    public List<Position> getListUnitCost(String bagianId){
+
+        String id = bagianId == null || "".equalsIgnoreCase(bagianId) ? "%" : bagianId;
+
+        String SQL = "SELECT \n" +
+                "position_id, \n" +
+                "position_name, \n" +
+                "kodering \n" +
+                "FROM im_position\n" +
+                "WHERE bagian_id LIKE '"+id+"'\n" +
+                "AND flag_cost_unit = 'Y'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<Position> positionList = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Position position = new Position();
+                position.setPositionId(obj[0].toString());
+                position.setPositionName(obj[1].toString());
+                position.setKodering(obj[2] == null ? "" : obj[2].toString());
+                positionList.add(position);
+            }
+        }
+
+        return positionList;
+    }
 }

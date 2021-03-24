@@ -184,6 +184,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
 
                         // transaksi obat detail
                         List<ImtSimrsTransaksiObatDetailEntity> transaksiObatDetailEntities = getListEntityTransObatDetail(transaksiObatDetail);
+                        permintaanVendor.setJumlahObat(BigInteger.valueOf(transaksiObatDetailEntities.size()));
                         if (transaksiObatDetailEntities.size() > 0) {
                             List<TransaksiObatDetail> transaksiObatDetails = new ArrayList<>();
                             TransaksiObatDetail transaksiObatDetail1;
@@ -1117,7 +1118,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
                 if(obat.getLembarPerBox() != null && !"".equalsIgnoreCase(obat.getLembarPerBox().toString())){
                     headerObatEntity.setBijiPerLembar(obat.getBijiPerLembar());
                 }
-                headerObatEntity.setFlag("U");
+                headerObatEntity.setAction("U");
                 headerObatEntity.setLastUpdate(obat.getLastUpdate());
                 headerObatEntity.setLastUpdateWho(obat.getLastUpdateWho());
                 try {

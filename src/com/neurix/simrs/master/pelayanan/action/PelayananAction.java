@@ -179,7 +179,7 @@ public class PelayananAction extends BaseTransactionAction {
         logger.info("[PelayananAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         Pelayanan pelayanan = new Pelayanan();
-        if (!"KP".equalsIgnoreCase(CommonUtil.roleAsLogin()) || !"01".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
+        if (!"01".equalsIgnoreCase(CommonUtil.roleAsLogin())) {
             pelayanan.setBranchId(CommonUtil.userBranchLogin());
         }
         setPelayanan(pelayanan);

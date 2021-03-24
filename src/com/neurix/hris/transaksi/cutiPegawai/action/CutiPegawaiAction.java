@@ -10,39 +10,29 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 
-import com.neurix.hris.master.cuti.model.Cuti;
-
-import com.neurix.hris.master.cuti.bo.CutiBo;
-
 import com.neurix.hris.master.cutiPanjang.model.CutiPanjang;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
-import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
-import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
-import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.sql.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 
@@ -678,10 +668,10 @@ public class CutiPegawaiAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 List<CutiPegawai> cutiPegawaiList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
@@ -2054,7 +2044,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
         StrukturJabatanBo strukturJabatanBo= (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
         Branch branch = new Branch();
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         biodataList = biodataBo.getBiodataforAbsensi(getBranchId(),"",getBagian(),getNip());
 
         for (Biodata biodata : biodataList){

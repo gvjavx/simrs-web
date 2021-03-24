@@ -5,7 +5,7 @@ import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import org.apache.log4j.Logger;
@@ -29,7 +29,7 @@ public class StrukturJabatanAction extends BaseMasterAction{
     private StrukturJabatan strukturJabatan;
     private List<StrukturJabatan> listComboStrukturJabatan = new ArrayList<StrukturJabatan>();
 
-    private List<positionBagian> listComboPositionBagian = new ArrayList<>();
+    private List<PositionBagian> listComboPositionBagian = new ArrayList<>();
 
     public StrukturJabatanBo getStrukturJabatanBoProxy() {
         return strukturJabatanBoProxy;
@@ -74,11 +74,11 @@ public class StrukturJabatanAction extends BaseMasterAction{
         this.initComboStrukturJabatan = initComboStrukturJabatan;
     }
 
-    public List<positionBagian> getListComboPositionBagian() {
+    public List<PositionBagian> getListComboPositionBagian() {
         return listComboPositionBagian;
     }
 
-    public void setListComboPositionBagian(List<positionBagian> listComboPositionBagian) {
+    public void setListComboPositionBagian(List<PositionBagian> listComboPositionBagian) {
         this.listComboPositionBagian = listComboPositionBagian;
     }
 
@@ -572,13 +572,13 @@ public class StrukturJabatanAction extends BaseMasterAction{
     public String initComboSearchBagian() {
         logger.info("[PositionBagianAction.searchBagian] start process >>>");
 
-        List<positionBagian> listOfsearchBagian = new ArrayList();
+        List<PositionBagian> listOfsearchBagian = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
         try {
-            positionBagian positionBagian = new positionBagian();
+            PositionBagian positionBagian = new PositionBagian();
             positionBagian.setFlag("Y");
             listOfsearchBagian = positionBagianBo.getByCriteria(positionBagian);
         } catch (GeneralBOException e) {
@@ -597,16 +597,16 @@ public class StrukturJabatanAction extends BaseMasterAction{
         return "success_combo_bagian";
     }
 
-    public List<positionBagian> searchBagianBranch(String branchId) {
+    public List<PositionBagian> searchBagianBranch(String branchId) {
         logger.info("[strukturJabatanAction.searchBagianBranch] start process >>>");
 
-        List<positionBagian> listOfsearchBagian = new ArrayList();
+        List<PositionBagian> listOfsearchBagian = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
         try {
-            positionBagian positionBagian = new positionBagian();
+            PositionBagian positionBagian = new PositionBagian();
             positionBagian.setFlag("Y");
             positionBagian.setBranchId(branchId);
             if (("").equalsIgnoreCase(branchId)){

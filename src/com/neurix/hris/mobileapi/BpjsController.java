@@ -529,7 +529,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("metode_bayar", "tunai");
 
         try {
-            billingSystemBoProxy.createJurnal("01",data,"KP","TEST 1 : pembayaran piutang pasien bpjs atas NO FPK","Y");
+            billingSystemBoProxy.createJurnal("01",data,CommonConstant.BRANCH_KP,"TEST 1 : pembayaran piutang pasien bpjs atas NO FPK","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
@@ -560,7 +560,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("metode_bayar","tunai" );
 
         try {
-            billingSystemBoProxy.createJurnal("03",data,"KP","TEST 2 : pembayaran piutang rekanan","Y");
+            billingSystemBoProxy.createJurnal("03",data,CommonConstant.BRANCH_KP,"TEST 2 : pembayaran piutang rekanan","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
@@ -584,7 +584,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("piutang_pasien_bpjs", piutangPasienNonBpjs);
 
         try {
-            billingSystemBoProxy.createJurnal("06",data,"KP","TEST 3 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
+            billingSystemBoProxy.createJurnal("06",data,CommonConstant.BRANCH_KP,"TEST 3 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
@@ -612,7 +612,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
 
         try {
-            billingSystemBoProxy.createJurnal("02",data,"KP","TEST 4 : pembayaran piutang pasien non bpjs","Y");
+            billingSystemBoProxy.createJurnal("02",data,CommonConstant.BRANCH_KP,"TEST 4 : pembayaran piutang pasien non bpjs","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
@@ -652,7 +652,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("ppn_masukan",ppnMasukan);
 
         try {
-            billingSystemBoProxy.createJurnal("27",data,"KP","TEST 5 : Pengiriman Barang Gudang ke Apotik","Y");
+            billingSystemBoProxy.createJurnal("27",data,CommonConstant.BRANCH_KP,"TEST 5 : Pengiriman Barang Gudang ke Apotik","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }

@@ -745,6 +745,7 @@ public class TelemedicBoImpl implements TelemedicBo {
                     telemedicEntity.setKetDiagnosa(bean.getKetDiagnosa() == null ? telemedicEntity.getKetDiagnosa() : bean.getKetDiagnosa());
                     telemedicEntity.setAction("U");
                     telemedicEntity.setLastUpdate(bean.getLastUpdate());
+                    telemedicEntity.setFlagCall(bean.getFlagCall());
                     telemedicEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 }
 

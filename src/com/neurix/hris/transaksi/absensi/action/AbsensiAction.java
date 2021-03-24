@@ -20,7 +20,7 @@ import com.neurix.hris.master.jamkerja.model.JamKerja;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
@@ -1155,11 +1155,11 @@ public class AbsensiAction extends BaseMasterAction {
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
-        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
-        positionBagian positionBagian = new positionBagian();
-        if (!getBagian().equalsIgnoreCase("")) {
-            positionBagian = positionBagianBo.getBagianById(getBagian(), "Y");
-            stBagian = positionBagian.getBagianName();
+        PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        PositionBagian positionBagian = new PositionBagian();
+        if (!getBagian().equalsIgnoreCase("")){
+            positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
+            stBagian=positionBagian.getBagianName();
         }
 
         biodataList = biodataBo.getBiodataforUangMakan(getBranchId(), "", getBagian(), getNip());
@@ -1412,10 +1412,10 @@ public class AbsensiAction extends BaseMasterAction {
             unit = branch.getBranchName();
             uangMakan = branch.getUangMakan().intValue();
         }
-        positionBagian positionBagian = new positionBagian();
-        if (!getBagian().equalsIgnoreCase("")) {
-            positionBagian = positionBagianBo.getBagianById(getBagian(), "Y");
-            bagianSt = positionBagian.getBagianName();
+        PositionBagian positionBagian = new positionBagian();
+        if (!getBagian().equalsIgnoreCase("")){
+            positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
+            bagianSt=positionBagian.getBagianName();
         }
 
         listPegawaiMess = biodataBo.getPegawaiMess();
@@ -2482,7 +2482,7 @@ public class AbsensiAction extends BaseMasterAction {
             logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching biodata for absensi," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new positionBagian();
         if (bagian != null) {
             if (!bagian.equalsIgnoreCase("")) {
                 try {
@@ -3748,8 +3748,8 @@ public class AbsensiAction extends BaseMasterAction {
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-        List<positionBagian> positionBagians = new ArrayList<>();
-        positionBagian positionBagian2 = new positionBagian();
+        List<PositionBagian> positionBagians = new ArrayList<>();
+        PositionBagian positionBagian2 = new PositionBagian();
         positionBagian2.setBranchId(getBranchId());
         positionBagians = positionBagianBo.getBagian(positionBagian2);
 
@@ -3757,10 +3757,10 @@ public class AbsensiAction extends BaseMasterAction {
         for (Branch branch : branchList) {
             unit = branch.getBranchName();
         }
-        positionBagian positionBagian = new positionBagian();
-        if (!getBagian().equalsIgnoreCase("")) {
-            positionBagian = positionBagianBo.getBagianById(getBagian(), "Y");
-            bagian = positionBagian.getBagianName();
+        PositionBagian positionBagian = new positionBagian();
+        if (!getBagian().equalsIgnoreCase("")){
+            positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
+            bagian=positionBagian.getBagianName();
         }
         try {
             listDataFinal = absensiBo.searchBiodataForTriwulan(getBranchId(), nip, stTanggalAwal, stTanggalAkhir, getBagian());
@@ -3789,12 +3789,12 @@ public class AbsensiAction extends BaseMasterAction {
             }
         } else {
             String bagianPegawai = "";
-            char x = 'A';
-            int a = 1;
-            int z = 1;
-            for (positionBagian positionBagian1 : positionBagians) {
-                for (AbsensiTriwulanDTO absensi : listDataFinal) {
-                    if (!bagianPegawai.equalsIgnoreCase(positionBagian1.getBagianName())) {
+            char x='A';
+            int a =1;
+            int z=1;
+            for (PositionBagian positionBagian1: positionBagians){
+                for(AbsensiTriwulanDTO absensi: listDataFinal) {
+                    if (!bagianPegawai.equalsIgnoreCase(positionBagian1.getBagianName())){
                         AbsensiTriwulanDTO tmp = new AbsensiTriwulanDTO();
                         if (z != 1) {
                             tmp.setNo("");

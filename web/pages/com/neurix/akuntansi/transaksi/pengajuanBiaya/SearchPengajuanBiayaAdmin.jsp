@@ -136,7 +136,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
                                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pengajuanBiayaDetail.branchId"
                                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -276,7 +276,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'A':'Unit', 'KP' : 'Kantor Pusat'}"
+                                                        <s:select list="#{'A':'Unit', '01' : 'Kantor Pusat'}"
                                                                   id="statusKeuangan" name="pengajuanBiayaDetail.statusKeuangan"
                                                                   headerKey="" headerValue="" cssClass="form-control" />
                                                     </table>
@@ -346,7 +346,7 @@
                                                 <table id="tablePengajuanBiaya" class="tablePengajuanBiaya table table-bordered table-striped" style="font-size: 11px;">
                                                     <thead >
                                                     <tr bgcolor="#90ee90">
-                                                        <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
+                                                        <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
                                                         <td align="center" width="7%">
                                                             <div class="form-check">
                                                                 <input type="checkbox" id="selectall">
@@ -370,9 +370,9 @@
                                                     </thead>
                                                     <tbody>
                                                     <s:iterator value="#session.listOfResult" var="row">
-                                                            <s:if test='pengajuanBiayaDetail.branchIdUser == "KP"'>
+                                                            <s:if test='pengajuanBiayaDetail.branchIdUser == "01"'>
                                                             <td align="center">
-                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "KP"||#row.rkId!= null'>
+                                                                <s:if test='#row.pengajuanBiayaDetailId == ""||#row.statusKeuangan != "01"||#row.rkId!= null'>
                                                                 </s:if>
                                                                 <s:else>
                                                                     <div class="form-check">

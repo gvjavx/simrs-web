@@ -43,6 +43,34 @@ public class Tindakan {
     private BigDecimal bDTarif;
     private BigDecimal bDTarifBpjs;
     private String isVaksin;
+    private String namaTindakan;
+
+    private BigDecimal bTarifNormal;
+    private BigDecimal bTarifBpjs;
+
+    public BigDecimal getbTarifNormal() {
+        return bTarifNormal;
+    }
+
+    public void setbTarifNormal(BigDecimal bTarifNormal) {
+        this.bTarifNormal = bTarifNormal;
+    }
+
+    public BigDecimal getbTarifBpjs() {
+        return bTarifBpjs;
+    }
+
+    public void setbTarifBpjs(BigDecimal bTarifBpjs) {
+        this.bTarifBpjs = bTarifBpjs;
+    }
+
+    public String getNamaTindakan() {
+        return namaTindakan;
+    }
+
+    public void setNamaTindakan(String namaTindakan) {
+        this.namaTindakan = namaTindakan;
+    }
 
     public String getIsVaksin() {
         return isVaksin;
