@@ -64,8 +64,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
             if (mapCriteria.get("cost_unit")!=null) {
                 criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("cost_unit")));
             }else{
-                criteria.add(Restrictions.ne("flagCostUnit", "Y"));
-
+                criteria.add(Restrictions.or(Restrictions.ne("flagCostUnit", "Y"),Restrictions.isNull("flagCostUnit")));
             }
         }
 
@@ -281,6 +280,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
+                "\tAND flag_cost_unit = 'N' OR flag_cost_unit IS NULL \n" +
                 "order by\n" +
                 "\tkodering";
 
@@ -316,6 +316,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
+                "\tAND flag_cost_unit = 'N' OR flag_cost_unit IS NULL \n" +
                 "order by\n" +
                 "\tkodering";
 
