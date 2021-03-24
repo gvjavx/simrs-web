@@ -302,9 +302,9 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         if (id == null || "".equalsIgnoreCase(id))
             id = "%";
         if (!"mobile".equalsIgnoreCase(bean.getTipePencarian()))
-            order +=  "ORDER BY tanggal_upload";
+            order +=  "ORDER BY b.tanggal_upload";
         else
-            order += "ORDER BY id";
+            order += "ORDER BY b.last_update";
 
         String SQL = "SELECT \n" +
                 "a.id,\n" +

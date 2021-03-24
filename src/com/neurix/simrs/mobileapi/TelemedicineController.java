@@ -528,6 +528,8 @@ public class TelemedicineController implements ModelDriven<Object> {
             AntrianTelemedic bean = new AntrianTelemedic();
             bean.setId(idTele);
             bean.setStatus(this.status);
+            bean.setLastUpdate(now);
+            bean.setLastUpdateWho("admin");
 
 
             try {
