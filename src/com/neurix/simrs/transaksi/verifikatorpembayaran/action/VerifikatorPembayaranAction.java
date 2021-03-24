@@ -50,6 +50,8 @@ import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
+import com.neurix.simrs.master.telemedic.bo.RekeningTelemedicBo;
+import com.neurix.simrs.master.telemedic.model.ImSimrsRekeningTelemedicEntity;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.mobileapi.antrian.model.Antrian;
@@ -1446,13 +1448,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         MasterBo masterBo = (MasterBo) ctx.getBean("masterBoProxy");
         VerifikatorPembayaranBo verifikatorPembayaranBo = (VerifikatorPembayaranBo) ctx.getBean("verifikatorPembayaranBoProxy");
         TelemedicBo telemedicBo = (TelemedicBo) ctx.getBean("telemedicBoProxy");
+        RekeningTelemedicBo rekeningTelemedicBo = (RekeningTelemedicBo) ctx.getBean("rekeningTelemedicBoProxy");
 
+        String kodeBank = "";
+        String noRekening = "";
         String kode = "";
         String transId = "";
         String jenisPasien = "Umum ";
-        String kodeBank = "1.1.01.02.01";
         String idJenisPeriksaPasien = "";
-        String noRekening = CommonConstant.REK_BANK_BRI_TELE;
         BigDecimal biayaCover = new BigDecimal(0);
         BigDecimal tarifTele = new BigDecimal(0);
         BigDecimal nominalUnik = new BigDecimal(0);
@@ -1472,19 +1475,30 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
         if (idTransaksiOnline != null && !"".equalsIgnoreCase(idTransaksiOnline)){
             ItSimrsPembayaranOnlineEntity pembayaranOnlineEntity = verifikatorPembayaranBo.getPembayaranOnlineById(idTransaksiOnline);
             if (pembayaranOnlineEntity != null){
-                kodeBank = pembayaranOnlineEntity.getKodeBank();
+                // mengambil jumlah pembayaran
                 tarifTele = pembayaranOnlineEntity.getNominal();
+                // END;
 
                 if ("resep".equalsIgnoreCase(pembayaranOnlineEntity.getKeterangan())){
                     keterangan = pembayaranOnlineEntity.getKeterangan();
                 }
 
+                // mencari apakah dengan resep
                 ItSimrsAntrianTelemedicEntity antrianTelemedicEntity = telemedicBo.getAntrianTelemedicEntityById(pembayaranOnlineEntity.getIdAntrianTelemedic());
                 if (antrianTelemedicEntity != null){
                     if ("Y".equalsIgnoreCase(antrianTelemedicEntity.getFlagResep())){
                         withResep = "Y";
                     }
                 }
+                // END
+
+                // mencari coa bank. dan no rekening bank;
+                ImSimrsRekeningTelemedicEntity rekeningTelemedicEntity = rekeningTelemedicBo.getRekeningTelemedicById(pembayaranOnlineEntity.getIdRekening());
+                if (rekeningTelemedicEntity != null){
+                    kodeBank    = rekeningTelemedicEntity.getCoa();
+                    noRekening  = rekeningTelemedicEntity.getNoRekening();
+                }
+                // END
             }
         }
 
@@ -1551,7 +1565,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 }
 
                 Map mapPajakObat = new HashMap();
-//                mapPajakObat.put("bukti", invoice);
                 mapPajakObat.put("nilai", ppnObat);
                 mapPajakObat.put("master_id", CommonConstant.MASTER_PAJAK_OBAT);
 
@@ -1574,10 +1587,9 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
                     // create list map piutang
                     Map mapPiutang = new HashMap();
-//                    mapPiutang.put("bukti", invoice);
                     mapPiutang.put("nilai", jumlah.add(ppnObat));
                     mapPiutang.put("master_id", masterId);
-//                                mapPiutang.put("pasien_id", idPasien);
+
                     // debit piutang pasien asuransi
                     mapJurnal.put("ppn_keluaran", mapPajakObat);
                     mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
@@ -1588,7 +1600,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
 
         } else {
             if ("umum".equalsIgnoreCase(idJenisPeriksaPasien)){
-                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                 // create list map piutang
                 Map mapkas = new HashMap();
@@ -1601,15 +1612,14 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 mapJurnal.put("pendapatan_lain", mapPendapatanLain);
                 mapJurnal.put("kas", mapkas);
                 transId = "90";
+
             } else if ("asuransi".equalsIgnoreCase(idJenisPeriksaPasien)){
-                invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                 // create list map piutang
                 Map mapPiutang = new HashMap();
-//                mapPiutang.put("bukti", invoice);
                 mapPiutang.put("nilai", jumlah);
                 mapPiutang.put("master_id", masterId);
-//                                mapPiutang.put("pasien_id", idPasien);
+
                 // debit piutang pasien asuransi
                 mapJurnal.put("pendapatan_rawat_jalan_asuransi", listOfTindakan);
                 mapJurnal.put("piutang_pasien_asuransi", mapPiutang);
@@ -1619,7 +1629,6 @@ public class VerifikatorPembayaranAction extends BaseMasterAction{
                 // BPJS only konsultasi
                 if ("N".equalsIgnoreCase(withResep)){
                     jenisPasien = "BPJS No. SEP " + detailCheckupEntity.getNoSep();
-                    invoice = billingSystemBo.createInvoiceNumber("JRJ", branchId);
 
                     Map mapPiutang = new HashMap();
                     mapPiutang.put("bukti", detailCheckupEntity.getNoSep());
