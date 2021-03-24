@@ -1101,7 +1101,7 @@ public class BiodataAction extends BaseMasterAction {
                 logger.error("[BiodataAction.search] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[BiodataAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[BiodataAction.search] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }

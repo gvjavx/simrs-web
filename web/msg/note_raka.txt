@@ -2,12 +2,12 @@
 -- Menambahkan field Tunjangan
 
     ALTER TABLE it_hris_tunj_lain_pegawai
-    --ADD COLUMN flag_tunj_peralihan_gapok varchar(2),
-    --ADD COLUMN flag_tunj_peralihan_sankhus varchar(2),
-    --ADD COLUMN flag_tunj_peralihan_tunjangan varchar(2),
-    --ADD COLUMN tunj_peralihan_gapok numeric(15,2),
-    --ADD COLUMN tunj_peralihan_sankhus numeric(15,2),
-    --ADD COLUMN tunj_peralihan_tunjangan numeric(15,2);
+    ADD COLUMN flag_tunj_peralihan_gapok varchar(2),
+    ADD COLUMN flag_tunj_peralihan_sankhus varchar(2),
+    ADD COLUMN flag_tunj_peralihan_tunjangan varchar(2),
+    ADD COLUMN tunj_peralihan_gapok numeric(15,2),
+    ADD COLUMN tunj_peralihan_sankhus numeric(15,2),
+    ADD COLUMN tunj_peralihan_tunjangan numeric(15,2);
     ADD COLUMN tunj_pemondokan numeric(15,2),
     ADD COLUMN tunj_supervisi numeric(15,2),
     ADD COLUMN tunj_lokasi numeric(15,2),
