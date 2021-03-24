@@ -856,6 +856,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlag("Y");
             bean.setIsMobile("Y");
             bean.setFlagDateNow(CommonUtil.convertTimestampToString2(now));
+            bean.setTipePencarian("mobile");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
@@ -1074,6 +1075,7 @@ public class TelemedicineController implements ModelDriven<Object> {
             bean.setFlag("Y");
             bean.setIsMobile("Y");
             bean.setFlagDateNow(CommonUtil.convertTimestampToString2(now));
+            bean.setTipePencarian("mobile");
 
             List<AntrianTelemedic> result = new ArrayList<>();
 
