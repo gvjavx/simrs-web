@@ -9,6 +9,7 @@ function showModalOperasi(jenis, idRM, isSetIdRM) {
     }
     if ("tindakan_medis_op" == jenis) {
         selectOptionTM('op', jenis);
+        $('#form-'+jenis).hide();
     }
     setDataPasien();
     $('#modal-op-' + jenis).modal({show: true, backdrop: 'static'});

@@ -2143,22 +2143,19 @@ function saveAsesmenRawatInap(jenis, ket) {
     }
 
     if ("add_tindakan_ina" == jenis) {
+        var va1 = $('#op1').val();
+        var va2 = $('#op2').val();
+        var va3 = $('#op3').val();
+        var va4 = $('#op4').val();
+        var va5 = $('#op5').val();
+        var va6 = $('#op6').val();
+        var va7 = $('#op7').val();
+        var va8 = $('#op8').val();
+        var va9 = $('#op9').val();
+        var va10 = $('#op10').val();
+        var va11 = $('#op11').val();
 
-        var va1 = $('#ina1').val();
-        var va2 = $('#ina2').val();
-        var va3 = $('#ina3').val();
-        var va4 = $('#ina4').val();
-        var va5 = $('#ina5').val();
-        var va6 = $('#ina6').val();
-        var va7 = $('#ina7').val();
-        var va8 = $('#ina8').val();
-        var va9 = $('#ina9').val();
-        var va10 = $('#ina10').val();
-        var va11 = $('#ina11').val();
-        var dokter = $('#ina_dokter').val();
-        var pasien = $('#ina_pasien').val();
-
-        var tindakan = $('#tindakan_ina').val();
+        var persetujuan = $('#nama_tindakan_medis').val();
         var parameter = $('[name=parameter]');
         var tanda = $('[name=tanda]');
 
@@ -2168,57 +2165,65 @@ function saveAsesmenRawatInap(jenis, ket) {
         var ttd4 = document.getElementById("ttd4");
         var ttd5 = document.getElementById("ttd5");
 
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
+        var nama2 = $('#nama_terang_ttd2').val();
+        var nama3 = $('#nama_terang_ttd3').val();
+        var sip3 = $('#sip_ttd3').val();
+        var nama4 = $('#nama_terang_ttd4').val();
+        var nama5 = $('#nama_terang_ttd5').val();
+
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
         var cekTtd3 = isCanvasBlank(ttd3);
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (va1 && va2 && va3 && va4 && tindakan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban': 'Pemberian Informasi dan Persetujuan Tindakan Kedokteran ' + tindakan,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': 'Pemberian Informasi dan Persetujuan ' + persetujuan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Tanggal',
-                'jawaban': va1,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': va1,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Dokter Penanggung Jawab',
-                'jawaban': va2,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'parameter': 'Dokter Penanggung Jawab Anestesi',
+                'jawaban1': va2,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Pemberi Informasi',
-                'jawaban': va3,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': va3,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Penerima Informasi',
-                'jawaban': va4,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': va4,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
 
             data.push({
                 'parameter': 'Jenis Informasi',
-                'informasi': 'Isi Informasi',
-                'jawaban': 'Check Informasi',
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': 'Isi Informasi',
+                'jawaban2': 'Check Informasi',
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'bold',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -2272,10 +2277,10 @@ function saveAsesmenRawatInap(jenis, ket) {
 
                 data.push({
                     'parameter': item.value,
-                    'informasi': info,
-                    'jawaban': tdn,
-                    'keterangan': ket,
-                    'jenis': tindakan,
+                    'jawaban2': tdn,
+                    'jawaban1': info,
+                    'keterangan': jenis,
+                    'jenis': persetujuan,
                     'tipe': 'info',
                     'id_detail_checkup': idDetailCheckup
                 });
@@ -2294,73 +2299,72 @@ function saveAsesmenRawatInap(jenis, ket) {
                 canv5 = canv5.replace(/^data:image\/(png|jpg);base64,/, "");
 
             data.push({
-                'parameter': 'Dengan ini menyatakan bahwa saya ' + dokter + ' telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya',
-                'jawaban': canv1,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'parameter': 'Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya',
+                'jawaban1': canv1,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama1,
+                'sip':sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Dengan ini menyatakan bahwa saya ' + pasien + ' telah menerima informasi sebagaimana di atas dan telah memahaminya',
-                'jawaban': canv2,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'parameter': 'Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya',
+                'jawaban1': canv2,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama2,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban': 'Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan',
-                'keterangan': ket,
-                'jenis': tindakan,
-                'tipe': 'colspan',
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
-                'parameter': 'pernyataan',
-                'jawaban': 'Persetujuan Tindakan Medis',
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': 'Persetujuan Tindakan Medis',
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'penyataan',
-                'jawaban': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
-                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan SETUJU untuk dilakukan tindakan ' + va8 + ' ' +
+                'jawaban1': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
+                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + persetujuan + ' ' +
                     'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
                     'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'TTD yang menyatakan',
-                'jawaban': canv3,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': canv3,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama3,
+                'sip':sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Saksi I',
-                'jawaban': canv4,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': canv4,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama4,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Saksi II',
-                'jawaban': canv5,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban1': canv5,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama5,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;

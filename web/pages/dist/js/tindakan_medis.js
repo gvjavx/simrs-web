@@ -1,4 +1,6 @@
 function pilihTindakanMedis(val, id) {
+    console.log(val)
+    console.log(id)
     var namaTindakan = "";
     if (val != '') {
         $.each(kategoriTindakanMedis(''), function (idx, itemx) {
