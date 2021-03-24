@@ -26,14 +26,23 @@
 
             if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
 
+                PositionAction.getOnePositionByKodering(kodering, function (res) {
+                    if (res.status == "found" || res.status == "error"){
+                        error = true;
+                        document.getElementById('errorValidationMessage5').innerHTML = msg;
+                        $.publish('showErrorValidationDialog5');
+                    }
+                });
 
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
+                if (error == false){
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
 
-                } else {
-                    // Cancel Submit comes with 1.8.0
-                    event.originalEvent.options.submit = false;
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
                 }
             } else {
 
@@ -58,7 +67,6 @@
                 }
 
                 document.getElementById('errorValidationMessage5').innerHTML = msg;
-
                 $.publish('showErrorValidationDialog5');
 
             }

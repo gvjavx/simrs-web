@@ -12,6 +12,7 @@ import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -700,5 +701,34 @@ public class PositionAction extends BaseMasterAction {
 
         logger.info("[PositionAction.getUnitCostBySubBid] END process <<<");
         return positions;
+    }
+
+    public CrudResponse getOnePositionByKodering(String kodering){
+        logger.info("[PositionAction.getUnitCostBySubBid] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        CrudResponse response = new CrudResponse();
+
+        Position position = new Position();
+
+        try {
+            position = positionBo.getOnePositionByKodering(kodering);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getOnePositionByKodering] Found problem when searching data by criteria, please inform to your admin.", e);
+            response.addResponse("error", "[PositionAction.getOnePositionByKodering] Found problem when searching data by criteria, please inform to your admin."+ e);
+            return response;
+        }
+
+        if (position != null && position.getPositionId() != null){
+            String positionName = position.getPositionName();
+            response.addResponse("error", "Ditemukan Kodering yang sama pada : " + positionName);
+            return response;
+        }
+
+        response.addResponse("success", "Tidak ditemukan kodering yang sama.");
+        logger.info("[PositionAction.getUnitCostBySubBid] END process <<<");
+        return response;
     }
 }

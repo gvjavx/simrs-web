@@ -563,4 +563,28 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         return positionList;
     }
+
+    public Position getOnePositionByKodering(String kodering){
+
+        String SQL = "SELECT \n" +
+                "position_id, \n" +
+                "position_name,\n" +
+                "kodering\n" +
+                "FROM im_position \n" +
+                "WHERE kodering = '"+kodering+"'\n" +
+                "ORDER BY flag_cost_unit\n";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            Position position = new Position();
+            position.setPositionId(obj[0].toString());
+            position.setPositionName(obj[1].toString());
+            position.setKodering(obj[2] == null ? "" : obj[2].toString());
+            return position;
+        }
+        return null;
+
+    }
 }

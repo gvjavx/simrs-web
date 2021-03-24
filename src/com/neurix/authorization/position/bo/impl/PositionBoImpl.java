@@ -271,7 +271,7 @@ public class PositionBoImpl implements PositionBo {
                 ImPosition imPosition = new ImPosition();
 
                 imPosition.setFlag("Y");
-                imPosition.setPositionId(positionDao.getNextPosition() + "");
+                imPosition.setPositionId(positionDao.getNextPosition());
                 imPosition.setPositionName(position.getPositionName());
                 imPosition.setDepartmentId(position.getDepartmentId());
                 imPosition.setKelompokId(position.getKelompokId());
@@ -960,5 +960,22 @@ public class PositionBoImpl implements PositionBo {
 
         logger.info("[PositionBoImpl.getUnitCostByBagian]  END <<<");
         return positionList;
+    }
+
+    @Override
+    public Position getOnePositionByKodering(String kodering) throws GeneralBOException {
+        logger.info("[PositionBoImpl.getUnitCostByBagian]  START >>>");
+
+        Position position = new Position();
+
+        try {
+            position = positionDao.getOnePositionByKodering(kodering);
+        } catch (HibernateException e){
+            logger.error("[PositionBoImpl.getOnePositionByKodering] ERROR, " + e.getMessage());
+            throw new GeneralBOException("[PositionBoImpl.getOnePositionByKodering] Found problem search unit cost ." + e.getMessage());
+        }
+
+        logger.info("[PositionBoImpl.getUnitCostByBagian]  END <<<");
+        return position;
     }
 }
