@@ -2108,7 +2108,6 @@ last_update_who character varying(100)
 
 CREATE SEQUENCE seq_asesmen_monitoring_gizi;
 
-
 --Tindakan Header
 ALTER TABLE im_simrs_header_tindakan
 ADD COLUMN flag_konsul_gizi VARCHAR(1);

@@ -907,6 +907,11 @@ function kategoriTindakanMedis(tipe) {
         'nama_tindakan': 'Ventilator'
     });
     data.push({
+        'tipe': 'icu',
+        'id_tindakan': '08',
+        'nama_tindakan': 'Ventilator'
+    });
+    data.push({
         'tipe': 'ina',
         'id_tindakan': '09',
         'nama_tindakan': 'Transfusi Darah'
