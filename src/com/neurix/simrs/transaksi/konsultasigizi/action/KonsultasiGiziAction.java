@@ -89,8 +89,10 @@ public class KonsultasiGiziAction extends BaseTransactionAction {
             konsultasiGiziBo.saveEdit(konsultasiGizi);
             response.setStatus("success");
             response.setMsg("OK");
-        }catch (HibernateException e){
+        }catch (Exception e){
             logger.error("[KonsultasiGiziAction.saveEdit] Error, "+e.getMessage());
+            response.setStatus("error");
+            response.setMsg(e.getMessage());
         }
         logger.info("[KonsultasiGiziAction.saveEdit] End >>>>>>>");
         return response;

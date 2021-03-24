@@ -1127,7 +1127,7 @@ function saveDataOperasi(jenis, ket) {
         var va14 = $('[name=lap14]:checked').val();
         var va15 = $('[name=lap15]:checked').val();
         var va16 = $('[name=lap16]:checked').val();
-        var va17 = $('#lap17').val();
+        // var va17 = $('#lap17').val();
         var va18 = $('#lap18').val();
         var va19 = $('#lap19').val();
         var nama = $('#nama_terang_sps').val();
@@ -1259,13 +1259,6 @@ function saveDataOperasi(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Jumlah Perdarahan',
-                'jawaban1': va17,
-                'keterangan': ket,
-                'jenis': jenis,
-                'id_detail_checkup': idDetailCheckup
-            });
-            data.push({
                 'parameter': 'Jumlah Cairan Masuk',
                 'jawaban1': va18,
                 'keterangan': ket,
@@ -1316,9 +1309,7 @@ function saveDataOperasi(jenis, ket) {
         var va5 = $('#pra5').val();
         var va6 = $('#pra6').val();
         var va7 = $('#pra7').val();
-        var va8 = $('#pra8').val();
         var va9 = $('#pra9').val();
-        var va10 = $('#pra10').val();
 
         var va11 = $('[name=pra11]:checked').val();
         var va12 = $('[name=pra12]:checked').val();
@@ -1341,7 +1332,7 @@ function saveDataOperasi(jenis, ket) {
         var va25 = $('[name=pra25]:checked').val();
         var va26 = $('[name=pra26]:checked').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 &&
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va9 &&
             va14 && va15 && va16 && va17 && va18 && va19 && va21 && va22 != '' &&
             va11 && va12 && va13 && va20 && va23 && va24 && va25 && va26 != undefined) {
 
@@ -1396,7 +1387,7 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Anamnesa',
-                'jawaban1': va8,
+                'jawaban1': "",
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1410,7 +1401,7 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Pemeriksaan Fisik',
-                'jawaban1': va10,
+                'jawaban1': "",
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -2972,7 +2963,12 @@ function detailOperasi(jenis) {
 
 function delRowOperasi(id) {
     $('#del_op_' + id).remove();
-    var url = contextPath + '/pages/images/icons8-plus-25.png';
+    var url = "";
+    if(id == "laporan_operasi"){
+        url = contextPath + '/pages/images/icons8-add-list-25.png';
+    }else{
+        url = contextPath + '/pages/images/icons8-plus-25.png';
+    }
     $('#btn_op_' + id).attr('src', url);
     $('#btn_op_' + id).attr('onclick', 'detailOperasi(\'' + id + '\')');
 }

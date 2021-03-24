@@ -60,14 +60,13 @@
                         <div class="form-group">
                             <label class="col-md-3">Tindakan</label>
                             <div class="col-md-9">
-                                <select class="form-control select2" id="tindakan_ina" style="width: 100%" onchange="pilihTindakanINA(this.value)">
-                                    <option value="">[Select One]</option>
-                                    <option value="Appendecitomy">Appendecitomy</option>
+                                <select class="form-control select2" id="tindakan_ina" style="width: 100%" onchange="pilihTindakanMedis(this.value, 'tindakan-ina'); setTindakanMedisValue(this.value, 'ina', 'nama_tindakan_medis')">
                                 </select>
                             </div>
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="nama_tindakan_medis">
                 <div class="box-body" style="display: none" id="form-tindakan-ina">
                     <div class="row">
                         <div class="form-group">

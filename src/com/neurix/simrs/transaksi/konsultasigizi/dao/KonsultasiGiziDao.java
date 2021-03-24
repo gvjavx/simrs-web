@@ -113,7 +113,8 @@ public class KonsultasiGiziDao extends GenericDao<ItSimrsKonsultasiGiziEntity, S
                     "a.jenis_kelamin,\n" +
                     "a.tgl_lahir,\n" +
                     "d.nama_pelayanan,\n" +
-                    "e.id_konsultasi_gizi\n" +
+                    "e.id_konsultasi_gizi,\n" +
+                    "e.status\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b On a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
@@ -139,6 +140,7 @@ public class KonsultasiGiziDao extends GenericDao<ItSimrsKonsultasiGiziEntity, S
                     gizi.setDiagnosa(getDiagnosa(obj[1].toString()));
                     gizi.setNamaPelayanan(obj[6] != null ? obj[6].toString() : "");
                     gizi.setIdKonsultasiGizi(obj[7] != null ? obj[7].toString() : "");
+                    gizi.setStatus(obj[8] != null ? obj[8].toString() : "");
                     konsultasiGiziList.add(gizi);
                 }
             }

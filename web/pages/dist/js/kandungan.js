@@ -438,7 +438,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Siklus menstruasi',
-                'jawaban': va21 + ', Siklus menstruasi ' + va22,
+                'jawaban': va21 + ', Lamanya ' + va22 +' hari',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1628,7 +1628,7 @@ function saveRB(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Obat yang tidak tahan',
+                'parameter': 'Riwayat alergi obat',
                 'jawaban': va29,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -2137,7 +2137,7 @@ function saveRB(jenis, ket) {
                 'tetes': va8,
                 'obat_cairan': va9,
                 'nadi': va10,
-                'tensi': va11,
+                'tensi': replaceUnderLine(va11),
                 'suhu': va12,
                 'rr': va13
             }
@@ -3411,14 +3411,15 @@ function showChart(jenis, tanggal) {
                     if ("ibu" == jenis) {
                         data.push({
                             y: item.waktu,
-                            a: item.tensi,
-                            b: item.nadi,
-                            c: item.suhu,
-                            d: item.rr
+                            a: item.tensi.split("/")[0],
+                            b: item.tensi.split("/")[1],
+                            c: item.nadi,
+                            d: item.suhu,
+                            e: item.rr
                         });
-                        xKey = ['a', 'b', 'c', 'd'];
-                        label = ['Tensi', 'Nadi', 'Suhu', 'RR'];
-                        warna = ['#ff0000', '#0000ff', '#00cc00', '#ff9933'];
+                        xKey = ['a', 'b', 'c', 'd', 'e'];
+                        label = ['Sistol', 'Diastol', 'Nadi', 'Suhu', 'RR'];
+                        warna = ['#ff0000', '#D3FD01', '#0000ff', '#00cc00', '#ff9933'];
                         table.push({
                             'jam': item.waktu,
                             'oksitosin': item.oksitosin,

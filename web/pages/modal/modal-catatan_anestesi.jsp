@@ -127,12 +127,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row jarak">
+                    <hr class="garis">
+                    <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Anamnesa</label>
-                            <div class="col-md-8">
-                                <textarea rows="2" class="form-control anamnese" id="pra8"></textarea>
-                            </div>
+                            <label class="col-md-12">Anamnesa</label>
+                            <%--<div class="col-md-8">--%>
+                                <%--<textarea rows="2" class="form-control anamnese" id="pra8"></textarea>--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                     <div class="row jarak">
@@ -143,15 +144,15 @@
                             </div>
                         </div>
                     </div>
+                    <hr class="garis">
                     <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Pemeriksaan Fisik</label>
-                            <div class="col-md-8">
-                                <textarea rows="3" class="form-control" id="pra10"></textarea>
-                            </div>
+                            <label class="col-md-12">Pemeriksaan Fisik</label>
+                            <%--<div class="col-md-8">--%>
+                                <%--<textarea rows="3" class="form-control" id="pra10"></textarea>--%>
+                            <%--</div>--%>
                         </div>
                     </div>
-                    <hr class="garis">
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-4">Keadaan Umum</label>
@@ -175,8 +176,7 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-4">Pernafasan</label>
                             <div class="col-md-2">
@@ -193,31 +193,27 @@
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
-                            <label class="col-md-4">Kemungkinan sulit manajemen airway</label>
+                            <label class="col-md-5">Kemungkinan sulit manajemen airway</label>
                             <div class="col-md-2">
                                 <div class="custom02">
                                     <input type="radio" value="Tidak" id="pra131"
                                            name="pra13"/><label for="pra131">Tidak</label>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-1">
                                 <div class="custom02">
                                     <input type="radio" value="Ya" id="pra132"
                                            name="pra13"/><label for="pra132">Ya</label>
                                 </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-8">
+                            <div class="col-md-3">
                                 <input class="form-control" placeholder="persiapan khusus" id="ket_pra132" onchange="$('#pra132').val('Ya, '+this.value)">
                             </div>
                         </div>
                     </div>
-                    <hr class="garis">
-                    <div class="row">
+                    <div class="row jarak">
                         <div class="form-group">
                             <div class="col-md-3">
                                 <span>Tensi</span>

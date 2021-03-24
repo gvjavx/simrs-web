@@ -3141,6 +3141,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 var terIsi = 0;
                 var labelPrint = "";
                 var terIsiPrint = "";
+                var enter = '';
 
                 if (item.jumlahKategori != null) {
                     constan = item.jumlahKategori;
@@ -3160,6 +3161,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     }
                     icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                     icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    enter = '<br>';
                 }
 
                 labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
@@ -3172,9 +3174,9 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
                         } else if (item.keterangan == "surat") {
-                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
                         }
                     }
                 }
