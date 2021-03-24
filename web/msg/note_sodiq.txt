@@ -2215,6 +2215,16 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000263','RMM00000059','igd','3','Y','C','migrasi',now(),now(),'migrasi');
 
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000113','RI 001','Persetujuan Tindakan Medis','form','tindakan_ri','tindakan_ina','showModalAsesmenRawatInap','Y','C','migrasi',now(),now(),'migrasi','1'),
+('RMM00000114','ICU 002','Persetujuan Tindakan Medis','form','tindakan_icu','tindakan_icu','showModalICU','Y','C','migrasi',now(),now(),'migrasi','1'),
+('RMM00000115','RB 003','Persetujuan Tindakan Medis','form','tindakan_rb','tindakan_rb','showModalRB','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000264','RMM00000113','rawat_inap','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000265','RMM00000114','rawat_intensif','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000266','RMM00000115','ruang_bersalin','3','Y','C','migrasi',now(),now(),'migrasi');
+
 ALTER TABLE it_simrs_hemodinamika
 ALTER COLUMN tensi TYPE VARCHAR(10);
 
