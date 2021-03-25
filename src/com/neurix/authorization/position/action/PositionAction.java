@@ -269,7 +269,6 @@ public class PositionAction extends BaseMasterAction {
             entryPosition.setCreatedWho(userLogin);
             entryPosition.setLastUpdate(createTime);
             entryPosition.setLastUpdateWho(userLogin);
-            entryPosition.setAction("C");
             positionBoProxy.saveAdd(entryPosition);
         }  catch (GeneralBOException e) {
             throw new GeneralBOException(e.getMessage());
@@ -730,5 +729,20 @@ public class PositionAction extends BaseMasterAction {
         response.addResponse("success", "Tidak ditemukan kodering yang sama.");
         logger.info("[PositionAction.getUnitCostBySubBid] END process <<<");
         return response;
+    }
+
+    public String getSugestKodering(String idSubBidang){
+        logger.info("[PositionAction.getSugestKodering] START process >>>");
+
+        String sugestKodering = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        try {
+            sugestKodering = positionBo.sugestLastKoderingBySubbidId(idSubBidang);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getSugestKodering] Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        logger.info("[PositionAction.getSugestKodering] END process <<<");
+        return sugestKodering;
     }
 }

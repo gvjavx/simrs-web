@@ -18,21 +18,27 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var namePosition = document.getElementById("positionName1").value;
-            var department = document.getElementById("departmentId1").value;
-            var bagian = document.getElementById("bagianId1").value;
-            var kelompok = document.getElementById("kelompokId1").value;
-            var kodering = $("#kodering-position-final").val();
+            var namePosition    = document.getElementById("positionName1").value;
+            var department      = document.getElementById("departmentId1").value;
+            var bagian          = document.getElementById("bagianId1").value;
+            var kelompok        = document.getElementById("kelompokId1").value;
+            var kodering        = $("#kodering-position-final").val();
+            var flagCostUnit    = $("#jenis option:selected").val();
 
             if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
 
-                PositionAction.getOnePositionByKodering(kodering, function (res) {
-                    if (res.status == "found" || res.status == "error"){
-                        error = true;
-                        document.getElementById('errorValidationMessage5').innerHTML = msg;
-                        $.publish('showErrorValidationDialog5');
-                    }
-                });
+                if (flagCostUnit == "Y"){
+                    PositionAction.getOnePositionByKodering(kodering, function (res) {
+                        if (res.status == "found" || res.status == "error"){
+                            event.originalEvent.options.submit = false;
+                            error = true;
+                            document.getElementById('errorValidationMessage5').innerHTML = res.msg;
+                            $.publish('showErrorValidationDialog5');
+                        } else {
+                            error = false;
+                        }
+                    });
+                }
 
                 if (error == false){
                     if (confirm('Do you want to save this record?')) {
@@ -143,7 +149,12 @@
                         <td>
                             <table>
                                 <s:select list="#{}" id="bagianId1" name="position.bagianId"
-                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - " onchange="cekPosisiLain();showKoderingSubBidang();setOptionUnitCost()"
+                                          listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - "
+                                          onchange="
+                                          cekPosisiLain();
+                                          showKoderingSubBidang();
+                                          setOptionUnitCost();
+                                          sugestLastKodering()"
                                           cssClass="form-control"/>
                             </table>
                         </td>
@@ -376,6 +387,7 @@
         } else {
             $("#sec-kodering").show();
             $("#sec-cost-unit").hide();
+            sugestLastKodering();
         }
     }
 
@@ -407,5 +419,18 @@
                     .text(item.positionName));
             });
         });
+    }
+
+    function sugestLastKodering() {
+
+        var subbid      = $("#bagianId1 option:selected").val();
+        var isUnitCost  = $("#jenis option:selected").val();
+
+        if (isUnitCost == "Y"){
+            PositionAction.getSugestKodering(subbid, function (res) {
+                $("#kodering").val(res);
+                setKodering();
+            })
+        }
     }
 </script>

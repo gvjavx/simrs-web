@@ -35,4 +35,5 @@ public interface PositionBo extends BaseMasterBo<Position> {
     public PersonilPosition getAndCheckJabatanTerpakai(String positionId, String branchId) throws GeneralBOException;
     public List<Position> getUnitCostByBagian(String bagianId) throws GeneralBOException;
     public Position getOnePositionByKodering(String kodering) throws GeneralBOException;
+    public String sugestLastKoderingBySubbidId(String subBidId) throws GeneralBOException;
 }
