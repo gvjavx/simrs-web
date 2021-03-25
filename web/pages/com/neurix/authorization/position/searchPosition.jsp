@@ -107,7 +107,7 @@
                                     <table>
                                         <s:action id="comboMasaTanam" namespace="/department" name="initDepartment_department"/>
                                         <s:select list="#session.listOfResultDepartment" id="departmentId" name="position.departmentId" onchange="listPosisiHistory(); cekBidangLain()"
-                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                  listKey="departmentId" listValue="departmentName" headerKey="" headerValue=" - " cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -125,7 +125,7 @@
                                     <table>
                                         <s:action id="comboBagian" namespace="/positionBagian" name="searchPositionBagian_positionBagian"/>
                                         <s:select list="#comboBagian.comboListOfPositionBagian" id="bagianId" name="position.bagianId"
-                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue="[Select one]" onchange="cekPosisiLain()"
+                                                  listKey="bagianId" listValue="bagianName" headerKey="" headerValue=" - " onchange="cekPosisiLain()"
                                                   cssClass="form-control"/>
                                     </table>
                                 </td>
@@ -144,8 +144,21 @@
                                     <table>
                                         <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
                                         <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId" name="position.kelompokId"
-                                                  listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                  listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue=" - " cssClass="form-control"/>
                                     </table>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <label class="control-label"><small>Jenis :</small></label>
+                                </td>
+                                <td>
+                                    <table>
+                                        <s:select list="#{'Y':'Cost Unit','N':'Jabatan'}" id="search-jenis" name="position.flagCostUnit"
+                                                  headerKey="" headerValue=" - " cssClass="form-control"/>
+                                    </table>
+
                                 </td>
                             </tr>
 
@@ -239,8 +252,17 @@
                                             <display:column property="bagianName" sortable="true" title="Sub Bidang/Divisi"/>
                                             <display:column property="kelompokName" sortable="true" title="Kelompok Jabatan"/>
                                             <display:column property="kodering" sortable="true" title="Kodering"/>
-                                            <display:column property="flag" sortable="true" title="flag"  />
-                                            <display:column property="action" sortable="true" title="action"  />
+                                            <display:column media="html" title="Jenis" style="text-align:center;font-size:9">
+                                                <s:if test='#attr.row.flagCostUnit == "Y"'>
+                                                    <div style="background-color: #00a65a;padding: 5px;border-radius: 3px;">Cost Unit</div>
+                                                </s:if>
+                                                <s:else>
+                                                    <div style="background-color: lightgrey;padding: 5px;border-radius: 3px;">Jabatan</div>
+                                                </s:else>
+                                            </display:column>
+
+                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
+                                            <%--<display:column property="action" sortable="true" title="action"  />--%>
                                             <display:column property="createdDate" sortable="true" title="Created date"  />
                                             <display:column property="createdWho" sortable="true" title="Created who"  />
                                             <display:column property="lastUpdate" sortable="true" title="Last update"  />
