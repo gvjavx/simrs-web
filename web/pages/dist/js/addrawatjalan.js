@@ -3479,7 +3479,11 @@ function savePemeriksaanPasien() {
                             window.open('printNoRujukan_checkupdetail.action?id=' + idDetailCheckup, '_blank');
                         }
                         if ('pindah_poli' == tindakLanjut) {
-                            window.open('printNoAntrian_checkupdetail.action?id=' + idPasien + '&tipe=' + poliLain, '_blank');
+                            PelayananAction.getDataPelayanan(poliLain, function (res) {
+                                if(res.tipePelayanan != "igd"){
+                                    window.open('printNoAntrian_checkupdetail.action?id=' + idPasien + '&tipe=' + poliLain, '_blank');
+                                }
+                            });
                         }
                     } else {
                         $('#waiting_dialog').dialog('close');
