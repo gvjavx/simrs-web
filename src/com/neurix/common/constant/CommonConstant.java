@@ -263,6 +263,9 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
     public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
 
+    public final static String PEGAWAI_TETAP = "TP03";
+    public final static String PEGAWAI_PKWT = "TP04";
+
     //EMAIL
     public final static String EMAIL_USERNAME = CommonUtil.getPropertyParams("email.username");
     public final static String EMAIL_PASSWORD = CommonUtil.getPropertyParams("email.pasword");

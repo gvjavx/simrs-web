@@ -2,6 +2,7 @@ package com.neurix.hris.transaksi.lembur.bo.impl;
 
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.common.util.ExpoPushNotif;
@@ -524,12 +525,17 @@ public class LemburBoImpl implements LemburBo {
                 }
 
                 //RAKA-10MAR2021==> Validasi Hak Lembur Pegawai
-                if("TP03".equalsIgnoreCase(personalEntity.getTipePegawai())){
+                if(CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())){
                     Boolean hakLembur = cekHakLembur(personalEntity.getNip());
                     returnLembur.setHakLembur(hakLembur);
-                }else if("TP04".equalsIgnoreCase(personalEntity.getTipePegawai())){
-                    Boolean hakLembur = cekHakLembur(personalEntity.getNip());
-                    hakLembur = profesiDao.cekHakLemburByProfesi(personalEntity.getProfesiId());
+                }else if(CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(personalEntity.getTipePegawai())){
+                    Boolean hakLembur ;
+                    try {
+                        hakLembur = profesiDao.cekHakLemburByProfesi(personalEntity.getProfesiId());
+                    }catch (HibernateException e) {
+                        logger.error("[LemburBoImpl.getBiodatawithCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Cek Hak Lembur By Profesi, " + e.getMessage());
+                    }
                     returnLembur.setHakLembur(hakLembur);
                 }
 

@@ -1001,7 +1001,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-                        if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")) {
+                        if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
                             try {
                                 payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(), tahunGaji);
                             } catch (HibernateException e) {
@@ -1012,7 +1012,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                 sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                             }
-                        } else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP04")) {
+                        } else if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                             try {
                                 payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan(), tahunGaji);
                             } catch (HibernateException e) {
@@ -1511,7 +1511,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 double faktor = 0;
                 List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
                 Map hsCriteria4 = new HashMap();
-                hsCriteria4.put("tipe_pegawai_id", "TP03");
+                hsCriteria4.put("tipe_pegawai_id", CommonConstant.PEGAWAI_TETAP);
                 hsCriteria4.put("flag", "Y");
                 try{
                     pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
@@ -3812,7 +3812,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                     List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-                    if (tipePegawai.equalsIgnoreCase("TP03")) {
+                    if (tipePegawai.equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
                         try{
                             payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golongan, tahunGaji);
                         }catch (HibernateException e){
@@ -3823,7 +3823,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                             sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                         }
-                    } else if (tipePegawai.equalsIgnoreCase("TP04")) {
+                    } else if (tipePegawai.equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                         try{
                             payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golongan, tahunGaji);
                         }catch (HibernateException e){
@@ -5392,7 +5392,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     }
                 }
             }
-            if (("TP03").equalsIgnoreCase(pegawai.getTipePegawai())) {
+            if ((CommonConstant.PEGAWAI_TETAP).equalsIgnoreCase(pegawai.getTipePegawai())) {
                 result.setJatahCuti("12");
             } else {
                 result.setJatahCuti("0");
@@ -6641,7 +6641,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                 List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
 
-                if ("TP03".equalsIgnoreCase(biodata.getTipePegawai())) {
+                if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(biodata.getTipePegawai())) {
                     try{
                         payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                     }catch (HibernateException e){
@@ -6652,7 +6652,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
 //                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                     }
-                } else if ("TP04".equalsIgnoreCase(biodata.getTipePegawai())) {
+                } else if (CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(biodata.getTipePegawai())) {
                     try{
                         payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
                     }catch (HibernateException e){
@@ -6938,7 +6938,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
             List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
+            if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
                 try {
                     payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
@@ -6949,7 +6949,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                     sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                 }
-            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP04")) {
+            } else if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                 try {
                     payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
@@ -7077,7 +7077,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
             List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
+            if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
                 try {
                     payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
@@ -7088,7 +7088,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                     sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                 }
-            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP04")) {
+            } else if (biodata.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                 try {
                     payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
