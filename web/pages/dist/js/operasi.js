@@ -306,6 +306,8 @@ function saveDataOperasi(jenis, ket) {
 
         var pengirim = $('#nama_terang_pengirim').val();
         var perawat = $('#nama_terang_perawat').val();
+        var sip1 = $('#sip_terang_pengirim').val();
+        var sip2 = $('#sip_terang_perawat').val();
 
         if (cekList171 && cekList172 && cekList181 && cekList182 && cekList191 && cekList192 && cekList201 && cekList202 &&
             cekList211 && cekList212 && cekList221 && cekList222 && cekList231 && cekList232 && cekList241 && cekList242 && pengirim && !tes1) {
@@ -380,7 +382,7 @@ function saveDataOperasi(jenis, ket) {
             var ttd2 = canvasTtdPerawat.toDataURL("image/png"),
                 ttd2 = ttd2.replace(/^data:image\/(png|jpg);base64,/, "");
 
-            if(!tes1){
+            if(tes1){
                 ttd1 = "";
             }
             data.push({
@@ -390,9 +392,10 @@ function saveDataOperasi(jenis, ket) {
                 'jenis': 'cek_list_pre_operasi',
                 'tipe': 'ttd',
                 'nama_terang': pengirim,
+                'sip': sip1,
                 'id_detail_checkup': idDetailCheckup
             });
-            if(!tes2){
+            if(tes2){
                 ttd2 = "";
             }
             data.push({
@@ -402,6 +405,7 @@ function saveDataOperasi(jenis, ket) {
                 'jenis': 'cek_list_pre_operasi',
                 'tipe': 'ttd',
                 'nama_terang': perawat,
+                'sip': sip2,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -2013,7 +2017,6 @@ function saveDataOperasi(jenis, ket) {
                 'nama_terang': nama3,
                 'id_detail_checkup': idDetailCheckup
             });
-            console.log(data);
             cek = true;
         }
     }
@@ -2742,7 +2745,7 @@ function detailOperasi(jenis) {
                             }
 
                             if ("ttd" == item.tipe) {
-                                var tempTtd = '<i onclick="setTtdPerawat(\''+item.idAsesmenOperasi+'\', \''+cekItemIsNull(item.namaterang)+'\', \''+cekItemIsNull(item.sip)+'\')" class="fa fa-pencil" style="font-size: 20px; cursor: pointer; color: #00c0ef"></i><br>';
+                                var tempTtd = '<i onclick="setTtdPerawat(\''+item.idAsesmenOperasi+'\', \''+jenis+'\', \''+cekItemIsNull(item.namaterang)+'\', \''+cekItemIsNull(item.sip)+'\')" class="fa fa-pencil" style="font-size: 20px; cursor: pointer; color: #00c0ef"></i><br>';
                                 if(item.jawaban1 != null){
                                     tempTtd = '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">';
                                 }
@@ -3814,15 +3817,15 @@ function saveSerahTerima(id, i, parameter, jenis) {
 }
 
 function setTtdPerawat(id, jenis, nama, sip){
-    $('#nama_ttd_perawat').val(nama);
-    $('#sip_ttd_perawat').val(sip);
+    $('#nama_ttd_perawat_edit').val(nama);
+    $('#sip_ttd_perawat_edit').val(sip);
     $('#modal-op-ttd_perawat').modal({show: true, backdrop: 'static'});
     $('#save_ttd_perawat').attr('onclick','saveTtdPerawat(\''+id+'\', \''+jenis+'\')');
 }
 
-function saveTtdPerawat(id, jenis, ket, tipe){
-    var nama = $('#nama_ttd_perawat').val();
-    var sip = $('#sip_ttd_perawat').val();
+function saveTtdPerawat(id, jenis){
+    var nama = $('#nama_ttd_perawat_edit').val();
+    var sip = $('#sip_ttd_perawat_edit').val();
     var ttd = document.getElementById("ttd_edit");
     var cek = isCanvasBlank(ttd);
     if(nama && sip != '' && !cek){

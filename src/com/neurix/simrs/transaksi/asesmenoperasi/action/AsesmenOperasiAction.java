@@ -67,39 +67,41 @@ public class AsesmenOperasiAction {
                             "penanda".equalsIgnoreCase(obj.getString("tipe")) ||
                             "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
                         try {
-                            String name = obj.getString("jawaban1");
-                            String nameFile1 = name.substring(name.length() - 13);
-                            String nameFile2 = nameFile1.replace("=", "a");
-                            BASE64Decoder decoder = new BASE64Decoder();
-                            byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
-                            logger.info("Decoded upload data : " + decodedBytes.length);
-                            String wkt = time.toString();
-                            String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            logger.info("PATTERN :" + patten);
-                            String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2 + i + "-" + patten + ".png";
-                            String uploadFile = "";
+                            if(obj.getString("jawaban1") != null && !"".equalsIgnoreCase(obj.getString("jawaban1"))){
+                                String name = obj.getString("jawaban1");
+                                String nameFile1 = name.substring(name.length() - 13);
+                                String nameFile2 = nameFile1.replace("=", "a");
+                                BASE64Decoder decoder = new BASE64Decoder();
+                                byte[] decodedBytes = decoder.decodeBuffer(obj.getString("jawaban1"));
+                                logger.info("Decoded upload data : " + decodedBytes.length);
+                                String wkt = time.toString();
+                                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                                logger.info("PATTERN :" + patten);
+                                String fileName = obj.getString("id_detail_checkup") + "-" + nameFile2 + i + "-" + patten + ".png";
+                                String uploadFile = "";
 
-                            if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
-                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
-                            }
-                            if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
-                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
-                            }
-                            if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
-                                uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                            }
+                                if ("penanda".equalsIgnoreCase(obj.getString("tipe"))) {
+                                    uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_AREA_OPERASI + fileName;
+                                }
+                                if ("ttd".equalsIgnoreCase(obj.getString("tipe"))) {
+                                    uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                                }
+                                if ("gambar".equalsIgnoreCase(obj.getString("tipe"))) {
+                                    uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
+                                }
 
-                            logger.info("File save path : " + uploadFile);
-                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                                logger.info("File save path : " + uploadFile);
+                                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-                            if (image == null) {
-                                logger.error("Buffered Image is null");
-                                response.setStatus("error");
-                                response.setMsg("Buffered Image is null");
-                            } else {
-                                File f = new File(uploadFile);
-                                ImageIO.write(image, "png", f);
-                                asesmenOperasi.setJawaban1(fileName);
+                                if (image == null) {
+                                    logger.error("Buffered Image is null");
+                                    response.setStatus("error");
+                                    response.setMsg("Buffered Image is null");
+                                } else {
+                                    File f = new File(uploadFile);
+                                    ImageIO.write(image, "png", f);
+                                    asesmenOperasi.setJawaban1(fileName);
+                                }
                             }
                         } catch (IOException e) {
                             response.setStatus("error");
@@ -179,7 +181,7 @@ public class AsesmenOperasiAction {
                 response.setMsg("Found Error " + e.getMessage());
                 return response;
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Error when parse JSON array, " + e.getMessage());
         }

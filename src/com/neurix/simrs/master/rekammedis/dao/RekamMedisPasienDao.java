@@ -151,7 +151,7 @@ public class RekamMedisPasienDao extends GenericDao<ImSimrsRekamMedisPasienEntit
 
                     results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                             .setParameter("tipePelayanan", bean.getTipePelayanan())
-                            .setParameter("jenis", bean.getTipePelayanan())
+                            .setParameter("jenis", bean.getJenis())
                             .list();
                 }
             } else if ("igd".equalsIgnoreCase(bean.getTipePelayanan())) {

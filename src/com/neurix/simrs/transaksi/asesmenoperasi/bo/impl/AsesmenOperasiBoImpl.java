@@ -224,9 +224,9 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
             entity.setLastUpdateWho(bean.getLastUpdateWho());
             entity.setAction("U");
             if("ttd".equalsIgnoreCase(bean.getJenis())) {
-                entity.setJawaban1(entity.getJawaban1());
-                entity.setNamaterang(entity.getNamaterang());
-                entity.setSip(entity.getSip());
+                entity.setJawaban1(bean.getJawaban1());
+                entity.setNamaterang(bean.getNamaterang());
+                entity.setSip(bean.getSip());
             }else if("kondisi_pasien".equalsIgnoreCase(bean.getJenis())){
                 entity.setJawaban2(entity.getJawaban2()+"|"+bean.getJawaban2());
             }else{

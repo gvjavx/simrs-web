@@ -603,6 +603,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd_pengirim" width="220"
                                         onmouseover="paintTtd('ttd_pengirim')"></canvas>
                                 <input class="form-control" id="nama_terang_pengirim" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_terang_pengirim" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_pengirim')"><i
                                         class="fa fa-trash"></i> Clear
@@ -613,6 +614,7 @@
                                 <canvas class="paint-canvas-ttd" id="ttd_perawat" width="220"
                                         onmouseover="paintTtd('ttd_perawat')"></canvas>
                                 <input class="form-control nama_petugas" id="nama_terang_perawat" placeholder="Nama Terang">
+                                <input class="form-control" id="sip_terang_perawat" placeholder="SIP">
                                 <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                         onclick="removePaint('ttd_perawat')"><i
                                         class="fa fa-trash"></i> Clear
@@ -2635,8 +2637,8 @@
                                     <label>TTD Perawat OK</label>
                                     <canvas class="paint-canvas-ttd del-canvas" id="ttd_edit" width="300"
                                             onmouseover="paintTtd('ttd_edit')"></canvas>
-                                    <input class="form-control" id="nama_ttd_perawat" placeholder="Nama Terang">
-                                    <input style="margin-top: 3px" class="form-control" id="sip_ttd_perawat" placeholder="SIP">
+                                    <input class="form-control" id="nama_ttd_perawat_edit" placeholder="Nama Terang">
+                                    <input style="margin-top: 3px" class="form-control" id="sip_ttd_perawat_edit" placeholder="SIP">
                                     <button style="margin-left: 8px" type="button" class="btn btn-danger"
                                             onclick="removePaint('ttd_edit')"><i
                                             class="fa fa-trash"></i> Clear
