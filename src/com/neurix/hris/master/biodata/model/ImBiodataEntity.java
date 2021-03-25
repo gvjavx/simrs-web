@@ -68,10 +68,19 @@ public class ImBiodataEntity implements Serializable {
     private Integer masaKerjaGolongan;
     private String branchIdTerakhir;
     private String positionIdTerakhir;
-    private String flagTunjanganSupervisi;
-    private String flagTunjanganLokasi;
-    private String flagTunjanganSiaga;
-    private String flagTunjanganProfesional;
+    //RAKA-25MAR2021 ==> Remove
+//    private String flagTunjanganSupervisi;
+//    private String flagTunjanganLokasi;
+//    private String flagTunjanganSiaga;
+//    private String flagTunjanganProfesional;
+//    private String strukturGaji;
+//    private BigDecimal gaji;
+//    private String statusGiling;
+//    private String mt;
+//    private String golonganDapenNusindo;
+//    private int poinLebih;
+//    private String jenisPegawai;
+    //RAKA-end
 
     private String positionPltId;
     private String flagPlt;
@@ -88,7 +97,6 @@ public class ImBiodataEntity implements Serializable {
     private String flagDokterKso;
 
     private String divisiName;
-    private String jenisPegawai;
 
     private Date tanggalKeluar;
     private String flagPegawaiCutiDiluarTanggungan;
@@ -127,14 +135,6 @@ public class ImBiodataEntity implements Serializable {
         this.tanggalKeluar = tanggalKeluar;
     }
 
-    public String getJenisPegawai() {
-        return jenisPegawai;
-    }
-
-    public void setJenisPegawai(String jenisPegawai) {
-        this.jenisPegawai = jenisPegawai;
-    }
-
     public String getFlagDokterKso() {
         return flagDokterKso;
     }
@@ -149,38 +149,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setDivisiName(String divisiName) {
         this.divisiName = divisiName;
-    }
-
-    public String getFlagTunjanganSupervisi() {
-        return flagTunjanganSupervisi;
-    }
-
-    public void setFlagTunjanganSupervisi(String flagTunjanganSupervisi) {
-        this.flagTunjanganSupervisi = flagTunjanganSupervisi;
-    }
-
-    public String getFlagTunjanganLokasi() {
-        return flagTunjanganLokasi;
-    }
-
-    public void setFlagTunjanganLokasi(String flagTunjanganLokasi) {
-        this.flagTunjanganLokasi = flagTunjanganLokasi;
-    }
-
-    public String getFlagTunjanganSiaga() {
-        return flagTunjanganSiaga;
-    }
-
-    public void setFlagTunjanganSiaga(String flagTunjanganSiaga) {
-        this.flagTunjanganSiaga = flagTunjanganSiaga;
-    }
-
-    public String getFlagTunjanganProfesional() {
-        return flagTunjanganProfesional;
-    }
-
-    public void setFlagTunjanganProfesional(String flagTunjanganProfesional) {
-        this.flagTunjanganProfesional = flagTunjanganProfesional;
     }
 
     private Date tanggalPraPensiun;
@@ -356,8 +324,7 @@ public class ImBiodataEntity implements Serializable {
     private String desaName;
     private String pin;
     private String danaPensiun;
-    private String strukturGaji;
-    private BigDecimal gaji;
+
     private String shift;
 
     private String flag;
@@ -367,18 +334,15 @@ public class ImBiodataEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    private String statusGiling;
     private String noSkAktif;
     private String zakatProfesi;
     private String agama;
     private String npwp;
-    private String mt;
+
     private String golonganDapen;
-    private String golonganDapenNusindo;
     private String pjs;
     private Date tanggalAkhirKontrak;
     private Date tanggalMenikah;
-    private int poinLebih;
 
 
     public String getPjs() {
@@ -387,14 +351,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setPjs(String pjs) {
         this.pjs = pjs;
-    }
-
-    public String getGolonganDapenNusindo() {
-        return golonganDapenNusindo;
-    }
-
-    public void setGolonganDapenNusindo(String golonganDapenNusindo) {
-        this.golonganDapenNusindo = golonganDapenNusindo;
     }
 
     public String getGolonganDapen() {
@@ -413,6 +369,9 @@ public class ImBiodataEntity implements Serializable {
     private ImDesaEntity imDesaEntity ;
     private ImGolonganEntity imGolonganEntity;
     private ItPersonilPositionEntity itPersonilPositionEntity;
+    //RAKA-25MAR2021 ==> coba menghubungkan ItTunjLainPegawai
+    private ItTunjLainPegawaiEntity itTunjLainPegawaiEntity;
+    //RAKA-end
 
     private ImGolonganPkwtEntity imGolonganPkwtEntity;
 
@@ -488,14 +447,6 @@ public class ImBiodataEntity implements Serializable {
         this.agama = agama;
     }
 
-    public String getMt() {
-        return mt;
-    }
-
-    public void setMt(String mt) {
-        this.mt = mt;
-    }
-
     public String getNpwp() {
         return npwp;
     }
@@ -552,44 +503,12 @@ public class ImBiodataEntity implements Serializable {
         this.noSkAktif = noSkAktif;
     }
 
-    public String getStatusGiling() {
-        return statusGiling;
-    }
-
-    public void setStatusGiling(String statusGiling) {
-        this.statusGiling = statusGiling;
-    }
-
     public String getZakatProfesi() {
         return zakatProfesi;
     }
 
     public void setZakatProfesi(String zakatProfesi) {
         this.zakatProfesi = zakatProfesi;
-    }
-
-    public int getPoinLebih() {
-        return poinLebih;
-    }
-
-    public void setPoinLebih(int poinLebih) {
-        this.poinLebih = poinLebih;
-    }
-
-    public BigDecimal getGaji() {
-        return gaji;
-    }
-
-    public void setGaji(BigDecimal gaji) {
-        this.gaji = gaji;
-    }
-
-    public String getStrukturGaji() {
-        return strukturGaji;
-    }
-
-    public void setStrukturGaji(String strukturGaji) {
-        this.strukturGaji = strukturGaji;
     }
 
     public String getDanaPensiun() {

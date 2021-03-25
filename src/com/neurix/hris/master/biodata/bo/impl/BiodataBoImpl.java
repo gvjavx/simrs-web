@@ -804,7 +804,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataHistoryEntity.setDesaId(imBiodataEntity.getDesaId());
                                 imBiodataHistoryEntity.setRtRw(imBiodataEntity.getRtRw());
                                 imBiodataHistoryEntity.setTipePegawai(imBiodataEntity.getTipePegawai());
-                                imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
                                 imBiodataHistoryEntity.setGolongan(imBiodataEntity.getGolongan());
                                 imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
                                 imBiodataHistoryEntity.setStatusPegawai(imBiodataEntity.getStatusPegawai());
@@ -889,10 +888,6 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setDesaId(bean.getDesaId());
                                 imBiodataEntity.setRtRw(bean.getRtRw());
                                 imBiodataEntity.setTipePegawai(bean.getTipePegawai());
-                                imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
-//                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-//                                imBiodataEntity.setStatusGiling(bean.getStatusGiling()); //RAKA-delete
-//                                imBiodataEntity.setMt(bean.getMt()); //RAKA-delete
                                 imBiodataEntity.setGolongan(bean.getGolongan());
                                 imBiodataEntity.setPin(bean.getPin());
                                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
@@ -1481,10 +1476,6 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataHistoryEntity.setDesaId(imBiodataEntity.getDesaId());
                             imBiodataHistoryEntity.setRtRw(imBiodataEntity.getRtRw());
                             imBiodataHistoryEntity.setTipePegawai(imBiodataEntity.getTipePegawai());
-                            imBiodataHistoryEntity.setStrukturGaji(imBiodataEntity.getStrukturGaji());
-//                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-//                            imBiodataHistoryEntity.setStatusGiling(imBiodataEntity.getStatusGiling()); //RAKA-delete
-//                            imBiodataHistoryEntity.setMt(imBiodataEntity.getMt()); //RAKA-delete
                             imBiodataHistoryEntity.setGolongan(imBiodataEntity.getGolongan());
                             imBiodataHistoryEntity.setPin(imBiodataEntity.getPin());
                             imBiodataHistoryEntity.setStatusPegawai(imBiodataEntity.getStatusPegawai());
@@ -1558,11 +1549,7 @@ public class BiodataBoImpl implements BiodataBo {
                             imBiodataEntity.setDesaId(bean.getDesaId());
                             imBiodataEntity.setRtRw(bean.getRtRw());
                             imBiodataEntity.setTipePegawai(bean.getTipePegawai());
-                            imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
                             imBiodataEntity.setFlagDokterKso(bean.getFlagDokterKso());
-//                imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-//                            imBiodataEntity.setStatusGiling(bean.getStatusGiling()); //RAKA-delete
-//                            imBiodataEntity.setMt(bean.getMt()); //RAKA-delete
                             imBiodataEntity.setGolongan(bean.getGolongan());
                             imBiodataEntity.setPin(bean.getPin());
                             imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
@@ -2035,7 +2022,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setKotaId(bean.getKabupatenId());
                 imBiodataEntity.setProvinsiId(bean.getProvinsiId());
                 imBiodataEntity.setTanggalLahir(bean.getTanggalLahir());
-                if ("TP03".equalsIgnoreCase(bean.getTipePegawai())) {
+                if ("TP04".equalsIgnoreCase(bean.getTipePegawai())) {
                     imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalPensiun());
                 } else if ("Y".equalsIgnoreCase(bean.getFlagDokterKso())) {
                     imBiodataEntity.setTanggalAkhirKontrak(bean.getTanggalAkhirKontrak());
@@ -2053,7 +2040,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imBiodataEntity.setGolongan(bean.getGolongan());
-                if ("TP01".equalsIgnoreCase(bean.getTipePegawai())) {
+                if ("TP03".equalsIgnoreCase(bean.getTipePegawai())) {
 //                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
                 } else {
@@ -2081,12 +2068,6 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setNoBpjsKetenagakerjaan(bean.getNoBpjsKetenagakerjaan());
                 imBiodataEntity.setNoBpjsKetenagakerjaanPensiun(bean.getNoBpjsKetenagakerjaanPensiun());
                 imBiodataEntity.setNoBpjsKesehatan(bean.getNoBpjsKesehatan());
-                imBiodataEntity.setStrukturGaji(bean.getStrukturGaji());
-                if (bean.getGaji() != null && !"".equalsIgnoreCase(bean.getGaji())) {
-                    imBiodataEntity.setGaji(BigDecimal.valueOf(Double.parseDouble(bean.getGaji())));
-                } else {
-                    imBiodataEntity.setGaji(BigDecimal.valueOf(0));
-                }
                 imBiodataEntity.setAgama(bean.getAgama());
                 imBiodataEntity.setPin(bean.getPin());
                 imBiodataEntity.setNamaBank(bean.getNamaBank());
@@ -3050,14 +3031,12 @@ public class BiodataBoImpl implements BiodataBo {
                     }
 
                     returnBiodata.setPoint(personalEntity.getPoint());
-                    returnBiodata.setPoinLebih(personalEntity.getPoinLebih());
                     returnBiodata.setMasaGiling(personalEntity.getMasaGiling());
                     returnBiodata.setStatusPegawai(personalEntity.getStatusPegawai());
                     returnBiodata.setStatusKeluarga(personalEntity.getStatusKeluarga());
 
                     returnBiodata.setProvinsiId(personalEntity.getProvinsiId());
                     returnBiodata.setProvinsiName(personalEntity.getProvinsiName());
-                    returnBiodata.setJenisPegawai(personalEntity.getJenisPegawai());
                     returnBiodata.setFlagDokterKso(personalEntity.getFlagDokterKso());
                     returnBiodata.setKabupatenId(personalEntity.getKotaId());
                     returnBiodata.setKotaName(personalEntity.getKotaName());
@@ -3075,7 +3054,6 @@ public class BiodataBoImpl implements BiodataBo {
                     }
                     returnBiodata.setFotoUpload(personalEntity.getFotoUpload());
                     returnBiodata.setMasaGiling(personalEntity.getMasaGiling());
-                    returnBiodata.setMt(personalEntity.getMt());
                     returnBiodata.setPin(personalEntity.getPin());
                     returnBiodata.setKotaName(personalEntity.getKotaName());
                     returnBiodata.setKecamatanName(personalEntity.getKecamatanName());
@@ -3084,10 +3062,6 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setFlagZakat(personalEntity.getZakatProfesi());
                     returnBiodata.setGender(personalEntity.getGender());
                     returnBiodata.setNpwp(personalEntity.getNpwp());
-//                    returnBiodata.setGaji(personalEntity.getGaji().toPlainString());
-                    returnBiodata.setStrukturGaji(personalEntity.getStrukturGaji());
-                    returnBiodata.setStrukturGaji2(personalEntity.getStrukturGaji());
-                    returnBiodata.setStatusGiling(personalEntity.getStatusGiling());
                     returnBiodata.setJumlahAnak(personalEntity.getJumlahAnak());
                     returnBiodata.setDanaPensiun(personalEntity.getDanaPensiun());
                     returnBiodata.setNoAnggotaDapen(personalEntity.getNoAnggotaDapen());
@@ -4151,7 +4125,6 @@ public class BiodataBoImpl implements BiodataBo {
                 biodata.setFotoUpload("unknown-person2.jpg");
             }
             biodata.setMasaGiling(imBiodata.getMasaGiling());
-            biodata.setMt(imBiodata.getMt());
             biodata.setPin(imBiodata.getPin());
             biodata.setDanaPensiun(imBiodata.getDanaPensiun());
             biodata.setNoAnggotaDapen(imBiodata.getNoAnggotaDapen());
@@ -4187,19 +4160,6 @@ public class BiodataBoImpl implements BiodataBo {
             }
 
             biodata.setNpwp(imBiodata.getNpwp());
-            biodata.setGaji(imBiodata.getGaji().toPlainString());
-            biodata.setStrukturGaji(imBiodata.getStrukturGaji());
-            biodata.setStrukturGaji2(imBiodata.getStrukturGaji());
-            biodata.setStatusGiling(imBiodata.getStatusGiling());
-            if (imBiodata.getStatusGiling() != null) {
-                if (imBiodata.getStatusGiling().equalsIgnoreCase("DMG")) {
-                    biodata.setStatusGilingName("Dalam Masa Giling");
-                } else if (imBiodata.getStatusGiling().equalsIgnoreCase("LMG")) {
-                    biodata.setStatusGilingName("Luar Masa Giling");
-                }
-            } else {
-                biodata.setStatusGilingName("");
-            }
             biodata.setJumlahAnak(imBiodata.getJumlahAnak());
 
             String danPens = "";
