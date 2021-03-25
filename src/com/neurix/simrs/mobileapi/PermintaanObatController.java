@@ -607,7 +607,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("updateDiterimaFlag")){
             TransaksiObatBatch batch = new TransaksiObatBatch();
-            batch.setId(new BigInteger(idBatch));
+            batch.setId("TBA"+idBatch);
             batch.setDiterimaFlag("Y");
 
             try{

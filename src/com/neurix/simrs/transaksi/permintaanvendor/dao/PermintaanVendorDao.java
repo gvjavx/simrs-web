@@ -494,7 +494,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         return pabrikObatList;
     }
 
-    public TransaksiObatDetail getDataFisikObatMasukBatch(BigInteger idBatch){
+    public TransaksiObatDetail getDataFisikObatMasukBatch(String idBatch){
 
         String SQL = "SELECT\n" +
                 "a.id_transaksi_obat_detail,\n" +

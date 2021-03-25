@@ -262,14 +262,14 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Merek</label>
-                                <div class="col-md-7">
-                                    <input id="mod-merk" class="form-control" readonly="true">
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Merek</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input id="mod-merk" class="form-control" readonly="true">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                         <div class="row" style="margin-top: 7px">
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Standar Margin</label>
@@ -286,11 +286,12 @@
                     </div>
                 </div>
 
+                <hr/>
                 <div class="row" style="margin-top: 10px">
 
                     <%--SIDE HARGA OBAT UMUM--%>
                     <div class="col-md-6">
-                        <h4>Harga Obat Umum :</h4>
+                        <h4>Harga Obat Normal (Non BPJS)</h4>
                         <div class="row" style="margin-top: 7px">
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Harga Beli (Bijian)</label>
@@ -343,7 +344,7 @@
 
                     <%--SIDE HARGA OBAT KHUSUS--%>
                     <div class="col-md-6">
-                        <h4>Harga Obat Khusus :</h4>
+                        <h4>Harga Obat Khusus (Non BPJS)</h4>
                         <div class="row" style="margin-top: 7px">
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Harga Rata-Rata (Bijian)</label>
@@ -389,6 +390,116 @@
                                 <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
                                 <div class="col-md-7">
                                     <input type="number" id="mod-harga-jual" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <hr/>
+                <div class="row" style="margin-top: 10px">
+
+                    <%--SIDE HARGA OBAT UMUM BPJS--%>
+                    <div class="col-md-6">
+                        <h4>Harga Obat Normal (BPJS)</h4>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Harga Beli (Bijian)</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-harga-beli-bpjs" class="form-control" readonly="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Margin</label>
+                                <div class="col-md-7">
+                                    <div class="input-group">
+                                        <input type="number" id="mod-margin-umum-bpjs" onchange="hitungHargaJual('umum')" class="form-control">
+                                        <div class="input-group-addon">
+                                            %
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Harga</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-harga-net-umum-bpjs" onchange="hitungMargin('umum')" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Diskon</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-diskon-umum-bpjs" onchange="hitungDiskon('umum')" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-harga-jual-umum-bpjs" class="form-control" readonly>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <%--SIDE HARGA OBAT KHUSUS--%>
+                    <div class="col-md-6">
+                        <h4>Harga Obat Khusus (BPJS)</h4>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Harga Rata-Rata (Bijian)</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-harga-rata-bpjs" class="form-control" readonly="true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Margin</label>
+                                <div class="col-md-7">
+                                    <div class="input-group">
+                                        <input type="number" id="mod-margin-bpjs" onchange="hitungHargaJual('khusus')" class="form-control">
+                                        <div class="input-group-addon">
+                                            %
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Harga</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-harga-net-bpjs" onchange="hitungMargin('khusus')" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Diskon</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-diskon-bpjs" onchange="hitungDiskon('khusus')" class="form-control">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-top: 7px">
+                            <div class="form-group">
+                                <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
+                                <div class="col-md-7">
+                                    <input type="number" id="mod-harga-jual-bpjs" class="form-control" readonly>
                                 </div>
                             </div>
                         </div>
@@ -441,9 +552,21 @@
         var jualUmum = $("#mod-harga-jual-umum").val();
         var marginUmum = $("#mod-margin-umum").val();
 
+        var netKhususBpjs = $("#mod-harga-net-bpjs").val();
+        var diskonKhususBpjs = $("#mod-diskon-bpjs").val();
+        var jualKhususBpjs = $("#mod-harga-jual-bpjs").val();
+        var marginKhususBpjs = $("#mod-margin-bpjs").val();
+
+        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val();
+        var diskonUmumBpjs = $("#mod-diskon-umum-bpjs").val();
+        var jualUmumBpjs = $("#mod-harga-jual-umum-bpjs").val();
+        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val();
+
         var arJson = [];
         arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual, "margin" : margin,
-            "harga_net_umum" : netUmum, "diskon_umum" : diskonUmum, "harga_jual_umum" : jualUmum, "margin_umum" : marginUmum
+            "harga_net_umum" : netUmum, "diskon_umum" : diskonUmum, "harga_jual_umum" : jualUmum, "margin_umum" : marginUmum,
+            "net_khusus_bpjs" : netKhususBpjs, "diskon_khusus_bpjs" : diskonKhususBpjs, "jual_khusus_bpjs" : jualKhususBpjs, "margin_khusus_bpjs" : marginKhususBpjs,
+            "net_umum_bpjs" : netUmumBpjs, "diskon_umum_bpjs" : diskonUmumBpjs, "jual_umum_bpjs" : jualUmumBpjs, "margin_umum_bpjs" : marginUmumBpjs
         });
         var stJson = JSON.stringify(arJson);
         ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {

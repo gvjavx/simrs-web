@@ -32,6 +32,89 @@ public class HargaObat {
     private BigDecimal hargaJualUmum;
     private BigDecimal hargaNetUmum;
     private Integer marginUmum;
+    private String flagIsBpjs;
+
+    private BigDecimal diskonKhususBpjs;
+    private BigDecimal hargaJualKhususBpjs;
+    private BigDecimal hargaNetKhususBpjs;
+    private Integer marginKhususBpjs;
+
+    private BigDecimal diskonUmumBpjs;
+    private BigDecimal hargaJualUmumBpjs;
+    private BigDecimal hargaNetUmumBpjs;
+    private Integer marginNetUmumBpjs;
+
+    public BigDecimal getDiskonKhususBpjs() {
+        return diskonKhususBpjs;
+    }
+
+    public void setDiskonKhususBpjs(BigDecimal diskonKhususBpjs) {
+        this.diskonKhususBpjs = diskonKhususBpjs;
+    }
+
+    public BigDecimal getHargaJualKhususBpjs() {
+        return hargaJualKhususBpjs;
+    }
+
+    public void setHargaJualKhususBpjs(BigDecimal hargaJualKhususBpjs) {
+        this.hargaJualKhususBpjs = hargaJualKhususBpjs;
+    }
+
+    public BigDecimal getHargaNetKhususBpjs() {
+        return hargaNetKhususBpjs;
+    }
+
+    public void setHargaNetKhususBpjs(BigDecimal hargaNetKhususBpjs) {
+        this.hargaNetKhususBpjs = hargaNetKhususBpjs;
+    }
+
+    public BigDecimal getDiskonUmumBpjs() {
+        return diskonUmumBpjs;
+    }
+
+    public void setDiskonUmumBpjs(BigDecimal diskonUmumBpjs) {
+        this.diskonUmumBpjs = diskonUmumBpjs;
+    }
+
+    public BigDecimal getHargaJualUmumBpjs() {
+        return hargaJualUmumBpjs;
+    }
+
+    public void setHargaJualUmumBpjs(BigDecimal hargaJualUmumBpjs) {
+        this.hargaJualUmumBpjs = hargaJualUmumBpjs;
+    }
+
+    public BigDecimal getHargaNetUmumBpjs() {
+        return hargaNetUmumBpjs;
+    }
+
+    public void setHargaNetUmumBpjs(BigDecimal hargaNetUmumBpjs) {
+        this.hargaNetUmumBpjs = hargaNetUmumBpjs;
+    }
+
+    public Integer getMarginKhususBpjs() {
+        return marginKhususBpjs;
+    }
+
+    public void setMarginKhususBpjs(Integer marginKhususBpjs) {
+        this.marginKhususBpjs = marginKhususBpjs;
+    }
+
+    public Integer getMarginNetUmumBpjs() {
+        return marginNetUmumBpjs;
+    }
+
+    public void setMarginNetUmumBpjs(Integer marginNetUmumBpjs) {
+        this.marginNetUmumBpjs = marginNetUmumBpjs;
+    }
+
+    public String getFlagIsBpjs() {
+        return flagIsBpjs;
+    }
+
+    public void setFlagIsBpjs(String flagIsBpjs) {
+        this.flagIsBpjs = flagIsBpjs;
+    }
 
     public Integer getMarginUmum() {
         return marginUmum;

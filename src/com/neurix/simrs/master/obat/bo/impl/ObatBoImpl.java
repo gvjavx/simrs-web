@@ -1158,7 +1158,7 @@ public class ObatBoImpl implements ObatBo {
 
                     Obat sumObat = new Obat();
                     try {
-                        sumObat = obatDao.getSumStockObatGudangById(idObat, "stok", bean.getBranchId());
+                        sumObat = obatDao.getSumStockObatGudangById(idObat, "stok", bean.getBranchId(), bean.getFlagBpjs());
                     } catch (HibernateException e) {
                         logger.error("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
                         throw new GeneralBOException("[ObatBoImpl.getListObatGroup] ERROR, " + e.getMessage());
@@ -2493,7 +2493,7 @@ public class ObatBoImpl implements ObatBo {
         logger.info("[ObatBoImpl.testSumPersediaanObat] START >>>");
 
         try {
-            obatDao.getSumStockObatGudangById(id, ket, branchId);
+            obatDao.getSumStockObatGudangById(id, ket, branchId, "");
         } catch (HibernateException e){
             logger.error("[ObatBoImpl.testSumPersediaanObat] ERROR.", e);
             throw new GeneralBOException("[ObatBoImpl.testSumPersediaanObat] ERROR." + e.getMessage());
