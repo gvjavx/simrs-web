@@ -1412,7 +1412,7 @@ public class AbsensiAction extends BaseMasterAction {
             unit = branch.getBranchName();
             uangMakan = branch.getUangMakan().intValue();
         }
-        PositionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
             positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
             bagianSt=positionBagian.getBagianName();
@@ -2482,7 +2482,7 @@ public class AbsensiAction extends BaseMasterAction {
             logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching biodata for absensi," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
-        PositionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (bagian != null) {
             if (!bagian.equalsIgnoreCase("")) {
                 try {
@@ -3757,7 +3757,7 @@ public class AbsensiAction extends BaseMasterAction {
         for (Branch branch : branchList) {
             unit = branch.getBranchName();
         }
-        PositionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
             positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
             bagian=positionBagian.getBagianName();

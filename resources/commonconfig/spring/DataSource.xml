@@ -32,7 +32,7 @@
     <bean id="dataSource"
           class="org.springframework.jdbc.datasource.DriverManagerDataSource"
           p:driverClassName="org.postgresql.Driver"
-          p:url="jdbc:postgresql://localhost:5432/gomedsys_nmu_migrasi"
+          p:url="jdbc:postgresql://localhost:5432/gomedsys_mig_prod"
           p:username="postgres"
           p:password="postgres"/>
 
