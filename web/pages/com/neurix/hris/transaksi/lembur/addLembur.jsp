@@ -192,7 +192,7 @@
                                     })
                                 }
 
-                                if (selectedObj.tipePegawai=="TP01"){
+                                if (selectedObj.tipePegawai=="TP03"){
                                     LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
                                         canLembur = hakLembur;
                                         console.log(canLembur + " - " + hakLembur);

@@ -1001,7 +1001,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         hsCriteria4.put("flag", "Y");
                         List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                         List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-                        if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP01")) {
+                        if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")) {
                             try {
                                 payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodataEntity.getGolongan(), tahunGaji);
                             } catch (HibernateException e) {
@@ -1511,7 +1511,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 double faktor = 0;
                 List<PengaliFaktorLemburEntity> pengaliFaktorLemburEntityList = new ArrayList<>();
                 Map hsCriteria4 = new HashMap();
-                hsCriteria4.put("tipe_pegawai_id", "TP01");
+                hsCriteria4.put("tipe_pegawai_id", "TP03");
                 hsCriteria4.put("flag", "Y");
                 try{
                     pengaliFaktorLemburEntityList = pengaliFaktorLemburDao.getByCriteria(hsCriteria4);
@@ -3812,7 +3812,7 @@ public class AbsensiBoImpl implements AbsensiBo {
 
                     List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                     List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-                    if (tipePegawai.equalsIgnoreCase("TP01")) {
+                    if (tipePegawai.equalsIgnoreCase("TP03")) {
                         try{
                             payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(golongan, tahunGaji);
                         }catch (HibernateException e){
@@ -5392,7 +5392,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     }
                 }
             }
-            if (("TP01").equalsIgnoreCase(pegawai.getTipePegawai())) {
+            if (("TP03").equalsIgnoreCase(pegawai.getTipePegawai())) {
                 result.setJatahCuti("12");
             } else {
                 result.setJatahCuti("0");
@@ -6641,7 +6641,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
                 List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
 
-                if ("TP01".equalsIgnoreCase(biodata.getTipePegawai())) {
+                if ("TP03".equalsIgnoreCase(biodata.getTipePegawai())) {
                     try{
                         payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                     }catch (HibernateException e){
@@ -6938,7 +6938,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
             List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase("TP01")) {
+            if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
                 try {
                     payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
@@ -7077,7 +7077,7 @@ public class AbsensiBoImpl implements AbsensiBo {
             hsCriteria4.put("flag", "Y");
             List<ImPayrollSkalaGajiEntity> payrollSkalaGajiList = new ArrayList<>();
             List<ImPayrollSkalaGajiPkwtEntity> payrollSkalaGajiPkwtEntityList = new ArrayList<>();
-            if (biodata.getTipePegawai().equalsIgnoreCase("TP01")) {
+            if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
                 try {
                     payrollSkalaGajiList = payrollSkalaGajiDao.getDataSkalaGajiSimRs(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {

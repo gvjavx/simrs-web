@@ -561,7 +561,7 @@
 
 <script>
     window.changePegawai = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golonganBaru1Group').show();
@@ -698,7 +698,7 @@
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
 
                 console.log(item.tipePegawai);
-                if (item.tipePegawai == 'TP01'){
+                if (item.tipePegawai == "TP03"){
                     $('#golonganLamaId1').val(item.levelLama).change();
                 }else {
                     $('#golonganLamaId2').val(item.levelLama).change();

@@ -524,7 +524,7 @@ public class LemburBoImpl implements LemburBo {
                 }
 
                 //RAKA-10MAR2021==> Validasi Hak Lembur Pegawai
-                if("TP01".equalsIgnoreCase(personalEntity.getTipePegawai())){
+                if("TP03".equalsIgnoreCase(personalEntity.getTipePegawai())){
                     Boolean hakLembur = cekHakLembur(personalEntity.getNip());
                     returnLembur.setHakLembur(hakLembur);
                 }else if("TP04".equalsIgnoreCase(personalEntity.getTipePegawai())){

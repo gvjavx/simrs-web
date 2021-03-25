@@ -77,7 +77,7 @@
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
 
-            if(tipePegawai == 'TP01') {
+            if(tipePegawai == "TP03") {
                 var level               = document.getElementById("golongan1").value;
             } else {
                 var level               = document.getElementById("golongan3").value;
@@ -1018,7 +1018,7 @@
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden name="biodata.tipePegawai" />
                                                         </s:if>
-                                                        <s:elseif test='biodata.tipePegawai=="TP01"'>
+                                                        <s:elseif test='biodata.tipePegawai=="TP03"'>
                                                             <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden name="biodata.tipePegawai" />
@@ -3452,7 +3452,7 @@
     }
 
     window.changePegawai = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
@@ -3471,7 +3471,7 @@
         }
     }
     window.changePegawaiHistory = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golonganHistory1Group').show();
             $('#golonganHistory2Group').hide();
         } else {
@@ -4748,7 +4748,7 @@
             var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
             var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
             var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
-            if(tipePegawaiId=="TP01"){
+            if(tipePegawaiId=="TP03"){
                 var golonganId = document.getElementById("pengalamanGolonganId1").value;
             }
             if(tipePegawaiId=="TP04"){
@@ -5639,7 +5639,7 @@
                 $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
-                if(listdata.tipePegawaiId == "TP01"){
+                if(listdata.tipePegawaiId == "TP03"){
                     $('#pengalamanGolonganId1').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').show();
                     $('#golonganHistory2Group').hide();
@@ -6521,7 +6521,7 @@
 
     window.getTanggalPensiun = function () {
         var tipePegawai = $('#tipePegawai1').val();
-        if(tipePegawai !=null && tipePegawai != '' && tipePegawai !='TP03') {
+        if(tipePegawai !=null && tipePegawai != '' && tipePegawai !="TP03") {
             var tanggal = $('#tanggalLahir1').val();
             var tanggalPensiun = document.getElementById("tanggalPensiun").value;
             var tanggalPraPensiun = document.getElementById("tanggalPraPensiun").value;
@@ -6657,7 +6657,7 @@
     function getPensiun(){
         var tipePegawai = $('#tipePegawai1').val();
         var tglLahir = $('#tanggalLahir1').val();
-        if(tipePegawai == 'TP03'){
+        if(tipePegawai == "TP04"){
             $('#tanggalPraPensiun').val('');
             $('#tanggalPensiun').val('');
 

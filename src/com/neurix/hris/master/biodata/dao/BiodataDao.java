@@ -60,7 +60,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
             }
             if (mapCriteria.get("from")!=null) {
-                criteria.add(Restrictions.ne("tipePegawai", "TP01"));
+                criteria.add(Restrictions.ne("tipePegawai", "TP03"));
             }
             if (mapCriteria.get("pin")!=null) {
                 criteria.add(Restrictions.eq("pin", (String) mapCriteria.get("pin")));
@@ -998,7 +998,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     //for Cuti
     public List<ImBiodataEntity> findAllUserCuti() throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
-//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.eq("tipePegawai","TP03"))
 //                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
@@ -1009,7 +1009,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> findUserCuti(String nip) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip",nip))
-//                .add(Restrictions.eq("tipePegawai","TP01"))
+//                .add(Restrictions.eq("tipePegawai","TP03"))
 //                .add(Restrictions.isNotNull("pin"))
                 .add(Restrictions.eq("flag","Y"))
                 .addOrder(Order.asc("nip"))
@@ -1020,7 +1020,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
     public List<ImBiodataEntity> getByNip(String nip) throws  HibernateException{
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("nip", nip))
-                .add(Restrictions.eq("tipePegawai", "TP01"))
+                .add(Restrictions.eq("tipePegawai", "TP03"))
                 .add(Restrictions.isNotNull("tanggalAktif"))
                 .add(Restrictions.eq("flag", "Y"))
                 .addOrder(Order.asc("nip"))
