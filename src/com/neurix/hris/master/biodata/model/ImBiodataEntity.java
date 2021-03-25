@@ -80,6 +80,7 @@ public class ImBiodataEntity implements Serializable {
 //    private String golonganDapenNusindo;
 //    private int poinLebih;
 //    private String jenisPegawai;
+//    private String masaGiling;
     //RAKA-end
 
     private String positionPltId;
@@ -297,7 +298,6 @@ public class ImBiodataEntity implements Serializable {
         this.tanggalPraPensiun = tanggalPraPensiun;
     }
 
-    private String masaGiling;
     private BigInteger jumlahAnak;
 //    private String golonganId;
 
@@ -533,14 +533,6 @@ public class ImBiodataEntity implements Serializable {
 
     public void setJumlahAnak(BigInteger jumlahAnak) {
         this.jumlahAnak = jumlahAnak;
-    }
-
-    public String getMasaGiling() {
-        return masaGiling;
-    }
-
-    public void setMasaGiling(String masaGiling) {
-        this.masaGiling = masaGiling;
     }
 
     public int getPoint() {

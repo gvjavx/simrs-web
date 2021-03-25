@@ -1012,7 +1012,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                                 gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                                 sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                             }
-                        } else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP03")) {
+                        } else if (biodataEntity.getTipePegawai().equalsIgnoreCase("TP04")) {
                             try {
                                 payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodataEntity.getGolongan(), tahunGaji);
                             } catch (HibernateException e) {
@@ -3823,7 +3823,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                             gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                             sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                         }
-                    } else if (tipePegawai.equalsIgnoreCase("TP03")) {
+                    } else if (tipePegawai.equalsIgnoreCase("TP04")) {
                         try{
                             payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(golongan, tahunGaji);
                         }catch (HibernateException e){
@@ -6652,7 +6652,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
 //                sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                     }
-                } else if ("TP03".equalsIgnoreCase(biodata.getTipePegawai())) {
+                } else if ("TP04".equalsIgnoreCase(biodata.getTipePegawai())) {
                     try{
                         payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
                     }catch (HibernateException e){
@@ -6949,7 +6949,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                     sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                 }
-            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
+            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP04")) {
                 try {
                     payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {
@@ -7088,7 +7088,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                     gapok = imPayrollSkalaGajiEntity.getNilai().doubleValue();
                     sankhus = imPayrollSkalaGajiEntity.getSantunanKhusus().doubleValue();
                 }
-            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP03")) {
+            } else if (biodata.getTipePegawai().equalsIgnoreCase("TP04")) {
                 try {
                     payrollSkalaGajiPkwtEntityList = payrollSkalaGajiPkwtDao.getSkalaGajiPkwt(biodata.getGolongan(), tahunGaji);
                 } catch (HibernateException e) {

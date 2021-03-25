@@ -1979,7 +1979,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             result.setStSetelahResetCutiTahunan("");
             result.setStSetelahResetCutiPanjang("");
 
-            if ("TP03".equalsIgnoreCase(biodata.getTipePegawai())) {
+            if ("TP04".equalsIgnoreCase(biodata.getTipePegawai())) {
                 Date tanggalSekarang = new Date(new java.util.Date().getTime());
                 Date tanggalMasuk = new Date(new java.util.Date().getTime());
                 if (biodata.getTanggalMasuk() != null) {

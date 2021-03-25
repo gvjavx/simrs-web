@@ -3482,7 +3482,7 @@
 
     function loadStatusPegawai(){
         var statusPegawai = $('#tipePegawai1').val();
-        if (statusPegawai=="TP03"){
+        if (statusPegawai=="TP04"){
             $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir : </small>");
             $('.label-pensiun').html("<small>Tgl Kontrak Berakhir : </small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak : </small>");
@@ -4751,7 +4751,7 @@
             if(tipePegawaiId=="TP01"){
                 var golonganId = document.getElementById("pengalamanGolonganId1").value;
             }
-            if(tipePegawaiId=="TP03"){
+            if(tipePegawaiId=="TP04"){
                 var golonganId = document.getElementById("golonganHistory3").value;
             }
 //            var pjsFlag = document.getElementById("pjsFlag1").value;
@@ -5644,7 +5644,7 @@
                     $('#golonganHistory1Group').show();
                     $('#golonganHistory2Group').hide();
                 }
-                if(listdata.tipePegawaiId == "TP03"){
+                if(listdata.tipePegawaiId == "TP04"){
                     $('#golonganHistory3').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').hide();
                     $('#golonganHistory2Group').show();

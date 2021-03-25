@@ -2833,7 +2833,6 @@ public class SmkBoImpl implements SmkBo {
 
 //                itemComboBiodata.setDivisi(imBiodataEntity.getDivisi());
                 itemComboBiodata.setTipePegawai(imBiodataEntity.getTipePegawai());
-                itemComboBiodata.setMasaGiling(imBiodataEntity.getMasaGiling());
                 itemComboBiodata.setTanggalAktif(imBiodataEntity.getTanggalAktif());
                 itemComboBiodata.setGolonganId(imBiodataEntity.getGolongan());
 //                itemComboBiodata.setPositionId(imBiodataEntity.getPositionId());

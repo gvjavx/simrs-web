@@ -498,7 +498,6 @@ public class LemburBoImpl implements LemburBo {
                 returnLembur = new Lembur();
                 returnLembur.setNip(personalEntity.getNip());
                 returnLembur.setPegawaiName(personalEntity.getNamaPegawai());
-                returnLembur.setStatusGiling(personalEntity.getMasaGiling());
                 returnLembur.setGolonganId(personalEntity.getGolongan());
                 returnLembur.setTipePegawaiId(personalEntity.getTipePegawai());
 
@@ -528,7 +527,7 @@ public class LemburBoImpl implements LemburBo {
                 if("TP01".equalsIgnoreCase(personalEntity.getTipePegawai())){
                     Boolean hakLembur = cekHakLembur(personalEntity.getNip());
                     returnLembur.setHakLembur(hakLembur);
-                }else if("TP03".equalsIgnoreCase(personalEntity.getTipePegawai())){
+                }else if("TP04".equalsIgnoreCase(personalEntity.getTipePegawai())){
                     Boolean hakLembur = cekHakLembur(personalEntity.getNip());
                     hakLembur = profesiDao.cekHakLemburByProfesi(personalEntity.getProfesiId());
                     returnLembur.setHakLembur(hakLembur);

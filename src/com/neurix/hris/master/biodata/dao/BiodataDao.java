@@ -59,9 +59,6 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
             if (mapCriteria.get("position_id")!=null) {
                 criteria.add(Restrictions.eq("positionId", (String) mapCriteria.get("position_id")));
             }
-            if (mapCriteria.get("masa_giling")!=null) {
-                criteria.add(Restrictions.eq("masaGiling", (String) mapCriteria.get("masa_giling")));
-            }
             if (mapCriteria.get("from")!=null) {
                 criteria.add(Restrictions.ne("tipePegawai", "TP01"));
             }

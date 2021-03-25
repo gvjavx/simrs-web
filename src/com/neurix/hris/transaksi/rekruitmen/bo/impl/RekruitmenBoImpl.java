@@ -699,7 +699,6 @@ public class RekruitmenBoImpl implements RekruitmenBo {
             BigInteger bi = BigInteger.valueOf(bean.getJumlahAnak().intValue());
             imBiodataEntity.setJumlahAnak(bi);
             imBiodataEntity.setGender(bean.getJenisKelamin());
-            imBiodataEntity.setMasaGiling(bean.getStatusGiling());
             imBiodataEntity.setNip(bean.getNip());
             imBiodataEntity.setGolongan(bean.getGolongan());
             imBiodataEntity.setTanggalAktif(bean.getTanggalAktif());
