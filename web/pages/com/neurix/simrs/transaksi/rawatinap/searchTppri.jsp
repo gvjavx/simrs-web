@@ -892,6 +892,7 @@
     var diagnosa = "";
     var idPasien = "";
     var tglLahir = "";
+    var tanggalMasuk = "";
 
     function printGelangPasien(noCheckup) {
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
@@ -901,12 +902,12 @@
         $('#' + id).val(formatRupiahAtas2(val));
     }
 
-    function detail(noCheckup, idDCP, tindakLanjut, keteranganSelesai) {
+    function detail(noCKP, idDCP, tindakLanjut, keteranganSelesai) {
         idDetailCheckup = idDCP;
+        noCheckup = noCKP;
         startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDCP,
-            {
+        CheckupAction.listDataPasien(idDCP, {
                 callback: function (res) {
                     if (res.idPasien != null) {
                         stopSpinner('t_', idDCP);
@@ -979,7 +980,7 @@
                         }
 
                         $('#no_rm').html(res.idPasien);
-                        $('#no_detail_checkup').html(noCheckup);
+                        $('#no_detail_checkup').html(noCKP);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);

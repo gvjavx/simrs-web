@@ -231,7 +231,6 @@ function delCPT(jenis, ket, tipe, id) {
 }
 
 function setTtdDpjp(id, jenis, ket, tipe){
-    console.log(id);
     setDataPasien();
     $('#modal-ina-ttd_dpjp').modal({show: true, backdrop: 'static'});
     $('#save_ttd_dpjp').attr('onclick','saveTtdDpjp(\''+id+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')');

@@ -30,6 +30,9 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
             if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
                 hsCriteria.put("keterangan", bean.getKeterangan());
             }
@@ -54,7 +57,9 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     if ("penanda".equalsIgnoreCase(entity.getTipe())) {
                         operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_AREA_OPERASI + entity.getJawaban1());
                     } else if ("ttd".equalsIgnoreCase(entity.getTipe())) {
-                        operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban1());
+                        if(entity.getJawaban1() != null && !"".equalsIgnoreCase(entity.getJawaban1())){
+                            operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + entity.getJawaban1());
+                        }
                     } else if ("gambar".equalsIgnoreCase(entity.getTipe())) {
                         operasi.setJawaban1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_IMG_RM + entity.getJawaban1());
                     } else {
@@ -74,6 +79,7 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     operasi.setTipe(entity.getTipe());
                     operasi.setNamaterang(entity.getNamaterang());
                     operasi.setSip(entity.getSip());
+                    operasi.setNoCheckup(entity.getNoCheckup());
                     list.add(operasi);
                 }
             }
@@ -106,6 +112,7 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                     operasi.setTipe(bean.getTipe());
                     operasi.setNamaterang(bean.getNamaterang());
                     operasi.setSip(bean.getSip());
+                    operasi.setNoCheckup(bean.getNoCheckup());
 
                     try {
                         asesmenOperasiDao.addAndSave(operasi);
@@ -146,6 +153,7 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                         operasi.setTipe(bean.getTipe());
                         operasi.setNamaterang(bean.getNamaterang());
                         operasi.setSip(bean.getSip());
+                        operasi.setNoCheckup(bean.getNoCheckup());
 
                         try {
                             asesmenOperasiDao.addAndSave(operasi);
@@ -206,6 +214,30 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
             logger.error(e.getMessage());
         }
         return res;
+    }
+
+    @Override
+    public void saveEdit(AsesmenOperasi bean) throws GeneralBOException {
+        ItSimrsAsesmenOperasiEntity entity = asesmenOperasiDao.getById("idAsesmenOperasi", bean.getIdAsesmenOperasi());
+        if (entity != null) {
+            entity.setLastUpdate(bean.getLastUpdate());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setAction("U");
+            if("ttd".equalsIgnoreCase(bean.getJenis())) {
+                entity.setJawaban1(entity.getJawaban1());
+                entity.setNamaterang(entity.getNamaterang());
+                entity.setSip(entity.getSip());
+            }else if("kondisi_pasien".equalsIgnoreCase(bean.getJenis())){
+                entity.setJawaban2(entity.getJawaban2()+"|"+bean.getJawaban2());
+            }else{
+                entity.setJawaban2(bean.getJawaban2());
+            }
+            try {
+                asesmenOperasiDao.updateAndSave(entity);
+            } catch (HibernateException e) {
+                throw new GeneralBOException("Errror, "+e.getMessage());
+            }
+        }
     }
 
     public static Logger getLogger() {

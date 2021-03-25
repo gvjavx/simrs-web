@@ -2205,7 +2205,12 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000257','RMM00000026','pindah_ri','3','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000258','RMM00000027','pindah_ri','4','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000259','RMM00000028','pindah_ri','5','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000260','RMM00000095','pindah_ri','6','Y','C','migrasi',now(),now(),'migrasi');
+('RMP000000260','RMM00000095','pindah_ri','6','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000267','RMM00000025','pindah_ok','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000268','RMM00000026','pindah_ok','4','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000269','RMM00000027','pindah_ok','5','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000270','RMM00000028','pindah_ok','6','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000271','RMM00000095','pindah_ok','7','Y','C','migrasi',now(),now(),'migrasi');
 
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000261','RMM00000111','rawat_jalan','20','Y','C','migrasi',now(),now(),'migrasi'),
@@ -2227,6 +2232,22 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ALTER TABLE it_simrs_hemodinamika
 ALTER COLUMN tensi TYPE VARCHAR(10);
 
+--BARU SETELAH DI DEV
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN no_checkup VARCHAR(50);
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET flag = 'N'
+WHERE id_rekam_medis_pasien = 'RMM00000089'
+AND tipe_pelayanan = 'rawat_inap';
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET urutan = '45'
+WHERE id_rekam_medis_pasien = 'RMM00000105'
+AND tipe_pelayanan = 'rawat_inap';
+
+ALTER TABLE it_simrs_asesmen_operasi
+ADD COLUMN no_checkup VARCHAR(100);
 
 
 

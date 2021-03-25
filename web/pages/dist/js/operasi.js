@@ -1,8 +1,8 @@
-function showModalOperasi(jenis, idRM, isSetIdRM) {
+function showModalOperasi(jenis, idRM, isSetIdRM, flagHide, flagCheck) {
     if (isSetIdRM == "Y") {
         tempidRm = idRM;
     }
-    if (isReadRM) {
+    if (isReadRM || flagHide == "Y") {
         $('.btn-hide').hide();
     } else {
         $('.btn-hide').show();
@@ -10,6 +10,20 @@ function showModalOperasi(jenis, idRM, isSetIdRM) {
     if ("tindakan_medis_op" == jenis) {
         selectOptionTM('op', jenis);
         $('#form-'+jenis).hide();
+    }
+    if("ceklist_operasi" == jenis){
+        $('#h_cek').val(flagCheck);
+    }else{
+        var cekForm = $('#h_cek').val();
+        if("pre_operasi" == jenis || "kondisi_pasien" == jenis){
+            if("Y" == cekForm){
+                $('.btn-check').hide();
+            }else{
+                $('.btn-check').show();
+            }
+        }else{
+            $('#h_cek').val("N");
+        }
     }
     setDataPasien();
     $('#modal-op-' + jenis).modal({show: true, backdrop: 'static'});
@@ -49,15 +63,15 @@ function saveDataOperasi(jenis, ket) {
         var cekList99 = $('[name=cek_list99]:checked').val();
         var cekList10 = $('[name=cek_list10]:checked').val();
         var cekList1010 = $('[name=cek_list1010]:checked').val();
-        var cekList11 = $('[name=cek_list11]:checked').val();
+        var cekList011 = $('[name=cek_list11]:checked').val();
         var cekList1111 = $('[name=cek_list1111]:checked').val();
-        var cekList12 = $('[name=cek_list12]:checked').val();
+        var cekList012 = $('[name=cek_list12]:checked').val();
         var cekList1212 = $('[name=cek_list1212]:checked').val();
-        var cekList13 = $('[name=cek_list13]:checked').val();
+        var cekList013 = $('[name=cek_list13]:checked').val();
         var cekList1313 = $('[name=cek_list1313]:checked').val();
-        var cekList14 = $('[name=cek_list14]:checked').val();
+        var cekList014 = $('[name=cek_list14]:checked').val();
         var tCekList14 = "";
-        if (cekList14 == "Ya") {
+        if (cekList014 == "Ya") {
             var checbox = $('[name=cek_ket_list14]');
             $.each(checbox, function (i, item) {
                 if (item.checked) {
@@ -69,7 +83,7 @@ function saveDataOperasi(jenis, ket) {
                 }
             });
         } else {
-            tCekList14 = cekList14;
+            tCekList14 = cekList014;
         }
 
         var cekList15 = $('#cek_list15').val();
@@ -137,7 +151,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Pembatasan Nutrisi Per Oral(Puasa)',
                 'jawaban1': cekList1,
-                'jawaban2': cekList11,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -145,7 +159,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Pemeriksaan Laboratorium',
                 'jawaban1': cekList2,
-                'jawaban2': cekList22,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -153,7 +167,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Pemeriksaan Radiologi (Thorax Foto, USG, Scan)',
                 'jawaban1': cekList3,
-                'jawaban2': cekList33,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -161,7 +175,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Pemeriksaan ECG',
                 'jawaban1': cekList4,
-                'jawaban2': cekList44,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -169,7 +183,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Edukasi dan Informed Consent Bedah',
                 'jawaban1': cekList5,
-                'jawaban2': cekList55,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -177,7 +191,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Penandaan Area Operasi',
                 'jawaban1': cekList6,
-                'jawaban2': cekList66,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -185,7 +199,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Konsultasi Dokter Spesialis Anestesi',
                 'jawaban1': cekList7,
-                'jawaban2': cekList77,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -193,7 +207,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Edukasi dan Informed Consent Anestesi',
                 'jawaban1': cekList8,
-                'jawaban2': cekList88,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -201,7 +215,7 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Konsultasi Dokter Kardiologi ACC Operasi dengan Resiko: Ringan/Sedang/berat Cardiac Risk Index Grade I/II/III/IV',
                 'jawaban1': cekList9,
-                'jawaban2': cekList99,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -209,31 +223,31 @@ function saveDataOperasi(jenis, ket) {
             data.push({
                 'parameter': 'Konsultasi Dokter Spesialis Penyakit Dalam',
                 'jawaban1': cekList10,
-                'jawaban2': cekList1010,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Schiren / Cukur',
-                'jawaban1': cekList11,
-                'jawaban2': cekList1111,
+                'jawaban1': cekList011,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Melepas Perhiasan, Soft Lens, Gigi Palsu, DLL',
-                'jawaban1': cekList12,
-                'jawaban2': cekList1212,
+                'jawaban1': cekList012,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Persiapan Prosuk Darah',
-                'jawaban1': cekList13,
-                'jawaban2': cekList1313,
+                'jawaban1': cekList013,
+                'jawaban2': "N",
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -294,7 +308,7 @@ function saveDataOperasi(jenis, ket) {
         var perawat = $('#nama_terang_perawat').val();
 
         if (cekList171 && cekList172 && cekList181 && cekList182 && cekList191 && cekList192 && cekList201 && cekList202 &&
-            cekList211 && cekList212 && cekList221 && cekList222 && cekList231 && cekList232 && cekList241 && cekList242 && pengirim && perawat != '' && !tes1 && !tes2) {
+            cekList211 && cekList212 && cekList221 && cekList222 && cekList231 && cekList232 && cekList241 && cekList242 && pengirim && !tes1) {
             data.push({
                 'parameter': 'Kesadaran Umum',
                 'jawaban1': cekList171,
@@ -321,8 +335,8 @@ function saveDataOperasi(jenis, ket) {
             });
             data.push({
                 'parameter': 'Suhu',
-                'jawaban1': cekList201 + ' x/menit',
-                'jawaban2': cekList202 + ' x/menit',
+                'jawaban1': cekList201 + ' ˚C',
+                'jawaban2': cekList202 + ' ˚C',
                 'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'id_detail_checkup': idDetailCheckup
@@ -366,19 +380,25 @@ function saveDataOperasi(jenis, ket) {
             var ttd2 = canvasTtdPerawat.toDataURL("image/png"),
                 ttd2 = ttd2.replace(/^data:image\/(png|jpg);base64,/, "");
 
+            if(!tes1){
+                ttd1 = "";
+            }
             data.push({
                 'parameter': 'TTD Perawat Pengirim',
                 'jawaban1': ttd1,
-                'keterangan': 'penandaan_area',
+                'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'tipe': 'ttd',
                 'nama_terang': pengirim,
                 'id_detail_checkup': idDetailCheckup
             });
+            if(!tes2){
+                ttd2 = "";
+            }
             data.push({
                 'parameter': 'TTD Perawat Kamar Operasi',
                 'jawaban1': ttd2,
-                'keterangan': 'penandaan_area',
+                'keterangan': jenis,
                 'jenis': 'cek_list_pre_operasi',
                 'tipe': 'ttd',
                 'nama_terang': perawat,
@@ -2625,17 +2645,28 @@ function detailOperasi(jenis) {
             var cekData = false;
             var data = [];
 
-            AsesmenOperasiAction.getListAsesmenOperasi(idDetailCheckup, jenis, function (res) {
+            AsesmenOperasiAction.getListAsesmenOperasi(noCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         if ("pre_operasi" == item.keterangan) {
                             var jwb1 = "";
                             var jwb2 = "";
+                            var temp = "";
+
                             if (item.jawaban1 != null) {
                                 jwb1 = item.jawaban1;
                             }
                             if (item.jawaban2 != null) {
                                 jwb2 = item.jawaban2;
+                            }
+                            if(jwb2 == "N"){
+                                temp =
+                                    '<div id="set_'+jenis+i+'"><div class="form-check">\n' +
+                                    '<input type="checkbox" name="cek_'+i+'" id="'+jenis+i+'" value="Ya">\n' +
+                                    '<label for="'+jenis+i+'"></label>\n' + '</div>' +
+                                    '<button style="margin-top: -2px" class="btn btn-success btn-sm" onclick="saveSerahTerima(\''+item.idAsesmenOperasi+'\', \''+i+'\',\''+item.parameter+'\', \''+jenis+'\')"><i class="fa fa-check"></i></button></div>';
+                            }else{
+                                temp = checkIcon(jwb2);
                             }
                             if ("colspan" == item.tipe) {
                                 body += '<tr>' +
@@ -2646,38 +2677,88 @@ function detailOperasi(jenis) {
                                 body += '<tr style="font-weight: bold">' +
                                     '<td>' + item.parameter + '</td>' +
                                     '<td align="center">' + jwb1 + '</td>' +
-                                    '<td align="center">' + jwb2 + '</td>' +
+                                    '<td align="center" style="vertical-align: middle">' + jwb2 + '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
                                     '<td align="center">' + checkIcon(jwb1) + '</td>' +
-                                    '<td align="center">' + checkIcon(jwb2) + '</td>' +
+                                    '<td align="center">' + temp + '</td>' +
                                     '</tr>';
                             }
                         } else if ("kondisi_pasien" == item.keterangan) {
                             var jwb1 = "";
                             var jwb2 = "";
+
+                            var diterima = "";
+                            var tempDiterima = "";
+
                             if (item.jawaban1 != null) {
                                 jwb1 = item.jawaban1;
                             }
                             if (item.jawaban2 != null) {
-                                jwb2 = item.jawaban2;
+                                jwb2 = item.jawaban2.split("|")[0];
+                                diterima = item.jawaban2.split("|")[1];
                             }
+
+                            if(diterima != undefined){
+                                tempDiterima = diterima;
+                            }else{
+                                if ("Kesadaran Umum" == item.parameter) {
+                                    tempDiterima = '<div id="set_'+jenis+i+'">' +
+                                        '<div class="input-group" style="width: 100%">' +
+                                        '<select id="'+jenis+i+'" class="form-control">\n' +
+                                        '<option value="">[Select One]</option>\n' +
+                                        '<option value="Baik">Baik</option>\n' +
+                                        '<option value="Cukup">Cukup</option>\n' +
+                                        '<option value="Lemah">Lemah</option>\n' +
+                                        '<option value="Jelek">Jelek</option>\n' +
+                                        '</select>' +
+                                        '<div onclick="saveSerahTerima(\''+item.idAsesmenOperasi+'\', \''+i+'\',\''+item.parameter+'\', \''+jenis+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
+                                        '<i class="fa fa-check" style="color: white"></i>' +
+                                        '</div>' +
+                                        '</div></div>';
+                                } else if ("Tekanan Darah" == item.parameter) {
+                                    tempDiterima = '<div id="set_'+jenis+i+'">' +
+                                        '<div class="input-group">' +
+                                        '<input id="'+jenis+i+'" class="form-control" data-inputmask="\'mask\': [\'999/999\']" data-mask="">' +
+                                        '<div onclick="saveSerahTerima(\''+item.idAsesmenOperasi+'\', \''+i+'\', \''+item.parameter+'\', \''+jenis+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
+                                        '<i class="fa fa-check" style="color: white"></i>' +
+                                        '</div>' +
+                                        '</div></div>';
+                                } else {
+                                    var tip = 'type="number"';
+                                    if("Lain-Lain" == item.parameter){
+                                        tip = "";
+                                    }
+                                    tempDiterima = '<div id="set_'+jenis+i+'">' +
+                                        '<div class="input-group">' +
+                                        '<input id="'+jenis+i+'" class="form-control" '+tip+'>' +
+                                        '<div onclick="saveSerahTerima(\''+item.idAsesmenOperasi+'\', \''+i+'\', \''+item.parameter+'\', \''+jenis+'\')" class="input-group-addon" style="cursor: pointer; background-color: #449d44">' +
+                                        '<i class="fa fa-check" style="color: white"></i>' +
+                                        '</div>' +
+                                        '</div></div>';
+                                }
+                            }
+
                             if ("ttd" == item.tipe) {
+                                var tempTtd = '<i onclick="setTtdPerawat(\''+item.idAsesmenOperasi+'\', \''+cekItemIsNull(item.namaterang)+'\', \''+cekItemIsNull(item.sip)+'\')" class="fa fa-pencil" style="font-size: 20px; cursor: pointer; color: #00c0ef"></i><br>';
+                                if(item.jawaban1 != null){
+                                    tempTtd = '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">';
+                                }
                                 body += '<tr>' +
                                     '<td>' + item.parameter + '</td>' +
-                                    '<td colspan="2">' +
-                                    '<img src="' + item.jawaban1 + '" style="width: 100px; height: 70px">' +
+                                    '<td colspan="3">' + tempTtd +
                                     '<p style="margin-top: -3px">' + cekItemIsNull(item.namaterang) + '</p>' +
                                     '<p style="margin-top: -7px">' + cekItemIsNull(item.sip) + '</p>' +
                                     '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +
-                                    '<td width="60%">' + item.parameter + '</td>' +
+                                    '<td width="40%">' + item.parameter + '</td>' +
                                     '<td>' + jwb1 + '</td>' +
                                     '<td>' + jwb2 + '</td>' +
+                                    '<td>' + tempDiterima + '</td>' +
                                     '</tr>';
                             }
                         } else if ("penandaan_area" == item.keterangan) {
@@ -2886,6 +2967,7 @@ function detailOperasi(jenis) {
                         head = '<tr>' +
                             '<td><b>Pemeriksaan</b></td>' +
                             '<td><b>Sebelum Ditransfer</b></td>' +
+                            '<td><b>Saat Perjalanan</b></td>' +
                             '<td><b>Saat Diterima</b></td>' +
                             '</tr>';
                     }
@@ -2957,6 +3039,7 @@ function detailOperasi(jenis) {
                 var url = contextPath + '/pages/images/minus-allnew.png';
                 $('#btn_op_' + jenis).attr('src', url);
                 $('#btn_op_' + jenis).attr('onclick', 'delRowOperasi(\'' + jenis + '\')');
+                $('[data-mask]').inputmask();
             });
         }
     }
@@ -3673,5 +3756,103 @@ function delOP(jenis, ket) {
                 }
             }
         });
+    }
+}
+
+function setSideValue(id, value) {
+    if (value == '' || value == '___/___') {
+        $('#' + id).val('');
+    } else {
+        $('#' + id).val(value);
+    }
+}
+
+function saveSerahTerima(id, i, parameter, jenis) {
+    var nilai = "";
+    if(jenis == "pre_operasi"){
+        if($('#'+jenis+i).is(':checked')){
+            nilai = "Ya";
+        }else{
+            nilai = "Tidak";
+        }
+    }else{
+        nilai = $('#'+jenis+i).val();
+    }
+    if(id != '' && nilai != ''){
+        var jawaban = "";
+        if("Tekanan Darah" == parameter){
+            jawaban = replaceUnderLine(nilai)+" mmHg";
+        }else if("Suhu" == parameter){
+            jawaban = nilai+" ˚C";
+        }else if("Nadi" == parameter || "DJJ" == parameter){
+            jawaban = nilai+" x/mnt";
+        }else if("RR" == parameter || "Respirator" == parameter){
+            jawaban = nilai+" x/mnt";
+        }else if("Skala Nyeri" == parameter){
+            jawaban = nilai+" x/menit";
+        }else{
+            jawaban = nilai;
+        }
+        dwr.engine.setAsync(true);
+        AsesmenOperasiAction.saveEditAsesmenOP(id, jawaban, jenis, {
+            callback: function (res) {
+                if (res.status == "success") {
+                    if(jenis == "pre_operasi"){
+                        $('#set_'+jenis+i).html(cekIconsIsNotNull(jawaban));
+                    }else{
+                        $('#set_'+jenis+i).html('<span>'+jawaban+'</span>');
+                    }
+                    $('#success_'+jenis).show().fadeOut(5000);
+                    $('#msg_'+jenis).text("Data berhasil disimpan...!");
+                } else {
+                    $('#warn_ceklist_operasi').show().fadeOut(5000);
+                    $('#msg_ceklist_operasi').text(res.msg);
+                }
+            }
+        });
+    }
+}
+
+function setTtdPerawat(id, jenis, nama, sip){
+    $('#nama_ttd_perawat').val(nama);
+    $('#sip_ttd_perawat').val(sip);
+    $('#modal-op-ttd_perawat').modal({show: true, backdrop: 'static'});
+    $('#save_ttd_perawat').attr('onclick','saveTtdPerawat(\''+id+'\', \''+jenis+'\')');
+}
+
+function saveTtdPerawat(id, jenis, ket, tipe){
+    var nama = $('#nama_ttd_perawat').val();
+    var sip = $('#sip_ttd_perawat').val();
+    var ttd = document.getElementById("ttd_edit");
+    var cek = isCanvasBlank(ttd);
+    if(nama && sip != '' && !cek){
+        if(!cekSession()){
+            var ttd1 = ttd.toDataURL("image/png"),
+                ttd1 = ttd1.replace(/^data:image\/(png|jpg);base64,/, "");
+            $('#save_ttd_perawat').hide();
+            $('#load_ttd_perawat').show();
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.updateTtdPerawat(id, ttd1, sip, nama, {
+                callback: function (res) {
+                    if (res.status == "success") {
+                        $('#modal-op-ttd_perawat').modal('hide');
+                        $('#save_ttd_perawat').show();
+                        $('#load_ttd_perawat').hide();
+                        $('#warning_op_ceklist_operasi').show().fadeOut(5000);
+                        $('#msg_op_ceklist_operasi').text("Berhasil mengupdate data...");
+                        delRowOperasi(jenis);
+                        detailOperasi(jenis);
+                    } else {
+                        $('#warning_op_ttd_perawat').show().fadeOut(5000);
+                        $('#msg_op_ttd_perawat').text(res.msg);
+                        $('#save_ttd_perawat').show();
+                        $('#load_ttd_perawat').hide();
+                    }
+                }
+            });
+        }
+    }else {
+        $('#warning_op_ttd_perawat').show().fadeOut(5000);
+        $('#msg_op_ttd_perawat').text("Silahkan cek kembali inputan anda...!");
     }
 }

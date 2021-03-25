@@ -39,12 +39,21 @@ public class AsesmenOperasiAction {
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        String noCheckup = "";
+        String idDetailCheckup = "";
+        String idPasien = "";
+        String idRm = "";
+
         try {
+            JSONObject objt = new JSONObject(dataPasien);
+            noCheckup = objt.getString("no_checkup");
+            idDetailCheckup = objt.getString("id_detail_checkup");
+            idPasien = objt.getString("id_pasien");
+            idRm = objt.getString("id_rm");
+
             JSONArray json = new JSONArray(data);
             List<AsesmenOperasi> operasiList = new ArrayList<>();
-
             for (int i = 0; i < json.length(); i++) {
-
                 JSONObject obj = json.getJSONObject(i);
                 AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
                 if(obj.has("parameter")){
@@ -57,7 +66,6 @@ public class AsesmenOperasiAction {
                     if ("ttd".equalsIgnoreCase(obj.getString("tipe")) ||
                             "penanda".equalsIgnoreCase(obj.getString("tipe")) ||
                             "gambar".equalsIgnoreCase(obj.getString("tipe"))) {
-
                         try {
                             String name = obj.getString("jawaban1");
                             String nameFile1 = name.substring(name.length() - 13);
@@ -90,7 +98,6 @@ public class AsesmenOperasiAction {
                                 response.setMsg("Buffered Image is null");
                             } else {
                                 File f = new File(uploadFile);
-                                // write the image
                                 ImageIO.write(image, "png", f);
                                 asesmenOperasi.setJawaban1(fileName);
                             }
@@ -143,6 +150,7 @@ public class AsesmenOperasiAction {
                 asesmenOperasi.setCreatedDate(time);
                 asesmenOperasi.setLastUpdateWho(userLogin);
                 asesmenOperasi.setLastUpdate(time);
+                asesmenOperasi.setNoCheckup(noCheckup);
                 operasiList.add(asesmenOperasi);
             }
 
@@ -150,13 +158,12 @@ public class AsesmenOperasiAction {
                 response = asesmenOperasiBo.saveAdd(operasiList);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
-                    JSONObject objt = new JSONObject(dataPasien);
                     if (objt != null) {
                         StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
-                        status.setNoCheckup(objt.getString("no_checkup"));
-                        status.setIdDetailCheckup(objt.getString("id_detail_checkup"));
-                        status.setIdPasien(objt.getString("id_pasien"));
-                        status.setIdRekamMedisPasien(objt.getString("id_rm"));
+                        status.setNoCheckup(noCheckup);
+                        status.setIdDetailCheckup(idDetailCheckup);
+                        status.setIdPasien(idPasien);
+                        status.setIdRekamMedisPasien(idRm);
                         status.setIsPengisian("Y");
                         status.setAction("C");
                         status.setFlag("Y");
@@ -179,14 +186,14 @@ public class AsesmenOperasiAction {
         return response;
     }
 
-    public List<AsesmenOperasi> getListAsesmenOperasi(String idDetailCheckup, String keterangan) {
+    public List<AsesmenOperasi> getListAsesmenOperasi(String noCheckup, String keterangan) {
         List<AsesmenOperasi> list = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
-        if (!"".equalsIgnoreCase(idDetailCheckup) && !"".equalsIgnoreCase(keterangan)) {
+        if (!"".equalsIgnoreCase(noCheckup) && !"".equalsIgnoreCase(keterangan)) {
             try {
                 AsesmenOperasi operasi = new AsesmenOperasi();
-                operasi.setIdDetailCheckup(idDetailCheckup);
+                operasi.setNoCheckup(noCheckup);
                 operasi.setKeterangan(keterangan);
                 list = asesmenOperasiBo.getByCriteria(operasi);
             } catch (GeneralBOException e) {
@@ -353,6 +360,75 @@ public class AsesmenOperasiAction {
             }
         }
         return responses;
+    }
+
+    public CrudResponse saveEditAsesmenOP(String id, String jawaban, String jenis) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        if (!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(jawaban)) {
+            try {
+                AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
+                asesmenOperasi.setIdAsesmenOperasi(id);
+                asesmenOperasi.setJawaban2(jawaban);
+                asesmenOperasi.setLastUpdate(time);
+                asesmenOperasi.setLastUpdateWho(userLogin);
+                asesmenOperasi.setJenis(jenis);
+                asesmenOperasiBo.saveEdit(asesmenOperasi);
+                response.setStatus("success");
+                response.setMsg("OK");
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error, "+e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    public CrudResponse updateTtdPerawat(String id, String ttd, String sip, String nama) {
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        AsesmenOperasiBo asesmenOperasiBo = (AsesmenOperasiBo) ctx.getBean("asesmenOperasiBoProxy");
+        String userLogin = CommonUtil.userLogin();
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        if (!"".equalsIgnoreCase(id) && !"".equalsIgnoreCase(ttd)) {
+            try {
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(ttd);
+                String wkt = time.toString();
+                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                String fileName = id + "-" + patten + ".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + fileName;
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                if (image == null) {
+                    response.setStatus("error");
+                    response.setMsg("Buffered Image is null");
+                    return response;
+                } else {
+                    File f = new File(uploadFile);
+                    ImageIO.write(image, "png", f);
+                    AsesmenOperasi asesmenOperasi = new AsesmenOperasi();
+                    asesmenOperasi.setIdAsesmenOperasi(id);
+                    asesmenOperasi.setJawaban1(fileName);
+                    asesmenOperasi.setNamaterang(nama);
+                    asesmenOperasi.setSip(sip);
+                    asesmenOperasi.setLastUpdate(time);
+                    asesmenOperasi.setLastUpdateWho(userLogin);
+                    asesmenOperasi.setJenis("ttd");
+                    asesmenOperasiBo.saveEdit(asesmenOperasi);
+                    response.setStatus("success");
+                    response.setMsg("OK");
+                }
+            } catch (Exception e) {
+                logger.error("Found Error" + e.getMessage());
+                response.setStatus("error");
+                response.setMsg("Error, "+e.getMessage());
+            }
+        }
+        return response;
     }
 
     public static Logger getLogger() {

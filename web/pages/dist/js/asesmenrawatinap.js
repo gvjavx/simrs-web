@@ -1,13 +1,18 @@
-function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, idDetailKhusus) {
+function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, flagHide, flagCheck) {
     if (isSetIdRM == "Y") {
         tempidRm = idRM;
     }
-    if (isReadRM) {
+    if (isReadRM || flagHide == "Y") {
         $('.btn-hide').hide();
     } else {
         $('.btn-hide').show();
     }
 
+    if (flagCheck == "Y") {
+        $('.btn-check').hide();
+    } else {
+        $('.btn-check').show();
+    }
     if ("s_o" == jenis) {
         loadImgCanvas('area_canvas');
     }
@@ -43,14 +48,6 @@ function showModalAsesmenRawatInap(jenis, idRM, isSetIdRM, idDetailKhusus) {
         $('#pla').html('');
         $('#imp').html('');
         $('#eva').html('');
-    }
-    if ("transfer_pasien" == jenis) {
-        if (idDetailKhusus != null && idDetailKhusus != '') {
-            $('#btn_ina_data_ruangan').attr('onclick', 'detailAsesmenRawatInap(\'data_ruangan\',\'' + idDetailKhusus + '\')');
-            $('#btn_ina_catatan_klinis').attr('onclick', 'detailAsesmenRawatInap(\'catatan_klinis\',\'' + idDetailKhusus + '\')');
-            $('#btn_ina_kondisi_serah_terima').attr('onclick', 'detailAsesmenRawatInap(\'kondisi_serah_terima\',\'' + idDetailKhusus + '\')');
-            $('.btn-hide').hide();
-        }
     }
 
     if ("tindakan_ina" == jenis) {
@@ -3117,6 +3114,8 @@ function saveAsesmenRawatInap(jenis, ket) {
                         $('#warning_ina_' + ket).show().fadeOut(5000);
                         $('#msg_ina_' + ket).text("Berhasil menambahkan data ....");
                         $('#modal-ina-' + jenis).scrollTop(0);
+                        delRowAsesmenRawatInap(jenis);
+                        detailAsesmenRawatInap(jenis);
                     } else {
                         $('#save_ina_' + jenis).show();
                         $('#load_ina_' + jenis).hide();
@@ -3134,12 +3133,8 @@ function saveAsesmenRawatInap(jenis, ket) {
     }
 }
 
-function detailAsesmenRawatInap(jenis, idKhusus) {
+function detailAsesmenRawatInap(jenis) {
     if(!cekSession()){
-        var idDetail = idDetailCheckup;
-        if (idKhusus != null && idKhusus != '') {
-            idDetail = idKhusus;
-        }
         if (jenis != '') {
             var head = "";
             var body = "";
@@ -3157,7 +3152,7 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
             var tercamtum = "";
             var cekTercamtum = false;
             var cekJenis = "";
-            AsesmenRawatInapAction.getListAsesmenRawat(idDetail, jenis, function (res) {
+            AsesmenRawatInapAction.getListAsesmenRawat(noCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var jwb = "";
@@ -3604,11 +3599,12 @@ function detailAsesmenRawatInap(jenis, idKhusus) {
                 newRow.insertAfter($('table').find('#row_ina_' + jenis));
                 var url = contextPath + '/pages/images/minus-allnew.png';
                 $('#btn_ina_' + jenis).attr('src', url);
-                if (idKhusus != null && idKhusus != '') {
-                    $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\',\'' + idKhusus + '\')');
-                } else {
-                    $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\')');
-                }
+                // if (idKhusus != null && idKhusus != '') {
+                //     $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\',\'' + idKhusus + '\')');
+                // } else {
+                //
+                // }
+                $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\')');
                 $('[data-mask]').inputmask();
             });
         }
@@ -3619,11 +3615,12 @@ function delRowAsesmenRawatInap(id, idKhusus) {
     $('#del_ina_' + id).remove();
     var url = contextPath + '/pages/images/icons8-plus-25.png';
     $('#btn_ina_' + id).attr('src', url);
-    if (idKhusus != null && idKhusus != '') {
-        $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\',\'' + idKhusus + '\')');
-    } else {
-        $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\')');
-    }
+    // if (idKhusus != null && idKhusus != '') {
+    //     $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\',\'' + idKhusus + '\')');
+    // } else {
+    //
+    // }
+    $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\')');
 }
 
 function showKetIna(value, ket) {
@@ -5930,6 +5927,8 @@ function delRI(jenis, ket) {
                 $('#warn_' + ket).show().fadeOut(5000);
                 $('#msg_' + ket).text(res.msg);
             }
+            delRowAsesmenRawatInap(jenis);
+            detailAsesmenRawatInap(jenis);
         }
     });
 }

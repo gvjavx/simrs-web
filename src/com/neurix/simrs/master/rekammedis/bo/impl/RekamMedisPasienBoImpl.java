@@ -70,11 +70,11 @@ public class RekamMedisPasienBoImpl implements RekamMedisPasienBo {
     }
 
     @Override
-    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(String tipePelayanan, String jenis, String id) throws GeneralBOException {
+    public List<RekamMedisPasien> getListRekamMedisByTipePelayanan(RekamMedisPasien bean) throws GeneralBOException {
         logger.info("[RekamMedisPasienBoImpl.getListRekamMedisByTipePelayanan] start process >>>");
         List<RekamMedisPasien> rekamMedisPasienList = new ArrayList<>();
         try {
-            rekamMedisPasienList = rekamMedisPasienDao.getListRekamMedisByPelayanan(tipePelayanan, jenis, id);
+            rekamMedisPasienList = rekamMedisPasienDao.getListRekamMedisByPelayanan(bean);
         }catch (HibernateException e){
             logger.error("[RekamMedisPasienBoImpl.getListRekamMedisByTipePelayanan]"+e.getMessage());
         }

@@ -11,4 +11,5 @@ public interface AsesmenOperasiBo {
     public CrudResponse saveAdd(List<AsesmenOperasi> list) throws GeneralBOException;
     public CrudResponse saveDelete(AsesmenOperasi bean) throws GeneralBOException;
     public String getDataByKey(String id, String params) throws GeneralBOException;
+    public void saveEdit(AsesmenOperasi bean) throws GeneralBOException;
 }
