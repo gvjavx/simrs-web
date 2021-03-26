@@ -11,18 +11,23 @@ function paintTtd(id, change){
         colorPicker = document.querySelector(".js-color-picker");
     }
 
-    colorPicker.addEventListener("change", function (evt) {
-        context.strokeStyle = evt.target.value;
-    });
+    if(colorPicker != null){
+        colorPicker.addEventListener("change", function (evt) {
+            context.strokeStyle = evt.target.value;
+        });
+    }else{
+        colorPicker = "#151414";
+    }
 
     const lineWidthRange = document.querySelector(".js-line-range");
     const lineWidthLabel = document.querySelector(".js-range-value");
-
-    lineWidthRange.addEventListener("input", function (evt) {
-        const width = evt.target.value;
-        lineWidthLabel.innerHTML = width+" px";
-        context.lineWidth = width;
-    });
+    if(lineWidthRange != null){
+        lineWidthRange.addEventListener("input", function (evt) {
+            const width = evt.target.value;
+            lineWidthLabel.innerHTML = width+" px";
+            context.lineWidth = width;
+        });
+    }
 
     let x = 0,
         y = 0;

@@ -118,5 +118,6 @@ public interface CheckupBo {
     public List<HeaderCheckup> daftarPasienOnline(String branchId, String idPelayanan) throws GeneralBOException;
 
     public void cancelPeriksa(HeaderDetailCheckup detailCheckup) throws GeneralBOException;
+    public String fisrtCheckup(String noCheckup) throws GeneralBOException;
 
 }

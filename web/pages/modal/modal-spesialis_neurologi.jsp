@@ -288,7 +288,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <input class="form-control tgl" id="pt12">
+                                <input class="form-control ptr-tgl" id="pt12">
                             </div>
                         </div>
                     </div>

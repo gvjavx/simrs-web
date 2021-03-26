@@ -1071,6 +1071,24 @@ apply the skin class to the body tag so the changes take effect.
         return $('#'+id).get(0).files.length === 0;
     }
 
+    function postAtas(path, params) {
+        var method='post';
+        const form = document.createElement('form');
+        form.method = method;
+        form.action = path;
+        for (const key in params) {
+            if (params.hasOwnProperty(key)) {
+                const hiddenField = document.createElement('input');
+                hiddenField.type = 'hidden';
+                hiddenField.name = key;
+                hiddenField.value = params[key];
+                form.appendChild(hiddenField);
+            }
+        }
+        document.body.appendChild(form);
+        form.submit();
+    }
+
 </script>
 
 

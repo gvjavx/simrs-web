@@ -127,7 +127,7 @@
                         <td>
                             <table>
                                 <s:select list="#{'rawat_inap':'rawat inap','rawat_intensif':'rawat intensif',
-                                'kamar_operasi':'kamar operasi','rawat_isolasi':'rawat isolasi','ruang_bersalin':'ruang bersalin','ruang_recovery':'ruang recovery'
+                                'kamar_operasi':'kamar operasi','rawat_isolasi':'rawat isolasi','ruang_bersalin':'ruang bersalin','rr':'ruang recovery'
                                 }"
                                           id="kategoriAdd" name="kelasRuangan.kategori"
                                           headerKey="" headerValue="[Select one]" cssClass="form-control" cssStyle="margin-top: 5px"

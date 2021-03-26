@@ -447,7 +447,6 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 permintaanObatPoli.setTipePermintaan(item.getTipePermintaan());
                 permintaanObatPoli.setIsRequest(item.getRequest().toString());
                 permintaanObatPoli.setJumlahObat(item.getJumlahObat());
-
                 listOfPermintaanObat.add(permintaanObatPoli);
             }
         }

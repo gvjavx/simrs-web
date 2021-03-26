@@ -12,12 +12,15 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PermintaanGiziAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
+
     <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/paintTtd.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
-    <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/gizi.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -305,7 +308,8 @@
                                                          '<s:property value="bentukGizi"/>',
                                                          '<s:property value="alergi"/>',
                                                          '<s:property value="namaDiagnosa"/>',
-                                                         '<s:property value="idDetailCheckup"/>'
+                                                         '<s:property value="idDetailCheckup"/>',
+                                                         '<s:property value="noCheckup"/>'
                                                          )">
                                         </s:if>
                                         <s:else>
@@ -325,7 +329,8 @@
                                                              '<s:property value="bentukGizi"/>',
                                                              '<s:property value="alergi"/>',
                                                              '<s:property value="namaDiagnosa"/>',
-                                                             '<s:property value="idDetailCheckup"/>'
+                                                             '<s:property value="idDetailCheckup"/>',
+                                                             '<s:property value="noCheckup"/>'
                                                              )">
                                             </s:elseif>
                                             <s:else>
@@ -341,7 +346,8 @@
                                                              '<s:property value="bentukGizi"/>',
                                                              '<s:property value="alergi"/>',
                                                              '<s:property value="namaDiagnosa"/>',
-                                                             '<s:property value="idDetailCheckup"/>'
+                                                             '<s:property value="idDetailCheckup"/>',
+                                                             '<s:property value="noCheckup"/>'
                                                              )">
                                                 <div class="form-check">
                                                     <input onclick="setSave('id_order_gizi')" type="checkbox"
@@ -578,6 +584,28 @@
 
 <div id="modal-temp"></div>
 
+<div class="modal fade" id="modal-confirm-rm">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Konfirmasi
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center" id="tanya"></h4>
+                <h4 class="text-center" id="print_form"></h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> Tidak
+                </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con_rm"><i class="fa fa-check"></i> Ya            </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
@@ -597,6 +625,7 @@
     var tempTinggi = "";
     var tempAnmnesa = "";
     var idPasien = "";
+    var tempidRm = "";
 
     function listOrderGizi(idRawatInap, noCheckup) {
         $('#modal-detail-pasien').modal({show: true, backdrop: 'static'});
@@ -862,12 +891,13 @@
         }
     }
 
-    function viewHistory(idPas, namaPasien, jenisKelamin, um, ruangan, jenisDiet, betukDiet, alergi, diagnosa, iddetail) {
+    function viewHistory(idPas, namaPasien, jenisKelamin, um, ruangan, jenisDiet, betukDiet, alergi, diagnosa, iddetail, nocheckup) {
         if(!cekSession()){
             $('#btn_ases').attr('onclick', 'getListRekamMedis(\'gizi\',\'\',\''+iddetail+'\')');
             idDetailCheckup = iddetail;
             umur = um;
             idPasien = idPas;
+            noCheckup = nocheckup;
             $('#label_pasien').text(namaPasien);
             $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});
             var table = "";
@@ -996,12 +1026,16 @@
         $('#modal-lab_luar').modal({show:true, backdrop:'static'});
     }
 
-    function loadModalRM(jenis) {
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 
@@ -1033,6 +1067,7 @@
                     var terIsi = 0;
                     var labelPrint = "";
                     var terIsiPrint = "";
+                    var enter = '';
 
                     if (item.jumlahKategori != null) {
                         constan = item.jumlahKategori;
@@ -1052,6 +1087,7 @@
                         }
                         icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                         icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                        enter = '<br>';
                     }
 
                     labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
@@ -1064,9 +1100,9 @@
                             li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
                         } else {
                             if (item.keterangan == 'form') {
-                                li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
                             } else if (item.keterangan == "surat") {
-                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
                             }
                         }
                     }

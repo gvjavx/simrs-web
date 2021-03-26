@@ -1293,7 +1293,7 @@
                 <div class="box-body">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4" style="margin-top: 7px">Status Fisik Anestesi</label>
+                            <label class="col-md-12" style="margin-top: 7px">Status Fisik Anestesi</label>
                         </div>
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">ASA</label>
@@ -2164,7 +2164,7 @@
                         <tr id="row_op_laporan_operasi">
                             <td>Laporan Operasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_op_laporan_operasi" class="hvr-grow" onclick="detailOperasi('laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                <img id="btn_op_laporan_operasi" class="hvr-grow" onclick="detailOperasi('laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                                 <img id="delete_add_laporan_operasi" class="hvr-grow btn-hide" onclick="conOP('add_laporan_operasi', 'laporan_operasi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
                             </td>
                         </tr>
@@ -2437,14 +2437,14 @@
                     <hr class="garis">
                     <div class="row">
                         <div class="form-group">
-                            <label class="col-md-4">Jml Perdarahan</label>
-                            <div class="col-md-3">
-                                <input class="form-control" id="lap17">
-                            </div>
-                            <label class="col-md-2">Jml Cairan masuk</label>
-                            <div class="col-md-3">
+                            <label class="col-md-4">Jml Cairan masuk</label>
+                            <div class="col-md-4">
                                 <input class="form-control" id="lap18">
                             </div>
+                            <%--<label class="col-md-4">Jml Perdarahan</label>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<input class="form-control" id="lap17">--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                     <div class="row">

@@ -59,4 +59,5 @@ public interface RawatInapBo {
     public CrudResponse saveUangMuka(UangMuka bean) throws GeneralBOException;
     public List<UangMuka> getAllListUangMuka(UangMuka bean) throws GeneralBOException;
     public HeaderCheckup getDetailGelang(String noCheckup) throws GeneralBOException;
+    public void deleteMon(MonCairan bean) throws GeneralBOException;
 }

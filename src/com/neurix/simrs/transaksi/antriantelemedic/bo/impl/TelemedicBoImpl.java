@@ -1752,7 +1752,7 @@ public class TelemedicBoImpl implements TelemedicBo {
         if (itSimrsVideoRmEntityList != null) {
 
             //check jika terdapat lebih dari satu video, maka video digabung
-            if (itSimrsVideoRmEntityList.size() + 1 > 1) {
+            if (itSimrsVideoRmEntityList.size() > 1) {
 
 //               path = gabungVideo(itSimrsVideoRmEntityList);
 

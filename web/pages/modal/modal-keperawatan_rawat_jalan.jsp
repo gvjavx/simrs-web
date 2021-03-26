@@ -230,6 +230,15 @@
                             </div>
                         </div>
                     </div>
+                    <div class="row jarak">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-3">
+                                <div class="custom02">
+                                    <input type="radio" onclick="showKetRJ(this.value, 'af12')" value="Tidak Ada" id="af124" name="af12" /><label for="af124">Tidak Ada</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="row jarak" style="display: none" id="form_af12">
                         <div class="form-group">
                             <div class="col-md-offset-3 col-md-9">

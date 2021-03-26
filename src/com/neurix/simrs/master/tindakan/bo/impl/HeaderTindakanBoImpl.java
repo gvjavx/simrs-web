@@ -74,6 +74,7 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 if(inaEntity != null){
                     headerTindakan.setNamaKategoriBpjs(inaEntity.getNama());
                 }
+                headerTindakan.setFlagKonsulGizi(entity.getFlagKonsulGizi());
                 headerTindakanList.add(headerTindakan);
             }
         }
@@ -140,6 +141,7 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                         imSimrsHeaderTindakanEntity.setFlagKonsulTele(bean.getFlagKonsulTele());
                         imSimrsHeaderTindakanEntity.setFlagVaksin(bean.getFlagVaksin());
                         imSimrsHeaderTindakanEntity.setKategori(bean.getKategori());
+                        imSimrsHeaderTindakanEntity.setFlagKonsulGizi(bean.getFlagKonsulGizi());
 
                         try {
                             headerTindakanDao.addAndSave(imSimrsHeaderTindakanEntity);
@@ -189,6 +191,9 @@ public class HeaderTindakanBoImpl implements HeaderTindakanBo {
                 }
                 if(bean.getKategori() != null){
                     entity.setKategori(bean.getKategori());
+                }
+                if(bean.getFlagKonsulGizi() != null){
+                    entity.setFlagKonsulGizi(bean.getFlagKonsulGizi());
                 }
                 entity.setAction(bean.getAction());
                 entity.setFlag(bean.getFlag());

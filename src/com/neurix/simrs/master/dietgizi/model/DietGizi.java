@@ -17,6 +17,15 @@ public class DietGizi extends BaseModel {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isSonde;
+
+    public String getIsSonde() {
+        return isSonde;
+    }
+
+    public void setIsSonde(String isSonde) {
+        this.isSonde = isSonde;
+    }
 
     public String getIdDietGizi() {
         return idDietGizi;

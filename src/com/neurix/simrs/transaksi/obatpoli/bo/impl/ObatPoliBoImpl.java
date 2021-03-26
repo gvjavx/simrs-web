@@ -212,6 +212,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 }
                 permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
                 permintaanObatPoli.setRequest(bean.getRequest());
+
                 TransaksiObatDetail detail = new TransaksiObatDetail();
                 detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
                 List<ImtSimrsTransaksiObatDetailEntity> entityList = getListEntityObatDetail(detail);

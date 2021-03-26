@@ -54,7 +54,7 @@
                             <%--theme="simple" cssClass="form-horizontal">--%>
                             <div class="form-group form-horizontal">
                                 <div class="row">
-                                    <label class="control-label col-sm-4">Id Detail Chcekup</label>
+                                    <label class="control-label col-sm-4">ID Detail Chcekup</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="search_iddetailcheckup" cssStyle="margin-top: 7px"
                                                      name="headerCheckup.idDetailCheckup" required="false"
@@ -87,6 +87,42 @@
                                     <%--</div>--%>
                                 <%--</div>--%>
                             <%--</div>--%>
+                                <div class="form-group" style="display: none">
+                                    <div class="col-md-12">
+                                        <sj:dialog id="waiting_dialog" openTopics="showDialogLoading"
+                                                   closeTopics="closeDialog" modal="true"
+                                                   resizable="false"
+                                                   height="250" width="600" autoOpen="false"
+                                                   title="Searching ...">
+                                            Please don't close this window, server is processing your request ...
+                                            <br>
+                                            <center>
+                                                <img border="0" style="width: 130px; height: 120px; margin-top: 20px"
+                                                     src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"
+                                                     name="image_indicator_write">
+                                                <br>
+                                                <img class="spin" border="0" style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"
+                                                     src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"
+                                                     name="image_indicator_write">
+                                            </center>
+                                        </sj:dialog>
+                                        <sj:dialog id="info_dialog" openTopics="showInfoDialog" modal="true" resizable="false"
+                                                   closeOnEscape="false"
+                                                   height="200" width="400" autoOpen="false" title="Infomation Dialog"
+                                                   buttons="{
+                                                                                'OK':function() {
+                                                                                         $('#info_dialog').dialog('close');
+                                                                                         window.location.reload(true);
+                                                                                     }
+                                                                            }"
+                                        >
+                                            <s:hidden id="close_pos"></s:hidden>
+                                            <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                                                 name="icon_success">
+                                            Record has been saved successfully.
+                                        </sj:dialog>
+                                    </div>
+                                </div>
                             <br>
                             <div class="form-group form-horizontal">
                                 <label class="control-label col-sm-4"></label>
@@ -1125,18 +1161,17 @@
     }
 
     function search() {
-
         var idPasien = $("#idPasien").val();
         var idDetail = $("#search_iddetailcheckup").val();
-
         var arrJson = [];
         arrJson.push({"id_pasien":idPasien, "id_detail_checkup":idDetail, "id_pelayanan":""});
         var stJson = JSON.stringify(arrJson);
-
+        $('#waiting_dialog').dialog('open');
+        dwr.engine.setAsync(true);
         PlanKegiatanRawatAction.getSearchKegiatanRawat(stJson, function (response) {
+            dwr.engine.setAsync(false);
+            var str = "";
             if (response.length > 0){
-
-                var str = "";
                 $.each(response, function (i, item) {
                     str += "<tr>" +
                         "<td>" + item.idDetailCheckup + "</td>" +
@@ -1150,12 +1185,11 @@
                         "</td>" +
                         "</tr>";
                 });
-
                 $("#body-list-plan").html(str);
-
             } else {
-
+                $("#body-list-plan").html(str);
             }
+            $('#waiting_dialog').dialog('close');
         })
     }
 

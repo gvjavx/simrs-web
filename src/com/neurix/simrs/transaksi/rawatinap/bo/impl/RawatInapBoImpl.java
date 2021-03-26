@@ -1313,6 +1313,39 @@ public class RawatInapBoImpl implements RawatInapBo {
         return rawatInapDao.getDetailGelang(noCheckup);
     }
 
+    @Override
+    public void deleteMon(MonCairan bean) throws GeneralBOException {
+        if("cairan".equalsIgnoreCase(bean.getKeterangan())){
+            ItSimrsMonCairanEntity monCairanEntity = monCairanDao.getById("id", bean.getId());
+            if(monCairanEntity != null){
+                monCairanEntity.setFlag("N");
+                monCairanEntity.setAction("D");
+                monCairanEntity.setLastUpdate(bean.getLastUpdate());
+                monCairanEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    monCairanDao.updateAndSave(monCairanEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }else{
+            ItSimrsMonPemberianObatEntity pemberianObatEntity = monPemberianObatDao.getById("id", bean.getId());
+            if(pemberianObatEntity != null){
+                pemberianObatEntity.setFlag("N");
+                pemberianObatEntity.setAction("D");
+                pemberianObatEntity.setLastUpdate(bean.getLastUpdate());
+                pemberianObatEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                try {
+                    monPemberianObatDao.updateAndSave(pemberianObatEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }
+    }
+
     private String dateFormater(String type) {
         Date date = new Date(new java.util.Date().getTime());
         DateFormat df = new SimpleDateFormat(type);
