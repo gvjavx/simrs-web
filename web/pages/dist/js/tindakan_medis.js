@@ -1,4 +1,6 @@
 function pilihTindakanMedis(val, id) {
+    console.log(val)
+    console.log(id)
     var namaTindakan = "";
     if (val != '') {
         $.each(kategoriTindakanMedis(''), function (idx, itemx) {
@@ -77,67 +79,7 @@ function tindakanMedis(id) {
     var data = [];
     var dataCari = [];
 
-    data.push({
-        'id': '08',
-        'parameter': 'Pengertian',
-        'informasi': 'Pemberian alat bantu nafas (mekanik) yang memberikan bantuan nafas dengan cara mebantu sebagian atau mengambil alih semua fungsi ventilasi',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Dasar Diagnosis',
-        'informasi': 'Cedera otak berat, Post operasi trepanasi, Potensial terjadi gangguan airway dan breathing, Hypoxia (Sesak, RR > 35, Nafas Cuping hidung, Adanya gerak nafas tambahan retraksi kalau berat tampak cyanosis)',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Tindakan Medis',
-        'informasi': 'Intubasi, Ventilator(Setting mode)',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Tata Cara',
-        'informasi': 'Setting mode ventilator, koneksikan tubing ventilator ke ETT',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Tujuan',
-        'informasi': 'Pemenuhan kebutuhan Oksigen (oksigenasi)',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Resiko',
-        'informasi': 'Pneumo thoraks, Hypotensi',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Komplikasi',
-        'informasi': 'VAP, pneumothorax, barrotrauma',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Prognosa',
-        'informasi': 'Ad Bonam',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Tindakan Alternatif',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '08',
-        'parameter': 'Biaya*',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-
+    //HERNIA
     data.push({
         'id': '01',
         'parameter': 'Diagnosa',
@@ -193,6 +135,7 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+    //SECTION CAESAR
     data.push({
         'id': '02',
         'parameter': 'Diagnosa',
@@ -254,6 +197,8 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+
+    //APPENDICTOMY
     data.push({
         'id': '03',
         'parameter': 'Diagnosa',
@@ -315,6 +260,7 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+    //SOFT TUMOR
     data.push({
         'id': '04',
         'parameter': 'Diagnosa',
@@ -376,6 +322,8 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+
+    //KURRETAGE
     data.push({
         'id': '05',
         'parameter': 'Diagnosa',
@@ -437,6 +385,8 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+
+    //FRAKTUR
     data.push({
         'id': '06',
         'parameter': 'Diagnosa',
@@ -498,6 +448,8 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
+
+    //LAPARATOMY
     data.push({
         'id': '07',
         'parameter': 'Diagnosa',
@@ -558,186 +510,9 @@ function tindakanMedis(id) {
         'informasi': '',
         'keterangan': 'i'
     });
-    data.push({
-        'id': '02',
-        'parameter': 'Diagnosa',
-        'informasi': 'G|P',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Dasar Diagnosis',
-        'informasi': 'Pemeriksaan Fisik|Anamnesa|Pemeriksaan Penunjang',
-        'keterangan': 'r'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Tindakan Kedokteran',
-        'informasi': 'Low Segement Caesarean Section (LSCS)',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Indikasi Tindakan',
-        'informasi': 'Ibu|Janin',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Tata Cara',
-        'informasi': 'Incisi laparatomy, incisi segmen bawah rahim, prosedur melahirkan janin',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Tujuan',
-        'informasi': 'Evakuasi / melahirkan bayi melalui insisi perut',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Resiko',
-        'informasi': 'Perdarahan > 1 liter, robekan rahim, cedera usus, sedera kandung kemih, perawatan ICU, Angkat rahim, kematian ibu',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Komplikasi',
-        'informasi': 'Infeksi luka operasi, infeksi organ dalam rongga perut',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Prognosa',
-        'informasi': 'Ad Bonam',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '02',
-        'parameter': 'Alternatif',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Diagnosa',
-        'informasi': 'Blighted Ovum|Menometrorargia|Abortus Incomplet|DUB|Sisa Kehamilan',
-        'keterangan': 'c'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Dasar Diagnosis',
-        'informasi': 'Pemeriksaan Fisik|Anamnesa|Pemeriksaan Penunjang',
-        'keterangan': 'r'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Tindakan Kedokteran',
-        'informasi': 'Delatasi|Kurretage',
-        'keterangan': 'r'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Indikasi Tindakan',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Tata Cara',
-        'informasi': 'Mengeluarkan jaringan abnormal/ sisa kehamilan dalam rongga rahim, menggunakan instrumen kurretage',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Tujuan',
-        'informasi': 'Mengerluarkan isi uterus (jaringan abnormal)',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Resiko',
-        'informasi': 'Perdarahan, perforasi uterus, cidera usus, cidera kandung kemih',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Komplikasi',
-        'informasi': 'Infeksi luka operasi, infeksi dalam rongga perut',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Prognosa',
-        'informasi': 'Ad Bonam',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '05',
-        'parameter': 'Alternatif',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Diagnosa',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Dasar Diagnosis',
-        'informasi': 'USG|Anamnesa',
-        'keterangan': 'r'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Tindakan Kedokteran',
-        'informasi': 'Laparatomy',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Indikasi Tindakan',
-        'informasi': '',
-        'keterangan': 'i'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Tata Cara',
-        'informasi': 'Incisi laparatomy, identifikasi, pengangkatan tumor / jaringan infeksi',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Tujuan',
-        'informasi': 'Evakuasi tumor',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Resiko',
-        'informasi': 'Perdarahan, infertelisasi, pegangkatan rahim, cidera usus, kematian',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Komplikasi',
-        'informasi': 'Infeksi luka operasi, infeksi organ dalam rongga perut',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Prognosa',
-        'informasi': 'Ad Bonam',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '07',
-        'parameter': 'Alternatif',
-        'informasi': '',
-        'keterangan': 'i'
-    });
+
+
+    //VENTILASI
     data.push({
         'id': '08',
         'parameter': 'Pengertian',
@@ -799,71 +574,8 @@ function tindakanMedis(id) {
         'keterangan': 'i'
     });
 
-    data.push({
-        'id': '10',
-        'parameter': 'Diagnosis (WD dan DD)',
-        'informasi': 'CKD V on HD',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Dasar Diagnosis',
-        'informasi': 'Riwayat penyakit, pemeriksaan fisik, pemeriksaan penunjang',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Tindakan Kedokteran',
-        'informasi': 'Hemodialisa',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Indikasi Tindakan',
-        'informasi': 'CKD V, gangguan eletronik, produk sampah ginjal dalam kadar toksik, sindroma kelebihan cairan.' +
-            'Kegawatan dibidang nefrologi(hipertensi, oedema paru, encepalopati reumia,anuria / oliguria)',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Tata Cara',
-        'informasi': 'Pembuluh darah arteri dan vena dihubungkan dengan mesin hemodialisa yang menganalisa ' +
-            'darah, lalu sampah dan cairan dipindahkan dari tubuh dan darah kembali ke tubuh',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Tujuan',
-        'informasi': 'Mengatur keseimbangan eletronik, keseimbangan cairan dan membersihkan tubuh dari sampah ginjal',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Resiko',
-        'informasi': 'Pendarahan, pembengkakan dan infeksi di tempat penusukan, mual-muntah, kontaminasi air' +
-            'yang digunakan hemodialisa, kram otot, penurunan tekanan darah, gejala' +
-            'ketidakseimbangan, irama jantung tidak teratur, reaksi cairan dialisat, kematian',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Prognosis',
-        'informasi': 'Dubia ad malam',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Alternattif',
-        'informasi': 'CAPD, Cangkok ginjal',
-        'keterangan': 'l'
-    });
-    data.push({
-        'id': '10',
-        'parameter': 'Perkiraan Biaya',
-        'informasi': '',
-        'keterangan': 'i'
-    });
 
+    //TRANSFUSI DARAH
     data.push({
         'id': '09',
         'parameter': 'Diagnosis (WD dan DD)',
@@ -930,135 +642,207 @@ function tindakanMedis(id) {
         'informasi': '',
         'keterangan': 'i'
     });
+
+
+    //HEMODIALISA
     data.push({
         'id': '10',
+        'parameter': 'Diagnosis (WD dan DD)',
+        'informasi': 'CKD V on HD',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Dasar Diagnosis',
+        'informasi': 'Riwayat penyakit, pemeriksaan fisik, pemeriksaan penunjang',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tindakan Kedokteran',
+        'informasi': 'Hemodialisa',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Indikasi Tindakan',
+        'informasi': 'CKD V, gangguan eletronik, produk sampah ginjal dalam kadar toksik, sindroma kelebihan cairan.' +
+            'Kegawatan dibidang nefrologi(hipertensi, oedema paru, encepalopati reumia,anuria / oliguria)',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tata Cara',
+        'informasi': 'Pembuluh darah arteri dan vena dihubungkan dengan mesin hemodialisa yang menganalisa ' +
+            'darah, lalu sampah dan cairan dipindahkan dari tubuh dan darah kembali ke tubuh',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Tujuan',
+        'informasi': 'Mengatur keseimbangan eletronik, keseimbangan cairan dan membersihkan tubuh dari sampah ginjal',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Resiko',
+        'informasi': 'Pendarahan, pembengkakan dan infeksi di tempat penusukan, mual-muntah, kontaminasi air' +
+            'yang digunakan hemodialisa, kram otot, penurunan tekanan darah, gejala' +
+            'ketidakseimbangan, irama jantung tidak teratur, reaksi cairan dialisat, kematian',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Prognosis',
+        'informasi': 'Dubia ad malam',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Alternattif',
+        'informasi': 'CAPD, Cangkok ginjal',
+        'keterangan': 'l'
+    });
+    data.push({
+        'id': '10',
+        'parameter': 'Perkiraan Biaya',
+        'informasi': '',
+        'keterangan': 'i'
+    });
+
+
+    //GENERAL ANESTESI
+    data.push({
+        'id': '11',
         'parameter': 'Teknik Anestesi',
         'informasi': 'General Anestesi|Sedasi Moderat/Dalam',
         'keterangan': 'c'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Kondisi yang diharapkan',
         'informasi': 'Rasa Cemas berkurang, mengantuk s/d kesadaran hilang, tidak merasa nyeri',
         'keterangan': 'l'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Tata cara',
         'informasi': 'Obat yang diinjeksikan ke pembuluh darah, obat dihirupkan keseluruh nafas',
         'keterangan': 'l'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Resiko',
         'informasi': 'Aspirasi, udema pasru, cedera mulut (gigi, lidah, bibir), suara serak dan nteri tenggorokan',
         'keterangan': 'l'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Tujuan',
         'informasi': 'Mengurangi rasa cemas, menghilangkan nyeri menjaga fungsi organ selama pembedahan',
         'keterangan': 'l'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Komplikasi',
         'informasi': 'Reaksi alergi obat, stroke, serangan jantung kematian',
         'keterangan': 'l'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Tranfusi',
         'informasi': 'Tidak|Ya',
         'keterangan': 'r'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Komplikasi',
         'informasi': 'Reaksi tranfusi, penularan penyakit lewat darah',
         'keterangan': 'l'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Rencana Pemberian obat nyeri',
         'informasi': 'Injeksi|Patch|Peridural|Injeksi kontinyu|Lainnya',
         'keterangan': 'c'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Prognosa',
         'informasi': '',
         'keterangan': 'i'
     });
     data.push({
-        'id': '10',
+        'id': '11',
         'parameter': 'Alternatif',
         'informasi': '',
         'keterangan': 'i'
     });
 
+
+    //REGIONAL ANESTESI
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Teknik Anestesi',
         'informasi': 'Sub Arachnoid Blok (SAB)|Epidural|CSE/Block Syarat Mayor',
         'keterangan': 'c'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Kondisi yang diharapkan',
         'informasi': 'Akan terjadi mati rasa pada bagian tubuh tertentu',
         'keterangan': 'l'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Tata cara',
         'informasi': 'Obat diinjeksikan pada kanal tulang belakang posisi pasien tidur miring atau duduk',
         'keterangan': 'l'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Resiko',
         'informasi': 'Sakit kepala, sakit panggung, infeksi ditempat injeksi total spinal',
         'keterangan': 'l'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Tujuan',
         'informasi': 'Mengurangi rasa cemas, menghilangkan nyeri menjaga fungsi organ selama pembedahan',
         'keterangan': 'l'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Komplikasi',
         'informasi': 'Reaksi alergi obat, stroke, serangan jantung kematian',
         'keterangan': 'l'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Tranfusi',
         'informasi': 'Tidak|Ya',
         'keterangan': 'r'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Komplikasi',
         'informasi': 'Reaksi tranfusi, penularan penyakit lewat darah',
         'keterangan': 'l'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Rencana Pemberian obat nyeri',
         'informasi': 'Injeksi|Patch|Peridural|Injeksi kontinyu|Lainnya',
         'keterangan': 'c'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Prognosa',
         'informasi': '',
         'keterangan': 'i'
     });
     data.push({
-        'id': '11',
+        'id': '12',
         'parameter': 'Alternatif',
         'informasi': '',
         'keterangan': 'i'
@@ -1083,12 +867,12 @@ function kategoriTindakanMedis(tipe) {
     var data = [];
     var dataCari = [];
     data.push({
-        'tipe': 'ina',
+        'tipe': 'op',
         'id_tindakan': '01',
         'nama_tindakan': 'Hernia'
     });
     data.push({
-        'tipe': 'ina',
+        'tipe': 'rb',
         'id_tindakan': '02',
         'nama_tindakan': 'Sectio Caesaria'
     });
@@ -1098,27 +882,32 @@ function kategoriTindakanMedis(tipe) {
         'nama_tindakan': 'Appendictomy'
     });
     data.push({
-        'tipe': 'ina',
+        'tipe': 'op',
         'id_tindakan': '04',
         'nama_tindakan': 'Soft Tissue Tumor'
     });
     data.push({
-        'tipe': 'ina',
+        'tipe': 'rb',
         'id_tindakan': '05',
         'nama_tindakan': 'Kurretage'
     });
     data.push({
-        'tipe': 'ina',
+        'tipe': 'op',
         'id_tindakan': '06',
         'nama_tindakan': 'Fraktur'
     });
     data.push({
-        'tipe': 'ina',
+        'tipe': 'rb',
         'id_tindakan': '07',
         'nama_tindakan': 'Laparatomy'
     });
     data.push({
         'tipe': 'ina',
+        'id_tindakan': '08',
+        'nama_tindakan': 'Ventilator'
+    });
+    data.push({
+        'tipe': 'icu',
         'id_tindakan': '08',
         'nama_tindakan': 'Ventilator'
     });

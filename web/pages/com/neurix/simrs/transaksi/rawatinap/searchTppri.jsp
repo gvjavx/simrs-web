@@ -892,6 +892,7 @@
     var diagnosa = "";
     var idPasien = "";
     var tglLahir = "";
+    var tanggalMasuk = "";
 
     function printGelangPasien(noCheckup) {
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
@@ -901,12 +902,12 @@
         $('#' + id).val(formatRupiahAtas2(val));
     }
 
-    function detail(noCheckup, idDCP, tindakLanjut, keteranganSelesai) {
+    function detail(noCKP, idDCP, tindakLanjut, keteranganSelesai) {
         idDetailCheckup = idDCP;
+        noCheckup = noCKP;
         startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDCP,
-            {
+        CheckupAction.listDataPasien(idDCP, {
                 callback: function (res) {
                     if (res.idPasien != null) {
                         stopSpinner('t_', idDCP);
@@ -979,7 +980,7 @@
                         }
 
                         $('#no_rm').html(res.idPasien);
-                        $('#no_detail_checkup').html(noCheckup);
+                        $('#no_detail_checkup').html(noCKP);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);
@@ -1382,7 +1383,7 @@
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
                         } else if (item.keterangan == "surat") {
                             li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
                         }
@@ -1393,12 +1394,16 @@
         });
     }
 
-    function loadModalRM(jenis) {
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
-            context = contextPath + '/pages/modal/modal-' + jenis + '.jsp';
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 

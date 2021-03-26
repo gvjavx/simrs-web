@@ -3653,22 +3653,42 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public List<RekamMedisPasien> getListRekammedisPasien(String tipePelayanan, String jenis, String id) {
-
         logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
-
         List<RekamMedisPasien> listRM = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
-
         if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan)) {
+            RekamMedisPasien pasien = new RekamMedisPasien();
+            pasien.setIdDetailCheckup(id);
+            pasien.setJenis(jenis);
+            pasien.setTipePelayanan(tipePelayanan);
             try {
-                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(tipePelayanan, jenis, id);
+                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(pasien);
             } catch (GeneralBOException e) {
                 logger.error("Found Error, " + e.getMessage());
             }
         }
-
         logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
+    }
+
+    public List<RekamMedisPasien> getListRekammedisPasienByNoCheckup(String tipePelayanan, String jenis, String id) {
+        logger.info("[CheckupAction.getListRekammedisPasienByNoCheckup] START process >>>");
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+        if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan)) {
+            RekamMedisPasien pasien = new RekamMedisPasien();
+            pasien.setNoCheckup(id);
+            pasien.setJenis(jenis);
+            pasien.setTipePelayanan(tipePelayanan);
+            try {
+                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(pasien);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.getListRekammedisPasienByNoCheckup]Found Error, " + e.getMessage());
+            }
+        }
+        logger.info("[CheckupAction.getListRekammedisPasienByNoCheckup] END process >>>");
         return listRM;
     }
 
@@ -3953,6 +3973,18 @@ public class CheckupAction extends BaseMasterAction {
         }catch (Exception e){
             response.setStatus("error");
             response.setMsg("Error, "+e.getMessage());
+        }
+        return response;
+    }
+
+    public String fistCheckup(String noCheckup){
+        String response = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
+        try {
+            response = checkupBo.fisrtCheckup(noCheckup);
+        }catch (Exception e){
+            logger.error(e.getMessage());
         }
         return response;
     }

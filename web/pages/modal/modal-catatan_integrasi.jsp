@@ -27,7 +27,7 @@
                             <td>Catatan Perkembangan Pasien Terintegrasi</td>
                             <td width="20%" align="center">
                                 <img id="btn_ina_catatan_integrasi_pasien_ina" class="hvr-grow" onclick="detailCPPT('catatan_integrasi_pasien_ina', 'catatan_terintegrasi_ina', 'ina')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -108,7 +108,7 @@
                                         <option value="Dokter">Dokter</option>
                                         <option value="Perawat">Perawat</option>
                                         <option value="Apoteker">Apoteker</option>
-                                        <option value="Gizi">Gizi</option>
+                                        <%--<option value="Gizi">Gizi</option>--%>
                                         <option value="Bidan">Bidan</option>
                                     </select>
                                 </div>
@@ -127,11 +127,11 @@
                                 <label class="col-md-3" ><b>O</b>bjective</label>
                                 <div class="col-md-4">
                                     <span>Tensi </span> <small>(mmHg)</small>
-                                    <input class="form-control" id="cppt5_tensi" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input class="form-control tensi-pasien" id="cppt5_tensi" data-inputmask="'mask': ['999/999']" data-mask="">
                                 </div>
                                 <div class="col-md-4">
                                     <span>Suhu </span> <small>(&#8451)</small>
-                                    <input class="form-control" id="cppt5_suhu" type="number">
+                                    <input class="form-control suhu-pasien" id="cppt5_suhu" type="number">
                                 </div>
                             </div>
                         </div>
@@ -139,11 +139,11 @@
                             <div class="form-group">
                                 <div class="col-md-offset-3 col-md-4">
                                     <span>Nadi </span> <small>(x/menit)</small>
-                                    <input class="form-control" id="cppt5_nadi" type="number">
+                                    <input class="form-control nadi-pasien" id="cppt5_nadi" type="number">
                                 </div>
                                 <div class="col-md-4">
                                     <span>RR </span> <small>(x/menit)</small>
-                                    <input class="form-control" id="cppt5_rr" type="number">
+                                    <input class="form-control rr-pasien" id="cppt5_rr" type="number">
                                 </div>
                             </div>
                         </div>

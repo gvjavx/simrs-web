@@ -3327,6 +3327,48 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }
     }
 
+    @Override
+    public String fisrtCheckup(String noCheckup) throws GeneralBOException {
+        String res = "";
+        try{
+            res = headerCheckupDao.firstCheckup(noCheckup);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return res;
+    }
+
+    @Override
+    public void updateVitalSign(HeaderCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.updateVitalSign] Start <<<<<<<");
+        if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+            try {
+                ItSimrsHeaderChekupEntity entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+                if(entity != null){
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setAction("U");
+                    if(bean.getTensi() != null && !"".equalsIgnoreCase(bean.getTensi())){
+                        entity.setTensi(bean.getTensi());
+                    }
+                    if(bean.getNadi() != null && !"".equalsIgnoreCase(bean.getNadi())){
+                        entity.setNadi(bean.getNadi());
+                    }
+                    if(bean.getPernafasan() != null && !"".equalsIgnoreCase(bean.getPernafasan())){
+                        entity.setRr(bean.getPernafasan());
+                    }
+                    if(bean.getSuhu() != null && !"".equalsIgnoreCase(bean.getSuhu())){
+                        entity.setSuhu(bean.getSuhu());
+                    }
+                    headerCheckupDao.updateAndSave(entity);
+                }
+            }catch (Exception e){
+                logger.error("[CheckupBoImpl.updateVitalSign] Error, "+e.getMessage());
+            }
+        }
+        logger.info("[CheckupBoImpl.updateVitalSign] End <<<<<<<");
+    }
+
     private CrudResponse saveRawatInap(RawatInap bean) {
         logger.info("[CheckupDetailBoImpl.saveRawatInap] Start >>>>>>>>");
         CrudResponse response = new CrudResponse();

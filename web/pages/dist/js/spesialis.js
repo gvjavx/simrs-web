@@ -213,7 +213,7 @@ function saveSPS(jenis, ket) {
         var va8 = $('#pt8').val();
         var va9 = $('#pt9').val();
 
-        if (va1 && va3 && va4 && va5 && va6 && va7 && va8 && va9 != '') {
+        if (va1 && va3 && va4 && va5 && va6 && va7 != '') {
             data.push({
                 'parameter': 'Kepala',
                 'jawaban': va1,
@@ -461,7 +461,7 @@ function saveSPS(jenis, ket) {
         var va11 = $('#pt11').val();
         var va12 = $('#pt12').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va12 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 != '') {
             data.push({
                 'parameter': 'Kondisi Umum',
                 'jawaban': va1,
@@ -650,7 +650,7 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             operesi = "N";
         }
-        if (va2 && va3 && va4 && va5 && va6 && va7 && va8 != '' && operesi == "Y") {
+        if (va2 && va3 && va4 && va5 && va6 != '' && operesi == "Y") {
 
             var canv = canvasArea.toDataURL("image/png"),
                 canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -733,7 +733,8 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             paru = "N";
         }
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 != '' && paru == "Y") {
+
+        if (va1 && va2 && va3 && va4 && va5 && va6 != '' && paru == "Y") {
 
             data.push({
                 'parameter': 'Anamnesa',
@@ -967,7 +968,7 @@ function saveSPS(jenis, ket) {
         var va12 = $('#pt12').val();
         var va13 = $('#pt13').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 && va12 && va13 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 != '') {
 
             data.push({
                 'parameter': 'Pemeriksaan Fisik',
@@ -1145,7 +1146,7 @@ function saveSPS(jenis, ket) {
         var va10 = $('#pt10').val();
         var va11 = $('#pt11').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 && va10 && va11 != '') {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 && va9 != '') {
 
             data.push({
                 'parameter': 'TFU',
@@ -1281,9 +1282,9 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             cekCanvas = "N";
         }
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 &&
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 &&
             va9 && va10 && va11 && va12 && va13 && va14 && va15 &&
-            va16 && va17 && va18 != '' && cekCanvas == "Y") {
+            va16 != '' && cekCanvas == "Y") {
 
             var canv = canvasArea.toDataURL("image/png"),
                 canv = canv.replace(/^data:image\/(png|jpg);base64,/, "");
@@ -1444,7 +1445,7 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             ginjal = "N";
         }
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 != '' && ginjal == "Y") {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '' && ginjal == "Y") {
 
             data.push({
                 'parameter': 'Anamnesa',
@@ -1543,7 +1544,7 @@ function saveSPS(jenis, ket) {
         if (canvasArea.toDataURL() == canvasCek.toDataURL()) {
             jantung = "N";
         }
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 && va8 != '' && jantung == "Y") {
+        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '' && jantung == "Y") {
 
             data.push({
                 'parameter': 'Anamnesa',
@@ -1709,7 +1710,7 @@ function saveSPS(jenis, ket) {
         var va6 = $('#pt6').val();
         var va7 = $('#pt7').val();
 
-        if (va1 && va2 && va3 && va4 && va5 && va6 && va7 != '') {
+        if (va1 && va2 && va3 && va4 && va5 != '') {
             data.push({
                 'parameter': 'Pemeriksaan Fisik/Lokalis',
                 'jawaban': va1,

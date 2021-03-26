@@ -60,7 +60,7 @@ function dataForm(jenis){
     data.push({
         'jenis':'catatan',
         'parameter': '9. Masalah dalam kehamilan /persalinan ini',
-        'jawaban':'Gawat Darurat|Perdarahan|RDK|Infeksi|PMTCT',
+        'jawaban':'Gawat Darurat|Perdarahan|RDK|Infeksi|PMTCT|Tidak Ada',
         'class':'',
         'keterangan':'c'
     });
@@ -310,7 +310,7 @@ function dataForm(jenis){
     });
     data.push({
         'jenis':'bayi_baru_lahir',
-        'parameter': 'Hipotensi, Tindakan',
+        'parameter': 'Hipotermi, Tindakan',
         'jawaban':'',
         'class':'',
         'keterangan':'t'

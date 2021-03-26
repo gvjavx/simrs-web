@@ -4,7 +4,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan Tindakan Medis
+                <h4 class="modal-title"><i class="fa fa-user-md"></i> Persetujuan Tindakan Medis Anestesi
                 </h4>
             </div>
             <div class="modal-body">
@@ -23,7 +23,7 @@
                     <table class="table" id="tabel_op_tindakan_medis_op">
                         <tbody>
                         <tr id="row_op_tindakan_medis_op">
-                            <td>Persetujuan Tindakan Medis</td>
+                            <td>Persetujuan Tindakan Medis Anestesi</td>
                             <td width="20%" align="center">
                                 <img id="btn_op_tindakan_medis_op" class="hvr-grow"
                                      onclick="detailOperasi('tindakan_medis_op')"
@@ -48,7 +48,7 @@
             <div class="modal-header" style="background-color: #00a65a; color: white">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan Tindakan Medis
+                <h4 class="modal-title"><i class="fa fa-user-plus"></i> Persetujuan Tindakan Medis Anestesi
                 </h4>
             </div>
             <div class="modal-body">
@@ -88,7 +88,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Dokter Pelaksana Tindakan</label>
                             <div class="col-md-6">
-                                <input class="form-control" id="op2">
+                                <input class="form-control nama_dokter_ri" id="op2">
                             </div>
                         </div>
                     </div>

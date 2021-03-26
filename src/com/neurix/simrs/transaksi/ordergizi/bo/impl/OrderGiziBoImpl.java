@@ -3,8 +3,10 @@ package com.neurix.simrs.transaksi.ordergizi.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dietgizi.dao.DietGiziDao;
 import com.neurix.simrs.master.dietgizi.dao.JenisDietDao;
+import com.neurix.simrs.master.dietgizi.dao.MasterPendampingGiziDao;
 import com.neurix.simrs.master.dietgizi.model.ImSimrsDietGizi;
 import com.neurix.simrs.master.dietgizi.model.ImSimrsJenisDietEntity;
+import com.neurix.simrs.master.dietgizi.model.ImSimrsPendampingGiziEntity;
 import com.neurix.simrs.master.dietgizi.model.JenisDiet;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
 import com.neurix.simrs.transaksi.icu.model.HeaderIcu;
@@ -14,11 +16,10 @@ import com.neurix.simrs.transaksi.obatinap.model.ObatInap;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderJenisDietDao;
-import com.neurix.simrs.transaksi.ordergizi.model.DetailJenisDiet;
-import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsDetailJenisDietEntity;
-import com.neurix.simrs.transaksi.ordergizi.model.ItSimrsOrderGiziEntity;
-import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
+import com.neurix.simrs.transaksi.ordergizi.dao.PendampingGiziDao;
+import com.neurix.simrs.transaksi.ordergizi.model.*;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.record.formula.functions.Or;
 import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
@@ -30,6 +31,8 @@ public class OrderGiziBoImpl implements OrderGiziBo {
     private OrderJenisDietDao orderJenisDietDao;
     private JenisDietDao jenisDietDao;
     private DietGiziDao dietGiziDao;
+    private PendampingGiziDao pendampingGiziDao;
+    private MasterPendampingGiziDao masterPendampingGiziDao;
 
     @Override
     public List<OrderGizi> getByCriteria(OrderGizi bean) throws GeneralBOException {
@@ -49,11 +52,12 @@ public class OrderGiziBoImpl implements OrderGiziBo {
     }
 
     @Override
-    public CheckResponse saveAdd(List<OrderGizi> list, String isTomorrow) throws GeneralBOException {
+    public CheckResponse saveAdd(List<OrderGizi> list, OrderGizi orderGizi) throws GeneralBOException {
         logger.info("[OrderGiziBoImpl.saveAdd] Start >>>>>>>");
         CheckResponse response = new CheckResponse();
         if (list.size() > 0){
-            if("1".equalsIgnoreCase(isTomorrow) || "12".equalsIgnoreCase(isTomorrow)){
+            //kondisi untuk hari ini atau
+            if("1".equalsIgnoreCase(orderGizi.getKeterangan()) || "12".equalsIgnoreCase(orderGizi.getKeterangan()) || "sonde".equalsIgnoreCase(orderGizi.getKeterangan())){
                 for (OrderGizi bean: list){
                     ItSimrsOrderGiziEntity orderGiziEntity = new ItSimrsOrderGiziEntity();
                     orderGiziEntity.setIdOrderGizi("ODG" + orderGiziDao.getNextId());
@@ -143,9 +147,46 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                             logger.error("[OrderGiziBoImpl.saveAdd] Error when insert obat inap ", e);
                         }
                     }
+
+                    if(bean.getListMakananLuar().size() > 0){
+                        for (String makanLuar: bean.getListMakananLuar()){
+                            ItSimrsPendampingGiziEntity entity = new ItSimrsPendampingGiziEntity();
+                            entity.setIdPendampingGizi(pendampingGiziDao.getNextId());
+                            entity.setNama(makanLuar);
+                            entity.setIdOrderGizi(orderGiziEntity.getIdOrderGizi());
+                            entity.setTipe("makanan_luar");
+                            entity.setFlag("Y");
+                            entity.setAction("C");
+                            entity.setCreatedWho(bean.getCreatedWho());
+                            entity.setCreatedDate(bean.getCreatedDate());
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            insertPendampingGizi(entity);
+                        }
+                    }
+
+                    if(bean.getListSnack().size() > 0){
+                        for (String snack: bean.getListSnack()){
+                            ItSimrsPendampingGiziEntity entity = new ItSimrsPendampingGiziEntity();
+                            ImSimrsPendampingGiziEntity pendampingGiziEntity = masterPendampingGiziDao.getById("idPendampingGizi", snack);
+                            entity.setIdPendampingGizi(pendampingGiziDao.getNextId());
+                            entity.setNama(pendampingGiziEntity.getNama());
+                            entity.setIdOrderGizi(orderGiziEntity.getIdOrderGizi());
+                            entity.setTipe(pendampingGiziEntity.getTipe());
+                            entity.setFlag("Y");
+                            entity.setAction("C");
+                            entity.setCreatedWho(bean.getCreatedWho());
+                            entity.setCreatedDate(bean.getCreatedDate());
+                            entity.setLastUpdate(bean.getLastUpdate());
+                            entity.setLastUpdateWho(bean.getLastUpdateWho());
+                            insertPendampingGizi(entity);
+                        }
+                    }
                 }
             }
-            if("2".equalsIgnoreCase(isTomorrow) || "12".equalsIgnoreCase(isTomorrow)){
+
+            //untuk besok
+            if("2".equalsIgnoreCase(orderGizi.getKeterangan()) || "12".equalsIgnoreCase(orderGizi.getKeterangan())){
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(new Date());
                 cal.add(Calendar.DATE, 1);
@@ -235,6 +276,16 @@ public class OrderGiziBoImpl implements OrderGiziBo {
         }
         logger.info("[OrderGiziBoImpl.saveAdd] End <<<<<<");
         return response;
+    }
+
+    private void insertPendampingGizi(ItSimrsPendampingGiziEntity entity){
+        if(entity != null){
+            try {
+                pendampingGiziDao.addAndSave(entity);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+            }
+        }
     }
 
     @Override
@@ -481,6 +532,17 @@ public class OrderGiziBoImpl implements OrderGiziBo {
         return orderGiziList;
     }
 
+    @Override
+    public List<OrderGizi> getPendampingGizi(String branchId) throws GeneralBOException {
+        List<OrderGizi> orderGiziList = new ArrayList<>();
+        try {
+            orderGiziList = dietGiziDao.getPendampingGizi(branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return orderGiziList;
+    }
+
     public String getNextId(){
         logger.info("[OrderGiziBoImpl.getNextId] Start >>>>>>>");
 
@@ -593,6 +655,14 @@ public class OrderGiziBoImpl implements OrderGiziBo {
 
     public void setDietGiziDao(DietGiziDao dietGiziDao) {
         this.dietGiziDao = dietGiziDao;
+    }
+
+    public void setPendampingGiziDao(PendampingGiziDao pendampingGiziDao) {
+        this.pendampingGiziDao = pendampingGiziDao;
+    }
+
+    public void setMasterPendampingGiziDao(MasterPendampingGiziDao masterPendampingGiziDao) {
+        this.masterPendampingGiziDao = masterPendampingGiziDao;
     }
 }
 

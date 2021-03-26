@@ -2674,6 +2674,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setBranchId(branchId);
                         headerDetailCheckup.setTypeTransaction("pindah_poli");
 
+                        Pelayanan pelayanan = new Pelayanan();
+                        pelayanan.setIdPelayanan(idPoli);
+                        pelayanan = pelayananBo.getObjectPelayanan(pelayanan);
+                        headerDetailCheckup.setTipePelayanan(pelayanan.getTipePelayanan());
+
                         try {
                             finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
                         } catch (GeneralBOException e) {
@@ -3325,7 +3330,7 @@ public class CheckupDetailAction extends BaseMasterAction {
     }
 
     public List<KelasRuangan> getListKelasKamar(String kategori) {
-        logger.info("[CheckupDetailAction.getListComboKelasRuangan] start process >>>");
+        logger.info("[CheckupDetailAction.getListKelasKamar] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KelasRuanganBo kelasRuanganBo = (KelasRuanganBo) ctx.getBean("kelasRuanganBoProxy");
@@ -3334,10 +3339,10 @@ public class CheckupDetailAction extends BaseMasterAction {
         try {
             kelasRuanganList = kelasRuanganBo.getListKelasKamar(kategori);
         } catch (GeneralBOException e) {
-            logger.error("[CheckupDetailAction.getListComboKelasRuangan] Error when get kelas ruangan ," + "Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[CheckupDetailAction.getListKelasKamar] Error when get kelas ruangan ," + "Found problem when saving add data, please inform to your admin.", e);
         }
 
-        logger.info("[CheckupDetailAction.getListComboKelasRuangan] end process <<<");
+        logger.info("[CheckupDetailAction.getListKelasKamar] end process <<<");
         return kelasRuanganList;
     }
 
@@ -5031,7 +5036,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("data1", content1);
             reportParams.put("data2", content2);
 
-            if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe)) {
+            if ("SP15".equalsIgnoreCase(tipe) || "SP16".equalsIgnoreCase(tipe) || "SP17".equalsIgnoreCase(tipe) || "SP19".equalsIgnoreCase(tipe)) {
                 String penunjang = checkupBoProxy.getPenunjangMedis(checkup.getIdDetailCheckup(), null);
                 String terapi = checkupBoProxy.getResepPasien(checkup.getIdDetailCheckup());
                 String diagnosaPrimer = checkupBoProxy.getDiagnosaPrimer(checkup.getIdDetailCheckup());
@@ -5191,6 +5196,12 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
             if ("SP18".equalsIgnoreCase(tipe)) {
                 return "print_surat_cuti";
+            }
+            if ("SP19".equalsIgnoreCase(tipe)) {
+                return "print_aturan_makan_diluar";
+            }
+            if ("SP20".equalsIgnoreCase(tipe)) {
+                return "print_buta_warna";
             }
             if ("SK01".equalsIgnoreCase(tipe)) {
                 return "print_keterangan_dokter";

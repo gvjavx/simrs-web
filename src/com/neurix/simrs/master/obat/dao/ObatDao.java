@@ -795,7 +795,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "merk, \n" +
                     "flag_bpjs \n" +
                     "FROM im_simrs_header_obat\n" +
-                    "WHERE flag NOT LIKE 'N'\n" +
+                    "WHERE flag = 'Y'\n" +
                     "AND nama_obat ILIKE :id\n" +
                     "OR id_obat ILIKE :id\n" +
                     "LIMIT 10";

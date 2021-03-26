@@ -19,6 +19,15 @@ public class HeaderTindakan {
     private String flagKonsulTele;
     private String flagVaksin;
     private String kategori;
+    private String flagKonsulGizi;
+
+    public String getFlagKonsulGizi() {
+        return flagKonsulGizi;
+    }
+
+    public void setFlagKonsulGizi(String flagKonsulGizi) {
+        this.flagKonsulGizi = flagKonsulGizi;
+    }
 
     public String getKategori() {
         return kategori;

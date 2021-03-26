@@ -529,7 +529,7 @@ function saveMonHD(jenis, ket) {
             && va10 && va15 && namaTerang != '' && !cekTtd){
             data.push({
                 'parameter': 'Resep HD',
-                'jawaban1': va1+', HD : '+va2+' jam, QB : '+va3+' ml/menit, QD : '+va4+' ml/menit, UF Gaol: '+va5+' ml',
+                'jawaban1': va1+', HD : '+va2+' jam, QB : '+replaceUnderLine(va3)+' ml/menit, QD : '+replaceUnderLine(va4)+' ml/menit, UF Gaol: '+va5+' ml',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1723,7 +1723,7 @@ function saveMonHD(jenis, ket) {
             }
             data.push({
                 'parameter': 'Perencanaan Hemodialisa',
-                'jawaban1': 'Sebanyak ' + va5 + ' kali/minggu|' + 'Lama Hemodialisa ' + va6 + ' Jam ' + va7 + ' Menit|' + 'UF ' + va8 + ' Liter, Heparin ' + va9 + '|QB ' + va10 + ', BD ' + va11,
+                'jawaban1': 'Sebanyak ' + va5 + ' kali/minggu|' + 'Lama Hemodialisa ' + va6 + ' Jam ' + va7 + ' Menit|' + 'UF ' + va8 + ' Liter, Heparin ' + va9 + '|QB ' + replaceUnderLine(va10) + ', BD ' + va11,
                 'keterangan': jenis,
                 'jenis': 'perencanaan_hemodialisa',
                 'id_detail_checkup': idDetailCheckup
@@ -2001,7 +2001,6 @@ function saveMonHD(jenis, ket) {
                         $('#warning_hd_' + ket).show().fadeOut(5000);
                         $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
                         $('#modal-hd-' + jenis).scrollTop(0);
-                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
                     } else {
                         $('#save_hd_' + jenis).show();
                         $('#load_hd_' + jenis).hide();
@@ -2424,7 +2423,7 @@ function saveObservasi(jenis, ket){
             data.push({
                 'waktu': va1+' '+va2,
                 'observasi': va3,
-                'qb': va4,
+                'qb': replaceUnderLine(va4),
                 'tensi': replaceUnderLine(va5),
                 'nadi': va6,
                 'suhu': va7,

@@ -179,7 +179,7 @@ function detailCPPT(jenis, ket, tipe) {
 function delRowCPPT(jenis, ket, tipe) {
     $('#del_' + tipe + '_' + jenis).remove();
     var url = "";
-    if ("monitoring_hd" == ket || "asesmen-ugd" == ket) {
+    if ("monitoring_hd" == ket || "asesmen-ugd" == ket || "catatan_terintegrasi_ina" == ket) {
         url = contextPath + '/pages/images/icons8-add-list-25.png';
     } else {
         url = contextPath + '/pages/images/icons8-plus-25.png';
@@ -231,7 +231,6 @@ function delCPT(jenis, ket, tipe, id) {
 }
 
 function setTtdDpjp(id, jenis, ket, tipe){
-    console.log(id);
     setDataPasien();
     $('#modal-ina-ttd_dpjp').modal({show: true, backdrop: 'static'});
     $('#save_ttd_dpjp').attr('onclick','saveTtdDpjp(\''+id+'\', \''+jenis+'\', \''+ket+'\', \''+tipe+'\')');
