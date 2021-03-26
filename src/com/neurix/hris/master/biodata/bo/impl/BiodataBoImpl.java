@@ -4049,7 +4049,7 @@ public class BiodataBoImpl implements BiodataBo {
                 }
             }
 
-            if (!"".equalsIgnoreCase(imBiodata.getGolongan())) {
+            if (!"".equalsIgnoreCase(imBiodata.getGolongan()) && imBiodata.getGolongan()!=null) {
 //
 //                if (CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(imBiodata.getTipePegawai())){
 //                    if (imBiodata.getImGolonganPkwtEntity() != null){
@@ -4076,13 +4076,12 @@ public class BiodataBoImpl implements BiodataBo {
                             throw new GeneralBOException("Found problem when get Golongan PKWT by ID, please info to your admin..." + e.getMessage());
                         }
                         biodata.setGolonganName(golonganPkwtEntity.getGolonganPkwtName());
-                    } else {
+                    } else if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(imBiodata.getTipePegawai())) {
                         biodata.setGolonganName(imBiodata.getImGolonganEntity().getGolonganName());
                     }
                     biodata.setGolongan(imBiodata.getGolongan());
                 } else {
                     biodata.setGolongan(imBiodata.getGolongan());
-//
                 }
             } else {
                 biodata.setGolongan(imBiodata.getGolongan());
