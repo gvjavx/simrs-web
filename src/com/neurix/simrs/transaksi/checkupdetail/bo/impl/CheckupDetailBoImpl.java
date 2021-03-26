@@ -833,7 +833,10 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         detailCheckupEntity.setNoAntrian(noAntrian);
                     }
                 }
+                detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
             }
+        }else{
+            detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         }
 
         try {
