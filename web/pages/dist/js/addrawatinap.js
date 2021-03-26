@@ -193,10 +193,13 @@ function listSelectRuangan(id) {
             } else {
                 option = option;
             }
+            // alert(option);
+            // console.log(option);
+
+            $('#kamar_detail').html(option);
+            $('#ruangan_ruang').html(option);
         });
     }
-    $('#kamar_detail').html(option);
-    $('#ruangan_ruang').html(option);
 }
 
 function selectKeterangan(idKtg) {
