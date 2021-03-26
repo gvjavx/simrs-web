@@ -42,7 +42,7 @@ public class HargaObat {
     private BigDecimal diskonUmumBpjs;
     private BigDecimal hargaJualUmumBpjs;
     private BigDecimal hargaNetUmumBpjs;
-    private Integer marginNetUmumBpjs;
+    private Integer marginUmumBpjs;
 
     public BigDecimal getDiskonKhususBpjs() {
         return diskonKhususBpjs;
@@ -100,12 +100,12 @@ public class HargaObat {
         this.marginKhususBpjs = marginKhususBpjs;
     }
 
-    public Integer getMarginNetUmumBpjs() {
-        return marginNetUmumBpjs;
+    public Integer getMarginUmumBpjs() {
+        return marginUmumBpjs;
     }
 
-    public void setMarginNetUmumBpjs(Integer marginNetUmumBpjs) {
-        this.marginNetUmumBpjs = marginNetUmumBpjs;
+    public void setMarginUmumBpjs(Integer marginUmumBpjs) {
+        this.marginUmumBpjs = marginUmumBpjs;
     }
 
     public String getFlagIsBpjs() {

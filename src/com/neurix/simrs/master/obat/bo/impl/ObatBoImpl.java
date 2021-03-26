@@ -1263,6 +1263,16 @@ public class ObatBoImpl implements ObatBo {
                     obatEntity.setDiskonUmum(bean.getDiskonUmum());
                     obatEntity.setHargaNetUmum(bean.getHargaNetUmum());
 
+                    // obat khusus bpjs
+                    obatEntity.setHargaJualKhususBpjs(bean.getHargaJualKhususBpjs());
+                    obatEntity.setDiskonKhususBpjs(bean.getDiskonKhususBpjs());
+                    obatEntity.setHargaNetKhususBpjs(bean.getHargaNetKhususBpjs());
+
+                    // obat normal bpjs
+                    obatEntity.setHargaJualUmumBpjs(bean.getHargaJualUmumBpjs());
+                    obatEntity.setDiskonUmumBpjs(bean.getDiskonUmumBpjs());
+                    obatEntity.setHargaNetUmumBpjs(bean.getHargaNetUmumBpjs());
+
                     obatEntity.setFlag("Y");
                     obatEntity.setAction("U");
                     obatEntity.setLastUpdate(bean.getLastUpdate());
@@ -1296,10 +1306,20 @@ public class ObatBoImpl implements ObatBo {
                     hargaObatEntity.setDiskon(bean.getDiskon());
                     hargaObatEntity.setHargaNet(bean.getHargaNet());
 
-                    // harga obat umu,
+                    // harga obat umum
                     hargaObatEntity.setHargaJualUmum(bean.getHargaJualUmum());
                     hargaObatEntity.setDiskonUmum(bean.getDiskonUmum());
                     hargaObatEntity.setHargaNetUmum(bean.getHargaNetUmum());
+
+                    // harga obat khusus bpjs
+                    hargaObatEntity.setHargaJualKhususBpjs(bean.getHargaJualKhususBpjs());
+                    hargaObatEntity.setDiskonKhususBpjs(bean.getDiskonKhususBpjs());
+                    hargaObatEntity.setHargaNetKhususBpjs(bean.getHargaNetKhususBpjs());
+
+                    // harga obat khusus bpjs
+                    hargaObatEntity.setHargaJualUmumBpjs(bean.getHargaJualUmumBpjs());
+                    hargaObatEntity.setDiskonUmumBpjs(bean.getDiskonUmumBpjs());
+                    hargaObatEntity.setHargaNetUmumBpjs(bean.getHargaNetUmumBpjs());
 
                     hargaObatEntity.setSatuan("biji");
                     hargaObatEntity.setFlag("Y");

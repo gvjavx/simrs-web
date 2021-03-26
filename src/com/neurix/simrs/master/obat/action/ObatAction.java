@@ -731,11 +731,11 @@ public class ObatAction extends BaseMasterAction {
             hargaObat.setHargaJualKhususBpjs(new BigDecimal(obj.getString("jual_khusus_bpjs")));
             hargaObat.setMarginKhususBpjs(obj.getString("margin_khusus_bpjs") == null || "".equalsIgnoreCase(obj.getString("margin_khusus_bpjs")) ? null : Integer.valueOf(obj.getString("margin_khusus_bpjs")));
 
-            // harga obat nonrmal BPJS
-            hargaObat.setHargaNetUmum(new BigDecimal(obj.getString("net_umum_bpjs")));
-            hargaObat.setDiskonUmum(new BigDecimal(obj.getString("diskon_umum_bpjs")));
-            hargaObat.setHargaJualUmum(new BigDecimal(obj.getString("jual_umum_bpjs")));
-            hargaObat.setMarginUmum(obj.getString("margin_umum_bpjs") == null || "".equalsIgnoreCase(obj.getString("margin_umum_bpjs")) ? null : Integer.valueOf(obj.getString("margin_umum_bpjs")));
+            // harga obat normal BPJS
+            hargaObat.setHargaNetUmumBpjs(new BigDecimal(obj.getString("net_umum_bpjs")));
+            hargaObat.setDiskonUmumBpjs(new BigDecimal(obj.getString("diskon_umum_bpjs")));
+            hargaObat.setHargaJualUmumBpjs(new BigDecimal(obj.getString("jual_umum_bpjs")));
+            hargaObat.setMarginUmumBpjs(obj.getString("margin_umum_bpjs") == null || "".equalsIgnoreCase(obj.getString("margin_umum_bpjs")) ? null : Integer.valueOf(obj.getString("margin_umum_bpjs")));
 
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
