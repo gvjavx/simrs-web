@@ -37,6 +37,9 @@ public class MonAnestesiBoImpl implements MonAnestesiBo {
             if (bean.getJenis() != null && !"".equalsIgnoreCase(bean.getJenis())) {
                 hsCriteria.put("jenis", bean.getJenis());
             }
+            if (bean.getIsDesc() != null && !"".equalsIgnoreCase(bean.getIsDesc())) {
+                hsCriteria.put("is_desc", bean.getIsDesc());
+            }
 
             List<ItSimrsMonitoringAnestesiEntity> entityList = new ArrayList<>();
 

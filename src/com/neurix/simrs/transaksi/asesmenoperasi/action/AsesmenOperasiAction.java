@@ -433,6 +433,26 @@ public class AsesmenOperasiAction {
         return response;
     }
 
+    public MonitoringAnestesi getVitalSingMonAnestesi(String idDetailCheckup) {
+        MonitoringAnestesi monitoringAnestesi = new MonitoringAnestesi();
+        List<MonitoringAnestesi> list = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MonAnestesiBo monAnestesiBo = (MonAnestesiBo) ctx.getBean("monAnestesiBoProxy");
+        if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup)) {
+            try {
+                monitoringAnestesi.setIdDetailCheckup(idDetailCheckup);
+                monitoringAnestesi.setIsDesc("Y");
+                list = monAnestesiBo.getByCriteria(monitoringAnestesi);
+            } catch (GeneralBOException e) {
+                logger.error("Found Error" + e.getMessage());
+            }
+            if(list.size() > 0){
+                monitoringAnestesi = list.get(0);
+            }
+        }
+        return monitoringAnestesi;
+    }
+
     public static Logger getLogger() {
         return logger;
     }
