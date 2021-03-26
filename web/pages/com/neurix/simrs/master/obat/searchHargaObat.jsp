@@ -251,6 +251,7 @@
                                 <label class="col-md-5" style="margin-top: 7px">ID Obat</label>
                                 <div class="col-md-7">
                                     <input id="mod-id-obat" class="form-control" readonly="true">
+                                    <input type="hidden" id="mod-id-harga-obat">
                                 </div>
                             </div>
                         </div>
@@ -539,6 +540,8 @@
 
     function saveObat(id, idBarang){
 
+        alert("klik");
+
         if (checkMargin())
             return false;
 
@@ -552,15 +555,15 @@
         var jualUmum = $("#mod-harga-jual-umum").val();
         var marginUmum = $("#mod-margin-umum").val();
 
-        var netKhususBpjs = $("#mod-harga-net-bpjs").val();
-        var diskonKhususBpjs = $("#mod-diskon-bpjs").val();
-        var jualKhususBpjs = $("#mod-harga-jual-bpjs").val();
-        var marginKhususBpjs = $("#mod-margin-bpjs").val();
+        var netKhususBpjs = $("#mod-harga-net-bpjs").val() == '' ? 0 : $("#mod-harga-net-bpjs").val();
+        var diskonKhususBpjs = $("#mod-diskon-bpjs").val() == '' ? 0 : $("#mod-diskon-bpjs").val();
+        var jualKhususBpjs = $("#mod-harga-jual-bpjs").val() == '' ? 0 : $("#mod-harga-jual-bpjs").val();
+        var marginKhususBpjs = $("#mod-margin-bpjs").val() == '' ? 0 : $("#mod-margin-bpjs").val();
 
-        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val();
-        var diskonUmumBpjs = $("#mod-diskon-umum-bpjs").val();
-        var jualUmumBpjs = $("#mod-harga-jual-umum-bpjs").val();
-        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val();
+        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val() == '' ? 0 : $("#mod-harga-net-umum-bpjs").val();
+        var diskonUmumBpjs = $("#mod-diskon-umum-bpjs").val() == '' ? 0 : $("#mod-diskon-umum-bpjs").val();
+        var jualUmumBpjs = $("#mod-harga-jual-umum-bpjs").val() == '' ? 0 : $("#mod-harga-jual-umum-bpjs").val();
+        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val() == '' ? 0 : $("#mod-harga-jual-umum-bpjs").val();
 
         var arJson = [];
         arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual, "margin" : margin,
@@ -584,7 +587,7 @@
     }
 
     function searchForm(idObat){
-        $("#nama_obat").val(idObat);
+        $("#id_obat").val(idObat);
         $("#obatForm").submit();
     }
 
@@ -594,6 +597,7 @@
            if (response.length > 0){
                $.each(response, function(i, item){
                    $('#mod-id-obat').val(item.idObat);
+                   $('#mod-id-harga-obat').val(item.idHargaObat);
                    $("#mod-nama-obat").val(item.namaObat);
                    $("#mod-merk").val(item.merk);
 
