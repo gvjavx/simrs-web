@@ -540,8 +540,6 @@
 
     function saveObat(id, idBarang){
 
-        alert("klik");
-
         if (checkMargin())
             return false;
 
