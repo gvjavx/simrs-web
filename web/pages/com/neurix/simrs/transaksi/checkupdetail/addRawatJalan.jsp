@@ -946,34 +946,34 @@
                         </table>
                     </div>
 
-                    <div class="box-header with-border" id="pos_diet">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi
-                        </button>
-                        <button class="btn btn-primary" style="margin-bottom: 10px;"
-                                onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90" style="height: 20px">
-                                <td >Tanggal</td>
-                                <td >Jenis Diet</td>
-                                <td >Bentuk Diet</td>
-                                <td >Keterangan</td>
-                                <td align="center">Status</td>
-                                <td align="center"width="18%">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_diet">
+                    <%--<div class="box-header with-border" id="pos_diet">--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"--%>
+                                <%--onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" style="margin-bottom: 10px;"--%>
+                                <%--onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh--%>
+                        <%--</button>--%>
+                        <%--<table class="table table-bordered table-striped">--%>
+                            <%--<thead>--%>
+                            <%--<tr bgcolor="#90ee90" style="height: 20px">--%>
+                                <%--<td >Tanggal</td>--%>
+                                <%--<td >Jenis Diet</td>--%>
+                                <%--<td >Bentuk Diet</td>--%>
+                                <%--<td >Keterangan</td>--%>
+                                <%--<td align="center">Status</td>--%>
+                                <%--<td align="center"width="18%">Action</td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_diet">--%>
 
-                            </tbody>
-                        </table>
-                    </div>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
