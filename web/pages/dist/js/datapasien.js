@@ -339,17 +339,18 @@ function setDataPasien() {
             });
         }
 
-        if(tensiMon.length > 0 || nadiMon.length > 0 || rrMon.length > 0){
+        if(tensiMon > 0 || nadiMon > 0 || rrMon > 0){
             dwr.engine.setAsync(true);
             AsesmenOperasiAction.getVitalSingMonAnestesi(idDetailCheckup, function (res) {
+                console.log(res);
                 if(res != null){
-                    if(tensiMon.length > 0){
+                    if(tensiMon > 0){
                         $('.tensi_mon').val(res.sistole+"/"+res.diastole);
                     }
-                    if(nadiMon.length > 0){
+                    if(nadiMon > 0){
                         $('.nadi_mon').val(res.nadi);
                     }
-                    if(rrMon.length > 0){
+                    if(rrMon > 0){
                         $('.rr_mon').val(res.rr);
                     }
                 }
