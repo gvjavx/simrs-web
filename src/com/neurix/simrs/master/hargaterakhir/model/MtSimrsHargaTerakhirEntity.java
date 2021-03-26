@@ -15,6 +15,15 @@ public class MtSimrsHargaTerakhirEntity {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private BigDecimal hargaTerakhirBpjs;
+
+    public BigDecimal getHargaTerakhirBpjs() {
+        return hargaTerakhirBpjs;
+    }
+
+    public void setHargaTerakhirBpjs(BigDecimal hargaTerakhirBpjs) {
+        this.hargaTerakhirBpjs = hargaTerakhirBpjs;
+    }
 
     public String getId() {
         return id;

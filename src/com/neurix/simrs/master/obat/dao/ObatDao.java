@@ -72,6 +72,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
             }
+            if (mapCriteria.get("flag_bpjs") != null) {
+                criteria.add(Restrictions.eq("flagBpjs", mapCriteria.get("flag_bpjs")));
+            }
+
 
             if (mapCriteria.get("asc") != null) {
                 criteria.addOrder(Order.asc("createdDate"));
@@ -343,7 +347,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id, String ket, String branchId) {
+    public Obat getSumStockObatGudangById(String id, String ket, String branchId, String flagBpjs) {
 
         Obat obat = new Obat();
 
@@ -395,6 +399,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "\tbranch_id\n" +
                     "\tFROM im_simrs_obat\n" +
                     "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
+                    "\tAND flag_bpjs = :flagBpjs \n" +
                     ") a\n" +
                     "WHERE a.id_obat = :id1 \n" +
                     "AND a.branch_id = :branchId1 ";
@@ -420,6 +425,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "\tINNER JOIN ( \n" +
                     "\t\tSELECT id_barang, qty_box, qty_lembar, qty_biji FROM mt_simrs_obat_poli\n" +
                     "\t\t) b ON b.id_barang = a.id_barang\n" +
+                    "\t\tWHERE a.flag_bpjs = :flagBpjs \n" +
                     "\tGROUP BY \n" +
                     "\ta.lembar_per_box, \n" +
                     "\ta.biji_per_lembar,\n" +
@@ -432,11 +438,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
                     .setParameter("branchId1", branchId)
+                    .setParameter("flagBpjs", flagBpjs)
                     .list();
 
             List<Object[]> results2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLPoli)
                     .setParameter("id2", id)
                     .setParameter("branchId2", branchId)
+                    .setParameter("flagBpjs", flagBpjs)
                     .list();
 
             String idObat = "";

@@ -472,8 +472,36 @@
                     <%--</div>--%>
                 <%--</div>--%>
                 <div class="row">
+                    <div class="col-md-3">
+                        <label style="margin-top: 10px">Lembar/Box</label>
+                    </div>
+                    <div class="col-md-3">
+                        <s:textfield type="number" min="1" cssClass="form-control"
+                                     cssStyle="margin-top: 7px" id="add_lembar_box"
+                                     onkeypress="inputWarning('war_lembar_box','cor_lembar_box')"></s:textfield>
+                        <span style="color: red; display: none;"
+                              id="war_lembar_box"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; display: none;"
+                              id="cor_lembar_box"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <label style="margin-top: 10px">Biji/Lembar</label>
+                    </div>
+                    <div class="col-md-3">
+                        <s:textfield type="number" min="1" cssClass="form-control"
+                                     cssStyle="margin-top: 7px" id="add_biji_lembar"
+                                     onkeypress="inputWarning('war_biji_lembar','cor_biji_lembar')"></s:textfield>
+                        <span style="color: red; display: none;"
+                              id="war_biji_lembar"><i class="fa fa-times"></i> required</span>
+                        <span style="color: green; display: none;"
+                              id="cor_biji_lembar"><i class="fa fa-check"></i> correct</span>
+                    </div>
+                </div>
+                <div class="row">
                     <label class="col-md-3" style="margin-top: 7px">Minimal Stok</label>
-                    <div class="col-md-9">
+                    <div class="col-md-5">
                         <div class="input-group" style="margin-top: 7px;">
                             <s:textfield type="number" min="1" cssClass="form-control"
                                          id="add_min_stok"
@@ -490,37 +518,9 @@
                 </div>
                 <div class="row">
                     <div class="col-md-3">
-                        <label style="margin-top: 10px">Lembar/Box</label>
-                    </div>
-                    <div class="col-md-9">
-                        <s:textfield type="number" min="1" cssClass="form-control"
-                                     cssStyle="margin-top: 7px" id="add_lembar_box"
-                                     onkeypress="inputWarning('war_lembar_box','cor_lembar_box')"></s:textfield>
-                        <span style="color: red; display: none;"
-                              id="war_lembar_box"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; display: none;"
-                              id="cor_lembar_box"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label style="margin-top: 10px">Biji/Lembar</label>
-                    </div>
-                    <div class="col-md-9">
-                        <s:textfield type="number" min="1" cssClass="form-control"
-                                     cssStyle="margin-top: 7px" id="add_biji_lembar"
-                                     onkeypress="inputWarning('war_biji_lembar','cor_biji_lembar')"></s:textfield>
-                        <span style="color: red; display: none;"
-                              id="war_biji_lembar"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; display: none;"
-                              id="cor_biji_lembar"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-3">
                         <label style="margin-top: 10px">Standar Margin</label>
                     </div>
-                    <div class="col-md-9">
+                    <div class="col-md-3">
                         <div class="input-group" style="margin-top: 7px;">
                             <input type="number" class="form-control" id="margin"
                                    onkeypress="var warn =$('#war_margin').is(':visible'); if (warn){$('#cor_margin').show().fadeOut(3000);$('#war_margin').hide()}"
@@ -535,27 +535,27 @@
                               id="cor_margin"><i class="fa fa-check"></i> correct</span>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-md-3">
-                        <label style="margin-top: 10px">BPJS</label>
-                    </div>
-                    <div class="col-md-2" style="margin-top: 8px;">
-                        <div class="custom02">
-                            <input class="radio_remove" onclick="inputWarning('war_flag_bpjs', 'cor_flag_bpjs')" type="radio" value="Y" id="bpjs1" name="radio_bpjs" /><label for="bpjs1" >Ya</label>
-                        </div>
-                    </div>
-                    <div class="col-md-2" style="margin-top: 8px;">
-                        <div class="custom02" >
-                            <input class="radio_remove" onclick="inputWarning('war_flag_bpjs', 'cor_flag_bpjs')" type="radio" value="N" id="bpjs2" name="radio_bpjs" /><label for="bpjs2" >Tidak</label>
-                        </div>
-                    </div>
-                    <div class="col-md-2" style="margin-top: 8px;">
-                        <span style="color: red; display: none;"
-                              id="war_flag_bpjs"><i class="fa fa-times"></i> required</span>
-                        <span style="color: green; display: none;"
-                              id="cor_flag_bpjs"><i class="fa fa-check"></i> correct</span>
-                    </div>
-                </div>
+                <%--<div class="row">--%>
+                    <%--<div class="col-md-3">--%>
+                        <%--<label style="margin-top: 10px">BPJS</label>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2" style="margin-top: 8px;">--%>
+                        <%--<div class="custom02">--%>
+                            <%--<input class="radio_remove" onclick="inputWarning('war_flag_bpjs', 'cor_flag_bpjs')" type="radio" value="Y" id="bpjs1" name="radio_bpjs" /><label for="bpjs1" >Ya</label>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2" style="margin-top: 8px;">--%>
+                        <%--<div class="custom02" >--%>
+                            <%--<input class="radio_remove" onclick="inputWarning('war_flag_bpjs', 'cor_flag_bpjs')" type="radio" value="N" id="bpjs2" name="radio_bpjs" /><label for="bpjs2" >Tidak</label>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="col-md-2" style="margin-top: 8px;">--%>
+                        <%--<span style="color: red; display: none;"--%>
+                              <%--id="war_flag_bpjs"><i class="fa fa-times"></i> required</span>--%>
+                        <%--<span style="color: green; display: none;"--%>
+                              <%--id="cor_flag_bpjs"><i class="fa fa-check"></i> correct</span>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
                 <div class="row" style="margin-top: 7px">
                     <div class="col-md-3">
                         <label>Kronis</label>
@@ -837,16 +837,16 @@
                     <div class="col-md-6">
                         <table class="table table-striped">
                             <tr>
-                                <td width="30%"><b>Min Stok</b></td>
-                                <td><span id="det_min_stok_obat"></span></td>
-                            </tr>
-                            <tr>
                                 <td><b>Lembar/Box</b></td>
                                 <td><span id="det_lembar_obat"></span></td>
                             </tr>
                             <tr>
                                 <td><b>Biji/Lembar</b></td>
                                 <td><span id="det_biji_obat"></span></td>
+                            </tr>
+                            <tr>
+                                <td width="30%"><b>Min Stok</b></td>
+                                <td><span id="det_min_stok_obat" style="background-color: lightgrey; padding: 5px; border-radius: 5px;"></span></td>
                             </tr>
                         </table>
                     </div>
@@ -855,10 +855,9 @@
                     <thead>
                     <td>ID Barang</td>
                     <td>Pabrik</td>
-                    <td>Merk</td>
                     <td>Expired Date</td>
-                    <%--<td>Qty Lembar</td>--%>
                     <td>Stok Biji</td>
+                    <td>Barcode</td>
                     </thead>
                     <tbody id="body_detail">
                     </tbody>
@@ -925,11 +924,11 @@
         var hargaLembar = $('#add_harga_lembar').val();
         var hargaBiji   = $('#add_harga_biji').val();
         var minStok     = $('#add_min_stok').val();
-        var flagBpjs    = $('[name=radio_bpjs]:checked').val();
+        //var flagBpjs    = $('[name=radio_bpjs]:checked').val();
         var flagKronis  = $('[name=radio_kronis]:checked').val();
         var flagGeneric = $('[name=radio_generic]:checked').val();
-        var formula    = $('[name=radio_formula]:checked').val();
-        var parenteral    = $('[name=radio_parenteral]:checked').val();
+        var formula     = $('[name=radio_formula]:checked').val();
+        var parenteral  = $('[name=radio_parenteral]:checked').val();
         var margin      = $('#margin').val();
         var idKategori  = $('#id_kategori').val();
         var idBentuk    = $('#id_bentuk').val();
@@ -948,7 +947,7 @@
         }
 
         if (nama && lembarBox && bijiLembar && margin && idKategori && idBentuk
-            && minStok != '' && flagKronis && flagGeneric && flagBpjs && idJenisBantuk && idJenisSub
+            && minStok != '' && flagKronis && flagGeneric && idJenisBantuk && idJenisSub
             && formula && parenteral != undefined && jenis != null && cekGenerate) {
             var tempKandungan = [];
             $.each(tableKandungan, function (i, item) {
@@ -987,7 +986,7 @@
                 'lembar_box':lembarBox,
                 'biji_lembar':bijiLembar,
                 'margin':margin,
-                'bpjs':flagBpjs,
+                //'bpjs':flagBpjs,
                 'kronis':flagKronis,
                 'generic':flagGeneric,
                 'parenteral':parenteral,
@@ -1080,9 +1079,9 @@
             if (flagGeneric == undefined) {
                 $('#war_generic').show();
             }
-            if (flagBpjs == undefined) {
-                $('#war_flag_bpjs').show();
-            }
+//            if (flagBpjs == undefined) {
+//                $('#war_flag_bpjs').show();
+//            }
             if (formula == undefined) {
                 $('#war_formula').show();
             }
@@ -1217,11 +1216,15 @@
                         table += '<tr bgcolor=' + warna + ' style="color: ' + color + '">' +
                             '<td>'+item.idBarang+'</td>'+
                             '<td>'+item.namaPabrikObat+'</td>'+
-                            '<td>'+item.merk+'</td>'+
                             '<td>'+converterDate(item.expiredDate)+'</td>'+
-                            // '<td>'+item.qtyBox+'</td>'+
-                            // '<td>'+item.qtyLembar+'</td>'+
                             '<td>'+item.qtyBiji+'</td>'+
+                            '<td align="center">' +
+                            '<a target="_blank" href="../permintaanpo/printBarcodeBarang_permintaanpo.action?id='+item.idBarang+'">' +
+                            //'<button class="btn btn-sm btn-default" onclick="printBarcode(\''+item.idBarang+'\')">' +
+                            //'<i class="fa fa-print"></i>' +
+                            //'</button>' +
+                            '<img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer;"></a>' +
+                            '</td>'+
                             '</tr>'
                     });
 
@@ -1232,6 +1235,10 @@
             });
             $('#modal-detail-obat').modal({show:true, backdrop:'static'});
         }
+    }
+
+    function printBarcode(id) {
+        window.location.href = "/permintaanpo/printBarcodeBarang_permintaanpo.action?id="+id;
     }
 
     function formaterDate(tanggal){

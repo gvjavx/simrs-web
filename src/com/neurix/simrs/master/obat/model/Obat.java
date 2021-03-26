@@ -102,6 +102,15 @@ public class Obat extends BaseModel {
 
     private String idPabrikObat;
     private String namaPabrikObat;
+    private String idHargaObat;
+
+    public String getIdHargaObat() {
+        return idHargaObat;
+    }
+
+    public void setIdHargaObat(String idHargaObat) {
+        this.idHargaObat = idHargaObat;
+    }
 
     public String getIdPabrikObat() {
         return idPabrikObat;

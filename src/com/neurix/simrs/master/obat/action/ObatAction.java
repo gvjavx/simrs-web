@@ -370,7 +370,7 @@ public class ObatAction extends BaseMasterAction {
                     obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
                     obat.setFlagKronis(obj.getString("kronis"));
                     obat.setFlagGeneric(obj.getString("generic"));
-                    obat.setFlagBpjs(obj.getString("bpjs"));
+                    //obat.setFlagBpjs(obj.getString("bpjs"));
                     obat.setFlagFormula(obj.getString("formula"));
                     obat.setFlagParenteral(obj.getString("parenteral"));
                     obat.setMargin(intMargin);
@@ -488,7 +488,7 @@ public class ObatAction extends BaseMasterAction {
                     obat.setHargaTerakhir(new BigDecimal(String.valueOf(0)));
                     obat.setFlagKronis(obj.getString("kronis"));
                     obat.setFlagGeneric(obj.getString("generic"));
-                    obat.setFlagBpjs(obj.getString("bpjs"));
+                    //obat.setFlagBpjs(obj.getString("bpjs"));
                     obat.setFlagFormula(obj.getString("formula"));
                     obat.setFlagParenteral(obj.getString("parenteral"));
                     obat.setMargin(intMargin);
@@ -707,21 +707,35 @@ public class ObatAction extends BaseMasterAction {
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
 
         HargaObat hargaObat = new HargaObat();
+        hargaObat.setBranchId(branchId);
         for (int i = 0; i < json.length(); i++) {
             JSONObject obj = json.getJSONObject(i);
-            hargaObat.setIdHargaObat(branchId+idObat);
             hargaObat.setIdObat(idObat);
             hargaObat.setIdBarang(idBarang);
+
             // harga obat khusus
             hargaObat.setHargaNet(new BigDecimal(obj.getString("harga_net")));
             hargaObat.setDiskon(new BigDecimal(obj.getString("diskon")));
             hargaObat.setHargaJual(new BigDecimal(obj.getString("harga_jual")));
             hargaObat.setMargin(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin")) ? null : Integer.valueOf(obj.getString("margin")));
+
             // harga obat umum
             hargaObat.setHargaNetUmum(new BigDecimal(obj.getString("harga_net_umum")));
             hargaObat.setDiskonUmum(new BigDecimal(obj.getString("diskon_umum")));
             hargaObat.setHargaJualUmum(new BigDecimal(obj.getString("harga_jual_umum")));
-            hargaObat.setMarginUmum(obj.getString("margin") == null || "".equalsIgnoreCase(obj.getString("margin_umum")) ? null : Integer.valueOf(obj.getString("margin_umum")));
+            hargaObat.setMarginUmum(obj.getString("margin_umum") == null || "".equalsIgnoreCase(obj.getString("margin_umum")) ? null : Integer.valueOf(obj.getString("margin_umum")));
+
+            // harga obat khusus BPJS
+//            hargaObat.setHargaNetKhususBpjs(new BigDecimal(obj.getString("net_khusus_bpjs")));
+//            hargaObat.setDiskonKhususBpjs(new BigDecimal(obj.getString("diskon_khusus_bpjs")));
+//            hargaObat.setHargaJualKhususBpjs(new BigDecimal(obj.getString("jual_khusus_bpjs")));
+//            hargaObat.setMarginKhususBpjs(obj.getString("margin_khusus_bpjs") == null || "".equalsIgnoreCase(obj.getString("margin_khusus_bpjs")) ? null : Integer.valueOf(obj.getString("margin_khusus_bpjs")));
+
+            // harga obat normal BPJS
+//            hargaObat.setHargaNetUmumBpjs(new BigDecimal(obj.getString("net_umum_bpjs")));
+//            hargaObat.setDiskonUmumBpjs(new BigDecimal(obj.getString("diskon_umum_bpjs")));
+//            hargaObat.setHargaJualUmumBpjs(new BigDecimal(obj.getString("jual_umum_bpjs")));
+//            hargaObat.setMarginUmumBpjs(obj.getString("margin_umum_bpjs") == null || "".equalsIgnoreCase(obj.getString("margin_umum_bpjs")) ? null : Integer.valueOf(obj.getString("margin_umum_bpjs")));
 
             hargaObat.setCreatedDate(time);
             hargaObat.setCreatedWho(userLogin);
