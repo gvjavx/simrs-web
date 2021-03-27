@@ -2178,55 +2178,69 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
                 // MERESET CUTI APABILA CUTI TAHUN DEPAN DIAPPROVE
                 if ("Y".equalsIgnoreCase(bean.getApprovalFlag())) {
-                    List<ItCutiPegawaiEntity> itCutiPegawaiEntities = cutiPegawaiDao.getLastCutiPegawai(itCutiPegawaiEntity.getNip());
-                    Calendar calendar = Calendar.getInstance();
-                    Timestamp lastTglPengajuan = new Timestamp(itCutiPegawaiEntities.get(0).getTanggalDari().getTime());
-                    calendar.setTime(lastTglPengajuan);
-                    int tahun = calendar.get(Calendar.YEAR);
+                    List<ItCutiPegawaiEntity> itCutiPegawaiEntities = new ArrayList<>();
+                    try {
+                        itCutiPegawaiEntities = cutiPegawaiDao.getLastCutiPegawai(itCutiPegawaiEntity.getNip());
+                    } catch (HibernateException e) {
+                        logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Last Cuti Pegawai, " + e.getMessage());
+                    }
+                    if (itCutiPegawaiEntities.size() != 0) {
+                        Calendar calendar = Calendar.getInstance();
+                        Timestamp lastTglPengajuan = new Timestamp(itCutiPegawaiEntities.get(0).getTanggalDari().getTime());
+                        calendar.setTime(lastTglPengajuan);
+                        int tahun = calendar.get(Calendar.YEAR);
 
-                    Calendar calendar1 = Calendar.getInstance();
-                    calendar1.setTime(itCutiPegawaiEntity.getTanggalDari());
-                    int tahunMulai = calendar1.get(Calendar.YEAR);
+                        Calendar calendar1 = Calendar.getInstance();
+                        calendar1.setTime(itCutiPegawaiEntity.getTanggalDari());
+                        int tahunMulai = calendar1.get(Calendar.YEAR);
 
-                    if (tahunMulai > tahun) {
-                        // creating object entity serializable
-                        ItCutiPegawaiEntity resetCuti = new ItCutiPegawaiEntity();
-                        resetCuti.setCutiPegawaiId(cutiPegawaiDao.getNextCutiPegawaiId());
-                        resetCuti.setNip(bean.getNip());
-                        resetCuti.setPegawaiPenggantiSementara("");
-                        resetCuti.setCutiId("CT002");
-                        resetCuti.setLamaHariCuti(BigInteger.valueOf(0));
-                        resetCuti.setSisaCutiHari(BigInteger.valueOf(12));
-                        resetCuti.setApprovalId("");
-                        resetCuti.setKeterangan("RESET TAHUNAN");
-                        resetCuti.setAlamatCuti("");
-                        resetCuti.setApprovalDate(itCutiPegawaiEntity.getCreatedDate());
-                        resetCuti.setNote("");
-                        resetCuti.setClosed("");
-                        resetCuti.setCancelFlag("N");
-                        resetCuti.setNoteApproval("");
-                        resetCuti.setAlamatCuti("");
-                        resetCuti.setApprovalId("system");
-                        resetCuti.setTanggalDari(itCutiPegawaiEntity.getTanggalDari());
-                        resetCuti.setTanggalSelesai(itCutiPegawaiEntity.getTanggalSelesai());
-                        resetCuti.setApprovalFlag("Y");
-                        resetCuti.setApprovalDate(itCutiPegawaiEntity.getCreatedDate());
-                        resetCuti.setCancelPerson("");
-                        resetCuti.setCancelNote("");
-                        resetCuti.setFlag("Y");
-                        resetCuti.setAction("C");
-                        resetCuti.setCreatedWho(itCutiPegawaiEntity.getCreatedWho());
-                        resetCuti.setLastUpdateWho(itCutiPegawaiEntity.getLastUpdateWho());
-                        resetCuti.setCreatedDate(itCutiPegawaiEntity.getCreatedDate());
-                        resetCuti.setLastUpdate(itCutiPegawaiEntity.getLastUpdate());
-                        resetCuti.setFlagPerbaikan("Y");
+                        if (tahunMulai > tahun) {
+                            // creating object entity serializable
+                            ItCutiPegawaiEntity resetCuti = new ItCutiPegawaiEntity();
+                            try {
+                                String cutiPegId = cutiPegawaiDao.getNextCutiPegawaiId();
+                                resetCuti.setCutiPegawaiId(cutiPegId);
+                            }catch (HibernateException e){
+                                logger.error("[CutiPegawaiBoImpl.saveApprove] Error, " + e.getMessage());
+                                throw new GeneralBOException("Error when retrieving Next Cuti Pegawai ID, " + e.getMessage());
+                            }
+                            resetCuti.setNip(bean.getNip());
+                            resetCuti.setPegawaiPenggantiSementara("");
+                            resetCuti.setCutiId("CT002");
+                            resetCuti.setLamaHariCuti(BigInteger.valueOf(0));
+                            resetCuti.setSisaCutiHari(BigInteger.valueOf(12));
+                            resetCuti.setApprovalId("");
+                            resetCuti.setKeterangan("RESET TAHUNAN");
+                            resetCuti.setAlamatCuti("");
+                            resetCuti.setApprovalDate(itCutiPegawaiEntity.getCreatedDate());
+                            resetCuti.setNote("");
+                            resetCuti.setClosed("");
+                            resetCuti.setCancelFlag("N");
+                            resetCuti.setNoteApproval("");
+                            resetCuti.setAlamatCuti("");
+                            resetCuti.setApprovalId("system");
+                            resetCuti.setTanggalDari(itCutiPegawaiEntity.getTanggalDari());
+                            resetCuti.setTanggalSelesai(itCutiPegawaiEntity.getTanggalSelesai());
+                            resetCuti.setApprovalFlag("Y");
+                            resetCuti.setApprovalDate(itCutiPegawaiEntity.getCreatedDate());
+                            resetCuti.setCancelPerson("");
+                            resetCuti.setCancelNote("");
+                            resetCuti.setFlag("Y");
+                            resetCuti.setAction("C");
+                            resetCuti.setCreatedWho(itCutiPegawaiEntity.getCreatedWho());
+                            resetCuti.setLastUpdateWho(itCutiPegawaiEntity.getLastUpdateWho());
+                            resetCuti.setCreatedDate(itCutiPegawaiEntity.getCreatedDate());
+                            resetCuti.setLastUpdate(itCutiPegawaiEntity.getLastUpdate());
+                            resetCuti.setFlagPerbaikan("Y");
 
-                        try {
-                            // insert into database
-                            cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
-                        } catch (HibernateException e) {
-                            logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                            throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                            try {
+                                // insert into database
+                                cutiPegawaiDao.addAndSave(itCutiPegawaiEntity);
+                            } catch (HibernateException e) {
+                                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                            }
                         }
                     }
                 }

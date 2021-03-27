@@ -735,43 +735,49 @@
         var max =parseInt(document.getElementById("cutiMax").value);
         var days;
         var jmllibur;
-        if (startdate==null){
+        if (startdate==null && startdate == ""){
             alert("Isikan Tanggal Awal Cuti");
             $('#tgl1').val("");
         }
-        else{
-            dwr.engine.setAsync(false);
-            IjinKeluarAction.calculateLibur(tglawal,tglakhir, function (listdata) {
-                jmllibur = listdata;
-            });
-            if (startdate<=enddate) {
-                var kalender="kerja";
-                if (posisi=='130'||posisi=='161'){
-                    jmllibur=0;
-                    kalender="kalender";
+        else {
+            if (enddate != null && enddate != "") {
+                dwr.engine.setAsync(false);
+                IjinKeluarAction.calculateLibur(tglawal, tglakhir, function (listdata) {
+                    jmllibur = listdata;
+                });
+                if (startdate <= enddate) {
+                    var kalender = "kerja";
+                    if (posisi == '130' || posisi == '161') {
+                        jmllibur = 0;
+                        kalender = "kalender";
+                    }
+                    if (kalender == "kalender") {
+                        days = (enddate - startdate) / 1000 / 60 / 60 / 24;
+                        days = days + 1;
+                        days = days - jmllibur;
+                    }
+                    else if (kalender == "kerja") {
+                        days = calcBusinessDays(startdate, enddate);
+                        days = days - jmllibur;
+                    }
+                    else {
+                        alert("Belum memilih Jenis Cuti");
+                        $('#tgl1').val("");
+                    }
+                    $('#lamaCuti').val(days);
                 }
-                if (kalender=="kalender"){
-                    days = (enddate - startdate)/1000/60/60/24;
-                    days = days+1;
-                    days = days-jmllibur;
-                }
-                else if (kalender=="kerja"){
-                    days = calcBusinessDays(startdate,enddate);
-                    days = days-jmllibur;
-                }
-                else {
-                    alert("Belum memilih Jenis Cuti");
+
+                if (enddate<startdate){
+                    alert ('Tanggal yang dipilih salah');
+                    $('#tgl2').val("");
                     $('#tgl1').val("");
                 }
-                $('#lamaCuti').val(days);
+            }else{
+                alert("Isikan Tanggal Akhir Cuti");
             }
+
         }
 
-        if (enddate<startdate){
-            alert ('Tanggal yang dipilih salah');
-            $('#tgl2').val("");
-            $('#tgl1').val("");
-        }
     });
 </script>
 <script type='text/javascript'>
