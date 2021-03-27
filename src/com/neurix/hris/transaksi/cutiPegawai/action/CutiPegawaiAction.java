@@ -476,7 +476,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
     }
 
     public String pengajuanBatal(){
-        logger.info("[AlatAction.saveEdit] start process >>>");
+        logger.info("[CutiPegawaiAction.pengajuanBatal] start process >>>");
         try {
             CutiPegawai cancelCutiPegawai = getCutiPegawai();
             String userLogin = CommonUtil.userLogin();
@@ -484,8 +484,16 @@ public class CutiPegawaiAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
-            java.sql.Date dateStart = CommonUtil.convertToDate(cutiPegawai.getStTanggalDari());
-            java.sql.Date dateEnd = CommonUtil.convertToDate(cutiPegawai.getStTanggalSelesai());
+            String tglAwal, tglAkhir;
+            try{
+                tglAwal = cutiPegawai.getStTanggalDari();
+                tglAkhir = cutiPegawai.getStTanggalSelesai();
+            }catch(HibernateException e){
+                logger.error("[CutiPegawaiAction.pengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Tanggal Awal / Akhir Cuti Pegawai, " + e.getMessage());
+            }
+            java.sql.Date dateStart = CommonUtil.convertToDate(tglAwal);
+            java.sql.Date dateEnd = CommonUtil.convertToDate(tglAkhir);
             cancelCutiPegawai.setTanggalDari(dateStart);
             cancelCutiPegawai.setTanggalSelesai(dateEnd);
             cancelCutiPegawai.setFlagPengajuanBatal("Y");
@@ -496,7 +504,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setAction("U");
             cancelCutiPegawai.setFlag("Y");
 
-            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+            List<Notifikasi> notifikasiList = new ArrayList<>();
+            try{
+                notifikasiList = cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+            }catch(HibernateException e){
+                logger.error("[CutiPegawaiAction.pengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when saving Pengajuan Batal, " + e.getMessage());
+            }
 
 
             for (Notifikasi notifikasi : notifikasiList){
@@ -507,15 +521,15 @@ public class CutiPegawaiAction extends BaseMasterAction {
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
             } catch (GeneralBOException e1) {
-                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                logger.error("[CutiPegawaiAction.pengajuanBatal] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            logger.error("[CutiPegawaiAction.pengajuanBatal] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
-        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+        logger.info("[CutiPegawaiAction.pengajuanBatal] end process <<<");
 
         return "success_batal";
     }

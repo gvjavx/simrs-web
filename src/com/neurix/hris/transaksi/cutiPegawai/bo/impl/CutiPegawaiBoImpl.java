@@ -40,6 +40,7 @@ import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao;
 import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity;
 import org.apache.log4j.Logger;
+import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.joda.time.LocalDate;
 
@@ -339,6 +340,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
     @Override
     public List<Notifikasi> savePengajuanBatal(CutiPegawai bean) throws GeneralBOException {
+        logger.info("[CutiPegawaiBoImpl.savePengajuanBatal] START >>>>>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
         if (bean != null) {
             String cutiPegawaiId = bean.getCutiPegawaiId();
@@ -346,8 +348,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             try {
                 itCutiPegawaiEntity = cutiPegawaiDao.getById("cutiPegawaiId", cutiPegawaiId);
             } catch (HibernateException e) {
-                logger.error("[CutiPegawaiBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+                logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data Cuti Pegawai by ID, please inform to your admin...," + e.getMessage());
             }
             if (itCutiPegawaiEntity != null) {
                 itCutiPegawaiEntity.setCutiPegawaiId(bean.getCutiPegawaiId());
@@ -363,16 +365,28 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                     // Update into database
                     cutiPegawaiDao.updateAndSave(itCutiPegawaiEntity);
                 } catch (HibernateException e) {
-                    logger.error("[CutiPegawaiBoImpl.saveEdit] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving update data alat, please info to your admin..." + e.getMessage());
+                    logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Cuti Pegawai, please info to your admin..." + e.getMessage());
                 }
             } else {
-                logger.error("[CutiPegawaiBoImpl.saveEdit] Error, not found data alat with request id, please check again your data ...");
+                logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, not found data alat with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data alat with request id, please check again your data ...");
             }
 
-            List<User> usersList = userDao.getUserByBranchAndRole(itCutiPegawaiEntity.getUnitId(), CommonConstant.ROLE_ID_ADMIN);
-            ImBiodataEntity biodataEntity = biodataDao.getById("nip", itCutiPegawaiEntity.getNip());
+            List<User> usersList = new ArrayList<>();
+            try{
+                usersList = userDao.getUserByBranchAndRole(itCutiPegawaiEntity.getUnitId(), CommonConstant.ROLE_ID_ADMIN);
+            }catch(HibernateException e){
+                logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retrieving User by Branch and Role, please info to your admin..." + e.getMessage());
+            }
+            ImBiodataEntity biodataEntity;
+            try{
+                biodataEntity = biodataDao.getById("nip", itCutiPegawaiEntity.getNip());
+            }catch(HibernateException e){
+                logger.error("[CutiPegawaiBoImpl.savePengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when retrieving Biodata by ID, please info to your admin..." + e.getMessage());
+            }
             for (User user : usersList) {
                 Notifikasi notif = new Notifikasi();
                 notif.setNip(user.getUserId());
@@ -387,6 +401,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 notifikasiList.add(notif);
             }
         }
+        logger.info("[CutiPegawaiBoImpl.savePengajuanBatal] START >>>>>>");
         return notifikasiList;
     }
 
@@ -543,12 +558,18 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
     @Override
     public List<Notifikasi> saveAddCuti(CutiPegawai bean) throws GeneralBOException {
-        logger.info("[CutiPegawaiBoImpl.saveAdd] start process >>>");
+        logger.info("[CutiPegawaiBoImpl.saveAddCuti] start process >>>");
         List<Notifikasi> notifikasiList = new ArrayList<>();
         String nip = bean.getNip(), cutiPegawaiId;
 
         //validasi
-        ImBiodataEntity biodataEntity = biodataDao.getById("nip", bean.getNip());
+        ImBiodataEntity biodataEntity;
+        try{
+            biodataEntity = biodataDao.getById("nip", bean.getNip());
+        }catch (HibernateException e){
+            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error :, " + e.getMessage());
+            throw new GeneralBOException("Found problem when searching data, please inform to your admin...," + e.getMessage());
+        }
         bean.setTanggalAktif(biodataEntity.getTanggalAktif());
 
         Calendar c = Calendar.getInstance();
@@ -640,7 +661,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip())) {
                             hsCriteria.put("nip", bean.getNip());
                         }
-                        cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
+                        try{
+                            cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
+                        }catch(HibernateException e){
+                            logger.error("[CutiPegawaiBoImpl.saveAddCuti] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Next Cuti Pegawai ID, " + e.getMessage());
+                        }
 
                         // creating object entity serializable
                         ItCutiPegawaiEntity itCutiPegawaiEntity1 = new ItCutiPegawaiEntity();
@@ -828,14 +854,29 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                             try {
                                 // Generating ID, get from postgre sequence
                                 cutiPegawaiId = cutiPegawaiDao.getNextCutiPegawaiId();
+                            } catch (HibernateException e) {
+                                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when getting sequence cuti id, please info to your admin..." + e.getMessage());
+                            }
 
+                            try {
                                 cutiPegawaiEntityList = cutiPegawaiDao.getJumlahHariCuti(nip, bean.getCutiId());
+                            }catch(HibernateException e){
+                                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                                throw new GeneralBOException("Found problem when getting jumlah hari cuti, please info to your admin..." + e.getMessage());
+                            }
+                            if(cutiPegawaiEntityList.size() != 0) {
                                 for (ItCutiPegawaiEntity cutiPegawai : cutiPegawaiEntityList) {
                                     jumlahCutiPegawai = cutiPegawai.getSisaCutiHari();
                                 }
-                            } catch (HibernateException e) {
-                                logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
-                                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                            } else {
+                                try {
+                                    ImCutiEntity cuti = cutiDao.getById("cutiId", bean.getCutiId());
+                                    jumlahCutiPegawai = BigInteger.valueOf(cuti.getJumlahCuti());
+                                }catch(HibernateException e){
+                                    logger.error("[CutiPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Found problem when getting data cuti, please info to your admin..." + e.getMessage());
+                                }
                             }
 
                             // creating object entity serializable
@@ -857,11 +898,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                                 throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                             }
                             itCutiPegawaiEntity.setPegawaiPenggantiSementara(bean.getPegawaiPenggantiSementara());
-                            if ("CT007".equalsIgnoreCase(bean.getCutiId()))
-                                itCutiPegawaiEntity.setCutiId(bean.getCutiTanggunganId());
-                            else
-                                itCutiPegawaiEntity.setCutiId(bean.getCutiId());
 
+                            itCutiPegawaiEntity.setCutiId(bean.getCutiId());
                             itCutiPegawaiEntity.setLamaHariCuti(bean.getLamaHariCuti());
 
                             if ("CT007".equalsIgnoreCase(bean.getCutiId()))

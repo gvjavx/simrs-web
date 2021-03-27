@@ -481,9 +481,14 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 }
             }
 
+//            String query = "SELECT cuti.* FROM  \n" +
+//                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
+//                    "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
+//                    " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
+
             String query = "SELECT cuti.* FROM  \n" +
-                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
-                    "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
+                    "                    it_hris_notifikasi notifikasi LEFT JOIN  \n" +
+                    "                    it_hris_cuti_pegawai cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
                     " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
 
             results = this.sessionFactory.getCurrentSession()

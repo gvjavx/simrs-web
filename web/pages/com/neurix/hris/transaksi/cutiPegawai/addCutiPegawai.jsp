@@ -88,13 +88,12 @@
                 }
             });
             if (intSisaCuti - intLamaCuti < 0){
-                var sisaCutiMsg ='Maaf, Sisa cuti yang anda ajukan sudah habis';
+                var sisaCutiMsg ='Maaf, Sisa cuti yang anda ajukan sudah habis / pengajuan melebihi sisa cuti.';
                 document.getElementById('errorMessageAddCuti').innerHTML = sisaCutiMsg;
                 $.publish('showErrorValidationDialog');
                 event.originalEvent.options.submit = false;
 
-            }
-            else{
+            } else{
                 if ( nipid != ''&& cutiid != ''&& tanggalAkhir != '' && tanggalAwal != ''&&ket==""&&unitid!=""&&cek=="" && alamatCuti != "") {
                     if (year == year1){
                         if (cekth == ''){
@@ -130,12 +129,12 @@
                             }
                         }
 
-                    }else {
+                    }else if(cutiid != "CT007") {
                         event.originalEvent.options.submit = false;
                         var msg = "";
 
                         if (year != year1) {
-                            msg += 'Tidak melakukan cuti normal di tahun yang berbeda<br/>';
+                            msg += 'Tidak bisa melakukan cuti normal di tahun yang berbeda<br/>';
                         }
                         document.getElementById('errorMessageAddCuti').innerHTML = msg;
                         $.publish('showErrorValidationDialog');
