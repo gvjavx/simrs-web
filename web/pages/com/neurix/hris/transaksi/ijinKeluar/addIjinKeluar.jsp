@@ -387,7 +387,7 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <s:textfield id="tgl3" name="ijinKeluar.stTanggalAwal" cssClass="form-control pull-right"
-                                             required="false" onchange="getTanggalAkhir(this.value); getlastDate()" cssStyle=""/>
+                                             required="false" onchange="getTanggalAkhir(this.value);" cssStyle=""/>
                                     <%--<input type="text" class="form-control pull-right" id="loginTimestampFrom" name="userSessionLog.stLoginTimestampFrom">--%>
                             </div>
                         </td>
@@ -689,6 +689,8 @@
                 alert ("tanggal selesai kurang dari tanggal mulai , mohon ulangi ");
                 $('#tgl2').val("");
             }
+        }else{
+            getlastDate();
         }
     };
 

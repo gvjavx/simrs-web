@@ -4164,7 +4164,9 @@ public class BiodataBoImpl implements BiodataBo {
             String danPens = "";
             if (imBiodata.getDanaPensiun() != null) {
                 if (!imBiodata.getDanaPensiun().equalsIgnoreCase("")) {
-                    danPens = imBiodata.getImDanaPensiunEntity().getDanaPensiun();
+                    if(imBiodata.getImDanaPensiunEntity().getDanaPensiun()!=null) {
+                        danPens = imBiodata.getImDanaPensiunEntity().getDanaPensiun();
+                    }
                 }
             }
 
