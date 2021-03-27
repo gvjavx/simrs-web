@@ -6,6 +6,8 @@ import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.authorization.user.bo.UserBo;
+import com.neurix.authorization.user.model.User;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -57,6 +59,7 @@ import org.hibernate.HibernateException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.web.context.ContextLoader;
 import sun.misc.BASE64Decoder;
 
@@ -97,6 +100,8 @@ public class BiodataAction extends BaseMasterAction {
     private Sertifikat sertifikat;
     private PelatihanJabatanUser pelatihanJabatanUser;
     private String tipe;
+    private UserBo userBoProxy;
+    private BranchBo branchBoProxy;
     private List<JenisPegawai> listOfComboJenisPegawai = new ArrayList<>();
 
     public List<JenisPegawai> getListOfComboJenisPegawai() {
@@ -887,6 +892,15 @@ public class BiodataAction extends BaseMasterAction {
                     logger.error("[BiodataAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
+                }
+
+                //CREATE USER
+                if("Y".equalsIgnoreCase(biodata.getCreateUser())) {
+                    try {
+                        createUser(biodata);
+                    } catch (Exception e) {
+                        logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                    }
                 }
 
                 clearAllSession();
@@ -3799,9 +3813,50 @@ public class BiodataAction extends BaseMasterAction {
         return "init_add_user";
     }
 
-    public void createUser (){
+    public void createUser (Biodata bio) throws Exception {
         logger.info("[BiodataAction.createUser] start process >>>");
 
+        User user = new User();
+        user.setUserId(bio.getNip());
+        user.setUsername(bio.getNamaPegawai());
+        user.setPassword("123");  //default Password
+//        user.setConfirmPassword("123");
+        user.setRoleId("45"); //Roles KARYAWAN
+        user.setBranchId(bio.getBranch());
+        user.setDivisiId(bio.getDivisi());
+        user.setPositionId(bio.getPositionId());
+        user.setPhotoUserUrl(bio.getFotoUpload());
+
+        String defEmail = bio.getNip().substring(8) + "@email.com"; //default Email
+        user.setEmail(defEmail);
+
+        try{
+            Branch branch = branchBoProxy.getBranchById(bio.getBranch(),"Y");
+            user.setAreaId(branch.getAreaId());
+        }catch (HibernateException e){
+            logger.error("[BiodataAction.createUser] Error, " + e.getMessage());
+        }
+
+        String rawPassword = user.getPassword();
+        ShaPasswordEncoder passwordEncoder = new ShaPasswordEncoder();
+        String hashedPassword = passwordEncoder.encodePassword(rawPassword, null);
+        user.setPassword(hashedPassword);
+
+        try{
+            String userLogin = CommonUtil.userLogin();
+            Timestamp createTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            user.setCreatedDate(createTime);
+            user.setCreatedWho(userLogin);
+            user.setLastUpdate(createTime);
+            user.setLastUpdateWho(userLogin);
+            user.setAction("C");
+
+            userBoProxy.saveAdd(user);
+            user.setSuccessMessage("Successfully Entry New Data");
+        }catch (GeneralBOException e){
+            logger.error("[BiodataAction] Error, " +e.getMessage());
+        }
         logger.info("[BiodataAction.createUser] end process >>>");
     }
 

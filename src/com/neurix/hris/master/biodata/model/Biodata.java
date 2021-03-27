@@ -175,6 +175,28 @@ public class Biodata extends BaseModel {
     private BigDecimal tunjSupervisi;
     private BigDecimal tunjLokasi;
     private BigDecimal tunjSiaga;
+    //RAKA-end
+    //RAKA-24MAR2021 ==> untuk keperluan create User
+    private String createUser;
+    private String email;
+    //RAKA-end
+
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getStTunjPemondokan() {
         return stTunjPemondokan;
