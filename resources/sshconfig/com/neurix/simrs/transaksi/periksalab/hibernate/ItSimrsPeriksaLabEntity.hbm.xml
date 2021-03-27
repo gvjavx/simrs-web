@@ -92,5 +92,8 @@
         <property name="tarifLabLuar">
             <column name="tarif_lab_luar"/>
         </property>
+        <property name="ttdPengirim">
+            <column name="ttd_pengirim"/>
+        </property>
     </class>
 </hibernate-mapping>

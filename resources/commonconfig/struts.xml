@@ -315,4 +315,6 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/verifikator/struts/VerifRekananRi.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/konsultasigizi/struts/KonsultasiGiziAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/transaksi/ordergizi/struts/PendampingGiziAction.xml"/>
+
 </struts>

@@ -293,7 +293,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         return null;
     }
 
-    public CrudResponse saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter, String isLuar, String idDokter, String idKategori, String waktuPending) {
+    public CrudResponse saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter, String isLuar, String idDokter, String idKategori, String waktuPending, String ttdPengirim) {
         logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
         CrudResponse response = new CrudResponse();
         try {
@@ -325,6 +325,26 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setLastUpdate(updateTime);
                 periksaLab.setCreatedDate(updateTime);
                 periksaLab.setLastUpdateWho(userLogin);
+            }
+
+            if(ttdPengirim != null && !"".equalsIgnoreCase(ttdPengirim)){
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(ttdPengirim);
+                String wkt = updateTime.toString();
+                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                String fileName = idDokter + "-" + patten + ".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                if (image == null) {
+                    logger.error("Buffered Image is null");
+                    response.setStatus("error");
+                    response.setMsg("Buffered Image is null");
+                    return response;
+                } else {
+                    File f = new File(uploadFile);
+                    ImageIO.write(image, "png", f);
+                    periksaLab.setTtdPengirim(fileName);
+                }
             }
 
             response = periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
@@ -598,6 +618,11 @@ public class PeriksaLabAction extends BaseMasterAction {
                     periksaLab.setLastUpdate(updateTime);
                     periksaLab.setLastUpdateWho(userLogin);
                     periksaLab.setAction("U");
+                    if(obj.has("keterangan_hasil")){
+                        if(obj.getString("keterangan_hasil") != null && !"".equalsIgnoreCase(obj.getString("keterangan_hasil"))){
+                            periksaLab.setKeterangan(obj.getString("keterangan_hasil"));
+                        }
+                    }
 
                     if (uploadHasilPemeriksaan != null && !"".equalsIgnoreCase(uploadHasilPemeriksaan)) {
                         try {

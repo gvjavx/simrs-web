@@ -350,6 +350,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             }
             entity.setIsPeriksaLuar(periksaLab.getIsLuar());
             entity.setNamaLabLuar(periksaLab.getNamaLabLuar());
+            entity.setTtdPengirim(periksaLab.getTtdPengirim());
 
             try {
                 periksaLabDao.addAndSave(entity);
@@ -560,6 +561,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setTtdValidator(bean.getTtdValidator());
                 entity.setTtdPetugas(bean.getTtdPetugas());
                 entity.setTarifLabLuar(bean.getTarifLabLuar());
+                entity.setKeterangan(bean.getKeterangan());
             }
 
             try {

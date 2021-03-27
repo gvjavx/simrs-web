@@ -290,18 +290,10 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_rad"></p>
                         </div>
-                        <table style="display: none" class="table table-bordered table-striped" id="tabel_radiologi">
-                            <thead>
-                            <tr bgcolor="#90ee90">
-                                <td width="40%">Pemeriksaan</td>
-                                <td>Hasil</td>
-                                <td>Kesan</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_parameter">
+                        <textarea name="" id="ta-1" cols="30" rows="30"></textarea>
+                        <div id="body_parameter" id="form_hasil_lab_isi">
 
-                            </tbody>
-                        </table>
+                        </div>
                         <div class="row" id="form_params" style="display: none">
                             <div class="form-group">
                                 <div class="col-md-6">
@@ -349,78 +341,49 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-6" id="form_hasil_lab_title">
-                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi <small>(Optional)</small></h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6" id="form_hasil_lab_isi" style="display: none">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="col-md-10">
-                                            <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <span class="btn btn-default btn-file">
-                                                 Browse… <input accept="image/*" onchange="setCanvasWithText('hasil_lab_0', 'label_hasil_lab_0', 'img_hasil_lab_0')" type="file">
-                                            </span>
-                                        </span>
-                                                <input type="text" class="form-control" readonly id="label_hasil_lab_0">
-                                            </div>
-                                            <canvas id="hasil_lab_0" class="hasil_lab" style="display: none"></canvas>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button onclick="addUpload('hasil_lab', 'set_hasil')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="set_hasil">
+                    <%--<div class="box-header with-border"></div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-6" id="form_hasil_lab_title">--%>
+                                <%--<h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Radiologi <small>(Optional)</small></h3>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
 
-                                </div>
-                                <div class="row top_jarak">
-                                    <div class="col-md-12">
-                                        <a class="btn btn-success" onclick="viewUpload('hasil_lab')"><i class="fa fa-image"></i> View Upload</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <%--</div>--%>
                     <hr class="garis">
                     <div class="box-body">
                         <div class="row">
                             <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
+                                <div class="col-md-offset-4 col-md-4 text-center">
                                    <span>TTD Petugas</span>
                                     <button class="btn btn-danger" onclick="removePaint('ttd_petugas')">
                                         <i class="fa fa-trash"></i>
                                     </button>
                                 </div>
-                                <div class="col-md-3">
-                                    <span>TTD Validator</span>
-                                    <button class="btn btn-danger" onclick="removePaint('ttd_dokter')">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
+                                <%--<div class="col-md-3">--%>
+                                    <%--<span>TTD Validator</span>--%>
+                                    <%--<button class="btn btn-danger" onclick="removePaint('ttd_dokter')">--%>
+                                        <%--<i class="fa fa-trash"></i>--%>
+                                    <%--</button>--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                         <div class="row">
                             <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
+                                <div class="col-md-offset-4 col-md-3">
                                     <canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"
                                             onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>
                                     <input class="form-control" placeholder="Nama Petugas" id="nama_petugas">
                                     <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_petugas">
                                 </div>
-                                <div class="col-md-3">
-                                    <canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"
-                                            onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>
-                                    <input class="form-control" placeholder="Nama Validator" id="nama_validator">
-                                    <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_validator">
-                                </div>
+                                <%--<div class="col-md-3">--%>
+                                    <%--<canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"--%>
+                                            <%--onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>--%>
+                                    <%--<input class="form-control" placeholder="Nama Validator" id="nama_validator">--%>
+                                    <%--<input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px" id="nip_validator">--%>
+                                <%--</div>--%>
                             </div>
                         </div>
                         <hr class="garis">
@@ -948,23 +911,68 @@
             if (response.length > 0) {
                 var table = "";
                 $.each(response, function (i, item) {
-                    var hasil = "";
-                    var kesan = "";
-                    if (item.hasil != null && item.hasil != '') {
-                        hasil = item.hasil;
-                    }
-                    if (item.keteranganPeriksa != null && item.keteranganPeriksa != '') {
-                        kesan = item.keteranganPeriksa;
-                    }
-                    table += '<tr>' +
-                        '<td>' + item.namaDetailPeriksa +
-                        '<input id="id_periksa_lab_'+i+'" type="hidden" value="'+item.idPeriksaLabDetail+'">' +
-                        '</td>' +
-                        '<td>' + '<textarea id="hasil_'+i+'" class="form-control" value="'+hasil+'"/>' + '</td>' +
-                        '<td>' + '<textarea id="kesan_'+i+'" class="form-control" value="'+kesan+'"/>' + '</td>' +
-                        '</tr>';
+                    // var hasil = "";
+                    // var kesan = "";
+                    // if (item.hasil != null && item.hasil != '') {
+                    //     hasil = item.hasil;
+                    // }
+                    // if (item.keteranganPeriksa != null && item.keteranganPeriksa != '') {
+                    //     kesan = item.keteranganPeriksa;
+                    // }
+                    // table += '<tr>' +
+                    //     '<td>' + item.namaDetailPeriksa +
+                    //     '<input id="id_periksa_lab_'+i+'" type="hidden" value="'+item.idPeriksaLabDetail+'">' +
+                    //     '</td>' +
+                    //     '<td>' + '<textarea id="hasil_'+i+'" class="form-control" value="'+hasil+'"/>' + '</td>' +
+                    //     '<td>' + '<textarea id="kesan_'+i+'" class="form-control" value="'+kesan+'"/>' + '</td>' +
+                    //     '</tr>';
+                    table = '<div class="row">\n' +
+                        '<div class="col-md-12">\n' +
+                        '    <h4>Skull AP</h4>\n' +
+                        '    <div id="editor'+i+'">\n' +
+                        '        <ul>\n' +
+                        '            <li><strong>Hasil</strong></li>\n' +
+                        '        </ul>\n' +
+                        '        <p>&nbsp;</p>\n' +
+                        '        <p>&nbsp;</p>\n' +
+                        '        <ul>\n' +
+                        '            <li><strong>Kesimpulan</strong></li>\n' +
+                        '        </ul>\n' +
+                        '    </div>\n' +
+                        '</div>\n' +
+                        '                        </div>\n' +
+                        '                        <div class="row top_jarak">\n' +
+                        '<div class="col-md-6"  >\n' +
+                        '    <div class="row">\n' +
+                        '        <div class="form-group">\n' +
+                        '            <div class="col-md-10">\n' +
+                        '                <div class="input-group">\n' +
+                        '            <span class="input-group-btn">\n' +
+                        '                <span class="btn btn-default btn-file">\n' +
+                        '                     Browse… <input accept="image/*" onchange="setCanvasWithText(\'hasil_lab_0\', \'label_hasil_lab_0\', \'img_hasil_lab_0\')" type="file">\n' +
+                        '                </span>\n' +
+                        '            </span>\n' +
+                        '                    <input type="text" class="form-control" readonly id="label_hasil_lab_0">\n' +
+                        '                </div>\n' +
+                        '                <canvas id="hasil_lab_0" class="hasil_lab" style="display: none"></canvas>\n' +
+                        '            </div>\n' +
+                        '            <div class="col-md-2">\n' +
+                        '                <button onclick="addUpload(\'hasil_lab\', \'set_hasil\')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>\n' +
+                        '            </div>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '    <div id="set_hasil">\n' +
+                        '    </div>\n' +
+                        '    <div class="row top_jarak">\n' +
+                        '        <div class="col-md-12">\n' +
+                        '            <a class="btn btn-warning" onclick="viewUpload(\'hasil_lab\')"><i class="fa fa-image"></i> View Upload</a>\n' +
+                        '            <a class="btn btn-success" onclick="viewUpload(\'hasil_lab\')"><i class="fa fa-check"></i> Save Hasil</a>\n' +
+                        '        </div>\n' +
+                        '    </div>\n' +
+                        '</div>\n' +
+                        '</div>';
                 });
-                $('#body_parameter').html(table);
+                // $('#body_parameter').html(table);
             }
         });
     }

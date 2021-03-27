@@ -2902,21 +2902,21 @@ function detailOperasi(jenis) {
                         }else if("tindakan_medis_op" == item.keterangan){
                             if ("colspan" == item.tipe) {
                                 body += '<tr>' +
-                                    '<td colspan="3">' + item.jawaban1 + '</td>' +
+                                    '<td colspan="3">' + cekItemIsNull(item.jawaban1) + '</td>' +
                                     '</tr>';
                             } else if ("info" == item.tipe) {
                                 body += '<tr>' +
                                     '<td width="25%">' + item.parameter + '</td>' +
-                                    '<td >' + item.jawaban1 + '</td>' +
-                                    '<td width="20%" align="center">' + cekIcons(item.jawaban2) + '</td>' +
+                                    '<td >' + cekItemIsNull(item.jawaban1) + '</td>' +
+                                    '<td width="20%" align="center">' + cekIconsIsNotNull(item.jawaban2) + '</td>' +
                                     '</tr>';
                             } else if ("ttd" == item.tipe) {
                                 body += '<tr>' +
                                     '<td colspan="2">' + item.parameter + '</td>' +
-                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban1 + '" style="height: 80px">' +
                                     '<p style="margin-top: -3px">'+cekItemIsNull(item.namaterang)+'</p>' +
                                     '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
-                                    '</tr>';
+                                    '</td>';
                             } else if ("bold" == item.tipe) {
                                 body += '<tr style="font-weight: bold">' +
                                     '<td width="25%">' + item.parameter + '</td>' +

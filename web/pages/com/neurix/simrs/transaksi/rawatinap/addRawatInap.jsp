@@ -734,6 +734,35 @@
                             </tbody>
                         </table>
                     </div>
+
+                        <div class="box-header with-border" id="pos_pendamping">
+                        </div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-stethoscope"></i> Catering Pendamping</h3>
+                        </div>
+                        <div class="box-body">
+                            <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
+                                    onclick="showModal(9)"><i class="fa fa-plus hvr-icon"></i> Catering
+                            </button>
+                            <button class="btn btn-primary" style="margin-bottom: 10px;"
+                                    onclick="refreshTable('pendamping_ref', 'pendamping')"><i class="fa fa-refresh" id="pendamping_ref"></i> Refresh
+                            </button>
+                            <table class="table table-bordered table-striped">
+                                <thead>
+                                <tr bgcolor="#90ee90" style="height: 20px">
+                                    <td>Tanggal</td>
+                                    <td>Nama Catering</td>
+                                    <td>Tipe</td>
+                                    <td align="center">Status</td>
+                                    <td align="center"width="18%">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_pendamping">
+
+                                </tbody>
+                            </table>
+                        </div>
+
                     </s:if>
                     <s:if test='rawatInap.kategoriRuangan == "rawat_inap"'>
                     <div class="box-header with-border" id="pos_ruangan">
@@ -1621,6 +1650,15 @@
                         </div>
                     </div>
                 </div>
+                <hr class="garis">
+                <div class="row" id="form_ttd">
+                    <div class="col-md-offset-3 col-md-6">
+                        <canvas style="cursor: pointer" onmouseover="paintTtd('ttd_dokter_pengirim')" class="paint-canvas" id="ttd_dokter_pengirim" width="250" height="200"></canvas>
+                        <select onchange="onChangePengirim(this.value)" class="form-control" id="select_pengirim"></select>
+                        <input style="margin-top: 5px" class="form-control" id="sip_pengirim">
+                        <buton onclick="removePaint('ttd_dokter_pengirim')" class="btn btn-danger"><i class="fa fa-trash"></i> Clear</buton>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -1852,6 +1890,94 @@
                 <button type="button" class="btn btn-success" id="save_diet"><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_diet"><i
+                        class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="modal-catering">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Gizi</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info alert-dismissible" style="display: none" id="info_catering">
+                    <h4><i class="icon fa fa-info"></i> Info!</h4>
+                    <p id="msg_info_catering"></p>
+                </div>
+                <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_catering">
+                    <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                    <p id="msg_catering"></p>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Snack & Minuman</label>
+                        <div class="col-md-7">
+                            <select id="snack" class="form-control select2" multiple style="width: 100%"
+                                    onchange="inputWarning('war_snack', 'cor_snack')">
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_snack"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_snack">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Makanan Luar</label>
+                        <div class="col-md-7">
+                            <div class="input-group" style="margin-top: 7px">
+                                <input id="makan_luar" class="form-control makanan_luar" placeholder="Makanan Luar 1"
+                                       onchange="inputWarning('war_makan_luar', 'cor_makan_luar')">
+                                <div class="input-group-btn">
+                                    <a onclick="addMakanLuar()" class="btn btn-success" style="height: 34px; margin-top: 0px">
+                                        <i class="fa fa-plus" style="margin-top: 3px"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div id="temp_luar"></div>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_makan_luar"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_makan_luar">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row">
+                    <div class="col-md-12">
+                        <table id="table_add_catering" class="table table-bordered" style="font-size: 12px">
+                            <thead>
+                            <tr>
+                                <td>Waktu</td>
+                                <td>Jenis</td>
+                                <td>Bentuk</td>
+                                <td>Snack</td>
+                                <td>Makanan Luar</td>
+                            </tr>
+                            </thead>
+                            <tbody id="body_add_catering"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" id="save_catering"><i class="fa fa-check"></i> Save
+                </button>
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_catering"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>

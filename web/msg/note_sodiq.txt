@@ -2249,5 +2249,24 @@ AND tipe_pelayanan = 'rawat_inap';
 ALTER TABLE it_simrs_asesmen_operasi
 ADD COLUMN no_checkup VARCHAR(100);
 
+--BELUM DI PROD
+--SABTU MENJELANG MALAM MINGGU
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN ttd_pengirim VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000272','RMM00000033','gizi','6','Y','C','migrasi',now(),now(),'migrasi');
+
+ALTER TABLE it_simrs_pendamping_gizi
+RENAME COLUMN id_order_gizi TO id_detail_checkup;
+
+ALTER TABLE it_simrs_pendamping_gizi
+ADD COLUMN status VARCHAR(1);
+
+ALTER TABLE it_simrs_periksa_lab
+ALTER COLUMN keterangan TYPE text;
+
+
+
 
 
