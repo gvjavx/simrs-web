@@ -104,6 +104,22 @@ public class BiodataAction extends BaseMasterAction {
     private BranchBo branchBoProxy;
     private List<JenisPegawai> listOfComboJenisPegawai = new ArrayList<>();
 
+    public UserBo getUserBoProxy() {
+        return userBoProxy;
+    }
+
+    public void setUserBoProxy(UserBo userBoProxy) {
+        this.userBoProxy = userBoProxy;
+    }
+
+    public BranchBo getBranchBoProxy() {
+        return branchBoProxy;
+    }
+
+    public void setBranchBoProxy(BranchBo branchBoProxy) {
+        this.branchBoProxy = branchBoProxy;
+    }
+
     public List<JenisPegawai> getListOfComboJenisPegawai() {
         return listOfComboJenisPegawai;
     }
@@ -896,6 +912,8 @@ public class BiodataAction extends BaseMasterAction {
 
                 //CREATE USER
                 if("Y".equalsIgnoreCase(biodata.getCreateUser())) {
+                    biodata.setPositionId(biodata.getListOfPersonilPosition().get(0).getPositionId());
+                    biodata.setDivisi(biodata.getListOfPersonilPosition().get(0).getDivisiId());
                     try {
                         createUser(biodata);
                     } catch (Exception e) {

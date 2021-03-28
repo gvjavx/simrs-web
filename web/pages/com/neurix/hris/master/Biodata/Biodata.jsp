@@ -1368,25 +1368,26 @@
                                                 <%--</table>--%>
                                                 <%--</td>--%>
                                                 <%--</tr>--%>
-                                            <tr>
-                                                <td>
-                                                    <label><small>Jabatan PLT :</small></label>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <s:if test="isDelete()">
-                                                            <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                            <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId" disabled="true"
-                                                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
-                                                        </s:if>
-                                                        <s:else>
-                                                            <s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>
-                                                            <s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"
-                                                                      listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>
-                                                        </s:else>
-                                                    </table>
-                                                </td>
-                                            </tr>
+                                            <%--RAKA-28MAR2021 jabatan PLT dipilih di Tab JABTAN & RIWAYAT--%>
+                                            <%--<tr>--%>
+                                                <%--<td>--%>
+                                                    <%--<label><small>Jabatan PLT :</small></label>--%>
+                                                <%--</td>--%>
+                                                <%--<td>--%>
+                                                    <%--<table>--%>
+                                                        <%--<s:if test="isDelete()">--%>
+                                                            <%--<s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>--%>
+                                                            <%--<s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId" disabled="true"--%>
+                                                                      <%--listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                                        <%--</s:if>--%>
+                                                        <%--<s:else>--%>
+                                                            <%--<s:action id="comboPosition" namespace="/admin/position" name="searchPosition_position"/>--%>
+                                                            <%--<s:select list="#comboPosition.listOfComboPosition" id="positionPltId" name="biodata.positionPltId"--%>
+                                                                      <%--listKey="positionId" listValue="positionName" headerKey="" headerValue="" cssClass="form-control"/>--%>
+                                                        <%--</s:else>--%>
+                                                    <%--</table>--%>
+                                                <%--</td>--%>
+                                            <%--</tr>--%>
                                             <tr>
                                                 <td>
                                                     <label><small>Shift <span style="color:red;">*</span> :</small></label>
@@ -2003,7 +2004,7 @@
                     </div>
 
                     <s:if test="isAddOrEdit()">
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"
+                        <sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -6664,7 +6665,7 @@
         var tipePegawai = $('#tipePegawai1').val();
         var tglLahir = $('#tanggalLahir1').val();
         console.log("tipe pegawai : " + tipePegawai);
-        if(tipePegawai == "TP04"){
+        if(tipePegawai != "TP03"){
             $('#tanggalPraPensiun').val('');
             $('#tanggalPensiun').val('');
 
