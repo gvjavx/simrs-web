@@ -1,5 +1,7 @@
 package com.neurix.hris.master.strukturJabatan.bo.impl;
 
+import com.neurix.authorization.position.dao.PositionDao;
+import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
@@ -29,6 +31,11 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
     protected static transient Logger logger = Logger.getLogger(StrukturJabatanBoImpl.class);
     private StrukturJabatanDao strukturJabatanDao;
     private PositionBagianDao positionBagianDao;
+    private PositionDao positionDao;
+
+    public void setPositionDao(PositionDao positionDao) {
+        this.positionDao = positionDao;
+    }
 
     public PositionBagianDao getPositionBagianDao() {
         return positionBagianDao;
@@ -203,7 +210,12 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
         ImStrukturJabatanEntity strukturJabatan = new ImStrukturJabatanEntity();
         StrukturJabatan strukturJabatan1 = new StrukturJabatan();
 
-        strukturJabatan = strukturJabatanDao.getById("strukturJabatanId", id);
+        try{
+            strukturJabatan = strukturJabatanDao.getById("strukturJabatanId", id);
+        }catch (HibernateException e) {
+            logger.error("[StrukturJabatanBoImpl.getDataStrukturJab] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when saving update data StrukturJabatan, please info to your admin..." + e.getMessage());
+        }
         if(strukturJabatan.getStrukturJabatanId() != null){
             strukturJabatan1.setStrukturJabatanId(strukturJabatan.getStrukturJabatanId());
             strukturJabatan1.setParentId(strukturJabatan.getParentId());
@@ -325,6 +337,7 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
 
             if(imStrukturJabatanEntity != null){
                 StrukturJabatan returnStrukturJabatan;
+
                 // Looping from dao to object and save in collection
                 for(ImStrukturJabatanEntity strukturJabatanEntity : imStrukturJabatanEntity){
                     returnStrukturJabatan = new StrukturJabatan();
@@ -452,6 +465,9 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
             throw new GeneralBOException("Error when retrieving Struktur Jabatan, " + e.getMessage());
         }
         if(strukturJabatans.size() > 0){
+            List<ImPosition> unitCostList = new ArrayList<>();
+            Map criteria = new HashMap();
+
             for(StrukturJabatan imStrukturJabatanEntity : strukturJabatans){
                 StrukturJabatan itemComboStrukturJabatan = new StrukturJabatan();
                 itemComboStrukturJabatan.setStrukturJabatanId(imStrukturJabatanEntity.getStrukturJabatanId());
@@ -470,6 +486,26 @@ public class StrukturJabatanBoImpl implements StrukturJabatanBo {
                     itemComboStrukturJabatan.setNip(imStrukturJabatanEntity.getNip());
                     itemComboStrukturJabatan.setName(imStrukturJabatanEntity.getNamaPegawai());
                 }
+
+
+                //RAKA-28MAR2021 ==> mengetahui Unit Cost berdasarkan kodering yg sama
+                unitCostList = new ArrayList<>();
+                criteria.put("flag_cost_unit","Y");
+                criteria.put("kodering", imStrukturJabatanEntity.getKodering());
+                criteria.put("flag", "Y");
+                try{
+                    unitCostList = positionDao.getByCriteria(criteria);
+                }catch (HibernateException e) {
+                    logger.error("[StrukturJabatanBoImpl.getByCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
+                }
+
+                if(unitCostList.size() > 0){
+                    itemComboStrukturJabatan.setUnitCostName(unitCostList.get(0).getPositionName());
+                }else{
+                    itemComboStrukturJabatan.setUnitCostName("-");
+                }
+                //RAKA-end
 
                 //digunakan jika filter posisi ada, set nilai parent id supaya bisa dibaca oleh table
                 if(!positionId.equalsIgnoreCase("")){

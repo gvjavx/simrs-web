@@ -36,8 +36,17 @@ public class StrukturJabatan extends BaseModel {
 
     //RAKA-22MAR2021
     private String kodering;
-    //RAKAend
+    private String unitCostName;
+    //RAKA-end
 
+
+    public String getUnitCostName() {
+        return unitCostName;
+    }
+
+    public void setUnitCostName(String unitCostName) {
+        this.unitCostName = unitCostName;
+    }
 
     public String getKodering() {
         return kodering;
