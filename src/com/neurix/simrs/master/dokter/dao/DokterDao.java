@@ -200,7 +200,7 @@ public class DokterDao extends GenericDao<ImSimrsDokterEntity, String> {
     public String getNextKodering() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kodering')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%01d", iter.next());
+        String sId = String.format("%04d", iter.next());
 
         return sId;
     }
