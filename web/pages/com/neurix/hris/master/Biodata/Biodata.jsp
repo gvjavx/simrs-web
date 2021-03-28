@@ -76,8 +76,9 @@
             var flag                = document.getElementById("flagAktif").value;
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
+            var msKerjaGol          = document.getElementById("poinLebih").value;
 
-            if(tipePegawai == "TP03") {
+            if(tipePegawai == "TP03") { //PEG. TETAP
                 var level               = document.getElementById("golongan1").value;
             } else {
                 var level               = document.getElementById("golongan3").value;
@@ -85,6 +86,8 @@
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && level !='') {
                 if (confirm('Do you want to save this record?')) {
+                    alert("Pegawai akan secara otomatis dibuatka Akun User!" +
+                        "\n\tUSER ID : " + nip + "\n\tPASSWORD: 123");
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -1498,6 +1501,9 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="display: none" id="createUser" name="biodata.createUser" value="Y" />
+                                            </s:if>
                                         </table>
                                     </div>
                                 </div>
@@ -1997,7 +2003,7 @@
                     </div>
 
                     <s:if test="isAddOrEdit()">
-                        <sj:submit targets="crusd" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="homeForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -6521,7 +6527,7 @@
 
     window.getTanggalPensiun = function () {
         var tipePegawai = $('#tipePegawai1').val();
-        if(tipePegawai !=null && tipePegawai != '' && tipePegawai !="TP03") {
+        if(tipePegawai !=null && tipePegawai != '' && tipePegawai =="TP03") {
             var tanggal = $('#tanggalLahir1').val();
             var tanggalPensiun = document.getElementById("tanggalPensiun").value;
             var tanggalPraPensiun = document.getElementById("tanggalPraPensiun").value;
@@ -6657,6 +6663,7 @@
     function getPensiun(){
         var tipePegawai = $('#tipePegawai1').val();
         var tglLahir = $('#tanggalLahir1').val();
+        console.log("tipe pegawai : " + tipePegawai);
         if(tipePegawai == "TP04"){
             $('#tanggalPraPensiun').val('');
             $('#tanggalPensiun').val('');

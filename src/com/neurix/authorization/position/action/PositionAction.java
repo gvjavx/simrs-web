@@ -588,9 +588,9 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.searchDivisi] start process >>>");
 
         Position searchPosition = new Position();
-        if (!"0".equalsIgnoreCase(branchId)){
+//        if (!"0".equalsIgnoreCase(branchId)){
             searchPosition.setBranchId(branchId);
-        }
+//        }
         List<Position> listOfSearchPosition = new ArrayList();
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

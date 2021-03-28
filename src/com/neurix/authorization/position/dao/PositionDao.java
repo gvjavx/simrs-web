@@ -240,7 +240,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<Position> listOfResult = new ArrayList<Position>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select \n" +
                 "\tdepartment_id,\n" +
                 "\tdepartment_name,\n" +
                 "\tkodering\n" +
@@ -281,7 +281,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
-                "\tAND flag_cost_unit = 'N' OR flag_cost_unit IS NULL \n" +
+                "\tAND (flag_cost_unit = 'N' OR flag_cost_unit IS NULL) \n" +
                 "order by\n" +
                 "\tkodering";
 
