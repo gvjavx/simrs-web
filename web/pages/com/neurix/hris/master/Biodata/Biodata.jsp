@@ -6665,7 +6665,7 @@
         var tipePegawai = $('#tipePegawai1').val();
         var tglLahir = $('#tanggalLahir1').val();
         console.log("tipe pegawai : " + tipePegawai);
-        if(tipePegawai != "TP03"){
+        if(tipePegawai == "TP04"){
             $('#tanggalPraPensiun').val('');
             $('#tanggalPensiun').val('');
 
