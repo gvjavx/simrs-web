@@ -953,7 +953,7 @@
                                             <s:action id="initComboKet" namespace="/checkupdetail"
                                                       name="getListComboKeteranganKeluar_checkupdetail"/>
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
-                                                      listKey="keterangan"
+                                                      listKey="idKeterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
                                                       onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()};"
                                                       headerKey="" headerValue="[Select one]"

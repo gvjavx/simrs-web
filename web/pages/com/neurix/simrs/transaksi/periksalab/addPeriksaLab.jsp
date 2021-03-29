@@ -354,15 +354,14 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-sticky-note-o"></i> Keterangan
+                        <h3 class="box-title"><i class="fa fa-sticky-note-o"></i> Catatan
                             <small>(Optional)</small>
                         </h3>
                     </div>
                     <div class="box-body">
                         <div class="row">
                             <div class="col-md-12">
-                                 <textarea name="editor1" id="keterangan_hasil_lab" rows="5">
-                                 </textarea>
+                                 <textarea class="editors" id="keterangan_hasil_lab" rows="5"></textarea>
                             </div>
                         </div>
                     </div>
@@ -953,7 +952,7 @@
         var nip2 = $('#nip_validator').val();
         var isiParam = $('#tabel_lab').tableToJSON();
         var totalTarif = $('#h_total_tarif').val();
-        var keteranganHasil = $('#keterangan_hasil_lab').val();
+        var keteranganHasil = CKEDITOR.instances['keterangan_hasil_lab'].getData();
 
         var jsonData = [];
         $.each(isiParam, function (i, item) {

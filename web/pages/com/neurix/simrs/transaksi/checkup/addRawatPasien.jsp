@@ -2980,15 +2980,21 @@
                             $('#cover_biaya_paket').val(selectedObj.tarif);
                         }
 
-                        if (res.isDaftar == "Y") {
+                        if(res.flagMeninggal == "Y"){
                             $('#btn-save').hide();
                             $('#warning_pasien').show();
-                            $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                        } else {
-                            $('#btn-save').show();
-                            $('#warning_pasien').hide();
-                            $('#msg_pasien').text("");
-                            alertObatKronis(selectedObj.id);
+                            $('#msg_pasien').text("Pasien Sudah Meninggal Dunia Pada Tanggal ["+converterDate(res.tglMeninggal)+"]");
+                        }else{
+                            if (res.isDaftar == "Y") {
+                                $('#btn-save').hide();
+                                $('#warning_pasien').show();
+                                $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                            } else {
+                                $('#btn-save').show();
+                                $('#warning_pasien').hide();
+                                $('#msg_pasien').text("");
+                                alertObatKronis(selectedObj.id);
+                            }
                         }
                     }
                 });
@@ -3110,15 +3116,21 @@
                                 $('#cover_biaya_paket').val(selectedObj.tarif);
                             }
 
-                            if (res.isDaftar == "Y") {
+                            if(res.flagMeninggal == "Y"){
                                 $('#btn-save').hide();
                                 $('#warning_pasien').show();
-                                $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                            } else {
-                                $('#btn-save').show();
-                                $('#warning_pasien').hide();
-                                $('#msg_pasien').text("");
-                                alertObatKronis(selectedObj.id);
+                                $('#msg_pasien').text("Pasien Sudah Meninggal Dunia Pada Tanggal ["+converterDate(res.tglMeninggal)+"]");
+                            }else{
+                                if (res.isDaftar == "Y") {
+                                    $('#btn-save').hide();
+                                    $('#warning_pasien').show();
+                                    $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                                } else {
+                                    $('#btn-save').show();
+                                    $('#warning_pasien').hide();
+                                    $('#msg_pasien').text("");
+                                    alertObatKronis(selectedObj.id);
+                                }
                             }
                         }
                     });

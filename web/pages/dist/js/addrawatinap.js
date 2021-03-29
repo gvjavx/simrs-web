@@ -3538,7 +3538,7 @@ function savePemeriksaanPasien() {
     var data = "";
     var tindakLanjut = $('#keterangan').val();
     var catatan = $('#pesan_dokter').val();
-    var keterangan = $('#ket_selesai').val();
+    var keterangan = $('#ket_selesai option:selected').text();
     var ketRawatInap = $('#keterangan_rw').val();
     var rsRujukan = $('#rs_rujukan').val();
     var tglKontrol = $('#tgl_kontrol').val().split("-").reverse().join("-");
@@ -3551,6 +3551,7 @@ function savePemeriksaanPasien() {
     var idRuanganLama = $('#id_ruangan_lama').val();
     var cek = false;
     var cekTindakan = $('#tabel_tindakan').tableToJSON();
+    var idKeterangan = $('#ket_selesai').val();
 
     if (cekTindakan.length > 0) {
         if (tindakLanjut != '') {
@@ -3634,6 +3635,16 @@ function savePemeriksaanPasien() {
                 }
                 var ket = tindakLanjut.replace("_", " ");
                 var ktr = convertSentenceCaseUp(ket);
+                var meninggal = "";
+
+                if("selesai" == tindakLanjut){
+                    CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
+                        if("meninggal" == res.kategori){
+                            meninggal = "Y";
+                        }
+                    });
+                }
+
                 data = {
                     'id_detail_checkup': idDetailCheckup,
                     'no_checkup': noCheckup,
@@ -3644,7 +3655,8 @@ function savePemeriksaanPasien() {
                     'id_ruangan': idRuangan,
                     'is_stay': stay,
                     'jenis_pasien': jenisPeriksaPasien,
-                    'id_ruangan_lama': idRuanganLama
+                    'id_ruangan_lama': idRuanganLama,
+                    'is_meninggal': meninggal
                 }
                 cek = true;
             }

@@ -95,5 +95,8 @@
         <property name="ttdPengirim">
             <column name="ttd_pengirim"/>
         </property>
+        <property name="catatan">
+            <column name="catatan"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -41,4 +41,6 @@ public interface PeriksaLabBo {
     public List<PeriksaLab> getListLab(String noChekcup, String jenis) throws GeneralBOException;
     public List<PeriksaLab> pushListLab(String kategori, String branchId) throws GeneralBOException;
     public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) throws GeneralBOException;
+    public void saveEditRadiologi(PeriksaLab bean) throws GeneralBOException;
+    public void saveSelesaiRadiologi(PeriksaLab bean) throws GeneralBOException;
 }

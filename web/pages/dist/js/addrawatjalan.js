@@ -3297,7 +3297,7 @@ function savePemeriksaanPasien() {
     var dataAsuransi = "";
     var tindakLanjut = $('#keterangan').val();
     var catatan = $('#pesan_dokter').val();
-    var keterangan = $('#ket_selesai').val();
+    var keterangan = $('#ket_selesai option:selected').text();
     var ketRawatInap = $('#keterangan_rw').val();
     var rsRujukan = $('#rs_rujukan').val();
     var tglKontrol = $('#tgl_kontrol').val().split("-").reverse().join("-");
@@ -3323,6 +3323,7 @@ function savePemeriksaanPasien() {
     var dataURL = canvas.toDataURL("image/png"),
         dataURL = dataURL.replace(/^data:image\/(png|jpg);base64,/, "");
     var cek = false;
+    var idKeterangan = $('#ket_selesai').val();
 
     var eksekutif = "N";
     if ($('#is_eksekutif').is(':checked')) {
@@ -3452,6 +3453,15 @@ function savePemeriksaanPasien() {
         } else {
             var ket = tindakLanjut.replace("_", " ");
             var ktr = convertSentenceCaseUp(ket);
+            var meninggal = "";
+
+            if("selesai" == tindakLanjut){
+                CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
+                    if("meninggal" == res.kategori){
+                        meninggal = "Y";
+                    }
+                });
+            }
 
             data = {
                 'no_checkup': noCheckup,
@@ -3459,7 +3469,8 @@ function savePemeriksaanPasien() {
                 'tindak_lanjut': tindakLanjut,
                 'keterangan': ktr,
                 'catatan': catatan,
-                'jenis_pasien': jenisPeriksaPasien
+                'jenis_pasien': jenisPeriksaPasien,
+                'is_meninggal': meninggal
             }
             cek = true;
         }

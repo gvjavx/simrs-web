@@ -2263,8 +2263,23 @@ RENAME COLUMN id_order_gizi TO id_detail_checkup;
 ALTER TABLE it_simrs_pendamping_gizi
 ADD COLUMN status VARCHAR(1);
 
-ALTER TABLE it_simrs_periksa_lab
-ALTER COLUMN keterangan TYPE text;
+ALTER TABLE it_simrs_periksa_lab_detail
+ALTER COLUMN hasil TYPE text;
+
+ALTER TABLE it_simrs_upload_hasil_pemeriksaan
+ADD COLUMN id_periksa_lab_detail VARCHAR(50),
+ADD COLUMN nama_detail_periksa VARCHAR(100);
+
+ALTER TABLE im_simrs_pasien
+ADD COLUMN flag_meninggal VARCHAR(1),
+ADD COLUMN tanggal_meninggal TIMESTAMP WITHOUT TIME ZONE;
+
+ALTER TABLE im_simrs_keterangan_keluar
+ADD COLUMN kategori VARCHAR(100);
+
+UPDATE im_simrs_keterangan_keluar
+SET kategori = 'meninggal'
+WHERE id_keterangan = '04';
 
 
 

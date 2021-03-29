@@ -1228,6 +1228,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String idPoliInternal = null;
                 String eksekutif = null;
                 String vaksin = null;
+                String isMeninggal = "";
 
                 if (object.has("rs_rujukan")) {
                     rsRujukan = object.getString("rs_rujukan");
@@ -1277,6 +1278,9 @@ public class CheckupDetailAction extends BaseMasterAction {
                 if (object.has("is_vaksin")) {
                     vaksin = object.getString("is_vaksin");
                 }
+                if (object.has("is_meninggal")) {
+                    isMeninggal = object.getString("is_meninggal");
+                }
 
                 List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
 
@@ -1295,6 +1299,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setTglCekup(java.sql.Date.valueOf(tglKontrol));
                     }
                     headerDetailCheckup.setRsRujukan(rsRujukan);
+                    headerDetailCheckup.setIsMeninggal(isMeninggal);
 
                     saveApproveAllTindakanRawatJalan(idDetailCheckup, jenisPasien);
 
@@ -5273,10 +5278,13 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             if (periksalb.getIdPeriksaLab() != null) {
                 if ("lab".equalsIgnoreCase(tipe)) {
-                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
+                    reportParams.put("title", "Hasil Periksa Lab");
+                    reportParams.put("divisi", "Laboratorium");
                 } else {
-                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
+                    reportParams.put("title", "Hasil Periksa Radiologi");
+                    reportParams.put("divisi", "Radiologi");
                 }
+                reportParams.put("jenisPemeriksaan", periksalb.getLabName());
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -5288,6 +5296,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("nama", checkup.getNama());
             String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
             reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+            reportParams.put("tgllahir", formatDate);
             if ("L".equalsIgnoreCase(checkup.getJenisKelamin())) {
                 jk = "Laki-Laki";
             } else {
@@ -5779,6 +5788,23 @@ public class CheckupDetailAction extends BaseMasterAction {
         }
 
         return "print_no_antrian";
+    }
+
+    private KeteranganKeluar initKeteranganKeluar(String id) {
+        KeteranganKeluar res = new KeteranganKeluar();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        KeteranganKeluarBo keteranganKeluarBo = (KeteranganKeluarBo) ctx.getBean("keteranganKeluarBoProxy");
+        List<KeteranganKeluar> keluarList = new ArrayList<>();
+        try {
+            res.setIdKeterangan(id);
+            keluarList = keteranganKeluarBo.getByCriteria(res);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        if(keluarList.size() > 0){
+            res = keluarList.get(0);
+        }
+        return res;
     }
 
 
