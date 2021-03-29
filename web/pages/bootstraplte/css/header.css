@@ -226,7 +226,6 @@ html, body {
     -webkit-animation-delay: .33s;
     -webkit-animation-duration: 2.2s;
 }
-.modal { overflow-y: auto}
 
 .ttd-paint-canvas {
     border: 1px black solid;

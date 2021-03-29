@@ -1072,6 +1072,19 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
         }
     }
 
+    @Override
+    public void saveUpload(ItSimrsUploadHasilPemeriksaanEntity bean) throws GeneralBOException {
+        if(bean != null){
+            try {
+                bean.setIdUploadHasilPemeriksaan(uploadHasilPeriksaDao.getNextId());
+                uploadHasilPeriksaDao.addAndSave(bean);
+            }catch (HibernateException e){
+                logger.error(e.getMessage());
+                throw new GeneralBOException(e.getMessage());
+            }
+        }
+    }
+
     public void setUploadHasilPeriksaDao(UploadHasilPeriksaDao uploadHasilPeriksaDao) {
         this.uploadHasilPeriksaDao = uploadHasilPeriksaDao;
     }

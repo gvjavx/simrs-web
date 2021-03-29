@@ -5790,7 +5790,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         return "print_no_antrian";
     }
 
-    private KeteranganKeluar initKeteranganKeluar(String id) {
+    public KeteranganKeluar initKeteranganKeluar(String id) {
         KeteranganKeluar res = new KeteranganKeluar();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KeteranganKeluarBo keteranganKeluarBo = (KeteranganKeluarBo) ctx.getBean("keteranganKeluarBoProxy");
