@@ -512,6 +512,27 @@
         });
     });
 
+    Date.prototype.workingDaysFrom=function(fromDate){
+        // ensure that the argument is a valid and past date
+        if(!fromDate||isNaN(fromDate)||this<fromDate){return -1;}
+
+        // clone date to avoid messing up original date and time
+        var frD=new Date(fromDate.getTime()),
+            toD=new Date(this.getTime()),
+            numOfWorkingDays=1;
+
+        // reset time portion
+        frD.setHours(0,0,0,0);
+        toD.setHours(0,0,0,0);
+
+        while(frD<toD){
+            frD.setDate(frD.getDate()+1);
+            var day=frD.getDay();
+            if(day!=0&&day!=6){numOfWorkingDays++;}
+        }
+        return numOfWorkingDays;
+    };
+
     $('#tgl1').on('change',function(){
         var startdate = $('#tgl2').datepicker('getDate');
         var enddate = $('#tgl1').datepicker('getDate');
@@ -524,6 +545,7 @@
             $('#tgl1').val("");
         }
     });
+
     $('#tgl2').on('change',function(){
         var hariini = new Date();
         var startdate = $('#tgl2').datepicker('getDate');
@@ -539,8 +561,14 @@
     });
     $('#tglMelahirkan1').on('change',function(){
         var date = $('#tglMelahirkan1').datepicker('getDate');
+        var oldDate = $('#tglMelahirkan1').datepicker('getDate');
         date.setDate(date.getDate()+45);
-        console.log('tgl selesai '+date);
+        var dur = date.workingDaysFrom(oldDate);
+        while(dur<45){
+            date.setDate(date.getDate()+1);
+            dur = date.workingDaysFrom(oldDate);
+        }
+        console.log('tgl selesai '+date+ " durasi : " + dur);
         var d = new Date(date),
                 month = '' + (d.getMonth() + 1),
                 day = '' + (d.getDate()),
