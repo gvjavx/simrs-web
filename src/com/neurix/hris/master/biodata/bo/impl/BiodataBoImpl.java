@@ -2040,7 +2040,7 @@ public class BiodataBoImpl implements BiodataBo {
                 imBiodataEntity.setStatusPegawai(bean.getStatusPegawai());
                 imBiodataEntity.setStatusKeluarga(bean.getStatusKeluarga());
                 imBiodataEntity.setGolongan(bean.getGolongan());
-                if (CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(bean.getTipePegawai())) {
+                if (!CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(bean.getTipePegawai())) {
 //                if ("N".equalsIgnoreCase(bean.getFlagDokterKso())){
                     if(!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null){
                         imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
@@ -2403,7 +2403,7 @@ public class BiodataBoImpl implements BiodataBo {
 
                                     if (pengalamanKerja.getGolonganId() != null) {
                                         if (!pengalamanKerja.getGolonganId().equalsIgnoreCase("")) {
-                                            if (pengalamanKerja.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                                            if (!pengalamanKerja.getTipePegawaiId().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
                                                 try {
                                                     golonganName = historyJabatanPegawaiDao.getGolonganById(pengalamanKerja.getGolonganId());
                                                 } catch (HibernateException e) {

@@ -78,7 +78,7 @@
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
             var msKerjaGol          = document.getElementById("poinLebih").value;
 
-            if(tipePegawai == "TP03") { //PEG. TETAP
+            if(tipePegawai != "TP04") { //sealin PEG. TETAP
                 var level               = document.getElementById("golongan1").value;
             } else {
                 var level               = document.getElementById("golongan3").value;
@@ -3459,7 +3459,7 @@
     }
 
     window.changePegawai = function (id) {
-        if (id == "TP03") {
+        if (id != "TP04") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
@@ -3478,7 +3478,7 @@
         }
     }
     window.changePegawaiHistory = function (id) {
-        if (id == "TP03") {
+        if (id != "TP04") {
             $('#golonganHistory1Group').show();
             $('#golonganHistory2Group').hide();
         } else {

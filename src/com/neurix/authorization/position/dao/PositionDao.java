@@ -209,13 +209,14 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> listOfResult = new ArrayList<ImPosition>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select\n" +
                 "\tposition_id,\n" +
                 "\tposition_name,\n" +
                 "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" + bagian + " and flag='Y'\n" +
+                "\tand (flag_cost_unit IS NULL or flag_cost_unit != 'Y')\n" +
                 "\torder by kodering";
 
         results = this.sessionFactory.getCurrentSession()
