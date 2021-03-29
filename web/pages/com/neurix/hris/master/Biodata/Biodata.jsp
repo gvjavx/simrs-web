@@ -86,8 +86,10 @@
 
             if (statusPegawai != '' && nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tipePegawai != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && level !='') {
                 if (confirm('Do you want to save this record?')) {
-                    alert("Pegawai akan secara otomatis dibuatka Akun User!" +
-                        "\n\tUSER ID : " + nip + "\n\tPASSWORD: 123");
+                    <s:if test="isAdd()">
+                        alert("Pegawai akan secara otomatis dibuatka Akun User!" +
+                            "\n> USER ID : " + nip + "\n> PASSWORD: 123");
+                    </s:if>
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -6528,7 +6530,7 @@
 
     window.getTanggalPensiun = function () {
         var tipePegawai = $('#tipePegawai1').val();
-        if(tipePegawai !=null && tipePegawai != '' && tipePegawai =="TP03") {
+        if(tipePegawai !=null && tipePegawai != '' && tipePegawai !="TP04") {
             var tanggal = $('#tanggalLahir1').val();
             var tanggalPensiun = document.getElementById("tanggalPensiun").value;
             var tanggalPraPensiun = document.getElementById("tanggalPraPensiun").value;

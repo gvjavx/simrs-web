@@ -40,7 +40,7 @@
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
                 }
                 if (grupId =='') {
-                    msg += 'Field <strong>Grup</strong> is required.' + '<br/>';
+                    msg += 'Field <strong>Sub Divisi</strong> is required.' + '<br/>';
                 }
                 if (jamKerjaAwal =='') {
                     msg += 'Field <strong>Jam Awal Kerja</strong> is required.' + '<br/>';
