@@ -556,12 +556,13 @@
                 $('.I').css("display", "none");
             }
         }
+
         if ($('#check').val()=="Y"){
             $('#branchId').attr('readonly','true');
             $('#branchId').attr('disabled','true');
             $('#nipId').attr('readonly','true');
 
-            if ($('#berhakLembur').val()==false){
+            if ($('#berhakLembur').val()!=true){
                 $('#save').text("Anda Tidak Berhak Mengajukan Lembur");
                 $('#save').removeClass("btn-primary");
                 $('#save').addClass("btn-danger");
