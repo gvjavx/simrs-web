@@ -92,6 +92,7 @@ public class PositionBoImpl implements PositionBo {
         this.positionDao = positionDao;
     }
 
+    @Override
     public List<Position> getAll() throws GeneralBOException {
 
         logger.info("[PositionBoImpl.getAll] start process >>>");
@@ -158,6 +159,7 @@ public class PositionBoImpl implements PositionBo {
         return listComboDivisi;
     }
 
+    @Override
     public List<Position> getByCriteria(Position searchPosition) throws GeneralBOException {
 
         logger.info("[PositionBoImpl.getByCriteria] start process >>>");
@@ -192,6 +194,14 @@ public class PositionBoImpl implements PositionBo {
             if (searchPosition.getKategori() != null && !"".equalsIgnoreCase(searchPosition.getKategori())) {
                 hsCriteria.put("kategori", searchPosition.getKategori());
             }
+            if (searchPosition.getFlagCostUnit() != null && !"".equalsIgnoreCase(searchPosition.getFlagCostUnit())) {
+                hsCriteria.put("flag_cost_unit", searchPosition.getFlagCostUnit());
+            }
+            //RAKA-29MAR2021 ==> alternatif menampilkan semua (sementara)
+            else{
+                hsCriteria.put("flag_cost_unit", "all");
+            }
+            //RAKA-end
 
             if (searchPosition.getFlag() != null && !"".equalsIgnoreCase(searchPosition.getFlag())) {
                 if ("N".equalsIgnoreCase(searchPosition.getFlag())) {
@@ -249,6 +259,7 @@ public class PositionBoImpl implements PositionBo {
                     resultPosition.setLastUpdateWho(imPosition.getLastUpdateWho());
                     resultPosition.setFlag(imPosition.getFlag());
                     resultPosition.setKategori(imPosition.getKategori());
+                    resultPosition.setFlagCostUnit(imPosition.getFlagCostUnit());
 
                     listOfResultPosition.add(resultPosition);
                 }
@@ -261,41 +272,42 @@ public class PositionBoImpl implements PositionBo {
         return listOfResultPosition;
     }
 
+    @Override
     public Position saveAdd(Position position) throws GeneralBOException {
 
         logger.info("[PositionBoImpl.saveAdd] start process >>>");
 
         if (position != null) {
-            String status = cekStatus(position.getPositionName());
-            if (!status.equalsIgnoreCase("Exist")){
-                ImPosition imPosition = new ImPosition();
+            ImPosition imPosition = new ImPosition();
 
-                imPosition.setFlag("Y");
-                imPosition.setPositionId(positionDao.getNextPosition() + "");
-                imPosition.setPositionName(position.getPositionName());
-                imPosition.setDepartmentId(position.getDepartmentId());
-                imPosition.setKelompokId(position.getKelompokId());
-                imPosition.setBagianId(position.getBagianId());
+            String positionId = "";
 
-                ImPositionBagianEntity positionBagianEntity = positionBagianDao.getById("bagianId",position.getBagianId());
-                List<ImPosition> positionList = positionDao.getListByBagianId(position.getBagianId());
-                String sId = String.format("%02d", positionList.size()+1);
+            try {
+                positionId = positionDao.getNextPosition();
+            } catch (HibernateException e){
+                logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when get positionid, please info to your admin. " + e.getMessage());
+            }
 
-                imPosition.setKodering(positionBagianEntity.getKodering()+"."+sId);
+            imPosition.setPositionId(positionId);
+            imPosition.setPositionName(position.getPositionName());
+            imPosition.setDepartmentId(position.getDepartmentId());
+            imPosition.setKelompokId(position.getKelompokId());
+            imPosition.setBagianId(position.getBagianId());
+            imPosition.setKodering(position.getKodering());
+            imPosition.setFlagCostUnit(position.getFlagCostUnit());
+            imPosition.setCreatedDate(position.getCreatedDate());
+            imPosition.setCreatedWho(position.getCreatedWho());
+            imPosition.setLastUpdate(position.getLastUpdate());
+            imPosition.setLastUpdateWho(position.getLastUpdateWho());
+            imPosition.setFlag("Y");
+            imPosition.setAction("C");
 
-                imPosition.setCreatedDate(position.getCreatedDate());
-                imPosition.setLastUpdate(position.getLastUpdate());
-                imPosition.setLastUpdateWho(position.getLastUpdateWho());
-                imPosition.setCreatedWho(position.getCreatedWho());
-                imPosition.setAction(position.getAction());
-                try {
-                    positionDao.addAndSave(imPosition);
-                } catch (HibernateException e) {
-                    logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data position, please info to your admin..." + e.getMessage());
-                }
-            }else{
-                throw new GeneralBOException("Maaf Posisi atau Kodering Tersebut Sudah Ada");
+            try {
+                positionDao.addAndSave(imPosition);
+            } catch (HibernateException e) {
+                logger.error("[PositionBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data position, please info to your admin..." + e.getMessage());
             }
         }
 
@@ -303,6 +315,7 @@ public class PositionBoImpl implements PositionBo {
         return null;
     }
 
+    @Override
     public Long saveErrorMessage(String message, String moduleMethod) throws GeneralBOException {
 
 //        Long result = GenerateBoLog.generateBoLog(positionDao, message, moduleMethod);
@@ -310,6 +323,7 @@ public class PositionBoImpl implements PositionBo {
         return null;
     }
 
+    @Override
     public void saveEdit(Position bean) throws GeneralBOException{
         logger.info("[PositionBoImpl.saveEdit] start process >>>");
 
@@ -384,7 +398,7 @@ public class PositionBoImpl implements PositionBo {
                     throw new GeneralBOException("Error, not found data Position with request id, please check again your data ...");
                 }
             }else {
-                throw new GeneralBOException("Maaf Posisi Tersebut Sudah Terisi");
+                throw new GeneralBOException("Posisi dengan Nama Tersebut Sudah Ada");
             }
         }
         logger.info("[PositionBoImpl.saveEdit] end process <<<");
@@ -465,6 +479,7 @@ public class PositionBoImpl implements PositionBo {
 //        logger.info("[PositionBoImpl.saveEdit] end process <<<");
 //    }
 
+    @Override
     public void saveDelete(Position position) throws GeneralBOException {
 
         logger.info("[PositionBoImpl.saveDelete] start process >>>");
@@ -646,6 +661,7 @@ public class PositionBoImpl implements PositionBo {
         return resultPosition;
     }
 
+    @Override
     public List<Position> getComboPositionWithCriteria(String query) throws GeneralBOException {
         logger.info("[PositionBoImpl.getComboPositionWithCriteria] start process >>>");
 
@@ -756,6 +772,8 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
+
+    @Override
     public List<Position> searchPositionBiodataSysHistory(String divisiId) throws GeneralBOException {
         List<ImPosition> posisiList = null;
         List<Position> positions = new ArrayList<>();
@@ -771,6 +789,7 @@ public class PositionBoImpl implements PositionBo {
         }
         return positions;
     }
+    @Override
     public String cekStatus(String positionName)throws GeneralBOException{
         String status ="";
         List<ImPosition> imPositions = new ArrayList<>();
@@ -792,6 +811,7 @@ public class PositionBoImpl implements PositionBo {
         return status;
     }
 
+    @Override
     public String cekStatusEdit(String positionName, String department, String bagian, String kelompok) throws GeneralBOException{
         String status = "";
         List<ImPosition> positions = new ArrayList<>();
@@ -910,6 +930,7 @@ public class PositionBoImpl implements PositionBo {
         return listOfResultPosition;
     }
 
+    @Override
     public List<ImPosition> getPositionByString(String query) throws GeneralBOException {
         String term = "%"+query+"%";
         return positionDao.getListPosition(term);
@@ -960,5 +981,48 @@ public class PositionBoImpl implements PositionBo {
 
         logger.info("[PositionBoImpl.getUnitCostByBagian]  END <<<");
         return positionList;
+    }
+
+    @Override
+    public Position getOnePositionByKodering(String kodering) throws GeneralBOException {
+        logger.info("[PositionBoImpl.getUnitCostByBagian]  START >>>");
+
+        Position position = new Position();
+
+        try {
+            position = positionDao.getOnePositionByKodering(kodering);
+        } catch (HibernateException e){
+            logger.error("[PositionBoImpl.getOnePositionByKodering] ERROR, " + e.getMessage());
+            throw new GeneralBOException("[PositionBoImpl.getOnePositionByKodering] Found problem search unit cost ." + e.getMessage());
+        }
+
+        logger.info("[PositionBoImpl.getUnitCostByBagian]  END <<<");
+        return position;
+    }
+
+    @Override
+    public String sugestLastKoderingBySubbidId(String subBidId) throws GeneralBOException {
+        logger.info("[PositionBoImpl.sugestLastKoderingBySubbidId]  START >>>");
+
+        String kodering = "";
+
+        ImPositionBagianEntity positionBagianEntity = new ImPositionBagianEntity();
+
+        try {
+            positionBagianEntity = positionBagianDao.getById("bagianId", subBidId);
+        } catch (HibernateException e){
+            logger.error("[PositionBoImpl.sugestLastKoderingBySubbidId] ERROR, " + e.getMessage());
+            throw new GeneralBOException("[PositionBoImpl.sugestLastKoderingBySubbidId] Found problem search unit cost ." + e.getMessage());
+        }
+
+        try {
+            kodering = positionDao.getLastKodering(positionBagianEntity.getKodering());
+        } catch (HibernateException e){
+            logger.error("[PositionBoImpl.sugestLastKoderingBySubbidId] ERROR, " + e.getMessage());
+            throw new GeneralBOException("[PositionBoImpl.sugestLastKoderingBySubbidId] Found problem search unit cost ." + e.getMessage());
+        }
+
+        logger.info("[PositionBoImpl.sugestLastKoderingBySubbidId]  END <<<");
+        return kodering;
     }
 }

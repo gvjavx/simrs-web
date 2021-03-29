@@ -1870,6 +1870,7 @@ public class UserBoImpl implements UserBo {
         return listOfResultUsers;
     }
 
+    @Override
     public void saveAdd(User addUsers) throws GeneralBOException {
 
         logger.info("[UserBoImpl.saveAdd] start process >>>");

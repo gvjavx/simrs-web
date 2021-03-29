@@ -1180,7 +1180,7 @@
                             <s:a action="ksoToKaryawan_biodata.action" cssClass="btn btn-info" id="kso2karyawan">
                                 <s:param name="id"><s:property value="biodata.nip" /></s:param>
                                 <s:param name="flag"><s:property value="biodata.flag" /></s:param>
-                                <i class="fa fa-user"></i>  Jadikan Karyawan Tetap
+                                <i class="fa fa-user"></i>  Jadikan Karyawan Kantor
                             </s:a>
                         </s:if>
                     </s:if>
@@ -2490,7 +2490,7 @@
     }
 
     window.changePegawai = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
@@ -2501,7 +2501,7 @@
         }
     }
     window.changePegawaiHistory = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golonganHistory1Group').show();
             $('#golonganHistory2Group').hide();
         } else {
@@ -2512,7 +2512,7 @@
 
     function loadStatusPegawai(){
         var statusPegawai = $('#tipePegawai1').val();
-        if (statusPegawai=="TP03"){
+        if (statusPegawai=="TP04"){
             $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir</small>");
             $('.label-pensiun').html("<small>Tgl Kontrak Berakhir</small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
@@ -3653,10 +3653,10 @@
             var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
             var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
             var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
-            if(tipePegawaiId=="TP01"){
+            if(tipePegawaiId=="TP03"){
                 var golonganId = document.getElementById("pengalamanGolonganId1").value;
             }
-            if(tipePegawaiId=="TP03"){
+            if(tipePegawaiId=="TP04"){
                 var golonganId = document.getElementById("golonganHistory3").value;
             }
             var pjsFlag = document.getElementById("pjsFlag1").value;
@@ -4492,12 +4492,12 @@
                 $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
-                if(listdata.tipePegawaiId == "TP01"){
+                if(listdata.tipePegawaiId == "TP03"){
                     $('#pengalamanGolonganId1').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').show();
                     $('#golonganHistory2Group').hide();
                 }
-                if(listdata.tipePegawaiId == "TP03"){
+                if(listdata.tipePegawaiId == "TP04"){
                     $('#golonganHistory3').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').hide();
                     $('#golonganHistory2Group').show();

@@ -370,7 +370,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
     public List<ImBiodataEntity> getPegawaiCuti(String unit) throws HibernateException {
         List<ImBiodataEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImBiodataEntity.class)
                 .add(Restrictions.eq("flag","Y"))
-                .add(Restrictions.eq("tipePegawai","TP01"))
+                .add(Restrictions.eq("tipePegawai",CommonConstant.PEGAWAI_TETAP))
                 .add(Restrictions.isNotNull("pin"))
                 .list();
         return results;
@@ -481,9 +481,14 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 }
             }
 
-            String query = "SELECT DISTINCT cuti.* FROM  \n" +
-                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
-                    "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
+//            String query = "SELECT cuti.* FROM  \n" +
+//                    "                    ( SELECT * FROM it_hris_notifikasi ) notifikasi LEFT JOIN  \n" +
+//                    "                    ( SELECT * FROM it_hris_cuti_pegawai ) cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
+//                    " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
+
+            String query = "SELECT cuti.* FROM  \n" +
+                    "                    it_hris_notifikasi notifikasi LEFT JOIN  \n" +
+                    "                    it_hris_cuti_pegawai cuti ON notifikasi.no_request=cuti.cuti_pegawai_id" +
                     " WHERE notifikasi.tipe_notif_id='TN66' AND cuti.flag='Y' "+searchAtasan+searchNip+searchCutiPegawaiId+" ORDER BY cuti.cuti_pegawai_id DESC";
 
             results = this.sessionFactory.getCurrentSession()

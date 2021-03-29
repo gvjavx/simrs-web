@@ -45,6 +45,7 @@ public class ImBranches implements Serializable {
     private String lon;
     private String warna;
 
+
     public String getWarna() {
         return warna;
     }

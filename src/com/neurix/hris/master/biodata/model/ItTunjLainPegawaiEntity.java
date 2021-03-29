@@ -1,6 +1,7 @@
 package com.neurix.hris.master.biodata.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -25,6 +26,54 @@ public class ItTunjLainPegawaiEntity implements Serializable {
     private Timestamp lastUpdate;
     private String createdWho;
     private String lastUpdateWho;
+
+    private String flagTunjPeralihanGapok;
+    private String flagTunjPeralihanSankhus;
+    private String flagTunjPeralihanTunjangan;
+    private String flagTunjPemondokan;
+    private BigDecimal tunjPeralihanGapok;
+    private BigDecimal tunjPeralihanSankhus;
+    private BigDecimal tunjPeralihanTunjangan;
+
+    //RAKA-22MAR2021
+    private BigDecimal tunjPemondokan;
+    private BigDecimal tunjSupervisi;
+    private BigDecimal tunjLokasi;
+    private BigDecimal tunjSiaga;
+    //RAKA-end
+
+
+    public BigDecimal getTunjPemondokan() {
+        return tunjPemondokan;
+    }
+
+    public void setTunjPemondokan(BigDecimal tunjPemondokan) {
+        this.tunjPemondokan = tunjPemondokan;
+    }
+
+    public BigDecimal getTunjSupervisi() {
+        return tunjSupervisi;
+    }
+
+    public void setTunjSupervisi(BigDecimal tunjSupervisi) {
+        this.tunjSupervisi = tunjSupervisi;
+    }
+
+    public BigDecimal getTunjLokasi() {
+        return tunjLokasi;
+    }
+
+    public void setTunjLokasi(BigDecimal tunjLokasi) {
+        this.tunjLokasi = tunjLokasi;
+    }
+
+    public BigDecimal getTunjSiaga() {
+        return tunjSiaga;
+    }
+
+    public void setTunjSiaga(BigDecimal tunjSiaga) {
+        this.tunjSiaga = tunjSiaga;
+    }
 
     public String getAction() {
         return action;
@@ -120,5 +169,61 @@ public class ItTunjLainPegawaiEntity implements Serializable {
 
     public void setTunjLainId(String tunjLainId) {
         this.tunjLainId = tunjLainId;
+    }
+
+    public String getFlagTunjPeralihanGapok() {
+        return flagTunjPeralihanGapok;
+    }
+
+    public void setFlagTunjPeralihanGapok(String flagTunjPeralihanGapok) {
+        this.flagTunjPeralihanGapok = flagTunjPeralihanGapok;
+    }
+
+    public String getFlagTunjPeralihanSankhus() {
+        return flagTunjPeralihanSankhus;
+    }
+
+    public void setFlagTunjPeralihanSankhus(String flagTunjPeralihanSankhus) {
+        this.flagTunjPeralihanSankhus = flagTunjPeralihanSankhus;
+    }
+
+    public String getFlagTunjPeralihanTunjangan() {
+        return flagTunjPeralihanTunjangan;
+    }
+
+    public void setFlagTunjPeralihanTunjangan(String flagTunjPeralihanTunjangan) {
+        this.flagTunjPeralihanTunjangan = flagTunjPeralihanTunjangan;
+    }
+
+    public BigDecimal getTunjPeralihanGapok() {
+        return tunjPeralihanGapok;
+    }
+
+    public void setTunjPeralihanGapok(BigDecimal tunjPeralihanGapok) {
+        this.tunjPeralihanGapok = tunjPeralihanGapok;
+    }
+
+    public BigDecimal getTunjPeralihanSankhus() {
+        return tunjPeralihanSankhus;
+    }
+
+    public void setTunjPeralihanSankhus(BigDecimal tunjPeralihanSankhus) {
+        this.tunjPeralihanSankhus = tunjPeralihanSankhus;
+    }
+
+    public BigDecimal getTunjPeralihanTunjangan() {
+        return tunjPeralihanTunjangan;
+    }
+
+    public void setTunjPeralihanTunjangan(BigDecimal tunjPeralihanTunjangan) {
+        this.tunjPeralihanTunjangan = tunjPeralihanTunjangan;
+    }
+
+    public String getFlagTunjPemondokan() {
+        return flagTunjPemondokan;
+    }
+
+    public void setFlagTunjPemondokan(String flagTunjPemondokan) {
+        this.flagTunjPemondokan = flagTunjPemondokan;
     }
 }

@@ -347,7 +347,8 @@
                                                                     <s:if test='#attr.row.onCall=="Y"'>
                                                                     <a href="javascript:;"
                                                                        id="<s:property value="%{#attr.row.jadwalShiftKerjaDetailId}"/>"
-                                                                       tanggal="<s:property value="%{#attr.row.stTanggal}"/>"
+                                                                       <%--tanggal="<s:property value="%{#attr.row.stTanggal}"/>"--%>
+                                                                       tanggal="<s:property value="%{#attr.row.tanggal}"/>"
                                                                        nama="<s:property value="%{#attr.row.namaPegawai}"/>"
                                                                        posisi="<s:property value="%{#attr.row.positionName}"/>"
                                                                        grup="<s:property value="%{#attr.row.profesiName}"/>"
@@ -691,6 +692,7 @@
 
 <script>
     $(document).ready(function() {
+
         function showDialog(tipe) {
             if (tipe == "loading"){
                 $("#modal-loading-dialog").modal('show');
@@ -754,8 +756,21 @@
         $('.tableJadwalShiftKerja').on('click', '.item-panggil', function() {
             var id= $(this).attr('id');
             var nip =$(this).attr('nip');
+
+            function pad(n) {
+                return (n < 10 ? '0' : '') + n;
+            }
+
+            var date = new Date($(this).attr('tanggal'));
+            var month = pad(date.getMonth()+1);//months (0-11)
+            var day = pad(date.getDate());//day (1-31)
+            var year= date.getFullYear();
+
+            var tanggal =  day+"-"+month+"-"+year;
+
             $('#mod_id').val(id);
-            $('#mod_tanggal').val($(this).attr('tanggal'));
+            // $('#mod_tanggal').val($(this).attr('tanggal'));
+            $('#mod_tanggal').val(tanggal);
             $('#mod_nama').val($(this).attr('nama'));
             $('#mod_nip').val($(this).attr('nip'));
             $('#mod_posisi').val($(this).attr('posisi'));

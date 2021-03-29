@@ -222,6 +222,26 @@
         </property>
         <!--Batas-->
 
+        <!--RAKA-19MAR2021 ==> Raka ijin menambahkan xD-->
+        <property name="nipLama">
+            <column name="nip_lama" sql-type="varchar" length="15"/>
+        </property>
+        <property name="flagDokterKso">
+            <column name="flag_dokter_kso" sql-type="varchar" length="1"/>
+        </property>
+        <property name="tanggalKeluar">
+            <column name="tanggal_keluar" sql-type="date"/>
+        </property>
+        <property name="flagCutiDiluarTanggungan">
+            <column name="flag_pegawai_cuti_diluar_tanggungan" sql-type="varchar" length="1"/>
+        </property>
+        <property name="tanggalCutiDiluarAwal">
+            <column name="tanggal_cuti_diluar_awal" sql-type="date"/>
+        </property>
+        <property name="tanggalCutiDiluarAkhir">
+            <column name="tanggal_cuti_diluar_akhir" sql-type="date"/>
+        </property>
+        <!--RAKA-end-->
 
         <!--<many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"-->
                      <!--insert="false" update="false" fetch="select" cascade="all">-->

@@ -1011,6 +1011,9 @@ public class  CommonUtil {
             case "16":
                 status="On Call";
                 break;
+            case "17":
+                status="Stand By On Call";
+                break;
         }
         return status;
     }

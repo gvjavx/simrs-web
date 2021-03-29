@@ -10,11 +10,14 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.dokterKso.bo.DokterKsoBo;
+import com.neurix.hris.master.dokterKso.bo.Impl.DokterKsoBoImpl;
 import com.neurix.hris.master.dokterKso.model.DokterKso;
 import com.neurix.hris.master.dokterKsoTindakan.bo.DokterKsoTindakanBo;
 import com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
+import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
+import com.neurix.simrs.master.pelayanan.model.Pelayanan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
@@ -99,15 +102,15 @@ public class DokterKsoAction extends BaseMasterAction {
         this.dokterKsoBoProxy = dokterKsoBoProxy;
     }
 
-    public DokterKso init(String kode, String flag){
+    public DokterKso init(String kode, String flag) {
         logger.info("[DokterKsoAction.init] start process >>>>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<DokterKso> listOfResult = (List<DokterKso>) session.getAttribute("listOfResultDokterKso");
 
-        if (kode != null && !"".equalsIgnoreCase(kode)){
-            if (listOfResult != null){
-                for (DokterKso dokterKso : listOfResult){
-                    if (kode.equalsIgnoreCase(dokterKso.getDokterKsoId()) && flag.equalsIgnoreCase(dokterKso.getFlag())){
+        if (kode != null && !"".equalsIgnoreCase(kode)) {
+            if (listOfResult != null) {
+                for (DokterKso dokterKso : listOfResult) {
+                    if (kode.equalsIgnoreCase(dokterKso.getDokterKsoId()) && flag.equalsIgnoreCase(dokterKso.getFlag())) {
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                         BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
                         Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
@@ -141,10 +144,10 @@ public class DokterKsoAction extends BaseMasterAction {
         setAdd(true);
 
         String branchId = CommonUtil.userBranchLogin();
-        if (branchId != null){
+        if (branchId != null) {
             addDokterKso.setBranchUser(branchId);
             addDokterKso.setBranchId(branchId);
-        }else {
+        } else {
             addDokterKso.setBranchUser("");
             addDokterKso.setBranchId("");
         }
@@ -172,9 +175,9 @@ public class DokterKsoAction extends BaseMasterAction {
         tindakan.setFlag("Y");
 
         try {
-            dokterKsoList= dokterKsoBoProxy.getByCriteria(search);
+            dokterKsoList = dokterKsoBoProxy.getByCriteria(search);
             dokterKsoTindakanList = dokterKsoTindakanBoProxy.getByCriteria(tindakan);
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             Long logId = null;
             try {
                 logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "DokterKsoAction.edit");
@@ -187,27 +190,23 @@ public class DokterKsoAction extends BaseMasterAction {
             return ERROR;
         }
         DokterKso edit = new DokterKso();
-        for (DokterKso dokterKso : dokterKsoList){
+        for (DokterKso dokterKso : dokterKsoList) {
             edit.setDokterKsoId(dokterKso.getDokterKsoId());
             edit.setNip(dokterKso.getNip());
             edit.setNamaDokter(dokterKso.getNamaDokter());
             edit.setMasterId(dokterKso.getMasterId());
             edit.setBranchId(dokterKso.getBranchId());
+            edit.setPositionId(dokterKso.getPositionId());
             edit.setJenisKso(dokterKso.getJenisKso());
             edit.setPersenKso(dokterKso.getPersenKso());
             edit.setPersenKs(dokterKso.getPersenKs());
             edit.setTarifIna(dokterKso.getTarifIna());
 
-            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
-            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
-            edit.setPositionId(biodata.getPositionId());
-
             break;
         }
-        dokterKso=edit;
+        dokterKso = edit;
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.setAttribute("listOfResultDokterKsoTindakan",dokterKsoTindakanList);
+        session.setAttribute("listOfResultDokterKsoTindakan", dokterKsoTindakanList);
 
         logger.info("[DokterKsoAction.edit] end process <<<");
         return "init_edit";
@@ -228,9 +227,9 @@ public class DokterKsoAction extends BaseMasterAction {
         tindakan.setFlag("Y");
 
         try {
-            dokterKsoList= dokterKsoBoProxy.getByCriteria(search);
+            dokterKsoList = dokterKsoBoProxy.getByCriteria(search);
             dokterKsoTindakanList = dokterKsoTindakanBoProxy.getByCriteria(tindakan);
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             Long logId = null;
             try {
                 logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "DokterKsoAction.delete");
@@ -243,27 +242,23 @@ public class DokterKsoAction extends BaseMasterAction {
             return ERROR;
         }
         DokterKso delete = new DokterKso();
-        for (DokterKso dokterKso : dokterKsoList){
+        for (DokterKso dokterKso : dokterKsoList) {
             delete.setDokterKsoId(dokterKso.getDokterKsoId());
             delete.setNip(dokterKso.getNip());
             delete.setNamaDokter(dokterKso.getNamaDokter());
             delete.setMasterId(dokterKso.getMasterId());
             delete.setBranchId(dokterKso.getBranchId());
+            delete.setPositionId(dokterKso.getPositionId());
             delete.setJenisKso(dokterKso.getJenisKso());
             delete.setPersenKso(dokterKso.getPersenKso());
             delete.setPersenKs(dokterKso.getPersenKs());
             delete.setTarifIna(dokterKso.getTarifIna());
 
-            ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-            BiodataBo biodataBo = (BiodataBo) context.getBean("biodataBoProxy");
-            Biodata biodata = biodataBo.detailBiodataSys(dokterKso.getNip());
-            delete.setPositionId(biodata.getPositionId());
-
             break;
         }
-        dokterKso=delete;
+        dokterKso = delete;
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.setAttribute("listOfResultDokterKsoTindakan",dokterKsoTindakanList);
+        session.setAttribute("listOfResultDokterKsoTindakan", dokterKsoTindakanList);
 
         logger.info("[DokterKsoAction.delete] end process <<<");
 
@@ -285,9 +280,9 @@ public class DokterKsoAction extends BaseMasterAction {
         tindakan.setFlag("Y");
 
         try {
-            dokterKsoList= dokterKsoBoProxy.getByCriteria(search);
+            dokterKsoList = dokterKsoBoProxy.getByCriteria(search);
             dokterKsoTindakanList = dokterKsoTindakanBoProxy.getByCriteria(tindakan);
-        }catch (GeneralBOException e) {
+        } catch (GeneralBOException e) {
             Long logId = null;
             try {
                 logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "DokterKsoAction.delete");
@@ -300,7 +295,7 @@ public class DokterKsoAction extends BaseMasterAction {
             return ERROR;
         }
         DokterKso delete = new DokterKso();
-        for (DokterKso dokterKso : dokterKsoList){
+        for (DokterKso dokterKso : dokterKsoList) {
             delete.setDokterKsoId(dokterKso.getDokterKsoId());
             delete.setNip(dokterKso.getNip());
             delete.setNamaDokter(dokterKso.getNamaDokter());
@@ -318,9 +313,9 @@ public class DokterKsoAction extends BaseMasterAction {
 
             break;
         }
-        dokterKso=delete;
+        dokterKso = delete;
         HttpSession session = ServletActionContext.getRequest().getSession();
-        session.setAttribute("listOfResultDokterKsoTindakan",dokterKsoTindakanList);
+        session.setAttribute("listOfResultDokterKsoTindakan", dokterKsoTindakanList);
 
         logger.info("[DokterKsoAction.delete] end process <<<");
 
@@ -332,7 +327,7 @@ public class DokterKsoAction extends BaseMasterAction {
         return null;
     }
 
-    public String saveAdd(){
+    public String saveAdd() {
         logger.info("[DokterKsoAction.saveAdd] start process >>>");
 
         try {
@@ -347,16 +342,20 @@ public class DokterKsoAction extends BaseMasterAction {
             dokterKso.setAction("C");
             dokterKso.setFlag("Y");
 
-            dokterKsoBoProxy.saveAdd(dokterKso);
-        }catch (GeneralBOException e) {
+            try{
+                dokterKsoBoProxy.saveAdd(dokterKso);
+            }catch (GeneralBOException e){
+                logger.error("[DokterKsoAction.saveAdd] Error, " + e.getMessage());
+            }
+        } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "tindakanBO.saveAdd");
+                logId = dokterKsoBoProxy.saveErrorMessage(e.getMessage(), "dokterKsoBO.saveAdd");
             } catch (GeneralBOException e1) {
-                logger.error("[tindakanAction.saveAdd] Error when saving error,", e1);
+                logger.error("[DokterKsoAction.saveAdd] Error when saving error,", e1);
                 throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[tindakanAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[DokterKsoAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
             throw new GeneralBOException(e.getMessage());
         }
@@ -364,12 +363,13 @@ public class DokterKsoAction extends BaseMasterAction {
 
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultDokterKso");
+        session.removeAttribute("listOfResultDokterKsoTindakan");
 
-        logger.info("[tindakanAction.saveAdd] end process >>>");
+        logger.info("[DokterKsoAction.saveAdd] end process >>>");
         return "success_save_add";
     }
 
-    public String saveEdit(){
+    public String saveEdit() {
         logger.info("[DokterKsoAction.saveEdit] start process >>>");
         try {
 
@@ -403,7 +403,7 @@ public class DokterKsoAction extends BaseMasterAction {
         return "success_save_edit";
     }
 
-    public String saveDelete(){
+    public String saveDelete() {
         logger.info("[DokterKsoAction.saveDelete] start process >>>");
         try {
 
@@ -454,16 +454,16 @@ public class DokterKsoAction extends BaseMasterAction {
                 return ERROR;
             }
             logger.error("[PelayananAction.save] Error when searching alat by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }
 
         String branchId = CommonUtil.userBranchLogin();
         DokterKso data = new DokterKso();
-        if (branchId != null){
+        if (branchId != null) {
             data.setBranchId(branchId);
             data.setBranchUser(branchId);
-        }else {
+        } else {
             data.setBranchUser("");
         }
         dokterKso = data;
@@ -485,10 +485,10 @@ public class DokterKsoAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         String branchId = CommonUtil.userBranchLogin();
         DokterKso data = new DokterKso();
-        if (branchId != null){
+        if (branchId != null) {
             data.setBranchUser(branchId);
             data.setBranchId(branchId);
-        }else {
+        } else {
             data.setBranchUser("");
             data.setBranchId("");
         }
@@ -561,7 +561,7 @@ public class DokterKsoAction extends BaseMasterAction {
     }
 
     public List<RiwayatTindakan> initTypeaheadRiwayatTindakan(String namaRiwayatTindakan) {
-        logger.info("[KodeRekeningAction.initTypeaheadKodeRekening] start process >>>");
+        logger.info("[DokterKsoAction.initTypeaheadRiwayatTindakan] start process >>>");
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RiwayatTindakanBo riwayatTindakanBoProxy = (RiwayatTindakanBo) ctx.getBean("riwayatTindakanBoProxy");
         List<RiwayatTindakan> riwayatTindakanList = new ArrayList();
@@ -570,62 +570,64 @@ public class DokterKsoAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[KodeRekeningAction.initTypeaheadKodeRekening] Error when searching data by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         return riwayatTindakanList;
     }
 
-    public String cekBeforeSave(String nip,String metode){
-        String status="";
+    public String cekBeforeSave(String nip, String jenisKso, String masterId, String metode) {
+        String status = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         DokterKsoBo dokterKsoBo = (DokterKsoBo) ctx.getBean("dokterKsoBoProxy");
         List<DokterKso> dokterKsoList = new ArrayList<>();
         DokterKso search = new DokterKso();
         search.setNip(nip);
+        search.setJenisKso(jenisKso);
+        search.setMasterId(masterId);
         search.setFlag("Y");
         try {
-            if (("add").equalsIgnoreCase(metode)){
-                dokterKsoList=dokterKsoBo.getByCriteria(search);
+            if (("add").equalsIgnoreCase(metode)) {
+                dokterKsoList = dokterKsoBo.getByCriteria(search);
             }
         } catch (GeneralBOException e1) {
-            logger.error("[MappingJurnalAction.initComboMappingJurnal] Error when saving error,", e1);
+            logger.error("[DokterKsoAction.cekBeforeSave] Error when saving error,", e1);
         }
-        if (dokterKsoList.size()==0){
+        if (dokterKsoList.size() == 0) {
             HttpSession session = ServletActionContext.getRequest().getSession();
-            List<DokterKsoTindakan> listOfsearch= (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakan");
-            List<DokterKsoTindakan> listOfsearchEdit= (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakanEdit");
+            List<DokterKsoTindakan> listOfsearch = (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakan");
+            List<DokterKsoTindakan> listOfsearchEdit = (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakanEdit");
 
-            if ("edit".equalsIgnoreCase(metode)){
-                if (listOfsearchEdit!=null){
+            if ("edit".equalsIgnoreCase(metode)) {
+                if (listOfsearchEdit != null) {
                     int jum = listOfsearchEdit.size();
-                    for (int i=0;i<listOfsearchEdit.size();i++){
+                    for (int i = 0; i < listOfsearchEdit.size(); i++) {
                         if (listOfsearchEdit.get(i).getFlag().equalsIgnoreCase("N"))
                             jum--;
                     }
                     if (jum == 0)
-                        status="Belum ada data dokter kso tindakan, silahkan ditambahkan";
-                }else {
+                        status = "Belum ada data dokter kso tindakan, silahkan ditambahkan";
+                } else {
                     if (listOfsearch == null)
-                        status="Belum ada data dokter kso tindakan, silahkan ditambahkan";
+                        status = "Belum ada data dokter kso tindakan, silahkan ditambahkan";
                 }
-            }else {
-                if (listOfsearch==null)
-                    status="Belum ada data dokter kso tindakan, silahkan ditambahkan";
+            } else {
+                if (listOfsearch == null)
+                    status = "Belum ada data dokter kso tindakan, silahkan ditambahkan";
             }
-        }else{
-            status="Data Dokter KSO dengan NIP tersebut sudah ada";
+        } else {
+            status = "Data Dokter KSO dengan NIP tersebut sudah ada";
         }
         return status;
     }
 
-    public void saveRiwayatKsoTindakanSession(String idRiwayatTindakan, String namaRiwayatTindakan, BigDecimal persenKsoTindakan){
+    public void saveRiwayatKsoTindakanSession(String idRiwayatTindakan, String namaRiwayatTindakan, BigDecimal persenKsoTindakan) {
         logger.info("[DokterKsoAction.saveKoderingSession] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<DokterKsoTindakan> listOfResult = (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakan");
         List<DokterKsoTindakan> listOfResultEdit = (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakanEdit");
 
-        if (listOfResult==null){
-            listOfResult= new ArrayList<>();
+        if (listOfResult == null) {
+            listOfResult = new ArrayList<>();
         }
 
         DokterKsoTindakan result = new DokterKsoTindakan();
@@ -634,14 +636,14 @@ public class DokterKsoAction extends BaseMasterAction {
         result.setPersenKso(persenKsoTindakan);
         listOfResult.add(result);
 
-        if (listOfResultEdit != null){
+        if (listOfResultEdit != null) {
             DokterKsoTindakan result1 = new DokterKsoTindakan();
             result1.setTindakanId(idRiwayatTindakan);
             result1.setTindakanName(namaRiwayatTindakan);
             result1.setPersenKso(persenKsoTindakan);
             result1.setFlag("Y");
             listOfResultEdit.add(result1);
-        }else {
+        } else {
             listOfResultEdit = new ArrayList<>();
             DokterKsoTindakan result1 = new DokterKsoTindakan();
             result1.setTindakanId(idRiwayatTindakan);
@@ -651,30 +653,30 @@ public class DokterKsoAction extends BaseMasterAction {
             listOfResultEdit.add(result1);
         }
 
-        session.setAttribute("listOfResultDokterKsoTindakan",listOfResult);
-        session.setAttribute("listOfResultDokterKsoTindakanEdit",listOfResultEdit);
+        session.setAttribute("listOfResultDokterKsoTindakan", listOfResult);
+        session.setAttribute("listOfResultDokterKsoTindakanEdit", listOfResultEdit);
         logger.info("[SettingReportKeuanganKonsolAction.saveKonsolDetailSession] end process <<<");
     }
 
     public List<DokterKsoTindakan> searchTindakanDetailSession() {
         logger.info("[DokterKsoAction.searchTindakanDetailSession] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
-        List<DokterKsoTindakan> listOfsearch= (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakan");
+        List<DokterKsoTindakan> listOfsearch = (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakan");
         return listOfsearch;
     }
 
     public String deleteSessionTindakanDetail(String tindakanId) {
         logger.info("[DokterKsoAction.deleteSessionTindakanDetail] start process >>>");
-        String status="";
+        String status = "";
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<DokterKsoTindakan> tindakanDetailList = (List<DokterKsoTindakan>) session.getAttribute("listOfResultDokterKsoTindakan");
         List<DokterKsoTindakan> tindakanDetailArrayList = new ArrayList<>();
         List<DokterKsoTindakan> tindakanDetailArrayListEdit = new ArrayList<>();
 
-        for (DokterKsoTindakan tindakanDetail:tindakanDetailList){
-            if (tindakanDetail.getTindakanId().equalsIgnoreCase(tindakanId)){
+        for (DokterKsoTindakan tindakanDetail : tindakanDetailList) {
+            if (tindakanDetail.getTindakanId().equalsIgnoreCase(tindakanId)) {
                 tindakanDetail.setFlag("N");
-            }else{
+            } else {
                 tindakanDetail.setFlag("Y");
                 tindakanDetailArrayList.add(tindakanDetail);
             }
@@ -685,9 +687,39 @@ public class DokterKsoAction extends BaseMasterAction {
             tindakanDetailArrayListEdit.add(tindakanDetail);
         }
 
-        session.setAttribute("listOfResultDokterKsoTindakanEdit",tindakanDetailArrayListEdit);
-        session.setAttribute("listOfResultDokterKsoTindakan",tindakanDetailArrayList);
+        session.setAttribute("listOfResultDokterKsoTindakanEdit", tindakanDetailArrayListEdit);
+        session.setAttribute("listOfResultDokterKsoTindakan", tindakanDetailArrayList);
         logger.info("[DokterKsoAction.deleteSessionTindakanDetail] end process >>>");
         return status;
+    }
+
+    public List<Pelayanan> initComboPelayananDokter(String idDokter) {
+        List<Pelayanan> pelayananList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterKsoBo dokterKsoBo = (DokterKsoBo) ctx.getBean("dokterKsoBoProxy");
+
+        if (idDokter != null && !"".equalsIgnoreCase(idDokter)) {
+            try {
+                pelayananList = dokterKsoBo.getPelayananDokter(idDokter);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        return pelayananList;
+    }
+
+    public List<Tindakan> initComboTindakanDokter(String idPelayanan, String idDokter) {
+        List<Tindakan> tindakanList = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        DokterKsoBo dokterKsoBo = (DokterKsoBo) ctx.getBean("dokterKsoBoProxy");
+
+        try {
+            tindakanList = dokterKsoBo.getTindakanPelayanan(idPelayanan, idDokter);
+        } catch (Exception e) {
+            logger.error("[DokterKsoAction.initComboTindakanDokter] Error, " + e.getMessage());
+        }
+
+        return tindakanList;
     }
 }

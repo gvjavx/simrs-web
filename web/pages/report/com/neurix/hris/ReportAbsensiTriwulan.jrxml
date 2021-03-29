@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.461537825000002"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="17"/>
+	<property name="ireport.x" value="504"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -172,7 +172,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="22" uuid="3f2739d4-f6d1-41ba-a53e-762a2064a0e3">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#E1E1E1" uuid="2bef004e-5a21-4428-8ad3-4fcf3753ac5a"/>
+								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#FFFFFF" uuid="2bef004e-5a21-4428-8ad3-4fcf3753ac5a"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -208,7 +208,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="147" uuid="75366ce3-7823-4d7d-a222-104c5fb32d61">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="147" height="23" backcolor="#E1E1E1" uuid="8ee22972-5b37-4fdc-8b70-d8e5ddd8a6ea"/>
+								<reportElement mode="Opaque" x="0" y="0" width="147" height="23" backcolor="#FFFFFF" uuid="8ee22972-5b37-4fdc-8b70-d8e5ddd8a6ea"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -234,8 +234,8 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="147" height="14" uuid="e1cf9379-2bda-4e93-a9a6-8865db152244"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
-									<font size="7"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7" isUnderline="true"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
 							</textField>
@@ -244,7 +244,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="142" uuid="d38a8b19-6c0a-4c65-8a08-ee62824cd2e2">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="142" height="23" backcolor="#E1E1E1" uuid="10d07f24-9c13-443c-9d7c-c647abd1cc79"/>
+								<reportElement mode="Opaque" x="0" y="0" width="142" height="23" backcolor="#FFFFFF" uuid="10d07f24-9c13-443c-9d7c-c647abd1cc79"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -270,7 +270,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:detailCell height="14" rowSpan="1">
 							<textField>
 								<reportElement style="Style1" x="0" y="0" width="142" height="14" uuid="1c9fdba2-99d1-4a8d-b3d0-3c7a9f400e57"/>
-								<textElement textAlignment="Center" verticalAlignment="Middle">
+								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{jabatan}]]></textFieldExpression>
@@ -280,7 +280,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="21" uuid="4cc755ff-6b4b-42f1-a2aa-846e08802d6e">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="21" height="23" backcolor="#E1E1E1" uuid="0cdf9dc4-61a9-48f1-bd90-24cc5b6e7929"/>
+								<reportElement mode="Opaque" x="0" y="0" width="21" height="23" backcolor="#FFFFFF" uuid="0cdf9dc4-61a9-48f1-bd90-24cc5b6e7929"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -316,7 +316,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="22" uuid="869c4f5e-133d-447a-9ed7-bd9f75f80dbe">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#E1E1E1" uuid="f94065ac-ea09-42dd-ad48-1dd80af2f0f4"/>
+								<reportElement mode="Opaque" x="0" y="0" width="22" height="23" backcolor="#FFFFFF" uuid="f94065ac-ea09-42dd-ad48-1dd80af2f0f4"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -352,7 +352,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="28" uuid="4b2bd294-6699-4fae-8232-e6d43e74cb69">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="28" height="23" backcolor="#E1E1E1" uuid="d4cf560b-779a-4f9b-85cf-6796f6f832c1"/>
+								<reportElement mode="Opaque" x="0" y="0" width="28" height="23" backcolor="#FFFFFF" uuid="d4cf560b-779a-4f9b-85cf-6796f6f832c1"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -363,7 +363,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 								<textElement textAlignment="Center" verticalAlignment="Middle">
 									<font size="7"/>
 								</textElement>
-								<text><![CDATA[Masuk <07:00]]></text>
+								<text><![CDATA[Masuk <08:00]]></text>
 							</staticText>
 						</jr:columnHeader>
 						<jr:columnFooter height="43" rowSpan="1">
@@ -388,7 +388,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:columnGroup width="57" uuid="f683ab3c-e7fe-4609-993d-a71e36374384">
 						<jr:columnHeader height="12" rowSpan="1">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="57" height="12" backcolor="#E1E1E1" uuid="bb5b3f19-3088-4f0e-9df3-09ef7d4a5877"/>
+								<reportElement mode="Opaque" x="0" y="0" width="57" height="12" backcolor="#FFFFFF" uuid="bb5b3f19-3088-4f0e-9df3-09ef7d4a5877"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -414,7 +414,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="26" uuid="946a7dac-57d3-4d6a-8b35-404c4a337a4e">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="26" height="11" backcolor="#E1E1E1" uuid="314eb4ab-98af-4efa-90bd-0d54fe15c3c1"/>
+									<reportElement mode="Opaque" x="0" y="0" width="26" height="11" backcolor="#FFFFFF" uuid="314eb4ab-98af-4efa-90bd-0d54fe15c3c1"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -441,7 +441,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="31" uuid="bf861b88-986b-41e8-80a3-59443f9040e9">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="31" height="11" backcolor="#E1E1E1" uuid="d38c612a-cbb1-46e7-bb47-f89c49e582cf"/>
+									<reportElement mode="Opaque" x="0" y="0" width="31" height="11" backcolor="#FFFFFF" uuid="d38c612a-cbb1-46e7-bb47-f89c49e582cf"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -469,7 +469,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="39" uuid="d6ac2de7-a450-46ee-aa6b-d994d7a922a9">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="39" height="23" backcolor="#E1E1E1" uuid="baad9a90-d620-4a49-a5fd-96a218e147b2"/>
+								<reportElement mode="Opaque" x="0" y="0" width="39" height="23" backcolor="#FFFFFF" uuid="baad9a90-d620-4a49-a5fd-96a218e147b2"/>
 								<box leftPadding="3">
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -505,7 +505,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="37" uuid="cfa069b7-e8b8-474d-be2f-185c7f5f522a">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="37" height="23" backcolor="#E1E1E1" uuid="8c8b9ffc-9786-4774-9b73-dce66ea7861e"/>
+								<reportElement mode="Opaque" x="0" y="0" width="37" height="23" backcolor="#FFFFFF" uuid="8c8b9ffc-9786-4774-9b73-dce66ea7861e"/>
 								<box leftPadding="3">
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -541,7 +541,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="45" uuid="a74fb18a-3c0b-4e27-81b8-0a21f1bbd933">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="45" height="23" backcolor="#E1E1E1" uuid="4a32431a-18e5-40f0-b3ce-841a1709e12c"/>
+								<reportElement mode="Opaque" x="0" y="0" width="45" height="23" backcolor="#FFFFFF" uuid="4a32431a-18e5-40f0-b3ce-841a1709e12c"/>
 								<box leftPadding="3">
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -577,7 +577,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:column width="51" uuid="a8707311-d174-4601-8644-ed6f17a91c0b">
 						<jr:columnHeader height="24" rowSpan="2">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="51" height="23" backcolor="#E1E1E1" uuid="8ce6522e-bdaf-468e-8405-2a7aa8a39b03"/>
+								<reportElement mode="Opaque" x="0" y="0" width="51" height="23" backcolor="#FFFFFF" uuid="8ce6522e-bdaf-468e-8405-2a7aa8a39b03"/>
 								<box leftPadding="3">
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -613,7 +613,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 					<jr:columnGroup width="190" uuid="b11d199d-7ee9-42b3-a8df-ba82cb38a483">
 						<jr:columnHeader height="12" rowSpan="1">
 							<staticText>
-								<reportElement mode="Opaque" x="0" y="0" width="190" height="12" backcolor="#E1E1E1" uuid="0133994f-e012-45a1-a1c1-8ca514383624"/>
+								<reportElement mode="Opaque" x="0" y="0" width="190" height="12" backcolor="#FFFFFF" uuid="0133994f-e012-45a1-a1c1-8ca514383624"/>
 								<box>
 									<pen lineWidth="1.0"/>
 									<topPen lineWidth="1.0"/>
@@ -639,7 +639,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="23" uuid="616189d9-b6c7-4540-8662-0dfe247e9150">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="23" height="11" backcolor="#E1E1E1" uuid="bd927fd9-9261-4efe-a14a-42268c4d1e12"/>
+									<reportElement mode="Opaque" x="0" y="0" width="23" height="11" backcolor="#FFFFFF" uuid="bd927fd9-9261-4efe-a14a-42268c4d1e12"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -666,7 +666,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="19" uuid="6d3e6c11-2a54-4a87-9512-63be5396854f">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="19" height="11" backcolor="#E1E1E1" uuid="f406aee4-7f0c-4f05-af70-9e2aaa01f6f4"/>
+									<reportElement mode="Opaque" x="0" y="0" width="19" height="11" backcolor="#FFFFFF" uuid="f406aee4-7f0c-4f05-af70-9e2aaa01f6f4"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -693,7 +693,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="29" uuid="4739ed4b-c1f6-430d-874e-154686e1a38f">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="29" height="11" backcolor="#E1E1E1" uuid="89ba9f26-2d46-48ac-9a36-83e83831b7fc"/>
+									<reportElement mode="Opaque" x="0" y="0" width="29" height="11" backcolor="#FFFFFF" uuid="89ba9f26-2d46-48ac-9a36-83e83831b7fc"/>
 									<box leftPadding="3">
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -720,7 +720,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="18" uuid="3f9f690d-c9af-4a11-85b2-bd3704a46e97">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="18" height="11" backcolor="#E1E1E1" uuid="4039cff6-15ab-418f-bdb2-ab2fc7e079c1"/>
+									<reportElement mode="Opaque" x="0" y="0" width="18" height="11" backcolor="#FFFFFF" uuid="4039cff6-15ab-418f-bdb2-ab2fc7e079c1"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -747,7 +747,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="37" uuid="c55e1407-7a68-44d7-8a1e-ef7880e6a5dc">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="37" height="11" backcolor="#E1E1E1" uuid="c417c6cd-9b67-43ac-8c92-423231073ad6"/>
+									<reportElement mode="Opaque" x="0" y="0" width="37" height="11" backcolor="#FFFFFF" uuid="c417c6cd-9b67-43ac-8c92-423231073ad6"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
@@ -774,7 +774,7 @@ com.google.zxing.BarcodeFormat.QR_CODE, 300, 300))]]></imageExpression>
 						<jr:column width="64" uuid="57d51eef-bc9b-4193-8a9e-d0cb235ab726">
 							<jr:columnHeader height="12" rowSpan="1">
 								<staticText>
-									<reportElement mode="Opaque" x="0" y="0" width="64" height="11" backcolor="#E1E1E1" uuid="82ea2370-8c79-4a48-be54-0651e181c24d"/>
+									<reportElement mode="Opaque" x="0" y="0" width="64" height="11" backcolor="#FFFFFF" uuid="82ea2370-8c79-4a48-be54-0651e181c24d"/>
 									<box>
 										<pen lineWidth="1.0"/>
 										<topPen lineWidth="1.0"/>
