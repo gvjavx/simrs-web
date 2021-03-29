@@ -8,8 +8,8 @@
             <id name="idPendampingGizi">
                 <column name="id_pendamping_gizi"/>
             </id>
-            <basic name="idOrderGizi">
-                <column name="id_order_gizi"/>
+            <basic name="idDetailCheckup">
+                <column name="id_detail_checkup"/>
             </basic>
             <basic name="nama">
                 <column name="nama"/>
@@ -37,6 +37,9 @@
             </basic>
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
             </basic>
         </attributes>
     </entity>

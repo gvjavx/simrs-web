@@ -40,6 +40,7 @@
           p:rekananOpsDao-ref="rekananOpsDao"
           p:tempatTidurDao-ref="tempatTidurDao"
           p:uangMukaDao-ref="uangMukaDao"
+          p:pasienDao-ref="pasienDao"
     />
 
     <bean id="rawatInapBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"

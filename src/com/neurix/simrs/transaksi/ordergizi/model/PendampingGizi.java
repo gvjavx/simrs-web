@@ -2,9 +2,8 @@ package com.neurix.simrs.transaksi.ordergizi.model;
 
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Objects;
 
-public class ItSimrsPendampingGiziEntity {
+public class PendampingGizi {
     private String idPendampingGizi;
     private String idDetailCheckup;
     private String nama;

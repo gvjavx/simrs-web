@@ -669,8 +669,8 @@
                                 <table class="table table-bordered table-striped" id="tabel_alergi">
                                     <thead>
                                     <tr bgcolor="#90ee90">
-                                        <td>Alergi</td>
                                         <td>Jenis</td>
+                                        <td>Alergi</td>
                                         <td align="center" width="20%">Action</td>
                                     </tr>
                                     </thead>
@@ -1012,7 +1012,7 @@
                                             <s:action id="initComboKet" namespace="/checkupdetail"
                                                       name="getListComboKeteranganKeluar_checkupdetail"/>
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
-                                                      listKey="keterangan"
+                                                      listKey="idKeterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
                                                       onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this.value);"
                                                       headerKey="" headerValue="[Select one]"
@@ -1279,10 +1279,18 @@
                 </div>
                 <div class="row jarak">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Alergi</label>
+                        <label class="col-md-3" style="margin-top: 7px">
+                            Alergi
+                            <i class="fa fa-question-circle box-rm" style="font-size: 18px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Pisahkan dengan coma jika alergi lebih dari 1 pada 1 jenis alergi
+                                    </span>
+                        </i>
+                        </label>
                         <div class="col-md-7">
-                            <input class="form-control" id="alergi" autocomplete="off"
-                                   oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}">
+                            <textarea class="form-control" id="alergi" autocomplete="off" rows="5"
+                                   oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}"
+                            ></textarea>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_alergi">
@@ -1740,6 +1748,15 @@
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_pending"><i class="fa fa-check"></i> correct</p>
                         </div>
+                    </div>
+                </div>
+                <hr class="garis">
+                <div class="row" id="form_ttd">
+                    <div class="col-md-offset-3 col-md-6">
+                        <canvas style="cursor: pointer" onmouseover="paintTtd('ttd_dokter_pengirim')" class="paint-canvas" id="ttd_dokter_pengirim" width="250" height="200"></canvas>
+                        <select onchange="onChangePengirim(this.value)" class="form-control" id="select_pengirim"></select>
+                        <input style="margin-top: 5px" class="form-control" id="sip_pengirim">
+                        <buton onclick="removePaint('ttd_dokter_pengirim')" class="btn btn-danger"><i class="fa fa-trash"></i> Clear</buton>
                     </div>
                 </div>
             </div>

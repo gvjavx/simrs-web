@@ -147,41 +147,6 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                             logger.error("[OrderGiziBoImpl.saveAdd] Error when insert obat inap ", e);
                         }
                     }
-
-                    if(bean.getListMakananLuar().size() > 0){
-                        for (String makanLuar: bean.getListMakananLuar()){
-                            ItSimrsPendampingGiziEntity entity = new ItSimrsPendampingGiziEntity();
-                            entity.setIdPendampingGizi(pendampingGiziDao.getNextId());
-                            entity.setNama(makanLuar);
-                            entity.setIdOrderGizi(orderGiziEntity.getIdOrderGizi());
-                            entity.setTipe("makanan_luar");
-                            entity.setFlag("Y");
-                            entity.setAction("C");
-                            entity.setCreatedWho(bean.getCreatedWho());
-                            entity.setCreatedDate(bean.getCreatedDate());
-                            entity.setLastUpdate(bean.getLastUpdate());
-                            entity.setLastUpdateWho(bean.getLastUpdateWho());
-                            insertPendampingGizi(entity);
-                        }
-                    }
-
-                    if(bean.getListSnack().size() > 0){
-                        for (String snack: bean.getListSnack()){
-                            ItSimrsPendampingGiziEntity entity = new ItSimrsPendampingGiziEntity();
-                            ImSimrsPendampingGiziEntity pendampingGiziEntity = masterPendampingGiziDao.getById("idPendampingGizi", snack);
-                            entity.setIdPendampingGizi(pendampingGiziDao.getNextId());
-                            entity.setNama(pendampingGiziEntity.getNama());
-                            entity.setIdOrderGizi(orderGiziEntity.getIdOrderGizi());
-                            entity.setTipe(pendampingGiziEntity.getTipe());
-                            entity.setFlag("Y");
-                            entity.setAction("C");
-                            entity.setCreatedWho(bean.getCreatedWho());
-                            entity.setCreatedDate(bean.getCreatedDate());
-                            entity.setLastUpdate(bean.getLastUpdate());
-                            entity.setLastUpdateWho(bean.getLastUpdateWho());
-                            insertPendampingGizi(entity);
-                        }
-                    }
                 }
             }
 

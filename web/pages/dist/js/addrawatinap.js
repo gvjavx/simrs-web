@@ -697,6 +697,7 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 
     } else if (select == 4) {
+        dokterDpjp();
         $('#is_luar, #is_pending_lab').prop('checked', false);
         $('#is_luar, #is_pending_lab').attr('disabled', false);
         $('#form_pending, #form_lab_luar').hide();
@@ -785,6 +786,11 @@ function showModal(select) {
             $('#resep_jenis_obat').html(option);
         });
     } else if (select == 8) {
+        $('#id_icd9, #ket_icd9').val('');
+        $('#load_icd9').hide();
+        $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
+        $('#modal-icd9').modal({show: true, backdrop: 'static'});
+    }else if (select == 8) {
         $('#id_icd9, #ket_icd9').val('');
         $('#load_icd9').hide();
         $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
@@ -1302,13 +1308,7 @@ function listSelectParameter(idLab) {
 }
 
 function saveLab(id) {
-    var data = $('#tbl_dokter').tableToJSON();
-    var idDokter = "";
-    $.each(data, function (i, item) {
-        if (i == 0) {
-            idDokter = data[i]["ID Dokter"];
-        }
-    });
+    var idDokter = $('#sip_pengirim').val();
     var idKategori = $('#lab_kategori').val();
     var idLab = $('#lab_lab').val();
     var idParameter = $('#lab_parameter').val();
@@ -1318,6 +1318,10 @@ function saveLab(id) {
 
     var idLabLuar = $('#lab_luar').val();
     var idParameterLuar = $('#lab_parameter_luar').val();
+
+    var canvas = document.getElementById('ttd_dokter_pengirim');
+    var ttdPengirim = convertToDataURLAtas(canvas);
+    var ttd = isBlank(canvas);
 
     var tempLab = "";
     var tempParams = "";
@@ -1381,23 +1385,28 @@ function saveLab(id) {
                         }
                     });
                 }else{
-                    $('#save_lab').hide();
-                    $('#load_lab').show();
-                    dwr.engine.setAsync(true);
-                    PeriksaLabAction.saveOrderLab(idDetailCheckup, tempLab, tempParams, isLuar, idDokter, idKategori, waktu, {
-                        callback: function (response) {
-                            if (response.status == "success") {
-                                dwr.engine.setAsync(false);
-                                listLab();
-                                $('#modal-lab').modal('hide');
-                                $('#info_dialog').dialog('open');
-                                $('#close_pos').val(4);
-                            } else {
-                                $('#warning_lab').show().fadeOut(5000);
-                                $('#msg_lab').text(response.msg);
+                    if(!ttd){
+                        $('#save_lab').hide();
+                        $('#load_lab').show();
+                        dwr.engine.setAsync(true);
+                        PeriksaLabAction.saveOrderLab(idDetailCheckup, tempLab, tempParams, isLuar, idDokter, idKategori, waktu, ttdPengirim, {
+                            callback: function (response) {
+                                if (response.status == "success") {
+                                    dwr.engine.setAsync(false);
+                                    listLab();
+                                    $('#modal-lab').modal('hide');
+                                    $('#info_dialog').dialog('open');
+                                    $('#close_pos').val(4);
+                                } else {
+                                    $('#warning_lab').show().fadeOut(5000);
+                                    $('#msg_lab').text(response.msg);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        $('#warning_lab').show().fadeOut(5000);
+                        $('#msg_lab').text("Silhakan cek tanda tangan dokter pengirim...!");
+                    }
                 }
             } else {
                 $('#warning_lab').show().fadeOut(5000);
@@ -3529,7 +3538,7 @@ function savePemeriksaanPasien() {
     var data = "";
     var tindakLanjut = $('#keterangan').val();
     var catatan = $('#pesan_dokter').val();
-    var keterangan = $('#ket_selesai').val();
+    var keterangan = $('#ket_selesai option:selected').text();
     var ketRawatInap = $('#keterangan_rw').val();
     var rsRujukan = $('#rs_rujukan').val();
     var tglKontrol = $('#tgl_kontrol').val().split("-").reverse().join("-");
@@ -3542,6 +3551,7 @@ function savePemeriksaanPasien() {
     var idRuanganLama = $('#id_ruangan_lama').val();
     var cek = false;
     var cekTindakan = $('#tabel_tindakan').tableToJSON();
+    var idKeterangan = $('#ket_selesai').val();
 
     if (cekTindakan.length > 0) {
         if (tindakLanjut != '') {
@@ -3625,6 +3635,16 @@ function savePemeriksaanPasien() {
                 }
                 var ket = tindakLanjut.replace("_", " ");
                 var ktr = convertSentenceCaseUp(ket);
+                var meninggal = "";
+
+                if("selesai" == tindakLanjut){
+                    CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
+                        if("meninggal" == res.kategori){
+                            meninggal = "Y";
+                        }
+                    });
+                }
+
                 data = {
                     'id_detail_checkup': idDetailCheckup,
                     'no_checkup': noCheckup,
@@ -3635,7 +3655,8 @@ function savePemeriksaanPasien() {
                     'id_ruangan': idRuangan,
                     'is_stay': stay,
                     'jenis_pasien': jenisPeriksaPasien,
-                    'id_ruangan_lama': idRuanganLama
+                    'id_ruangan_lama': idRuanganLama,
+                    'is_meninggal': meninggal
                 }
                 cek = true;
             }
@@ -4466,5 +4487,25 @@ function setRekamMedisHasilPindah(tipePelayanan, id) {
             }
         }
     });
+}
+
+function dokterDpjp(){
+    var data = $('#tbl_dokter').tableToJSON();
+    var option = "";
+    $.each(data, function (i, item) {
+        var idDokter = data[i]["ID Dokter"];
+        var namaDokter = data[i]["Nama"];
+        option += '<option value="'+idDokter+'">'+namaDokter+'</option>';
+        if(i == 0){
+            $('#sip_pengirim').val(idDokter);
+        }
+    });
+    $('#select_pengirim').html(option);
+}
+
+function onChangePengirim(dokter){
+    if(dokter != ''){
+        $('#sip_pengirim').val(dokter);
+    }
 }
 

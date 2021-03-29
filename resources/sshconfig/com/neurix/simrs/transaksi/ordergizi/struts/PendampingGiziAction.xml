@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="radiologi" namespace="/radiologi" extends="struts-default, jasperreports-default, json-default">
+    <package name="pendampinggizi" namespace="/pendampinggizi" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,27 +69,11 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_radiologi"
-                class="com.neurix.simrs.transaksi.periksaradiologi.action.PeriksaRadiologiAction" method="{1}">
+        <action name="*_pendampinggizi"
+                class="com.neurix.simrs.transaksi.ordergizi.action.OrderGiziAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-
-            <result name="search">/pages/com/neurix/simrs/transaksi/periksaradiologi/searchPeriksaRadiologi.jsp</result>
-            <result name="init_add">/pages/com/neurix/simrs/transaksi/periksaradiologi/addPeriksaRadiologi.jsp</result>
-
-            <result name="print_radiologi" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printHasilPeriksaRadiologiNew.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_label" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/labelLabRadiologi.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
+            <result name="search">/pages/com/neurix/simrs/transaksi/pendampinggizi/searchPendampingGizi.jsp</result>
         </action>
+
     </package>
 </struts>

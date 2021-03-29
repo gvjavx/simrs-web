@@ -115,7 +115,7 @@
                             <label class="col-md-2" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control suhu-pasien" type="number" id="rps5">
+                                    <input class="form-control suhu-pasien" type="number" id="rps5" oninput="setSideValue('rps16', this.value)">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -124,8 +124,8 @@
                             <label class="col-md-1" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control nadi-pasien" type="number" id="rps6">
-                                    <div class="input-group-addon" style="font-size: 10px">
+                                    <input class="form-control nadi-pasien" type="number" id="rps6"  oninput="setSideValue('rps17', this.value)">
+                                    <div class="input-group-addon" style="font-size: 10px" >
                                         x/mnt
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                             <label class="col-md-2" style="margin-top: 7px">RR</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control rr-pasien" type="number" id="rps7">
+                                    <input class="form-control rr-pasien" type="number" id="rps7"  oninput="setSideValue('rps18', this.value)">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/mnt
                                     </div>
@@ -146,7 +146,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control tensi-pasien" id="rps8" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input class="form-control tensi-pasien" id="rps8" data-inputmask="'mask': ['999/999']" data-mask=""  oninput="setSideValue('rps19', this.value)">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -158,7 +158,7 @@
                         <div class="form-group">
                             <label class="col-md-2" style="margin-top: 7px">GCS</label>
                             <div class="col-md-4">
-                                <input class="form-control" id="rps9" style="margin-top: 7px">
+                                <input class="form-control" id="rps9" style="margin-top: 7px"  oninput="setSideValue('rps20', this.value)">
                             </div>
                         </div>
                     </div>

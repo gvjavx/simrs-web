@@ -42,6 +42,6 @@ public class UploadHasilPeriksaDao extends GenericDao<ItSimrsUploadHasilPemeriks
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_upload_hasil_pemeriksaan')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "UHP"+sId;
     }
 }

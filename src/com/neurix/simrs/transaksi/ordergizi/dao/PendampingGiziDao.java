@@ -23,8 +23,8 @@ public class PendampingGiziDao extends GenericDao<ItSimrsPendampingGiziEntity, S
             if (mapCriteria.get("id_pendamping_gizi") != null) {
                 criteria.add(Restrictions.eq("idPendampingGizi", mapCriteria.get("id_pendamping_gizi").toString()));
             }
-            if (mapCriteria.get("id_order_gizi") != null) {
-                criteria.add(Restrictions.eq("idOrderGizi", mapCriteria.get("id_order_gizi").toString()));
+            if (mapCriteria.get("id_detail_checkup") != null) {
+                criteria.add(Restrictions.eq("idDetailCheckup", mapCriteria.get("id_detail_checkup").toString()));
             }
             if (mapCriteria.get("nama") != null) {
                 criteria.add(Restrictions.eq("nama", mapCriteria.get("nama").toString()));

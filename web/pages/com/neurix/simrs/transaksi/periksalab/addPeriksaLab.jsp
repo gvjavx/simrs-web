@@ -286,10 +286,10 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>Pemeriksaan</td>
-                                <td>Nilai Normal</td>
-                                <td>Satuan</td>
                                 <td>Hasil</td>
                                 <td>Keterangan</td>
+                                <td>Nilai Normal</td>
+                                <td>Satuan</td>
                             </tr>
                             </thead>
                             <tbody id="body_parameter">
@@ -354,9 +354,24 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
+                        <h3 class="box-title"><i class="fa fa-sticky-note-o"></i> Catatan
+                            <small>(Optional)</small>
+                        </h3>
+                    </div>
+                    <div class="box-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                 <textarea class="editors" id="keterangan_hasil_lab" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <div class="box-header with-border">
                         <div class="row">
                             <div class="col-md-6" id="form_hasil_lab_title">
-                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Laboratorium <small>(Optional)</small></h3>
+                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Laboratorium
+                                    <small>(Optional)</small>
+                                </h3>
                             </div>
                         </div>
                     </div>
@@ -420,8 +435,10 @@
                                 <div class="col-md-offset-3 col-md-3">
                                     <canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"
                                             onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>
-                                    <input class="form-control" placeholder="Nama Petugas" id="nama_petugas">
-                                    <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px"
+                                    <input class="form-control nama_petugas" placeholder="Nama Petugas"
+                                           id="nama_petugas">
+                                    <input class="form-control nip_petugas" placeholder="NIP/SIP"
+                                           style="margin-top: 5px"
                                            id="nip_petugas">
                                 </div>
                                 <div class="col-md-3">
@@ -447,8 +464,8 @@
                 </div>
             </div>
         </div>
-</section>
-<!-- /.content -->
+    </section>
+    <!-- /.content -->
 </div>
 
 <div class="modal fade" id="modal-edit-parameter">
@@ -847,6 +864,8 @@
             ride: false,
             pause: false
         });
+
+        cekLogin();
     });
 
     function listSelectDokter() {
@@ -895,23 +914,23 @@
             }
         });
 
-        if("Y" == cekIsKeluar){
+        if ("Y" == cekIsKeluar) {
             if (cekLabLuar && totalTarif != '') {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
                 $('#warning_rad').show().fadeOut(5000);
                 $('#msg_rad').text("Silahkan cek kembali data hasil Laboratorium, data petugas, dan data Validator...!");
-                $(window).scrollTop( $("#pos_lab").offset().top );
+                $(window).scrollTop($("#pos_lab").offset().top);
             }
-        }else{
+        } else {
             if (nama1 && nama2 && nip1 && nip2 != '' && !cek && !cekPetugas && !cekDokter || cekLabLuar && data.length > 0) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
                 $('#warning_rad').show().fadeOut(5000);
                 $('#msg_rad').text("Silahkan cek kembali data hasil Laboratorium, data petugas, dan data Validator...!");
-                $(window).scrollTop( $("#pos_lab").offset().top );
+                $(window).scrollTop($("#pos_lab").offset().top);
             }
         }
     }
@@ -933,6 +952,7 @@
         var nip2 = $('#nip_validator').val();
         var isiParam = $('#tabel_lab').tableToJSON();
         var totalTarif = $('#h_total_tarif').val();
+        var keteranganHasil = CKEDITOR.instances['keterangan_hasil_lab'].getData();
 
         var jsonData = [];
         $.each(isiParam, function (i, item) {
@@ -1001,7 +1021,8 @@
             'hasil_pemeriksaan': JSON.stringify(jsonData),
             'upload_hasil': JSON.stringify(tempImgHasilLab),
             'upload_hasil_luar': JSON.stringify(tempImgHasilLuar),
-            'total_tarif': totalTarif
+            'total_tarif': totalTarif,
+            'keterangan_hasil': keteranganHasil
         }
 
         var result = JSON.stringify(tempDataFinal);
@@ -1150,10 +1171,10 @@
                         "<td>" + pemeriksaan +
                         '<input id="id_periksa_lab_' + i + '" type="hidden" value="' + item.idPeriksaLabDetail + '">' +
                         "</td>" +
-                        "<td>" + acuan + "</td>" +
-                        "<td>" + satuan + "</td>" +
                         '<td>' + '<textarea id="hasil_' + i + '" class="form-control" value="' + hasil + '"/>' + '</td>' +
                         '<td>' + '<textarea id="kesan_' + i + '" class="form-control" value="' + keterangan + '"/>' + '</td>' +
+                        "<td>" + acuan + "</td>" +
+                        "<td>" + satuan + "</td>" +
                         "</tr>"
                 });
                 $('#body_parameter').html(table);
@@ -1315,6 +1336,17 @@
                     set += '<li>' + item.namaDetailPeriksa + '</li>';
                 });
                 $('#params').html(set);
+            }
+        });
+    }
+
+    function cekLogin() {
+        CheckupAction.cekLogin({
+            callback: function (res) {
+                if (res != '') {
+                    $('.nama_petugas').val(res.msg);
+                    $('.nip_petugas').val(res.status);
+                }
             }
         });
     }

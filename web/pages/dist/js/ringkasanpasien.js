@@ -26,15 +26,14 @@ function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
 function saveRingkasanPasien(jenis, ket) {
     var data = [];
     var cek = false;
-    var dataPasien = "";
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
 
     if ("ringkasan_pulang_pasien" == jenis) {
-        dataPasien = {
-            'no_checkup': idDetailCheckup,
-            'id_detail_checkup': idDetail,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
         var pe1 = $('#rps1').val();
         var pe2 = $('#rps2').val();
         var pe3 = $('#rps3').val();
@@ -466,13 +465,6 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if ("ringkasan_keluar_pasien" == jenis) {
-        var idDetail = $('#h_id_detail_pasien').val();
-        dataPasien = {
-            'no_checkup': $('#h_no_checkup').val(),
-            'id_detail_checkup': idDetail,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
         var pe1 = $('#rkp1').val();
         var pe2 = "";
         var p2 = $('[name=rkp2]:checked').val();
@@ -627,13 +619,6 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if ("pre_admisi" == jenis) {
-        var idDetail = $('#h_id_detail_pasien').val();
-        dataPasien = {
-            'no_checkup': $('#h_no_checkup').val(),
-            'id_detail_checkup': idDetail,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
         var check1 = $('[name=pre01]:checked').val();
         var check2 = $('[name=pre02]:checked').val();
         var check3 = $('[name=pre03]:checked').val();
@@ -1170,6 +1155,7 @@ function delRing(jenis, ket) {
         dwr.engine.setAsync(true);
         RingkasanPasienAction.saveDelete(idDetailCheckup, jenis, result, {
             callback: function (res) {
+                console.log(res);
                 if (res.status == "success") {
                     stopSpin('delete_'+jenis);
                     $('#modal-ring-'+ket).scrollTop(0);
@@ -1185,5 +1171,13 @@ function delRing(jenis, ket) {
                 detailRingkasanPasien(jenis);
             }
         });
+    }
+}
+
+function setSideValue(id, value) {
+    if (value == '' || value == '___/___') {
+        $('#' + id).val('');
+    } else {
+        $('#' + id).val(value);
     }
 }

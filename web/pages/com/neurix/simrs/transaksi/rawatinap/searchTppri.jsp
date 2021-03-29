@@ -226,8 +226,11 @@
                                         </s:if>
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>"
-                                                 onclick="detail('<s:property value="noCheckup"/>','<s:property
-                                                         value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
+                                                 onclick="detail('<s:property value="noCheckup"/>',
+                                                         '<s:property value="idDetailCheckup"/>',
+                                                         '<s:property value="idPasien"/>',
+                                                         '<s:property value="tindakLanjut"/>',
+                                                         '<s:property value="keteranganSelesai"/>')" class="hvr-grow"
                                                  src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
                                                  style="cursor: pointer;">
                                         </s:else>
@@ -902,9 +905,10 @@
         $('#' + id).val(formatRupiahAtas2(val));
     }
 
-    function detail(noCKP, idDCP, tindakLanjut, keteranganSelesai) {
+    function detail(noCKP, idDCP, idPsn, tindakLanjut, keteranganSelesai) {
         idDetailCheckup = idDCP;
         noCheckup = noCKP;
+        idPasien = idPsn;
         startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
         CheckupAction.listDataPasien(idDCP, {

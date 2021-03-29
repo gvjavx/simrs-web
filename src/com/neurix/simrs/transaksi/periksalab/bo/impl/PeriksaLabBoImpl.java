@@ -350,6 +350,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             }
             entity.setIsPeriksaLuar(periksaLab.getIsLuar());
             entity.setNamaLabLuar(periksaLab.getNamaLabLuar());
+            entity.setTtdPengirim(periksaLab.getTtdPengirim());
 
             try {
                 periksaLabDao.addAndSave(entity);
@@ -560,6 +561,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 entity.setTtdValidator(bean.getTtdValidator());
                 entity.setTtdPetugas(bean.getTtdPetugas());
                 entity.setTarifLabLuar(bean.getTarifLabLuar());
+                entity.setCatatan(bean.getCatatan());
             }
 
             try {
@@ -1000,6 +1002,74 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     @Override
     public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) throws GeneralBOException {
         return periksaLabDao.getHistoryLabRadiologi(idPasien);
+    }
+
+    @Override
+    public void saveEditRadiologi(PeriksaLab bean) throws GeneralBOException {
+        if(bean != null){
+            ItSimrsPeriksaLabEntity periksaLabEntity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
+            if(periksaLabEntity != null){
+                periksaLabEntity.setTtdPetugas(bean.getTtdPetugas());
+                periksaLabEntity.setIdPetugas(bean.getIdPetugas());
+                periksaLabEntity.setNamaPetugas(bean.getNamaPetugas());
+                periksaLabEntity.setLastUpdate(bean.getLastUpdate());
+                periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                periksaLabEntity.setAction(bean.getAction());
+                try {
+                    periksaLabDao.updateAndSave(periksaLabEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+
+            ItSimrsPeriksaLabDetailEntity labDetailEntity = periksaLabDetailDao.getById("idPeriksaLabDetail", bean.getIdPeriksaLabDetail());
+            if(labDetailEntity != null){
+                labDetailEntity.setHasil(bean.getHasil());
+                labDetailEntity.setLastUpdate(bean.getLastUpdate());
+                labDetailEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                labDetailEntity.setAction(bean.getAction());
+                try {
+                    periksaLabDetailDao.updateAndSave(labDetailEntity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+
+            if(bean.getUploadHasil().size() > 0){
+                for (ItSimrsUploadHasilPemeriksaanEntity entity: bean.getUploadHasil()){
+                    try {
+                        entity.setIdUploadHasilPemeriksaan(uploadHasilPeriksaDao.getNextId());
+                        uploadHasilPeriksaDao.addAndSave(entity);
+                    }catch (HibernateException e){
+                        logger.error(e.getMessage());
+                        throw new GeneralBOException(e.getMessage());
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void saveSelesaiRadiologi(PeriksaLab bean) throws GeneralBOException {
+        if(bean != null) {
+            ItSimrsPeriksaLabEntity periksaLabEntity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
+            if (periksaLabEntity != null) {
+                periksaLabEntity.setApproveFlag(bean.getApproveFlag());
+                periksaLabEntity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
+                periksaLabEntity.setStatusPeriksa(bean.getStatusPeriksa());
+                periksaLabEntity.setLastUpdate(bean.getLastUpdate());
+                periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                periksaLabEntity.setAction(bean.getAction());
+                try {
+                    periksaLabDao.updateAndSave(periksaLabEntity);
+                } catch (HibernateException e) {
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
+            }
+        }
     }
 
     public void setUploadHasilPeriksaDao(UploadHasilPeriksaDao uploadHasilPeriksaDao) {

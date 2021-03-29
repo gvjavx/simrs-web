@@ -379,9 +379,10 @@
     var tempAnmnesa = "";
     var idPasien = "";
 
-    function viewDetail(idPas, nama, namaPelayanan, jenisKelamin, um, alergi, diagnosa, tglLahir, iddetail, nocheckup, idGizi, status) {
+    function viewDetail(idPas, nama, namaPelayanan, jenisKelamin, um, alergi, diagnosa, tglLahir, nocheckup, iddetail, idGizi, status) {
         if(!cekSession()){
             idDetailCheckup = iddetail;
+            noCheckup = nocheckup;
             umur = um;
             idPasien = idPas;
             $('#det_no_rm').html(idPas);

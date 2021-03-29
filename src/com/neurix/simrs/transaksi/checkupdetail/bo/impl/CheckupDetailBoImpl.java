@@ -5,6 +5,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -92,6 +94,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private PaketPasienDao paketPasienDao;
     private TempatTidurDao tempatTidurDao;
     private PelayananDao pelayananDao;
+    private PasienDao pasienDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -667,6 +670,26 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                         response.setMsg("Error when update checkup " + e.getMessage());
                         logger.error("[CheckupDetailBoImpl.saveEdit] Error when update checkup ", e);
                         throw new GeneralBOException("[CheckupDetailBoImpl.saveEdit] Error when update checkup " + e.getMessage());
+                    }
+                }
+            }
+
+            //sodiq, update flag meninggal, minggu malem 23.35 2021,03,28
+            if("Y".equalsIgnoreCase(bean.getIsMeninggal())){
+                ItSimrsHeaderChekupEntity chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
+                if(chekupEntity != null){
+                    ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", chekupEntity.getIdPasien());
+                    if(pasienEntity != null){
+                        pasienEntity.setLastUpdate(bean.getLastUpdate());
+                        pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        pasienEntity.setAction("U");
+                        pasienEntity.setFlagMeninggal("Y");
+                        pasienEntity.setTanggalMeninggal(bean.getLastUpdate());
+                        try {
+                            pasienDao.updateAndSave(pasienEntity);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
+                        }
                     }
                 }
             }
@@ -1749,5 +1772,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     @Override
     public void setPelayananDao(PelayananDao pelayananDao) {
         this.pelayananDao = pelayananDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
     }
 }

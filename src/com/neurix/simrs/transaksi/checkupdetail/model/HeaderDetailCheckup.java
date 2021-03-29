@@ -209,6 +209,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String noTelp;
     private String isEksekutif;
     private String isVaksin;
+    private String isMeninggal;
+
+    public String getIsMeninggal() {
+        return isMeninggal;
+    }
+
+    public void setIsMeninggal(String isMeninggal) {
+        this.isMeninggal = isMeninggal;
+    }
 
     public String getIsVaksin() {
         return isVaksin;

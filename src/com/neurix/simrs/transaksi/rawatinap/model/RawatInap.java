@@ -128,6 +128,15 @@ public class RawatInap {
     private String tipePelayanan;
     private String waktu;
     private Timestamp tglOrder;
+    private String isMeninggal;
+
+    public String getIsMeninggal() {
+        return isMeninggal;
+    }
+
+    public void setIsMeninggal(String isMeninggal) {
+        this.isMeninggal = isMeninggal;
+    }
 
     public Timestamp getTglOrder() {
         return tglOrder;

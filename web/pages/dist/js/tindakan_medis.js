@@ -1,6 +1,4 @@
 function pilihTindakanMedis(val, id) {
-    console.log(val)
-    console.log(id)
     var namaTindakan = "";
     if (val != '') {
         $.each(kategoriTindakanMedis(''), function (idx, itemx) {
@@ -20,9 +18,9 @@ function pilihTindakanMedis(val, id) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
                     if (itemx != '') {
-                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '" onchange="$(\'#info' + i + '\').val(\'' + itemx + ' ' + '\'+this.value)">';
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '" onchange="$(\'#info' +i+ idx + '\').val(\'' + itemx + ' ' + '\'+this.value);">';
                     } else {
-                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '">';
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '">';
                     }
                 });
             }
