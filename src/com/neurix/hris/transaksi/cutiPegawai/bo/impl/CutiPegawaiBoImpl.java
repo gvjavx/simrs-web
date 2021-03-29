@@ -2499,7 +2499,12 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
         List<CutiPegawai> cutiPegawai = new ArrayList<>();
         List<ItCutiPegawaiEntity> itCutiPegawaiEntities = null;
 
-        itCutiPegawaiEntities = cutiPegawaiDao.getSisaCutiSys(nip);
+        try {
+            itCutiPegawaiEntities = cutiPegawaiDao.getSisaCutiSys(nip);
+        }catch (HibernateException e){
+            logger.error("[CutiPegawaiBoImpl.sisaCutiSys] Error, " + e.getMessage());
+            throw new GeneralBOException("Error when retrieving Sisa Cuti, " + e.getMessage());
+        }
         if (itCutiPegawaiEntities != null) {
             for (ItCutiPegawaiEntity itCutiPegawaiEntity : itCutiPegawaiEntities) {
                 CutiPegawai cutiPegawai1 = new CutiPegawai();
@@ -2509,6 +2514,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 cutiPegawai1.setSisaCutiHari(itCutiPegawaiEntity.getSisaCutiHari());
                 cutiPegawai.add(cutiPegawai1);
             }
+        }else{
+
         }
 
         return cutiPegawai;

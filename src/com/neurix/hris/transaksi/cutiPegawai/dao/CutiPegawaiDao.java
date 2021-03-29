@@ -104,7 +104,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 "                from  \n" +
                 "                im_hris_cuti cuti \n" +
                 "                where \n " +
-                "                cuti.cuti_id != 'CT005'";
+                "                cuti.cuti_id != 'CT007'"; //sebelumnya hardcode CT005 ==> tidak ada cuti dgn ID tersebut, Raka ganti selain Cuti Diluar Tanggungan
         resultsCuti = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query1)
                 .list();
@@ -116,7 +116,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
             result.setJumlahCuti(BigInteger.valueOf(Integer.valueOf(row[2].toString())));
 
             List<Object[]> results = new ArrayList<Object[]>();
-            String query2 = "select  nip,sisa_hari_cuti\n" +
+            String query2 = "select  nip," +
+                    "        sisa_hari_cuti\n" +
                     "        from  it_hris_cuti_pegawai cuti\n" +
                     "        WHERE nip='"+nip+"' AND cuti_id='"+result.getCutiId()+"' AND approval_flag='Y' \n" +
                     "        ORDER BY cuti_pegawai_id DESC\t\n" +
@@ -126,7 +127,7 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                     .list();
 
             if (results.size()==0){
-                result.setSisaCutiHari(BigInteger.valueOf(0));
+                result.setSisaCutiHari((BigInteger) row[2]);
             }else{
                 for(Object[] row1:results){
                     result.setSisaCutiHari((BigInteger) row1[1]);
