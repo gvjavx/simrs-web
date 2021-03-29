@@ -68,6 +68,7 @@ public class ImBiodataEntity implements Serializable {
     private Integer masaKerjaGolongan;
     private String branchIdTerakhir;
     private String positionIdTerakhir;
+
     //RAKA-25MAR2021 ==> Remove
 //    private String flagTunjanganSupervisi;
 //    private String flagTunjanganLokasi;

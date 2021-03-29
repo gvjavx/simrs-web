@@ -562,7 +562,7 @@
             $('#branchId').attr('disabled','true');
             $('#nipId').attr('readonly','true');
 
-            if ($('#berhakLembur').val()!=true){
+            if ($('#berhakLembur').val()!="true"){
                 $('#save').text("Anda Tidak Berhak Mengajukan Lembur");
                 $('#save').removeClass("btn-primary");
                 $('#save').addClass("btn-danger");
