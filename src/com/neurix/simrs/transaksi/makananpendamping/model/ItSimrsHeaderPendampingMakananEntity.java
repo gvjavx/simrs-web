@@ -1,15 +1,11 @@
-package com.neurix.simrs.transaksi.ordergizi.model;
+package com.neurix.simrs.transaksi.makananpendamping.model;
 
-import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Objects;
 
-public class ItSimrsPendampingGiziEntity {
-    private String idPendampingGizi;
+public class ItSimrsHeaderPendampingMakananEntity {
+    private String idHeaderPendampingMakanan;
     private String idDetailCheckup;
-    private String nama;
-    private String tipe;
-    private BigInteger tarif;
+    private String idRuangan;
     private String flag;
     private String action;
     private String createdWho;
@@ -26,12 +22,12 @@ public class ItSimrsPendampingGiziEntity {
         this.status = status;
     }
 
-    public String getIdPendampingGizi() {
-        return idPendampingGizi;
+    public String getIdHeaderPendampingMakanan() {
+        return idHeaderPendampingMakanan;
     }
 
-    public void setIdPendampingGizi(String idPendampingGizi) {
-        this.idPendampingGizi = idPendampingGizi;
+    public void setIdHeaderPendampingMakanan(String idHeaderPendampingMakanan) {
+        this.idHeaderPendampingMakanan = idHeaderPendampingMakanan;
     }
 
     public String getIdDetailCheckup() {
@@ -42,28 +38,12 @@ public class ItSimrsPendampingGiziEntity {
         this.idDetailCheckup = idDetailCheckup;
     }
 
-    public String getNama() {
-        return nama;
+    public String getIdRuangan() {
+        return idRuangan;
     }
 
-    public void setNama(String nama) {
-        this.nama = nama;
-    }
-
-    public String getTipe() {
-        return tipe;
-    }
-
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
-    }
-
-    public BigInteger getTarif() {
-        return tarif;
-    }
-
-    public void setTarif(BigInteger tarif) {
-        this.tarif = tarif;
+    public void setIdRuangan(String idRuangan) {
+        this.idRuangan = idRuangan;
     }
 
     public String getFlag() {

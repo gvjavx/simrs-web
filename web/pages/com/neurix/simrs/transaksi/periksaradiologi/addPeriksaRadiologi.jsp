@@ -312,19 +312,24 @@
                                         <div class="form-group">
                                             <div class="col-md-10">
                                                 <div class="input-group">
-                                                    <span class="input-group-btn">
-                                                        <span class="btn btn-default btn-file">
-                                                            Browse… <input accept="image/*" onchange="setText('label_luar_0')" type="file" id="file_0">
-                                                        </span>
-                                                    </span>
-                                                    <input type="text" class="form-control" readonly id="label_luar_0">
+                                        <span class="input-group-btn">
+                                            <span class="btn btn-default btn-file">
+                                                 Browse… <input accept="image/*"
+                                                                onchange="setCanvasWithText('hasil_luar_0', 'label_hasil_luar_0', 'img_hasil_luar_0')"
+                                                                type="file">
+                                            </span>
+                                        </span>
+                                                    <input type="text" class="form-control" readonly
+                                                           id="label_hasil_luar_0">
                                                 </div>
-                                                <div class="progress xs" style="display: none" id="prog_luar_0">
-                                                    <div class="progress-bar progress-bar-success" id="status_luar_0"></div>
-                                                </div>
+                                                <canvas id="hasil_luar_0" class="hasil_luar"
+                                                        style="display: none"></canvas>
                                             </div>
                                             <div class="col-md-2">
-                                                <button onclick="addUpload('hasil_luar', 'set_luar')" class="btn btn-success" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-plus"></i></button>
+                                                <button onclick="addUpload('hasil_luar', 'set_luar')"
+                                                        class="btn btn-success"
+                                                        style="margin-left: -20px; margin-top: 3px"><i
+                                                        class="fa fa-plus"></i></button>
                                             </div>
                                         </div>
                                     </div>
@@ -346,9 +351,6 @@
                                                 <input type="hidden" id="h_total_tarif">
                                             </div>
                                         </div>
-                                        <button class="btn btn-success" onclick="readAsBase64()">
-                                            CEK
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -949,14 +951,14 @@
                         '                <div class="input-group">\n' +
                         '            <span class="input-group-btn">\n' +
                         '                <span class="btn btn-default btn-file">\n' +
-                        '                     Browse… <input accept="image/*" id="images' + i + '" \n' +
-                        '        onchange="setCanvasWithText(\'hasil_lab_' + i + '\', \'label_hasil_lab_' + i + '\', \'img_hasil_lab_' + i + '\')"\n' +
+                        '                     Browse… <input accept="image/*" id="images'+i+'" \n' +
+                        '        onchange="setCanvasWithText(\'hasil_lab_' + i + '\', \'label_hasil_lab_' + i + '\', \'img_hasil_lab_' + i + '\'); readAsBase64(\'images'+i+'\')"\n' +
                         '        type="file">\n' +
                         '                </span>\n' +
                         '            </span>\n' +
                         '                    <input type="text" class="form-control" readonly id="label_hasil_lab_' + i + '">\n' +
                         '                </div>\n' +
-                        '                <canvas id="hasil_lab_' + i + '" class="hasil_lab' + i + '" style="display: none"></canvas>\n' +
+                        '                <canvas id="hasil_lab_'+i+'" class="hasil_lab' + i + '" style="display: none"></canvas>\n' +
                         '            </div>\n' +
                         '            <div class="col-md-2">\n' +
                         '                <button onclick="addUpload(\'hasil_lab' + i + '\', \'set_hasil' + i + '\')"\n' +
@@ -1164,6 +1166,8 @@
     }
 
     function addUpload(jen, idset) {
+        console.log(jen);
+        console.log(idset);
         var valJen = $('.' + jen);
         var count = valJen.length;
         var idRow = jen + count;
@@ -1175,15 +1179,12 @@
             '        <div class="input-group">\n' +
             '<span class="input-group-btn">\n' +
             '    <span class="btn btn-default btn-file">\n' +
-            '         Browse… <input accept="image/*" onchange="setCanvasWithText(\'' + jenis + '\', \'' + label + '\', \'img_' + jenis + '\')" type="file" id="file_' + count + '">\n' +
+            '         Browse… <input accept="image/*" onchange="setCanvasWithText(\'' + jenis + '\', \'' + label + '\', \'img_' + jenis + '\')" type="file">\n' +
             '    </span>\n' +
             '</span>\n' +
             '            <input type="text" class="form-control" readonly id="' + label + '">\n' +
             '        </div>\n' +
-            // '        <canvas id="' + jenis + '" class="' + jen + '" style="display: none"></canvas>\n' +
-            '<div class="progress xs '+jen +'" style="display: none">\n' +
-            '<div class="progress-bar progress-bar-success" id="'+jenis+'"></div>\n' +
-            '</div>\n'+
+            '        <canvas id="' + jenis + '" class="' + jen + '" style="display: none"></canvas>\n' +
             '    </div>\n' +
             '    <div class="col-md-2">\n' +
             '        <button onclick="delUpload(\'' + idRow + '\',\'item_' + jenis + '\', \'li_' + jenis + '\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-trash"></i></button>\n' +
@@ -1245,14 +1246,6 @@
         fr.readAsDataURL(event.target.files[0]);
     }
 
-    function setText(tujuan) {
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            $('#' + tujuan).val(event.target.files[0].name);
-        }
-        reader.readAsDataURL(event.target.files[0]);
-    }
-
     function getlistParams() {
         PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
             if (response.length > 0) {
@@ -1305,12 +1298,12 @@
         dwr.engine.setAsync(true);
         PeriksaLabAction.saveEditRadiologi(result, {
             callback: function (res) {
-                if (res.status == "success") {
+                if(res.status == "success"){
                     $('#load_ttd').hide();
                     $('#save_ttd').show();
                     $('#modal-ttd').modal('hide');
                     $('#info_dialog').dialog('open');
-                } else {
+                }else{
                     $('#warning_ttd').show().fadeOut(5000);
                     $('#msg_ttd').text(res.msg);
                     $('#load_ttd').hide();
@@ -1320,25 +1313,25 @@
         });
     }
 
-    function conRadioLogi() {
+    function conRadioLogi(){
         $('#modal-confirm-dialog').modal('show');
         $('#save_con').attr('onclick', 'saveSelesaiRadiologi()');
     }
 
-    function saveSelesaiRadiologi() {
+    function saveSelesaiRadiologi(){
         $('#modal-confirm-dialog').modal('hide');
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
         PeriksaLabAction.saveSelesaiRadiologi(idPeriksaLab, {
             callback: function (res) {
-                if (res.status == "success") {
+                if(res.status == "success"){
                     $('#waiting_dialog').dialog('close');
                     $('#save_ket').show();
                     $('#load_ket').hide();
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(1);
                     $('body').scrollTop(0);
-                } else {
+                }else{
                     $('#save_ket').show();
                     $('#load_ket').hide();
                     $('#waiting_dialog').dialog('close');
@@ -1349,63 +1342,22 @@
         });
     }
 
-    function readAsBase64() {
-        var base64File;
-        var files = document.getElementById('file_0').files;
+    function readAsBase64(id) {
+        var files = document.getElementById(id).files;
         if (files.length > 0) {
             var fileToLoad = files[0];
             var fileReader = new FileReader();
-            fileReader.onload = function (event) {
+            var base64File;
+            // Reading file content when it's loaded
+            fileReader.onload = function(event) {
                 base64File = event.target.result;
+                // base64File console
                 console.log(base64File);
             };
+
+            // Convert data to base64
+            fileReader.readAsDataURL(fileToLoad);
         }
-        return base64File;
-    }
-
-    function cekExtensionFile(stringByte) {
-        var ext = "";
-        if (stringByte != "") {
-            var cek = stringByte.split(",")[0];
-            if (cek == "data:image/jpeg;base64") {
-                ext = "jpg";
-            } else if (cek == "data:image/png;base64") {
-                ext = "png";
-            } else if (cek == "data:application/pdf;base64") {
-                ext = "pdf";
-            }
-        }
-        return ext;
-    }
-
-    function uploadHasilLab(i, tipe) {
-        // var byte = readAsBase64('file_'+tipe+'_'+i);
-        // var data = {
-        //     'id_periksa_lab': idPeriksaLab,
-        //     'byte': replaceByte(byte),
-        //     'id_periksa_detail': 'ID',
-        //     'nama_periksa': 'Nama',
-        //     'tipe': 'dalam',
-        //     'eks': cekExtensionFile(byte)
-        // }
-        // $('#prog_'+tipe+'_'+i).show();
-        // var persen = '%'
-        // var interval = setInterval(function () {
-        //     $('#status_'+tipe+'_'+i).css('width', );
-        // }, 100);
-        // var result = JSON.stringify(data);
-        // dwr.engine.setAsync(true);
-        // PeriksaLabAction.uploadFilePemeriksaan(result, {
-        //     callback: function (res) {
-        //         if(res.status == "success"){
-        //             $('#prog_'+tipe+'_'+i).hide();
-        //         }
-        //     }
-        // });
-    }
-
-    function replaceByte(res){
-        return res.replace(/^data:(image|application)\/(png|jpg|pdf);base64,/, "");
     }
 
 </script>

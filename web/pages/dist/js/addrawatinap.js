@@ -790,11 +790,11 @@ function showModal(select) {
         $('#load_icd9').hide();
         $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
         $('#modal-icd9').modal({show: true, backdrop: 'static'});
-    }else if (select == 8) {
+    }else if (select == 9) {
         $('#id_icd9, #ket_icd9').val('');
         $('#load_icd9').hide();
-        $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
-        $('#modal-icd9').modal({show: true, backdrop: 'static'});
+        $('#save_icd9').attr('onclick', 'saveMakananPendamping(\'' + id + '\')').show();
+        $('#modal-makanan_pendamping').modal({show: true, backdrop: 'static'});
     }
 }
 
@@ -3989,11 +3989,7 @@ function setDiet(id) {
                 '<td>' + bentukText +
                 '<input type="hidden" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
                 '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
-                '<input type="hidden" value="' + tempMknLuar + '" id="makan_luar_' + idCount + '">' +
-                '<input type="hidden" value="' + tempPendamping + '" id="snack_' + idCount + '">' +
                 '</td>' +
-                '<td><ul style="margin-left: 10px">'+tempSnack+'</ul></td>'+
-                '<td><ul style="margin-left: 10px">'+tempMakanLuar+'</ul></td>'+
                 '</tr>';
             $('#body_add_diet').append(table);
         } else {

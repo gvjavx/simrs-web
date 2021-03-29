@@ -32,11 +32,10 @@
         $(document).ready(function () {
             $('#exampleGizi').dataTable({
                 "columnDefs": [
-                    {"orderable": false, "targets": 6}
+                    {"orderable": false, "targets": 1}
                 ]
             });
-            $('#permintaan_gizi').addClass('active');
-            setTipe('<s:property value="rawatInap.tipePelayanan"/>');
+            $('#makanan_pendamping').addClass('active');
         });
 
     </script>
@@ -54,7 +53,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Permintaan Gizi
+            Makanan Pendamping
         </h1>
     </section>
 
@@ -65,99 +64,64 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Permintaan Gizi</h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Makanan Pendamping</h3>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
-                            <s:form id="giziForm" method="post" namespace="/ordergizi" action="search_ordergizi.action"
+                            <s:form id="giziForm" method="post" namespace="/pendampingmakanan" action="search_pendampingmakanan.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Pelayanan</label>
+                                    <label class="control-label col-sm-4">ID Detail Checkup</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'RI':'Rawat Inap'}" onchange="setTipe(this.value)"
-                                                  id="tipe_pelayanan" name="rawatInap.tipePelayanan"
-                                                  headerKey="RJ" headerValue="Rawat Jalan"
-                                                  cssClass="form-control select2"/>
+                                        <s:textfield id="id_detail_checkup" cssStyle="margin-top: 7px"
+                                                     name="headerPendampingMakanan.idDetailCheckup" required="false"
+                                                     readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="id_pasien" cssStyle="margin-top: 7px"
-                                                     name="rawatInap.idPasien" required="false"
+                                                     name="headerPendampingMakanan.idPasien" required="false"
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
-                                        <s:textfield id="nama_pasien" name="rawatInap.namaPasien"
+                                        <s:textfield id="nama_pasien" name="headerPendampingMakanan.nama"
                                                      required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Waktu</label>
+                                    <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
-                                        <s:select list="#{'siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
-                                                  id="status" name="rawatInap.waktu"
-                                                  headerKey="pagi" headerValue="Pagi"
+                                        <s:action id="initComboKelas" namespace="/checkupdetail"
+                                                  name="getListComboKelasRuangan_checkupdetail"/>
+                                        <s:select cssStyle="margin-top: 7px"
+                                                  onchange="$(this).css('border',''); listSelectRuangan(this.value)"
+                                                  list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
+                                                  name="headerPendampingMakanan.idKelas"
+                                                  listKey="idKelasRuangan"
+                                                  listValue="namaKelasRuangan"
+                                                  headerKey="" headerValue="[Select one]"
                                                   cssClass="form-control select2"/>
                                     </div>
-                                </div>
-                                <div style="display: none" id="form_ri">
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Kelas Ruangan</label>
-                                        <div class="col-sm-4">
-                                            <s:action id="initComboKelas" namespace="/checkupdetail"
-                                                      name="getListComboKelasRuangan_checkupdetail"/>
-                                            <s:select cssStyle="margin-top: 7px"
-                                                      onchange="$(this).css('border',''); listSelectRuangan(this.value)"
-                                                      list="#initComboKelas.listOfKelasRuangan" id="kelas_kamar"
-                                                      name="rawatInap.idKelas"
-                                                      listKey="idKelasRuangan"
-                                                      listValue="namaKelasRuangan"
-                                                      headerKey="" headerValue="[Select one]"
-                                                      cssClass="form-control select2"/>
-                                        </div>
-                                        <div class="col-sm-3" style="display: none;" id="load_ruang">
-                                            <img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
-                                                 style="cursor: pointer; width: 45px; height: 45px"><b
-                                                style="color: #00a157;">Sedang diproses...</b></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="control-label col-sm-4">Ruangan</label>
-                                        <div class="col-sm-4">
-                                            <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
-                                                    id="nama_ruangan" name="rawatInap.idRuang">
-                                                <option value=''>[Select One]</option>
-                                            </select>
-                                        </div>
-                                    </div>
+                                    <div class="col-sm-3" style="display: none;" id="load_ruang">
+                                        <img border="0" src="<s:url value="/pages/images/spinner.gif"/>"
+                                             style="cursor: pointer; width: 45px; height: 45px"><b
+                                            style="color: #00a157;">Sedang diproses...</b></div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Tanggal Order</label>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_from" name="rawatInap.stTglFrom"
-                                                         cssClass="form-control"
-                                                         required="false"/>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <div class="input-group date" style="margin-top: 7px">
-                                            <div class="input-group-addon">
-                                                <i class="fa fa-calendar"></i>
-                                            </div>
-                                            <s:textfield id="tgl_to" name="rawatInap.stTglTo" cssClass="form-control"
-                                                         required="false"/>
-                                        </div>
+                                    <label class="control-label col-sm-4">Ruangan</label>
+                                    <div class="col-sm-4">
+                                        <select id="ruangan_ruang" style="margin-top: 7px" class="form-control select2"
+                                                id="nama_ruangan" name="headerPendampingMakanan.idRuangan">
+                                            <option value=''>[Select One]</option>
+                                        </select>
                                     </div>
                                 </div>
-                                <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
                                     <div class="col-sm-4" style="margin-top: 7px">
@@ -168,7 +132,7 @@
                                             <i class="fa fa-search"></i>
                                             Search
                                         </sj:submit>
-                                        <a type="button" class="btn btn-danger" href="initForm_ordergizi.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_pendampingmakanan.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -240,142 +204,47 @@
                     </div>
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Gizi</h3>
+                        <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Order Makanan Pendamping</h3>
                     </div>
                     <div class="box-body">
-                        <table id="exampleGizi" class="table table-bordered table-striped" style="font-size: 12px">
+                        <table id="exampleGizi" class="table table-bordered table-striped">
                             <thead>
                             <tr bgcolor="#90ee90">
+                                <td>No Pesanan</td>
+                                <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
                                 <td>Ruangan</td>
-                                <td>Jenis Diet</td>
-                                <td>Bentuk Diet</td>
-                                <td>Alergi</td>
-                                <td>Diagnosa</td>
                                 <td width="15%">Status</td>
-                                <td align="center" width="9%">
-                                    <div class="form-check">
-                                        <input type="checkbox" id="select_all" value="all"
-                                               onclick="setAll(this.id, 'id_order_gizi'); setSave('id_order_gizi')">
-                                        <label for="select_all"></label>
-                                    </div>
-                                </td>
                             </tr>
                             </thead>
                             <tbody>
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
+                                    <td><s:property value="idHeaderPendampingMakanan"/></td>
+                                    <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
-                                    <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="nama"/></td>
                                     <td>
                                         <s:if test='#row.noRuangan != "" && #row.noRuangan != null'>
-                                            [<s:property value="noRuangan"/>] <s:property value="namaRangan"/>
+                                            [<s:property value="noRuangan"/>] <s:property value="namaRuangan"/>
                                         </s:if>
                                         <s:else>
-                                            <s:property value="namaRangan"/>
+                                            <s:property value="namaRuangan"/>
                                         </s:else>
                                     </td>
-                                    <td><s:property value="jenisDiet"/></td>
-                                    <td><s:property value="bentukGizi"/></td>
                                     <td>
-                                        <s:property value="alergi"/>
-                                        <input type="hidden" id="no_checkup_<s:property value="idOrderGizi"/>" value="<s:property value="noCheckup"/>">
-                                    </td>
-                                    <td><s:property value="namaDiagnosa"/></td>
-                                    <td>
-                                        <s:if test='#row.diterimaFlag == "R"'>
-                                            <span class="span-danger">dibatalkan</span>
+                                        <s:if test='#row.status == "0"'>
+                                            <span class="span-danger">proses</span>
                                         </s:if>
                                         <s:else>
-                                            <s:if test='#row.approveFlag == "Y"'>
-                                                <span class="span-success">telah dikonfirmasi</span>
-                                            </s:if>
-                                            <s:elseif test='#row.approveFlag == "N"'>
-                                                <span class="span-danger">ditolak</span>
-                                            </s:elseif>
-                                            <s:else>
-                                                <span class="span-warning">menunggu konfirmasi</span>
-                                            </s:else>
-                                        </s:else>
-                                    </td>
-                                    <td align="center">
-                                        <s:if test='#row.diterimaFlag == "R"'>
-                                            <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
-                                                 src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                                 style="cursor: pointer;"
-                                                 onclick="viewHistory('<s:property value="idPasien"/>',
-                                                         '<s:property value="namaPasien"/>',
-                                                         '<s:property value="jenisKelamin"/>',
-                                                         '<s:property value="umur"/>',
-                                                         '<s:property value="namaRangan"/>',
-                                                         '<s:property value="jenisDiet"/>',
-                                                         '<s:property value="bentukGizi"/>',
-                                                         '<s:property value="alergi"/>',
-                                                         '<s:property value="namaDiagnosa"/>',
-                                                         '<s:property value="idDetailCheckup"/>',
-                                                         '<s:property value="noCheckup"/>'
-                                                         )">
-                                        </s:if>
-                                        <s:else>
-                                            <s:if test='#row.approveFlag == "Y"'>
-                                                <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
-                                            </s:if>
-                                            <s:elseif test='#row.approveFlag == "N"'>
-                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
-                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                                     style="cursor: pointer;"
-                                                     onclick="viewHistory('<s:property value="idPasien"/>',
-                                                             '<s:property value="namaPasien"/>',
-                                                             '<s:property value="jenisKelamin"/>',
-                                                             '<s:property value="umur"/>',
-                                                             '<s:property value="namaRangan"/>',
-                                                             '<s:property value="jenisDiet"/>',
-                                                             '<s:property value="bentukGizi"/>',
-                                                             '<s:property value="alergi"/>',
-                                                             '<s:property value="namaDiagnosa"/>',
-                                                             '<s:property value="idDetailCheckup"/>',
-                                                             '<s:property value="noCheckup"/>'
-                                                             )">
-                                            </s:elseif>
-                                            <s:else>
-                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
-                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
-                                                     style="cursor: pointer;"
-                                                     onclick="viewHistory('<s:property value="idPasien"/>',
-                                                             '<s:property value="namaPasien"/>',
-                                                             '<s:property value="jenisKelamin"/>',
-                                                             '<s:property value="umur"/>',
-                                                             '<s:property value="namaRangan"/>',
-                                                             '<s:property value="jenisDiet"/>',
-                                                             '<s:property value="bentukGizi"/>',
-                                                             '<s:property value="alergi"/>',
-                                                             '<s:property value="namaDiagnosa"/>',
-                                                             '<s:property value="idDetailCheckup"/>',
-                                                             '<s:property value="noCheckup"/>'
-                                                             )">
-                                                <div class="form-check">
-                                                    <input onclick="setSave('id_order_gizi')" type="checkbox"
-                                                           name="id_order_gizi"
-                                                           id="id_order_gizi_<s:property value="idOrderGizi"/>"
-                                                           value="<s:property value="idOrderGizi"/>">
-                                                    <label for="id_order_gizi_<s:property value="idOrderGizi"/>"></label>
-                                                </div>
-                                            </s:else>
+                                            <span class="span-success">selesai</span>
                                         </s:else>
                                     </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
                         </table>
-                        <div class="row">
-                            <div class="col-md-offset-4 col-md-4 text-center">
-                                <a style="display: none" id="btn-not-approve" class="btn btn-danger"
-                                   onclick="saveNotApproveGizi()"><i class="fa fa-times"></i> Not Approve</a>
-                                <a style="display: none" id="btn-approve" class="btn btn-success"
-                                   onclick="saveApproveGizi()"><i class="fa fa-check"></i> Approve</a>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -729,7 +598,7 @@
     }
 
     function printBarcodeGizi(noCheckup, idorderGizi) {
-        window.open('printBarcodeGizi_ordergizi.action?id=' + noCheckup + '&order=' + idorderGizi, '_blank');
+        window.open('printBarcodeGizi_pendampingmakanan.action?id=' + noCheckup + '&order=' + idorderGizi, '_blank');
     }
 
     function saveVerif() {

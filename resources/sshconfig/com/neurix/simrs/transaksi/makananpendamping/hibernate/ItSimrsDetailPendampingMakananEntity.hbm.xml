@@ -2,23 +2,29 @@
 <entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
         version="2.0">
 
-    <entity class="com.neurix.simrs.transaksi.ordergizi.model.ItSimrsPendampingGiziEntity">
-        <table name="it_simrs_pendamping_gizi" schema="public"/>
+    <entity class="com.neurix.simrs.transaksi.makananpendamping.model.ItSimrsDetailPendampingMakananEntity">
+        <table name="it_simrs_detail_pendamping_makanan" schema="public"/>
         <attributes>
-            <id name="idPendampingGizi">
-                <column name="id_pendamping_gizi"/>
+            <id name="idDetailPendampingMakanan">
+                <column name="id_detail_pendamping_makanan"/>
             </id>
-            <basic name="idDetailCheckup">
-                <column name="id_detail_checkup"/>
+            <basic name="idHeaderPendampingMakanan">
+                <column name="id_header_pendamping_makanan"/>
             </basic>
             <basic name="nama">
                 <column name="nama"/>
             </basic>
-            <basic name="tipe">
-                <column name="tipe"/>
+            <basic name="qty">
+                <column name="qty"/>
             </basic>
             <basic name="tarif">
                 <column name="tarif"/>
+            </basic>
+            <basic name="totalTarif">
+                <column name="total_tarif"/>
+            </basic>
+            <basic name="keterangan">
+                <column name="keterangan"/>
             </basic>
             <basic name="flag">
                 <column name="flag"/>
@@ -37,9 +43,6 @@
             </basic>
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
-            </basic>
-            <basic name="status">
-                <column name="status"/>
             </basic>
         </attributes>
     </entity>
