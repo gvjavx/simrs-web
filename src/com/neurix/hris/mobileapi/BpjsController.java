@@ -867,7 +867,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 absensiBoProxy.saveAddAbsensi(absensiPegawaiList, listOfResultOnCall, search);
             }catch (GeneralBOException e){
                 String error = "ERROR WHEN SAVE ABSENSI PEGAWAI : " + "[" + e + "]";
-                statusInquiry = "{status:0;}";
+                statusInquiry = "{status:3;}";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
 
                 //Kirim Notif
@@ -889,7 +889,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             }
         }catch (Exception e){
             String error = "ERROR WHEN GET ABSENSI PEGAWAI : " + "[" + e + "]";
-            statusInquiry = "{status:0;}";
+            statusInquiry = "{status:2;}";
             absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
 
             //Kirim Notif

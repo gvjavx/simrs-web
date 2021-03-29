@@ -2516,6 +2516,10 @@ public class AbsensiBoImpl implements AbsensiBo {
             con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
             try (DataOutputStream wr = new DataOutputStream(con.getOutputStream())) {
                 wr.write(postData);
+            }catch (Exception e){
+                logger.error("[AbsensiBoImpl.getAlldataFromMesin] Error, " + e.getMessage());
+                hbStatus = "8";
+                throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Data From Mesin Absensi, " + e.getMessage());
             }
             int responseCode = con.getResponseCode();
             System.out.println("\nSending 'POST' request to URL : " + url);
@@ -2531,7 +2535,14 @@ public class AbsensiBoImpl implements AbsensiBo {
             JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
             boolean adaData = myResponseCheck.getBoolean("Result");
             if (adaData) {
-                JSONArray ja_data = myResponseCheck.getJSONArray("Data");
+                JSONArray ja_data;
+                try {
+                    ja_data = myResponseCheck.getJSONArray("Data");
+                }catch(Exception e){
+                    logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                    hbStatus = "9";
+                    throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Error when retrieving Data from JSON Array, " + e.getMessage());
+                }
                 int length = ja_data.length();
                 for (int i = 0; i < length; i++) {
                     JSONObject jObj = ja_data.getJSONObject(i);
@@ -2556,7 +2567,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         mesinAbsensiDetailId = mesinAbsensiDetailDao.getNextMesinAbsensiDetailId();
                     } catch (HibernateException e) {
                         logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
-                        hbStatus = "3";
+                        hbStatus = "4";
                         throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when retrieving Sequence, " + e.getMessage());
                     }
                     mesinAbsensiDetailEntity.setMesinAbsensiDetailId(mesinAbsensiDetailId);
@@ -2579,7 +2590,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                         mesinAbsensiDetailDao.addAndSave(mesinAbsensiDetailEntity);
                     } catch (HibernateException e) {
                         logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
-                        hbStatus = "4";
+                        hbStatus = "5";
                         throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when Add and Save Mesin Absensi Detail, " + e.getMessage());
                     }
                 }
@@ -2591,7 +2602,7 @@ public class AbsensiBoImpl implements AbsensiBo {
                 mesinAbsensiEntity = mesinDao.getById("mesinId", mesin.getMesinId());
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
-                hbStatus = "5";
+                hbStatus = "6";
                 throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when Mesin Absensi by ID, " + e.getMessage());
             }
             mesinAbsensiEntity.setLastGet(bean.getLastUpdate());
@@ -2599,10 +2610,9 @@ public class AbsensiBoImpl implements AbsensiBo {
                 mesinDao.updateAndSave(mesinAbsensiEntity);
             } catch (HibernateException e) {
                 logger.error("[AbsensiBoImpl.getDataFromMesin] Error, " + e.getMessage());
-                hbStatus = "6";
+                hbStatus = "7";
                 throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Found problem when Update and Save Mesin Absensi, " + e.getMessage());
             }
-            hbStatus = "1";
         }
         // END OF CODING ASLI //
 
@@ -2733,7 +2743,14 @@ public class AbsensiBoImpl implements AbsensiBo {
                 in.close();
                 JSONObject myResponseCheck = new JSONObject(responseTemp.toString());
                 isSession = myResponseCheck.getBoolean("IsSession");
-                JSONArray ja_data = myResponseCheck.getJSONArray("Data");
+                JSONArray ja_data;
+                try {
+                    ja_data = myResponseCheck.getJSONArray("Data");
+                }catch(Exception e){
+                    logger.error("[AbsensiBoImpl.getAllDataFromMesin] Error, " + e.getMessage());
+                    hbStatus = "9";
+                    throw new GeneralBOException("{status:" + hbStatus + "; response:"+ respCode +";}-Error when retrieving Data from JSON Array, " + e.getMessage());
+                }
                 int length = ja_data.length();
                 for (int i = 0; i < length; i++) {
                     JSONObject jObj = ja_data.getJSONObject(i);

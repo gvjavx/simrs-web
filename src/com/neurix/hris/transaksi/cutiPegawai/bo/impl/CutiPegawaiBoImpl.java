@@ -2643,8 +2643,18 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
             logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list , please info to your admin..." + e.getMessage());
         }
-        for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
-            sisaCutiTahunan = cutiPegawaiEntity.getSisaCutiHari();
+        if(cutiPegawaiEntityList.size() == 0){
+            try{
+                ImCutiEntity cuti = cutiDao.getById("cutiId","CT002");
+                sisaCutiTahunan = BigInteger.valueOf(cuti.getJumlahCuti());
+            }catch (HibernateException e){
+                logger.error("[CutiPegawaiBoImpl.getListSetCuti] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Cuti by ID, " + e.getMessage());
+            }
+        }else {
+            for (ItCutiPegawaiEntity cutiPegawaiEntity : cutiPegawaiEntityList) {
+                sisaCutiTahunan = cutiPegawaiEntity.getSisaCutiHari();
+            }
         }
         if (sisaCutiTahunan.equals(BigInteger.valueOf(0))) {
             try {
