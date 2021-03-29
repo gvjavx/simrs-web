@@ -490,6 +490,8 @@
     var today = dd+'/'+mm+'/'+yyyy;
     //$('#tanggalAwalCuti').val(today);
     $(document).ready(function() {
+        var raw = $('#tgl2').val().split("-")
+        var limDate = new Date(raw[2],raw[1]-1,raw[0]);
 
         function callSearch2() {
             //alert('okok');
@@ -506,6 +508,7 @@
         });
         $('#tglMelahirkan1').datepicker({
             dateFormat: 'dd-mm-yy',
+            minDate: limDate
         });
     });
 
