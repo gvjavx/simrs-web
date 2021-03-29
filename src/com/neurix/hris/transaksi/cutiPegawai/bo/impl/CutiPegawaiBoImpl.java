@@ -696,7 +696,7 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                         itCutiPegawaiEntity1.setLamaHariCuti(bean.getLamaHariCuti());
 
                         if ("CT007".equalsIgnoreCase(bean.getCutiId()))
-                            itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(1095));
+                            itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(1095)); //Setelah dipakai, jd 0. (Bila 1x seumur hidup)
 
                         else
                             itCutiPegawaiEntity1.setSisaCutiHari(BigInteger.valueOf(12).subtract(bean.getLamaHariCuti()));

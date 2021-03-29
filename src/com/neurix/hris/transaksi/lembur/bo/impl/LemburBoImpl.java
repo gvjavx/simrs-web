@@ -82,6 +82,10 @@ public class LemburBoImpl implements LemburBo {
 //    private String ACTION_CLICK = "TASK_LEMBUR";
     private String ACTION_CLICK = null;
 
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
+    }
+
     public void setNotifikasiFcmDao(NotifikasiFcmDao notifikasiFcmDao) {
         this.notifikasiFcmDao = notifikasiFcmDao;
     }
@@ -525,19 +529,18 @@ public class LemburBoImpl implements LemburBo {
                 }
 
                 //RAKA-10MAR2021==> Validasi Hak Lembur Pegawai
+                Boolean hakLembur =false;
                 if(CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())){
-                    Boolean hakLembur = cekHakLembur(personalEntity.getNip());
-                    returnLembur.setHakLembur(hakLembur);
+                    hakLembur = cekHakLembur(personalEntity.getNip());
                 }else if(CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(personalEntity.getTipePegawai())){
-                    Boolean hakLembur ;
                     try {
-                        hakLembur = profesiDao.cekHakLemburByProfesi(personalEntity.getProfesiId());
+                        hakLembur = profesiDao.cekHakLemburByProfesi(itPersonilPositionEntity.getProfesiId());
                     }catch (HibernateException e) {
                         logger.error("[LemburBoImpl.getBiodatawithCriteria] Error, " + e.getMessage());
                         throw new GeneralBOException("Error when retrieving Cek Hak Lembur By Profesi, " + e.getMessage());
                     }
-                    returnLembur.setHakLembur(hakLembur);
                 }
+                returnLembur.setHakLembur(hakLembur);
 
                 if (imPosition!=null){
                     returnLembur.setDivisiId(imPosition.getDepartmentId());

@@ -119,9 +119,7 @@ public class LemburAction extends BaseMasterAction {
         List<Lembur> listOfsearchBiodata = new ArrayList();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        if (("ADMIN").equalsIgnoreCase(role)||("Admin Bagian").equalsIgnoreCase(role)){
-
-        }else{
+        if (!("ADMIN").equalsIgnoreCase(role) && !("Admin Bagian").equalsIgnoreCase(role)){
             Biodata searchBiodata = new Biodata();
             String user = CommonUtil.userIdLogin();
             addLembur.setNip(user);
@@ -133,7 +131,8 @@ public class LemburAction extends BaseMasterAction {
             }
             session.removeAttribute("listOfResultLemburPersonil");
             session.setAttribute("listOfResultLemburPersonil", listOfsearchBiodata);
-            List<Lembur> listOfResultLemburPersonil = (List<Lembur>) session.getAttribute("listOfResultLemburPersonil");
+//            List<Lembur> listOfResultLemburPersonil = (List<Lembur>) session.getAttribute("listOfResultLemburPersonil");
+            List<Lembur> listOfResultLemburPersonil = listOfsearchBiodata;
 
             if(listOfResultLemburPersonil != null){
                 for (Lembur lembur: listOfResultLemburPersonil) {
