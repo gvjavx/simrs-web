@@ -68,8 +68,10 @@
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
             var tglAkhir            = document.getElementById("tanggalAkhirKontrak").value;
+            var profesi             = $("#profesi1").val();
+            var posisi              = $("#positionId1").val();
 
-            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
+            if ( nip != '' && posisi != '' && profesi != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
@@ -105,6 +107,12 @@
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (profesi == '') {
+                    msg += 'Field <strong>Profesi</strong> is required.' + '<br/>';
+                }
+                if (posisi == '') {
+                    msg += 'Field <strong>Jabatan</strong> is required.' + '<br/>';
                 }
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
@@ -536,7 +544,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label><small>Profesi :</small></label>
+                                                        <label><small>Profesi <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -556,7 +564,7 @@
                                             <s:else>
                                                 <tr>
                                                     <td>
-                                                        <label><small>Profesi :</small></label>
+                                                        <label><small>Profesi <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -967,8 +975,13 @@
                                                         <s:if test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;" readonly="true" value="Y" cssClass="form-control" id="shift" name="biodata.shift" />
                                                         </s:if>
-                                                        <s:else>
+                                                        <s:elseif test="isDelete()">
                                                             <s:textfield cssStyle="text-align: left;" readonly="true" cssClass="form-control" id="shift" name="biodata.shift" />
+                                                        </s:elseif>
+                                                            <%--RAKA-30MAR2021 ==> //membuka akses edit shift (handle salah inject)--%>
+                                                        <s:else>
+                                                            <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                                      headerKey="N" headerValue="N" cssClass="form-control" />
                                                         </s:else>
 
                                                     </table>
@@ -1613,7 +1626,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Profesi : </label>
+                        <label class="control-label col-sm-4" >Profesi <span style="color:red;">*</span> : </label>
                         <div class="col-sm-8">
                             <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                             <s:select list="#comboProfesi.listComboProfesi" id="profesi3" name="biodata.profesiId"

@@ -620,6 +620,15 @@
    $('#tgl2').datepicker({
         dateFormat: 'dd/mm/yy'
    });
+    $('#tgl3').on('change',function() {
+        var strDate = $('#tgl3').datepicker('getDate');
+        var strDay = strDate.getDay();
+        if (strDay == 0 || strDay == 6){
+            alert ("tanggal awal ijin harus di hari kerja");
+            $('#tgl3').val("");
+        }
+    })
+
     $('#tgl2').on('change',function(){
         var nip=document.getElementById("nipId").value;
         var tglawal=document.getElementById("tgl3").value;
@@ -663,8 +672,14 @@
         var ijinId = $('#ijinId1').val();
         if (ijinId == 'IJ013'){
             var date = $('#tgl3').datepicker('getDate');
+            var strDate = $('#tgl3').datepicker('getDate');
             console.log(date);
             date.setDate(date.getDate()+45);
+            var dur = date.workingDaysFrom(strDate);
+            while(dur<45){
+                date.setDate(date.getDate()+1);
+                dur = date.workingDaysFrom(strDate);
+            }
             var d = new Date(date),
                     month = '' + (d.getMonth() + 1),
                     day = '' + (d.getDate()),
@@ -682,8 +697,8 @@
             console.log(startdate);
             console.log(enddate);
             if(startdate<enddate) {
-                var days   = (enddate - startdate)/1000/60/60/24;
-                $('#lamaId').val(days);
+                // var days   = (enddate - startdate)/1000/60/60/24;
+                $('#lamaId').val(dur);
             }
             else {
                 alert ("tanggal selesai kurang dari tanggal mulai , mohon ulangi ");
@@ -694,10 +709,37 @@
         }
     };
 
+    Date.prototype.workingDaysFrom=function(fromDate){
+        // ensure that the argument is a valid and past date
+        if(!fromDate||isNaN(fromDate)||this<fromDate){return -1;}
+
+        // clone date to avoid messing up original date and time
+        var frD=new Date(fromDate.getTime()),
+            toD=new Date(this.getTime()),
+            numOfWorkingDays=1;
+
+        // reset time portion
+        frD.setHours(0,0,0,0);
+        toD.setHours(0,0,0,0);
+
+        while(frD<toD){
+            frD.setDate(frD.getDate()+1);
+            var day=frD.getDay();
+            if(day!=0&&day!=6){numOfWorkingDays++;}
+        }
+        return numOfWorkingDays;
+    };
+
     window.getlastDate = function() {
         var tgl = $('#tgl3').datepicker('getDate');
+        var strTgl = $('#tgl3').datepicker('getDate');
         var maxIjin = parseInt($('#maxIjin').val());
         tgl.setDate(tgl.getDate() + maxIjin-1);
+        var dur = tgl.workingDaysFrom(strTgl);
+        while(dur<maxIjin){
+            tgl.setDate(tgl.getDate() + 1);
+            dur = tgl.workingDaysFrom(strTgl);
+        }
         var result = new Date(tgl);
         console.log(tgl);
 

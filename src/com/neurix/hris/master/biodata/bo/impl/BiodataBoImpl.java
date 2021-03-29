@@ -1671,25 +1671,25 @@ public class BiodataBoImpl implements BiodataBo {
                                     }
 
                                     //RAKA-03MAR2021==>Penambahan Tunjangan Peralihan
-                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPeralihanGapok())) {
-                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanGapok("Y");
+                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPeralihanGapok()) && bean.getFlagTunjPeralihanGapok() != null) {
+                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanGapok(bean.getFlagTunjPeralihanGapok());
                                     } else {
                                         itTunjLainPegawaiEntity.setFlagTunjPeralihanGapok("N");
                                     }
-                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPeralihanSankhus())) {
-                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanSankhus("Y");
+                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPeralihanSankhus()) && bean.getFlagTunjPeralihanSankhus() != null) {
+                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanSankhus(bean.getFlagTunjPeralihanSankhus());
                                     } else {
                                         itTunjLainPegawaiEntity.setFlagTunjPeralihanSankhus("N");
                                     }
-                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPeralihanTunjangan())) {
-                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanTunjangan("Y");
+                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPeralihanTunjangan()) && bean.getFlagTunjPeralihanTunjangan() != null) {
+                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanTunjangan(bean.getFlagTunjPeralihanTunjangan());
                                     } else {
                                         itTunjLainPegawaiEntity.setFlagTunjPeralihanTunjangan("N");
                                     }
-                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPemondokan())) {
-                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanTunjangan("Y");
+                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPemondokan()) && bean.getFlagTunjPemondokan() != null) {
+                                        itTunjLainPegawaiEntity.setFlagTunjPemondokan(bean.getFlagTunjPemondokan());
                                     } else {
-                                        itTunjLainPegawaiEntity.setFlagTunjPeralihanTunjangan("N");
+                                        itTunjLainPegawaiEntity.setFlagTunjPemondokan("N");
                                     }
 
                                     if (bean.getStTunjPeralihanGapok() != null && !"".equalsIgnoreCase(bean.getStTunjPeralihanGapok())) {
@@ -1701,11 +1701,19 @@ public class BiodataBoImpl implements BiodataBo {
                                     if (bean.getStTunjPeralihanTunjangan() != null && !"".equalsIgnoreCase(bean.getStTunjPeralihanTunjangan())) {
                                         itTunjLainPegawaiEntity.setTunjPeralihanTunjangan(new BigDecimal(bean.getStTunjPeralihanTunjangan()));
                                     }
-
-                                    if (!"".equalsIgnoreCase(bean.getFlagTunjPemondokan())) {
-                                        itTunjLainPegawaiEntity.setFlagTunjPemondokan("Y");
-                                    } else {
-                                        itTunjLainPegawaiEntity.setFlagTunjPemondokan("N");
+                                    //RAKA-end
+                                    //RAKA-22MAR2021 ==> Nominal Tunjangan di pindah ke Tunj_Lain
+                                    if (bean.getStTunjSiaga() != null && !"".equalsIgnoreCase(bean.getStTunjSiaga())) {
+                                        itTunjLainPegawaiEntity.setTunjSiaga(new BigDecimal(bean.getStTunjSiaga()));
+                                    }
+                                    if (bean.getStTunjSupervisi() != null && !"".equalsIgnoreCase(bean.getStTunjSupervisi())) {
+                                        itTunjLainPegawaiEntity.setTunjSupervisi(new BigDecimal(bean.getStTunjSupervisi()));
+                                    }
+                                    if (bean.getStTunjLokasi() != null && !"".equalsIgnoreCase(bean.getStTunjLokasi())) {
+                                        itTunjLainPegawaiEntity.setTunjLokasi(new BigDecimal(bean.getStTunjLokasi()));
+                                    }
+                                    if (bean.getStTunjPemondokan() != null && !"".equalsIgnoreCase(bean.getStTunjPemondokan())) {
+                                        itTunjLainPegawaiEntity.setTunjPemondokan(new BigDecimal(bean.getStTunjPemondokan()));
                                     }
                                     //RAKA-end
 
@@ -6571,6 +6579,7 @@ public class BiodataBoImpl implements BiodataBo {
         biodataEntity.setNamaBank(bean.getNamaBank());
         biodataEntity.setNoRekBank(bean.getNoRekBank());
         biodataEntity.setCabangBank(bean.getCabangBank());
+        biodataEntity.setShift(bean.getShift());
 
         if (bean.getFotoUpload() != null) {
             biodataEntity.setFotoUpload(bean.getFotoUpload());
