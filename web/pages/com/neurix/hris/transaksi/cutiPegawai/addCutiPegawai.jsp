@@ -724,6 +724,15 @@
         dateFormat: 'dd/mm/yy'
     });
 
+    $('#tgl2').on('change', function(){
+        var date = $('#tgl2').datepicker('getDate');
+        var tgl = date.getDay();
+        if (tgl == 0 || tgl == 6){
+            alert ("tanggal awal cuti harus di hari kerja");
+            $('#tgl2').val("");
+        }
+    })
+
     $('#tgl1').on('change',function(){
         var nip = document.getElementById("nipId").value;
         var tglawal = document.getElementById("tgl2").value;
