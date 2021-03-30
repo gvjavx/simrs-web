@@ -1876,14 +1876,14 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 
     @Override
     public List getCriteriaForResetCuti(String unit) throws GeneralBOException {
-        logger.info("[UserBoImpl.getCriteriaForResetCuti] start process >>>");
+        logger.info("[CutiPegawaiBoImpl.getCriteriaForResetCuti] start process >>>");
         String tahun;
         List<ImBiodataEntity> biodataEntityList;
         List<CutiPegawai> listCutiPegawai = new ArrayList();
         try {
             biodataEntityList = cutiPegawaiDao.getPegawaiCuti(unit);
         } catch (HibernateException e) {
-            logger.error("[UserBoImpl.getCriteriaForResetCuti] Error, " + e.getMessage());
+            logger.error("[CutiPegawaiBoImpl.getCriteriaForResetCuti] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
         }
         for (ImBiodataEntity imBiodataEntity : biodataEntityList) {
@@ -1966,8 +1966,8 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
                 try {
                     tahun = cutiPanjangDao.cekResetCutiPanjang(result.getNip());
                 } catch (HibernateException e) {
-                    logger.error("[UserBoImpl.getCriteriaForResetCuti] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+                    logger.error("[CutiPegawaiBoImpl.getCriteriaForResetCuti] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when retieving data with criteria, please info to your admin..." + e.getMessage());
                 }
                 Calendar now = Calendar.getInstance();
                 String currentYear = String.valueOf(now.get(Calendar.YEAR));
@@ -1988,21 +1988,21 @@ public class CutiPegawaiBoImpl implements CutiPegawaiBo {
 //            if (cutiPegawaiEntityList.size()==0){
 //            }
         }
-        logger.info("[UserBoImpl.getCriteriaForResetCuti] end process <<<");
+        logger.info("[CutiPegawaiBoImpl.getCriteriaForResetCuti] end process <<<");
         return listCutiPegawai;
     }
 
     @Override
     public List getCriteriaForInisialisasiCuti(String unit) throws GeneralBOException {
-        logger.info("[UserBoImpl.getCriteriaForInisialisasiCuti] start process >>>");
+        logger.info("[CutiPegawaiBoImpl.getCriteriaForInisialisasiCuti] start process >>>");
 
         List<Biodata> biodataList;
         List<CutiPegawai> listCutiPegawai = new ArrayList();
         try {
             biodataList = biodataDao.getBiodataByUnitAndNip(unit, "");
         } catch (HibernateException e) {
-            logger.error("[UserBoImpl.getCriteriaForInisialisasiCuti] Error, " + e.getMessage());
-            throw new GeneralBOException("Found problem when retieving list user with criteria, please info to your admin..." + e.getMessage());
+            logger.error("[CutiPegawaiBoImpl.getCriteriaForInisialisasiCuti] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retieving list biodata with criteria, please info to your admin..." + e.getMessage());
         }
         for (Biodata biodata : biodataList) {
             CutiPegawai result = getSisaCuti(biodata.getNip());

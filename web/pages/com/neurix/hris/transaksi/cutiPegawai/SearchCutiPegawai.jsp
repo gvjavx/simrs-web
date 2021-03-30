@@ -1117,9 +1117,9 @@
 //            alert(cutiAktif);
             if(unit!=""){
                 var cutiAktif="";
-                // CutiPegawaiAction.getCutiAktif(unit,function(data){
-                //     cutiAktif = data;
-                // });
+                CutiPegawaiAction.getCutiAktif(unit,function(data){
+                    cutiAktif = data;
+                });
                 if( cutiAktif =='N'){
                     CutiPegawaiAction.searchPegawaiResetTahunan(unit,function(listdata) {
                         if (listdata!=""){
