@@ -34,22 +34,16 @@
                 <prop key="hibernate.bytecode.use_reflection_optimizer">false</prop>
 
                 <!-- ===== PROD ====== -->
-<!--                <prop key="hibernate.connection.url">jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu</prop>-->
-<!--                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-<!--                <prop key="hibernate.connection.username">root</prop>-->
-<!--                <prop key="hibernate.connection.password">123456</prop>-->
-
-                <!-- ====== PROD-VPN ======= -->
                 <!--<prop key="hibernate.connection.url">jdbc:postgresql://10.88.70.233:5432/gomedsys_nmu</prop>-->
                 <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
                 <!--<prop key="hibernate.connection.username">root</prop>-->
                 <!--<prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ===== DEV ====== -->
-                <!--<prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_09022021</prop>-->
-                <!--<prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
-                <!--<prop key="hibernate.connection.username">root</prop>-->
-                <!--<prop key="hibernate.connection.password">123456</prop>-->
+<!--                <prop key="hibernate.connection.url">jdbc:postgresql://192.168.0.10:5432/gomedsys_nmu_240321</prop>-->
+<!--                <prop key="hibernate.connection.driver_class">org.postgresql.Driver</prop>-->
+<!--                <prop key="hibernate.connection.username">root</prop>-->
+<!--                <prop key="hibernate.connection.password">123456</prop>-->
 
                 <!-- ====== LOCALHOST ======= -->
                 <prop key="hibernate.connection.url">jdbc:postgresql://localhost:5432/gomedsys_nmu_prod_mig</prop>

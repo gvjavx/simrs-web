@@ -310,19 +310,19 @@ public class LemburDao extends GenericDao<LemburEntity, String> {
         for(Object[] result : results){
             if(result[2] != null){
                  compResult = zero.compareTo((BigDecimal) result[2]);
-                 if(compResult == 1){
+                 if(compResult == -1){
                      hakLembur = false;
                  }
             }
             if(result[3] != null){
                 compResult = zero.compareTo((BigDecimal) result[3]);
-                if(compResult == 1){
+                if(compResult == -1){
                     hakLembur = false;
                 }
             }
             if(result[4] != null){
                 compResult = zero.compareTo((BigDecimal) result[4]);
-                if(compResult == 1){
+                if(compResult == -1){
                     hakLembur = false;
                 }
             }

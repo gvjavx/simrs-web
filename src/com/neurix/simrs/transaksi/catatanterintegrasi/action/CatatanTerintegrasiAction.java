@@ -6,6 +6,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.catatanterintegrasi.bo.CatatanTerintegrasiBo;
 import com.neurix.simrs.transaksi.catatanterintegrasi.model.CatatanTerintegrasi;
+import com.neurix.simrs.transaksi.checkup.bo.CheckupBo;
+import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
 import org.apache.log4j.Logger;
@@ -150,6 +152,7 @@ public class CatatanTerintegrasiAction {
                     response = catatanTerintegrasiBo.saveAdd(catatan);
                     if("success".equalsIgnoreCase(response.getStatus())){
                         RekamMedikBo rekamMedikBo = (RekamMedikBo) ctx.getBean("rekamMedikBoProxy");
+                        CheckupBo checkupBo = (CheckupBo) ctx.getBean("checkupBoProxy");
                         JSONObject objt = new JSONObject(dataPasien);
                         if(objt != null){
                             StatusPengisianRekamMedis status = new StatusPengisianRekamMedis();
@@ -165,6 +168,15 @@ public class CatatanTerintegrasiAction {
                             status.setLastUpdateWho(userLogin);
                             status.setLastUpdate(time);
                             response = rekamMedikBo.saveAdd(status);
+
+                            HeaderCheckup checkup = new HeaderCheckup();
+                            checkup.setLastUpdate(time);
+                            checkup.setLastUpdateWho(userLogin);
+                            checkup.setTensi(catatan.getTensi());
+                            checkup.setNadi(catatan.getNadi());
+                            checkup.setPernafasan(catatan.getRr());
+                            checkup.setSuhu(catatan.getSuhu());
+                            checkupBo.updateVitalSign(checkup);
                         }
                     }
                 } catch (GeneralBOException e) {

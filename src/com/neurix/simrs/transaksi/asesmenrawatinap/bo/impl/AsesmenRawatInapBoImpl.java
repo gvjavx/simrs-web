@@ -28,6 +28,9 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             if (bean.getIdAsesmenKeperawatanRawatInap() != null && !"".equalsIgnoreCase(bean.getIdAsesmenKeperawatanRawatInap())) {
                 hsCriteria.put("id_asesmen_keperawatan_rawat_inap", bean.getIdAsesmenKeperawatanRawatInap());
             }
+            if (bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())) {
+                hsCriteria.put("no_checkup", bean.getNoCheckup());
+            }
             if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
@@ -72,6 +75,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInap.setInformasi(entity.getInformasi());
                     asesmenRawatInap.setNamaTerang(entity.getNamaTerang());
                     asesmenRawatInap.setSip(entity.getSip());
+                    asesmenRawatInap.setNoCheckup(entity.getNoCheckup());
                     list.add(asesmenRawatInap);
                 }
             }
@@ -139,6 +143,8 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             asesmenRawatInapEntity.setInformasi(bean.getInformasi());
             asesmenRawatInapEntity.setNamaTerang(bean.getNamaTerang());
             asesmenRawatInapEntity.setSip(bean.getSip());
+            asesmenRawatInapEntity.setNoCheckup(bean.getNoCheckup());
+
             try {
                 asesmenRawatInapDao.addAndSave(asesmenRawatInapEntity);
                 response.setStatus("success");
