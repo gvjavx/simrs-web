@@ -2284,7 +2284,9 @@ public class AbsensiBoImpl implements AbsensiBo {
 
             for (AbsensiPegawaiEntity hasil : absensiPegawaiEntityList) {
                 if (("03").equalsIgnoreCase(hasil.getStatusAbsensi())) {
-                    if (!("00").equalsIgnoreCase(statusTidakMasuk) || !("08").equalsIgnoreCase(statusTidakMasuk)) {
+//                    if (!("00").equalsIgnoreCase(statusTidakMasuk) || !("08").equalsIgnoreCase(statusTidakMasuk)) {
+                    //RAKA-30MAR2021 ==> berusaha menerjemahkan maksud kode di atas.
+                    if (!("00").equalsIgnoreCase(statusTidakMasuk) && !("08").equalsIgnoreCase(statusTidakMasuk)) {
                         hasil.setStatusAbsensi(statusTidakMasuk);
                         try{
                             absensiPegawaiDao.updateAndSave(hasil);
