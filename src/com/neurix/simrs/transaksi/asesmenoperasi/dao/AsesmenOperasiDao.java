@@ -27,6 +27,9 @@ public class AsesmenOperasiDao extends GenericDao<ItSimrsAsesmenOperasiEntity, S
             if (mapCriteria.get("id_asesmen_operasi")!=null) {
                 criteria.add(Restrictions.eq("idAsesmenOperasi", (String) mapCriteria.get("id_asesmen_operasi")));
             }
+            if (mapCriteria.get("no_checkup")!=null) {
+                criteria.add(Restrictions.eq("noCheckup", (String) mapCriteria.get("no_checkup")));
+            }
             if (mapCriteria.get("id_detail_checkup")!=null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }

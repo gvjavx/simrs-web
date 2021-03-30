@@ -766,7 +766,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setIdDetailCheckup("DCM" + id);
         detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
         detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
-        detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         detailCheckupEntity.setFlag("Y");
         detailCheckupEntity.setAction("C");
         detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
@@ -807,30 +806,37 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         if("pindah_poli".equalsIgnoreCase(bean.getTypeTransaction())){
-            if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-                String noAntrian = "";
-                HeaderCheckup lastAntrian = new HeaderCheckup();
-                String idDokter = null;
-                if(bean.getDokterTeamList().size() > 0){
-                    idDokter = bean.getDokterTeamList().get(0).getIdDokter();
-                }
-                try {
-                    lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
-                }catch (HibernateException e){
-                    logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
-                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
-                }
-                if(lastAntrian.getStNoAntrian() != null){
-                    int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
-                    noAntrian = String.valueOf(jumlah);
-                }else{
-                    noAntrian = "1";
-                }
+            if("igd".equalsIgnoreCase(bean.getTipePelayanan())){
+                detailCheckupEntity.setStatusPeriksa("1");
+            }else {
+                if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    String noAntrian = "";
+                    HeaderCheckup lastAntrian = new HeaderCheckup();
+                    String idDokter = null;
+                    if(bean.getDokterTeamList().size() > 0){
+                        idDokter = bean.getDokterTeamList().get(0).getIdDokter();
+                    }
+                    try {
+                        lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
+                    }catch (HibernateException e){
+                        logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                    }
+                    if(lastAntrian.getStNoAntrian() != null){
+                        int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
+                        noAntrian = String.valueOf(jumlah);
+                    }else{
+                        noAntrian = "1";
+                    }
 
-                if(!"".equalsIgnoreCase(noAntrian)){
-                    detailCheckupEntity.setNoAntrian(noAntrian);
+                    if(!"".equalsIgnoreCase(noAntrian)){
+                        detailCheckupEntity.setNoAntrian(noAntrian);
+                    }
                 }
+                detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
             }
+        }else{
+            detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         }
 
         try {

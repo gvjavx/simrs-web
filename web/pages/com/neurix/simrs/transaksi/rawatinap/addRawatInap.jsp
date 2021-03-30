@@ -508,8 +508,17 @@
                                    <ul class="dropdown-menu" role="menu" id="asesmen_ri">
                                    </ul>
                                </div>
-                               <button type="button" id="btn_tranfer_pasien" onmouseenter="loadModalRM('transfer_pasien')" class="btn btn-info" onclick="showModalAsesmenRawatInap('transfer_pasien')"><i class="fa fa-file-o"></i> Serah Terima Pasien
-                               </button>
+                               <div class="btn-group dropdown" style="display: none" id="form_pindahan">
+                                   <button type="button" class="btn btn-info hvr-icon-down"><i class="fa fa-edit"></i> Asesmen Sebelumnya
+                                   </button>
+                                   <button id="btn_hasil_pindah" type="button" class="btn btn-info dropdown-toggle"
+                                           data-toggle="dropdown" style="height: 34px">
+                                       <span class="caret hvr-icon"></span>
+                                       <span class="sr-only">Toggle Dropdown</span>
+                                   </button>
+                                   <ul class="dropdown-menu" role="menu" id="asesmen_hasil_pindah">
+                                   </ul>
+                               </div>
                                <button type="button" onclick="viewHistory()" class="btn btn-info hvr-icon-spin"><i class="fa fa-history hvr-icon"></i> All History
                                </button>
                            </div>
@@ -4387,7 +4396,6 @@
         hitungStatusBiaya();
         getJenisResep();
         listICD9();
-        cekTranfersPasien('transfer_pasien');
 
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");
@@ -4395,6 +4403,8 @@
             urlPage = 'rawatinap';
             $('#pel_ri_active, #bayar_rawat_inap').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+            setRekamMedisHasilPindah('pindah_ri','');
         }
         if(kategoriRuangan == 'rawat_intensif'){
             $('#title-pages').text("Rawat Intensif Pasien");
@@ -4402,6 +4412,8 @@
             urlPage = 'rawatintensif';
             $('#pel_ri_active, #rawat_intensif').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+            setRekamMedisHasilPindah('pindah_ri','');
         }
         if(kategoriRuangan == 'rawat_isolasi'){
             $('#title-pages').text("Rawat Isolasi Pasien");
@@ -4409,6 +4421,8 @@
             urlPage = 'rawatisolasi';
             $('#pel_ri_active, #rawat_isolasi').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+            setRekamMedisHasilPindah('pindah_ri','');
         }
         if(kategoriRuangan == 'kamar_operasi'){
             $('#title-pages').text("Rawat Operasi Pasien");
@@ -4416,6 +4430,8 @@
             urlPage = 'rawatoperasi';
             $('#pel_ri_active, #rawat_operasi').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ok\',\'asesmen_hasil_pindah\')');
+            setRekamMedisHasilPindah('pindah_ok','');
         }
         if(kategoriRuangan == 'ruang_bersalin'){
             $('#title-pages').text("Rawat Bersalin Pasien");
@@ -4423,6 +4439,8 @@
             urlPage = 'rawatbersalin';
             $('#pel_ri_active, #rawat_bersalin').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
+            $('#btn_hasil_pindah').attr('onclick', 'setRekamMedisHasilPindah(\'pindah_ri\',\'asesmen_hasil_pindah\')');
+            setRekamMedisHasilPindah('pindah_ri','');
         }
         if(kategoriRuangan == 'rr'){
             $('#title-pages').text("Recovery Room");
@@ -4456,16 +4474,27 @@
             pause: false
         });
 
+        var asalMasuk = $('.asal_masuk').length;
+        if(asalMasuk > 0){
+            CheckupAction.fistCheckup(noCheckup, {
+                callback: function (res) {
+                    if (res != '') {
+                        $('.asal_masuk').text(res);
+                    }
+                }
+            });
+        }
+
     });
 
-    function loadModalRM(jenis, method, parameter, idRM, flag) {
+    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
             if(status == "success"){
-                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\', \''+flagCheck+'\')');
                 func();
             }
         });

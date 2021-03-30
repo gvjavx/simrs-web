@@ -46,6 +46,11 @@ function setDataPasien() {
         var jenisPasien = $('.nama_jenis_pasien').length;
         var asalMasuk = $('.asal_masuk').length;
 
+        var tensiMon = $('.tensi_mon').length;
+        var nadiMon = $('.nadi_mon').length;
+        var rrMon = $('.rr_mon').length;
+        var suhuMon = $('.suhu_mon').length;
+
         if (tensi > 0 || gejala > 0 || bb > 0 || tb > 0) {
             dwr.engine.setAsync(true);
             CheckupAction.getDataPemeriksaanFisik(noCheckup, {
@@ -329,6 +334,24 @@ function setDataPasien() {
                 callback: function (res) {
                     if (res != '') {
                         $('.asal_masuk').val(res);
+                    }
+                }
+            });
+        }
+
+        if(tensiMon > 0 || nadiMon > 0 || rrMon > 0){
+            dwr.engine.setAsync(true);
+            AsesmenOperasiAction.getVitalSingMonAnestesi(idDetailCheckup, function (res) {
+                console.log(res);
+                if(res != null){
+                    if(tensiMon > 0){
+                        $('.tensi_mon').val(res.sistole+"/"+res.diastole);
+                    }
+                    if(nadiMon > 0){
+                        $('.nadi_mon').val(res.nadi);
+                    }
+                    if(rrMon > 0){
+                        $('.rr_mon').val(res.rr);
                     }
                 }
             });

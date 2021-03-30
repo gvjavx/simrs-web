@@ -2674,6 +2674,11 @@ public class CheckupDetailAction extends BaseMasterAction {
                         headerDetailCheckup.setBranchId(branchId);
                         headerDetailCheckup.setTypeTransaction("pindah_poli");
 
+                        Pelayanan pelayanan = new Pelayanan();
+                        pelayanan.setIdPelayanan(idPoli);
+                        pelayanan = pelayananBo.getObjectPelayanan(pelayanan);
+                        headerDetailCheckup.setTipePelayanan(pelayanan.getTipePelayanan());
+
                         try {
                             finalResponse = checkupDetailBo.saveAdd(headerDetailCheckup);
                         } catch (GeneralBOException e) {

@@ -200,6 +200,7 @@ function listSelectRuangan(id) {
 }
 
 function selectKeterangan(idKtg) {
+    var keteranganPindah = $('#keterangan option:selected').text();
     var jenisPasien = $('#id_jenis_pasien').val();
     if (idKtg != '') {
         if (idKtg == "selesai") {
@@ -231,6 +232,8 @@ function selectKeterangan(idKtg) {
                 $('#form-hak_kamar').hide();
                 $('#hak_kamar_bpjs').text('');
             }
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\')');
 
             $('#form-selesai').hide();
             $('#form-tgl-kontrol').hide();
@@ -280,6 +283,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else if (idKtg == "rawat_isolasi") {
             getKamar(null, 'rawat_isolasi');
@@ -297,6 +302,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else if (idKtg == "kamar_operasi") {
             getKamar(null, 'kamar_operasi');
@@ -314,6 +321,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ok\',\'asesmen_pindah\')');
 
         } else if (idKtg == "ruang_bersalin") {
             getKamar(null, 'ruang_bersalin');
@@ -331,6 +340,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else if (idKtg == "rr") {
             getKamar(null, 'rr');
@@ -4016,22 +4027,6 @@ function setDiskonHarga(id) {
     }
 }
 
-function cekTranfersPasien(jenis) {
-    AsesmenRawatInapAction.getListAsesmenRI(noCheckup, jenis, function (res) {
-        if(res.length > 0){
-            $.each(res, function (i, item) {
-                if("kondisi_serah_terima" == item.keterangan){
-                    var isi = item.jawaban.split("|");
-                    var cek = isi[2];
-                    if(cek == undefined){
-                        $('#btn_tranfer_pasien').attr('onclick', 'showModalAsesmenRawatInap(\'transfer_pasien\', \'\', \'\', \''+item.idDetailCheckup+'\')');
-                    }
-                }
-            });
-        }
-    });
-}
-
 function cekRacik(id){
     if($('#'+id).is(':checked')){
         $('#form-nama-racik').show();
@@ -4356,6 +4351,116 @@ function listMakanan(){
             $('#snack').html(option);
         }else{
             $('#snack').html(option);
+        }
+    });
+}
+
+function setRekamMedisPindah(tipePelayanan, id) {
+    var temp = "";
+    dwr.engine.setAsync(true);
+    CheckupAction.getListRekammedisPasien(tipePelayanan, null, idDetailCheckup, {
+        callback: function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var terIsiPrint = "";
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+
+                    if (item.keterangan == 'form') {
+                        if (item.jenis != "ugd_anak" && item.jenis != "ugd_dewasa" && item.jenis != "ugd_geriatri" && item.jenis != "mpp" && item.jenis != "asesmen_triase") {
+                            temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \'' + item.function + '\', \'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\', \'N\', \'Y\')">' + icons + item.namaRm +' '+ labelTerisi + tolText + '</a></li>';
+                        }
+                    }
+                });
+                $('#' + id).html(temp);
+            }
+        }
+    });
+}
+
+function setRekamMedisHasilPindah(tipePelayanan, id) {
+    var temp = "";
+    var show = false;
+    dwr.engine.setAsync(true);
+    CheckupAction.getListRekammedisPasienByNoCheckup(tipePelayanan, null, noCheckup, {
+        callback: function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+
+                    if(parseInt(terIsi) > 0){
+                        temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \'' + item.function + '\', \'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\', \'Y\', \'N\')">' + icons + item.namaRm +' '+ labelTerisi + tolText + '</a></li>';
+                        show = true;
+                    }
+
+                });
+                $('#' + id).html(temp);
+            }
+
+            if(show){
+                $('#form_pindahan').show();
+            }else{
+                $('#form_pindahan').hide();
+            }
         }
     });
 }

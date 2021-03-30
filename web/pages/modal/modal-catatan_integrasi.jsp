@@ -108,7 +108,7 @@
                                         <option value="Dokter">Dokter</option>
                                         <option value="Perawat">Perawat</option>
                                         <option value="Apoteker">Apoteker</option>
-                                        <option value="Gizi">Gizi</option>
+                                        <%--<option value="Gizi">Gizi</option>--%>
                                         <option value="Bidan">Bidan</option>
                                     </select>
                                 </div>

@@ -473,7 +473,7 @@ function saveRingkasanPasien(jenis, ket) {
             'id_pasien': $('#h_id_pasien').val(),
             'id_rm': tempidRm
         }
-        var pe1 = $('[name=rkp1]:checked').val();
+        var pe1 = $('#rkp1').val();
         var pe2 = "";
         var p2 = $('[name=rkp2]:checked').val();
         if (p2 != undefined) {
@@ -513,7 +513,7 @@ function saveRingkasanPasien(jenis, ket) {
             }
         }
 
-        if (pe1 && pe11 && pe12 != undefined && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 && pe2 && pe13 != '') {
+        if (pe1 != '') {
             data.push({
                 'parameter': 'MRS Melalui',
                 'jawaban': pe1,
@@ -782,6 +782,8 @@ function saveRingkasanPasien(jenis, ket) {
                        $('#warning_ring_' + ket).show().fadeOut(5000);
                        $('#msg_ring_' + ket).text("Berhasil menambahkan data ringkasan pasien...");
                        $('#modal-ring-' + jenis).scrollTop(0);
+                       delRowRingkasanPasien(jenis);
+                       detailRingkasanPasien(jenis);
                    } else {
                        $('#save_ring_' + jenis).show();
                        $('#load_ring_' + jenis).hide();
@@ -1179,6 +1181,8 @@ function delRing(jenis, ket) {
                     $('#warn_'+ket).show().fadeOut(5000);
                     $('#msg_'+ket).text(res.msg);
                 }
+                delRowRingkasanPasien(jenis);
+                detailRingkasanPasien(jenis);
             }
         });
     }

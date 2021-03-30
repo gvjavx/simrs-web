@@ -2816,6 +2816,7 @@
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenUgdAction.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/dwr/interface/MppAction.js"/>'></script>
 
 <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/fisioterapi.js"/>'></script>
@@ -2833,6 +2834,7 @@
 <script type='text/javascript' src='<s:url value="/pages/dist/js/allhistory.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenUgd.js"/>'></script>
 <script type='text/javascript' src='<s:url value="/pages/dist/js/operasi.js"/>'></script>
+<script type='text/javascript' src='<s:url value="/pages/dist/js/mpp.js"/>'></script>
 
 <script type='text/javascript'>
 
@@ -2976,14 +2978,14 @@
         });
     });
 
-    function loadModalRM(jenis, method, parameter, idRM, flag) {
+    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide, flagCheck) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
             if(status == "success"){
-                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\', \''+flagCheck+'\')');
                 func();
             }
         });

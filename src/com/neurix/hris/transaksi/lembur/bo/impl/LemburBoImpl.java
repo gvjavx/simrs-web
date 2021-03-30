@@ -226,6 +226,9 @@ public class LemburBoImpl implements LemburBo {
         this.lemburDao = lemburDao;
     }
 
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
+    }
 
     @Override
     public void saveDelete(Lembur bean) throws GeneralBOException {
@@ -1290,12 +1293,47 @@ public class LemburBoImpl implements LemburBo {
 
     @Override
     public Boolean cekHakLembur(String nip) throws GeneralBOException {
-        Boolean hakLembur;
-        try{
-            hakLembur = lemburDao.cekHakLembur(nip);
-        }catch(HibernateException e){
+        List<Biodata> biodataList;
+        Boolean hakLembur = false;
+
+        try {
+            biodataList = biodataDao.getBiodataByNip(nip);
+        } catch (HibernateException e){
             logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
+        }
+        if (biodataList != null) {
+            Biodata bio = biodataList.get(0);
+
+            if (bio.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
+                try{
+                    hakLembur = lemburDao.cekHakLembur(nip);
+                }catch(HibernateException e){
+                    logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
+                }
+
+            } else if (bio.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
+                List<ItPersonilPositionEntity> listPersonilPositionEntity;
+
+                try {
+                    listPersonilPositionEntity = personilPositionDao.getListNip(nip);
+                } catch (HibernateException e) {
+                    logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
+                }
+
+                if (listPersonilPositionEntity != null) {
+                    ItPersonilPositionEntity personilPositionEntity = listPersonilPositionEntity.get(0);
+
+                    try {
+                       hakLembur = profesiDao.cekHakLemburByProfesi(personilPositionEntity.getProfesiId());
+                    } catch (HibernateException e) {
+                        logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
+                    }
+                }
+            }
         }
         return hakLembur;
     }

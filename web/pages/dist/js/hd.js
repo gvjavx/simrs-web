@@ -2001,7 +2001,6 @@ function saveMonHD(jenis, ket) {
                         $('#warning_hd_' + ket).show().fadeOut(5000);
                         $('#msg_hd_' + ket).text("Berhasil menambahkan data hd...");
                         $('#modal-hd-' + jenis).scrollTop(0);
-                        getListRekamMedis('rawat_jalan', tipePelayanan, idDetailCheckup);
                     } else {
                         $('#save_hd_' + jenis).show();
                         $('#load_hd_' + jenis).hide();

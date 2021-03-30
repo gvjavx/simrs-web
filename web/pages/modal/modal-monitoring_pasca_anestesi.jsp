@@ -211,15 +211,15 @@
                     <div class="row jarak">
                         <div class="col-md-3">
                             <span>Tensi</span> <small><b>(mmHg)</b></small>
-                            <input class="form-control tensi-pasien" id="in9">
+                            <input class="form-control tensi_mon" id="in9">
                         </div>
                         <div class="col-md-3">
                             <span>Nadi</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control nadi-pasien" id="in10" type="number">
+                            <input class="form-control nadi_mon" id="in10" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>RR</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control rr-pasien" id="in11" type="number">
+                            <input class="form-control rr_mon" id="in11" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>Suhu</span> <small><b>(C)</b></small>
