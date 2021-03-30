@@ -22,9 +22,11 @@ import com.neurix.simrs.transaksi.periksalab.dao.UploadHasilPeriksaDao;
 import com.neurix.simrs.transaksi.periksalab.model.*;
 import com.neurix.simrs.transaksi.periksaradiologi.dao.PeriksaRadiologiDao;
 import com.neurix.simrs.transaksi.periksaradiologi.model.ItSimrsPeriksaRadiologiEntity;
+import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -574,28 +576,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when periksa lab ", e);
                 throw new GeneralBOException("Error when edit diagnosa " + e.getMessage());
             }
-
-            if(bean.getUploadHasil().size() > 0){
-                for (ItSimrsUploadHasilPemeriksaanEntity upload: bean.getUploadHasil()){
-                    upload.setIdPeriksaLab(bean.getIdPeriksaLab());
-                    upload.setIdUploadHasilPemeriksaan(uploadHasilPeriksaDao.getNextId());
-                    upload.setFlag("Y");
-                    upload.setAction("C");
-                    upload.setCreatedWho(bean.getLastUpdateWho());
-                    upload.setCreatedDate(bean.getLastUpdate());
-                    upload.setLastUpdateWho(bean.getLastUpdateWho());
-                    upload.setLastUpdate(bean.getLastUpdate());
-                    try {
-                        uploadHasilPeriksaDao.addAndSave(upload);
-                        response.setStatus("success");
-                        response.setMessage("Berhasil");
-                    } catch (HibernateException e) {
-                        response.setStatus("error");
-                        response.setMessage("Error " + e.getMessage());
-                        logger.error("[PeriksaLabBoImpl.saveDokterLab] Error when periksa lab ", e);
-                    }
-                }
-            }
         }
 
         logger.info("[PeriksaLabBoImpl.saveDokterLab] End <<<<<<<<<");
@@ -1073,14 +1053,32 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     }
 
     @Override
-    public void saveUpload(ItSimrsUploadHasilPemeriksaanEntity bean) throws GeneralBOException {
+    public CrudResponse saveUpload(ItSimrsUploadHasilPemeriksaanEntity bean) throws GeneralBOException {
+        CrudResponse response = new CrudResponse();
         if(bean != null){
             try {
                 bean.setIdUploadHasilPemeriksaan(uploadHasilPeriksaDao.getNextId());
                 uploadHasilPeriksaDao.addAndSave(bean);
+                response.setMsg(bean.getIdUploadHasilPemeriksaan());
             }catch (HibernateException e){
                 logger.error(e.getMessage());
                 throw new GeneralBOException(e.getMessage());
+            }
+        }
+        return response;
+    }
+
+    @Override
+    public void deleteUpload(String id) throws GeneralBOException {
+        if(id != null){
+            ItSimrsUploadHasilPemeriksaanEntity entity = uploadHasilPeriksaDao.getById("idUploadHasilPemeriksaan", id);
+            if(entity != null){
+                try {
+                    uploadHasilPeriksaDao.deleteAndSave(entity);
+                }catch (HibernateException e){
+                    logger.error(e.getMessage());
+                    throw new GeneralBOException(e.getMessage());
+                }
             }
         }
     }

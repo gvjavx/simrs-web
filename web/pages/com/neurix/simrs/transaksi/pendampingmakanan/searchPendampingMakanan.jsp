@@ -252,7 +252,14 @@
                                             <span class="span-success">selesai</span>
                                         </s:else>
                                     </td>
-                                    <td align="center"><img onclick="detailMakananPendamping('<s:property value="idHeaderPendampingMakanan"/>', '<s:property value="nama"/>', '<s:property value="noRuangan"/>', '<s:property value="namaRuangan"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;"></td>
+                                    <td align="center">
+                                        <s:if test='#row.status == "0"'>
+                                            <img onclick="detailMakananPendamping('<s:property value="idHeaderPendampingMakanan"/>', '<s:property value="nama"/>', '<s:property value="noRuangan"/>', '<s:property value="namaRuangan"/>', '<s:property value="status"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
+                                        </s:if>
+                                        <s:else>
+                                            <img onclick="detailMakananPendamping('<s:property value="idHeaderPendampingMakanan"/>', '<s:property value="nama"/>', '<s:property value="noRuangan"/>', '<s:property value="namaRuangan"/>', '<s:property value="status"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer;">
+                                        </s:else>
+                                    </td>
                                 </tr>
                             </s:iterator>
                             </tbody>
@@ -356,13 +363,28 @@
 
     var contextPath = '<%= request.getContextPath() %>';
 
-    function detailMakananPendamping(id, nama, noRuangan, namaRuangan){
+    function formatRupiah(angka) {
+        var reverse = angka.toString().split('').reverse().join(''),
+            ribuan = reverse.match(/\d{1,3}/g);
+        ribuan = ribuan.join('.').split('').reverse().join('');
+        return ribuan;
+    }
+
+    function detailMakananPendamping(id, nama, noRuangan, namaRuangan, status){
+        console.log(status);
         $('#det_no_pesanan').text(id);
         $('#det_nama').text(nama);
         $('#det_ruangan').text("["+noRuangan+"] "+namaRuangan);
         var table = "";
         PendampingMakananAction.listDetailPendampingMakanan(id, function (json) {
             $.each(json, function (i, item) {
+                var input = '<input class="form-control tarif_makanan" id="tarif_'+item.idDetailPendampingMakanan+'" placeholder="Tarif" oninput="convertRpAtas(\'tarif_'+item.idDetailPendampingMakanan+'\', this.value, \'tarif_val_'+item.idDetailPendampingMakanan+'\')">';
+                var ling = "";
+                if(status != "0"){
+                    input = formatRupiah(item.tarif);
+                    ling = 'align="right"';
+                }
+
                 var nomor = i+1;
                 table += '<tr id="'+item.idDetailPendampingMakanan+'">' +
                     '<td>'+nomor+'</td>'+
@@ -377,9 +399,8 @@
                     '<td><span id="l_keterangan_'+item.idDetailPendampingMakanan+'">'+item.keterangan+'</span>'+
                     '<input type="hidden" value="'+item.keterangan+'" class="form-control" id="keterangan_makanan_'+item.idDetailPendampingMakanan+'">'+
                     '</td>'+
-                    '<td>' +
-                    '<input class="form-control tarif_makanan" id="tarif_'+item.idDetailPendampingMakanan+'" placeholder="Tarif" oninput="convertRpAtas(\'tarif_'+item.idDetailPendampingMakanan+'\', this.value, \'tarif_val_'+item.idDetailPendampingMakanan+'\')">'+
-                    '<input type="hidden" class="val_tarif_makanan" id="tarif_val_'+item.idDetailPendampingMakanan+'">'
+                    '<td '+ling+'>' + input +
+                    '<input type="hidden" class="val_tarif_makanan" id="tarif_val_'+item.idDetailPendampingMakanan+'">'+
                     '</td>' +
                     '</tr>';
             });

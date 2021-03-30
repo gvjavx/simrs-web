@@ -1821,14 +1821,10 @@ function saveDiet(id) {
         var ketData = $('[name=ket_diet]');
         var untukKapan = $('[name=untuk]:checked').val();
         var isSonde = $('#h_is_sonde').val();
-        var snack = $('#snack').val();
-        var makanLuar = $('.makanan_luar');
         var jam = $('#jam_awal').val();
         var pemberian = $('#jumlah_pemberian').val();
         var satuan = $('#jumlah_satuan').val();
 
-        var tempMakanLuar = [];
-        var tempSnack = [];
         var keteranganDiet = "";
 
         $.each(ketData, function (i, item) {
@@ -1837,38 +1833,15 @@ function saveDiet(id) {
             }
         });
 
-        $.each(makanLuar, function (i, item) {
-            if (item.value != '') {
-                tempMakanLuar.push({
-                    'makanan': item.value
-                });
-            }
-        });
-
-        if(snack != null){
-            $.each(snack, function (i, item) {
-                tempSnack.push({
-                    'snack': item
-                });
-            });
-        }
-
         var table = $('#table_add_diet').tableToJSON();
-        $.each(table, function (i, item) {
-            var waktu = $('#waktu_' + i).val();
-            var bentuk = $('#bentuk_' + i).val();
-            var jenis = $('#jenis_' + i).val();
-            var mknLuar = $('#makan_luar_' + i).val();
-            var snack = $('#snack_' + i).val();
-            var bentukText = $('#bentuk_text_' + i).val();
+        var tempWaktu = $('.waktu_diet');
+        $.each(tempWaktu, function (i, item) {
             data.push({
                 'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'id_diet_gizi': bentuk,
-                'id_jenis_diet': jenis,
-                'id_rawat_inap': idRawatInap,
-                'makanan_luar': mknLuar != '' ? mknLuar : '',
-                'snack': snack != '' ? snack : ''
+                'waktu': item.value,
+                'id_diet_gizi': $('.bentuk_diet')[i].value,
+                'id_jenis_diet': $('.jenis_diet')[i].value,
+                'id_rawat_inap': idRawatInap
             });
         });
 
@@ -3916,15 +3889,9 @@ function setDiet(id) {
     var jenis = $('#jenis_diet').val();
     var bentukText = $('#bentuk_diet option:selected').text();
     var jenisText = $('#jenis_diet option:selected');
-    var snack = $('#snack').val();
-    var makanLuar = $('.makanan_luar');
 
     var tempText = "";
     var tempTextLi = "";
-    var tempMakanLuar = "";
-    var tempMknLuar = "";
-    var tempSnack = "";
-    var tempPendamping = "";
     var tempJenis = "";
 
     if(jenisText.length > 0){
@@ -3935,30 +3902,6 @@ function setDiet(id) {
                 tempText = item.innerText;
             }
             tempTextLi += '<li>'+item.innerText+'</li>';
-        });
-    }
-
-    $.each(makanLuar, function (i, item) {
-        if (item.value != '') {
-            tempMakanLuar += '<li>'+item.value+'</li>';
-            if(tempMknLuar != ''){
-                tempMknLuar = tempMknLuar+'#'+item.value;
-            }else{
-                tempMknLuar = item.value;
-            }
-        }
-    });
-
-    if(snack != null){
-        $.each(snack, function (i, item) {
-            var id = item.split("|")[0];
-            var sak = item.split("|")[1];
-            tempSnack += '<li>'+sak+'</li>';
-            if(tempPendamping != ''){
-                tempPendamping = tempPendamping+'#'+id;
-            }else{
-                tempPendamping = id;
-            }
         });
     }
 
@@ -3988,15 +3931,16 @@ function setDiet(id) {
     if($('#'+id).is(':checked')){
         if (bentuk && jenis != '') {
             table = '<tr id="' + ket + '">' +
-                '<td>' + keterangan + '<input type="hidden" value="' + ket + '" id="waktu_' + idCount + '"></td>' +
-                '<td>' + '<ul style="margin-left: 10px">'+tempTextLi+'</ul>' +
-                '<input type="hidden" value="' + tempJenis + '" id="jenis_' + idCount + '"></td>' +
+                '<td>' + keterangan + '</td>' +
+                '<td>' + '<ul style="margin-left: 10px">'+tempTextLi+'</ul>' + '</td>' +
                 '<td>' + bentukText +
-                '<input type="hidden" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
-                '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
+                '<input type="hidden" class="waktu_diet" value="' + ket + '" id="waktu_' + idCount + '">' +
+                '<input type="hidden" class="jenis_diet" value="' + tempJenis + '" id="jenis_' + idCount + '">'+
+                '<input type="hidden" class="bentuk_diet" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
+                '<input type="hidden" class="bentuk_text_diet" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
                 '</td>' +
                 '</tr>';
-            $('#body_add_diet').append(table);
+            $('#body_add_diet').append(table).hide().show('slow');
         } else {
             $('#warning_diet').show().fadeOut(5000);
             $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
@@ -4266,84 +4210,86 @@ function dataDiet(id){
     });
 }
 
-function generateSonde(val){
+function generateSonde(){
     $('#body_add_diet').html('');
-    if(val != ''){
-        var bentuk = $('#bentuk_diet').val();
-        var jenis = $('#jenis_diet').val();
-        var bentukText = $('#bentuk_diet option:selected').text();
-        var jenisText = $('#jenis_diet option:selected');
-        var jam = $('#jam_awal').val();
-        var pemberian = $('#jumlah_pemberian').val();
-        var satuan = $('#jumlah_satuan').val();
+    var bentuk = $('#bentuk_diet').val();
+    var jenis = $('#jenis_diet').val();
+    var bentukText = $('#bentuk_diet option:selected').text();
+    var jenisText = $('#jenis_diet option:selected');
+    var jam = $('#jam_awal').val();
+    var pemberian = $('#jumlah_pemberian').val();
+    var satuan = $('#jumlah_satuan').val();
+    var tempTextLi = "";
 
-        var tempText = "";
-        if(jenisText.length > 0){
-            $.each(jenisText, function (i, item) {
-                if(tempText != ''){
-                    tempText = tempText+', '+item.innerText;
-                }else{
-                    tempText = item.innerText;
+    var tempText = "";
+    if(jenisText.length > 0){
+        $.each(jenisText, function (i, item) {
+            if(tempText != ''){
+                tempText = tempText+', '+item.innerText;
+            }else{
+                tempText = item.innerText;
+            }
+            tempTextLi += '<li>'+item.innerText+'</li>';
+        });
+    }
+    var table = "";
+    if (bentuk && jenis && jam && pemberian && satuan != '') {
+        var time = $('#jam_awal').val();
+        var char = time.split(":");
+        var hh = char[0];
+        var min = char[1];
+        var timeSonde = new Date();
+        timeSonde.setHours(hh, min, 0);
+        var tempDate = "";
+        for (var i = 0; i < pemberian; i++){
+
+            var cek = false;
+            if(i != 0){
+                timeSonde.setHours(timeSonde.getHours() + 3, timeSonde.getMinutes(), 0);
+            }
+
+            if(tempDate != ""){
+                if(tempDate != timeSonde.getDate()){
+                    cek = true;
                 }
-            });
+            }
+
+            if(!cek){
+                tempDate = timeSonde.getDate();
+                var tgl = converterTime(timeSonde);
+                table = '<tr id="' + i + '">' +
+                    '<td>' + tgl + '</td>' +
+                    '<td>' + bentukText +
+                    '<input class="waktu_diet" type="hidden" value="' + tgl + '" id="waktu_' + i + '">'+
+                    '<input class="bentuk_diet" type="hidden" value="' + bentuk + '" id="bentuk_' + i + '">' +
+                    '<input class="bentuk_text_diet" type="hidden" value="' + bentukText + '" id="bentuk_text_' + i + '">' +
+                    '<input class="jenis_diet" type="hidden" value="' + jenis + '" id="jenis_' + i + '">'+
+                    '</td>' +
+                    '<td>' + '<ul style="margin-left: 10px">'+tempTextLi+'</ul>' + '</td>' +
+                    '</tr>';
+                $('#body_add_diet').append(table);
+            }else{
+                $('#warning_diet').show().fadeOut(5000);
+                $('#msg_diet').text("Pemberian hanya untuk hari ini saja...!");
+            }
         }
-        var table = "";
-        if (bentuk && jenis && jam && pemberian && satuan != '') {
-            var time = $('#jam_awal').val();
-            var char = time.split(":");
-            var hh = char[0];
-            var min = char[1];
-            var timeSonde = new Date();
-            timeSonde.setHours(hh, min, 0);
-            var tempDate = "";
-            for (var i = 0; i < val; i++){
-
-                var cek = false;
-                if(i != 0){
-                    timeSonde.setHours(timeSonde.getHours() + 3, timeSonde.getMinutes(), 0);
-                }
-
-                if(tempDate != ""){
-                    if(tempDate != timeSonde.getDate()){
-                        cek = true;
-                    }
-                }
-
-                if(!cek){
-                    tempDate = timeSonde.getDate();
-                    var tgl = converterDateTime(timeSonde);
-                    table = '<tr id="' + i + '">' +
-                        '<td>' + tgl + '<input type="hidden" value="' + tgl + '" id="waktu_' + i + '"></td>' +
-                        '<td>' + bentukText +
-                        '<input type="hidden" value="' + bentuk + '" id="bentuk_' + i + '">' +
-                        '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + i + '">' +
-                        '</td>' +
-                        '<td>' + tempText + '<input type="hidden" value="' + jenis + '" id="jenis_' + i + '"></td>' +
-                        '</tr>';
-                    $('#body_add_diet').append(table);
-                }else{
-                    $('#warning_diet').show().fadeOut(5000);
-                    $('#msg_diet').text("Pemberian hanya untuk hari ini saja...!");
-                }
-            }
-        } else {
-            $('#warning_diet').show().fadeOut(5000);
-            $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
-            if (bentuk == '') {
-                $('#war_bentuk_diet').show();
-            }
-            if (jenis == '' || jenis == null) {
-                $('#war_jenis_diet').show();
-            }
-            if (jam == '') {
-                $('#war_jam_awal').show();
-            }
-            if (pemberian == '') {
-                $('#war_jml_pemberian').show();
-            }
-            if (satuan == '') {
-                $('#war_jml_pemberian').show();
-            }
+    } else {
+        $('#warning_diet').show().fadeOut(5000);
+        $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
+        if (bentuk == '') {
+            $('#war_bentuk_diet').show();
+        }
+        if (jenis == '' || jenis == null) {
+            $('#war_jenis_diet').show();
+        }
+        if (jam == '') {
+            $('#war_jam_awal').show();
+        }
+        if (pemberian == '') {
+            $('#war_jml_pemberian').show();
+        }
+        if (satuan == '') {
+            $('#war_jml_pemberian').show();
         }
     }
 }
@@ -4594,6 +4540,7 @@ function saveMakananPendamping(){
                     $('#save_makanan_pendamping').show();
                     $('#info_dialog').dialog('open');
                     $('#close_pos').val(15);
+                    listMakananPendamping();
                 }else{
                     $('#load_makanan_pendamping').hide();
                     $('#save_makanan_pendamping').show();
@@ -4622,7 +4569,7 @@ function listMakananPendamping() {
             $.each(response, function (i, item) {
                 var status = "-";
                 var dateFormat = converterDate(item.createdDate);
-                var btn = '<img border="0" class="hvr-grow" onclick="detailMakananPendamping(\'' + item.idHeaderPendampingMakanan + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
+                var btn = '<img border="0" class="hvr-grow" onclick="detailMakananPendamping(\'' + item.idHeaderPendampingMakanan + '\', \''+item.status+'\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 if("0" == item.status){
                     status = '<span class="span-warning">Proses</span>';
                 }else{
@@ -4640,10 +4587,14 @@ function listMakananPendamping() {
     });
 }
 
-function detailMakananPendamping(id){
+function detailMakananPendamping(id, status){
     var table = "";
     PendampingMakananAction.listDetailPendampingMakanan(id, function (json) {
         $.each(json, function (i, item) {
+            var btn = "";
+            if(status == "0"){
+                btn = '<img id="btn_edit_'+item.idDetailPendampingMakanan+'" onclick="edtiDetailMP(\''+item.idDetailPendampingMakanan+'\')" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer; height: 25px; width: 25px;">';
+            }
             var nomor = i+1;
             table += '<tr id="'+item.idDetailPendampingMakanan+'">' +
                 '<td>'+nomor+'</td>'+
@@ -4656,7 +4607,7 @@ function detailMakananPendamping(id){
                 '<td><span id="l_keterangan_'+item.idDetailPendampingMakanan+'">'+item.keterangan+'</span>'+
                 '<input type="hidden" value="'+item.keterangan+'" class="form-control" id="keterangan_makanan_'+item.idDetailPendampingMakanan+'">'+
                 '</td>'+
-                '<td align="center"><img id="btn_edit_'+item.idDetailPendampingMakanan+'" onclick="edtiDetailMP(\''+item.idDetailPendampingMakanan+'\')" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                '<td align="center">'+btn+'</td>' +
                 '</tr>';
         });
         $('#body_pendamping_makanan').html(table);

@@ -1779,17 +1779,30 @@
                     <div class="row jarak">
                         <div class="form-group">
                             <label class="col-md-3">Jumlah Pemberian</label>
-                            <div class="col-md-4">
-                                <input type="number" id="jumlah_pemberian" class="form-control" oninput="inputWarning('war_jml_pemberian', 'cor_jml_pemberian'); generateSonde(this.value)">
+                            <div class="col-md-3">
+                                <input type="number" id="jumlah_pemberian" class="form-control" oninput="inputWarning('war_jml_pemberian', 'cor_jml_pemberian');">
+                            </div>
+                            <div class="col-md-1">
+                                <label style="margin-top: 5px; margin-left: -10px">x</label>
                             </div>
                             <div class="col-md-3">
-                                <input type="number" id="jumlah_satuan" class="form-control" oninput="inputWarning('war_jml_pemberian', 'cor_jml_pemberian');">
+                                <input style="margin-left: -30px" type="number" id="jumlah_satuan" class="form-control" oninput="inputWarning('war_jml_pemberian', 'cor_jml_pemberian');">
                             </div>
-                            <div class="col-md-2">
-                                <p style="color: red; margin-top: 6px; display: none; margin-left: -20px" id="war_jml_pemberian"><i
+                            <div class="col-md-1">
+                                <label style="margin-top: 5px; margin-left: -50px">cc</label>
+                            </div>
+                            <div class="col-md-1" style="font-size: 12px">
+                                <p style="color: red; margin-top: 6px; display: none; margin-left: -70px" id="war_jml_pemberian"><i
                                         class="fa fa-times"></i> required</p>
-                                <p style="color: green; margin-top: 6px; display: none; margin-left: -20px" id="cor_jml_pemberian">
+                                <p style="color: green; margin-top: 6px; display: none; margin-left: -70px" id="cor_jml_pemberian">
                                     <i class="fa fa-check"></i> correct</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group">
+                            <div class="col-md-offset-3 col-md-9">
+                                <button class="btn btn-success" onclick="generateSonde()"><i class="fa fa-plus"></i> Tambah</button>
                             </div>
                         </div>
                     </div>
