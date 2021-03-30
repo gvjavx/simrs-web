@@ -185,19 +185,23 @@
                                 //RAKA-09MAR2021 ==> Validasi Baru, Pengajuan
                                 var canLembur = false;
 
-                                if (selectedObj.tipePegawai=="TP04"){
-                                    ProfesiAction.getTipeProfesi(selectedObj.profesiPegawai, function(tipeProfesi){
-                                        console.log(selectedObj.profesiPegawai + " - " + tipeProfesi);
-                                        if(tipeProfesi != "apoteker" && tipeProfesi != "dokter") canLembur = true;
-                                    })
-                                }
+                                // if (selectedObj.tipePegawai=="TP04"){
+                                //     ProfesiAction.getTipeProfesi(selectedObj.profesiPegawai, function(tipeProfesi){
+                                //         console.log(selectedObj.profesiPegawai + " - " + tipeProfesi);
+                                //         if(tipeProfesi != "apoteker" && tipeProfesi != "dokter") canLembur = true;
+                                //     })
+                                // }
+                                //
+                                // if (selectedObj.tipePegawai=="TP03"){
+                                //     LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
+                                //         canLembur = hakLembur;
+                                //         console.log(canLembur + " - " + hakLembur);
+                                //     })
+                                // }
 
-                                if (selectedObj.tipePegawai=="TP03"){
-                                    LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
-                                        canLembur = hakLembur;
-                                        console.log(canLembur + " - " + hakLembur);
-                                    })
-                                }
+                                LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
+                                    canLembur = hakLembur;
+                                })
 
                                 if (canLembur){
                                     $('#divisiId').val(selectedObj.divisi).change();

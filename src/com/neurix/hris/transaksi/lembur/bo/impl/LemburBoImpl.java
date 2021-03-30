@@ -82,10 +82,6 @@ public class LemburBoImpl implements LemburBo {
 //    private String ACTION_CLICK = "TASK_LEMBUR";
     private String ACTION_CLICK = null;
 
-    public void setProfesiDao(ProfesiDao profesiDao) {
-        this.profesiDao = profesiDao;
-    }
-
     public void setNotifikasiFcmDao(NotifikasiFcmDao notifikasiFcmDao) {
         this.notifikasiFcmDao = notifikasiFcmDao;
     }
@@ -532,17 +528,17 @@ public class LemburBoImpl implements LemburBo {
                 }
 
                 //RAKA-10MAR2021==> Validasi Hak Lembur Pegawai
-                Boolean hakLembur =false;
-                if(CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())){
-                    hakLembur = cekHakLembur(personalEntity.getNip());
-                }else if(CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(personalEntity.getTipePegawai())){
-                    try {
-                        hakLembur = profesiDao.cekHakLemburByProfesi(itPersonilPositionEntity.getProfesiId());
-                    }catch (HibernateException e) {
-                        logger.error("[LemburBoImpl.getBiodatawithCriteria] Error, " + e.getMessage());
-                        throw new GeneralBOException("Error when retrieving Cek Hak Lembur By Profesi, " + e.getMessage());
-                    }
-                }
+                Boolean hakLembur = cekHakLembur(personalEntity.getNip());
+//                if(CommonConstant.PEGAWAI_TETAP.equalsIgnoreCase(personalEntity.getTipePegawai())){
+//                    hakLembur = cekHakLembur(personalEntity.getNip());
+//                }else if(CommonConstant.PEGAWAI_PKWT.equalsIgnoreCase(personalEntity.getTipePegawai())){
+//                    try {
+//                        hakLembur = profesiDao.cekHakLemburByProfesi(itPersonilPositionEntity.getProfesiId());
+//                    }catch (HibernateException e) {
+//                        logger.error("[LemburBoImpl.getBiodatawithCriteria] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Error when retrieving Cek Hak Lembur By Profesi, " + e.getMessage());
+//                    }
+//                }
                 returnLembur.setHakLembur(hakLembur);
 
                 if (imPosition!=null){
@@ -1302,7 +1298,7 @@ public class LemburBoImpl implements LemburBo {
             logger.error("[LemburBoImpl.cekHakLembur] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when Cek Hak Lembur by NIP, " + e.getMessage());
         }
-        if (biodataList != null) {
+        if (biodataList.size() > 0) {
             Biodata bio = biodataList.get(0);
 
             if (bio.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_TETAP)) {
