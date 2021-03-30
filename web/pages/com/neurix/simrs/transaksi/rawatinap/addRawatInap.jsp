@@ -49,6 +49,7 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/PlanKegiatanRawatAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/TindakanRawatICD9Action.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenOperasiAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PendampingMakananAction.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -1859,7 +1860,7 @@
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Gizi</h4>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Order Makanan Pendamping</h4>
             </div>
             <div class="modal-body">
                 <div class="alert alert-info alert-dismissible" style="display: none" id="info_catering">
@@ -1872,24 +1873,53 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 10px">Makanan Luar</label>
+                        <label class="col-md-3">Nama Makanan</label>
                         <div class="col-md-7">
-                            <div class="input-group" style="margin-top: 7px">
-                                <input id="makan_luar" class="form-control makanan_luar" placeholder="Makanan Luar 1"
-                                       onchange="inputWarning('war_makan_luar', 'cor_makan_luar')">
-                                <div class="input-group-btn">
-                                    <a onclick="addMakanLuar()" class="btn btn-success" style="height: 34px; margin-top: 0px">
-                                        <i class="fa fa-plus" style="margin-top: 3px"></i>
-                                    </a>
-                                </div>
-                            </div>
-                            <div id="temp_luar"></div>
+                            <input id="nama_makanan" class="form-control"
+                                   oninput="inputWarning('war_nama_makanan', 'cor_nama_makanan')">
                         </div>
                         <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_makan_luar"><i
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_nama_makanan"><i
                                     class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_makan_luar">
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_nama_makanan">
                                 <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <label class="col-md-3">Qty</label>
+                        <div class="col-md-7">
+                            <input id="qty_makanan" class="form-control" type="number"
+                                   oninput="inputWarning('war_qty_makanan', 'cor_qty_makanan')">
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_qty_makanan"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_qty_makanan">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 10px">Keterangan</label>
+                        <div class="col-md-7">
+                            <textarea class="form-control" id="keterangan_makanan" oninput="inputWarning('war_keterangan_makanan', 'cor_keterangan_makanan')"></textarea>
+                        </div>
+                        <div class="col-md-2">
+                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_keterangan_makanan"><i
+                                    class="fa fa-times"></i> required</p>
+                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px" id="cor_keterangan_makanan">
+                                <i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-7">
+                            <button onclick="addListMakananPendamping()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button onclick="resetMakanan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                         </div>
                     </div>
                 </div>
@@ -1899,14 +1929,13 @@
                         <table id="table_add_catering" class="table table-bordered" style="font-size: 12px">
                             <thead>
                             <tr>
-                                <td>Waktu</td>
-                                <td>Jenis</td>
-                                <td>Bentuk</td>
-                                <td>Snack</td>
-                                <td>Makanan Luar</td>
+                                <td>Nama</td>
+                                <td align="center">Qty</td>
+                                <td>Keterangan</td>
+                                <td align="center">Action</td>
                             </tr>
                             </thead>
-                            <tbody id="body_add_catering"></tbody>
+                            <tbody id="body_add_pendamping_makanan"></tbody>
                         </table>
                     </div>
                 </div>
@@ -1914,9 +1943,9 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_catering"><i class="fa fa-check"></i> Save
+                <button type="button" class="btn btn-success" id="save_makanan_pendamping"><i class="fa fa-check"></i> Save
                 </button>
-                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_catering"><i
+                <button style="display: none; cursor: no-drop" type="button" class="btn btn-success" id="load_makanan_pendamping"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
                 </button>
             </div>
@@ -4047,6 +4076,50 @@
     </div>
 </div>
 
+<div class="modal fade" id="modal-detail_makanan">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-user-md"></i> Detail Makanan Pendamping</h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="alert alert-success alert-dismissible" style="display: none" id="warning_suc_detail_makanan">
+                                <h4><i class="icon fa fa-info"></i> Info!</h4>
+                                <p id="msg_suc_detail_makanan"></p>
+                            </div>
+                            <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_detail_makanan">
+                                <h4><i class="icon fa fa-ban"></i> Warning!</h4>
+                                <p id="msg_detail_makanan"></p>
+                            </div>
+                            <table id="table_catering" class="table table-bordered" style="font-size: 12px">
+                                <thead>
+                                <tr>
+                                    <td width="5%">No</td>
+                                    <td>Nama</td>
+                                    <td align="center">Qty</td>
+                                    <td>Keterangan</td>
+                                    <td align="center">Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_pendamping_makanan"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="mask"></div>
 
 <div id="modal-temp"></div>
@@ -4347,6 +4420,7 @@
         hitungStatusBiaya();
         getJenisResep();
         listICD9();
+        listMakananPendamping();
 
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");

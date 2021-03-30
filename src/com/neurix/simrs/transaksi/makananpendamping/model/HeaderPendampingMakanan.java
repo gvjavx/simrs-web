@@ -20,6 +20,15 @@ public class HeaderPendampingMakanan {
     private String nama;
     private String noRuangan;
     private String namaRuangan;
+    private String idKelas;
+
+    public String getIdKelas() {
+        return idKelas;
+    }
+
+    public void setIdKelas(String idKelas) {
+        this.idKelas = idKelas;
+    }
 
     public String getStatus() {
         return status;

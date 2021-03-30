@@ -143,7 +143,7 @@ public class PendampingMakananAction extends BaseTransactionAction {
         DetailPendampingMakananBo detailPendampingMakananBo = (DetailPendampingMakananBo) ctx.getBean("detailPendampingMakananBoProxy");
         try {
             DetailPendampingMakanan detailPendampingMakanan = new DetailPendampingMakanan();
-            detailPendampingMakanan.setIdHeaderPendampingMakanan(id);
+            detailPendampingMakanan.setIdDetailPendampingMakanan(id);
             detailPendampingMakanan.setNama(nama);
             detailPendampingMakanan.setKeterangan(keterangan);
             detailPendampingMakanan.setQty(Integer.valueOf(qty));

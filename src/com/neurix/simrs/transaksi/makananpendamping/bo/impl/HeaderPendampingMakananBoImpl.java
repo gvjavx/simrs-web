@@ -22,11 +22,10 @@ public class HeaderPendampingMakananBoImpl implements HeaderPendampingMakananBo 
     public List<HeaderPendampingMakanan> getByCriteria(HeaderPendampingMakanan bean) throws GeneralBOException {
         logger.info("[HeaderPendampingMakananBoImpl.getByCriteria] Start >>>>>>>");
         List<HeaderPendampingMakanan> results = new ArrayList<>();
-        List<ItSimrsHeaderPendampingMakananEntity> list = new ArrayList<>();
         if (bean != null){
             List<ItSimrsHeaderPendampingMakananEntity> headerPendampingMakananEntityList = getListEntity(bean);
             if(headerPendampingMakananEntityList.size() > 0){
-                for (ItSimrsHeaderPendampingMakananEntity entity: list){
+                for (ItSimrsHeaderPendampingMakananEntity entity: headerPendampingMakananEntityList){
                     HeaderPendampingMakanan headerPendampingMakanan = new HeaderPendampingMakanan();
                     headerPendampingMakanan.setIdHeaderPendampingMakanan(entity.getIdHeaderPendampingMakanan());
                     headerPendampingMakanan.setIdDetailCheckup(entity.getIdDetailCheckup());
@@ -37,19 +36,7 @@ public class HeaderPendampingMakananBoImpl implements HeaderPendampingMakananBo 
                     headerPendampingMakanan.setCreatedDate(entity.getCreatedDate());
                     headerPendampingMakanan.setLastUpdate(entity.getLastUpdate());
                     headerPendampingMakanan.setLastUpdateWho(entity.getLastUpdateWho());
-
-                    List<ItSimrsDetailPendampingMakananEntity> detail = new ArrayList<>();
-                    DetailPendampingMakanan detailPendampingMakanan = new DetailPendampingMakanan();
-                    detailPendampingMakanan.setIdHeaderPendampingMakanan(entity.getIdHeaderPendampingMakanan());
-                    try {
-                        detail = getListDetailEntity(detailPendampingMakanan);
-                    }catch (HibernateException e){
-                        logger.error("[HeaderPendampingMakananBoImpl.getByCriteria] Error, "+e.getMessage());
-                        throw new GeneralBOException("Error when search pendamping makanan");
-                    }
-                    if(detail.size() > 0){
-                        headerPendampingMakanan.setDetailPendampingMakananList(detail);
-                    }
+                    headerPendampingMakanan.setStatus(entity.getStatus());
                     results.add(headerPendampingMakanan);
                 }
             }
@@ -63,7 +50,7 @@ public class HeaderPendampingMakananBoImpl implements HeaderPendampingMakananBo 
         logger.info("[HeaderPendampingMakananBoImpl.saveAdd] Start >>>>>>>");
         if (bean != null){
             ItSimrsHeaderPendampingMakananEntity headerPendampingMakananEntity = new ItSimrsHeaderPendampingMakananEntity();
-            headerPendampingMakananEntity.setIdHeaderPendampingMakanan(bean.getIdHeaderPendampingMakanan());
+            headerPendampingMakananEntity.setIdHeaderPendampingMakanan(headerPendampingMakananDao.getNextId());
             headerPendampingMakananEntity.setIdDetailCheckup(bean.getIdDetailCheckup());
             headerPendampingMakananEntity.setIdRuangan(bean.getIdRuangan());
             headerPendampingMakananEntity.setAction(bean.getAction());
@@ -85,6 +72,7 @@ public class HeaderPendampingMakananBoImpl implements HeaderPendampingMakananBo 
                 for (ItSimrsDetailPendampingMakananEntity entity: bean.getDetailPendampingMakananList()){
                     try {
                         entity.setIdDetailPendampingMakanan(detailPendampingMakananDao.getNextId());
+                        entity.setIdHeaderPendampingMakanan(headerPendampingMakananEntity.getIdHeaderPendampingMakanan());
                         detailPendampingMakananDao.addAndSave(entity);
                     }catch (HibernateException e){
                         logger.error("[HeaderPendampingMakananBoImpl.saveAdd] Error, "+e.getMessage());
@@ -132,28 +120,6 @@ public class HeaderPendampingMakananBoImpl implements HeaderPendampingMakananBo 
             throw new GeneralBOException("Error, "+e.getMessage());
         }
         logger.info("[HeaderPendampingMakananBoImpl.getListEntity] End <<<<<<");
-        return results;
-    }
-
-    private List<ItSimrsDetailPendampingMakananEntity> getListDetailEntity(DetailPendampingMakanan bean) throws GeneralBOException{
-        logger.info("[DetailPendampingMakananBoImpl.getListDetailEntity] Start >>>>>>>");
-        List<ItSimrsDetailPendampingMakananEntity> results = new ArrayList<>();
-
-        Map hsCriteria = new HashMap();
-        if (bean.getIdDetailPendampingMakanan() != null && !"".equalsIgnoreCase(bean.getIdDetailPendampingMakanan())){
-            hsCriteria.put("id_detail_pendamping_makanan", bean.getIdDetailPendampingMakanan());
-        }
-        if (bean.getIdHeaderPendampingMakanan() != null && !"".equalsIgnoreCase(bean.getIdHeaderPendampingMakanan())){
-            hsCriteria.put("id_header_pendamping_makanan", bean.getIdHeaderPendampingMakanan());
-        }
-
-        try {
-            results = detailPendampingMakananDao.getByCriteria(hsCriteria);
-        } catch (HibernateException e){
-            logger.error("[DetailPendampingMakananBoImpl.getListDetailEntity] Error when searching pedamping data ", e);
-            throw new GeneralBOException("Error, "+e.getMessage());
-        }
-        logger.info("[DetailPendampingMakananBoImpl.getListDetailEntity] End <<<<<<");
         return results;
     }
 

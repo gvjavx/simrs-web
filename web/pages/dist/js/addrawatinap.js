@@ -643,6 +643,8 @@ function toContent() {
         window.location.href = 'add_' + urlPage + '.action?id=' + idDetailCheckup + '&idx=' + idHref;
     } else if (back == 14) {
         desti = '#pos_rm';
+    } else if (back == 15){
+        desti = '#pos_pendamping';
     }
 
     $('html, body').animate({
@@ -791,9 +793,12 @@ function showModal(select) {
         $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
         $('#modal-icd9').modal({show: true, backdrop: 'static'});
     }else if (select == 9) {
-        $('#id_icd9, #ket_icd9').val('');
-        $('#load_icd9').hide();
-        $('#save_icd9').attr('onclick', 'saveMakananPendamping(\'' + id + '\')').show();
+        $('#body_add_pendamping_makanan').html('');
+        $('#nama_makanan').val('');
+        $('#qty_makanan').val('1');
+        $('#keterangan_makanan').val('');
+        $('#load_makanan_pendamping').hide();
+        $('#save_makanan_pendamping').attr('onclick', 'saveMakananPendamping()').show();
         $('#modal-makanan_pendamping').modal({show: true, backdrop: 'static'});
     }
 }
@@ -4504,4 +4509,203 @@ function onChangePengirim(dokter){
         $('#sip_pengirim').val(dokter);
     }
 }
+
+function addListMakananPendamping(){
+    var table = $('#table_add_catering').tableToJSON();
+    var count = table.length;
+    var row = "";
+    var makanan = $('#nama_makanan').val();
+    var qty = $('#qty_makanan').val();
+    var keterangan = $('#keterangan_makanan').val();
+    if(makanan && qty != ''){
+        if(keterangan == ''){
+            keterangan = '-';
+        }
+        var cek = false;
+        var temp = $('.makanan_pendamping');
+        $.each(temp, function (i, item) {
+            if(item.value.toUpperCase() == makanan.toUpperCase()){
+                cek = true;
+            }
+        });
+
+        if(!cek){
+            makanan = convertSentenceCase(makanan);
+            row = '<tr id="makanan_'+count+'">' +
+                '<td>'+makanan+
+                '<input type="hidden" value="'+makanan+'" class="makanan_pendamping" id="nama_makanan_'+count+'">'+
+                '<input type="hidden" value="'+qty+'" class="qty_makanan_pendamping" id="qty_makanan_'+count+'">'+
+                '<input type="hidden" value="'+keterangan+'" class="keterangan_makanan_pendamping" id="keterangan_makanan_'+count+'">'+
+                '</td>'+
+                '<td align="center">'+qty+'</td>'+
+                '<td>'+keterangan+'</td>'+
+                '<td align="center"><img onclick="delPendamping(\'makanan_' + count + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                '</tr>';
+            $('#body_add_pendamping_makanan').append(row).hide().show('slow');
+        }else{
+            $('#warning_catering').show().fadeOut(5000);
+            $('#msg_catering').text("Makanan "+makanan+" Sudah ada dalam list");
+        }
+    }else{
+        if(makanan == ''){
+            $('#war_nama_makanan').show();
+        }
+        if(qty == '' || parseInt(qty) <= 0){
+            $('#war_qty_makanan').show();
+        }
+        $('#warning_catering').show().fadeOut(5000);
+        $('#msg_catering').text("Silahkan cek kembali inputan berikut");
+    }
+}
+
+function delPendamping(id){
+    $('#'+id).remove();
+}
+
+function saveMakananPendamping(){
+    var table = $('#table_add_catering').tableToJSON();
+    if(table.length > 0){
+        var makanan = $('.makanan_pendamping');
+        var tempData = [];
+        $.each(makanan, function (i, item) {
+            if(item.value != ''){
+                tempData.push({
+                    'nama': item.value,
+                    'qty': $('.qty_makanan_pendamping')[i].value,
+                    'keterangan': $('.keterangan_makanan_pendamping')[i].value
+                });
+            }
+        });
+        var data = {
+            'id_detail_checkup': idDetailCheckup,
+            'id_ruangan': idRuangan,
+            'detail': JSON.stringify(tempData)
+        }
+
+        var result = JSON.stringify(data);
+        $('#load_makanan_pendamping').show();
+        $('#save_makanan_pendamping').hide();
+        dwr.engine.setAsync(true);
+        PendampingMakananAction.savePendampingMakanan(result, {
+            callback: function (res) {
+                if(res.status == "success"){
+                    $('#modal-makanan_pendamping').modal('hide');
+                    $('#load_makanan_pendamping').hide();
+                    $('#save_makanan_pendamping').show();
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(15);
+                }else{
+                    $('#load_makanan_pendamping').hide();
+                    $('#save_makanan_pendamping').show();
+                    $('#warning_catering').show().fadeOut(5000);
+                    $('#msg_catering').text(res.msg);
+                }
+            }
+        });
+    }else{
+        $('#warning_catering').show().fadeOut(5000);
+        $('#msg_catering').text("Silahkan cek kembali inputan anda...!");
+    }
+}
+
+function resetMakanan(){
+    $('#body_add_pendamping_makanan').html('');
+    $('#nama_makanan').val('');
+    $('#qty_makanan').val('1');
+    $('#keterangan_makanan').val('');
+}
+
+function listMakananPendamping() {
+    var table = "";
+    PendampingMakananAction.listHeaderPendampingMakanan(idDetailCheckup, function (response) {
+        if (response.length > 0) {
+            $.each(response, function (i, item) {
+                var status = "-";
+                var dateFormat = converterDate(item.createdDate);
+                var btn = '<img border="0" class="hvr-grow" onclick="detailMakananPendamping(\'' + item.idHeaderPendampingMakanan + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
+                if("0" == item.status){
+                    status = '<span class="span-warning">Proses</span>';
+                }else{
+                    status = '<span class="span-success">Selesai</span>';
+                }
+                table += "<tr>" +
+                    "<td>" + dateFormat + "</td>" +
+                    "<td>" + item.idHeaderPendampingMakanan + "</td>" +
+                    "<td align='center'>" + status + "</td>" +
+                    "<td align='center'>" + btn + "</td>" +
+                    "</tr>";
+            });
+            $('#body_pendamping').html(table);
+        }
+    });
+}
+
+function detailMakananPendamping(id){
+    var table = "";
+    PendampingMakananAction.listDetailPendampingMakanan(id, function (json) {
+        $.each(json, function (i, item) {
+            var nomor = i+1;
+            table += '<tr id="'+item.idDetailPendampingMakanan+'">' +
+                '<td>'+nomor+'</td>'+
+                '<td><span id="l_nama_'+item.idDetailPendampingMakanan+'">'+item.nama+'</span>'+
+                '<input type="hidden" value="'+item.nama+'" class="form-control" id="nama_makanan_'+item.idDetailPendampingMakanan+'">'+
+                '</td>'+
+                '<td align="center"><span id="l_qty_'+item.idDetailPendampingMakanan+'">'+item.qty+'</span>'+
+                '<input type="hidden" value="'+item.qty+'" class="form-control" id="qty_makanan_'+item.idDetailPendampingMakanan+'">'+
+                '</td>'+
+                '<td><span id="l_keterangan_'+item.idDetailPendampingMakanan+'">'+item.keterangan+'</span>'+
+                '<input type="hidden" value="'+item.keterangan+'" class="form-control" id="keterangan_makanan_'+item.idDetailPendampingMakanan+'">'+
+                '</td>'+
+                '<td align="center"><img id="btn_edit_'+item.idDetailPendampingMakanan+'" onclick="edtiDetailMP(\''+item.idDetailPendampingMakanan+'\')" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                '</tr>';
+        });
+        $('#body_pendamping_makanan').html(table);
+    });
+    $('#modal-detail_makanan').modal({show: true, backdrop: 'static'});
+}
+
+function edtiDetailMP(id){
+    $('#l_nama_'+id).hide();
+    $('#l_qty_'+id).hide();
+    $('#l_keterangan_'+id).hide();
+    $('#nama_makanan_'+id).removeAttr('type').attr('type','text');
+    $('#qty_makanan_'+id).removeAttr('type').attr('type','number');
+    $('#keterangan_makanan_'+id).removeAttr('type').attr('type','text');
+    var url = contextPath + '/pages/images/icons8-save-25.png';
+    $('#btn_edit_' + id).attr('src', url);
+    $('#btn_edit_' + id).attr('onclick', 'saveEditMP(\'' + id + '\')');
+}
+
+function saveEditMP(id){
+    $('#l_nama_'+id).show();
+    $('#l_qty_'+id).show();
+    $('#l_keterangan_'+id).show();
+    $('#nama_makanan_'+id).removeAttr('type').attr('type','hidden');
+    $('#qty_makanan_'+id).removeAttr('type').attr('type','hidden');
+    $('#keterangan_makanan_'+id).removeAttr('type').attr('type','hidden');
+    var nama = $('#nama_makanan_'+id).val();
+    var qty = $('#qty_makanan_'+id).val();
+    var keterangan = $('#keterangan_makanan_'+id).val();
+    $('#l_nama_'+id).text(nama);
+    $('#l_qty_'+id).text(qty);
+    $('#l_keterangan_'+id).text(keterangan);
+    var url = contextPath + '/pages/images/spinner.gif';
+    $('#btn_edit_' + id).attr('src', url);
+    dwr.engine.setAsync(true);
+    PendampingMakananAction.editDetailPendampingMakanan(id, nama, qty, keterangan, {
+        callback:function (res) {
+            if(res.status == "success"){
+                $('#warning_suc_detail_makanan').show().fadeOut(5000);
+                $('#msg_suc_detail_makanan').text("Berhasil menyimpan data...!");
+                var url = contextPath + '/pages/images/icons8-create-25.png';
+                $('#btn_edit_' + id).attr('src', url);
+                $('#btn_edit_' + id).attr('onclick', 'edtiDetailMP(\'' + id + '\')');
+            }else{
+                $('#warning_detail_makanan').show().fadeOut(5000);
+                $('#msg_detail_makanan').text(res.msg);
+            }
+        }
+    });
+}
+
 

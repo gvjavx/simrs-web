@@ -49,6 +49,8 @@ public class HeaderPendampingMakananDao extends GenericDao<ItSimrsHeaderPendampi
             String idDet = "%";
             String idPas = "%";
             String nama = "%";
+            String status = "%";
+            String idKelas = "%";
 
             if(bean.getIdRuangan() != null && !"".equalsIgnoreCase(bean.getIdRuangan())){
                 idRuangan = bean.getIdRuangan();
@@ -65,6 +67,12 @@ public class HeaderPendampingMakananDao extends GenericDao<ItSimrsHeaderPendampi
             if(bean.getNama() != null && !"".equalsIgnoreCase(bean.getNama())){
                 nama = "%"+bean.getNama()+"%";
             }
+            if(bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+                status = bean.getStatus();
+            }
+            if(bean.getIdKelas() != null && !"".equalsIgnoreCase(bean.getIdKelas())){
+                idKelas = bean.getIdKelas();
+            }
 
             String SQL = "SELECT\n" +
                     "a.id_header_pendamping_makanan,\n" +
@@ -72,7 +80,8 @@ public class HeaderPendampingMakananDao extends GenericDao<ItSimrsHeaderPendampi
                     "c.id_pasien,\n" +
                     "c.nama,\n" +
                     "e.no_ruangan,\n" +
-                    "e.nama_ruangan\n" +
+                    "e.nama_ruangan,\n" +
+                    "a.status\n" +
                     "FROM it_simrs_header_pendamping_makanan a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                     "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
@@ -80,9 +89,11 @@ public class HeaderPendampingMakananDao extends GenericDao<ItSimrsHeaderPendampi
                     "INNER JOIN mt_simrs_ruangan e ON d.id_ruangan = e.id_ruangan\n" +
                     "WHERE a.flag = 'Y'\n" +
                     "AND e.id_ruangan LIKE :idRuangan\n" +
-                    "AND a.id_header_pendamping_makanan LIKE :idRuangan\n" +
+                    "AND e.id_kelas_ruangan LIKE :idKelas\n" +
+                    "AND a.id_header_pendamping_makanan LIKE :idHead\n" +
                     "AND a.id_detail_checkup LIKE :idDet\n" +
                     "AND c.id_pasien LIKE :idPas \n" +
+                    "AND a.status LIKE :sts \n" +
                     "AND c.nama ILIKE :nama \n";
             List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idRuangan", idRuangan)
@@ -90,6 +101,8 @@ public class HeaderPendampingMakananDao extends GenericDao<ItSimrsHeaderPendampi
                     .setParameter("idDet", idDet)
                     .setParameter("idPas", idPas)
                     .setParameter("nama", nama)
+                    .setParameter("sts", status)
+                    .setParameter("idKelas", idKelas)
                     .list();
 
             if(result.size() > 0){
@@ -101,6 +114,7 @@ public class HeaderPendampingMakananDao extends GenericDao<ItSimrsHeaderPendampi
                     makanan.setNama(obj[3] != null ? obj[3].toString() : "");
                     makanan.setNoRuangan(obj[4] != null ? obj[4].toString() : "");
                     makanan.setNamaRuangan(obj[5] != null ? obj[5].toString() : "");
+                    makanan.setStatus(obj[6] != null ? obj[6].toString() : "");
                     headerPendampingMakananList.add(makanan);
                 }
             }

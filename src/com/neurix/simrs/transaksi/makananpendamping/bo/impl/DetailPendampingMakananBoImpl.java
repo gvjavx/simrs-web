@@ -25,26 +25,25 @@ public class DetailPendampingMakananBoImpl implements DetailPendampingMakananBo 
     public List<DetailPendampingMakanan> getByCriteria(DetailPendampingMakanan bean) throws GeneralBOException {
         logger.info("[DetailPendampingMakananBoImpl.getByCriteria] Start >>>>>>>");
         List<DetailPendampingMakanan> results = new ArrayList<>();
-        List<ItSimrsDetailPendampingMakananEntity> list = new ArrayList<>();
         if (bean != null){
-            List<ItSimrsDetailPendampingMakananEntity> orderGiziEntityList = getListEntity(bean);
-            if(orderGiziEntityList.size() > 0){
-                for (ItSimrsDetailPendampingMakananEntity entity: list){
-                    DetailPendampingMakanan DetailPendampingMakanan = new DetailPendampingMakanan();
-                    DetailPendampingMakanan.setIdDetailPendampingMakanan(entity.getIdDetailPendampingMakanan());
-                    DetailPendampingMakanan.setIdHeaderPendampingMakanan(entity.getIdHeaderPendampingMakanan());
-                    DetailPendampingMakanan.setNama(entity.getNama());
-                    DetailPendampingMakanan.setQty(entity.getQty());
-                    DetailPendampingMakanan.setTarif(entity.getTarif());
-                    DetailPendampingMakanan.setTotalTarif(entity.getTotalTarif());
-                    DetailPendampingMakanan.setKeterangan(entity.getKeterangan());
-                    DetailPendampingMakanan.setAction(entity.getAction());
-                    DetailPendampingMakanan.setFlag(entity.getFlag());
-                    DetailPendampingMakanan.setCreatedWho(entity.getCreatedWho());
-                    DetailPendampingMakanan.setCreatedDate(entity.getCreatedDate());
-                    DetailPendampingMakanan.setLastUpdate(entity.getLastUpdate());
-                    DetailPendampingMakanan.setLastUpdateWho(entity.getLastUpdateWho());
-                    results.add(DetailPendampingMakanan);
+            List<ItSimrsDetailPendampingMakananEntity> detailPendampingMakananEntityList = getListEntity(bean);
+            if(detailPendampingMakananEntityList.size() > 0){
+                for (ItSimrsDetailPendampingMakananEntity entity: detailPendampingMakananEntityList){
+                    DetailPendampingMakanan detailPendampingMakanan = new DetailPendampingMakanan();
+                    detailPendampingMakanan.setIdDetailPendampingMakanan(entity.getIdDetailPendampingMakanan());
+                    detailPendampingMakanan.setIdHeaderPendampingMakanan(entity.getIdHeaderPendampingMakanan());
+                    detailPendampingMakanan.setNama(entity.getNama());
+                    detailPendampingMakanan.setQty(entity.getQty());
+                    detailPendampingMakanan.setTarif(entity.getTarif());
+                    detailPendampingMakanan.setTotalTarif(entity.getTotalTarif());
+                    detailPendampingMakanan.setKeterangan(entity.getKeterangan());
+                    detailPendampingMakanan.setAction(entity.getAction());
+                    detailPendampingMakanan.setFlag(entity.getFlag());
+                    detailPendampingMakanan.setCreatedWho(entity.getCreatedWho());
+                    detailPendampingMakanan.setCreatedDate(entity.getCreatedDate());
+                    detailPendampingMakanan.setLastUpdate(entity.getLastUpdate());
+                    detailPendampingMakanan.setLastUpdateWho(entity.getLastUpdateWho());
+                    results.add(detailPendampingMakanan);
                 }
             }
         }
