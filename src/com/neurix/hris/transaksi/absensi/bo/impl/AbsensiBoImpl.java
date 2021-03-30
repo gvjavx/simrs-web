@@ -5271,38 +5271,40 @@ public class AbsensiBoImpl implements AbsensiBo {
         for (Biodata pegawai : daftarKaryawan) {
             int days = 0;
             //RAKA-24FEB2021==>Mengganti berdasarkan tanggal aktif menjadi berdasarkan tanggal masuk
-            if (tanggalAwal.after(pegawai.getTanggalMasuk())) {
-                //menghitung hari kerja
-                try {
-                    List<ImLiburEntity> liburEntityList = new ArrayList<>();
-                    try{
-                        liburEntityList = liburDao.getLiburRange(tanggalAwal, tanggalAkhir);
-                    }catch (HibernateException e){
-                        logger.error("[AbsensiBoImpl.searchBiodataForTriwulan] Error, " + e.getMessage());
-                        throw new GeneralBOException("Problem when retrieving Libur Range, " + e.getMessage());
+            if(pegawai.getTanggalMasuk()!=null) {
+                if (tanggalAwal.after(pegawai.getTanggalMasuk())) {
+                    //menghitung hari kerja
+                    try {
+                        List<ImLiburEntity> liburEntityList = new ArrayList<>();
+                        try {
+                            liburEntityList = liburDao.getLiburRange(tanggalAwal, tanggalAkhir);
+                        } catch (HibernateException e) {
+                            logger.error("[AbsensiBoImpl.searchBiodataForTriwulan] Error, " + e.getMessage());
+                            throw new GeneralBOException("Problem when retrieving Libur Range, " + e.getMessage());
+                        }
+                        days = CommonUtil.countDays(stTanggalAwal, stTanggalAkhir);
+                        int jumlahLibur = liburEntityList.size();
+                        days = days - jumlahLibur;
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    days = CommonUtil.countDays(stTanggalAwal, stTanggalAkhir);
-                    int jumlahLibur = liburEntityList.size();
-                    days = days - jumlahLibur;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            } else {
-                String stTanggalMasuk = CommonUtil.convertDateToString(pegawai.getTanggalMasuk());
-                //menghitung hari kerja
-                try {
-                    List<ImLiburEntity> liburEntityList = new ArrayList<>();
-                    try{
-                        liburEntityList = liburDao.getLiburRange(tanggalAwal, tanggalAkhir);
-                    }catch (HibernateException e){
-                        logger.error("[AbsensiBoImpl.searchBiodataForTriwulan] Error, " + e.getMessage());
-                        throw new GeneralBOException("Problem when retrieving Libur Range, " + e.getMessage());
+                } else {
+                    String stTanggalMasuk = CommonUtil.convertDateToString(pegawai.getTanggalMasuk());
+                    //menghitung hari kerja
+                    try {
+                        List<ImLiburEntity> liburEntityList = new ArrayList<>();
+                        try {
+                            liburEntityList = liburDao.getLiburRange(tanggalAwal, tanggalAkhir);
+                        } catch (HibernateException e) {
+                            logger.error("[AbsensiBoImpl.searchBiodataForTriwulan] Error, " + e.getMessage());
+                            throw new GeneralBOException("Problem when retrieving Libur Range, " + e.getMessage());
+                        }
+                        days = CommonUtil.countDays(stTanggalMasuk, stTanggalAkhir);
+                        int jumlahLibur = liburEntityList.size();
+                        days = days - jumlahLibur;
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    days = CommonUtil.countDays(stTanggalMasuk, stTanggalAkhir);
-                    int jumlahLibur = liburEntityList.size();
-                    days = days - jumlahLibur;
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
             }
             //RAKA-end
