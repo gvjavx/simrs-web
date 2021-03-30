@@ -904,7 +904,9 @@ public class BiodataBoImpl implements BiodataBo {
                                 imBiodataEntity.setTanggalPraPensiun(bean.getTanggalPraPensiun());
 
                                 if (!"".equalsIgnoreCase(bean.getStTanggalPensiun()) && bean.getStTanggalPensiun() != null) {
-                                    imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                                    if(!"".equalsIgnoreCase(bean.getStMasaKerjaGol()) && bean.getStMasaKerjaGol() != null) {
+                                        imBiodataEntity.setMasaKerjaGolongan(Integer.parseInt(bean.getStMasaKerjaGol()));
+                                    }
                                 } else {
                                     imBiodataEntity.setMasaKerjaGolongan(0);
                                 }
