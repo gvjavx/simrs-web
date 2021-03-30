@@ -431,9 +431,9 @@
                                                                     <%--<li id="btnCutiMinus">--%>
                                                                         <%--<s:a href="#"><i class="fa fa-search"></i> Daftar Cuti Minus</s:a>--%>
                                                                     <%--</li>--%>
-                                                                    <li id="btnCetakSisaCuti">
-                                                                        <s:a href="#"><i class="fa fa-search"></i> Cetak Sisa Cuti</s:a>
-                                                                    </li>
+                                                                    <%--<li id="btnCetakSisaCuti">--%>
+                                                                        <%--<s:a href="#"><i class="fa fa-search"></i> Cetak Sisa Cuti</s:a>--%>
+                                                                    <%--</li>--%>
                                                                 </ul>
                                                             </div>
                                                         </td>
@@ -1057,8 +1057,8 @@
         $("#btnProsesSave").trigger( "click" );
     });
     $('#btnCutiBersama').on('click', function () {
-        $('.listAbsensiTable').find('tbody').remove();
-        $('.listAbsensiTable').find('thead').remove();
+        $('.listCutiTable').find('tbody').remove();
+        $('.listCutiTable').find('thead').remove();
         dwr.engine.setAsync(false);
         var tmp_table = "";
         var unit=$('#branchid').val();

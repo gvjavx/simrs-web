@@ -814,7 +814,8 @@ public class CutiPegawaiDao extends GenericDao<ItCutiPegawaiEntity, String> {
                 "\tim_hris_pegawai b\n" +
                 "\tleft join it_hris_pegawai_position pp ON b.nip=pp.nip\n" +
                 "\tleft join im_position p ON p.position_id = pp.position_id\n" +
-                "\tleft join (select * from it_hris_cuti_pegawai where cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc) cp ON cp.nip=b.nip AND cp.cuti_pegawai_id = (select cuti_pegawai_id from it_hris_cuti_pegawai where nip=b.nip and cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc limit 1)\n" +
+                "\tleft join (select * from it_hris_cuti_pegawai where cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc) cp" +
+                "ON cp.nip=b.nip AND cp.cuti_pegawai_id = (select cuti_pegawai_id from it_hris_cuti_pegawai where nip=b.nip and cuti_id='"+CommonConstant.CUTI_TAHUNAN+"' and cancel_flag='N' order by tanggal_dari desc limit 1)\n" +
                 "where\n" +
                 "\tpp.branch_id='"+unit+"'\n" +
                 "\tand b.flag='Y'\n" +
