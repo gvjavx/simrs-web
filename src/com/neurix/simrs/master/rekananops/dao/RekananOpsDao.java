@@ -135,7 +135,8 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
                     "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
                     "INNER JOIN it_simrs_header_detail_checkup c ON a.id_rekanan_ops = c.id_asuransi\n" +
                     "WHERE c.id_detail_checkup = :id \n"+
-                    "AND b.branch_id = :branchId \n";
+                    "AND b.branch_id = :branchId \n" +
+                    "AND b.flag_parent = 'Y' \n";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)

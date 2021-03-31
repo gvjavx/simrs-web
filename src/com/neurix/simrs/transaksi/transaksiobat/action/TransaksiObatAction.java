@@ -378,6 +378,7 @@ public class TransaksiObatAction extends BaseMasterAction {
         TransaksiObatDetail transaksiObatDetail = new TransaksiObatDetail();
         transaksiObatDetail.setIdPermintaanResep(idPermintaan);
         transaksiObatDetail.setIsOrder("Y");
+        transaksiObatDetail.setJenisPeriksaPasien(checkup.getIdJenisPeriksaPasien());
         List<TransaksiObatDetail> obatDetailList = new ArrayList<>();
 
         if (transaksiObatDetail != null) {
