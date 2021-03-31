@@ -1666,3 +1666,9 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     ADD COLUMN harga_jual_umum_bpjs numeric,
     ADD COLUMN harga_jual_khusus_bpjs numeric;
 --
+
+--2021-03-29
+    ALTER TABLE mt_simrs_harga_terakhir
+    ADD COLUMN harga_rata_umum numeric,
+    ADD COLUMN harga_rata_bpjs numeric;
+--

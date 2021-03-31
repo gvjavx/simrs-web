@@ -16,6 +16,24 @@ public class MtSimrsHargaTerakhirEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private BigDecimal hargaTerakhirBpjs;
+    private BigDecimal hargaRataUmum;
+    private BigDecimal hargaRataBpjs;
+
+    public BigDecimal getHargaRataUmum() {
+        return hargaRataUmum;
+    }
+
+    public void setHargaRataUmum(BigDecimal hargaRataUmum) {
+        this.hargaRataUmum = hargaRataUmum;
+    }
+
+    public BigDecimal getHargaRataBpjs() {
+        return hargaRataBpjs;
+    }
+
+    public void setHargaRataBpjs(BigDecimal hargaRataBpjs) {
+        this.hargaRataBpjs = hargaRataBpjs;
+    }
 
     public BigDecimal getHargaTerakhirBpjs() {
         return hargaTerakhirBpjs;
