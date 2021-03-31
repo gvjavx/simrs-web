@@ -271,3 +271,13 @@ html, body {
 .top_margin{
     margin-top: 7px;
 }
+
+.blink_me_atas {
+    animation: blinker 3.0s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
+}

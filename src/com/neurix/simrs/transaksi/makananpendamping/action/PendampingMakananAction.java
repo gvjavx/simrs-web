@@ -18,6 +18,7 @@ import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -28,6 +29,9 @@ public class PendampingMakananAction extends BaseTransactionAction {
     protected static transient Logger logger = Logger.getLogger(PendampingMakananAction.class);
     private HeaderPendampingMakananBo headerPendampingMakananBoProxy;
     private HeaderPendampingMakanan headerPendampingMakanan;
+    private String id;
+    private String nama;
+    private String keterangan;
 
     public CrudResponse savePendampingMakanan(String data) {
         logger.info("[HeaderPendampingMakananAction.savePendampingMakanan] start process >>>");
@@ -236,6 +240,19 @@ public class PendampingMakananAction extends BaseTransactionAction {
         return "search";
     }
 
+    public String printBarcodeMakanan(){
+        reportParams.put("id", getId());
+        reportParams.put("nama",getNama());
+        reportParams.put("keterangan",getKeterangan());
+        try {
+            preDownload();
+        } catch (SQLException e) {
+            logger.error("[HeaderPendampingMakananAction.printBarcodeMakanan] Error when print report ," + "[" + e + "] Found problem when downloading data, please inform to your admin.", e);
+            return "search";
+        }
+        return "print_barcode_makanan";
+    }
+
     public static Logger getLogger() {
         return logger;
     }
@@ -250,5 +267,29 @@ public class PendampingMakananAction extends BaseTransactionAction {
 
     public void setHeaderPendampingMakanan(HeaderPendampingMakanan headerPendampingMakanan) {
         this.headerPendampingMakanan = headerPendampingMakanan;
+    }
+
+    public String getNama() {
+        return nama;
+    }
+
+    public void setNama(String nama) {
+        this.nama = nama;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

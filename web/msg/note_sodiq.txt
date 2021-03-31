@@ -2337,12 +2337,14 @@ ADD COLUMN status VARCHAR(1);
 INSERT INTO im_functions VALUES
 (6913, 'Makanan Pendamping', '/pendampingmakanan/initForm_pendampingmakanan.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6913),
 (6914, 'init', '/pendampingmakanan/initForm_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null),
-(6915, 'search', '/pendampingmakanan/search_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+(6915, 'search', '/pendampingmakanan/search_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6916, 'print', '/pendampingmakanan/printBarcodeMakanan_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null);
 
 INSERT INTO im_func_roles VALUES
 (6913, 40, 'Y', now(), now(), 'admin', 'admin'),
 (6914, 40, 'Y', now(), now(), 'admin', 'admin'),
-(6915, 40, 'Y', now(), now(), 'admin', 'admin');
+(6915, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6916, 40, 'Y', now(), now(), 'admin', 'admin');
 
 
 

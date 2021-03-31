@@ -585,12 +585,32 @@ public class PeriksaLabAction extends BaseMasterAction {
                     List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasilPemeriksaanEntityList = new ArrayList<>();
                     String idPeriksaLab = obj.getString("id_periksa_lab");
                     String keterangan = obj.getString("keterangan");
-                    String namaPetugas = obj.getString("nama_petugas");
-                    String nipPetugas = obj.getString("nip_petugas");
-                    String namaValidator = obj.getString("nama_validator");
-                    String nipValidator = obj.getString("nip_validator");
-                    String ttdPetugas = obj.getString("ttd_petugas");
-                    String ttdValidator = obj.getString("ttd_validator");
+                    String namaPetugas = null;
+                    String nipPetugas = null;
+                    String namaValidator = null;
+                    String nipValidator = null;
+                    String ttdPetugas = null;
+                    String ttdValidator = null;
+
+                    if(obj.has("nama_petugas")){
+                        namaPetugas = obj.getString("nama_petugas");
+                    }
+                    if(obj.has("nip_petugas")){
+                        nipPetugas = obj.getString("nip_petugas");
+                    }
+                    if(obj.has("nama_validator")){
+                        namaValidator = obj.getString("nama_validator");
+                    }
+                    if(obj.has("nip_validator")){
+                        nipValidator = obj.getString("nip_validator");
+                    }
+                    if(obj.has("ttd_petugas")){
+                        ttdPetugas = obj.getString("ttd_petugas");
+                    }
+                    if(obj.has("ttd_validator")){
+                        ttdValidator = obj.getString("ttd_validator");
+                    }
+
                     String jsonParams = "";
                     if(obj.has("hasil_pemeriksaan")){
                         jsonParams = obj.getString("hasil_pemeriksaan");
@@ -990,7 +1010,6 @@ public class PeriksaLabAction extends BaseMasterAction {
                     String namaDokter = obj.getString("nama_dokter");
                     String sipDokter = obj.getString("sip_dokter");
                     String ttdDokter = obj.getString("ttd_dokter");
-                    String imgHasilLab = obj.getString("img_hasil_lab");
                     String keteranganHasil = obj.getString("keterangan");
 
                     PeriksaLab periksaLab = new PeriksaLab();
@@ -1003,50 +1022,6 @@ public class PeriksaLabAction extends BaseMasterAction {
                     periksaLab.setLastUpdateWho(userLogin);
                     periksaLab.setAction("U");
                     periksaLab.setHasil(keteranganHasil);
-
-                    if (imgHasilLab != null && !"".equalsIgnoreCase(imgHasilLab)) {
-                        try {
-                            JSONArray json = new JSONArray(imgHasilLab);
-                            if (json != null) {
-                                for (int i = 0; i < json.length(); i++) {
-                                    JSONObject object = json.getJSONObject(i);
-                                    if (object.getString("img_hasil_lab") != null && !"".equalsIgnoreCase(object.getString("img_hasil_lab"))) {
-                                        ItSimrsUploadHasilPemeriksaanEntity entity = new ItSimrsUploadHasilPemeriksaanEntity();
-                                        BASE64Decoder decoder = new BASE64Decoder();
-                                        byte[] decodedBytes = decoder.decodeBuffer(object.getString("img_hasil_lab"));
-                                        String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                                        String fileName = idPeriksaDetail + "-0" + i + '-' + patten + ".png";
-                                        String cekPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PEMERIKSAAN;
-                                        String uploadFile = cekPath + fileName;
-                                        File theDir = new File(cekPath);
-                                        if (!theDir.exists()) {
-                                            theDir.mkdirs();
-                                        }
-                                        BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-                                        if (image == null) {
-                                            logger.error("Buffered Image is null");
-                                            response.setStatus("error");
-                                            response.setMsg("Buffered Image is null");
-                                            return response;
-                                        } else {
-                                            File f = new File(uploadFile);
-                                            ImageIO.write(image, "png", f);
-                                            entity.setUrlImg(fileName);
-                                            entity.setTipe("dalam");
-                                            entity.setIdPeriksaLab(idPeriksaLab);
-                                            entity.setIdPeriksaLabDetail(idPeriksaDetail);
-                                            entity.setNamaDetailPeriksa(namaPeriksaDetail);
-                                            uploadHasilPemeriksaanEntityList.add(entity);
-                                        }
-                                    }
-                                }
-                            }
-                        } catch (IOException e) {
-                            response.setStatus("error");
-                            response.setMsg("IO Error" + e.getMessage());
-                            return response;
-                        }
-                    }
 
                     if (ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)) {
                         try {

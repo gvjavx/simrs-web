@@ -1016,18 +1016,6 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     throw new GeneralBOException(e.getMessage());
                 }
             }
-
-            if(bean.getUploadHasil().size() > 0){
-                for (ItSimrsUploadHasilPemeriksaanEntity entity: bean.getUploadHasil()){
-                    try {
-                        entity.setIdUploadHasilPemeriksaan(uploadHasilPeriksaDao.getNextId());
-                        uploadHasilPeriksaDao.addAndSave(entity);
-                    }catch (HibernateException e){
-                        logger.error(e.getMessage());
-                        throw new GeneralBOException(e.getMessage());
-                    }
-                }
-            }
         }
     }
 
@@ -1056,6 +1044,30 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
     public CrudResponse saveUpload(ItSimrsUploadHasilPemeriksaanEntity bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
         if(bean != null){
+            if(bean.getUrlImg() != null && !"".equalsIgnoreCase(bean.getUrlImg())){
+                HashMap hsCriteria = new HashMap();
+                String fileName = bean.getUrlImg().replace(".jpg","").replace(".pdf", "").replace(".png","");
+                if(fileName != null && !"".equalsIgnoreCase(fileName)){
+                    hsCriteria.put("url_img", fileName);
+                    List<ItSimrsUploadHasilPemeriksaanEntity> list = new ArrayList<>();
+                    try {
+                        list = uploadHasilPeriksaDao.getByCriteria(hsCriteria);
+                    }catch (HibernateException e){
+                        logger.error(e.getMessage());
+                        throw new GeneralBOException(e.getMessage());
+                    }
+                    if(list.size() > 0){
+                        for (ItSimrsUploadHasilPemeriksaanEntity entity: list){
+                            try {
+                                uploadHasilPeriksaDao.deleteAndSave(entity);
+                            }catch (HibernateException e){
+                                logger.error(e.getMessage());
+                                throw new GeneralBOException(e.getMessage());
+                            }
+                        }
+                    }
+                }
+            }
             try {
                 bean.setIdUploadHasilPemeriksaan(uploadHasilPeriksaDao.getNextId());
                 uploadHasilPeriksaDao.addAndSave(bean);
@@ -1075,6 +1087,10 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             if(entity != null){
                 try {
                     uploadHasilPeriksaDao.deleteAndSave(entity);
+                    File myFile = new File(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PEMERIKSAAN+entity.getUrlImg());
+                    if (!myFile.isDirectory()){
+                        myFile.delete();
+                    }
                 }catch (HibernateException e){
                     logger.error(e.getMessage());
                     throw new GeneralBOException(e.getMessage());

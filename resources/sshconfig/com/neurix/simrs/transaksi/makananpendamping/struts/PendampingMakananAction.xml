@@ -73,6 +73,14 @@
                 class="com.neurix.simrs.transaksi.makananpendamping.action.PendampingMakananAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
             <result name="search">/pages/com/neurix/simrs/transaksi/pendampingmakanan/searchPendampingMakanan.jsp</result>
+
+            <result name="print_barcode_makanan" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/labelMakananLuar.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

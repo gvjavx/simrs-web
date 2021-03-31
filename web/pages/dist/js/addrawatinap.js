@@ -1249,6 +1249,12 @@ function listDiagnosa() {
                 if (item.idDiagnosa != null) {
                     id = item.idDiagnosa;
                 }
+
+                var blink = "";
+                if("B20" == id){
+                    blink = 'class="blink_me_atas" style="color: red"';
+                }
+
                 if (item.keteranganDiagnosa != null) {
                     ket = item.keteranganDiagnosa;
                 }
@@ -1261,7 +1267,7 @@ function listDiagnosa() {
                         jen = "Diagnosa Sekunder";
                     }
                 }
-                table += "<tr>" +
+                table += '<tr '+blink+'>' +
                     "<td>" + dateFormat + "</td>" +
                     "<td>" + id + "</td>" +
                     "<td>" + ket + "</td>" +
@@ -4181,9 +4187,17 @@ function showHasil(id, tipe, kategori){
                     cla = 'class="item active"';
                     claLi = 'class="active"';
                 }
-                set += '<div '+cla+'>\n' +
-                    '<img src="'+item.urlImg+'" style="width: 100%">\n' +
-                    '</div>';
+                var x = item.urlImg;
+                var tipe = x.split('.').pop();
+                if("pdf" == tipe){
+                    set += '<div ' + cla + '>\n' +
+                        '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                        '</div>';
+                }else{
+                    set += '<div ' + cla + '>\n' +
+                        '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                        '</div>';
+                }
                 li += '<li data-target="#carousel-hasil_lab" data-slide-to="'+i+'" '+claLi+'></li>';
             });
             $('#item_hasil_lab').html(set);

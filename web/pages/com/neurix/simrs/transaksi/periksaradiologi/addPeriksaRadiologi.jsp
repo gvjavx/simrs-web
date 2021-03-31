@@ -314,8 +314,8 @@
                                                 <div class="input-group">
                                         <span class="input-group-btn">
                                             <span class="btn btn-default btn-file">
-                                                 Browse… <input accept="image/*" id="hasil_luar_0"
-                                                                onchange="parseToByte('hasil_luar_0', 'label_hasil_luar_0', 'hasil_luar0')"
+                                                 Browse… <input accept="image/*" id="hasil_luar_0" class="hasil_luar"
+                                                                onchange="parseToByte('hasil_luar_0', 'label_hasil_luar_0', 'hasil_luar0', '', '', 'luar')"
                                                                 type="file">
                                             </span>
                                         </span>
@@ -404,7 +404,7 @@
                         <div class="col-md-offset-4 col-md-4 text-center">
                             <a href="initForm_radiologi.action" style="margin-top: 25px" class="btn btn-warning"><i
                                     class="fa fa-times"></i> Cancel</a>
-                            <button onclick="conRadioLogi()" style="margin-top: 25px" class="btn btn-success">
+                            <button onclick="conSavePeriksaLab()" style="margin-top: 25px" class="btn btn-success">
                                 <i class="fa fa-check"></i> Selesai
                             </button>
                         </div>
@@ -545,8 +545,8 @@
                         <canvas style="margin-left: -7px; cursor: pointer" class="ttd-paint-canvas" id="ttd_dokter"
                                 width="380" height="300"
                                 onmouseover="paintTtd(this.id)"></canvas>
-                        <input class="form-control" id="nama_dokter" placeholder="Nama Terang">
-                        <input class="form-control" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">
+                        <input oninput="$(this).css('border', '')" class="form-control" id="nama_dokter" placeholder="Nama Terang">
+                        <input oninput="$(this).css('border', '')" class="form-control" id="sip_dokter" style="margin-top: 5px" placeholder="SIP/NIP">
                         <button style="margin-top: 5px" type="button" class="btn btn-danger"
                                 onclick="removePaint('ttd_dokter')"><i class="fa fa-trash"></i> Clear
                         </button>
@@ -940,6 +940,7 @@
                         '        </ul>\n' +
                         '</textarea>' +
                         '</div>' +
+                        '<input type="hidden" id="h_'+item.idPeriksaLabDetail+'" class="status_selesai">'+
                         '</div>' +
                         '<div class="row" style="margin-top: 10px">\n' +
                         '<div class="col-md-6">\n' +
@@ -968,8 +969,10 @@
                         '    </div>\n' +
                         '    <div class="row top_jarak">\n' +
                         '        <div class="col-md-12">\n' +
-                        '            <a class="btn btn-success" onclick="savePemeriksaan(\'' + item.idPeriksaLabDetail + '\', \'hasil_lab' + i + '\', \'keterangan_' + i + '\', \'' + item.namaDetailPeriksa + '\')"><i\n' +
+                        '<div id="btn_save_'+item.idPeriksaLabDetail+'">' +
+                        '            <a class="btn btn-success" onclick="savePemeriksaan(\'' + item.idPeriksaLabDetail + '\', \'keterangan_' + i + '\', \'' + item.namaDetailPeriksa + '\')"><i\n' +
                         '                    class="fa fa-check"></i> Save Hasil</a>\n' +
+                        '</div>'+
                         '        </div>\n' +
                         '    </div>\n' +
                         '</div>\n' +
@@ -992,22 +995,13 @@
     }
 
     function conSavePeriksaLab() {
-        var data = $('#tabel_radiologi').tableToJSON();
-        var nama1 = $('#nama_petugas').val();
-        var nip1 = $('#nip_petugas').val();
-        var nama2 = $('#nama_validator').val();
-        var nip2 = $('#nip_validator').val();
-        var petugas = document.getElementById("ttd_petugas");
-        var dokter = document.getElementById("ttd_dokter");
-        var cekPetugas = isCanvasBlank(petugas);
-        var cekDokter = isCanvasBlank(dokter);
+        var data = $('.status_selesai');
         var totalTarif = $('#h_total_tarif').val();
         var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
 
         var cek = false;
         $.each(data, function (i, item) {
-            var hasil = $('#hasil_' + i).val();
-            if (hasil == "") {
+            if (item.value == "") {
                 cek = true;
             }
         });
@@ -1015,10 +1009,8 @@
         var tempHasilLuar = $('.hasil_luar');
         var cekLabLuar = false;
         $.each(tempHasilLuar, function (i, item) {
-            var canvas = document.getElementById('hasil_luar_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
+            var canvas = document.getElementById('hasil_luar_' + i).files;
+            if (canvas.length > 0) {
                 cekLabLuar = true;
             }
         });
@@ -1029,11 +1021,11 @@
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
                 $('#warning_rad').show().fadeOut(5000);
-                $('#msg_rad').text("Silahkan cek kembali data hasil Radiologi, data petugas, dan data Validator...!");
+                $('#msg_rad').text("Silahkan cek kembali data hasil Radiologi...!");
                 $(window).scrollTop($("#pos_lab").offset().top);
             }
         } else {
-            if (nama1 && nama2 && nip1 && nip2 != '' && !cek && !cekPetugas && !cekDokter || cekLabLuar && data.length > 0) {
+            if (!cek) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
@@ -1061,49 +1053,9 @@
         var nip2 = $('#nip_validator').val();
         var isiParam = $('#tabel_radiologi').tableToJSON();
         var totalTarif = $('#h_total_tarif').val();
-
-        var jsonData = [];
-        $.each(isiParam, function (i, item) {
-            var idLab = $('#id_periksa_lab_' + i).val();
-            var hasil = $('#hasil_' + i).val();
-            var kesan = $('#kesan_' + i).val();
-            if (hasil != '') {
-                jsonData.push({
-                    'id_periksa_lab': idLab,
-                    'hasil': hasil,
-                    'kesan': kesan,
-                });
-            }
-        });
-
-        var finalPetugas = convertToDataURL(petugas);
-        var finalDokter = convertToDataURL(dokter);
-
-        var tempHasilLab = $('.hasil_lab');
-        var tempImgHasilLab = [];
-        $.each(tempHasilLab, function (i, item) {
-            var canvas = document.getElementById('hasil_lab_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
-                tempImgHasilLab.push({
-                    'img_hasil_lab': convertToDataURLAtas(canvas)
-                });
-            }
-        });
-
-        var tempHasilLuar = $('.hasil_luar');
-        var tempImgHasilLuar = [];
-        $.each(tempHasilLuar, function (i, item) {
-            var canvas = document.getElementById('hasil_luar_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
-                tempImgHasilLuar.push({
-                    'img_hasil_luar': convertToDataURLAtas(canvas)
-                });
-            }
-        });
+        var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
+        var finalPetugas = "";
+        var finalDokter = "";
 
         var data = {
             'no_checkup': noCheckup,
@@ -1126,9 +1078,6 @@
             'nip_validator': nip2,
             'ttd_petugas': finalPetugas,
             'ttd_validator': finalDokter,
-            'hasil_pemeriksaan': JSON.stringify(jsonData),
-            'upload_hasil': JSON.stringify(tempImgHasilLab),
-            'upload_hasil_luar': JSON.stringify(tempImgHasilLuar),
             'total_tarif': totalTarif
         }
 
@@ -1172,7 +1121,7 @@
             '        <div class="input-group">\n' +
             '<span class="input-group-btn">\n' +
             '    <span class="btn btn-default btn-file">\n' +
-            '         Browse… <input accept="image/*" id="'+jenis+'" onchange="parseToByte(\'' + jenis + '\', \'' + label + '\', \''+idRow+'\', \''+idDetail+'\', \''+namaDetail+'\', \''+tipe+'\')" type="file">\n' +
+            '         Browse… <input class="'+jen+'" accept="image/*" id="'+jenis+'" onchange="parseToByte(\'' + jenis + '\', \'' + label + '\', \''+idRow+'\', \''+idDetail+'\', \''+namaDetail+'\', \''+tipe+'\')" type="file">\n' +
             '    </span>\n' +
             '</span>\n' +
             '            <input type="text" class="form-control" readonly id="' + label + '">\n' +
@@ -1182,9 +1131,6 @@
             '        <button id="'+idRow+'" onclick="delUpload(\'' + idRow + '\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-trash"></i></button>\n' +
             '    </div>\n' +
             '</div>\n' +
-            '</div>';
-        var imgCanvas = '<div class="item" id="item_' + jenis + '">\n' +
-            '<img id="img_' + jenis + '" style="width: 100%">\n' +
             '</div>';
         $('#' + idset).append(set);
     }
@@ -1196,7 +1142,6 @@
                 dwr.engine.setAsync(true);
                 PeriksaLabAction.deleteUploadFilePemeriksaan(idDetail, {
                     callback: function (res) {
-                        console.log(res);
                     }
                 });
             }
@@ -1232,59 +1177,71 @@
         });
     }
 
-    function savePemeriksaan(id, image, text, namaPeriksa) {
+    function savePemeriksaan(id, text, namaPeriksa) {
         $('#modal-ttd').modal({show: true, backdrop: 'static'});
-        $('#save_ttd').attr('onclick', 'saveHasil(\'' + id + '\', \'' + image + '\', \'' + text + '\', \'' + namaPeriksa + '\')');
+        $('#save_ttd').attr('onclick', 'saveHasil(\'' + id + '\', \'' + text + '\', \'' + namaPeriksa + '\')');
     }
 
-    function saveHasil(id, image, text, namaPeriksa) {
+    function saveHasil(id, text, namaPeriksa) {
         var keterangan = CKEDITOR.instances[text].getData();
         var dokter = document.getElementById("ttd_dokter");
         var cekDokter = isCanvasBlank(dokter);
         var dokterFinal = convertToDataURL(dokter);
         var nama = $('#nama_dokter').val();
         var sip = $('#sip_dokter').val();
-        var tempHasilLab = $('.' + image);
-        var tempImgHasilLab = [];
-        $.each(tempHasilLab, function (i, item) {
-            var canvas = document.getElementById('hasil_lab_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
-                tempImgHasilLab.push({
-                    'img_hasil_lab': convertToDataURLAtas(canvas)
-                });
-            }
-        });
-        var data = {
-            'id_periksa_lab': idPeriksaLab,
-            'id_periksa_detail': id,
-            'nama_periksa_detail': namaPeriksa,
-            'nama_dokter': nama,
-            'sip_dokter': sip,
-            'ttd_dokter': dokterFinal,
-            'keterangan': keterangan,
-            'img_hasil_lab': JSON.stringify(tempImgHasilLab)
-        }
-        $('#load_ttd').show();
-        $('#save_ttd').hide();
-        var result = JSON.stringify(data);
-        dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditRadiologi(result, {
-            callback: function (res) {
-                if(res.status == "success"){
-                    $('#load_ttd').hide();
-                    $('#save_ttd').show();
-                    $('#modal-ttd').modal('hide');
-                    $('#info_dialog').dialog('open');
-                }else{
-                    $('#warning_ttd').show().fadeOut(5000);
-                    $('#msg_ttd').text(res.msg);
-                    $('#load_ttd').hide();
-                    $('#save_ttd').show();
+
+        if(nama && sip != ''){
+            if(!cekDokter){
+                var data = {
+                    'id_periksa_lab': idPeriksaLab,
+                    'id_periksa_detail': id,
+                    'nama_periksa_detail': namaPeriksa,
+                    'nama_dokter': nama,
+                    'sip_dokter': sip,
+                    'ttd_dokter': dokterFinal,
+                    'keterangan': keterangan
                 }
+                $('#load_ttd').show();
+                $('#save_ttd').hide();
+                var result = JSON.stringify(data);
+                dwr.engine.setAsync(true);
+                PeriksaLabAction.saveEditRadiologi(result, {
+                    callback: function (res) {
+                        if(res.status == "success"){
+                            $('#load_ttd').hide();
+                            $('#save_ttd').show();
+                            $('#modal-ttd').modal('hide');
+                            $('#info_dialog').dialog('open');
+                            $('#btn_save_'+id).html('<a class="btn btn-warning" onclick="changeHasil(\''+id+'\', \''+text+'\', \''+namaPeriksa+'\')"><i class="fa fa-edit"></i> Edit Hasil</a>');
+                            $('#h_'+id).val("Y");
+                            CKEDITOR.instances[text].setReadOnly(true);
+                        }else{
+                            $('#warning_ttd').show().fadeOut(5000);
+                            $('#msg_ttd').text(res.msg);
+                            $('#load_ttd').hide();
+                            $('#save_ttd').show();
+                        }
+                    }
+                });
+            }else{
+                $('#warning_ttd').show().fadeOut(5000);
+                $('#msg_ttd').text("Silahkan melakukan TTD...!");
             }
-        });
+        }else{
+            if(nama == ''){
+                $('#nama_dokter').css('border', 'solid 1px red');
+            }
+            if(sip == ''){
+                $('#sip_dokter').css('border', 'solid 1px red');
+            }
+            $('#warning_ttd').show().fadeOut(5000);
+            $('#msg_ttd').text("Cek kembali inputan anda...!");
+        }
+    }
+
+    function changeHasil(id, text, namaPeriksa){
+        CKEDITOR.instances[text].setReadOnly(false);
+        $('#btn_save_'+id).html('<a class="btn btn-success" onclick="savePemeriksaan(\''+id+'\', \''+text+'\', \''+namaPeriksa+'\')"><i class="fa fa-check"></i> Save Hasil</a>');
     }
 
     function conRadioLogi(){
@@ -1320,6 +1277,9 @@
 
     function parseToByte(id, label, idRow, idPerikDetail, namaDetail, tipe) {
         if(!cekSession()){
+            if(tipe == "luar"){
+                namaDetail = label;
+            }
             var files = document.getElementById(id).files;
             if (files.length > 0) {
                 var fileToLoad = files[0];

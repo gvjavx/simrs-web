@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaLab" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.7715610000000104"/>
-	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="336"/>
+	<property name="ireport.zoom" value="3.1384283767210204"/>
+	<property name="ireport.x" value="577"/>
+	<property name="ireport.y" value="1255"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -392,7 +392,7 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[Hasil]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="269" y="0" width="40" height="20" backcolor="#FFFFFF" uuid="35495048-4ef5-432b-9529-64f83bfa7777"/>
+				<reportElement mode="Opaque" x="164" y="0" width="40" height="20" backcolor="#FFFFFF" uuid="35495048-4ef5-432b-9529-64f83bfa7777"/>
 				<box leftPadding="3">
 					<topPen lineStyle="Dashed"/>
 					<bottomPen lineStyle="Dashed"/>
@@ -403,7 +403,7 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[Satuan]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="309" y="0" width="72" height="20" backcolor="#FFFFFF" uuid="04d3eceb-8e1a-4557-8a4b-b37a54251ad2"/>
+				<reportElement mode="Opaque" x="204" y="0" width="72" height="20" backcolor="#FFFFFF" uuid="04d3eceb-8e1a-4557-8a4b-b37a54251ad2"/>
 				<box leftPadding="3">
 					<topPen lineStyle="Dashed"/>
 					<bottomPen lineStyle="Dashed"/>
@@ -414,7 +414,7 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[Nilai Normal]]></text>
 			</staticText>
 			<staticText>
-				<reportElement mode="Opaque" x="164" y="0" width="105" height="20" backcolor="#FFFFFF" uuid="28d087eb-f228-4484-805d-ed21c2d4815b"/>
+				<reportElement mode="Opaque" x="276" y="0" width="105" height="20" backcolor="#FFFFFF" uuid="28d087eb-f228-4484-805d-ed21c2d4815b"/>
 				<box leftPadding="3">
 					<topPen lineStyle="Dashed"/>
 					<bottomPen lineStyle="Dashed"/>
@@ -451,7 +451,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$F{hasil} == null ? '' : $F{hasil}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="269" y="0" width="40" height="15" uuid="966286d5-69eb-4b88-bbe3-17af2ab1723e"/>
+				<reportElement x="164" y="0" width="40" height="15" uuid="966286d5-69eb-4b88-bbe3-17af2ab1723e"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
@@ -462,7 +462,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$F{satuan} == null ? '' : $F{satuan}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="309" y="0" width="72" height="15" uuid="07fe93ce-b425-4ccc-8114-eb332eda2601"/>
+				<reportElement x="204" y="0" width="72" height="15" uuid="07fe93ce-b425-4ccc-8114-eb332eda2601"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
@@ -473,7 +473,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$F{keterangan_acuan} == null ? '' : $F{keterangan_acuan}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="164" y="0" width="105" height="15" uuid="7e203dab-829d-48a3-8d74-f4a7bba12959"/>
+				<reportElement x="276" y="0" width="105" height="15" uuid="7e203dab-829d-48a3-8d74-f4a7bba12959"/>
 				<box leftPadding="2">
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
 					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
@@ -568,7 +568,7 @@ AND b.flag = 'Y']]>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Dokter DPJP Laboratorium]]></text>
+				<text><![CDATA[Dokter Penanggung Jawab]]></text>
 			</staticText>
 			<line>
 				<reportElement x="16" y="308" width="87" height="1" uuid="15297a56-2732-4a89-9027-8cdd569118dc"/>

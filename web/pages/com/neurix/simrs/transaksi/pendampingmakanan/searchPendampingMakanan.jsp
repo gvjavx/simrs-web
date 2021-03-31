@@ -314,6 +314,7 @@
                                     <td align="center">Qty</td>
                                     <td>Keterangan</td>
                                     <td align="center">Tarif(Rp.)</td>
+                                    <td align="center">Print</td>
                                 </tr>
                                 </thead>
                                 <tbody id="body_pendamping_makanan"></tbody>
@@ -371,7 +372,6 @@
     }
 
     function detailMakananPendamping(id, nama, noRuangan, namaRuangan, status){
-        console.log(status);
         $('#det_no_pesanan').text(id);
         $('#det_nama').text(nama);
         $('#det_ruangan').text("["+noRuangan+"] "+namaRuangan);
@@ -402,6 +402,7 @@
                     '<td '+ling+'>' + input +
                     '<input type="hidden" class="val_tarif_makanan" id="tarif_val_'+item.idDetailPendampingMakanan+'">'+
                     '</td>' +
+                    '<td align="center">'+'<a target="_blank" href="printBarcodeMakanan_pendampingmakanan.action?id='+id+'&nama='+nama+'&keterangan='+item.nama+'"><img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>"></a>'+'</td>'+
                     '</tr>';
             });
             $('#body_pendamping_makanan').html(table);
