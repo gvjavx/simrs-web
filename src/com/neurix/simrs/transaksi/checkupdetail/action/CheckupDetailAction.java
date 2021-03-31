@@ -513,22 +513,19 @@ public class CheckupDetailAction extends BaseMasterAction {
     @Override
     public String add() {
         logger.info("[CheckupDetailAction.add] start process >>>");
-
         String id = getId();
-
         HeaderCheckup checkup = new HeaderCheckup();
-        HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-
         String jk = "";
 
         try {
             checkup = checkupBoProxy.getDataDetailPasien(id);
         } catch (GeneralBOException e) {
             logger.error("Found error when detail pasien " + e.getMessage());
+            throw new GeneralBOException("Error when get detail pasien,"+e.getMessage());
         }
 
-        if (checkup != null) {
+        if (checkup.getIdDetailCheckup() != null) {
 
             HeaderDetailCheckup detailCheckup = new HeaderDetailCheckup();
             detailCheckup.setNoCheckup(checkup.getNoCheckup());
@@ -541,9 +538,16 @@ public class CheckupDetailAction extends BaseMasterAction {
 
             try {
                 checkupDetailBoProxy.saveEdit(detailCheckup);
-                checkupDetailBoProxy.updateFlagPeriksaAntrianOnline(checkup.getIdDetailCheckup());
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.add] Error when update checkup detail");
+                throw new GeneralBOException("Error when update checkup detail,"+e.getMessage());
+            }
+
+            try {
+                checkupDetailBoProxy.updateFlagPeriksaAntrianOnline(checkup.getIdDetailCheckup());
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupDetailAction.add] Error when update checkup online");
+                throw new GeneralBOException("Error when update checkup online,"+e.getMessage());
             }
 
             detailCheckup.setIdPasien(checkup.getIdPasien());
@@ -5117,7 +5121,16 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if("INA".equalsIgnoreCase(tipe) || "RB".equalsIgnoreCase(tipe) || "ICU".equalsIgnoreCase(tipe) || "OK".equalsIgnoreCase(tipe)){
             reportParams.put("keterangan", getKeterangan());
-            reportParams.put("createdDate", getCreatedDate());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS");
+            if(getCreatedDate() != null && !"".equalsIgnoreCase(getCreatedDate())){
+                try {
+                    Date parsedDate = dateFormat.parse(getCreatedDate());
+                    Timestamp timestamp = new java.sql.Timestamp(parsedDate.getTime());
+                    reportParams.put("createdDate", timestamp);
+                }catch (Exception e){
+                    logger.error(e.getMessage());
+                }
+            }
         }
 
         try {
