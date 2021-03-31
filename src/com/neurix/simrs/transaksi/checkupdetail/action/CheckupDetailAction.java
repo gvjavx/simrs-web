@@ -185,6 +185,8 @@ public class CheckupDetailAction extends BaseMasterAction {
     private String lab;
     private String idPasien;
     private String ids;
+    private String keterangan;
+    private String createdDate;
 
 
     public String getIds() {
@@ -5113,6 +5115,11 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("pernyataan_sep", pernyataan);
         }
 
+        if("INA".equalsIgnoreCase(tipe) || "RB".equalsIgnoreCase(tipe) || "ICU".equalsIgnoreCase(tipe) || "OK".equalsIgnoreCase(tipe)){
+            reportParams.put("keterangan", getKeterangan());
+            reportParams.put("createdDate", getCreatedDate());
+        }
+
         try {
             preDownload();
         } catch (SQLException e) {
@@ -5231,6 +5238,18 @@ public class CheckupDetailAction extends BaseMasterAction {
             }
             if ("RI01".equalsIgnoreCase(tipe)) {
                 return "print_rawat_inap";
+            }
+            if("INA".equalsIgnoreCase(tipe)){
+                return  "print_persetujuan_ina";
+            }
+            if("RB".equalsIgnoreCase(tipe)){
+                return  "print_persetujuan_rb";
+            }
+            if("ICU".equalsIgnoreCase(tipe)){
+                return  "print_persetujuan_icu";
+            }
+            if("OK".equalsIgnoreCase(tipe)){
+                return  "print_persetujuan_ok";
             }
 
         } else {
@@ -5807,6 +5826,21 @@ public class CheckupDetailAction extends BaseMasterAction {
         return res;
     }
 
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
+    }
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
 
     @Override
     public String downloadPdf() {

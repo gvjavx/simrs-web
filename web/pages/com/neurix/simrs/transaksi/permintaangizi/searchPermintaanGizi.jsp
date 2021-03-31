@@ -977,9 +977,8 @@
                         $.each(res, function (i, item) {
                             if (keterangan == "radiologi") {
                                 body += '<tr>' +
-                                    '<td>' + cekDataNull(item.namaDetailLab) + '</td>' +
-                                    '<td>' + cekDataNull(item.kesimpulan) + '</td>' +
-                                    '<td>' + cekDataNull(item.keterangan) + '</td>' +
+                                    '<td width="40%">' + cekDataNull(item.namaDetailLab) + '</td>' +
+                                    '<td><div style="margin-left: 25px">' + cekDataNull(item.kesimpulan) + '</div></td>' +
                                     '</tr>';
                             }
                             if (keterangan == "laboratorium") {
@@ -998,7 +997,6 @@
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                             '<td>Pemeriksaan</td>' +
                             '<td>Hasil</td>' +
-                            '<td>Kesan</td>' +
                             '</tr>';
                     }
                     if (keterangan == "laboratorium") {
