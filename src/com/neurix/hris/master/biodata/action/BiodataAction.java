@@ -3835,11 +3835,22 @@ public class BiodataAction extends BaseMasterAction {
         logger.info("[BiodataAction.createUser] start process >>>");
 
         User user = new User();
+        String userName = bio.getNamaPegawai();
         user.setUserId(bio.getNip());
-        user.setUsername(bio.getNamaPegawai());
+        if(bio.getGelarDepan()!=null && "".equalsIgnoreCase(bio.getGelarDepan())){
+            userName = bio.getGelarDepan() + " " + userName;
+        }
+        if(bio.getGelarBelakang()!=null && "".equalsIgnoreCase(bio.getGelarBelakang())){
+            userName = userName + ", " + bio.getGelarBelakang();
+        }
+        user.setUsername(userName);
         user.setPassword("123");  //default Password
 //        user.setConfirmPassword("123");
-        user.setRoleId("45"); //Roles KARYAWAN
+        if("Y".equalsIgnoreCase(bio.getFlagDokterKso())) {
+            user.setRoleId("43"); //Roles DOKTER
+        }else{
+            user.setRoleId("45"); //Roles KARYAWAN
+        }
         user.setBranchId(bio.getBranch());
         user.setDivisiId(bio.getDivisi());
         user.setPositionId(bio.getPositionId());

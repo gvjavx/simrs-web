@@ -957,7 +957,7 @@
         var noSk            = $("#no_sk").val();
         var tanggalKeluar   = $("#tanggalKeluar").val();
         var url             = $('#myForm').attr('action');
-        var jenisJabLama    = $("#jenisPegawaiId option:selected").val();
+        var jenisJabLama    = $("#jenisPegawaiLamaId option:selected").val();
 
         if (url == "addPerson"){
             MutasiAction.checkIsAvailInSession(nip, function(res){

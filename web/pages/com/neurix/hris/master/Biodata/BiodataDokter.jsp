@@ -1029,6 +1029,10 @@
                                                 </td>
                                             </tr>
 
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="display: none" id="createUser" name="biodata.createUser" value="Y" />
+                                            </s:if>
+
                                             <tr>
                                                 <td>
                                                     <hr>

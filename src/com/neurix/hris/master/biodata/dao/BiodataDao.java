@@ -579,6 +579,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "where " +
                 "\t itPosisi.flag='"+flag+"' AND" +
                 "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
+                "\tAND itPosisi.jenis_pegawai = 'JP01'\n" + // Mencari yg jenis Jabatan NORMAL (Jabatan Utama)
                 "\torder by \n" +
                 "\titPosisi.position_id";
 
