@@ -636,11 +636,11 @@ public class BiodataAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataPengalaman");
+                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataReward");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataReward] Error when saving error,", e1);
             }
-            logger.error("[BiodataAction.searchDataPengalaman] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            logger.error("[BiodataAction.searchDataReward] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         logger.info("[BiodataAction.searchDataReward] end process >>>");
@@ -659,9 +659,9 @@ public class BiodataAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataPengalaman");
+                logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataSertifikat");
             } catch (GeneralBOException e1) {
-                logger.error("[BiodataAction.searchDataReward] Error when saving error,", e1);
+                logger.error("[BiodataAction.searchDataSertifikat] Error when saving error,", e1);
             }
             logger.error("[BiodataAction.searchDataSertifikat] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
@@ -702,7 +702,7 @@ public class BiodataAction extends BaseMasterAction {
 
         if (isAddOrEdit()) {
             if (!isAdd()) {
-                logger.info("[BiodataAction.saveEdit] start process >>>");
+                logger.info("[BiodataAction.save] start process >>>");
                 try {
                     Biodata editBiodata = getBiodata();
 
@@ -812,16 +812,16 @@ public class BiodataAction extends BaseMasterAction {
                     try {
                         logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.saveEdit");
                     } catch (GeneralBOException e1) {
-                        logger.error("[BiodataAction.saveEdit] Error when saving error,", e1);
+                        logger.error("[BiodataAction.save] Error when saving error,", e1);
                         throw new GeneralBOException(e1.getMessage());
                     }
-                    logger.error("[BiodataAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                    logger.error("[BiodataAction.save] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
                 }
 
                 clearAllSession();
-                logger.info("[BiodataAction.saveEdit] end process <<<");
+                logger.info("[BiodataAction.save] end process <<<");
                 return "success_save_edit";
             } else {
                 //add
@@ -873,9 +873,9 @@ public class BiodataAction extends BaseMasterAction {
                         try {
                             logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
                         } catch (GeneralBOException e1) {
-                            logger.error("[UserAction.save] Error when saving error,", e1);
+                            logger.error("[BiodataAction.save] Error when saving error,", e1);
                         }
-                        logger.error("[UserAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+                        logger.error("[BiodataAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                         addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
                         return ERROR;
                     }
@@ -897,28 +897,30 @@ public class BiodataAction extends BaseMasterAction {
                 biodata.setListOfPersonilPosition(listOfResultPersonil);
                 try {
                     biodataBoProxy.saveAdd(biodata);
+                    //RAKA-31MAR2021 ==> create User
+                    if("Y".equalsIgnoreCase(biodata.getCreateUser())) {
+                        if(!"Y".equalsIgnoreCase(biodata.getFlagDokterKso())) {
+                            biodata.setPositionId(biodata.getListOfPersonilPosition().get(0).getPositionId());
+                            biodata.setDivisi(biodata.getListOfPersonilPosition().get(0).getDivisiId());
+                        }
+                        try {
+                            createUser(biodata);
+                        } catch (Exception e) {
+                            logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                        }
+                    }
+                    //RAKA-end
                 } catch (GeneralBOException e) {
                     Long logId = null;
                     try {
-                        logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "pengalamanKerjaBO.saveAdd");
+                        logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.saveAdd");
                     } catch (GeneralBOException e1) {
-                        logger.error("[BiodataAction.saveAdd] Error when saving error,", e1);
+                        logger.error("[BiodataAction.save] Error when saving error,", e1);
                         throw new GeneralBOException(e1.getMessage());
                     }
-                    logger.error("[BiodataAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+                    logger.error("[BiodataAction.save] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
                     throw new GeneralBOException(e.getMessage());
-                }
-
-                //CREATE USER
-                if("Y".equalsIgnoreCase(biodata.getCreateUser())) {
-                    biodata.setPositionId(biodata.getListOfPersonilPosition().get(0).getPositionId());
-                    biodata.setDivisi(biodata.getListOfPersonilPosition().get(0).getDivisiId());
-                    try {
-                        createUser(biodata);
-                    } catch (Exception e) {
-                        logger.error("[BiodataAction.save] Error, " + e.getMessage());
-                    }
                 }
 
                 clearAllSession();
@@ -3837,10 +3839,10 @@ public class BiodataAction extends BaseMasterAction {
         User user = new User();
         String userName = bio.getNamaPegawai();
         user.setUserId(bio.getNip());
-        if(bio.getGelarDepan()!=null && "".equalsIgnoreCase(bio.getGelarDepan())){
+        if(bio.getGelarDepan()!=null && !"".equalsIgnoreCase(bio.getGelarDepan())){
             userName = bio.getGelarDepan() + " " + userName;
         }
-        if(bio.getGelarBelakang()!=null && "".equalsIgnoreCase(bio.getGelarBelakang())){
+        if(bio.getGelarBelakang()!=null && !"".equalsIgnoreCase(bio.getGelarBelakang())){
             userName = userName + ", " + bio.getGelarBelakang();
         }
         user.setUsername(userName);
