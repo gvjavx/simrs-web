@@ -441,20 +441,20 @@
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-2 col-sm-3">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Pelayanan</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <select id="modPelayanan" style="width: 100%" class="form-control select2" onchange="listTindakan()">
                                     <option value="">[Select One]</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-2 col-sm-3">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Tindakan</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <select id="modTindakan" style="width: 100%" class="form-control select2">
                                     <option value="">[Select One]</option>
                                 </select>
@@ -492,10 +492,10 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-2 col-sm-3">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Persen KSO Tindakan</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <s:textfield type="number" id="modPersenKsoTindakan" cssClass="form-control" />
                             </div>
                         </div>
@@ -634,7 +634,7 @@
         DokterKsoAction.initComboTindakanDokter(idPelayanan, idDokter, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
+                    option += "<option value='" + item.idTindakan + "'>" + item.idTindakan + " | " + item.tindakan + "</option>";
                 });
                 $('#modTindakan').html(option);
             } else {
