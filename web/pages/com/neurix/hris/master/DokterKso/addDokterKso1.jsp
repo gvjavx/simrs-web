@@ -259,7 +259,8 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <%--RAKA-31MAR2021--%>
+                                            <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
@@ -271,6 +272,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <%--RAKA-end--%>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Jenis KSO:</small></label>
