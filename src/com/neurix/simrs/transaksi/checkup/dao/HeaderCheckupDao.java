@@ -278,7 +278,13 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             branchId = "%";
         }
 
-        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+        String SQL = "SELECT " +
+                "ps.nama, " +
+                "diag.keterangan_diagnosa, \n" +
+                "ck.last_update, \n" +
+                "ck.no_checkup, \n" +
+                "diag.id_diagnosa \n" +
+                "FROM it_simrs_header_checkup ck\n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
                 "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
                 "INNER JOIN (\n" +
@@ -306,6 +312,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             alertPasien.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
             alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
             alertPasien.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+            alertPasien.setIdDiagnosa(obj[4] == null ? "" : obj[4].toString());
 
             if (obj[2] != null) {
                 Timestamp lastUpdate = (Timestamp) obj[2];

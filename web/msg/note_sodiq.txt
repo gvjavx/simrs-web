@@ -2281,6 +2281,73 @@ UPDATE im_simrs_keterangan_keluar
 SET kategori = 'meninggal'
 WHERE id_keterangan = '04';
 
+--SENNINN
+DROP TABLE it_simrs_pendamping_gizi;
+
+CREATE TABLE public.it_simrs_header_pendamping_makanan
+(
+  id_header_pendamping_makanan character varying(50) NOT NULL,
+  id_detail_checkup character varying(50),
+  id_ruangan character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT id_header_pendamping_makanan_pkey PRIMARY KEY (id_header_pendamping_makanan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_header_pendamping_makanan
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_header_pendamping_makanan;
+
+CREATE TABLE public.it_simrs_detail_pendamping_makanan
+(
+  id_detail_pendamping_makanan character varying(50) NOT NULL,
+  id_header_pendamping_makanan character varying(50),
+  nama character varying(100),
+  qty integer,
+  tarif numeric,
+  total_tarif numeric,
+  keterangan character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT id_detail_pendamping_makanan_pkey PRIMARY KEY (id_detail_pendamping_makanan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_detail_pendamping_makanan
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_detail_pendamping_makanan;
+
+ALTER TABLE it_simrs_header_pendamping_makanan
+ADD COLUMN status VARCHAR(1);
+
+--Function Makanan Pendamping
+INSERT INTO im_functions VALUES
+(6913, 'Makanan Pendamping', '/pendampingmakanan/initForm_pendampingmakanan.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6913),
+(6914, 'init', '/pendampingmakanan/initForm_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6915, 'search', '/pendampingmakanan/search_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6916, 'print', '/pendampingmakanan/printBarcodeMakanan_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6913, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6914, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6915, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6916, 40, 'Y', now(), now(), 'admin', 'admin');
+
+
+
 
 
 

@@ -61,6 +61,15 @@ function pilihTindakanMedis(val, id) {
                 '<td>' + informasi + '</td>' +
                 '<td align="center" width="15%">' + cekList + '</td>' +
                 '</tr>';
+
+            if(informasi == "Biaya*"){
+                $('#h_is_biaya').val("Y");
+                $('#form_biaya').show();
+            }else{
+                $('#h_is_biaya').val("N");
+                $('#form_biaya').hide();
+            }
+
         });
 
         $('#body_' + id).html(body);
@@ -569,7 +578,7 @@ function tindakanMedis(id) {
         'id': '08',
         'parameter': 'Biaya*',
         'informasi': '',
-        'keterangan': 'i'
+        'keterangan': 'i',
     });
 
 

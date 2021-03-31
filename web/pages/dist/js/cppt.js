@@ -130,7 +130,11 @@ function detailCPPT(jenis, ket, tipe, gizi) {
                             tempDel = "";
                         }
                     }else{
-                        tempDel = del;
+                        if("Gizi" == item.ppa){
+                            tempDel = "";
+                        }else{
+                            tempDel = del;
+                        }
                     }
 
                     var object = subject = 'Tensi : ' + item.tensi + ' mmHg, Nadi : ' + item.nadi +

@@ -1324,6 +1324,16 @@ function saveICU(jenis, ket) {
                 'nama_terang':nama2,
                 'id_detail_checkup': idDetailCheckup
             });
+            if($('#h_is_biaya').val() == "Y"){
+                data.push({
+                    'parameter': 'pernyataan',
+                    'jawaban': 'Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan',
+                    'keterangan': jenis,
+                    'jenis': persetujuan,
+                    'tipe': 'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
                 'parameter': 'pernyataan',
                 'jawaban': 'Persetujuan Tindakan Medis',

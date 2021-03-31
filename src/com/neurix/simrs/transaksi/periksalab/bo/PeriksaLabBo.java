@@ -5,9 +5,7 @@ import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.labdetail.model.LabDetail;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
-import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
+import com.neurix.simrs.transaksi.periksalab.model.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -43,4 +41,6 @@ public interface PeriksaLabBo {
     public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) throws GeneralBOException;
     public void saveEditRadiologi(PeriksaLab bean) throws GeneralBOException;
     public void saveSelesaiRadiologi(PeriksaLab bean) throws GeneralBOException;
+    public CrudResponse saveUpload(ItSimrsUploadHasilPemeriksaanEntity bean) throws GeneralBOException;
+    public void deleteUpload(String id) throws GeneralBOException;
 }

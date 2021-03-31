@@ -1,48 +1,3 @@
-.ui-datepicker-title{
-    color: black !important;
-}
-
-.ui-widget-header {
-    border: 1px solid #367fa9 !important;
-    background: #367fa9 ;
-    color: #ffffff;
-    font-weight: bold;
-}
-
-label {
-    font-weight: normal !important;
-}
-.ui-dialog{
-    top: 113px !important;
-    z-index: 1030;
-    position: fixed;
-}
-.ui-datepicker{
-    z-index: 1100 !important;
-}
-
-.ui-tooltip{
-    display: none !important;
-}
-
-.ui-button .ui-corner-all .ui-widget .ui-button-icon-only .ui-dialog .ui-dialog-titlebar-close .ui-icon-closethick{
-    display: none !important;
-}
-
-.ui-dialog-titlebar{
-    background-color: #367fa9;
-}
-
-.ui-widget-header {
-    border : 1px solid #367fa9;
-    background: #367fa9
-}
-
-.ui-widget-overlay {
-    background: black !important;
-    opacity: .5 !important;
-}
-
 .form-group {
     margin-bottom: 1px !important;
 }
@@ -226,7 +181,6 @@ html, body {
     -webkit-animation-delay: .33s;
     -webkit-animation-duration: 2.2s;
 }
-.modal { overflow-y: auto}
 
 .ttd-paint-canvas {
     border: 1px black solid;
@@ -316,4 +270,14 @@ html, body {
 
 .top_margin{
     margin-top: 7px;
+}
+
+.blink_me_atas {
+    animation: blinker 3.0s linear infinite;
+}
+
+@keyframes blinker {
+    50% {
+        opacity: 0;
+    }
 }

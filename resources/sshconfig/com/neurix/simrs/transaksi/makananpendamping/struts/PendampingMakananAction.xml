@@ -5,7 +5,7 @@
         "http://struts.apache.org/dtds/struts-2.3.dtd">
 
 <struts>
-    <package name="pendampinggizi" namespace="/pendampinggizi" extends="struts-default, jasperreports-default, json-default">
+    <package name="pendampingmakanan" namespace="/pendampingmakanan" extends="struts-default, jasperreports-default, json-default">
 
         <result-types>
             <result-type name="jasper" class="org.apache.struts2.views.jasperreports.JasperReportsResult" default="false" />
@@ -69,10 +69,18 @@
             <exception-mapping exception="java.lang.RuntimeException" result="global_error" />
         </global-exception-mappings>
 
-        <action name="*_pendampinggizi"
-                class="com.neurix.simrs.transaksi.ordergizi.action.OrderGiziAction" method="{1}">
+        <action name="*_pendampingmakanan"
+                class="com.neurix.simrs.transaksi.makananpendamping.action.PendampingMakananAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <result name="search">/pages/com/neurix/simrs/transaksi/pendampinggizi/searchPendampingGizi.jsp</result>
+            <result name="search">/pages/com/neurix/simrs/transaksi/pendampingmakanan/searchPendampingMakanan.jsp</result>
+
+            <result name="print_barcode_makanan" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/labelMakananLuar.jasper</param>
+                <param name="connection">connection</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
 
     </package>

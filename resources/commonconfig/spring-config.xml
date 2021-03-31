@@ -329,6 +329,7 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmengizi/spring/AsesmenMonitoringBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/konsultasigizi/spring/KonsultasiGiziBean.xml"/>
 
-    <import resource="sshconfig/com/neurix/simrs/transaksi/ordergizi/spring/PendampingGiziBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/makananpendamping/spring/HeaderPendampingMakananBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/makananpendamping/spring/DetailPendampingMakananBean.xml"/>
 
 </beans>

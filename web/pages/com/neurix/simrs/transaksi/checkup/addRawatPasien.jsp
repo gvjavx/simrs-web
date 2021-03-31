@@ -2510,7 +2510,6 @@
             if (response != null && response.namaPasien != null) {
 
                 namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
-                diagnosa = response.diagnosa;
                 tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" + converterDate(new Date(response.stTglKeluar)) + "</strong>";
 
                 if (response.listOfAlergi != null) {
@@ -2527,7 +2526,11 @@
                 $('#date-periksa').val(converterDate(response.stTglKeluar));
                 $("#nama-pasien").html(namapasien);
                 $("#alergi").html(alergi);
-                $("#diagnosa").html(diagnosa);
+                if("B20" == response.idDiagnosa){
+                    $("#diagnosa").html('<span class="blink_me_atas" style="color: red; font-weight: bold">'+'['+response.idDiagnosa+']'+response.diagnosa+'<span>');
+                }else{
+                    $("#diagnosa").html('['+response.idDiagnosa+']-'+response.diagnosa);
+                }
                 $("#alert-pasien").removeAttr("style");
                 $("#btn-rm").removeAttr("style");
             } else {

@@ -22,8 +22,52 @@
         .top_jarak {
             margin-top: 7px;
         }
-    </style>
+        .form-check {
+            display: inline-block;
+            padding-left: 2px;
+        }
 
+        .form-check input {
+            padding: 0;
+            height: initial;
+            width: initial;
+            margin-bottom: 0;
+            display: none;
+            cursor: pointer;
+        }
+
+        .form-check label {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .form-check label:before {
+            content: '';
+            -webkit-appearance: none;
+            background-color: transparent;
+            border: 2px solid #0079bf;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05), inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .form-check input:checked + label:after {
+            content: '';
+            display: block;
+            position: absolute;
+            top: 2px;
+            left: 9px;
+            width: 6px;
+            height: 14px;
+            border: solid #0079bf;
+            border-width: 0 2px 2px 0;
+            transform: rotate(45deg);
+        }
+    </style>
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/LabDetailAction.js"/>'></script>
@@ -287,9 +331,9 @@
                             <tr bgcolor="#90ee90">
                                 <td>Pemeriksaan</td>
                                 <td>Hasil</td>
-                                <td>Keterangan</td>
                                 <td>Nilai Normal</td>
                                 <td>Satuan</td>
+                                <td>Keterangan</td>
                             </tr>
                             </thead>
                             <tbody id="body_parameter">
@@ -310,16 +354,16 @@
                                                 <div class="input-group">
                                         <span class="input-group-btn">
                                             <span class="btn btn-default btn-file">
-                                                 Browse… <input accept="image/*"
-                                                                onchange="setCanvasWithText('hasil_luar_0', 'label_hasil_luar_0', 'img_hasil_luar_0')"
-                                                                type="file">
+                                                 Browse… <input accept="image/*" class="hasil_luar"
+                                                                onchange="parseToByte('hasil_luar_0', 'label_hasil_luar_0', 'hasil_luar0')"
+                                                                type="file" id="hasil_luar_0">
                                             </span>
                                         </span>
                                                     <input type="text" class="form-control" readonly
                                                            id="label_hasil_luar_0">
                                                 </div>
-                                                <canvas id="hasil_luar_0" class="hasil_luar"
-                                                        style="display: none"></canvas>
+                                                <%--<canvas id="hasil_luar_0" class="hasil_luar"--%>
+                                                        <%--style="display: none"></canvas>--%>
                                             </div>
                                             <div class="col-md-2">
                                                 <button onclick="addUpload('hasil_luar', 'set_luar')"
@@ -333,10 +377,10 @@
 
                                     </div>
                                     <div class="row top_jarak">
-                                        <div class="col-md-3">
-                                            <a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i
-                                                    class="fa fa-image"></i> View Upload</a>
-                                        </div>
+                                        <%--<div class="col-md-3">--%>
+                                            <%--<a class="btn btn-success" onclick="viewUpload('hasil_luar')"><i--%>
+                                                    <%--class="fa fa-image"></i> View Upload</a>--%>
+                                        <%--</div>--%>
                                         <div class="col-md-7">
                                             <div class="input-group">
                                                 <div class="input-group-addon">
@@ -352,101 +396,120 @@
                             </div>
                         </div>
                     </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-sticky-note-o"></i> Catatan
-                            <small>(Optional)</small>
-                        </h3>
-                    </div>
                     <div class="box-body">
                         <div class="row">
-                            <div class="col-md-12">
-                                 <textarea class="editors" id="keterangan_hasil_lab" rows="5"></textarea>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-header with-border"></div>
-                    <div class="box-header with-border">
-                        <div class="row">
-                            <div class="col-md-6" id="form_hasil_lab_title">
-                                <h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Laboratorium
-                                    <small>(Optional)</small>
-                                </h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="box-body">
-                        <div class="row">
-                            <div class="col-md-6" id="form_hasil_lab_isi" style="display: none">
-                                <div class="row">
-                                    <div class="form-group">
-                                        <div class="col-md-10">
-                                            <div class="input-group">
-                                        <span class="input-group-btn">
-                                            <span class="btn btn-default btn-file">
-                                                 Browse… <input accept="image/*"
-                                                                onchange="setCanvasWithText('hasil_lab_0', 'label_hasil_lab_0', 'img_hasil_lab_0')"
-                                                                type="file">
-                                            </span>
-                                        </span>
-                                                <input type="text" class="form-control" readonly id="label_hasil_lab_0">
-                                            </div>
-                                            <canvas id="hasil_lab_0" class="hasil_lab" style="display: none"></canvas>
-                                        </div>
-                                        <div class="col-md-2">
-                                            <button onclick="addUpload('hasil_lab', 'set_hasil')"
-                                                    class="btn btn-success" style="margin-left: -20px; margin-top: 3px">
-                                                <i class="fa fa-plus"></i></button>
-                                        </div>
+                            <div class="form-group">
+                                <div class="col-md-3">Ada Tambahan Keterangan Hasil ?</div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input type="checkbox" onclick="setNote(this.id)"
+                                               id="is_note"
+                                               value="Y">
+                                        <label for="is_note"></label>
                                     </div>
                                 </div>
-                                <div id="set_hasil">
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: none" id="form_note">
+                        <div class="box-header with-border"></div>
+                        <div class="box-header with-border">
+                            <h3 class="box-title"><i class="fa fa-sticky-note-o"></i> Catatan
+                                <small>(Optional)</small>
+                            </h3>
+                        </div>
+                        <div class="box-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <textarea class="editors" id="keterangan_hasil_lab" rows="5"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="box-header with-border"></div>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-6" id="form_hasil_lab_title">--%>
+                                <%--<h3 class="box-title"><i class="fa fa-upload"></i> Upload Hasil Laboratorium--%>
+                                    <%--<small>(Optional)</small>--%>
+                                <%--</h3>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<div class="row">--%>
+                            <%--<div class="col-md-6" id="form_hasil_lab_isi" style="display: none">--%>
+                                <%--<div class="row">--%>
+                                    <%--<div class="form-group">--%>
+                                        <%--<div class="col-md-10">--%>
+                                            <%--<div class="input-group">--%>
+                                        <%--<span class="input-group-btn">--%>
+                                            <%--<span class="btn btn-default btn-file">--%>
+                                                 <%--Browse… <input accept="image/*"--%>
+                                                                <%--onchange="setCanvasWithText('hasil_lab_0', 'label_hasil_lab_0', 'img_hasil_lab_0')"--%>
+                                                                <%--type="file">--%>
+                                            <%--</span>--%>
+                                        <%--</span>--%>
+                                                <%--<input type="text" class="form-control" readonly id="label_hasil_lab_0">--%>
+                                            <%--</div>--%>
+                                            <%--<canvas id="hasil_lab_0" class="hasil_lab" style="display: none"></canvas>--%>
+                                        <%--</div>--%>
+                                        <%--<div class="col-md-2">--%>
+                                            <%--<button onclick="addUpload('hasil_lab', 'set_hasil')"--%>
+                                                    <%--class="btn btn-success" style="margin-left: -20px; margin-top: 3px">--%>
+                                                <%--<i class="fa fa-plus"></i></button>--%>
+                                        <%--</div>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <%--<div id="set_hasil">--%>
 
-                                </div>
-                                <div class="row top_jarak">
-                                    <div class="col-md-12">
-                                        <a class="btn btn-success" onclick="viewUpload('hasil_lab')"><i
-                                                class="fa fa-image"></i> View Upload</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                                <%--</div>--%>
+                                <%--<div class="row top_jarak">--%>
+                                    <%--<div class="col-md-12">--%>
+                                        <%--<a class="btn btn-success" onclick="viewUpload('hasil_lab')"><i--%>
+                                                <%--class="fa fa-image"></i> View Upload</a>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
                     <hr class="garis">
                     <div class="box-body">
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
-                                    <span>TTD Petugas</span>
-                                    <button class="btn btn-danger" onclick="removePaint('ttd_petugas')">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                </div>
-                                <div class="col-md-3">
-                                    <span>TTD Validator</span>
-                                    <button class="btn btn-danger" onclick="removePaint('ttd_dokter')">
-                                        <i class="fa fa-trash"></i>
-                                    </button>
+                        <div style="display: none" id="form_ttd">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-3">
+                                        <span>TTD Petugas</span>
+                                        <button class="btn btn-danger" onclick="removePaint('ttd_petugas')">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <span>TTD Validator</span>
+                                        <button class="btn btn-danger" onclick="removePaint('ttd_dokter')">
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-group">
-                                <div class="col-md-offset-3 col-md-3">
-                                    <canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"
-                                            onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>
-                                    <input class="form-control nama_petugas" placeholder="Nama Petugas"
-                                           id="nama_petugas">
-                                    <input class="form-control nip_petugas" placeholder="NIP/SIP"
-                                           style="margin-top: 5px"
-                                           id="nip_petugas">
-                                </div>
-                                <div class="col-md-3">
-                                    <canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"
-                                            onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>
-                                    <input class="form-control" placeholder="Nama Validator" id="nama_validator">
-                                    <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px"
-                                           id="nip_validator">
+                            <div class="row">
+                                <div class="form-group">
+                                    <div class="col-md-offset-3 col-md-3">
+                                        <canvas class="paint-canvas-ttd" id="ttd_petugas" width="260"
+                                                onmouseover="paintTtd('ttd_petugas')" style="margin-left: -8px"></canvas>
+                                        <input class="form-control nama_petugas" placeholder="Nama Petugas"
+                                               id="nama_petugas">
+                                        <input class="form-control nip_petugas" placeholder="NIP/SIP"
+                                               style="margin-top: 5px"
+                                               id="nip_petugas">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <canvas class="paint-canvas-ttd" id="ttd_dokter" width="260"
+                                                onmouseover="paintTtd('ttd_dokter')" style="margin-left: -8px"></canvas>
+                                        <input class="form-control" placeholder="Nama Validator" id="nama_validator">
+                                        <input class="form-control" placeholder="NIP/SIP" style="margin-top: 5px"
+                                               id="nip_validator">
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -850,6 +913,7 @@
             $('#form_hasil_lab_isi').hide();
             $('#tabel_lab').hide();
             $('#form_params').show();
+            $('#form_ttd').hide();
         } else {
             listParameter();
             $('#form_hasil_lab_title').show();
@@ -857,6 +921,7 @@
             $('#form_hasil_lab_isi').show();
             $('#tabel_lab').show();
             $('#form_params').hide();
+            $('#form_ttd').show();
         }
 
         $('.carousel').carousel({
@@ -884,32 +949,14 @@
 
     function conSavePeriksaLab() {
         var data = $('#tabel_lab').tableToJSON();
-        var nama1 = $('#nama_petugas').val();
-        var nip1 = $('#nip_petugas').val();
-        var nama2 = $('#nama_validator').val();
-        var nip2 = $('#nip_validator').val();
-        var petugas = document.getElementById("ttd_petugas");
-        var dokter = document.getElementById("ttd_dokter");
-        var cekPetugas = isCanvasBlank(petugas);
-        var cekDokter = isCanvasBlank(dokter);
-        var totalTarif = $('#h_total_tarif').val();
         var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
-
-        var cek = false;
-        $.each(data, function (i, item) {
-            var hasil = $('#hasil_' + i).val();
-            if (hasil == "") {
-                cek = true;
-            }
-        });
+        var totalTarif = $('#h_total_tarif').val();
 
         var tempHasilLuar = $('.hasil_luar');
         var cekLabLuar = false;
         $.each(tempHasilLuar, function (i, item) {
-            var canvas = document.getElementById('hasil_luar_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
+            var file = document.getElementById('hasil_luar_' + i).files;
+            if (file.length > 0) {
                 cekLabLuar = true;
             }
         });
@@ -920,11 +967,29 @@
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
                 $('#warning_rad').show().fadeOut(5000);
-                $('#msg_rad').text("Silahkan cek kembali data hasil Laboratorium, data petugas, dan data Validator...!");
+                $('#msg_rad').text("Silahkan cek kembali data hasil Laboratorium luar...!");
                 $(window).scrollTop($("#pos_lab").offset().top);
             }
         } else {
-            if (nama1 && nama2 && nip1 && nip2 != '' && !cek && !cekPetugas && !cekDokter || cekLabLuar && data.length > 0) {
+            var nama1 = $('#nama_petugas').val();
+            var nip1 = $('#nip_petugas').val();
+            var nama2 = $('#nama_validator').val();
+            var nip2 = $('#nip_validator').val();
+            var petugas = document.getElementById("ttd_petugas");
+            var dokter = document.getElementById("ttd_dokter");
+            var cekPetugas = isCanvasBlank(petugas);
+            var cekDokter = isCanvasBlank(dokter);
+            var totalTarif = $('#h_total_tarif').val();
+            var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
+
+            var cek = false;
+            $.each(data, function (i, item) {
+                var hasil = $('#hasil_' + i).val();
+                if (hasil == "") {
+                    cek = true;
+                }
+            });
+            if (nama1 && nama2 && nip1 && nip2 != '' && !cek && !cekPetugas && !cekDokter) {
                 $('#modal-confirm-dialog').modal('show');
                 $('#save_con').attr('onclick', 'savePeriksaLab()');
             } else {
@@ -953,6 +1018,7 @@
         var isiParam = $('#tabel_lab').tableToJSON();
         var totalTarif = $('#h_total_tarif').val();
         var keteranganHasil = CKEDITOR.instances['keterangan_hasil_lab'].getData();
+        var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
 
         var jsonData = [];
         $.each(isiParam, function (i, item) {
@@ -968,34 +1034,13 @@
             }
         });
 
-        var finalPetugas = convertToDataURL(petugas);
-        var finalDokter = convertToDataURL(dokter);
+        var finalPetugas = "";
+        var finalDokter = "";
 
-        var tempHasilLab = $('.hasil_lab');
-        var tempImgHasilLab = [];
-        $.each(tempHasilLab, function (i, item) {
-            var canvas = document.getElementById('hasil_lab_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
-                tempImgHasilLab.push({
-                    'img_hasil_lab': convertToDataURLAtas(canvas)
-                });
-            }
-        });
-
-        var tempHasilLuar = $('.hasil_luar');
-        var tempImgHasilLuar = [];
-        $.each(tempHasilLuar, function (i, item) {
-            var canvas = document.getElementById('hasil_luar_' + i);
-            var cekCanvas = isCanvasBlank(canvas);
-            var toDecode = canvas.toDataURL("image/png");
-            if (!cekCanvas) {
-                tempImgHasilLuar.push({
-                    'img_hasil_luar': convertToDataURLAtas(canvas)
-                });
-            }
-        });
+        if("Y" != cekIsKeluar){
+            finalPetugas = convertToDataURL(petugas);
+            finalDokter = convertToDataURL(dokter);
+        }
 
         var data = {
             'no_checkup': noCheckup,
@@ -1018,9 +1063,6 @@
             'nip_validator': nip2,
             'ttd_petugas': finalPetugas,
             'ttd_validator': finalDokter,
-            'hasil_pemeriksaan': JSON.stringify(jsonData),
-            'upload_hasil': JSON.stringify(tempImgHasilLab),
-            'upload_hasil_luar': JSON.stringify(tempImgHasilLuar),
             'total_tarif': totalTarif,
             'keterangan_hasil': keteranganHasil
         }
@@ -1171,10 +1213,10 @@
                         "<td>" + pemeriksaan +
                         '<input id="id_periksa_lab_' + i + '" type="hidden" value="' + item.idPeriksaLabDetail + '">' +
                         "</td>" +
-                        '<td>' + '<textarea id="hasil_' + i + '" class="form-control" value="' + hasil + '"/>' + '</td>' +
                         '<td>' + '<textarea id="kesan_' + i + '" class="form-control" value="' + keterangan + '"/>' + '</td>' +
                         "<td>" + acuan + "</td>" +
                         "<td>" + satuan + "</td>" +
+                        '<td>' + '<textarea id="hasil_' + i + '" class="form-control" value="' + hasil + '"/>' + '</td>' +
                         "</tr>"
                 });
                 $('#body_parameter').html(table);
@@ -1261,30 +1303,35 @@
             '        <div class="input-group">\n' +
             '<span class="input-group-btn">\n' +
             '    <span class="btn btn-default btn-file">\n' +
-            '         Browse… <input accept="image/*" onchange="setCanvasWithText(\'' + jenis + '\', \'' + label + '\', \'img_' + jenis + '\')" type="file">\n' +
+            '         Browse… <input accept="image/*" class="'+jen+'" onchange="parseToByte(\'' + jenis + '\', \'' + label + '\', \''+idRow+'\')" type="file" id="'+jenis+'">\n' +
             '    </span>\n' +
             '</span>\n' +
             '            <input type="text" class="form-control" readonly id="' + label + '">\n' +
             '        </div>\n' +
-            '        <canvas id="' + jenis + '" class="' + jen + '" style="display: none"></canvas>\n' +
             '    </div>\n' +
             '    <div class="col-md-2">\n' +
-            '        <button onclick="delUpload(\'' + idRow + '\',\'item_' + jenis + '\', \'li_' + jenis + '\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-trash"></i></button>\n' +
+            '        <button id="del_'+idRow+'" onclick="delUpload(\'' + idRow + '\')" class="btn btn-danger" style="margin-left: -20px; margin-top: 3px"><i class="fa fa-trash"></i></button>\n' +
             '    </div>\n' +
             '</div>\n' +
             '</div>';
         var imgCanvas = '<div class="item" id="item_' + jenis + '">\n' +
             '<img id="img_' + jenis + '" style="width: 100%">\n' +
             '</div>';
-        $('#item_' + jen).append(imgCanvas);
-        $('#li_' + jen).append('<li id="li_' + jenis + '" data-target="#carousel-' + jen + '" data-slide-to="' + count + '"></li>');
         $('#' + idset).append(set);
     }
 
-    function delUpload(id, hidden, li) {
+    function delUpload(id, idDetail) {
         $('#' + id).remove();
-        $('#' + hidden).remove();
-        $('#' + li).remove();
+        if(idDetail != ''){
+            if(!cekSession()){
+                dwr.engine.setAsync(true);
+                PeriksaLabAction.deleteUploadFilePemeriksaan(idDetail, {
+                    callback: function (res) {
+                        console.log(res);
+                    }
+                });
+            }
+        }
     }
 
     function viewUpload(jenis) {
@@ -1302,30 +1349,6 @@
             }
         });
         $('#modal-' + jenis).modal({show: true, backdrop: 'static'});
-    }
-
-    function setCanvasWithText(id, tujuan, idHidden) {
-        var canvas = document.getElementById(id);
-        var ctx = canvas.getContext('2d');
-        var reader = new FileReader();
-        reader.onload = function (event) {
-            var img = new Image();
-            img.onload = function () {
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(img, 0, 0);
-            }
-            img.src = event.target.result;
-        }
-        reader.readAsDataURL(event.target.files[0]);
-        $('#' + tujuan).val(event.target.files[0].name);
-
-        var fr = new FileReader();
-        fr.onload = function (event) {
-            document.getElementById(idHidden).src = event.target.result;
-        }
-        fr.readAsDataURL(event.target.files[0]);
     }
 
     function getlistParams() {
@@ -1349,6 +1372,79 @@
                 }
             }
         });
+    }
+
+    function setNote(id){
+        if($('#'+id).is(':checked')){
+            $('#form_note').show();
+        }else{
+            $('#form_note').hide();
+        }
+    }
+
+    function parseToByte(id, label, idRow) {
+        if(!cekSession()){
+            var files = document.getElementById(id).files;
+            if (files.length > 0) {
+                var fileToLoad = files[0];
+                var fileReader = new FileReader();
+                var base64File;
+                fileReader.onload = function(event) {
+                    base64File = event.target.result;
+                    var eks = cekEks(base64File);
+                    var base = replaceFile(base64File);
+                    var data = {
+                        'id_periksa_lab': idPeriksaLab,
+                        'byte': base,
+                        'id_periksa_detail': "",
+                        'nama_periksa': id,
+                        'tipe': 'luar',
+                        'eks': eks,
+                        'file_name': id
+                    }
+                    if(eks == "pdf" || eks == "jpg" || eks == "png"){
+                        var result = JSON.stringify(data);
+                        $('#'+label).val("Sedang menyimpan...");
+                        dwr.engine.setAsync(true);
+                        PeriksaLabAction.uploadFilePemeriksaan(result, {
+                            callback: function (res) {
+                                if(res.status == "success"){
+                                    $('#'+label).val(files[0].name);
+                                    $('#'+label).css('border-bottom','solid 5px #5cb85c');
+                                    $('#del_'+idRow).attr('onclick', 'delUpload(\''+idRow+'\',\''+res.msg+'\')')
+                                }else{
+                                    $('#'+label).val(res.msg);
+                                    $('#'+label).css('border-bottom','solid 5px #c9302c');
+                                }
+                            }
+                        });
+                    }else{
+                        $('#'+label).val("File harus .jpg, .png, .pdf");
+                        $('#'+label).css('border-bottom','solid 5px #c9302c');
+                    }
+                };
+                fileReader.readAsDataURL(fileToLoad);
+            }
+        }
+    }
+
+    function replaceFile(byte){
+        var conditon = byte.split(",")[0]+',';
+        var res = byte.replace(conditon, "");
+        return res;
+    }
+
+    function cekEks(byte){
+        var res = "";
+        var conditon = byte.split(",")[0];
+        if(conditon == "data:image/jpeg;base64"){
+            res = "jpg";
+        }else if(conditon == "data:image/png;base64"){
+            res = "png";
+        }else if(conditon == "data:application/pdf;base64"){
+            res = "pdf";
+        }
+        return res;
     }
 
 

@@ -2326,6 +2326,16 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'nama_terang':nama2,
                 'id_detail_checkup': idDetailCheckup
             });
+            if($('#h_is_biaya').val() == "Y"){
+                data.push({
+                    'parameter': 'pernyataan',
+                    'jawaban': 'Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan',
+                    'keterangan': jenis,
+                    'jenis': persetujuan,
+                    'tipe': 'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
                 'parameter': 'pernyataan',
                 'jawaban': 'Persetujuan Tindakan Medis',
@@ -3396,6 +3406,12 @@ function detailAsesmenRawatInap(jenis) {
                                     '</tr>';
                             }
                         } else if ("add_tindakan_ina" == jenis) {
+                            var del = '';
+                            if("Tanggal" == item.parameter){
+                                del = '<span style="margin-right: 60px" onclick="conRI(\'' + jenis + '\',\''+item.keterangan+'\', \'' + item.idAsesmenKeperawatanRawatInap + '\')" class="pull-right"><i id="delete_' + item.idAsesmenKeperawatanRawatInap + '" class="fa fa-trash hvr-grow" style="color: red"></i></span>' +
+                                    '<a target="_blank" href="'+contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id='+idDetailCheckup+'&tipe=INA&keterangan='+item.keterangan+'&createdDate='+converterDateTimeComplex(item.createdDate)+'" class="pull-right"><i class="fa fa-print hvr-grow" style="color: deepskyblue"></i></a>';
+                            }
+
                             if ("colspan" == item.tipe) {
                                 body += '<tr>' +
                                     '<td colspan="3">' + cekNull(jwb) + '</td>' +
@@ -3423,7 +3439,7 @@ function detailAsesmenRawatInap(jenis) {
                             } else {
                                 body += '<tr>' +
                                     '<td width="30%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + jwb + '</td>' +
+                                    '<td colspan="2">' + jwb + del + '</td>' +
                                     '</tr>';
                             }
                         } else if ("transfer_external" == jenis) {
@@ -3613,11 +3629,6 @@ function detailAsesmenRawatInap(jenis) {
                 newRow.insertAfter($('table').find('#row_ina_' + jenis));
                 var url = contextPath + '/pages/images/minus-allnew.png';
                 $('#btn_ina_' + jenis).attr('src', url);
-                // if (idKhusus != null && idKhusus != '') {
-                //     $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\',\'' + idKhusus + '\')');
-                // } else {
-                //
-                // }
                 $('#btn_ina_' + jenis).attr('onclick', 'delRowAsesmenRawatInap(\'' + jenis + '\')');
                 $('[data-mask]').inputmask();
             });
@@ -3625,15 +3636,10 @@ function detailAsesmenRawatInap(jenis) {
     }
 }
 
-function delRowAsesmenRawatInap(id, idKhusus) {
+function delRowAsesmenRawatInap(id) {
     $('#del_ina_' + id).remove();
     var url = contextPath + '/pages/images/icons8-plus-25.png';
     $('#btn_ina_' + id).attr('src', url);
-    // if (idKhusus != null && idKhusus != '') {
-    //     $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\',\'' + idKhusus + '\')');
-    // } else {
-    //
-    // }
     $('#btn_ina_' + id).attr('onclick', 'detailAsesmenRawatInap(\'' + id + '\')');
 }
 
@@ -5878,6 +5884,8 @@ function delRIHand(jenis, ket, idAsesmen) {
                 $('#modal-ina-' + ket).scrollTop(0);
                 $('#warning_ina_' + ket).show().fadeOut(5000);
                 $('#msg_ina_' + ket).text("Berhasil menghapus data...");
+                delRowAsesmenRawatInap(jenis);
+                detailAsesmenRawatInap(jenis);
             } else {
                 stopIconSpin('delete_' + idAsesmen);
                 $('#modal-ina-' + ket).scrollTop(0);
