@@ -4422,18 +4422,6 @@
         $("#mcr_selesai").timepicker();
         $("#mcr_buang").timepicker();
         $(".date").val(date);
-        listDokter();
-        listTindakan();
-        listDiagnosa();
-        listLab();
-        listObat();
-        listDiet();
-        listRuanganInap();
-        listResepPasien();
-        hitungStatusBiaya();
-        getJenisResep();
-        listICD9();
-        listMakananPendamping();
 
         if(kategoriRuangan == 'rawat_inap'){
             $('#title-pages').text("Rawat Inap Pasien");
@@ -4487,6 +4475,19 @@
             $('#pel_ri_active, #rr').addClass('active');
             $('#pel_ri_open').addClass('menu-open');
         }
+
+        listDokter();
+        listTindakan();
+        listDiagnosa();
+        listLab();
+        listObat();
+        listDiet();
+        listRuanganInap();
+        listResepPasien();
+        hitungStatusBiaya();
+        getJenisResep();
+        listICD9();
+        listMakananPendamping();
 
         $('#img_ktp').on('click', function(e){
             e.preventDefault();

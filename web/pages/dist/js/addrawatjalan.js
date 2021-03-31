@@ -242,8 +242,8 @@ function listAlergi() {
                     "</tr>";
             });
         }
+        $('#body_alergi').html(table);
     });
-    $('#body_alergi').html(table);
 }
 
 function editAlergi(id, alergi, jenis) {
@@ -1099,9 +1099,9 @@ function listDokter() {
                 dokter = item.idDokter;
             });
         }
+        $('#tin_id_dokter').val(dokter);
+        $('#body_dokter').html(table);
     });
-    $('#tin_id_dokter').val(dokter);
-    $('#body_dokter').html(table);
 }
 
 function listDokterKeterangan(idPelayanan) {
@@ -1408,9 +1408,8 @@ function listDiagnosa() {
                     "</tr>"
             });
         }
+        $('#body_diagnosa').html(table);
     });
-
-    $('#body_diagnosa').html(table);
 }
 
 function listSelectLab(idKategori) {

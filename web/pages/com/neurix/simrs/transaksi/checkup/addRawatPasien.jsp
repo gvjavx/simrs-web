@@ -2529,7 +2529,7 @@
                 if("B20" == response.idDiagnosa){
                     $("#diagnosa").html('<span class="blink_me_atas" style="color: red; font-weight: bold">'+'['+response.idDiagnosa+']'+response.diagnosa+'<span>');
                 }else{
-                    $("#diagnosa").html(response.diagnosa);
+                    $("#diagnosa").html('['+response.idDiagnosa+']-'+response.diagnosa);
                 }
                 $("#alert-pasien").removeAttr("style");
                 $("#btn-rm").removeAttr("style");

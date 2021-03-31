@@ -537,6 +537,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     }
                 }
             }
+
             ItSimrsPeriksaLabEntity entity = null;
             try {
                 entity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
@@ -549,19 +550,31 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 throw new GeneralBOException("[PeriksaLabBoImpl.saveDokterLab] Error when save edit periksa lab " + e.getMessage());
             }
             if (entity != null) {
-                entity.setIdPetugas(bean.getIdPetugas());
-                entity.setNamaPetugas(bean.getNamaPetugas());
-                entity.setIdValidator(bean.getIdValidator());
-                entity.setNamaValidator(bean.getNamaValidator());
+                if(bean.getIdPetugas() != null && !"".equalsIgnoreCase(bean.getIdPetugas())){
+                    entity.setIdPetugas(bean.getIdPetugas());
+                }
+                if(bean.getNamaPetugas() != null && !"".equalsIgnoreCase(bean.getNamaPetugas())){
+                    entity.setNamaPetugas(bean.getNamaPetugas());
+                }
+                if(bean.getIdValidator() != null && !"".equalsIgnoreCase(bean.getIdValidator())){
+                    entity.setIdValidator(bean.getIdValidator());
+                }
+                if(bean.getNamaValidator() != null && !"".equalsIgnoreCase(bean.getNamaValidator())){
+                    entity.setNamaValidator(bean.getNamaValidator());
+                }
+                if(bean.getTtdValidator() != null && !"".equalsIgnoreCase(bean.getTtdValidator())){
+                    entity.setTtdValidator(bean.getTtdValidator());
+                }
+                if(bean.getTtdPetugas() != null && !"".equalsIgnoreCase(bean.getTtdPetugas())){
+                    entity.setTtdPetugas(bean.getTtdPetugas());
+                }
+
                 entity.setAction(bean.getAction());
                 entity.setLastUpdate(bean.getLastUpdate());
                 entity.setLastUpdateWho(bean.getLastUpdateWho());
                 entity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
                 entity.setStatusPeriksa("3");
                 entity.setApproveFlag("Y");
-                entity.setUrlImg(bean.getUrlImg());
-                entity.setTtdValidator(bean.getTtdValidator());
-                entity.setTtdPetugas(bean.getTtdPetugas());
                 entity.setTarifLabLuar(bean.getTarifLabLuar());
                 entity.setCatatan(bean.getCatatan());
             }

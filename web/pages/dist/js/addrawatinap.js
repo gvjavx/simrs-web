@@ -1276,9 +1276,8 @@ function listDiagnosa() {
                     "</tr>"
             });
         }
+        $('#body_diagnosa').html(table);
     });
-
-    $('#body_diagnosa').html(table);
 }
 
 function listSelectLab(idx) {
@@ -1779,9 +1778,8 @@ function listObat() {
                     "</tr>"
             });
         }
+        $('#body_obat').html(table);
     });
-
-    $('#body_obat').html(table);
 }
 
 function saveDiet(id) {
@@ -2814,9 +2812,8 @@ function listResepPasien() {
                     "</tr>"
             });
         }
+        $('#body_resep').html(table);
     });
-
-    $('#body_resep').html(table);
 }
 
 function detailResep(id) {
