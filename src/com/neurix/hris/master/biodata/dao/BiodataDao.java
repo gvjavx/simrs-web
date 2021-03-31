@@ -1879,12 +1879,15 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "b.golongan_id,\n" +
                 "a.profesi_id,\n" +
                 "b.tipe_pegawai,\n" +
-                "c.department_id \n" +
-                "FROM (SELECT * FROM it_hris_pegawai_position WHERE flag = 'Y') a\n" +
-                "INNER JOIN (SELECT * FROM im_hris_pegawai WHERE flag = 'Y') b ON b.nip = a.nip\n" +
+                "c.department_id,\n" +
+                "a.jenis_pegawai\n" +
+                "FROM it_hris_pegawai_position a\n" +
+                "INNER JOIN im_hris_pegawai b ON b.nip = a.nip\n" +
                 "INNER JOIN im_position c ON c.position_id = a.position_id\n" +
                 "WHERE a.branch_id ILIKE :unit \n" +
-                "AND b.nama_pegawai ILIKE :nama ";
+                "AND b.nama_pegawai ILIKE :nama \n" +
+                "AND a.flag = 'Y' \n" +
+                "AND b.flag = 'Y' ";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", branchId)
@@ -1904,6 +1907,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 biodata.setProfesiId(obj[6] == null ? null : obj[6].toString());
                 biodata.setTipePegawai(obj[7] == null ? null : obj[7].toString());
                 biodata.setDivisi(obj[8] == null ? null : obj[8].toString());
+                biodata.setJenisPegawai(obj[9] == null ? null : obj[9].toString());
                 biodataList.add(biodata);
             }
         }
