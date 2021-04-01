@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPersetujuanMedisIna" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
 	<property name="ireport.zoom" value="1.3636363636363797"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="96"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -46,14 +46,14 @@
 	<parameter name="reportParams.tempatMeninggal" class="java.lang.String"/>
 	<parameter name="reportParams.unitKota" class="java.lang.String"/>
 	<parameter name="keterangan" class="java.lang.String"/>
-	<parameter name="createdDate" class="java.lang.String"/>
+	<parameter name="createdDate" class="java.sql.Timestamp"/>
 	<queryString>
 		<![CDATA[SELECT
 *
 FROM it_simrs_asesmen_keperawatan_rawat_inap
 WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}
 AND keterangan = $P{keterangan}
-AND created_date = (SELECT to_timestamp($P{createdDate}, 'YYYY-MM-DD hh24:mi:ss.ms')::timestamp without time zone)]]>
+AND created_date = $P{createdDate}]]>
 	</queryString>
 	<field name="id_asesmen_keperawatan_rawat_inap" class="java.lang.String"/>
 	<field name="id_detail_checkup" class="java.lang.String"/>
@@ -216,39 +216,6 @@ AND created_date = (SELECT to_timestamp($P{createdDate}, 'YYYY-MM-DD hh24:mi:ss.
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="111">
-			<staticText>
-				<reportElement x="2" y="35" width="180" height="20" uuid="03281768-8cff-4668-b3dc-4fc8aee84189"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[Pihak Yang Menerima,]]></text>
-			</staticText>
-			<line>
-				<reportElement x="2" y="103" width="180" height="1" uuid="b6420050-f477-4750-b89a-6e3f11d187a3"/>
-			</line>
-			<line>
-				<reportElement x="375" y="104" width="180" height="1" uuid="0a9403e5-a35e-44d8-a5e7-9fd44b93efaf"/>
-			</line>
-			<textField>
-				<reportElement x="375" y="15" width="180" height="20" uuid="4a6237fb-be76-4a86-88d2-5dad8b991d67"/>
-				<box leftPadding="1"/>
-				<textElement verticalAlignment="Middle">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.unitKota} == null ? "" : $P{reportParams.unitKota}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="375" y="35" width="180" height="20" uuid="833b4eff-2809-46db-a7b7-16678a1825db"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<text><![CDATA[Dokter Yang Menerangkan]]></text>
-			</staticText>
-			<textField>
-				<reportElement x="94" y="0" width="255" height="20" uuid="4784af7e-1db9-4446-abb7-1168d82f352c"/>
-				<textFieldExpression><![CDATA[$P{createdDate}]]></textFieldExpression>
-			</textField>
-		</band>
+		<band height="111"/>
 	</lastPageFooter>
 </jasperReport>

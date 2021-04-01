@@ -577,7 +577,7 @@ function converterDateTimeComplex(dateTime) {
         var min = ((today.getMinutes() < 10 ? '0' : '') + today.getMinutes());
         var sec = today.getSeconds();
         var ml = today.getMilliseconds();
-        today = yyyy+ '-' +dd+ '-' + mm + ' ' + hh + ':' + min+':'+sec+'.'+ml;
+        today = yyyy+ '-' +mm+ '-' + dd + ' ' + hh + ':' + min+':'+sec+'.'+ml;
     }
     return today;
 }
