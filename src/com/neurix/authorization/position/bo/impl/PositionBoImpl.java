@@ -638,6 +638,7 @@ public class PositionBoImpl implements PositionBo {
             resultPosition.setDepartmentId(imPosition.getDepartmentId());
             resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
             resultPosition.setFlag(imPosition.getFlag());
+            resultPosition.setFlagCostUnit(imPosition.getFlagCostUnit());
         }
 
         /*if (imPosition != null) {

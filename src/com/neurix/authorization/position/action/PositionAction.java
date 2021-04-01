@@ -73,7 +73,12 @@ public class PositionAction extends BaseMasterAction {
         Position initPosition = new Position();
         if (id != null && !"".equalsIgnoreCase(id)) {
             String lId = id;
-            initPosition = positionBoProxy.getPositionById(lId, flag);
+            try {
+                initPosition = positionBoProxy.getPositionById(lId, flag);
+            }catch (GeneralBOException e){
+                logger.error("[PositionAction.init] error, " + e.getMessage());
+                addActionError("Error, Found problem when get position, please inform to your admin" );
+            }
         }
 
         logger.info("[PositionAction.init] end process <<<");
