@@ -85,8 +85,8 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                     "\tGROUP BY id_obat, branch_id\n" +
                     ") obd ON obd.id_obat = ob.id_obat\n" +
                     "LEFT JOIN im_simrs_margin_obat mg ON mg.id_obat = ob.id_obat\n" +
-                    "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.id_obat = ob.id_obat  \n" +
-                    "LEFT JOIN mt_simrs_harga_obat ho ON ho.id_obat = ob.id_obat \n" +
+                    "LEFT JOIN (SELECT * FROM mt_simrs_harga_terakhir WHERE branch_id = :branch) ht ON ht.id_obat = ob.id_obat  \n" +
+                    "LEFT JOIN (SELECT * FROM mt_simrs_harga_obat WHERE branch_id = :branch) ho ON ho.id_obat = ob.id_obat \n" +
                     "WHERE obd.branch_id = :branch " + condition;
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
