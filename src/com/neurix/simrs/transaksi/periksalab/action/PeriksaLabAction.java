@@ -844,7 +844,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 } else {
                     namaLab = periksalb.getLabName();
                 }
-                reportParams.put("title", "Hasil Periksa Lab");
+                reportParams.put("title", "Hasil Pemeriksaan Lab");
                 reportParams.put("jenisPemeriksaan", namaLab);
             }
 

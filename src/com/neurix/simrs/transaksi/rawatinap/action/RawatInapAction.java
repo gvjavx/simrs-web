@@ -1124,9 +1124,9 @@ public class RawatInapAction extends BaseMasterAction {
 
             if (periksalb.getIdPeriksaLab() != null) {
                 if ("lab".equalsIgnoreCase(tipe)) {
-                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
+                    reportParams.put("title", "Hasil Pemeriksaan Lab " + periksalb.getLabName());
                 } else {
-                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
+                    reportParams.put("title", "Hasil Pemeriksaan Radiologi " + periksalb.getLabName());
                 }
             }
 
