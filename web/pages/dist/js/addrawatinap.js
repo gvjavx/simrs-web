@@ -4106,7 +4106,7 @@ function getComboWaktuObat(idJenis){
                 option += '<option value="'+item.id+'">'+item.keterangan+'</option>';
             });
             $('#waktu_param').html(option);
-        }gitadd
+        }
     });
 }
 
