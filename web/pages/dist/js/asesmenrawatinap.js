@@ -2345,7 +2345,7 @@ function saveAsesmenRawatInap(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'penyataan',
+                'parameter': 'pernyataan',
                 'jawaban': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
                     'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + persetujuan + ' ' +
                     'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
