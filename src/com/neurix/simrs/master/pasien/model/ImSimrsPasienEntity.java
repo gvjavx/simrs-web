@@ -48,6 +48,25 @@ public class ImSimrsPasienEntity implements Serializable{
 
     private String flagLogin;
 
+    private String flagMeninggal;
+    private Timestamp tanggalMeninggal;
+
+    public String getFlagMeninggal() {
+        return flagMeninggal;
+    }
+
+    public void setFlagMeninggal(String flagMeninggal) {
+        this.flagMeninggal = flagMeninggal;
+    }
+
+    public Timestamp getTanggalMeninggal() {
+        return tanggalMeninggal;
+    }
+
+    public void setTanggalMeninggal(Timestamp tanggalMeninggal) {
+        this.tanggalMeninggal = tanggalMeninggal;
+    }
+
     public String getFlagLogin() {
         return flagLogin;
     }

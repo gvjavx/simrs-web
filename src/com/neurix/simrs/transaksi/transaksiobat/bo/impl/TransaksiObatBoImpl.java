@@ -130,9 +130,17 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
                         BigDecimal tempHarga = new BigDecimal(0);
                         if(isKhusus){
-                            tempHarga = hargaObatEntity.getHargaJual() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJual();
+                            if ("bpjs".equalsIgnoreCase(bean.getJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
+                                tempHarga = hargaObatEntity.getHargaJualKhususBpjs() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualKhususBpjs();
+                            } else {
+                                tempHarga = hargaObatEntity.getHargaJual() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJual();
+                            }
                         }else{
-                            tempHarga = hargaObatEntity.getHargaJualUmum() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmum();
+                            if ("bpjs".equalsIgnoreCase(bean.getJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
+                                tempHarga = hargaObatEntity.getHargaJualUmumBpjs() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmumBpjs();
+                            } else {
+                                tempHarga = hargaObatEntity.getHargaJualUmum() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmum();
+                            }
                         }
 
                         if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
@@ -905,7 +913,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 } else {
 
                     String seqBatch = batchDao.getNextId();
-                    batchEntity.setId(new BigInteger(seqBatch));
+                    batchEntity.setId("TBA"+seqBatch);
                     batchEntity.setStatus("Y");
                     batchEntity.setNoBatch(1);
 
@@ -1900,7 +1908,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                 MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
 
                 String seqBatch = batchDao.getNextId();
-                batchEntity.setId(new BigInteger(seqBatch));
+                batchEntity.setId("TBA"+seqBatch);
                 batchEntity.setIdBarang(obatDetail.getIdBarang());
                 batchEntity.setIdTransaksiObatDetail(obatDetailEntity.getIdTransaksiObatDetail());
                 batchEntity.setQtyApprove(obatDetail.getQtyApprove());
@@ -2583,7 +2591,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
         Obat sumObat = new Obat();
         try {
-            sumObat = obatDao.getSumStockObatGudangById(bean.getIdObat(), "", bean.getBranchId());
+            sumObat = obatDao.getSumStockObatGudangById(bean.getIdObat(), "", bean.getBranchId(), bean.getTipeObat());
         } catch (HibernateException e) {
             logger.error("[PermintaanVendorBoImpl.saveUpdateHargaRataBarangMasukKarnaReture] ERROR.", e);
             throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateHargaRataBarangMasukKarnaReture] ERROR." + e.getMessage());
@@ -2642,7 +2650,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             throw new GeneralBOException("[PermintaanVendorBoImpl.saveUpdateHargaRataBarangMasukKarnaReture] ERROR." + e.getMessage());
         }
 
-        permintaanVendorBo.updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId());
+        permintaanVendorBo.updateAllNewAverageHargaByObatId(bean.getIdObat(), newObatEntity.getAverageHargaBox(), newObatEntity.getAverageHargaLembar(), newObatEntity.getAverageHargaBiji(), bean.getBranchId(), bean.getTipeObat());
         saveTransaksiStokObatMasukKarnaReture(bean);
     }
 

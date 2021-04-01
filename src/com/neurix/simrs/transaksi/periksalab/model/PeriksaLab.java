@@ -98,6 +98,34 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String namaLabLuar;
     private BigDecimal tarifLabLuar;
 
+    private String idPeriksaLabDetail;
+    private String hasil;
+    private String catatan;
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getHasil() {
+        return hasil;
+    }
+
+    public void setHasil(String hasil) {
+        this.hasil = hasil;
+    }
+
+    public String getIdPeriksaLabDetail() {
+        return idPeriksaLabDetail;
+    }
+
+    public void setIdPeriksaLabDetail(String idPeriksaLabDetail) {
+        this.idPeriksaLabDetail = idPeriksaLabDetail;
+    }
+
     public BigDecimal getTarifLabLuar() {
         return tarifLabLuar;
     }

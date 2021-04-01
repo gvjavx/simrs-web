@@ -479,7 +479,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 }else{
                     namaLab = periksalb.getLabName();
                 }
-                reportParams.put("title", "Hasil Periksa Radiologi " + namaLab);
+                reportParams.put("title", "Hasil Periksa Radiologi");
+                reportParams.put("jenisPemeriksaan", namaLab);
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -493,6 +494,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             if(checkup.getTglLahir() != null){
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                reportParams.put("tgllahir", formatDate);
+                reportParams.put("divisi", "Radiologi");
             }
             if(periksalb.getCreatedDate() != null){
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());

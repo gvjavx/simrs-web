@@ -1061,6 +1061,8 @@ public class PasienBoImpl implements PasienBo {
             pasien.setPassword(data.getPassword());
             pasien.setStatusPerkawinan(data.getStatusPerkawinan());
             pasien.setPendidikan(data.getPendidikan());
+            pasien.setFlagMeninggal(data.getFlagMeninggal());
+            pasien.setTglMeninggal(data.getTanggalMeninggal());
 
             if (pasien.getDesaId() != null) {
                 List<Object[]> objs = provinsiDao.getListAlamatByDesaId(pasien.getDesaId().toString());

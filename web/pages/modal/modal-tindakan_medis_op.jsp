@@ -157,9 +157,10 @@
                         </div>
                     </div>
                     <hr class="garis">
-                    <div class="row jarak">
+                    <input type="hidden" id="h_is_biaya">
+                    <div class="row jarak" style="display: none" id="form_biaya">
                         <div class="form-group">
-                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
+                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
                         </div>
                     </div>
                     <div class="row jarak">

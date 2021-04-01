@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPersetujuanMedisIna" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
+	<property name="ireport.zoom" value="1.3636363636363797"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.tglLahir" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.alamat" class="java.lang.String"/>
+	<parameter name="reportParams.jenisKelamin" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.nik" class="java.lang.String"/>
+	<parameter name="reportParams.agama" class="java.lang.String"/>
+	<parameter name="reportParams.desa" class="java.lang.String"/>
+	<parameter name="reportParams.kecamatan" class="java.lang.String"/>
+	<parameter name="reportParams.provinsi" class="java.lang.String"/>
+	<parameter name="reportParams.kabupaten" class="java.lang.String"/>
+	<parameter name="reportParams.status" class="java.lang.String"/>
+	<parameter name="reportParams.tamatan" class="java.lang.String"/>
+	<parameter name="reportParams.jalan" class="java.lang.String"/>
+	<parameter name="reportParams.waktuMeninggal" class="java.lang.String"/>
+	<parameter name="reportParams.umur" class="java.lang.String"/>
+	<parameter name="reportParams.tempatMeninggal" class="java.lang.String"/>
+	<parameter name="reportParams.unitKota" class="java.lang.String"/>
+	<parameter name="keterangan" class="java.lang.String"/>
+	<parameter name="createdDate" class="java.sql.Timestamp"/>
+	<queryString>
+		<![CDATA[SELECT
+*
+FROM it_simrs_asesmen_keperawatan_rawat_inap
+WHERE id_detail_checkup = $P{reportParams.idDetailCheckup}
+AND keterangan = $P{keterangan}
+AND created_date = $P{createdDate}]]>
+	</queryString>
+	<field name="id_asesmen_keperawatan_rawat_inap" class="java.lang.String"/>
+	<field name="id_detail_checkup" class="java.lang.String"/>
+	<field name="parameter" class="java.lang.String"/>
+	<field name="jawaban" class="java.lang.String"/>
+	<field name="keterangan" class="java.lang.String"/>
+	<field name="jenis" class="java.lang.String"/>
+	<field name="skor" class="java.lang.Integer"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="informasi" class="java.lang.String"/>
+	<field name="tipe" class="java.lang.String"/>
+	<field name="nama_terang" class="java.lang.String"/>
+	<field name="sip" class="java.lang.String"/>
+	<field name="no_checkup" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="111" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="31" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="435" y="0" width="120" height="32" uuid="6a2de382-dadd-4d81-bb84-315f70cece67"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.idDetailCheckup}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<staticText>
+				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="8" width="268" height="20" uuid="89ca5627-7e73-4cd1-918e-9a81c49ef79d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Persetujuan Tindakan Medis ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="aaabcd6f-4375-4904-9a2a-32f836da7868"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="43" width="173" height="20" uuid="6f411b53-a957-4ce8-9bf4-3f379b53b1d2"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="63" width="111" height="20" uuid="90cf4202-39e0-44b6-9942-5d92b0efa643"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No RM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="83" width="111" height="20" uuid="7468c42d-6c6b-4e3c-ad34-8c0b0d1a9f17"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="293" y="63" width="107" height="20" uuid="9e3773e8-0058-4b57-aea8-08c3f9d71976"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tanggal Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="113" y="63" width="5" height="20" uuid="12eeb4d9-97ef-4065-ad9b-0ff1fc2b0e80"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="113" y="83" width="5" height="20" uuid="5eb27efc-5d6d-4768-9e79-c7480716244e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="63" width="5" height="20" uuid="52b982cd-df80-4fe2-874b-b480c8546eac"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="118" y="63" width="151" height="20" uuid="8698e75f-8abc-4b32-8e85-cae2a4f1cb4d"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="83" width="151" height="20" uuid="54b246ca-158b-432d-a3e4-1fc4daa3b3d8"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="404" y="63" width="151" height="20" uuid="d105ad0e-0683-41a1-b48a-94be40b49642"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="106" width="555" height="1" uuid="901eb047-a75a-48c4-a93d-5e1f72af7f2f"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="20">
+			<textField>
+				<reportElement x="0" y="0" width="239" height="20" uuid="8719773a-20be-4010-9da1-1cae5b956608"/>
+				<textFieldExpression><![CDATA[$F{parameter}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="239" y="0" width="216" height="20" uuid="cd29c3f0-d57f-44d5-bf76-4ec92ebbef66"/>
+				<textFieldExpression><![CDATA[$F{jawaban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="455" y="0" width="100" height="20" uuid="ec292662-f17e-4795-8dcd-67bdd7a387ba"/>
+				<textFieldExpression><![CDATA[$F{informasi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<lastPageFooter>
+		<band height="111"/>
+	</lastPageFooter>
+</jasperReport>

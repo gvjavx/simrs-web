@@ -1190,7 +1190,7 @@ function saveICU(jenis, ket) {
 
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban1': 'Pemberian Informasi dan Persetujuan ' + persetujuan,
+                'jawaban': 'Pemberian Informasi dan Persetujuan ' + persetujuan,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
@@ -1198,28 +1198,28 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'Tanggal',
-                'jawaban1': va1,
+                'jawaban': va1,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Dokter Penanggung Jawab Anestesi',
-                'jawaban1': va2,
+                'jawaban': va2,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Pemberi Informasi',
-                'jawaban1': va3,
+                'jawaban': va3,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Penerima Informasi',
-                'jawaban1': va4,
+                'jawaban': va4,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
@@ -1227,8 +1227,8 @@ function saveICU(jenis, ket) {
 
             data.push({
                 'parameter': 'Jenis Informasi',
-                'jawaban1': 'Isi Informasi',
-                'jawaban2': 'Check Informasi',
+                'jawaban': 'Isi Informasi',
+                'informasi': 'Check Informasi',
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'bold',
@@ -1284,8 +1284,8 @@ function saveICU(jenis, ket) {
 
                 data.push({
                     'parameter': item.value,
-                    'jawaban2': tdn,
-                    'jawaban1': info,
+                    'informasi': tdn,
+                    'jawaban': info,
                     'keterangan': jenis,
                     'jenis': persetujuan,
                     'tipe': 'info',
@@ -1307,7 +1307,7 @@ function saveICU(jenis, ket) {
 
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya',
-                'jawaban1': canv1,
+                'jawaban': canv1,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
@@ -1317,16 +1317,26 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya',
-                'jawaban1': canv2,
+                'jawaban': canv2,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
                 'nama_terang':nama2,
                 'id_detail_checkup': idDetailCheckup
             });
+            if($('#h_is_biaya').val() == "Y"){
+                data.push({
+                    'parameter': 'pernyataan',
+                    'jawaban': 'Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan',
+                    'keterangan': jenis,
+                    'jenis': persetujuan,
+                    'tipe': 'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban1': 'Persetujuan Tindakan Medis',
+                'jawaban': 'Persetujuan Tindakan Medis',
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
@@ -1334,7 +1344,7 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'penyataan',
-                'jawaban1': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
+                'jawaban': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
                     'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + persetujuan + ' ' +
                     'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
@@ -1348,7 +1358,7 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'TTD yang menyatakan',
-                'jawaban1': canv3,
+                'jawaban': canv3,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
@@ -1358,7 +1368,7 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'Saksi I',
-                'jawaban1': canv4,
+                'jawaban': canv4,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
@@ -1367,7 +1377,7 @@ function saveICU(jenis, ket) {
             });
             data.push({
                 'parameter': 'Saksi II',
-                'jawaban1': canv5,
+                'jawaban': canv5,
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'ttd',
@@ -1456,7 +1466,7 @@ function detailICU(jenis) {
                                 body += '<tr>' +
                                     '<td width="25%">' + item.parameter + '</td>' +
                                     '<td >' + item.informasi + '</td>' +
-                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                    '<td width="20%" align="center">' + cekIconsIsNotNull(jwb) + '</td>' +
                                     '</tr>';
                             } else if ("ttd" == item.tipe) {
                                 body += '<tr>' +
@@ -1470,7 +1480,38 @@ function detailICU(jenis) {
                                 body += '<tr style="font-weight: bold">' +
                                     '<td width="25%">' + item.parameter + '</td>' +
                                     '<td >' + item.informasi + '</td>' +
-                                    '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                    '<td width="20%" align="center">' + cekItemIsNull(jwb) + '</td>' +
+                                    '</tr>';
+                            } else {
+                                body += '<tr>' +
+                                    '<td width="30%">' + item.parameter + '</td>' +
+                                    '<td colspan="2">' + jwb + '</td>' +
+                                    '</tr>';
+                            }
+                        }else if("add_tindakan_icu" == jenis){
+                            if ("colspan" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="3">' + cekItemIsNull(jwb) + '</td>' +
+                                    '</tr>';
+                            } else if ("info" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td width="30%">' + cekItemIsNull(item.parameter) + '</td>' +
+                                    '<td >' + cekItemIsNull(jwb) + '</td>' +
+                                    '<td width="20%" align="center">' + cekIcons(item.informasi) + '</td>' +
+                                    '</tr>';
+                            } else if ("ttd" == item.tipe) {
+                                body += '<tr>' +
+                                    '<td colspan="2">' + item.parameter + '</td>' +
+                                    '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                    '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                    '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                    '</td>' +
+                                    '</tr>';
+                            } else if ("bold" == item.tipe) {
+                                body += '<tr style="font-weight: bold">' +
+                                    '<td width="25%">' + item.parameter + '</td>' +
+                                    '<td >' + cekItemIsNull(jwb) + '</td>' +
+                                    '<td width="20%" align="center">' + cekItemIsNull(item.informasi) + '</td>' +
                                     '</tr>';
                             } else {
                                 body += '<tr>' +

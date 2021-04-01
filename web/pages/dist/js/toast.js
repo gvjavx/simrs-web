@@ -72,7 +72,6 @@ $(function () {
     };
 });
 function showToast(tipe, jenis) {
-    console.log(tipe);
     switch (tipe) {
         case "types":
             $.toast(jenis, "This is a " + jenis + " toast.");

@@ -10,7 +10,7 @@ import java.sql.Timestamp;
  * Created by reza on 14/01/20.
  */
 public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
-    private BigInteger id;
+    private String id;
     private String idTransaksiObatDetail;
     private Integer noBatch;
     private String jenisSatuan;
@@ -197,11 +197,11 @@ public class MtSimrsTransaksiObatDetailBatchEntity implements Serializable {
         this.action = action;
     }
 
-    public BigInteger getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(BigInteger id) {
+    public void setId(String id) {
         this.id = id;
     }
 

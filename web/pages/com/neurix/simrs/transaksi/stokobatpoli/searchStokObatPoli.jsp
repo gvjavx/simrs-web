@@ -184,8 +184,7 @@
                                 <td>ID Barang</td>
                                 <td>Nama Obat</td>
                                 <td>Expired Date</td>
-                                <%--<td align="center">Qty Lembar</td>--%>
-                                <%--<td align="center">Qty Biji</td>--%>
+                                <td>Jenis</td>
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
                                 <td align="center">Stok Biji</td>
@@ -203,7 +202,18 @@
                                             document.write(converterDate(new Date(tgl)));
                                         </script>
                                     </td>
-                                    <%--<td align="center"><s:property value="qtyBox"/></td>--%>
+                                    <td align="center">
+                                        <script>
+                                            var str = "";
+                                            var flagBpjs = '<s:property value="flagBpjs"/>';
+                                            if (flagBpjs == 'Y'){
+                                                str = "BPJS";
+                                            } else {
+                                                str = "UMUM";
+                                            }
+                                            document.write(str);
+                                        </script>
+                                    </td>
                                     <%--<td align="center"><s:property value="qtyLembar"/></td>--%>
                                     <td align="center"><s:property value="lembarPerBox"/></td>
                                     <td align="center"><s:property value="bijiPerLembar"/></td>

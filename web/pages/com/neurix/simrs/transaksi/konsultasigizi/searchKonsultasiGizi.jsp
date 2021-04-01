@@ -14,6 +14,8 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
 
     <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
@@ -21,6 +23,8 @@
     <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/gizi.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 
     <script type='text/javascript'>
         $(document).ready(function () {
@@ -55,15 +59,16 @@
                         <div class="form-group">
                             <s:form id="giziForm" method="post" namespace="/konsultasigizi" action="search_konsultasigizi.action"
                                     theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Pelayanan</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'rawat_inap':'Rawat Inap'}"
-                                                  id="tipe_pelayanan" name="konsultasiGizi.tipePelayanan"
-                                                  headerKey="rawat_jalan" headerValue="Rawat Jalan"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tipe Pelayanan</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'rawat_inap':'Rawat Inap'}"--%>
+                                                  <%--id="tipe_pelayanan" name="konsultasiGizi.tipePelayanan"--%>
+                                                  <%--headerKey="rawat_jalan" headerValue="Rawat Jalan"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <s:hidden name="konsultasiGizi.tipePelayanan" value="rawat_jalan"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No Checkup</label>
                                     <div class="col-sm-4">
@@ -325,6 +330,8 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <button id="close_periksa" type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
                 <button type="button" class="btn btn-success" id="save_periksa"><i
                         class="fa fa-check"></i> Save
                 </button>
@@ -379,9 +386,10 @@
     var tempAnmnesa = "";
     var idPasien = "";
 
-    function viewDetail(idPas, nama, namaPelayanan, jenisKelamin, um, alergi, diagnosa, tglLahir, iddetail, nocheckup, idGizi, status) {
+    function viewDetail(idPas, nama, namaPelayanan, jenisKelamin, um, alergi, diagnosa, tglLahir, nocheckup, iddetail, idGizi, status) {
         if(!cekSession()){
             idDetailCheckup = iddetail;
+            noCheckup = nocheckup;
             umur = um;
             idPasien = idPas;
             $('#det_no_rm').html(idPas);
@@ -392,8 +400,12 @@
             $('#det_alergi').html(alergi);
             $('#det_diagnosa').html(diagnosa);
             if("3" != status){
+                $('#close_periksa').hide();
                 $('#save_periksa').attr('onclick', 'setStatus(\'3\',\''+idGizi+'\',\'dering\')');
                 setStatus('1', idGizi, 'silent');
+            }else{
+                $('#close_periksa').show();
+                $('#save_periksa').hide();
             }
             $('#btn_ases').attr('onclick', 'getListRekamMedis(\'gizi\',\'\',\''+iddetail+'\')');
             $('#modal-history').modal({show: true, backdrop: 'static', keyboard: false});

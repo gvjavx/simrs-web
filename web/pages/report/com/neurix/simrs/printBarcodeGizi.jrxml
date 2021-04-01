@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printBarcodeGizi" language="groovy" pageWidth="150" pageHeight="130" columnWidth="110" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="3a5ab152-c524-4ad6-b41f-7f1dddf50e80">
 	<property name="ireport.zoom" value="4.177248169415659"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="197"/>
+	<property name="ireport.y" value="53"/>
 	<parameter name="reportParams.idOrderGizi" class="java.lang.String"/>
 	<parameter name="reportParams.ruang" class="java.lang.String"/>
 	<parameter name="reportParams.nama" class="java.lang.String"/>

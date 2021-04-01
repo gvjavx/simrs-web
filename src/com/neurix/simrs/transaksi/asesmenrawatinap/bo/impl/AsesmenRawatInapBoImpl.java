@@ -107,7 +107,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     response = saveAsesmen(list);
                 }
             }else{
-                if("transfer_pasien".equalsIgnoreCase(inap.getJenis())){
+                if("transfer_pasien".equalsIgnoreCase(inap.getJenis()) || "add_tindakan_ina".equalsIgnoreCase(inap.getKeterangan())){
                     response = saveAsesmen(list);
                 }else{
                     if(rawatInapList.size() > 0){

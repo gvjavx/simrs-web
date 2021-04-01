@@ -232,17 +232,85 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         String queryJenisObat = "";
 
         if (idJenisObat != null && !idJenisObat.equalsIgnoreCase("")) {
-            queryJenisObat = "AND id_jenis_obat = '" + idJenisObat + "' \n";
+            queryJenisObat = "AND d.id_jenis_obat = '" + idJenisObat + "' \n";
         }
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
             String flag = "";
-            if("bpjs".equalsIgnoreCase(flagBpjs)){
-                flag = "WHERE flag_bpjs = 'Y'";
+            String whereQuery = "";
+            if("bpjs".equalsIgnoreCase(flagBpjs) || "bpjs_rekanan".equalsIgnoreCase(flagBpjs)){
+                flag = "WHERE flag_bpjs = 'Y' \n";
+                whereQuery = "WHERE c.harga_jual_khusus_bpjs > 0 \n" +
+                        "AND c.harga_jual_umum_bpjs > 0 \n";
             }else{
-                flag = "WHERE flag_bpjs IS NULL OR flag_bpjs = 'N'";
+                flag = "WHERE flag_bpjs != 'Y' \n";
+                whereQuery = "WHERE c.harga_jual > 0 \n" +
+                        "AND c.harga_jual_umum > 0 \n";
             }
+
+
+//            String SQL = "SELECT \n" +
+//                    "b.id_pelayanan,\n" + //0
+//                    "a.id_obat,\n" + //1
+//                    "a.nama_obat,\n" + //2
+//                    "b.box,\n" + //3
+//                    "b.lembar,\n" + //4
+//                    "b.biji,\n" + //5
+//                    "a.lembar_per_box,\n" + //6
+//                    "a.biji_per_lembar,\n" + //7
+//                    "a.flag_kronis,\n" + //8
+//                    "c.harga_jual,\n" + //9
+//                    "c.harga_jual_umum,\n" + //10
+//                    "c.harga_jual_khusus_bpjs,\n" + //11
+//                    "c.harga_jual_umum_bpjs\n" + //12
+//                    "FROM (\n" +
+//                    "\tSELECT \n" +
+//                    "\ta.id_obat,\n" +
+//                    "\ta.nama_obat,\n" +
+//                    "\ta.flag_kronis,\n" +
+//                    "\ta.lembar_per_box,\n" +
+//                    "\ta.biji_per_lembar,\n" +
+//                    "\ta.flag_bpjs\n" +
+//                    "\tFROM im_simrs_header_obat a\n" +
+//                    "\tINNER JOIN (SELECT id_obat, flag_bpjs  FROM im_simrs_obat "+flag+" GROUP BY id_obat, flag_bpjs )\n" +
+//                    "\tb ON b.id_obat = a.id_obat\n" +
+//                    ") a\n" +
+//                    "INNER JOIN (\n" +
+//                    "\tSELECT\n" +
+//                    "\tid_obat,\n" +
+//                    "\tid_pelayanan,\n" +
+//                    "\tbranch_id,\n" +
+//                    "\tSUM(qty_box) as box,\n" +
+//                    "\tSUM(qty_lembar) as lembar,\n" +
+//                    "\tSUM(qty_biji) as biji\n" +
+//                    "\tFROM mt_simrs_obat_poli\n" +
+//                    "\tWHERE id_pelayanan = :idPelayanan \n" +
+//                    "\tAND branch_id = :branchId \n" +
+//                    "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
+//                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n" +
+//                    ") b ON a.id_obat = b.id_obat\n" +
+//                    "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
+//                    "LEFT JOIN (\n" +
+//                    "\tSELECT\n" +
+//                    "\tid_obat,\n" +
+//                    "\tid_jenis_obat\n" +
+//                    "\tFROM im_simrs_obat_gejala \n" +
+//                    ")d ON d.id_obat = b.id_obat \n" + whereQuery + queryJenisObat +
+//                    "GROUP BY \n" +
+//                    "b.id_pelayanan,\n" +
+//                    "a.id_obat,\n" +
+//                    "a.nama_obat,\n" +
+//                    "b.box,\n" +
+//                    "b.lembar,\n" +
+//                    "b.biji,\n" +
+//                    "a.lembar_per_box,\n" +
+//                    "a.biji_per_lembar,\n" +
+//                    "a.flag_kronis,\n" +
+//                    "c.harga_jual,\n" +
+//                    "c.harga_jual_umum,\n" +
+//                    "c.harga_jual_khusus_bpjs,\n" +
+//                    "c.harga_jual_umum_bpjs \n";
 
             String SQL = "SELECT \n" +
                     "b.id_pelayanan,\n" +
@@ -255,17 +323,30 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.biji_per_lembar,\n" +
                     "a.flag_kronis,\n" +
                     "c.harga_jual,\n" +
-                    "d.id_jenis_obat,\n"+
-                    "c.harga_jual_umum\n"+
+                    "c.harga_jual_umum,\n" +
+                    "c.harga_jual_khusus_bpjs,\n" +
+                    "c.harga_jual_umum_bpjs\n" +
                     "FROM (\n" +
-                    "\tSELECT \n" +
-                    "\tid_obat,\n" +
-                    "\tnama_obat,\n" +
-                    "\tflag_kronis,\n" +
-                    "\tlembar_per_box,\n" +
-                    "\tbiji_per_lembar,\n" +
-                    "\tflag_bpjs\n" +
-                    "\tFROM im_simrs_header_obat\n" + flag +
+                    "\t\tSELECT \n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.nama_obat,\n" +
+                    "\t\ta.flag_kronis,\n" +
+                    "\t\ta.lembar_per_box,\n" +
+                    "\t\ta.biji_per_lembar\n" +
+                    "\t\tFROM im_simrs_header_obat a\n" +
+                    "\t\tINNER JOIN (\n" +
+                    "\t\t\tSELECT id_barang, id_obat, flag_bpjs  \n" +
+                    "\t\t\tFROM im_simrs_obat \n" + flag +
+                    "\t\t\tAND id_barang is not null\n" +
+                    "\t\t) b ON b.id_obat = a.id_obat\n" +
+                    "\t\tINNER JOIN mt_simrs_obat_poli ob ON ob.id_barang = b.id_barang\n" +
+                    "\t\tGROUP BY \n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.nama_obat,\n" +
+                    "\t\ta.flag_kronis,\n" +
+                    "\t\ta.lembar_per_box,\n" +
+                    "\t\ta.biji_per_lembar,\n" +
+                    "\t\ta.flag_bpjs\n" +
                     ") a\n" +
                     "INNER JOIN (\n" +
                     "\tSELECT\n" +
@@ -279,17 +360,29 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\tWHERE id_pelayanan = :idPelayanan \n" +
                     "\tAND branch_id = :branchId \n" +
                     "\tGROUP BY id_obat, id_pelayanan, branch_id\n" +
-                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n"+
+                    "\tHAVING SUM(qty_box) > 0 OR SUM(qty_lembar) > 0 OR SUM(qty_biji) > 0 \n" +
                     ") b ON a.id_obat = b.id_obat\n" +
                     "INNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
-                    "INNER JOIN (\n" +
+                    "LEFT JOIN (\n" +
                     "\tSELECT\n" +
                     "\tid_obat,\n" +
                     "\tid_jenis_obat\n" +
                     "\tFROM im_simrs_obat_gejala \n" +
-                    ")d ON d.id_obat = b.id_obat \n"+
-                    "WHERE c.harga_jual > 0 \n" +
-                    "AND c.harga_jual_umum > 0 \n" +queryJenisObat;
+                    ")d ON d.id_obat = b.id_obat \n" + whereQuery + queryJenisObat +
+                    "GROUP BY \n" +
+                    "b.id_pelayanan,\n" +
+                    "a.id_obat,\n" +
+                    "a.nama_obat,\n" +
+                    "b.box,\n" +
+                    "b.lembar,\n" +
+                    "b.biji,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar,\n" +
+                    "a.flag_kronis,\n" +
+                    "c.harga_jual,\n" +
+                    "c.harga_jual_umum,\n" +
+                    "c.harga_jual_khusus_bpjs,\n" +
+                    "c.harga_jual_umum_bpjs \n";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
@@ -310,11 +403,18 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[6] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[6].toString()));
                     obatPoli.setBijiPerLembar(obj[7] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[7].toString()));
                     obatPoli.setFlagKronis(obj[8] == null ? "" : obj[8].toString());
-                    obatPoli.setIdJenisObat(obj[10] == null ? "" : obj[10].toString());
                     if(cekKhusus){
-                        obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                        if ("bpjs".equalsIgnoreCase(flagBpjs) || "bpjs_rekanan".equalsIgnoreCase(flagBpjs)){
+                            obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+                        } else {
+                            obatPoli.setHarga(obj[9] == null ? "" : obj[9].toString());
+                        }
                     }else{
-                        obatPoli.setHarga(obj[11] == null ? "" : obj[11].toString());
+                        if ("bpjs".equalsIgnoreCase(flagBpjs)){
+                            obatPoli.setHarga(obj[12] == null ? "" : obj[12].toString());
+                        } else {
+                            obatPoli.setHarga(obj[10] == null ? "" : obj[10].toString());
+                        }
                     }
                     obatPoliList.add(obatPoli);
                 }
@@ -347,10 +447,9 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
 
         if(idPelayanan != null && !"".equalsIgnoreCase(idPelayanan) && branchId != null && !"".equalsIgnoreCase(branchId)){
 
-            String flag = "N";
-
-            if("bpjs".equalsIgnoreCase(flagBpjs)){
-                flag = "%";
+            String flag = "flag_bpjs != 'Y' ";
+            if("bpjs".equalsIgnoreCase(flagBpjs) || "rekanan_bpjs".equalsIgnoreCase(flagBpjs)){
+                flag = "flag_bpjs = 'Y' ";
             }
 
             String SQL = "SELECT\n" +
@@ -371,7 +470,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "\tFROM mt_simrs_obat_poli a\n" +
                     "\tINNER JOIN (\n" +
                     "\tSELECT id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
-                    "\tFROM im_simrs_obat WHERE flag_bpjs LIKE :flag GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
+                    "\tFROM im_simrs_obat WHERE "+flag+" GROUP BY id_obat, nama_obat, lembar_per_box, biji_per_lembar, flag_kronis\n" +
                     "\t) b ON a.id_obat = b.id_obat\n" +
                     "\tINNER JOIN mt_simrs_harga_obat c ON a.id_obat = c.id_obat\n" +
                     "\tINNER JOIN im_simrs_kandungan_obat_detail d ON d.id_obat = a.id_obat\n" +
@@ -391,7 +490,6 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("idPelayanan", idPelayanan)
                     .setParameter("branchId", branchId)
-                    .setParameter("flag", flag)
                     .setParameterList("listKandungan", kandugans)
                     .list();
 
@@ -478,14 +576,18 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.qty_biji,\n" +
                     "a.id_pelayanan,\n" +
                     "a.branch_id,\n" +
-                    "b.lembar_per_box,\n" +
-                    "b.biji_per_lembar\n" +
+                    "c.lembar_per_box,\n" +
+                    "c.biji_per_lembar,\n" +
+                    "c.flag_bpjs\n" +
                     "FROM mt_simrs_obat_poli a\n" +
                     "INNER JOIN im_simrs_header_obat b ON a.id_obat = b.id_obat\n" +
+                    "INNER JOIN im_simrs_obat c ON a.id_barang = c.id_barang\n" +
                     "WHERE a.flag = :flag\n" +condition;
+
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("flag", flag)
                     .list();
+
             if (results.size() > 0){
                 for (Object[] obj : results){
                     ObatPoli obatPoli = new ObatPoli();
@@ -498,6 +600,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setBranchId(obj[6] != null ? obj[6].toString() : "");
                     obatPoli.setLembarPerBox(obj[7] != null ? (BigInteger) obj[7] : new BigInteger(String.valueOf("0")));
                     obatPoli.setBijiPerLembar(obj[8] != null ? (BigInteger) obj[8] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setFlagBpjs(obj[9] != null ? obj[9].toString() : "");
                     obatPoliList.add(obatPoli);
                 }
             }

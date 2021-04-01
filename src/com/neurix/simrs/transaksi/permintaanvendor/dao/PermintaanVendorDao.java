@@ -494,7 +494,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         return pabrikObatList;
     }
 
-    public TransaksiObatDetail getDataFisikObatMasukBatch(BigInteger idBatch){
+    public TransaksiObatDetail getDataFisikObatMasukBatch(String idBatch){
 
         String SQL = "SELECT\n" +
                 "a.id_transaksi_obat_detail,\n" +
@@ -508,7 +508,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                 "a.mrek \n"+
                 "FROM mt_simrs_transaksi_obat_detail a\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail_batch b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
-                "WHERE b.id = "+idBatch+"\n" +
+                "WHERE b.id = '"+idBatch+"' \n" +
                 "GROUP BY \n" +
                 "a.id_transaksi_obat_detail,\n" +
                 "a.lembar_per_box, \n" +
