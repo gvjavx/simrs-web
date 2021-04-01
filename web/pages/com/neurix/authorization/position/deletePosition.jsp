@@ -124,7 +124,7 @@
                 </table>
 
                 <table >
-                    <tr>
+                    <tr style="display: none">
                         <s:if test='position.flagCostUnit = "Y"'>
                             <td colspan="2">
                                 <label class="control-label" style="background-color: #00a65a;padding: 8px;border-radius: 5px;" align="center"><big>UNIT COST</big></label>
