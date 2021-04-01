@@ -125,14 +125,14 @@
 
                 <table >
                     <tr>
-                        <s:if test='position.flagCostUnit = "Y"'>
+                        <s:if test='position.flagCostUnit == "Y"'>
                             <td colspan="2">
-                                <label class="control-label" style="background-color: #00a65a;padding: 8px;border-radius: 5px;" align="center"><big>UNIT COST</big></label>
+                                <label class="control-label" style="background-color: #00a65a;padding: 6px;margin:2px;border-radius: 5px;" align="center"><big>UNIT COST</big></label>
                             </td>
                         </s:if>
                         <s:else>
                             <td colspan="2">
-                                <label class="control-label" style="background-color: lightgrey;padding: 8px;border-radius: 5px;" align="center"><big>JABATAN</big></label>
+                                <label class="control-label" style="background-color: lightgrey;padding: 6px;margin: 2px;border-radius: 5px;" align="center"><big>JABATAN</big></label>
                             </td>
                         </s:else>
                     </tr>

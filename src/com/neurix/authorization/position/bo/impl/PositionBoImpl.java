@@ -489,7 +489,40 @@ public class PositionBoImpl implements PositionBo {
             String positionId = position.getPositionId();
 
             //validasi
-            List<ItPersonilPositionEntity> personilPositionEntityList= personilPositionDao.getListPersonilPositionByPositionId(positionId);
+            List<ItPersonilPositionEntity> personilPositionEntityList = new ArrayList<>();
+
+            if("Y".equalsIgnoreCase(position.getFlagCostUnit())){
+                List<ImPosition> imPositionList = new ArrayList<>();
+                Map criteria = new HashMap();
+                criteria.put("kodering", position.getKodering());
+                criteria.put("flag_cost_unit", "N");
+                criteria.put("flag", "Y");
+
+                try{
+                    imPositionList = positionDao.getByCriteria(criteria);
+                }catch(HibernateException e){
+                    logger.info("[PositionBoImpl.saveDelete] error, " + e.getMessage());
+                    throw new GeneralBOException("Error when retrieving Position by Criteria, " + e.getMessage());
+                }
+
+                List<ItPersonilPositionEntity> personilPositionEntities = new ArrayList<>();
+                for(ImPosition positionEntity : imPositionList){
+                    try{
+                        personilPositionEntities= personilPositionDao.getListPersonilPositionByPositionId(positionEntity.getPositionId());
+                        personilPositionEntityList.addAll(personilPositionEntities);
+                    }catch (HibernateException e){
+                        logger.error("[PositionBoImpl.saveDelete] error, " + e.getMessage());
+                        throw new GeneralBOException("Error when getting List Personil Position by Position ID, " + e.getMessage());
+                    }
+                }
+            }else {
+                try {
+                    personilPositionEntityList = personilPositionDao.getListPersonilPositionByPositionId(positionId);
+                } catch (HibernateException e) {
+                    logger.error("[PositionBoImpl.saveDelete] error, " + e.getMessage());
+                    throw new GeneralBOException("Error when getting List Personil Position by Position ID, " + e.getMessage());
+                }
+            }
 
             if (personilPositionEntityList.size()>0){
                 String status = "ERROR : data tidak bisa dihapus dikarenakan sudah digunakan di transaksi";
