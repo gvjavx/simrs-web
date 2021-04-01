@@ -3983,6 +3983,21 @@ function setDiskonHarga(id) {
                 }
                 if (jenisPeriksaPasien == "bpjs") {
                     $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                } else if (jenisPeriksaPasien == "bpjs_rekanan" || jenisPeriksaPasien == "rekanan"){
+
+                    TindakanRawatAction.getTarifDetailRekanaOps(idDetailCheckup, id, function (res2) {
+
+                        if (jenisPeriksaPasien == "bpjs_rekanan"){
+                            disk = res2.diskonBpjs;
+                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarifBpjs));
+                        }
+
+                        if (jenisPeriksaPasien == "rekanan"){
+                            disk = res2.diskonNonBpjs;
+                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarif));
+                        }
+                    });
+
                 } else {
                     $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarif));
                 }

@@ -9,6 +9,7 @@ import com.neurix.simrs.bpjs.eklaim.model.KlaimDetailResponse;
 import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
+import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
@@ -178,6 +179,7 @@ public class TindakanRawatAction extends BaseMasterAction {
             }
 
             RekananOps ops = new RekananOps();
+            DetailRekananOps detailRekananOps = new DetailRekananOps();
             if ("rekanan".equalsIgnoreCase(jenisTransaksi) || "bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
                 try {
                     ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
@@ -187,6 +189,19 @@ public class TindakanRawatAction extends BaseMasterAction {
                     response.setMsg("Tidak dapat menemukan id detail checkup");
                     return response;
                 }
+
+                // medapatkan tarif per tindakan rekanan
+                if (ops != null && ops.getIdRekananOps() != null && !"".equalsIgnoreCase(ops.getIdRekananOps())){
+                    try {
+                        detailRekananOps = rekananOpsBo.getTarifRekanan(ops.getIdRekananOps(), userArea, idTindakan);
+                    } catch (GeneralBOException e) {
+                        logger.error("Error, " + e.getMessage());
+                        response.setStatus("error");
+                        response.setMsg("Tidak dapat menemukan tarif per tindakan rekanan");
+                        return response;
+                    }
+                }
+                // END
             }
 
             BigInteger tarifBpjs = tindakanResult.getTarifBpjs();
@@ -202,19 +217,30 @@ public class TindakanRawatAction extends BaseMasterAction {
             if ("bpjs".equalsIgnoreCase(jenisTransaksi)) {
                 tindakanRawat.setTarif(tarifBpjs);
             } else if ("rekanan".equalsIgnoreCase(jenisTransaksi)) {
-                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
-                    BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
-                    tindakanRawat.setTarif(hasil.toBigInteger());
+
+                if (detailRekananOps != null){
+                    tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarif().toString()));
                 } else {
-                    tindakanRawat.setTarif(tarifNormal);
+                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                        BigDecimal hasil = new BigDecimal(tarifNormal).multiply(ops.getDiskon());
+                        tindakanRawat.setTarif(hasil.toBigInteger());
+                    } else {
+                        tindakanRawat.setTarif(tarifNormal);
+                    }
                 }
             } else if ("bpjs_rekanan".equalsIgnoreCase(jenisTransaksi)) {
-                if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
-                    BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
-                    tindakanRawat.setTarif(hasil.toBigInteger());
+
+                if (detailRekananOps != null){
+                    tindakanRawat.setTarif(new BigInteger(detailRekananOps.getTarifBpjs().toString()));
                 } else {
-                    tindakanRawat.setTarif(tarifBpjs);
+                    if (ops.getDiskon() != null && ops.getDiskon().intValue() > 0) {
+                        BigDecimal hasil = new BigDecimal(tarifBpjs).multiply(ops.getDiskon());
+                        tindakanRawat.setTarif(hasil.toBigInteger());
+                    } else {
+                        tindakanRawat.setTarif(tarifBpjs);
+                    }
                 }
+
             } else {
                 tindakanRawat.setTarif(tarifNormal);
             }
@@ -241,6 +267,34 @@ public class TindakanRawatAction extends BaseMasterAction {
             response.setMsg(e.getMessage());
         }
         return response;
+    }
+
+    public DetailRekananOps getTarifDetailRekanaOps(String idDetailCheckup, String idTindakan){
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+
+        String userArea = CommonUtil.userBranchLogin();
+
+        RekananOps ops = new RekananOps();
+        DetailRekananOps detailRekananOps = new DetailRekananOps();
+
+        try {
+            ops = rekananOpsBo.getDetailRekananOpsByDetail(idDetailCheckup, userArea);
+        } catch (GeneralBOException e) {
+            logger.error("Error, " + e.getMessage());
+        }
+
+        // medapatkan tarif per tindakan rekanan
+        if (ops != null && ops.getIdRekananOps() != null && !"".equalsIgnoreCase(ops.getIdRekananOps())){
+            try {
+                detailRekananOps = rekananOpsBo.getTarifRekanan(ops.getIdRekananOps(), userArea, idTindakan);
+            } catch (GeneralBOException e) {
+                logger.error("Error, " + e.getMessage());
+            }
+        }
+
+        return detailRekananOps;
     }
 
     public List<TindakanRawat> listTindakanRawat(String idDetailCheckup) {
