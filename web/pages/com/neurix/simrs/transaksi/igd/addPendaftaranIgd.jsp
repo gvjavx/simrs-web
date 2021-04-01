@@ -1057,6 +1057,69 @@
                                 </div>
                             </div>
 
+                            <div id="form-rekanan" style="display: none">
+                                <div class="box-header with-border"></div>
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">Nama
+                                                        Rekanan</label>
+
+                                                    <div class="col-md-8">
+                                                        <select id="unit_ptpn" class="form-control select2"
+                                                                style="width: 100%"
+                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
+                                                        </select>
+                                                        <span style="color: red; display: none" id="war_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group" id="form_pg" style="display: none">
+                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" id="unit_pg"
+                                                               style="margin-top: 7px">
+                                                        <span style="color: red; display: none" id="war_pg"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pg"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
+                                                        Rekanan</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield id="no_kartu_ptpn"
+                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
+                                                                     oninput="$('#h_no_kartu').val(this.value)"
+                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
+                                                        <span style="color: red; display: none"
+                                                              id="war_no_kartu_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none"
+                                                              id="con_no_kartu_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div id="form-rujukan" style="display: none">
                                 <div class="box-header with-border"></div>
                                 <div class="box-header with-border">
@@ -1392,69 +1455,6 @@
                                                                 <input type="text" class="form-control" readonly id="surat_polisi">
                                                             </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div id="form-rekanan" style="display: none">
-                                <div class="box-header with-border"></div>
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Nama
-                                                        Rekanan</label>
-
-                                                    <div class="col-md-8">
-                                                        <select id="unit_ptpn" class="form-control select2"
-                                                                style="width: 100%"
-                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
-                                                        </select>
-                                                        <span style="color: red; display: none" id="war_ptpn"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group" id="form_pg" style="display: none">
-                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
-                                                    <div class="col-md-8">
-                                                        <input class="form-control" id="unit_pg"
-                                                               style="margin-top: 7px">
-                                                        <span style="color: red; display: none" id="war_pg"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_pg"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
-                                                        Rekanan</label>
-                                                    <div class="col-md-8">
-                                                        <s:textfield id="no_kartu_ptpn"
-                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
-                                                                     oninput="$('#h_no_kartu').val(this.value)"
-                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
-                                                        <span style="color: red; display: none"
-                                                              id="war_no_kartu_ptpn"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none"
-                                                              id="con_no_kartu_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2375,9 +2375,9 @@
         });
     }
 
-    function listSelectRekanan() {
+    function listSelectRekanan(isBpjs) {
         var option = "<option value=''>[Select One]</option>";
-        CheckupAction.getListRekananOps(function (response) {
+        CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idRekananOps + '|' + item.isBpjs + '|' + item.tipe + "'>" + item.namaRekanan + "</option>";
