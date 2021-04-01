@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPersetujuanMedisIna" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3636363636363797"/>
+	<property name="ireport.zoom" value="1.2396694214876218"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="62"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -47,6 +47,13 @@
 	<parameter name="reportParams.unitKota" class="java.lang.String"/>
 	<parameter name="keterangan" class="java.lang.String"/>
 	<parameter name="createdDate" class="java.sql.Timestamp"/>
+	<parameter name="ttdYangMenyatakan" class="java.lang.String"/>
+	<parameter name="pihak1" class="java.lang.String"/>
+	<parameter name="pihak2" class="java.lang.String"/>
+	<parameter name="ttdPihak1" class="java.lang.String"/>
+	<parameter name="ttdPihak2" class="java.lang.String"/>
+	<parameter name="namaMenyatakan" class="java.lang.String"/>
+	<parameter name="sipMenyatakan" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 *
@@ -77,7 +84,7 @@ AND created_date = $P{createdDate}]]>
 		<band splitType="Stretch"/>
 	</background>
 	<title>
-		<band height="111" splitType="Stretch">
+		<band height="112" splitType="Stretch">
 			<line>
 				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
 			</line>
@@ -216,6 +223,75 @@ AND created_date = $P{createdDate}]]>
 		</band>
 	</detail>
 	<lastPageFooter>
-		<band height="111"/>
+		<band height="166">
+			<image onErrorType="Blank">
+				<reportElement x="24" y="93" width="94" height="50" uuid="79a93203-4ba8-4609-a1fa-a381574a7882"/>
+				<imageExpression><![CDATA[$P{ttdPihak1}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="13" y="79" width="115" height="14" uuid="eee88fe4-d7dd-440a-aaa1-f9e4605c22b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pihak I]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="424" y="143" width="116" height="15" uuid="65458a95-4822-4534-8900-22466714b292"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ttdPihak2} == null ? "" : $P{ttdPihak2} ]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="435" y="93" width="94" height="50" uuid="6407654a-b1db-4b72-b358-e227ed213b5b"/>
+				<imageExpression><![CDATA[$P{ttdPihak2}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="424" y="79" width="116" height="14" uuid="ab011a80-dbf5-49e0-a5d5-1300eb08b2c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pihak II]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="13" y="143" width="113" height="15" uuid="7b102409-1097-459a-9d4c-20bbad25cc1a"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ttdPihak1} == null ? "" : $P{ttdPihak1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="228" y="94" width="113" height="15" uuid="91d9e9ef-12c3-4e03-aadb-31328dd1ad75"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sipMenyatakan} == null ? "" : $P{sipMenyatakan}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="239" y="28" width="94" height="50" uuid="fb778594-2601-4fd3-a0e2-bfc1aeda4827"/>
+				<imageExpression><![CDATA[$P{ttdYangMenyatakan}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="228" y="14" width="115" height="14" uuid="cb8c306e-22fa-49e0-9c08-580559a00bed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TTD yang menyatakan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="243" y="93" width="87" height="1" uuid="32eec6e6-860f-4324-a217-32959e8e1cb0"/>
+			</line>
+			<textField>
+				<reportElement x="228" y="78" width="113" height="15" uuid="ad49efc1-ec77-4358-9208-e8a90689fa78"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{namaMenyatakan} == null ? "" : $P{namaMenyatakan}]]></textFieldExpression>
+			</textField>
+		</band>
 	</lastPageFooter>
 </jasperReport>

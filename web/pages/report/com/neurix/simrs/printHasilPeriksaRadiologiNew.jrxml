@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaRadiollogiNew" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.771561000000014"/>
+	<property name="ireport.zoom" value="0.9090909090909163"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="105"/>
+	<property name="ireport.y" value="85"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -65,7 +65,8 @@ CASE
 END as keterangan_acuan,
 b.satuan,
 b.hasil,
-b.keterangan_periksa
+b.keterangan_periksa,
+b.last_update
 FROM it_simrs_periksa_lab a
 INNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab
 INNER JOIN it_simrs_header_detail_checkup c ON a.id_detail_checkup = c.id_detail_checkup
@@ -81,6 +82,7 @@ AND b.flag = 'Y']]>
 	<field name="satuan" class="java.lang.String"/>
 	<field name="hasil" class="java.lang.String"/>
 	<field name="keterangan_periksa" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -89,8 +91,8 @@ AND b.flag = 'Y']]>
 	</columnHeader>
 	<detail>
 		<band height="555" splitType="Stretch">
-			<textField>
-				<reportElement x="0" y="183" width="381" height="262" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="202" width="381" height="246" isPrintWhenDetailOverflows="true" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
 				<box leftPadding="0"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
 					<font size="8"/>
@@ -397,7 +399,7 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[:]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="0" y="168" width="381" height="15" uuid="d66d426c-1f27-4a9f-bd40-3f417c3916ad"/>
+				<reportElement x="0" y="187" width="381" height="15" uuid="d66d426c-1f27-4a9f-bd40-3f417c3916ad"/>
 				<box leftPadding="0">
 					<pen lineStyle="Dashed"/>
 					<topPen lineWidth="0.25" lineStyle="Dashed"/>
@@ -409,6 +411,28 @@ AND b.flag = 'Y']]>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{nama_detail_periksa} == null ? "" : "<b>Pemeriksaan</b> : "+$F{nama_detail_periksa}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="89" y="160" width="5" height="15" uuid="a0723dd7-cebf-4136-a684-f6de5bbb7591"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="160" width="89" height="15" uuid="e31f9852-d182-43ec-b0f0-40b00f41a2e2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tanggal Input Hasil]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="94" y="160" width="110" height="15" uuid="c146d3ce-741f-45b2-8431-32f63ca30b13"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{last_update} == null ? "" : $F{last_update}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
