@@ -3781,7 +3781,7 @@ function addKeterangan() {
 
 function getComboParameterObat(idJenis) {
     ObatAction.getComboParameterObat(idJenis, function (res) {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 option += '<option value="' + item.id + '">' + item.nama + '</option>';
@@ -3794,7 +3794,7 @@ function getComboParameterObat(idJenis) {
 
 function getComboWaktuObat(idJenis) {
     ObatAction.getComboParameterWaktuObat(idJenis, function (res) {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         if (res.length > 0) {
             $.each(res, function (i, item) {
                 option += '<option value="' + item.id + '">' + item.keterangan + '</option>';
