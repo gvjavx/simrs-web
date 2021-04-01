@@ -552,14 +552,18 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.qty_biji,\n" +
                     "a.id_pelayanan,\n" +
                     "a.branch_id,\n" +
-                    "b.lembar_per_box,\n" +
-                    "b.biji_per_lembar\n" +
+                    "c.lembar_per_box,\n" +
+                    "c.biji_per_lembar,\n" +
+                    "c.flag_bpjs\n" +
                     "FROM mt_simrs_obat_poli a\n" +
                     "INNER JOIN im_simrs_header_obat b ON a.id_obat = b.id_obat\n" +
+                    "INNER JOIN im_simrs_obat c ON a.id_barang = c.id_barang\n" +
                     "WHERE a.flag = :flag\n" +condition;
+
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("flag", flag)
                     .list();
+
             if (results.size() > 0){
                 for (Object[] obj : results){
                     ObatPoli obatPoli = new ObatPoli();
@@ -572,6 +576,7 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setBranchId(obj[6] != null ? obj[6].toString() : "");
                     obatPoli.setLembarPerBox(obj[7] != null ? (BigInteger) obj[7] : new BigInteger(String.valueOf("0")));
                     obatPoli.setBijiPerLembar(obj[8] != null ? (BigInteger) obj[8] : new BigInteger(String.valueOf("0")));
+                    obatPoli.setFlagBpjs(obj[9] != null ? "" : obj[9].toString());
                     obatPoliList.add(obatPoli);
                 }
             }

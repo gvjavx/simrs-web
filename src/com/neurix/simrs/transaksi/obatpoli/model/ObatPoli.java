@@ -38,6 +38,15 @@ public class ObatPoli {
     private String idJenisObat;
     private String namaPabrikObat;
     private String merk;
+    private String flagBpjs;
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
 
     public String getNamaPabrikObat() {
         return namaPabrikObat;
