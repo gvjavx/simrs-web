@@ -7,6 +7,7 @@ import com.neurix.hris.master.dokterKsoTindakan.model.DokterKsoTindakan;
 import com.neurix.hris.master.dokterKsoTindakan.model.ImSimrsDokterKsoTindakan;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.dao.TindakanDao;
+import com.neurix.simrs.master.tindakan.model.ImSimrsTindakanEntity;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
 import com.neurix.simrs.transaksi.riwayattindakan.bo.RiwayatTindakanBo;
 import com.neurix.simrs.transaksi.riwayattindakan.dao.RiwayatTindakanDao;
@@ -100,7 +101,8 @@ public class DokterKsoTindakanBoImpl implements DokterKsoTindakanBo {
             try {
                 entityList = dokterKsoTindakanDao.getByCriteria(hsCriteria);
             } catch (HibernateException e){
-                logger.error("[PelayananBoImpl.getByCriteria] Error get pelayanan data "+e.getMessage());
+                logger.error("[DokterKsoTindakanBoImpl.getByCriteria] Error get pelayanan data "+e.getMessage());
+                throw new GeneralBOException("Problem when receiving Dokter KSO Tindakan using Criteria, " + e.getMessage());
             }
 
             if (entityList.size()!=0){
@@ -118,8 +120,17 @@ public class DokterKsoTindakanBoImpl implements DokterKsoTindakanBo {
                     dokterKsoTindakan.setLastUpdate(ksoTindakan.getLastUpdate());
                     dokterKsoTindakan.setLastUpdateWho(ksoTindakan.getLastUpdateWho());
                     if (ksoTindakan.getTindakanId() != null){
-                        ItSimrsRiwayatTindakanEntity riwayatTindakanEntity = riwayatTindakanDao.getById("idTindakan",ksoTindakan.getTindakanId());
-                        dokterKsoTindakan.setTindakanName(riwayatTindakanEntity.getNamaTindakan());
+                        Tindakan paramTindakan= new Tindakan();
+                        paramTindakan.setIdTindakan(ksoTindakan.getTindakanId());
+                        List<Tindakan> tindakanList = new ArrayList<>();
+                        try{
+                            tindakanList = tindakanDao.getListDataTindakan(paramTindakan);
+                        }catch (HibernateException e){
+                            logger.error("[DokterKsoTindakanBoImpl.getByCriteria] Error get pelayanan data "+e.getMessage());
+                            throw new GeneralBOException("Problem when receiving Dokter KSO Tindakan using Criteria, " + e.getMessage());
+                        }
+                        for(Tindakan tindakan : tindakanList)
+                        dokterKsoTindakan.setTindakanName(tindakan.getTindakan());
                     }
 
                     result.add(dokterKsoTindakan);

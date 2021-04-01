@@ -129,9 +129,9 @@
                         </td>
                         <td>
                             <table>
-                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" required="true"
-                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
+                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolongan" id="golonganId1" name="payrollSkalaGajiPensiunRni.golonganId" required="true"
+                                          listKey="golonganId" listValue="golPensiun" headerKey="" headerValue="" />
                             </table>
                         </td>
                     </tr>

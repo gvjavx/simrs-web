@@ -127,6 +127,65 @@ public class ImBiodataHistoryEntity implements Serializable {
     private ImGolonganEntity imGolonganEntity;
     private ItPersonilPositionEntity itPersonilPositionEntity;
 
+    //RAKA-19MAR2021 ==> penambahan kolom
+    private String nipLama;
+    private String flagDokterKso;
+
+    private Date tanggalKeluar;
+    private String flagCutiDiluarTanggungan;
+    private Date tanggalCutiDiluarAwal;
+    private Date tanggalCutiDiluarAkhir;
+    //RAKA-end
+
+
+    public String getNipLama() {
+        return nipLama;
+    }
+
+    public void setNipLama(String nipLama) {
+        this.nipLama = nipLama;
+    }
+
+    public String getFlagDokterKso() {
+        return flagDokterKso;
+    }
+
+    public void setFlagDokterKso(String flagDokterKso) {
+        this.flagDokterKso = flagDokterKso;
+    }
+
+    public Date getTanggalKeluar() {
+        return tanggalKeluar;
+    }
+
+    public void setTanggalKeluar(Date tanggalKeluar) {
+        this.tanggalKeluar = tanggalKeluar;
+    }
+
+    public String getFlagCutiDiluarTanggungan() {
+        return flagCutiDiluarTanggungan;
+    }
+
+    public void setFlagCutiDiluarTanggungan(String flagCutiDiluarTanggungan) {
+        this.flagCutiDiluarTanggungan = flagCutiDiluarTanggungan;
+    }
+
+    public Date getTanggalCutiDiluarAwal() {
+        return tanggalCutiDiluarAwal;
+    }
+
+    public void setTanggalCutiDiluarAwal(Date tanggalCutiDiluarAwal) {
+        this.tanggalCutiDiluarAwal = tanggalCutiDiluarAwal;
+    }
+
+    public Date getTanggalCutiDiluarAkhir() {
+        return tanggalCutiDiluarAkhir;
+    }
+
+    public void setTanggalCutiDiluarAkhir(Date tanggalCutiDiluarAkhir) {
+        this.tanggalCutiDiluarAkhir = tanggalCutiDiluarAkhir;
+    }
+
     public int getPoinLebih() {
         return poinLebih;
     }

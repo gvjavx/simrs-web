@@ -9,6 +9,7 @@ import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
 import com.neurix.hris.master.positionBagian.model.PositionBagian;
+import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -299,6 +300,8 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return null;
     }
 
+
+    @Override
     public List<PositionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException {
         logger.info("[UserBoImpl.getComboUserWithCriteria] start process >>>");
 
@@ -360,6 +363,8 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         result.setDivisiId(positionBagianEntity.getDivisiId());
         return result;
     }
+
+    @Override
     public String cekStatus(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
@@ -381,6 +386,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return status;
     }
 
+    @Override
     public String cekStatusEdit(String bagianName)throws GeneralBOException{
         String status ="";
         List<ImPositionBagianEntity> skalaGajiEntity = new ArrayList<>();
@@ -398,6 +404,7 @@ public class PositionBagianBoImpl implements PositionBagianBo {
         return status;
     }
 
+    @Override
     public List<PositionBagian> searchPositionBagian(String divisiId) throws GeneralBOException {
         List<ImPositionBagianEntity> posisiList = null;
         List<PositionBagian> positions = new ArrayList<>();

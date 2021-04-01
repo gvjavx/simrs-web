@@ -51,8 +51,8 @@ function listPositionJabatan(divisi, positionId) {
         divisi = $("#department-jabatan option:selected").val();
     }
 
-    PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
-
+    // PositionAction.searchPositionBiodataHistory(divisi, function (listdata) {
+    PositionAction.searchPositionBiodata(divisi, function (listdata) {
         var str = "";
         $.each(listdata, function (i, item) {
             if (positionId == item.positionId){

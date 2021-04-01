@@ -481,16 +481,20 @@ public class IjinBoImpl implements IjinBo {
             if (listIjin != null) {
                 for (ImIjinEntity imIjinEntity : listIjin) {
                     boolean bisa=true;
-                    if (imIjinEntity.getGender()==null){}
-                    else if(("L/P").equalsIgnoreCase(imIjinEntity.getGender())){}
-                    else if (!imIjinEntity.getGender().equalsIgnoreCase(biodataEntity.getGender())){
-                        bisa=false;
+                    if (imIjinEntity.getGender()!=null) {
+                        if (!"L/P".equalsIgnoreCase(imIjinEntity.getGender())) {
+                            if (!imIjinEntity.getGender().equalsIgnoreCase(biodataEntity.getGender())) {
+                                bisa = false;
+                            }
+                        }
                     }
 
-                    if (imIjinEntity.getAgama()==null){}
-                    else if(("all").equalsIgnoreCase(imIjinEntity.getAgama())){}
-                    else if (!imIjinEntity.getAgama().equalsIgnoreCase(biodataEntity.getAgama())){
-                        bisa=false;
+                    if (imIjinEntity.getAgama()!=null){
+                        if(!"all".equalsIgnoreCase(imIjinEntity.getAgama())) {
+                            if (!imIjinEntity.getAgama().equalsIgnoreCase(biodataEntity.getAgama())) {
+                                bisa = false;
+                            }
+                        }
                     }
 
                     if (bisa){

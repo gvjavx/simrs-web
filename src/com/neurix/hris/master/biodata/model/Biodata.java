@@ -144,12 +144,7 @@ public class Biodata extends BaseModel {
     private String strLastUpdate;
 
     //BARU
-    private BigDecimal peralihanGapok;
-    private BigDecimal peralihanSankhus;
-    private BigDecimal peralihanTunjangan;
-    private String stPeralihanGapok;
-    private String stPeralihanSankhus;
-    private String stPeralihanTunjangan;
+
 
     private Date tanggalKeluar;
     private String flagCutiDiluarTanggungan;
@@ -160,6 +155,201 @@ public class Biodata extends BaseModel {
 
     private String dpjpDokter;
     private String sipDokter;
+
+    private String flagTunjPeralihanGapok;
+    private String flagTunjPeralihanSankhus;
+    private String flagTunjPeralihanTunjangan;
+    private BigDecimal tunjPeralihanGapok;
+    private BigDecimal tunjPeralihanSankhus;
+    private BigDecimal tunjPeralihanTunjangan;
+    private String stTunjPeralihanGapok;
+    private String stTunjPeralihanSankhus;
+    private String stTunjPeralihanTunjangan;
+    private String flagTunjPemondokan;
+    //RAKA-22MAR2021 ==> tambah ke tunj-Lain
+    private String stTunjPemondokan;
+    private String stTunjSupervisi;
+    private String stTunjLokasi;
+    private String stTunjSiaga;
+    private BigDecimal tunjPemondokan;
+    private BigDecimal tunjSupervisi;
+    private BigDecimal tunjLokasi;
+    private BigDecimal tunjSiaga;
+    //RAKA-end
+    //RAKA-24MAR2021 ==> untuk keperluan create User
+    private String createUser;
+    private String email;
+    private String role;
+    //RAKA-end
+
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getStTunjPemondokan() {
+        return stTunjPemondokan;
+    }
+
+    public void setStTunjPemondokan(String stTunjPemondokan) {
+        this.stTunjPemondokan = stTunjPemondokan;
+    }
+
+    public String getStTunjSupervisi() {
+        return stTunjSupervisi;
+    }
+
+    public void setStTunjSupervisi(String stTunjSupervisi) {
+        this.stTunjSupervisi = stTunjSupervisi;
+    }
+
+    public String getStTunjLokasi() {
+        return stTunjLokasi;
+    }
+
+    public void setStTunjLokasi(String stTunjLokasi) {
+        this.stTunjLokasi = stTunjLokasi;
+    }
+
+    public String getStTunjSiaga() {
+        return stTunjSiaga;
+    }
+
+    public void setStTunjSiaga(String stTunjSiaga) {
+        this.stTunjSiaga = stTunjSiaga;
+    }
+
+    public BigDecimal getTunjPemondokan() {
+        return tunjPemondokan;
+    }
+
+    public void setTunjPemondokan(BigDecimal tunjPemondokan) {
+        this.tunjPemondokan = tunjPemondokan;
+    }
+
+    public BigDecimal getTunjSupervisi() {
+        return tunjSupervisi;
+    }
+
+    public void setTunjSupervisi(BigDecimal tunjSupervisi) {
+        this.tunjSupervisi = tunjSupervisi;
+    }
+
+    public BigDecimal getTunjLokasi() {
+        return tunjLokasi;
+    }
+
+    public void setTunjLokasi(BigDecimal tunjLokasi) {
+        this.tunjLokasi = tunjLokasi;
+    }
+
+    public BigDecimal getTunjSiaga() {
+        return tunjSiaga;
+    }
+
+    public void setTunjSiaga(BigDecimal tunjSiaga) {
+        this.tunjSiaga = tunjSiaga;
+    }
+
+    public String getFlagTunjPemondokan() {
+        return flagTunjPemondokan;
+    }
+
+    public void setFlagTunjPemondokan(String flagTunjPemondokan) {
+        this.flagTunjPemondokan = flagTunjPemondokan;
+    }
+
+    public String getFlagTunjPeralihanGapok() {
+        return flagTunjPeralihanGapok;
+    }
+
+    public void setFlagTunjPeralihanGapok(String flagTunjPeralihanGapok) {
+        this.flagTunjPeralihanGapok = flagTunjPeralihanGapok;
+    }
+
+    public String getFlagTunjPeralihanSankhus() {
+        return flagTunjPeralihanSankhus;
+    }
+
+    public void setFlagTunjPeralihanSankhus(String flagTunjPeralihanSankhus) {
+        this.flagTunjPeralihanSankhus = flagTunjPeralihanSankhus;
+    }
+
+    public String getFlagTunjPeralihanTunjangan() {
+        return flagTunjPeralihanTunjangan;
+    }
+
+    public void setFlagTunjPeralihanTunjangan(String flagTunjPeralihanTunjangan) {
+        this.flagTunjPeralihanTunjangan = flagTunjPeralihanTunjangan;
+    }
+
+    public BigDecimal getTunjPeralihanGapok() {
+        return tunjPeralihanGapok;
+    }
+
+    public void setTunjPeralihanGapok(BigDecimal tunjPeralihanGapok) {
+        this.tunjPeralihanGapok = tunjPeralihanGapok;
+    }
+
+    public BigDecimal getTunjPeralihanSankhus() {
+        return tunjPeralihanSankhus;
+    }
+
+    public void setTunjPeralihanSankhus(BigDecimal tunjPeralihanSankhus) {
+        this.tunjPeralihanSankhus = tunjPeralihanSankhus;
+    }
+
+    public BigDecimal getTunjPeralihanTunjangan() {
+        return tunjPeralihanTunjangan;
+    }
+
+    public void setTunjPeralihanTunjangan(BigDecimal tunjPeralihanTunjangan) {
+        this.tunjPeralihanTunjangan = tunjPeralihanTunjangan;
+    }
+
+    public String getStTunjPeralihanGapok() {
+        return stTunjPeralihanGapok;
+    }
+
+    public void setStTunjPeralihanGapok(String stTunjPeralihanGapok) {
+        this.stTunjPeralihanGapok = stTunjPeralihanGapok;
+    }
+
+    public String getStTunjPeralihanSankhus() {
+        return stTunjPeralihanSankhus;
+    }
+
+    public void setStTunjPeralihanSankhus(String stTunjPeralihanSankhus) {
+        this.stTunjPeralihanSankhus = stTunjPeralihanSankhus;
+    }
+
+    public String getStTunjPeralihanTunjangan() {
+        return stTunjPeralihanTunjangan;
+    }
+
+    public void setStTunjPeralihanTunjangan(String stTunjPeralihanTunjangan) {
+        this.stTunjPeralihanTunjangan = stTunjPeralihanTunjangan;
+    }
 
     public String getDpjpDokter() {
         return dpjpDokter;
@@ -236,56 +426,8 @@ public class Biodata extends BaseModel {
         this.stTanggalCutiDiluarTanggunganAkhir = stTanggalCutiDiluarTanggunganAkhir;
     }
 
-    public String getStPeralihanGapok() {
-        return stPeralihanGapok;
-    }
-
-    public void setStPeralihanGapok(String stPeralihanGapok) {
-        this.stPeralihanGapok = stPeralihanGapok;
-    }
-
-    public String getStPeralihanSankhus() {
-        return stPeralihanSankhus;
-    }
-
-    public void setStPeralihanSankhus(String stPeralihanSankhus) {
-        this.stPeralihanSankhus = stPeralihanSankhus;
-    }
-
-    public String getStPeralihanTunjangan() {
-        return stPeralihanTunjangan;
-    }
-
-    public void setStPeralihanTunjangan(String stPeralihanTunjangan) {
-        this.stPeralihanTunjangan = stPeralihanTunjangan;
-    }
-
     public String getJenisPegawai() {
         return jenisPegawai;
-    }
-
-    public BigDecimal getPeralihanGapok() {
-        return peralihanGapok;
-    }
-
-    public void setPeralihanGapok(BigDecimal peralihanGapok) {
-        this.peralihanGapok = peralihanGapok;
-    }
-
-    public BigDecimal getPeralihanSankhus() {
-        return peralihanSankhus;
-    }
-
-    public void setPeralihanSankhus(BigDecimal peralihanSankhus) {
-        this.peralihanSankhus = peralihanSankhus;
-    }
-
-    public BigDecimal getPeralihanTunjangan() {
-        return peralihanTunjangan;
-    }
-
-    public void setPeralihanTunjangan(BigDecimal peralihanTunjangan) {
-        this.peralihanTunjangan = peralihanTunjangan;
     }
 
     public void setJenisPegawai(String jenisPegawai) {

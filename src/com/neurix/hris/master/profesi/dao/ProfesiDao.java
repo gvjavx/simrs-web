@@ -113,6 +113,24 @@ public class ProfesiDao extends GenericDao<ImProfesiEntity, String> {
         return hasil;
     }
 
+    public Boolean cekHakLemburByProfesi(String profesiId) throws HibernateException{
+        Boolean hasil = true;
+        List<ImProfesiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImProfesiEntity.class)
+                .add(Restrictions.eq("profesiId",profesiId))
+                .add(Restrictions.eq("flag", "Y"))
+                .addOrder(Order.asc("profesiId"))
+                .list();
+
+        for(ImProfesiEntity profesi : results) {
+            if (profesi.getTipeProfesi() != null) {
+                if ("apoteker".equalsIgnoreCase(profesi.getTipeProfesi()) || "dokter".equalsIgnoreCase(profesi.getTipeProfesi())) {
+                    hasil = false;
+                }
+            }
+        }
+        return hasil;
+    }
+
     public void addAndSaveHistory(ImProfesiHistoryEntity entity) throws HibernateException {
         this.sessionFactory.getCurrentSession().save(entity);
     }

@@ -1,6 +1,7 @@
 package com.neurix.hris.transaksi.absensi.action;
 
 //import com.neurix.authorization.company.bo.AreaBo;
+
 import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.common.action.BaseMasterAction;
@@ -20,6 +21,9 @@ import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
 import com.neurix.hris.master.positionBagian.model.PositionBagian;
+import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
+import com.neurix.hris.master.strukturJabatan.model.ImStrukturJabatanEntity;
+import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
 import com.neurix.hris.transaksi.absensi.model.*;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
@@ -28,8 +32,11 @@ import com.neurix.hris.transaksi.ijinKeluar.bo.IjinKeluarBo;
 import com.neurix.hris.transaksi.ijinKeluar.model.IjinKeluar;
 import com.neurix.hris.transaksi.indisipliner.bo.IndisiplinerBo;
 import com.neurix.hris.transaksi.indisipliner.model.Indisipliner;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.JadwalShiftKerja;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
+import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
+import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.sppd.bo.SppdBo;
 import com.neurix.hris.transaksi.sppd.model.SppdPerson;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
@@ -43,6 +50,14 @@ import org.springframework.web.context.ContextLoader;
 
 import java.io.*;
 import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.math.RoundingMode;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Date;
@@ -174,15 +189,16 @@ public class AbsensiAction extends BaseMasterAction {
         this.absensiBoProxy = absensiBoProxy;
     }
 
-    public String cekKoneksi(){
+    public String cekKoneksi() {
         return "sukses";
     }
-    public List inquiry(String tanggalAwal,String tanggalAkhir) throws Exception {
+
+    public List inquiry(String tanggalAwal, String tanggalAkhir) throws Exception {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultMesinAbsensi");
         logger.info("[AbsensiAction.inquiry] start process >>>");
-        List<MesinAbsensi> mesinAbsensiList= new ArrayList<>();
-        List<MesinAbsensi> mesinAbsensiListFinal= new ArrayList<>();
+        List<MesinAbsensi> mesinAbsensiList = new ArrayList<>();
+        List<MesinAbsensi> mesinAbsensiListFinal = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
@@ -192,17 +208,17 @@ public class AbsensiAction extends BaseMasterAction {
         start.setTime(startDate);
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
-        end.add(Calendar.DATE,1);
+        end.add(Calendar.DATE, 1);
         java.util.Date date;
         Boolean awalTanggal = false;
         for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            if (date==startDate){
-                awalTanggal=true;
+            if (date == startDate) {
+                awalTanggal = true;
             }
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal,"", "");
+                mesinAbsensiList = absensiBo.inquiry(tanggal, awalTanggal, "", "");
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -211,7 +227,7 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.search] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
             mesinAbsensiListFinal.addAll(mesinAbsensiList);
         }
@@ -220,7 +236,7 @@ public class AbsensiAction extends BaseMasterAction {
         return mesinAbsensiListFinal;
     }
 
-    public void cekCronJob() throws Exception{
+    public void cekCronJob() throws Exception {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
@@ -235,6 +251,7 @@ public class AbsensiAction extends BaseMasterAction {
     public String downloadPdf() {
         return null;
     }
+
     //    @Override
 //    public String downloadXls() {
 //        return null;
@@ -245,10 +262,10 @@ public class AbsensiAction extends BaseMasterAction {
         AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
         String branchId = CommonUtil.userBranchLogin();
         AbsensiPegawai data = new AbsensiPegawai();
-        if (branchId!=null){
+        if (branchId != null) {
             data.setBranchId(branchId);
             data.setBranchIdUser(branchId);
-        }else{
+        } else {
             data.setBranchId("");
         }
 
@@ -261,6 +278,7 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[absensiAction.add] stop process >>>");
         return "init_add";
     }
+
     public String addTambahan() {
         logger.info("[absensiAction.addTambahan] start process >>>");
         AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
@@ -273,6 +291,7 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[absensiAction.addTambahan] stop process >>>");
         return "init_add_tambahan";
     }
+
     @Override
     public String edit() {
         return null;
@@ -285,23 +304,25 @@ public class AbsensiAction extends BaseMasterAction {
         searchAbsensi.setAbsensiPegawaiId(getId());
         searchAbsensi.setFlag(getFlag());
         absensiPegawaiList = absensiBoProxy.getByCriteria(searchAbsensi);
-        for (AbsensiPegawai absensiPegawai : absensiPegawaiList){
+        for (AbsensiPegawai absensiPegawai : absensiPegawaiList) {
             setAbsensiPegawai(absensiPegawai);
         }
         return "init_delete";
     }
+
     public String editAbsensi() {
         List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
         AbsensiPegawai searchAbsensi = new AbsensiPegawai();
         searchAbsensi.setAbsensiPegawaiId(getId());
         searchAbsensi.setFlag(getFlag());
         absensiPegawaiList = absensiBoProxy.getByCriteria(searchAbsensi);
-        for (AbsensiPegawai absensiPegawai : absensiPegawaiList){
+        for (AbsensiPegawai absensiPegawai : absensiPegawaiList) {
             setAbsensiPegawai(absensiPegawai);
         }
         return "init_edit";
     }
-    public String saveEdit(){
+
+    public String saveEdit() {
         logger.info("[AbsensiAction.saveEdit] start process >>>");
         try {
 
@@ -333,7 +354,8 @@ public class AbsensiAction extends BaseMasterAction {
 
         return "success_save_edit";
     }
-    public String saveDelete(){
+
+    public String saveDelete() {
         logger.info("[AbsensiAction.saveDelete] start process >>>");
         try {
 
@@ -375,11 +397,12 @@ public class AbsensiAction extends BaseMasterAction {
 
         absensiPegawaiList = absensiBoProxy.getByCriteria(searchAbsensi);
 
-        for (AbsensiPegawai absensiPegawai : absensiPegawaiList){
+        for (AbsensiPegawai absensiPegawai : absensiPegawaiList) {
             setAbsensiPegawai(absensiPegawai);
         }
         return "init_view";
     }
+
     public String addKeteranganById() {
         List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
         AbsensiPegawai searchAbsensi = new AbsensiPegawai();
@@ -388,7 +411,7 @@ public class AbsensiAction extends BaseMasterAction {
 
         absensiPegawaiList = absensiBoProxy.getByCriteria(searchAbsensi);
 
-        for (AbsensiPegawai absensiPegawai : absensiPegawaiList){
+        for (AbsensiPegawai absensiPegawai : absensiPegawaiList) {
             setAbsensiPegawai(absensiPegawai);
         }
         return "init_add_keterangan";
@@ -422,7 +445,7 @@ public class AbsensiAction extends BaseMasterAction {
         List<AbsensiPegawai> absensiPegawaiList = new ArrayList<AbsensiPegawai>();
         List<Biodata> personList = new ArrayList<Biodata>();
         AbsensiPegawai editAbsensiPegawai = new AbsensiPegawai();
-        if(itemFlag != null){
+        if (itemFlag != null) {
             try {
                 editAbsensiPegawai = init2(itemId, itemFlag);
                 absensiPegawaiList.add(editAbsensiPegawai);
@@ -447,7 +470,7 @@ public class AbsensiAction extends BaseMasterAction {
         return null;
     }
 
-    public void saveAdd(){
+    public void saveAdd() {
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         List<AbsensiPegawai> listOfResult = new ArrayList<>();
@@ -458,10 +481,10 @@ public class AbsensiAction extends BaseMasterAction {
         listOfResult = (List<AbsensiPegawai>) session.getAttribute("listOfResultAbsensiPegawai");
         listOfResultOnCall = (List<AbsensiOnCall>) session.getAttribute("listOfResultOnCall");
 
-        if (listOfResult==null){
+        if (listOfResult == null) {
             listOfResult = new ArrayList<>();
         }
-        if (listOfResultOnCall==null){
+        if (listOfResultOnCall == null) {
             listOfResultOnCall = new ArrayList<>();
         }
 
@@ -473,12 +496,16 @@ public class AbsensiAction extends BaseMasterAction {
         data.setAction("C");
         data.setFlag("Y");
 
-        absensiBo.saveAddAbsensi(listOfResult,listOfResultOnCall,data);
+        try{
+            absensiBo.saveAddAbsensi(listOfResult, listOfResultOnCall, data);
+        }catch(GeneralBOException e){
+            logger.error("[AbsensiAction.saveAdd] Error, " + e.getMessage());
+        }
 
         session.removeAttribute("listOfResultAbsensiPegawai");
     }
 
-    public void saveAddIndisipliner (String nip, String nama,String tipeIndisipliner,String stTanggal,String keteranganIndisipliner,String dampak,String tanggalAwalPantau,String tanggalAkhirPantau,String tanggalAwalBlokir,String tanggalAkhirBlokir){
+    public void saveAddIndisipliner(String nip, String nama, String tipeIndisipliner, String stTanggal, String keteranganIndisipliner, String dampak, String tanggalAwalPantau, String tanggalAkhirPantau, String tanggalAwalBlokir, String tanggalAkhirBlokir) {
         String userLogin = CommonUtil.userLogin();
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
         Indisipliner saveIndisipliner = new Indisipliner();
@@ -506,24 +533,25 @@ public class AbsensiAction extends BaseMasterAction {
         searchBiodata.setFlag("Y");
         List<Biodata> biodataList = new ArrayList<>();
         biodataList = biodataBo.getByCriteria(searchBiodata);
-        for (Biodata biodata:biodataList){
+        for (Biodata biodata : biodataList) {
             saveIndisipliner.setDivisiId(biodata.getDivisi());
             saveIndisipliner.setBranchId(biodata.getBranch());
         }
 
         indisiplinerBo.saveAdd(saveIndisipliner);
     }
-    public String saveApprove(String AbsensiPegawaiId, String statusApprove, String who,String nip){
+
+    public String saveApprove(String AbsensiPegawaiId, String statusApprove, String who, String nip) {
         logger.info("[AbsensiAction.saveApprove] start process >>>");
         try {
 
             AbsensiPegawai editAbsensiPegawai = new AbsensiPegawai();
 
             editAbsensiPegawai.setAbsensiPegawaiId(AbsensiPegawaiId);
-            if(who.equals("atasan")){
-                if(statusApprove.equals("Y")){
+            if (who.equals("atasan")) {
+                if (statusApprove.equals("Y")) {
                     editAbsensiPegawai.setApprovalFlag(statusApprove);
-                }else{
+                } else {
                     editAbsensiPegawai.setApprovalFlag("N");
                     editAbsensiPegawai.setNotapprovalNote(statusApprove);
                 }
@@ -560,26 +588,27 @@ public class AbsensiAction extends BaseMasterAction {
         return "success_save_edit";
     }
 
-    public String saveAddKeterangan (String nip,String stTanggal,String keterangan, String flagUangMakan){
+    public String saveAddKeterangan(String nip, String stTanggal, String keterangan, String flagUangMakan) {
         logger.info("[AbsensiAction.saveAddKeterangan] start process >>>");
-        String status ="";
+        String status = "";
         List<AbsensiPegawaiEntity> listOfAbsensiPegawai = new ArrayList<>();
         List<AbsensiPegawaiEntity> listOfResult = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
         listOfAbsensiPegawai = (List<AbsensiPegawaiEntity>) session.getAttribute("listOfResultAbsensiFinal");
         session.removeAttribute("listOfResultAbsensiFinal");
-        for (AbsensiPegawaiEntity absensiPegawaiEntity : listOfAbsensiPegawai){
-            if (nip.equalsIgnoreCase(absensiPegawaiEntity.getNip())&&stTanggal.equalsIgnoreCase(absensiPegawaiEntity.getStTanggal())){
+        for (AbsensiPegawaiEntity absensiPegawaiEntity : listOfAbsensiPegawai) {
+            if (nip.equalsIgnoreCase(absensiPegawaiEntity.getNip()) && stTanggal.equalsIgnoreCase(absensiPegawaiEntity.getStTanggal())) {
                 absensiPegawaiEntity.setKeterangan(keterangan);
                 absensiPegawaiEntity.setFlagUangMakan(flagUangMakan);
             }
             listOfResult.add(absensiPegawaiEntity);
-            status="ok";
+            status = "ok";
         }
         session.setAttribute("listOfResultAbsensiFinal", listOfResult);
         return status;
     }
-    public String saveAddKeterangan (){
+
+    public String saveAddKeterangan() {
         logger.info("[AbsensiAction.saveAddKeterangan] start process >>>");
         AbsensiPegawai absensiPegawai = getAbsensiPegawai();
         String userLogin = CommonUtil.userLogin();
@@ -598,11 +627,12 @@ public class AbsensiAction extends BaseMasterAction {
                 logger.error("[AbsensiAction.saveAddKeterangan] Error when saving error,", e1);
             }
             logger.error("[AbsensiAction.saveAddKeterangan] Error when saving keterangan absensi with criteria," + "[" + logId + "] ", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when saving keterangan , please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving keterangan , please inform to your admin");
         }
         return "success_save_add_keterangan";
     }
-    public void saveTmp(){
+
+    public void saveTmp() {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultAbsensiFinal");
         AbsensiPegawai absen = getAbsensiPegawai();
@@ -610,7 +640,7 @@ public class AbsensiAction extends BaseMasterAction {
         for (String anAllData : allData) {
             String[] parts = anAllData.split(":");
             String pin = parts[0];
-            pin = pin.replaceAll("\\s+","");
+            pin = pin.replaceAll("\\s+", "");
             String stTanggal = parts[1];
             logger.info("[AbsensiAction.saveTmpAction] start process >>>");
             boolean flag = false;
@@ -628,7 +658,7 @@ public class AbsensiAction extends BaseMasterAction {
                     searchBiodata.setNip(mesinAbsensi.getNip());
                     Biodata biodata = biodataBo.getShift(searchBiodata);
 
-                    if (!"Y".equalsIgnoreCase(biodata.getShift())){
+                    if (!"Y".equalsIgnoreCase(biodata.getShift())) {
                         try {
                             AbsensiPegawai absensiPegawai = new AbsensiPegawai();
                             absensiPegawai.setJamMasuk(mesinAbsensi.getJamMasuk());
@@ -701,11 +731,11 @@ public class AbsensiAction extends BaseMasterAction {
                             if (liburList.size() != 0) {
                                 tipeHari = "hari_libur";
                             }
-                            AbsensiPegawai resultJadwal = absensiBo.getJadwalShiftKerja(mesinAbsensi.getNip(),mesinAbsensi.getTanggal());
+                            AbsensiPegawai resultJadwal = absensiBo.getJadwalShiftKerja(mesinAbsensi.getNip(), mesinAbsensi.getTanggal());
                             if (resultJadwal.getJamMasuk() != null && resultJadwal.getJamPulang() != null) {
-                                tipeHari="hari_kerja";
-                            }else{
-                                tipeHari="hari_libur";
+                                tipeHari = "hari_kerja";
+                            } else {
+                                tipeHari = "hari_libur";
                             }
 
                             absensiPegawai.setPin(mesinAbsensi.getPin());
@@ -718,9 +748,9 @@ public class AbsensiAction extends BaseMasterAction {
                             absensiPegawai.setTipePegawai(mesinAbsensi.getTipePegawai());
                             absensiPegawai.setStatusGiling(mesinAbsensi.getStatusGiling());
                             absensiPegawai.setJamMasukDb(mesinAbsensi.getJamMasukDb());
-                            if (tipeHari.equalsIgnoreCase("hari_kerja")){
+                            if (tipeHari.equalsIgnoreCase("hari_kerja")) {
                                 absensiPegawai.setJamPulangDb(mesinAbsensi.getJamPulangDb());
-                            }else{
+                            } else {
                                 absensiPegawai.setJamPulangDb(mesinAbsensi.getJamMasuk());
                             }
                             absensiBo.saveTmp(absensiPegawai, tipeHari);
@@ -739,7 +769,8 @@ public class AbsensiAction extends BaseMasterAction {
             }
         }
     }
-    public void saveTambahan(){
+
+    public void saveTambahan() {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiList = (List<PegawaiTambahanAbsensi>) session.getAttribute("listOfResultMesinAbsensi");
         for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : pegawaiTambahanAbsensiList) {
@@ -767,6 +798,7 @@ public class AbsensiAction extends BaseMasterAction {
             }
         }
     }
+
     public String searchStatusHari(String tanggal) throws ParseException {
         logger.info("[AbsensiAction.searchStatusHari] start process >>>");
         List<Libur> liburList = new ArrayList<>();
@@ -777,34 +809,33 @@ public class AbsensiAction extends BaseMasterAction {
         Calendar cal = Calendar.getInstance();
         cal.setTime(today);
         int day = cal.get(Calendar.DAY_OF_WEEK);
-        if (day==1||day==7){
+        if (day == 1 || day == 7) {
             return "hari_libur";
-        }else{
+        } else {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             LiburBo liburBo = (LiburBo) ctx.getBean("liburBoProxy");
             liburList = liburBo.getByCriteria(libur);
 
-            if (liburList.size()!=0){
+            if (liburList.size() != 0) {
                 return "hari_libur";
-            }
-            else {
+            } else {
                 return "hari_kerja";
             }
         }
     }
 
-    public List<AbsensiPegawai> searchAbsensiFinal(){
+    public List<AbsensiPegawai> searchAbsensiFinal() {
         HttpSession session = ServletActionContext.getRequest().getSession();
         return (List<AbsensiPegawai>) session.getAttribute("listOfResultAbsensiPegawai");
     }
 
-    public String goToInquiry(){
+    public String goToInquiry() {
         AbsensiPegawai addAbsensiPegawai = new AbsensiPegawai();
         String unitId = CommonUtil.userBranchLogin();
 //        Biodata data = new Biodata();
-        if (unitId != null){
+        if (unitId != null) {
             addAbsensiPegawai.setBranchId(unitId);
-        }else {
+        } else {
             addAbsensiPegawai.setBranchId("");
         }
 
@@ -813,15 +844,15 @@ public class AbsensiAction extends BaseMasterAction {
         return "go_to_inquiry";
     }
 
-    public String goToInquiryPegawaiTambahan(){
+    public String goToInquiryPegawaiTambahan() {
         return "go_to_inquiry_tambahan";
     }
 
-    public String goToProses(){
+    public String goToProses() {
         return "go_to_proses";
     }
 
-    public Indisipliner addIndisipliner(String nip , String stTanggal){
+    public Indisipliner addIndisipliner(String nip, String stTanggal) {
         Biodata searchBiodata = new Biodata();
         Indisipliner result = new Indisipliner();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -830,7 +861,7 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         List<Biodata> biodataList = biodataBo.getByCriteria(searchBiodata);
-        for (Biodata biodata : biodataList){
+        for (Biodata biodata : biodataList) {
             result.setBranchId(biodata.getBranch());
             result.setDivisiId(biodata.getDivisi());
             result.setPositionId(biodata.getPositionId());
@@ -864,10 +895,10 @@ public class AbsensiAction extends BaseMasterAction {
         IndisiplinerBo indisiplinerBo = (IndisiplinerBo) ctx.getBean("indisiplinerBoProxy");
         Indisipliner searchIndisipliner = new Indisipliner();
         Date tanggal = CommonUtil.convertToDate(stTanggal);
-        String tipeIndisipliner="";
-        List<Indisipliner> indisiplinerList = indisiplinerBo.getListIndisiplinerByPersonAndTanggal(nip,tanggal);
-        if (indisiplinerList.size()!=0){
-            for (Indisipliner indisipliner : indisiplinerList){
+        String tipeIndisipliner = "";
+        List<Indisipliner> indisiplinerList = indisiplinerBo.getListIndisiplinerByPersonAndTanggal(nip, tanggal);
+        if (indisiplinerList.size() != 0) {
+            for (Indisipliner indisipliner : indisiplinerList) {
                 switch (indisipliner.getTipeIndisipliner()) {
                     case "":
                         result.setTipeIndisipliner("SP0");
@@ -883,13 +914,14 @@ public class AbsensiAction extends BaseMasterAction {
                         break;
                 }
             }
-        } else{
+        } else {
             result.setTipeIndisipliner("SP0");
             result.setDampak("Blokir absensi, ybs tidak dapat melakukan absen finger print");
         }
         return result;
     }
-    public Indisipliner addKeterangan(String nip , String stTanggal){
+
+    public Indisipliner addKeterangan(String nip, String stTanggal) {
         Biodata searchBiodata = new Biodata();
         Indisipliner result = new Indisipliner();
         DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
@@ -898,7 +930,7 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         List<Biodata> biodataList = biodataBo.getByCriteria(searchBiodata);
-        for (Biodata biodata : biodataList){
+        for (Biodata biodata : biodataList) {
             result.setBranchId(biodata.getBranch());
             result.setDivisiId(biodata.getDivisi());
             result.setPositionId(biodata.getPositionId());
@@ -907,6 +939,7 @@ public class AbsensiAction extends BaseMasterAction {
         result.setStTanggal(stTanggal);
         return result;
     }
+
     @Override
     public String search() {
         logger.info("[AbsensiAction.search] start process >>>");
@@ -926,7 +959,7 @@ public class AbsensiAction extends BaseMasterAction {
                 return ERROR;
             }
             logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }
 
@@ -940,7 +973,7 @@ public class AbsensiAction extends BaseMasterAction {
         return SUCCESS;
     }
 
-    public List<MesinAbsensiDetail> searchListAbsensi(String pin , String tanggal) {
+    public List<MesinAbsensiDetail> searchListAbsensi(String pin, String tanggal) {
         MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
         mesinAbsensiDetail.setPin(pin);
         logger.info("[AbsensiAction.searchListAbsensi] start process >>>");
@@ -948,17 +981,18 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         try {
-            listOfMesinAbsensiDetail = absensiBo.getByCriteriaAbsensiDetail(mesinAbsensiDetail,tanggal);
+            listOfMesinAbsensiDetail = absensiBo.getByCriteriaAbsensiDetail(mesinAbsensiDetail, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
 
         logger.info("[AbsensiAction.searchListAbsensi] end process <<<");
         return listOfMesinAbsensiDetail;
     }
-    public List<Indisipliner> searchListIndisipliner(String nip , String stTanggal) {
+
+    public List<Indisipliner> searchListIndisipliner(String nip, String stTanggal) {
         Indisipliner indisipliner = new Indisipliner();
         indisipliner.setNip(nip);
         indisipliner.setTanggal(CommonUtil.convertToDate(stTanggal));
@@ -971,14 +1005,15 @@ public class AbsensiAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
 
         logger.info("[AbsensiAction.searchListAbsensi] end process <<<");
 
         return indisiplinerList;
     }
-    public List<MesinAbsensiDetail> searchListAbsensiDetail(String pin , String tanggal) {
+
+    public List<MesinAbsensiDetail> searchListAbsensiDetail(String pin, String tanggal) {
         MesinAbsensiDetail mesinAbsensiDetail = new MesinAbsensiDetail();
         mesinAbsensiDetail.setPin(pin);
         logger.info("[AbsensiAction.searchListAbsensi] start process >>>");
@@ -986,17 +1021,18 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         try {
-            listOfMesinAbsensiDetail = absensiBo.getByCriteriaAbsensiDetailAll(mesinAbsensiDetail,tanggal);
+            listOfMesinAbsensiDetail = absensiBo.getByCriteriaAbsensiDetailAll(mesinAbsensiDetail, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
 
         logger.info("[AbsensiAction.searchListAbsensi] end process <<<");
 
         return listOfMesinAbsensiDetail;
     }
+
     public List<Lembur> searchListAbsensiLembur(String tanggal, String Nip) {
         Lembur lembur = new Lembur();
         lembur.setNip(Nip);
@@ -1005,11 +1041,11 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         LemburBo lemburBo = (LemburBo) ctx.getBean("lemburBoProxy");
         try {
-            lemburList = lemburBo.getByCriteriaForAbsensi(lembur,tanggal);
+            lemburList = lemburBo.getByCriteriaForAbsensi(lembur, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         logger.info("[AbsensiAction.searchListAbsensi] end process <<<");
         return lemburList;
@@ -1023,15 +1059,16 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
         try {
-            ijinKeluarList = ijinKeluarBo.getByCriteriaForAbsensi(ijinKeluar,tanggal);
+            ijinKeluarList = ijinKeluarBo.getByCriteriaForAbsensi(ijinKeluar, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         logger.info("[AbsensiAction.searchListAbsensi] end process <<<");
         return ijinKeluarList;
     }
+
     public List<CutiPegawai> searchListAbsensiCuti(String tanggal, String Nip) {
         CutiPegawai cutiPegawai = new CutiPegawai();
         cutiPegawai.setNip(Nip);
@@ -1040,15 +1077,16 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
         try {
-            cutiPegawaiList = cutiPegawaiBo.getByCriteriaForAbsensi(cutiPegawai,tanggal);
+            cutiPegawaiList = cutiPegawaiBo.getByCriteriaForAbsensi(cutiPegawai, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensiCuti] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         logger.info("[AbsensiAction.searchListAbsensiCuti] end process <<<");
         return cutiPegawaiList;
     }
+
     public List<SppdPerson> searchListAbsensiSppd(String tanggal, String Nip) {
         SppdPerson sppdPerson = new SppdPerson();
         sppdPerson.setPersonId(Nip);
@@ -1057,15 +1095,16 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         SppdBo sppdBo = (SppdBo) ctx.getBean("sppdBoProxy");
         try {
-            sppdPersonList = sppdBo.getByCriteriaForAbsensi(sppdPerson,tanggal);
+            sppdPersonList = sppdBo.getByCriteriaForAbsensi(sppdPerson, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensiSppd] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         logger.info("[AbsensiAction.searchListAbsensiSppd] end process <<<");
         return sppdPersonList;
     }
+
     public List<IjinKeluar> searchListAbsensiIjinTidakMasuk(String tanggal, String Nip) {
         IjinKeluar ijinKeluar = new IjinKeluar();
         ijinKeluar.setNip(Nip);
@@ -1074,25 +1113,26 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
         try {
-            ijinKeluarList = ijinKeluarBo.getByCriteriaForAbsensiIjinTidakMasuk(ijinKeluar,tanggal);
+            ijinKeluarList = ijinKeluarBo.getByCriteriaForAbsensiIjinTidakMasuk(ijinKeluar, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             logger.error("[AbsensiAction.searchListAbsensiIjinTidakMasuk] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         logger.info("[AbsensiAction.searchListAbsensiIjinTidakMasuk] end process <<<");
         return ijinKeluarList;
     }
+
     @Override
     public String initForm() {
         logger.info("[absensiAction.initForm] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         String branchId = CommonUtil.userBranchLogin();
         AbsensiPegawai data = new AbsensiPegawai();
-        if (branchId!=null){
+        if (branchId != null) {
             data.setBranchId(branchId);
             data.setBranchIdUser(branchId);
-        }else{
+        } else {
             data.setBranchId("");
         }
 
@@ -1103,16 +1143,17 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[absensiAction.initForm] end process >>>");
         return INPUT;
     }
+
     public String printReportAbsensi() {
         logger.info("[ReportAction.printReportAbsensi] start process >>>");
-        String unit ="-";
-        String stBagian="-";
+        String unit = "-";
+        String stBagian = "-";
         String unitId = "";
         List<AbsensiPegawai> listDataFinal = new ArrayList();
-        List<Biodata> biodataList= new ArrayList();
+        List<Biodata> biodataList = new ArrayList();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
-        BiodataBo biodataBo= (BiodataBo) ctx.getBean("biodataBoProxy");
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
         IjinKeluarBo ijinKeluarBo = (IjinKeluarBo) ctx.getBean("ijinKeluarBoProxy");
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
         PositionBagian positionBagian = new PositionBagian();
@@ -1121,10 +1162,10 @@ public class AbsensiAction extends BaseMasterAction {
             stBagian=positionBagian.getBagianName();
         }
 
-        biodataList = biodataBo.getBiodataforUangMakan(getBranchId(),"",getBagian(),getNip());
-        int x=1;
-        int jumlahTerlambatKurang60=0,jumlahTerlambatLebih60=0,tidakAbsenMasuk=0,tidakAbsenPulang=0;
-        String nama="";
+        biodataList = biodataBo.getBiodataforUangMakan(getBranchId(), "", getBagian(), getNip());
+        int x = 1;
+        int jumlahTerlambatKurang60 = 0, jumlahTerlambatLebih60 = 0, tidakAbsenMasuk = 0, tidakAbsenPulang = 0;
+        String nama = "";
         for (Biodata biodata : biodataList) {
             List<AbsensiPegawai> listData = new ArrayList();
             List<AbsensiPegawai> listDataAbsensi = new ArrayList();
@@ -1144,9 +1185,9 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.search] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
-            for (AbsensiPegawai absensiPegawai : listData ){
+            for (AbsensiPegawai absensiPegawai : listData) {
                 absensiPegawai.setNama(biodata.getNamaPegawai());
                 absensiPegawai.setPositionName(biodata.getPositionName());
                 absensiPegawai.setDivisi(biodata.getDivisiName());
@@ -1158,39 +1199,39 @@ public class AbsensiAction extends BaseMasterAction {
         }
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
         listDataFinal = new ArrayList<>();
-        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
-            if(absensiPegawai.getJamMasuk()==null){
+        for (AbsensiPegawai absensiPegawai : listDataFinalTmp) {
+            if (absensiPegawai.getJamMasuk() == null) {
                 absensiPegawai.setJamMasuk("");
             }
-            if(absensiPegawai.getJamKeluar()==null){
+            if (absensiPegawai.getJamKeluar() == null) {
                 absensiPegawai.setJamKeluar("");
             }
-            if(absensiPegawai.getJamPulang()==null){
+            if (absensiPegawai.getJamPulang() == null) {
                 absensiPegawai.setJamPulang("");
             }
-            if (absensiPegawai.getTerlambatKurang60()==null){
+            if (absensiPegawai.getTerlambatKurang60() == null) {
                 absensiPegawai.setTerlambatKurang60("");
             }
-            if (absensiPegawai.getTerlambatLebih60()==null){
+            if (absensiPegawai.getTerlambatLebih60() == null) {
                 absensiPegawai.setTerlambatLebih60("");
             }
-            if (absensiPegawai.getTidakAbsenMasuk()==null){
+            if (absensiPegawai.getTidakAbsenMasuk() == null) {
                 absensiPegawai.setTidakAbsenMasuk("");
             }
-            if (absensiPegawai.getTidakAbsenPulang()==null){
+            if (absensiPegawai.getTidakAbsenPulang() == null) {
                 absensiPegawai.setTidakAbsenPulang("");
             }
-            if (absensiPegawai.getRealisasiJamLembur()==0){
+            if (absensiPegawai.getRealisasiJamLembur() == 0) {
                 absensiPegawai.setStRealisasiJamLembur("");
-            }else{
+            } else {
                 absensiPegawai.setStRealisasiJamLembur(String.valueOf(absensiPegawai.getRealisasiJamLembur()));
             }
             unit = absensiPegawai.getUnit();
 
-            if (x==1){
-                nama=absensiPegawai.getNama();
-            }else if (!nama.equalsIgnoreCase(absensiPegawai.getNama())){
-                AbsensiPegawai newAbsen= new AbsensiPegawai();
+            if (x == 1) {
+                nama = absensiPegawai.getNama();
+            } else if (!nama.equalsIgnoreCase(absensiPegawai.getNama())) {
+                AbsensiPegawai newAbsen = new AbsensiPegawai();
                 newAbsen.setStTanggal("");
                 newAbsen.setNip("");
                 newAbsen.setNama("");
@@ -1208,44 +1249,43 @@ public class AbsensiAction extends BaseMasterAction {
                 newAbsen.setTidakAbsenMasuk("");
                 newAbsen.setTidakAbsenPulang("");
 //                  jumlahTerlambatKurang60=0;jumlahTerlambatLebih60=0;tidakAbsenMasuk=0;tidakAbsenPulang=0;
-                  listDataFinal.add(newAbsen);
-                  nama=absensiPegawai.getNama();
+                listDataFinal.add(newAbsen);
+                nama = absensiPegawai.getNama();
             }
 
-            if (("1").equalsIgnoreCase(absensiPegawai.getTerlambatKurang60())){
-                jumlahTerlambatKurang60=jumlahTerlambatKurang60+1;
-            }else if (("1").equalsIgnoreCase(absensiPegawai.getTerlambatLebih60())){
-                jumlahTerlambatLebih60=jumlahTerlambatLebih60+1;
-            }else if (("1").equalsIgnoreCase(absensiPegawai.getTidakAbsenMasuk())){
-                tidakAbsenMasuk=tidakAbsenMasuk+1;
-            }else if (("1").equalsIgnoreCase(absensiPegawai.getTidakAbsenPulang())){
-                tidakAbsenPulang=tidakAbsenPulang+1;
+            if (("1").equalsIgnoreCase(absensiPegawai.getTerlambatKurang60())) {
+                jumlahTerlambatKurang60 = jumlahTerlambatKurang60 + 1;
+            } else if (("1").equalsIgnoreCase(absensiPegawai.getTerlambatLebih60())) {
+                jumlahTerlambatLebih60 = jumlahTerlambatLebih60 + 1;
+            } else if (("1").equalsIgnoreCase(absensiPegawai.getTidakAbsenMasuk())) {
+                tidakAbsenMasuk = tidakAbsenMasuk + 1;
+            } else if (("1").equalsIgnoreCase(absensiPegawai.getTidakAbsenPulang())) {
+                tidakAbsenPulang = tidakAbsenPulang + 1;
             }
 
             absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
             absensiPegawai.setMulaiIzin("");
             absensiPegawai.setPulangIzin("");
-            boolean sudah=false;
-            if (("Y").equalsIgnoreCase(absensiPegawai.getIjin())){
+            boolean sudah = false;
+            if (("Y").equalsIgnoreCase(absensiPegawai.getIjin())) {
                 IjinKeluar searchIjinKeluar = new IjinKeluar();
                 searchIjinKeluar.setNip(absensiPegawai.getNip());
-                List<IjinKeluar> ijinKeluarList = ijinKeluarBo.getByCriteriaForAbsensi(searchIjinKeluar,absensiPegawai.getStTanggal());
-                if (ijinKeluarList.size()==1){
-                    for (IjinKeluar ijinKeluar : ijinKeluarList){
+                List<IjinKeluar> ijinKeluarList = ijinKeluarBo.getByCriteriaForAbsensi(searchIjinKeluar, absensiPegawai.getStTanggal());
+                if (ijinKeluarList.size() == 1) {
+                    for (IjinKeluar ijinKeluar : ijinKeluarList) {
                         absensiPegawai.setMulaiIzin(ijinKeluar.getJamKeluar());
                         absensiPegawai.setPulangIzin(ijinKeluar.getJamKembali());
                     }
-                }
-                else if (ijinKeluarList.size()>1){
-                    int noIjin=1;
-                    for (IjinKeluar ijinKeluar : ijinKeluarList){
-                        if (noIjin==1){
+                } else if (ijinKeluarList.size() > 1) {
+                    int noIjin = 1;
+                    for (IjinKeluar ijinKeluar : ijinKeluarList) {
+                        if (noIjin == 1) {
                             absensiPegawai.setMulaiIzin(ijinKeluar.getJamKeluar());
                             absensiPegawai.setPulangIzin(ijinKeluar.getJamKembali());
                             listDataFinal.add(absensiPegawai);
-                            sudah=true;
-                        }else{
-                            AbsensiPegawai newAbsen= new AbsensiPegawai();
+                            sudah = true;
+                        } else {
+                            AbsensiPegawai newAbsen = new AbsensiPegawai();
                             newAbsen.setStTanggal("");
                             newAbsen.setNip("");
                             newAbsen.setNama("");
@@ -1268,12 +1308,12 @@ public class AbsensiAction extends BaseMasterAction {
                     }
                 }
             }
-            if (!sudah){
+            if (!sudah) {
                 listDataFinal.add(absensiPegawai);
             }
             x++;
         }
-        AbsensiPegawai newAbsen= new AbsensiPegawai();
+        AbsensiPegawai newAbsen = new AbsensiPegawai();
         newAbsen.setStTanggal("");
         newAbsen.setNip("");
         newAbsen.setNama("");
@@ -1291,7 +1331,10 @@ public class AbsensiAction extends BaseMasterAction {
         newAbsen.setTidakAbsenMasuk("");
         newAbsen.setTidakAbsenPulang("");
 
-        jumlahTerlambatKurang60=0;jumlahTerlambatLebih60=0;tidakAbsenMasuk=0;tidakAbsenPulang=0;
+        jumlahTerlambatKurang60 = 0;
+        jumlahTerlambatLebih60 = 0;
+        tidakAbsenMasuk = 0;
+        tidakAbsenPulang = 0;
         listDataFinal.add(newAbsen);
 
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listDataFinal);
@@ -1301,25 +1344,27 @@ public class AbsensiAction extends BaseMasterAction {
         String stDate = dt1.format(dataDate);
 
         Branch branch = new Branch();
-        try{
+        try {
             BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
             branch = branchBo.getBranchById(unitId,"Y");
         }catch( HibernateException e){
-
+            logger.error("[AbsensiAction.printReportAbsensi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving Branch By Id, " + e.getMessage());
         }
-        String logo ="";
-        if (unitId.equalsIgnoreCase("RS01")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-        }else if (unitId.equalsIgnoreCase("RS02")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-        }else if (unitId.equalsIgnoreCase("RS03")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-        }else{
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+        String logo = "";
+        if (unitId.equalsIgnoreCase("RS01")) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
+        } else if (unitId.equalsIgnoreCase("RS02")) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
+        } else if (unitId.equalsIgnoreCase("RS03")) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
+        } else {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU;
         }
-        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+        String stTanggal = CommonUtil.convertDateToString(new java.util.Date());
         reportParams.put("urlLogo", logo);
-        reportParams.put("alamatSurat", branch.getAlamatSurat()+","+stTanggal);        reportParams.put("titleReport", "Laporan Absensi");
+        reportParams.put("alamatSurat", branch.getAlamatSurat() + "," + stTanggal);
+        reportParams.put("titleReport", "Laporan Absensi");
         reportParams.put("tanggalDari", getTglFrom());
         reportParams.put("tanggalSelesai", getTglTo());
         reportParams.put("unit", branch.getBranchName());
@@ -1348,24 +1393,24 @@ public class AbsensiAction extends BaseMasterAction {
     public String printReportUangMakan() {
         logger.info("[ReportAction.printReportUangMakan] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
-        List<Biodata> listPegawaiMess= new ArrayList();
+        List<Biodata> listPegawaiMess = new ArrayList();
         List<Biodata> biodataList = new ArrayList();
         String unit = "";
-        String divisi="";
-        String bagianSt="";
-        int uangMakan=0;
+        String divisi = "";
+        String bagianSt = "";
+        int uangMakan = 0;
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
-        BiodataBo biodataBo= (BiodataBo) ctx.getBean("biodataBoProxy");
-        BranchBo branchBo= (BranchBo) ctx.getBean("branchBoProxy");
-        PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(getBranchId());
         List<Branch> branchList = branchBo.getByCriteria(searchBranch);
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
-            uangMakan=branch.getUangMakan().intValue();
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
+            uangMakan = branch.getUangMakan().intValue();
         }
         PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
@@ -1374,9 +1419,9 @@ public class AbsensiAction extends BaseMasterAction {
         }
 
         listPegawaiMess = biodataBo.getPegawaiMess();
-        biodataList = biodataBo.getBiodataforUangMakan(getBranchId(),"",getBagian(),getNip());
+        biodataList = biodataBo.getBiodataforUangMakan(getBranchId(), "", getBagian(), getNip());
 
-        for (Biodata biodata : biodataList){
+        for (Biodata biodata : biodataList) {
             List<AbsensiPegawai> listData = new ArrayList();
             List<AbsensiPegawai> listDataAbsensi = new ArrayList();
 
@@ -1396,27 +1441,26 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.printReportUangMakan] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.printReportUangMakan] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
 
             //hanya 5 absensi saja
-            if (biodata.getShift()!=null){
-                if (listData.size()>6&& biodata.getShift().equalsIgnoreCase("Y")){
-                    int jumlah = listData.size()-6;
-                    boolean lebih=true;
+            if (biodata.getShift() != null) {
+                if (listData.size() > 6 && biodata.getShift().equalsIgnoreCase("Y")) {
+                    int jumlah = listData.size() - 6;
+                    boolean lebih = true;
                     List<AbsensiPegawai> listDataTmp = new ArrayList();
-                    for (AbsensiPegawai absensiPegawai : listData ){
-                        if (absensiPegawai.getStatusAbsensi().equalsIgnoreCase("02")||absensiPegawai.getStatusAbsensi().equalsIgnoreCase("03")||absensiPegawai.getStatusAbsensi().equalsIgnoreCase("14")){
-                            if (!lebih){
+                    for (AbsensiPegawai absensiPegawai : listData) {
+                        if (absensiPegawai.getStatusAbsensi().equalsIgnoreCase("02") || absensiPegawai.getStatusAbsensi().equalsIgnoreCase("03") || absensiPegawai.getStatusAbsensi().equalsIgnoreCase("14")) {
+                            if (!lebih) {
                                 listDataTmp.add(absensiPegawai);
-                            }else if (jumlah!=0){
-                                jumlah=jumlah-1;
+                            } else if (jumlah != 0) {
+                                jumlah = jumlah - 1;
                             }
-                            if (jumlah==0)
-                            {
-                                lebih=false;
+                            if (jumlah == 0) {
+                                lebih = false;
                             }
-                        }else{
+                        } else {
                             listDataTmp.add(absensiPegawai);
                         }
                     }
@@ -1426,20 +1470,19 @@ public class AbsensiAction extends BaseMasterAction {
             }
 
             //filter lagi
-            if (biodata.getShift()!=null){
-                if (listData.size()>6&& biodata.getShift().equalsIgnoreCase("Y")){
-                    int jumlah = listData.size()-6;
-                    boolean lebih=true;
+            if (biodata.getShift() != null) {
+                if (listData.size() > 6 && biodata.getShift().equalsIgnoreCase("Y")) {
+                    int jumlah = listData.size() - 6;
+                    boolean lebih = true;
                     List<AbsensiPegawai> listDataTmp = new ArrayList();
-                    for (AbsensiPegawai absensiPegawai : listData ){
-                        if (!lebih){
+                    for (AbsensiPegawai absensiPegawai : listData) {
+                        if (!lebih) {
                             listDataTmp.add(absensiPegawai);
-                        }else if (jumlah!=0){
-                            jumlah=jumlah-1;
+                        } else if (jumlah != 0) {
+                            jumlah = jumlah - 1;
                         }
-                        if (jumlah==0)
-                        {
-                            lebih=false;
+                        if (jumlah == 0) {
+                            lebih = false;
                         }
                     }
                     listData.clear();
@@ -1447,7 +1490,7 @@ public class AbsensiAction extends BaseMasterAction {
                 }
             }
 
-            for (AbsensiPegawai absensiPegawai : listData ){
+            for (AbsensiPegawai absensiPegawai : listData) {
                 absensiPegawai.setNama(biodata.getNamaPegawai());
                 absensiPegawai.setPositionName(biodata.getPositionName());
                 absensiPegawai.setDivisi(biodata.getDivisiName());
@@ -1461,20 +1504,20 @@ public class AbsensiAction extends BaseMasterAction {
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
 
         listDataFinal = new ArrayList<>();
-        String nip="";
+        String nip = "";
         AbsensiPegawai tmp = new AbsensiPegawai();
         int index = 0;
-        int totalAbsensi=0;
-        String stTotal="";
-        BigDecimal totalUangMakan= BigDecimal.valueOf(0);
-        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
-            if (index!=0&&!nip.equalsIgnoreCase(absensiPegawai.getNip())){
+        int totalAbsensi = 0;
+        String stTotal = "";
+        BigDecimal totalUangMakan = BigDecimal.valueOf(0);
+        for (AbsensiPegawai absensiPegawai : listDataFinalTmp) {
+            if (index != 0 && !nip.equalsIgnoreCase(absensiPegawai.getNip())) {
                 tmp.setNip(absensiPegawai.getNip());
                 tmp.setNama(absensiPegawai.getNama());
                 tmp.setDivisi(absensiPegawai.getDivisi());
-                if (absensiPegawai.getBagian()==null){
+                if (absensiPegawai.getBagian() == null) {
                     tmp.setBagian("");
-                }else{
+                } else {
                     tmp.setBagian(absensiPegawai.getBagian());
                 }
                 tmp.setJamMasuk(absensiPegawai.getJamMasuk());
@@ -1493,9 +1536,9 @@ public class AbsensiAction extends BaseMasterAction {
                 absensiPegawai.setStTanggal("");
                 absensiPegawai.setStatusName("");
                 absensiPegawai.setAbsensi(String.valueOf(totalAbsensi));
-                stTotal=CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi*uangMakan), "###,###");
+                stTotal = CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi * uangMakan), "###,###");
                 absensiPegawai.setStUangmakan(stTotal);
-                totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi*uangMakan));
+                totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi * uangMakan));
                 index++;
                 listDataFinal.add(absensiPegawai);
 
@@ -1513,62 +1556,62 @@ public class AbsensiAction extends BaseMasterAction {
                 absensiPegawai.setStatusName(CommonUtil.statusName(tmp.getStatusAbsensi()));
             }
             boolean mess = false;
-            for (Biodata biodata : listPegawaiMess){
-                if (absensiPegawai.getNip().equalsIgnoreCase(biodata.getNip())){
-                    mess=true;
+            for (Biodata biodata : listPegawaiMess) {
+                if (absensiPegawai.getNip().equalsIgnoreCase(biodata.getNip())) {
+                    mess = true;
                     break;
                 }
             }
             if (!absensiPegawai.getNip().equalsIgnoreCase(nip)) {
 
-                if (mess){
-                    totalAbsensi=0;
+                if (mess) {
+                    totalAbsensi = 0;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("");
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
                     absensiPegawai.setStUangmakan("MESS");
                     index++;
                     listDataFinal.add(absensiPegawai);
-                }else if(("16-0431").equalsIgnoreCase(absensiPegawai.getNip())&&!("-").equalsIgnoreCase(absensiPegawai.getJamMasuk())&&!("-").equalsIgnoreCase(absensiPegawai.getJamPulang())){
-                    totalAbsensi=1;
+                } else if (("16-0431").equalsIgnoreCase(absensiPegawai.getNip()) && !("-").equalsIgnoreCase(absensiPegawai.getJamMasuk()) && !("-").equalsIgnoreCase(absensiPegawai.getJamPulang())) {
+                    totalAbsensi = 1;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
                     index++;
                     listDataFinal.add(absensiPegawai);
-                }else if(("01").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())||("04").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())||("09").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())){
-                    totalAbsensi=1;
+                } else if (("01").equalsIgnoreCase(absensiPegawai.getStatusAbsensi()) || ("04").equalsIgnoreCase(absensiPegawai.getStatusAbsensi()) || ("09").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())) {
+                    totalAbsensi = 1;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
                     index++;
                     listDataFinal.add(absensiPegawai);
-                }else if("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())&&"Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())){
-                    totalAbsensi=1;
+                } else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag()) && "Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())) {
+                    totalAbsensi = 1;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
                     index++;
                     listDataFinal.add(absensiPegawai);
-                }else{
-                    totalAbsensi=0;
+                } else {
+                    totalAbsensi = 0;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("0");
                     absensiPegawai.setStUangmakan("0");
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
-                    if(("Pengemudi").equalsIgnoreCase(tmp.getBagian())){
-                        if (("00").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())){
+                    if (("Pengemudi").equalsIgnoreCase(tmp.getBagian())) {
+                        if (("00").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())) {
                             absensiPegawai.setStatusName("-");
                         }
                     }
                     index++;
                     listDataFinal.add(absensiPegawai);
                 }
-            }else if (nip.equalsIgnoreCase(absensiPegawai.getNip())){
-                if (mess){
+            } else if (nip.equalsIgnoreCase(absensiPegawai.getNip())) {
+                if (mess) {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
@@ -1576,10 +1619,10 @@ public class AbsensiAction extends BaseMasterAction {
                     absensiPegawai.setAbsensi("");
                     absensiPegawai.setStUangmakan("MESS");
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
-                    totalAbsensi=0;
+                    totalAbsensi = 0;
                     listDataFinal.add(absensiPegawai);
                     index++;
-                } else if(("16-0431").equalsIgnoreCase(absensiPegawai.getNip())&&!("-").equalsIgnoreCase(absensiPegawai.getJamMasuk())&&!("-").equalsIgnoreCase(absensiPegawai.getJamPulang())){
+                } else if (("16-0431").equalsIgnoreCase(absensiPegawai.getNip()) && !("-").equalsIgnoreCase(absensiPegawai.getJamMasuk()) && !("-").equalsIgnoreCase(absensiPegawai.getJamPulang())) {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
@@ -1587,10 +1630,10 @@ public class AbsensiAction extends BaseMasterAction {
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
-                    totalAbsensi=totalAbsensi+1;
+                    totalAbsensi = totalAbsensi + 1;
                     listDataFinal.add(absensiPegawai);
                     index++;
-                } else if(("01").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())||("04").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())||("09").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())){
+                } else if (("01").equalsIgnoreCase(absensiPegawai.getStatusAbsensi()) || ("04").equalsIgnoreCase(absensiPegawai.getStatusAbsensi()) || ("09").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())) {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
@@ -1598,11 +1641,10 @@ public class AbsensiAction extends BaseMasterAction {
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
-                    totalAbsensi=totalAbsensi+1;
+                    totalAbsensi = totalAbsensi + 1;
                     listDataFinal.add(absensiPegawai);
                     index++;
-                }
-                else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())&&"Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())){
+                } else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag()) && "Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())) {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
@@ -1610,10 +1652,10 @@ public class AbsensiAction extends BaseMasterAction {
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
-                    totalAbsensi=totalAbsensi+1;
+                    totalAbsensi = totalAbsensi + 1;
                     listDataFinal.add(absensiPegawai);
                     index++;
-                }else{
+                } else {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
@@ -1621,8 +1663,8 @@ public class AbsensiAction extends BaseMasterAction {
                     absensiPegawai.setAbsensi("0");
                     absensiPegawai.setStUangmakan("0");
                     absensiPegawai.setStatusName(CommonUtil.statusName(absensiPegawai.getStatusAbsensi()));
-                    if(("Pengemudi").equalsIgnoreCase(tmp.getBagian())){
-                        if (("00").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())){
+                    if (("Pengemudi").equalsIgnoreCase(tmp.getBagian())) {
+                        if (("00").equalsIgnoreCase(absensiPegawai.getStatusAbsensi())) {
                             absensiPegawai.setStatusName("-");
                         }
                     }
@@ -1641,11 +1683,11 @@ public class AbsensiAction extends BaseMasterAction {
         absensiPegawai.setStTanggal("");
         absensiPegawai.setStatusName("");
         absensiPegawai.setAbsensi(String.valueOf(totalAbsensi));
-        stTotal=CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi*uangMakan), "###,###");
+        stTotal = CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi * uangMakan), "###,###");
         absensiPegawai.setStUangmakan(String.valueOf(stTotal));
         listDataFinal.add(absensiPegawai);
 
-        totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi*uangMakan));
+        totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi * uangMakan));
 
         absensiPegawai = new AbsensiPegawai();
         absensiPegawai.setNama("TOTAL UANG MAKAN ABSENSI :");
@@ -1701,25 +1743,25 @@ public class AbsensiAction extends BaseMasterAction {
         List<PegawaiTambahanAbsensi> listDataFinal = new ArrayList();
         List<PegawaiTambahan> pegawaiTambahanList = new ArrayList();
         String unit = "Kantor Direksi";
-        String divisi="";
-        String bagianSt=getBagian();
-        int uangMakan=0;
+        String divisi = "";
+        String bagianSt = getBagian();
+        int uangMakan = 0;
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        BranchBo branchBo= (BranchBo) ctx.getBean("branchBoProxy");
-        AbsensiBo absensiBo= (AbsensiBo) ctx.getBean("absensiBoProxy");
+        BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
         searchBranch.setBranchId("KD01");
         List<Branch> branchList = branchBo.getByCriteria(searchBranch);
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
-            uangMakan=branch.getUangMakan().intValue();
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
+            uangMakan = branch.getUangMakan().intValue();
         }
 
         pegawaiTambahanList = absensiBo.getDataPegawaiTambahan(bagianSt);
 
-        for (PegawaiTambahan pegawaiTambahan : pegawaiTambahanList){
+        for (PegawaiTambahan pegawaiTambahan : pegawaiTambahanList) {
             List<PegawaiTambahanAbsensi> listData = new ArrayList();
             List<PegawaiTambahanAbsensi> listDataAbsensi = new ArrayList();
 
@@ -1739,9 +1781,9 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.printReportUangMakan] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.printReportUangMakan] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
-            for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listData ){
+            for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listData) {
                 pegawaiTambahanAbsensi.setNama(pegawaiTambahan.getNama());
                 pegawaiTambahanAbsensi.setPositionName("");
                 pegawaiTambahanAbsensi.setDivisi("");
@@ -1755,20 +1797,20 @@ public class AbsensiAction extends BaseMasterAction {
         List<PegawaiTambahanAbsensi> listDataFinalTmp = listDataFinal;
 
         listDataFinal = new ArrayList<>();
-        String nip="";
+        String nip = "";
         PegawaiTambahanAbsensi tmp = new PegawaiTambahanAbsensi();
         int index = 0;
-        int totalAbsensi=0;
-        String stTotal="";
-        BigDecimal totalUangMakan= BigDecimal.valueOf(0);
-        for ( PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listDataFinalTmp){
-            if (index!=0&&!nip.equalsIgnoreCase(pegawaiTambahanAbsensi.getPin())){
+        int totalAbsensi = 0;
+        String stTotal = "";
+        BigDecimal totalUangMakan = BigDecimal.valueOf(0);
+        for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listDataFinalTmp) {
+            if (index != 0 && !nip.equalsIgnoreCase(pegawaiTambahanAbsensi.getPin())) {
                 tmp.setPin(pegawaiTambahanAbsensi.getPin());
                 tmp.setNama(pegawaiTambahanAbsensi.getNama());
                 tmp.setDivisi(pegawaiTambahanAbsensi.getDivisi());
-                if (pegawaiTambahanAbsensi.getBagian()==null){
+                if (pegawaiTambahanAbsensi.getBagian() == null) {
                     tmp.setBagian("");
-                }else{
+                } else {
                     tmp.setBagian(pegawaiTambahanAbsensi.getBagian());
                 }
                 tmp.setJamMasuk(pegawaiTambahanAbsensi.getJamMasuk());
@@ -1785,9 +1827,9 @@ public class AbsensiAction extends BaseMasterAction {
                 pegawaiTambahanAbsensi.setStTanggal("");
                 pegawaiTambahanAbsensi.setStatusAbsensiName("");
                 pegawaiTambahanAbsensi.setAbsensi(String.valueOf(totalAbsensi));
-                stTotal=CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi*uangMakan), "###,###");
+                stTotal = CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi * uangMakan), "###,###");
                 pegawaiTambahanAbsensi.setStUangmakan(stTotal);
-                totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi*uangMakan));
+                totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi * uangMakan));
                 index++;
                 listDataFinal.add(pegawaiTambahanAbsensi);
 
@@ -1805,16 +1847,16 @@ public class AbsensiAction extends BaseMasterAction {
 
             if (!pegawaiTambahanAbsensi.getPin().equalsIgnoreCase(nip)) {
 
-                if(("01").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())||("04").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())||("09").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())){
-                    totalAbsensi=1;
+                if (("01").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi()) || ("04").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi()) || ("09").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())) {
+                    totalAbsensi = 1;
                     nip = pegawaiTambahanAbsensi.getPin();
                     pegawaiTambahanAbsensi.setAbsensi("1");
                     pegawaiTambahanAbsensi.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     pegawaiTambahanAbsensi.setStatusAbsensiName(CommonUtil.statusName(pegawaiTambahanAbsensi.getStatusAbsensi()));
                     index++;
                     listDataFinal.add(pegawaiTambahanAbsensi);
-                }else{
-                    totalAbsensi=0;
+                } else {
+                    totalAbsensi = 0;
                     nip = pegawaiTambahanAbsensi.getPin();
                     pegawaiTambahanAbsensi.setAbsensi("0");
                     pegawaiTambahanAbsensi.setStUangmakan("0");
@@ -1823,8 +1865,8 @@ public class AbsensiAction extends BaseMasterAction {
                     index++;
                     listDataFinal.add(pegawaiTambahanAbsensi);
                 }
-            }else if (nip.equalsIgnoreCase(pegawaiTambahanAbsensi.getPin())){
-                if(("01").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())||("04").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())||("09").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())){
+            } else if (nip.equalsIgnoreCase(pegawaiTambahanAbsensi.getPin())) {
+                if (("01").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi()) || ("04").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi()) || ("09").equalsIgnoreCase(pegawaiTambahanAbsensi.getStatusAbsensi())) {
                     pegawaiTambahanAbsensi.setPin("");
                     pegawaiTambahanAbsensi.setNama("");
                     pegawaiTambahanAbsensi.setDivisi("");
@@ -1832,10 +1874,10 @@ public class AbsensiAction extends BaseMasterAction {
                     pegawaiTambahanAbsensi.setAbsensi("1");
                     pegawaiTambahanAbsensi.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(uangMakan), "###,###"));
                     pegawaiTambahanAbsensi.setStatusAbsensiName(CommonUtil.statusName(pegawaiTambahanAbsensi.getStatusAbsensi()));
-                    totalAbsensi=totalAbsensi+1;
+                    totalAbsensi = totalAbsensi + 1;
                     listDataFinal.add(pegawaiTambahanAbsensi);
                     index++;
-                }else{
+                } else {
                     pegawaiTambahanAbsensi.setPin("");
                     pegawaiTambahanAbsensi.setNama("");
                     pegawaiTambahanAbsensi.setDivisi("");
@@ -1859,11 +1901,11 @@ public class AbsensiAction extends BaseMasterAction {
         pegawaiTambahanAbsensi.setStTanggal("");
         pegawaiTambahanAbsensi.setStatusAbsensiName("");
         pegawaiTambahanAbsensi.setAbsensi(String.valueOf(totalAbsensi));
-        stTotal=CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi*uangMakan), "###,###");
+        stTotal = CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi * uangMakan), "###,###");
         pegawaiTambahanAbsensi.setStUangmakan(String.valueOf(stTotal));
         listDataFinal.add(pegawaiTambahanAbsensi);
 
-        totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi*uangMakan));
+        totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi * uangMakan));
 
         pegawaiTambahanAbsensi = new PegawaiTambahanAbsensi();
         pegawaiTambahanAbsensi.setNama("TOTAL UANG MAKAN ABSENSI :");
@@ -1880,7 +1922,7 @@ public class AbsensiAction extends BaseMasterAction {
         listDataFinal.add(pegawaiTambahanAbsensi);
 
         List<AbsensiPegawai> forReport = new ArrayList<>();
-        for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi1 : listDataFinal){
+        for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi1 : listDataFinal) {
             AbsensiPegawai data = new AbsensiPegawai();
             data.setNama(pegawaiTambahanAbsensi1.getNama());
             data.setNip("");
@@ -1936,15 +1978,15 @@ public class AbsensiAction extends BaseMasterAction {
         List<PegawaiTambahanAbsensi> listDataFinal = new ArrayList();
         List<PegawaiTambahan> pegawaiTambahanList = new ArrayList();
         String unit = "Kantor Direksi";
-        String nama="";
+        String nama = "";
         int x = 1;
-        String bagianSt=getBagian();
+        String bagianSt = getBagian();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        AbsensiBo absensiBo= (AbsensiBo) ctx.getBean("absensiBoProxy");
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
         pegawaiTambahanList = absensiBo.getDataPegawaiTambahan(bagianSt);
 
-        for (PegawaiTambahan pegawaiTambahan : pegawaiTambahanList){
+        for (PegawaiTambahan pegawaiTambahan : pegawaiTambahanList) {
             List<PegawaiTambahanAbsensi> listData = new ArrayList();
             List<PegawaiTambahanAbsensi> listDataAbsensi = new ArrayList();
 
@@ -1964,9 +2006,9 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.printReportUangMakan] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.printReportUangMakan] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
-            for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listData ){
+            for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listData) {
                 pegawaiTambahanAbsensi.setNama(pegawaiTambahan.getNama());
                 pegawaiTambahanAbsensi.setPositionName("");
                 pegawaiTambahanAbsensi.setDivisi("");
@@ -1979,17 +2021,17 @@ public class AbsensiAction extends BaseMasterAction {
 
         List<PegawaiTambahanAbsensi> listDataFinalTmp = listDataFinal;
         listDataFinal = new ArrayList<>();
-        for ( PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listDataFinalTmp){
-            if(pegawaiTambahanAbsensi.getJamMasuk()==null){
+        for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listDataFinalTmp) {
+            if (pegawaiTambahanAbsensi.getJamMasuk() == null) {
                 pegawaiTambahanAbsensi.setJamMasuk("");
             }
-            if(pegawaiTambahanAbsensi.getJamPulang()==null){
+            if (pegawaiTambahanAbsensi.getJamPulang() == null) {
                 pegawaiTambahanAbsensi.setJamPulang("");
             }
-            if (x==1){
-                nama=pegawaiTambahanAbsensi.getNama();
-            }else if (!nama.equalsIgnoreCase(pegawaiTambahanAbsensi.getNama())){
-                PegawaiTambahanAbsensi newAbsen= new PegawaiTambahanAbsensi();
+            if (x == 1) {
+                nama = pegawaiTambahanAbsensi.getNama();
+            } else if (!nama.equalsIgnoreCase(pegawaiTambahanAbsensi.getNama())) {
+                PegawaiTambahanAbsensi newAbsen = new PegawaiTambahanAbsensi();
                 newAbsen.setStTanggal("JUMLAH");
                 newAbsen.setPin("");
                 newAbsen.setNama("");
@@ -1997,13 +2039,13 @@ public class AbsensiAction extends BaseMasterAction {
                 newAbsen.setJamMasuk("");
                 newAbsen.setJamPulang("");
                 listDataFinal.add(newAbsen);
-                nama=pegawaiTambahanAbsensi.getNama();
+                nama = pegawaiTambahanAbsensi.getNama();
             }
 
             pegawaiTambahanAbsensi.setStatusAbsensiName(CommonUtil.statusName(pegawaiTambahanAbsensi.getStatusAbsensi()));
             listDataFinal.add(pegawaiTambahanAbsensi);
         }
-        PegawaiTambahanAbsensi newAbsen= new PegawaiTambahanAbsensi();
+        PegawaiTambahanAbsensi newAbsen = new PegawaiTambahanAbsensi();
         newAbsen.setStTanggal("JUMLAH");
         newAbsen.setPin("");
         newAbsen.setNama("");
@@ -2015,7 +2057,7 @@ public class AbsensiAction extends BaseMasterAction {
 
 
         List<AbsensiPegawai> reportAbsensi = new ArrayList<>();
-        for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listDataFinal){
+        for (PegawaiTambahanAbsensi pegawaiTambahanAbsensi : listDataFinal) {
             AbsensiPegawai data = new AbsensiPegawai();
             data.setNip(pegawaiTambahanAbsensi.getPin());
             data.setStTanggal(pegawaiTambahanAbsensi.getStTanggal());
@@ -2245,12 +2287,12 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[ReportAction.printReportLembur] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
         String unit = "";
-        String nama="";
-        String bagian ="";
-        String golongan="";
-        String posisi="";
-        String branchIdForReport="";
-        String keteranga="";
+        String nama = "";
+        String bagian = "";
+        String golongan = "";
+        String posisi = "";
+        String branchIdForReport = "";
+        String keteranga = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
@@ -2259,15 +2301,15 @@ public class AbsensiAction extends BaseMasterAction {
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(getBranchId());
         List<Branch> branchList = branchBo.getByCriteria(searchBranch);
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
         }
 
         AbsensiPegawai search = new AbsensiPegawai();
         search.setFlag("Y");
         search.setTanggalAwal(CommonUtil.convertToDate(getTglFrom()));
         search.setTanggalAkhir(CommonUtil.convertToDate(getTglTo()));
-        if (!("").equalsIgnoreCase(getNip())){
+        if (!("").equalsIgnoreCase(getNip())) {
             search.setNip(getNip());
 
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
@@ -2276,9 +2318,9 @@ public class AbsensiAction extends BaseMasterAction {
             searchBiodata.setFlag("Y");
             Biodata biodata = new Biodata();
             biodata = biodataBo.detailBiodataSys(getNip());
-            if (biodata!=null){
-                golongan=biodata.getGolonganName();
-                posisi=biodata.getPositionName();
+            if (biodata != null) {
+                golongan = biodata.getGolonganName();
+                posisi = biodata.getPositionName();
             }
         }
         try {
@@ -2291,25 +2333,25 @@ public class AbsensiAction extends BaseMasterAction {
                 logger.error("[AbsensiAction.printReportLembur] Error when saving error,", e1);
             }
             logger.error("[AbsensiAction.printReportLembur] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
         listDataFinal = new ArrayList<>();
-        Double hasilLamaLembur= (double) 0,hasilhariKerja15= (double) 0,hasilhariKerja20= (double) 0,hasilhariLibur20= (double) 0,hasilhariLibur30= (double) 0,hasilhariLibur40= (double) 0,hasilJamLembur= (double)0 ,hasilBiayaLembur= (double) 0;
+        Double hasilLamaLembur = (double) 0, hasilhariKerja15 = (double) 0, hasilhariKerja20 = (double) 0, hasilhariLibur20 = (double) 0, hasilhariLibur30 = (double) 0, hasilhariLibur40 = (double) 0, hasilJamLembur = (double) 0, hasilBiayaLembur = (double) 0;
 
         DecimalFormat df = new DecimalFormat("0.00");
-        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
+        for (AbsensiPegawai absensiPegawai : listDataFinalTmp) {
             branchIdForReport = absensiPegawai.getBranchId();
-            nama=absensiPegawai.getNama();
+            nama = absensiPegawai.getNama();
             double realisasi;
-            if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
-                realisasi= absensiPegawai.getLamaLembur();
-            }else{
-                realisasi= absensiPegawai.getRealisasiJamLembur();
+            if (absensiPegawai.getLamaLembur() <= absensiPegawai.getRealisasiJamLembur()) {
+                realisasi = absensiPegawai.getLamaLembur();
+            } else {
+                realisasi = absensiPegawai.getRealisasiJamLembur();
             }
             AbsensiPegawai tmp = new AbsensiPegawai();
             AbsensiPegawai resultSetHari;
-            resultSetHari = absensiBo.getJamLembur(realisasi,absensiPegawai.getTipeHari());
+            resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
             tmp.setStTanggal(absensiPegawai.getStTanggal());
             tmp.setStLamaLembur(df.format(realisasi));
             tmp.setStHariKerja15(df.format(resultSetHari.getHariKerja15()));
@@ -2323,23 +2365,23 @@ public class AbsensiAction extends BaseMasterAction {
             //keterangan lembur
             tmp.setKeterangan(absensiPegawai.getKeterangan());
 
-            if (absensiPegawai.getBiayaLembur()==0d){
-                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(0),"###,###"));
-            }else{
-                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawai.getBiayaLembur()/absensiPegawai.getJamLembur()),"###,###"));
+            if (absensiPegawai.getBiayaLembur() == 0d) {
+                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(0), "###,###"));
+            } else {
+                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawai.getBiayaLembur() / absensiPegawai.getJamLembur()), "###,###"));
             }
 
-            tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawai.getBiayaLembur()),"###,###"));
+            tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(absensiPegawai.getBiayaLembur()), "###,###"));
             tmp.setBiayaLembur(absensiPegawai.getBiayaLembur());
-            hasilBiayaLembur=hasilBiayaLembur+absensiPegawai.getBiayaLembur();
-            hasilLamaLembur=hasilLamaLembur+realisasi;
-            hasilJamLembur=hasilJamLembur+absensiPegawai.getJamLembur();
+            hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
+            hasilLamaLembur = hasilLamaLembur + realisasi;
+            hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
 
-            hasilhariKerja15 =hasilhariKerja15+resultSetHari.getHariKerja15();
-            hasilhariKerja20 =hasilhariKerja20+resultSetHari.getHariKerja20();
-            hasilhariLibur20 =hasilhariLibur20+resultSetHari.getHariLibur20();
-            hasilhariLibur30 =hasilhariLibur30+resultSetHari.getHariLibur30();
-            hasilhariLibur40 =hasilhariLibur40+resultSetHari.getHariLibur40();
+            hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
+            hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
+            hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
+            hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
+            hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
 
             listDataFinal.add(tmp);
         }
@@ -2353,7 +2395,7 @@ public class AbsensiAction extends BaseMasterAction {
         hasil.setStHariLibur40(df.format(hasilhariLibur40));
         hasil.setStJamLembur(df.format(hasilJamLembur));
         hasil.setStBiayaLemburPerjam("");
-        hasil.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
+        hasil.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
         listDataFinal.add(hasil);
 
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listDataFinal);
@@ -2363,21 +2405,21 @@ public class AbsensiAction extends BaseMasterAction {
         String stDate = dt1.format(dataDate);
 
         Branch branch = new Branch();
-        try{
-            branch = branchBo.getBranchById(branchIdForReport,"Y");
-        }catch( HibernateException e){
+        try {
+            branch = branchBo.getBranchById(branchIdForReport, "Y");
+        } catch (HibernateException e) {
         }
-        if (branchIdForReport.equalsIgnoreCase("RS01")){
-            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01);
-        }else if (branchIdForReport.equalsIgnoreCase("RS02")){
-            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02);
-        }else if (branchIdForReport.equalsIgnoreCase("RS03")){
-            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03);
-        }else{
-            reportParams.put("urlLogo",CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU);
+        if (branchIdForReport.equalsIgnoreCase("RS01")) {
+            reportParams.put("urlLogo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01);
+        } else if (branchIdForReport.equalsIgnoreCase("RS02")) {
+            reportParams.put("urlLogo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02);
+        } else if (branchIdForReport.equalsIgnoreCase("RS03")) {
+            reportParams.put("urlLogo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03);
+        } else {
+            reportParams.put("urlLogo", CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU);
         }
-        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
-        reportParams.put("alamatUni", branch.getAlamatSurat()+","+stTanggal);
+        String stTanggal = CommonUtil.convertDateToString(new java.util.Date());
+        reportParams.put("alamatUni", branch.getAlamatSurat() + "," + stTanggal);
         reportParams.put("branchName", branch.getBranchName());
         reportParams.put("titleReport", "DAFTAR LEMBUR");
         reportParams.put("tanggalDari", getTglFrom());
@@ -2387,9 +2429,9 @@ public class AbsensiAction extends BaseMasterAction {
         reportParams.put("date", stTanggal);
         reportParams.put("nama", nama);
         reportParams.put("posisi", posisi);
-        if (golongan!=null){
-            reportParams.put("golongan", golongan.replace("Golongan ",""));
-        }else{
+        if (golongan != null) {
+            reportParams.put("golongan", golongan.replace("Golongan ", ""));
+        } else {
             reportParams.put("golongan", "-");
         }
         reportParams.put("date", stDate);
@@ -2417,34 +2459,69 @@ public class AbsensiAction extends BaseMasterAction {
         logger.info("[ReportAction.printReportRekapitulasiLembur] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
         List<AbsensiPegawai> listDataAbsensi = new ArrayList();
-        String unit = "",bagian ="",golongan="", unitId="";
-        bagian=getBagian();
+        String unit = "", bagian = "", golongan = "", unitId = "";
+        bagian = getBagian();
 
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-        BiodataBo biodataBo= (BiodataBo) ctx.getBean("biodataBoProxy");
-        PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
-        List<Biodata> biodataList= biodataBo.getBiodataforAbsensi(getBranchId(),"",getBagian(),getNip());
-
+        List<Biodata> biodataList = new ArrayList<>();
+        try {
+            biodataList = biodataBo.getBiodataforAbsensi(getBranchId(), "", getBagian(), getNip());
+        }catch(GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "BiodataBO.getBiodataforAbsensi");
+            } catch (GeneralBOException e1) {
+                logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+            }
+            logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching biodata for absensi," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+        }
         PositionBagian positionBagian = new PositionBagian();
-        if (bagian!=null){
-            if (!bagian.equalsIgnoreCase("")){
-                positionBagian = positionBagianBo.getBagianById(getBagian(),"Y");
-                bagian=positionBagian.getBagianName();
+        if (bagian != null) {
+            if (!bagian.equalsIgnoreCase("")) {
+                try {
+                    positionBagian = positionBagianBo.getBagianById(getBagian(), "Y");
+                }catch(GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "PositionBagianiodataBO.getBagianById");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+                    }
+                    logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching bagian by ID," + "[" + logId + "] Found problem when searching data by ID, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching bagian by ID, please inform to your admin");
+                }
+                bagian = positionBagian.getBagianName();
             }
         }
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(getBranchId());
-        List<Branch> branchList = branchBo.getByCriteria(searchBranch);
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
-            unitId=branch.getBranchId();
+
+        List<Branch> branchList = new ArrayList<>();
+        try{
+            branchList = branchBo.getByCriteria(searchBranch);
+        }catch (GeneralBOException e){
+            Long logId = null;
+            try {
+                logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "BranchBo.getByCriteria");
+            } catch (GeneralBOException e1) {
+                logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+            }
+            logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching branch list by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching branch by criteria, please inform to your admin");
         }
-        for (Biodata biodata :biodataList){
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
+            unitId = branch.getBranchId();
+        }
+        for (Biodata biodata : biodataList) {
             AbsensiPegawai search = new AbsensiPegawai();
             search.setNip(biodata.getNip());
             search.setFlag("Y");
@@ -2462,10 +2539,10 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
             List<AbsensiPegawai> absensiPegawaiList = new ArrayList<>();
-            for (AbsensiPegawai absensiPegawai : listDataAbsensi){
+            for (AbsensiPegawai absensiPegawai : listDataAbsensi) {
                 absensiPegawai.setNama(biodata.getNamaPegawai());
                 absensiPegawai.setPositionName(biodata.getPositionName());
                 absensiPegawai.setDivisi(biodata.getDivisiName());
@@ -2473,53 +2550,68 @@ public class AbsensiAction extends BaseMasterAction {
                 absensiPegawai.setBagian(biodata.getBagianName());
                 absensiPegawaiList.add(absensiPegawai);
             }
-
             listDataFinal.addAll(absensiPegawaiList);
         }
 
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
         listDataFinal = new ArrayList<>();
-        Double hasilLamaLembur= (double) 0,hasilhariKerja15= (double) 0,hasilhariKerja20= (double) 0,hasilJumlahhariKerja= (double) 0,hasilhariLibur20= (double) 0,hasilhariLibur30= (double) 0,hasilhariLibur40= (double) 0,hasilJumlahHariLibur= (double) 0,hasilJamLembur= (double)0 ,hasilBiayaLemburPerJam= (double) 0,hasilBiayaLembur= (double) 0;
+//        BigDecimal
+        Double hasilLamaLembur = (double) 0, hasilhariKerja15 = (double) 0,
+                hasilhariKerja20 = (double) 0, hasilJumlahhariKerja = (double) 0,
+                hasilhariLibur20 = (double) 0, hasilhariLibur30 = (double) 0,
+                hasilhariLibur40 = (double) 0, hasilJumlahHariLibur = (double) 0,
+                hasilJamLembur = (double) 0, hasilBiayaLemburPerJam = (double) 0,
+                hasilBiayaLembur = (double) 0;
         DecimalFormat df = new DecimalFormat("0.00");
         int i = 1;
-        String nip="",nama="",bagianName="";
-        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
+        String nip = "", nama = "", bagianName = "";
+        for (AbsensiPegawai absensiPegawai : listDataFinalTmp) {
             //inisialisasi
-            if (i==1){
-                nip=absensiPegawai.getNip();
-                nama=absensiPegawai.getNama();
-                bagianName=absensiPegawai.getBagian();
+            if (i == 1) {
+                nip = absensiPegawai.getNip();
+                nama = absensiPegawai.getNama();
+                bagianName = absensiPegawai.getBagian();
             }
-            if (nip.equalsIgnoreCase(absensiPegawai.getNip())){
+            if (nip.equalsIgnoreCase(absensiPegawai.getNip())) {
                 //grouping jam lembur
                 double realisasi;
-                if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
-                    realisasi= absensiPegawai.getLamaLembur();
-                }else{
-                    realisasi= absensiPegawai.getRealisasiJamLembur();
+                if (absensiPegawai.getLamaLembur() <= absensiPegawai.getRealisasiJamLembur()) {
+                    realisasi = absensiPegawai.getLamaLembur();
+                } else {
+                    realisasi = absensiPegawai.getRealisasiJamLembur();
                 }
-                AbsensiPegawai resultSetHari;
-                resultSetHari = absensiBo.getJamLembur(realisasi,absensiPegawai.getTipeHari());
+                AbsensiPegawai resultSetHari = new AbsensiPegawai();
+                try {
+                    resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
+                }catch (GeneralBOException e){
+                    Long logId = null;
+                    try {
+                        logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.getJamLembur");
+                    } catch (GeneralBOException e1) {
+                        logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when saving error,", e1);
+                    }
+                    logger.error("[AbsensiAction.printReportRekapitulasiLembur] Error when searching jam lembur by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+                }
+                hasilLamaLembur = hasilLamaLembur + realisasi;
+                hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
+                hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
+                hasilJumlahhariKerja = hasilhariKerja15 + hasilhariKerja20;
+                hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
+                hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
+                hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
+                hasilJumlahHariLibur = hasilhariLibur20 + hasilhariLibur30 + hasilhariLibur40;
+                hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
+                hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
 
-                hasilLamaLembur = hasilLamaLembur+realisasi;
-                hasilhariKerja15 = hasilhariKerja15+resultSetHari.getHariKerja15();
-                hasilhariKerja20 = hasilhariKerja20+resultSetHari.getHariKerja20();
-                hasilJumlahhariKerja = hasilhariKerja15+hasilhariKerja20;
-                hasilhariLibur20 = hasilhariLibur20+resultSetHari.getHariLibur20();
-                hasilhariLibur30 = hasilhariLibur30+resultSetHari.getHariLibur30();
-                hasilhariLibur40 = hasilhariLibur40+resultSetHari.getHariLibur40();
-                hasilJumlahHariLibur = hasilhariLibur20+hasilhariLibur30+hasilhariLibur40;
-                hasilJamLembur = hasilJamLembur+absensiPegawai.getJamLembur();
-                hasilBiayaLembur = hasilBiayaLembur+absensiPegawai.getBiayaLembur();
-
-                if (hasilBiayaLembur==0){
+                if (hasilBiayaLembur == 0) {
                     hasilBiayaLemburPerJam = 0d;
-                }else{
-                    hasilBiayaLemburPerJam = hasilBiayaLembur/hasilJamLembur;
+                } else {
+                    hasilBiayaLemburPerJam = hasilBiayaLembur / hasilJamLembur;
                 }
 
-                bagianName=absensiPegawai.getBagian();
-            }else{
+                bagianName = absensiPegawai.getBagian();
+            } else {
                 AbsensiPegawai tmp = new AbsensiPegawai();
 
                 tmp.setNo(String.valueOf(i));
@@ -2535,8 +2627,8 @@ public class AbsensiAction extends BaseMasterAction {
                 tmp.setStHariLibur40(df.format(hasilhariLibur40));
                 tmp.setsJumlahHariLibur(df.format(hasilJumlahHariLibur));
                 tmp.setStJamLembur(df.format(hasilJamLembur));
-                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam),"###,###"));
-                tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
+                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam), "###,###"));
+                tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
 
                 listDataFinal.add(tmp);
                 hasilLamaLembur = (double) 0;
@@ -2551,32 +2643,32 @@ public class AbsensiAction extends BaseMasterAction {
                 hasilBiayaLembur = (double) 0;
                 hasilBiayaLemburPerJam = (double) 0;
 
-                nip=absensiPegawai.getNip();
-                nama=absensiPegawai.getNama();
-                bagianName=absensiPegawai.getBagian();
+                nip = absensiPegawai.getNip();
+                nama = absensiPegawai.getNama();
+                bagianName = absensiPegawai.getBagian();
                 double realisasi;
-                if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
-                    realisasi= absensiPegawai.getLamaLembur();
-                }else{
-                    realisasi= absensiPegawai.getRealisasiJamLembur();
+                if (absensiPegawai.getLamaLembur() <= absensiPegawai.getRealisasiJamLembur()) {
+                    realisasi = absensiPegawai.getLamaLembur();
+                } else {
+                    realisasi = absensiPegawai.getRealisasiJamLembur();
                 }
                 AbsensiPegawai resultSetHari;
-                resultSetHari = absensiBo.getJamLembur(realisasi,absensiPegawai.getTipeHari());
+                resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
 
-                hasilLamaLembur = hasilLamaLembur+realisasi;
-                hasilhariKerja15 = hasilhariKerja15+resultSetHari.getHariKerja15();
-                hasilhariKerja20 = hasilhariKerja20+resultSetHari.getHariKerja20();
-                hasilJumlahhariKerja = hasilhariKerja15+hasilhariKerja20;
-                hasilhariLibur20 = hasilhariLibur20+resultSetHari.getHariLibur20();
-                hasilhariLibur30 = hasilhariLibur30+resultSetHari.getHariLibur30();
-                hasilhariLibur40 = hasilhariLibur40+resultSetHari.getHariLibur40();
-                hasilJumlahHariLibur = hasilhariLibur20+hasilhariLibur30+hasilhariLibur40;
-                hasilJamLembur = hasilJamLembur+absensiPegawai.getJamLembur();
-                hasilBiayaLembur = hasilBiayaLembur+absensiPegawai.getBiayaLembur();
+                hasilLamaLembur = hasilLamaLembur + realisasi;
+                hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
+                hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
+                hasilJumlahhariKerja = hasilhariKerja15 + hasilhariKerja20;
+                hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
+                hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
+                hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
+                hasilJumlahHariLibur = hasilhariLibur20 + hasilhariLibur30 + hasilhariLibur40;
+                hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
+                hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
 
-                if (hasilBiayaLembur==0){
+                if (hasilBiayaLembur == 0) {
                     hasilBiayaLemburPerJam = 0d;
-                }else{
+                } else {
                     hasilBiayaLemburPerJam = hasilBiayaLembur/hasilJamLembur;
                 }
             }
@@ -2605,40 +2697,61 @@ public class AbsensiAction extends BaseMasterAction {
 //        data.setStHariLibur40(hasilhariLibur40.toString());
 //        data.setsJumlahHariLibur(hasilJumlahHariLibur.toString());
 //        data.setStJamLembur(hasilJamLembur.toString());
-        data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam),"###,###"));
-        data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
+        data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam), "###,###"));
+        data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
         listDataFinal.add(data);
 
         List<AbsensiPegawai> forReport = new ArrayList<>();
         String bagianPegawai = "";
         int a = 0;
-        Double jJumlahJamSeluruhnya=(double)0, jJamKerja15=(double)0, jJamKerja20=(double)0, jJumlahJamKerja=(double)0, jJamlibur20=(double)0, jJamlibur30=(double)0, jJamlibur40=(double)0, jJumlahLibur=(double)0, jJumlahJamLemburPerhitungan=(double)0, jJumlahUpahLembur=(double)0;
-        Double jJumlahJamSeluruhnyaAll=(double)0, jJamKerja15All=(double)0, jJamKerja20All=(double)0, jJumlahJamKerjaAll=(double)0, jJamlibur20All=(double)0, jJamlibur30All=(double)0, jJamlibur40All=(double)0, jJumlahLiburAll=(double)0, jJumlahJamLemburPerhitunganAll=(double)0, jJumlahUpahLemburAll=(double)0;
+        Double jJumlahJamSeluruhnya = (double) 0, jJamKerja15 = (double) 0, jJamKerja20 = (double) 0, jJumlahJamKerja = (double) 0,
+                jJamlibur20 = (double) 0, jJamlibur30 = (double) 0, jJamlibur40 = (double) 0, jJumlahLibur = (double) 0,
+                jJumlahJamLemburPerhitungan = (double) 0, jJumlahUpahLembur = (double) 0;
+        Double jJumlahJamSeluruhnyaAll = (double) 0, jJamKerja15All = (double) 0, jJamKerja20All = (double) 0, jJumlahJamKerjaAll = (double) 0,
+                jJamlibur20All = (double) 0, jJamlibur30All = (double) 0, jJamlibur40All = (double) 0, jJumlahLiburAll = (double) 0,
+                jJumlahJamLemburPerhitunganAll = (double) 0, jJumlahUpahLemburAll = (double) 0;
 
-        for(AbsensiPegawai absensiPegawai: listDataFinal) {
-            if (!bagianPegawai.equalsIgnoreCase(absensiPegawai.getBagian())){
+        for (AbsensiPegawai absensiPegawai : listDataFinal) {
+            if (!bagianPegawai.equalsIgnoreCase(absensiPegawai.getBagian())) {
                 AbsensiPegawai tmp = new AbsensiPegawai();
-                if (a!=0){
+                if (a != 0) {
                     //Set Jumlah
                     tmp = new AbsensiPegawai();
                     tmp.setNo("");
                     tmp.setNip("JUMLAH");
                     tmp.setNama("");
-                    tmp.setStLamaLembur(String.valueOf(jJumlahJamSeluruhnya));
-                    tmp.setStHariKerja15(String.valueOf(jJamKerja15));
-                    tmp.setStHariKerja20(String.valueOf(jJamKerja20));
-                    tmp.setsJumlahHariKerja(String.valueOf(jJumlahJamKerja));
-                    tmp.setStHariLibur20(String.valueOf(jJamlibur20));
-                    tmp.setStHariLibur30(String.valueOf(jJamlibur30));
-                    tmp.setStHariLibur40(String.valueOf(jJamlibur40));
-                    tmp.setsJumlahHariLibur(String.valueOf(jJumlahLibur));
-                    tmp.setStJamLembur(String.valueOf(jJumlahJamLemburPerhitungan));
+                    tmp.setStLamaLembur(df.format(jJumlahJamSeluruhnya));
+                    tmp.setStHariKerja15(df.format(jJamKerja15));
+                    tmp.setStHariKerja20(df.format(jJamKerja20));
+                    tmp.setsJumlahHariKerja(df.format(jJumlahJamKerja));
+                    tmp.setStHariLibur20(df.format(jJamlibur20));
+                    tmp.setStHariLibur30(df.format(jJamlibur30));
+                    tmp.setStHariLibur40(df.format(jJamlibur40));
+                    tmp.setsJumlahHariLibur(df.format(jJumlahLibur));
+                    tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitungan));
                     tmp.setStBiayaLemburPerjam("");
-                    tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur),"###,###"));
+                    tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur), "###,###"));
                     forReport.add(tmp);
-                    jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;
-                    jJumlahUpahLemburAll=jJumlahUpahLemburAll+jJumlahUpahLembur;
-                    jJumlahJamSeluruhnya=(double)0;jJamKerja15=(double)0;jJamKerja20=(double)0;jJumlahJamKerja=(double)0;jJamlibur20=(double)0;jJamlibur30=(double)0;jJamlibur40=(double)0;jJumlahLibur=(double)0;jJumlahJamLemburPerhitungan=(double)0;jJumlahUpahLembur=(double)0;
+                    jJumlahJamSeluruhnyaAll = jJumlahJamSeluruhnyaAll + jJumlahJamSeluruhnya;
+                    jJamKerja15All = jJamKerja15All + jJamKerja15;
+                    jJamKerja20All = jJamKerja20All + jJamKerja20;
+                    jJumlahJamKerjaAll = jJumlahJamKerjaAll + jJumlahJamKerja;
+                    jJamlibur20All = jJamlibur20All + jJamlibur20;
+                    jJamlibur30All = jJamlibur30All + jJamlibur30;
+                    jJamlibur40All = jJamlibur40All + jJamlibur40;
+                    jJumlahLiburAll = jJumlahLiburAll + jJumlahLibur;
+                    jJumlahJamLemburPerhitunganAll = jJumlahJamLemburPerhitunganAll + jJumlahJamLemburPerhitungan;
+                    jJumlahUpahLemburAll = jJumlahUpahLemburAll + jJumlahUpahLembur;
+                    jJumlahJamSeluruhnya = (double) 0;
+                    jJamKerja15 = (double) 0;
+                    jJamKerja20 = (double) 0;
+                    jJumlahJamKerja = (double) 0;
+                    jJamlibur20 = (double) 0;
+                    jJamlibur30 = (double) 0;
+                    jJamlibur40 = (double) 0;
+                    jJumlahLibur = (double) 0;
+                    jJumlahJamLemburPerhitungan = (double) 0;
+                    jJumlahUpahLembur = (double) 0;
                 }
                 tmp = new AbsensiPegawai();
                 tmp.setNo("");
@@ -2659,24 +2772,33 @@ public class AbsensiAction extends BaseMasterAction {
                 bagianPegawai = absensiPegawai.getBagian();
             }
             forReport.add(absensiPegawai);
-            NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY);
+//            NumberFormat nf = NumberFormat.getInstance(Locale.GERMANY);
+            NumberFormat nf = NumberFormat.getInstance();
             NumberFormat nf1 = NumberFormat.getInstance(Locale.US);
 //            DecimalFormat df1 =  new DecimalFormat("#.00",DecimalFormatSymbols.getInstance(Locale.US));
-            jJumlahJamSeluruhnya+=nf.parse(absensiPegawai.getStLamaLembur()).doubleValue();
-            jJamKerja15+=nf.parse(absensiPegawai.getStHariKerja15()).doubleValue();
-            jJamKerja20+=nf.parse(absensiPegawai.getStHariKerja20()).doubleValue();
-            jJumlahJamKerja+=nf.parse(absensiPegawai.getsJumlahHariKerja()).doubleValue();
-            jJamlibur20+=nf.parse(absensiPegawai.getStHariLibur20()).doubleValue();
-            jJamlibur30+=nf.parse(absensiPegawai.getStHariLibur30()).doubleValue();
-            jJamlibur40+=nf.parse(absensiPegawai.getStHariLibur40()).doubleValue();
-            jJumlahLibur+=nf.parse(absensiPegawai.getsJumlahHariLibur()).doubleValue();
-            jJumlahJamLemburPerhitungan+=nf.parse(absensiPegawai.getStJamLembur()).doubleValue();
-            jJumlahUpahLembur+=nf1.parse(absensiPegawai.getStBiayaLembur()).doubleValue();
+            jJumlahJamSeluruhnya += nf.parse(absensiPegawai.getStLamaLembur()).doubleValue();
+            jJamKerja15 += nf.parse(absensiPegawai.getStHariKerja15()).doubleValue();
+            jJamKerja20 += nf.parse(absensiPegawai.getStHariKerja20()).doubleValue();
+            jJumlahJamKerja += nf.parse(absensiPegawai.getsJumlahHariKerja()).doubleValue();
+            jJamlibur20 += nf.parse(absensiPegawai.getStHariLibur20()).doubleValue();
+            jJamlibur30 += nf.parse(absensiPegawai.getStHariLibur30()).doubleValue();
+            jJamlibur40 += nf.parse(absensiPegawai.getStHariLibur40()).doubleValue();
+            jJumlahLibur += nf.parse(absensiPegawai.getsJumlahHariLibur()).doubleValue();
+            jJumlahJamLemburPerhitungan += nf.parse(absensiPegawai.getStJamLembur()).doubleValue();
+            jJumlahUpahLembur += nf1.parse(absensiPegawai.getStBiayaLembur()).doubleValue();
 
             a++;
         }
-        jJumlahJamSeluruhnyaAll=jJumlahJamSeluruhnyaAll+jJumlahJamSeluruhnya;jJamKerja15All=jJamKerja15All+jJamKerja15;jJamKerja20All=jJamKerja20All+jJamKerja20;jJumlahJamKerjaAll=jJumlahJamKerjaAll+jJumlahJamKerja;jJamlibur20All=jJamlibur20All+jJamlibur20;jJamlibur30All=jJamlibur30All+jJamlibur30;jJamlibur40All=jJamlibur40All+jJamlibur40;jJumlahLiburAll=jJumlahLiburAll+jJumlahLibur;jJumlahJamLemburPerhitunganAll=jJumlahJamLemburPerhitunganAll+jJumlahJamLemburPerhitungan;
-        jJumlahUpahLemburAll=jJumlahUpahLemburAll+jJumlahUpahLembur;
+        jJumlahJamSeluruhnyaAll = jJumlahJamSeluruhnyaAll + jJumlahJamSeluruhnya;
+        jJamKerja15All = jJamKerja15All + jJamKerja15;
+        jJamKerja20All = jJamKerja20All + jJamKerja20;
+        jJumlahJamKerjaAll = jJumlahJamKerjaAll + jJumlahJamKerja;
+        jJamlibur20All = jJamlibur20All + jJamlibur20;
+        jJamlibur30All = jJamlibur30All + jJamlibur30;
+        jJamlibur40All = jJamlibur40All + jJamlibur40;
+        jJumlahLiburAll = jJumlahLiburAll + jJumlahLibur;
+        jJumlahJamLemburPerhitunganAll = jJumlahJamLemburPerhitunganAll + jJumlahJamLemburPerhitungan;
+        jJumlahUpahLemburAll = jJumlahUpahLemburAll + jJumlahUpahLembur;
         AbsensiPegawai tmp = new AbsensiPegawai();
         tmp.setNo("");
         tmp.setNip("JUMLAH");
@@ -2691,23 +2813,23 @@ public class AbsensiAction extends BaseMasterAction {
         tmp.setsJumlahHariLibur(df.format(jJumlahLibur));
         tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitungan));
         tmp.setStBiayaLemburPerjam("");
-        tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur),"###,###"));
+        tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLembur), "###,###"));
         forReport.add(tmp);
         //memberi nomor
-        List<AbsensiPegawai>finalRekapLembur=new ArrayList<>();
-        int no=1;
-        String nipTmp="";
-        for (AbsensiPegawai hasilAkhir:forReport){
-            if (!(nipTmp).equalsIgnoreCase(hasilAkhir.getNip())){
-                if (("").equalsIgnoreCase(hasilAkhir.getNama())){
+        List<AbsensiPegawai> finalRekapLembur = new ArrayList<>();
+        int no = 1;
+        String nipTmp = "";
+        for (AbsensiPegawai hasilAkhir : forReport) {
+            if (!(nipTmp).equalsIgnoreCase(hasilAkhir.getNip())) {
+                if (("").equalsIgnoreCase(hasilAkhir.getNama())) {
 //                    hasilAkhir.setNip(hasilAkhir.getNip().replace("Bagian ",""));
-                    no=1;
-                }else{
+                    no = 1;
+                } else {
                     hasilAkhir.setNo(String.valueOf(no));
                     no++;
                 }
                 finalRekapLembur.add(hasilAkhir);
-                nipTmp=hasilAkhir.getNip();
+                nipTmp = hasilAkhir.getNip();
             }
         }
 
@@ -2725,7 +2847,7 @@ public class AbsensiAction extends BaseMasterAction {
         tmp.setsJumlahHariLibur(df.format(jJumlahLiburAll));
         tmp.setStJamLembur(df.format(jJumlahJamLemburPerhitunganAll));
         tmp.setStBiayaLemburPerjam("");
-        tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLemburAll),"###,###"));
+        tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(jJumlahUpahLemburAll), "###,###"));
         finalRekapLembur.add(tmp);
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(finalRekapLembur);
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -2733,27 +2855,27 @@ public class AbsensiAction extends BaseMasterAction {
         SimpleDateFormat dt1 = new SimpleDateFormat("dd-MM-yyyy");
         String stDate = dt1.format(dataDate);
 
-        if (bagian==null){
-            bagian="";
+        if (bagian == null) {
+            bagian = "";
         }
         Branch branch = new Branch();
 
-        try{
-            branch = branchBo.getBranchById(unitId,"Y");
-        }catch( HibernateException e){
+        try {
+            branch = branchBo.getBranchById(unitId, "Y");
+        } catch (HibernateException e) {
 
         }
-        String logo ="";
-        if (unitId.equalsIgnoreCase("RS01")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS01;
-        }else if (unitId.equalsIgnoreCase("RS02")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS02;
-        }else if (unitId.equalsIgnoreCase("RS03")){
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_RS03;
-        }else{
-            logo= CommonConstant.RESOURCE_PATH_IMG_ASSET+"/"+CommonConstant.APP_NAME+CommonConstant.LOGO_NMU;
+        String logo = "";
+        if (unitId.equalsIgnoreCase("RS01")) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS01;
+        } else if (unitId.equalsIgnoreCase("RS02")) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS02;
+        } else if (unitId.equalsIgnoreCase("RS03")) {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_RS03;
+        } else {
+            logo = CommonConstant.RESOURCE_PATH_IMG_ASSET + "/" + CommonConstant.APP_NAME + CommonConstant.LOGO_NMU;
         }
-        String stTanggal = CommonUtil.convertDateToString( new java.util.Date());
+        String stTanggal = CommonUtil.convertDateToString(new java.util.Date());
         reportParams.put("urlLogo", logo);
         reportParams.put("titleReport", "REKAPITULASI LEMBUR");
         reportParams.put("tanggalDari", getTglFrom());
@@ -2785,7 +2907,7 @@ public class AbsensiAction extends BaseMasterAction {
     public String searchReportLembur() {
         logger.info("[AbsensiAction.searchReportLembur] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
-        List<Biodata> biodataList= new ArrayList();
+        List<Biodata> biodataList = new ArrayList();
         String unit = "";
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
@@ -2798,23 +2920,23 @@ public class AbsensiAction extends BaseMasterAction {
         List<Branch> branchList = new ArrayList<>();
         try {
             branchList = branchBo.getByCriteria(searchBranch);
-        }catch(GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[AbsensiAction.searchReportLembur] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retrieving Branch List using criteria. \n" + e.getMessage());
         }
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
         }
 
         Lembur lembur = getLembur();
         try {
             biodataList = biodataBo.getBiodataforAbsensi(getBranchId(), "", lembur.getBagian(), lembur.getNip());
-        } catch(GeneralBOException e){
+        } catch (GeneralBOException e) {
             logger.error("[AbsensiAction.searchReportLembur] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when retrieving Biodata for Absensi, \n" + e.getMessage());
         }
 
-        for (Biodata biodata : biodataList){
+        for (Biodata biodata : biodataList) {
             List<AbsensiPegawai> listData = new ArrayList();
             List<AbsensiPegawai> listDataAbsensiPegawai = new ArrayList();
             AbsensiPegawai search = new AbsensiPegawai();
@@ -2833,9 +2955,9 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.searchReportLembur] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.searchReportLembur] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
-            for (AbsensiPegawai absensiPegawai : listData ){
+            for (AbsensiPegawai absensiPegawai : listData) {
                 absensiPegawai.setNama(biodata.getNamaPegawai());
                 absensiPegawai.setPositionName(biodata.getPositionName());
                 absensiPegawai.setDivisi(biodata.getDivisiName());
@@ -2848,44 +2970,44 @@ public class AbsensiAction extends BaseMasterAction {
 
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
         listDataFinal = new ArrayList<>();
-        Double hasilLamaLembur= (double) 0,hasilhariKerja15= (double) 0,hasilhariKerja20= (double) 0,hasilJumlahhariKerja= (double) 0,hasilhariLibur20= (double) 0,hasilhariLibur30= (double) 0,hasilhariLibur40= (double) 0,hasilJumlahHariLibur= (double) 0,hasilJamLembur= (double)0 ,hasilBiayaLemburPerJam= (double) 0,hasilBiayaLembur= (double) 0;
+        Double hasilLamaLembur = (double) 0, hasilhariKerja15 = (double) 0, hasilhariKerja20 = (double) 0, hasilJumlahhariKerja = (double) 0, hasilhariLibur20 = (double) 0, hasilhariLibur30 = (double) 0, hasilhariLibur40 = (double) 0, hasilJumlahHariLibur = (double) 0, hasilJamLembur = (double) 0, hasilBiayaLemburPerJam = (double) 0, hasilBiayaLembur = (double) 0;
         DecimalFormat df = new DecimalFormat("0.00");
         int i = 1;
         int length = listDataFinalTmp.size();
-        String nip="",nama="", keterangan = "";
-        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
+        String nip = "", nama = "", keterangan = "";
+        for (AbsensiPegawai absensiPegawai : listDataFinalTmp) {
             //inisialisasi
-            if (i==1){
-                nip=absensiPegawai.getNip();
-                nama=absensiPegawai.getNama();
+            if (i == 1) {
+                nip = absensiPegawai.getNip();
+                nama = absensiPegawai.getNama();
             }
-            if (nip.equalsIgnoreCase(absensiPegawai.getNip())){
+            if (nip.equalsIgnoreCase(absensiPegawai.getNip())) {
                 //grouping jam lembur
                 double realisasi;
-                if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
-                    realisasi= absensiPegawai.getLamaLembur();
-                }else{
-                    realisasi= absensiPegawai.getRealisasiJamLembur();
+                if (absensiPegawai.getLamaLembur() <= absensiPegawai.getRealisasiJamLembur()) {
+                    realisasi = absensiPegawai.getLamaLembur();
+                } else {
+                    realisasi = absensiPegawai.getRealisasiJamLembur();
                 }
                 AbsensiPegawai resultSetHari;
-                resultSetHari = absensiBo.getJamLembur(realisasi,absensiPegawai.getTipeHari());
+                resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
 
-                hasilLamaLembur = hasilLamaLembur+realisasi;
-                hasilhariKerja15 = hasilhariKerja15+resultSetHari.getHariKerja15();
-                hasilhariKerja20 = hasilhariKerja20+resultSetHari.getHariKerja20();
-                hasilJumlahhariKerja = hasilhariKerja15+hasilhariKerja20;
-                hasilhariLibur20 = hasilhariLibur20+resultSetHari.getHariLibur20();
-                hasilhariLibur30 = hasilhariLibur30+resultSetHari.getHariLibur30();
-                hasilhariLibur40 = hasilhariLibur40+resultSetHari.getHariLibur40();
-                hasilJumlahHariLibur = hasilhariLibur20+hasilhariLibur30+hasilhariLibur40;
-                hasilJamLembur = hasilJamLembur+absensiPegawai.getJamLembur();
-                hasilBiayaLembur = hasilBiayaLembur+absensiPegawai.getBiayaLembur();
-                if (hasilBiayaLembur==0){
-                    hasilBiayaLemburPerJam= 0d;
-                }else{
-                    hasilBiayaLemburPerJam = hasilBiayaLembur/hasilJamLembur;
+                hasilLamaLembur = hasilLamaLembur + realisasi;
+                hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
+                hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
+                hasilJumlahhariKerja = hasilhariKerja15 + hasilhariKerja20;
+                hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
+                hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
+                hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
+                hasilJumlahHariLibur = hasilhariLibur20 + hasilhariLibur30 + hasilhariLibur40;
+                hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
+                hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
+                if (hasilBiayaLembur == 0) {
+                    hasilBiayaLemburPerJam = 0d;
+                } else {
+                    hasilBiayaLemburPerJam = hasilBiayaLembur / hasilJamLembur;
                 }
-            }else{
+            } else {
                 AbsensiPegawai tmp = new AbsensiPegawai();
 
                 tmp.setNo(String.valueOf(i));
@@ -2900,8 +3022,8 @@ public class AbsensiAction extends BaseMasterAction {
                 tmp.setStHariLibur40(df.format(hasilhariLibur40));
                 tmp.setsJumlahHariLibur(df.format(hasilJumlahHariLibur));
                 tmp.setStJamLembur(df.format(hasilJamLembur));
-                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam),"###,###"));
-                tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
+                tmp.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam), "###,###"));
+                tmp.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
                 tmp.setStTanggalDari(lembur.getStTanggalAwal());
                 tmp.setStTanggalSelesai(lembur.getStTanggalAkhir());
                 listDataFinal.add(tmp);
@@ -2917,32 +3039,32 @@ public class AbsensiAction extends BaseMasterAction {
                 hasilBiayaLembur = (double) 0;
                 hasilBiayaLemburPerJam = (double) 0;
 
-                nip=absensiPegawai.getNip();
-                nama=absensiPegawai.getNama();
+                nip = absensiPegawai.getNip();
+                nama = absensiPegawai.getNama();
 
                 double realisasi;
-                if (absensiPegawai.getLamaLembur()<=absensiPegawai.getRealisasiJamLembur()){
-                    realisasi= absensiPegawai.getLamaLembur();
-                }else{
-                    realisasi= absensiPegawai.getRealisasiJamLembur();
+                if (absensiPegawai.getLamaLembur() <= absensiPegawai.getRealisasiJamLembur()) {
+                    realisasi = absensiPegawai.getLamaLembur();
+                } else {
+                    realisasi = absensiPegawai.getRealisasiJamLembur();
                 }
                 AbsensiPegawai resultSetHari;
-                resultSetHari = absensiBo.getJamLembur(realisasi,absensiPegawai.getTipeHari());
+                resultSetHari = absensiBo.getJamLembur(realisasi, absensiPegawai.getTipeHari());
 
-                hasilLamaLembur = hasilLamaLembur+realisasi;
-                hasilhariKerja15 = hasilhariKerja15+resultSetHari.getHariKerja15();
-                hasilhariKerja20 = hasilhariKerja20+resultSetHari.getHariKerja20();
-                hasilJumlahhariKerja = hasilhariKerja15+hasilhariKerja20;
-                hasilhariLibur20 = hasilhariLibur20+resultSetHari.getHariLibur20();
-                hasilhariLibur30 = hasilhariLibur30+resultSetHari.getHariLibur30();
-                hasilhariLibur40 = hasilhariLibur40+resultSetHari.getHariLibur40();
-                hasilJumlahHariLibur = hasilhariLibur20+hasilhariLibur30+hasilhariLibur40;
-                hasilJamLembur = hasilJamLembur+absensiPegawai.getJamLembur();
-                hasilBiayaLembur = hasilBiayaLembur+absensiPegawai.getBiayaLembur();
-                if (hasilBiayaLembur==0){
+                hasilLamaLembur = hasilLamaLembur + realisasi;
+                hasilhariKerja15 = hasilhariKerja15 + resultSetHari.getHariKerja15();
+                hasilhariKerja20 = hasilhariKerja20 + resultSetHari.getHariKerja20();
+                hasilJumlahhariKerja = hasilhariKerja15 + hasilhariKerja20;
+                hasilhariLibur20 = hasilhariLibur20 + resultSetHari.getHariLibur20();
+                hasilhariLibur30 = hasilhariLibur30 + resultSetHari.getHariLibur30();
+                hasilhariLibur40 = hasilhariLibur40 + resultSetHari.getHariLibur40();
+                hasilJumlahHariLibur = hasilhariLibur20 + hasilhariLibur30 + hasilhariLibur40;
+                hasilJamLembur = hasilJamLembur + absensiPegawai.getJamLembur();
+                hasilBiayaLembur = hasilBiayaLembur + absensiPegawai.getBiayaLembur();
+                if (hasilBiayaLembur == 0) {
                     hasilBiayaLemburPerJam = 0d;
-                }else{
-                    hasilBiayaLemburPerJam = hasilBiayaLembur/hasilJamLembur;
+                } else {
+                    hasilBiayaLemburPerJam = hasilBiayaLembur / hasilJamLembur;
                 }
             }
 //            keterangan = absensiPegawai.getKeterangan();
@@ -2961,16 +3083,16 @@ public class AbsensiAction extends BaseMasterAction {
         data.setStHariLibur40(df.format(hasilhariLibur40));
         data.setsJumlahHariLibur(df.format(hasilJumlahHariLibur));
         data.setStJamLembur(df.format(hasilJamLembur));
-        data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam),"###,###"));
-        data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur),"###,###"));
+        data.setStBiayaLemburPerjam(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLemburPerJam), "###,###"));
+        data.setStBiayaLembur(CommonUtil.numbericFormat(BigDecimal.valueOf(hasilBiayaLembur), "###,###"));
         data.setStTanggalDari(lembur.getStTanggalAwal());
         data.setStTanggalSelesai(lembur.getStTanggalAkhir());
         data.setKeterangan(keterangan);
         listDataFinal.add(data);
 
         List<AbsensiPegawai> forReport = new ArrayList<>();
-        int x=1;
-        for(AbsensiPegawai absensiPegawai: listDataFinal) {
+        int x = 1;
+        for (AbsensiPegawai absensiPegawai : listDataFinal) {
             if (!"".equalsIgnoreCase(absensiPegawai.getNip()) && absensiPegawai.getNip() != null) {
                 absensiPegawai.setNo(String.valueOf(x));
                 forReport.add(absensiPegawai);
@@ -2983,22 +3105,22 @@ public class AbsensiAction extends BaseMasterAction {
         return "success_report_lembur";
     }
 
-    public List<AbsensiPegawai> getListUangMakan(String tanggalDari , String tanggalSampai , String unitId,String bidangId) {
+    public List<AbsensiPegawai> getListUangMakan(String tanggalDari, String tanggalSampai, String unitId, String bidangId) {
         logger.info("[ReportAction.printReportKPIUnit] start process >>>");
         List<AbsensiPegawai> listDataFinal = new ArrayList();
         String unit = "";
-        String divisi="";
+        String divisi = "";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
         DepartmentBo departmentBo = (DepartmentBo) ctx.getBean("departmentBoProxy");
 
-        if (!bidangId.equalsIgnoreCase("")){
-            Department searchDepartment=new Department();
+        if (!bidangId.equalsIgnoreCase("")) {
+            Department searchDepartment = new Department();
             searchDepartment.setDepartmentId(bidangId);
             searchDepartment.setFlag("Y");
             List<Department> departmentList = departmentBo.getByCriteria(searchDepartment);
-            for (Department department:departmentList){
+            for (Department department : departmentList) {
                 divisi = department.getDepartmentName();
             }
         }
@@ -3006,8 +3128,8 @@ public class AbsensiAction extends BaseMasterAction {
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(unitId);
         List<Branch> branchList = branchBo.getByCriteria(searchBranch);
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
         }
         Date startDate = CommonUtil.convertToDate(tanggalDari);
         Date endDate = CommonUtil.convertToDate(tanggalSampai);
@@ -3015,7 +3137,7 @@ public class AbsensiAction extends BaseMasterAction {
         start.setTime(startDate);
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
-        end.add(Calendar.DATE,1);
+        end.add(Calendar.DATE, 1);
         java.util.Date date;
         for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
             List<AbsensiPegawai> listData = new ArrayList();
@@ -3023,7 +3145,7 @@ public class AbsensiAction extends BaseMasterAction {
             search.setTanggal(new Date(date.getTime()));
             search.setFlag("Y");
             search.setBranchId(unitId);
-            if (!bidangId.equalsIgnoreCase("")){
+            if (!bidangId.equalsIgnoreCase("")) {
                 search.setDivisiId(bidangId);
             }
             try {
@@ -3036,32 +3158,32 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.search] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
             listDataFinal.addAll(listData);
         }
         Comparator<AbsensiPegawai> comparator = new Comparator<AbsensiPegawai>() {
             @Override
             public int compare(AbsensiPegawai left, AbsensiPegawai right) {
-                String awal =left.getNip().replace("-","");
-                String akhir =right.getNip().replace("-","");
+                String awal = left.getNip().replace("-", "");
+                String akhir = right.getNip().replace("-", "");
                 Long angka1 = Long.parseLong(awal);
                 Long angka2 = Long.parseLong(akhir);
-                return (int) (angka1-angka2);
+                return (int) (angka1 - angka2);
             }
         };
         Collections.sort(listDataFinal, comparator);
         List<AbsensiPegawai> listDataFinalTmp = listDataFinal;
 
         listDataFinal = new ArrayList<>();
-        String nip="";
+        String nip = "";
         AbsensiPegawai tmp = new AbsensiPegawai();
         int index = 0;
-        int totalAbsensi=0;
+        int totalAbsensi = 0;
         int jamMasukDb = 0;
         int jamPulangDb = 0;
-        BigDecimal totalUangMakan= BigDecimal.valueOf(0);
-        for ( AbsensiPegawai absensiPegawai : listDataFinalTmp){
+        BigDecimal totalUangMakan = BigDecimal.valueOf(0);
+        for (AbsensiPegawai absensiPegawai : listDataFinalTmp) {
             Date tanggal = CommonUtil.convertToDate(absensiPegawai.getStTanggal());
             Calendar cal = Calendar.getInstance();
             cal.setTime(tanggal);
@@ -3070,12 +3192,12 @@ public class AbsensiAction extends BaseMasterAction {
             JamKerja jamKerja = new JamKerja();
             jamKerja.setHariKerja(day);
             jamKerja.setFlag("Y");
-            List<JamKerja>jamKerjaList = jamKerjaBo.getByCriteria(jamKerja);
-            for (JamKerja jamKerja1 : jamKerjaList){
-                jamMasukDb = Integer.valueOf(jamKerja1.getJamAwalKerja().replace(":",""));
-                jamPulangDb = Integer.valueOf(jamKerja1.getJamAwalKerja().replace(":",""));
+            List<JamKerja> jamKerjaList = jamKerjaBo.getByCriteria(jamKerja);
+            for (JamKerja jamKerja1 : jamKerjaList) {
+                jamMasukDb = Integer.valueOf(jamKerja1.getJamAwalKerja().replace(":", ""));
+                jamPulangDb = Integer.valueOf(jamKerja1.getJamAwalKerja().replace(":", ""));
             }
-            if (index!=0&&!nip.equalsIgnoreCase(absensiPegawai.getNip())){
+            if (index != 0 && !nip.equalsIgnoreCase(absensiPegawai.getNip())) {
                 tmp.setNip(absensiPegawai.getNip());
                 tmp.setNama(absensiPegawai.getNama());
                 tmp.setDivisi(absensiPegawai.getDivisi());
@@ -3092,8 +3214,8 @@ public class AbsensiAction extends BaseMasterAction {
                 absensiPegawai.setJamPulang("");
                 absensiPegawai.setStTanggal("");
                 absensiPegawai.setAbsensi(String.valueOf(totalAbsensi));
-                absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi*17500),"###,###"));
-                totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi*17500));
+                absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi * 17500), "###,###"));
+                totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi * 17500));
                 index++;
                 listDataFinal.add(absensiPegawai);
 
@@ -3108,26 +3230,25 @@ public class AbsensiAction extends BaseMasterAction {
                 absensiPegawai.setFlagUangMakan(tmp.getFlagUangMakan());
             }
             if (!absensiPegawai.getNip().equalsIgnoreCase(nip)) {
-                if (!absensiPegawai.getJamMasuk().equalsIgnoreCase("-")&&!absensiPegawai.getJamPulang().equalsIgnoreCase("-")&&absensiPegawai.getApprovalFlag()==null&&absensiPegawai.getFlagUangMakan()==null){
-                    if (absensiPegawai.getJamMasuk()!=null||absensiPegawai.getJamKeluar()!=null||absensiPegawai.getApprovalFlag()==null){
-                        if (!("").equalsIgnoreCase(absensiPegawai.getJamMasuk())&&!("").equalsIgnoreCase(absensiPegawai.getJamKeluar())&&absensiPegawai.getApprovalFlag()==null){
-                            if (Integer.parseInt(absensiPegawai.getJamMasuk().replace(":",""))<=jamMasukDb&&Integer.parseInt(absensiPegawai.getJamPulang().replace(":",""))>=jamPulangDb){
-                                totalAbsensi=1;
+                if (!absensiPegawai.getJamMasuk().equalsIgnoreCase("-") && !absensiPegawai.getJamPulang().equalsIgnoreCase("-") && absensiPegawai.getApprovalFlag() == null && absensiPegawai.getFlagUangMakan() == null) {
+                    if (absensiPegawai.getJamMasuk() != null || absensiPegawai.getJamKeluar() != null || absensiPegawai.getApprovalFlag() == null) {
+                        if (!("").equalsIgnoreCase(absensiPegawai.getJamMasuk()) && !("").equalsIgnoreCase(absensiPegawai.getJamKeluar()) && absensiPegawai.getApprovalFlag() == null) {
+                            if (Integer.parseInt(absensiPegawai.getJamMasuk().replace(":", "")) <= jamMasukDb && Integer.parseInt(absensiPegawai.getJamPulang().replace(":", "")) >= jamPulangDb) {
+                                totalAbsensi = 1;
                                 nip = absensiPegawai.getNip();
                                 absensiPegawai.setAbsensi("1");
                                 absensiPegawai.setStUangmakan("17,500");
                                 index++;
                                 listDataFinal.add(absensiPegawai);
-                            }else if ("Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())&&"Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())){
-                                totalAbsensi=1;
+                            } else if ("Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan()) && "Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())) {
+                                totalAbsensi = 1;
                                 nip = absensiPegawai.getNip();
                                 absensiPegawai.setAbsensi("1");
                                 absensiPegawai.setStUangmakan("17,500");
                                 index++;
                                 listDataFinal.add(absensiPegawai);
-                            }
-                            else{
-                                totalAbsensi=0;
+                            } else {
+                                totalAbsensi = 0;
                                 nip = absensiPegawai.getNip();
                                 absensiPegawai.setAbsensi("0");
                                 absensiPegawai.setStUangmakan("0");
@@ -3136,15 +3257,15 @@ public class AbsensiAction extends BaseMasterAction {
                             }
                         }
                     }
-                }else if("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())&&"Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())){
-                    totalAbsensi=1;
+                } else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag()) && "Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())) {
+                    totalAbsensi = 1;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan("17,500");
                     index++;
                     listDataFinal.add(absensiPegawai);
-                }else{
-                    totalAbsensi=0;
+                } else {
+                    totalAbsensi = 0;
                     nip = absensiPegawai.getNip();
                     absensiPegawai.setAbsensi("0");
                     absensiPegawai.setStUangmakan("0");
@@ -3152,28 +3273,27 @@ public class AbsensiAction extends BaseMasterAction {
                     listDataFinal.add(absensiPegawai);
                 }
 
-            }else if (nip.equalsIgnoreCase(absensiPegawai.getNip())){
-                if (!absensiPegawai.getJamMasuk().equalsIgnoreCase("-")&&!absensiPegawai.getJamPulang().equalsIgnoreCase("-")&&absensiPegawai.getApprovalFlag()==null&&absensiPegawai.getFlagUangMakan()==null){
-                    if (Integer.parseInt(absensiPegawai.getJamMasuk().replace(":",""))<=jamMasukDb&&Integer.parseInt(absensiPegawai.getJamPulang().replace(":",""))>=jamPulangDb){
+            } else if (nip.equalsIgnoreCase(absensiPegawai.getNip())) {
+                if (!absensiPegawai.getJamMasuk().equalsIgnoreCase("-") && !absensiPegawai.getJamPulang().equalsIgnoreCase("-") && absensiPegawai.getApprovalFlag() == null && absensiPegawai.getFlagUangMakan() == null) {
+                    if (Integer.parseInt(absensiPegawai.getJamMasuk().replace(":", "")) <= jamMasukDb && Integer.parseInt(absensiPegawai.getJamPulang().replace(":", "")) >= jamPulangDb) {
                         absensiPegawai.setNip("");
                         absensiPegawai.setNama("");
                         absensiPegawai.setDivisi("");
                         absensiPegawai.setAbsensi("1");
                         absensiPegawai.setStUangmakan("17,500");
-                        totalAbsensi=totalAbsensi+1;
+                        totalAbsensi = totalAbsensi + 1;
                         listDataFinal.add(absensiPegawai);
                         index++;
-                    }else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())&&"Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())){
+                    } else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag()) && "Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())) {
                         absensiPegawai.setNip("");
                         absensiPegawai.setNama("");
                         absensiPegawai.setDivisi("");
                         absensiPegawai.setAbsensi("1");
                         absensiPegawai.setStUangmakan("17,500");
-                        totalAbsensi=totalAbsensi+1;
+                        totalAbsensi = totalAbsensi + 1;
                         listDataFinal.add(absensiPegawai);
                         index++;
-                    }
-                    else{
+                    } else {
                         absensiPegawai.setNip("");
                         absensiPegawai.setNama("");
                         absensiPegawai.setDivisi("");
@@ -3182,16 +3302,16 @@ public class AbsensiAction extends BaseMasterAction {
                         listDataFinal.add(absensiPegawai);
                         index++;
                     }
-                }else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag())&&"Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())){
+                } else if ("Y".equalsIgnoreCase(absensiPegawai.getApprovalFlag()) && "Y".equalsIgnoreCase(absensiPegawai.getFlagUangMakan())) {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
                     absensiPegawai.setAbsensi("1");
                     absensiPegawai.setStUangmakan("17,500");
-                    totalAbsensi=totalAbsensi+1;
+                    totalAbsensi = totalAbsensi + 1;
                     listDataFinal.add(absensiPegawai);
                     index++;
-                }else{
+                } else {
                     absensiPegawai.setNip("");
                     absensiPegawai.setNama("");
                     absensiPegawai.setDivisi("");
@@ -3210,10 +3330,10 @@ public class AbsensiAction extends BaseMasterAction {
         absensiPegawai.setJamPulang("");
         absensiPegawai.setStTanggal("");
         absensiPegawai.setAbsensi(String.valueOf(totalAbsensi));
-        absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi*17500),"###,###"));
+        absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(BigDecimal.valueOf(totalAbsensi * 17500), "###,###"));
         listDataFinal.add(absensiPegawai);
 
-        totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi*17500));
+        totalUangMakan = totalUangMakan.add(BigDecimal.valueOf(totalAbsensi * 17500));
 
         absensiPegawai = new AbsensiPegawai();
         absensiPegawai.setNama("TOTAL UANG MAKAN ABSENSI :");
@@ -3224,7 +3344,7 @@ public class AbsensiAction extends BaseMasterAction {
         absensiPegawai.setStTanggal("");
         absensiPegawai.setAbsensi("");
 
-        absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(totalUangMakan,"###,###"));
+        absensiPegawai.setStUangmakan(CommonUtil.numbericFormat(totalUangMakan, "###,###"));
         listDataFinal.add(absensiPegawai);
 
         JRBeanCollectionDataSource itemData = new JRBeanCollectionDataSource(listDataFinal);
@@ -3259,14 +3379,14 @@ public class AbsensiAction extends BaseMasterAction {
         return listDataFinal;
     }
 
-    public String refreshAbsensi(String nip,String stTanggal) {
+    public String refreshAbsensi(String nip, String stTanggal) {
         logger.info("[AbsensiAction.refreshAbsensi start process >>>");
         Date tanggal = CommonUtil.convertStringToDate(stTanggal);
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        AbsensiBo absensiBo= (AbsensiBo) ctx.getBean("absensiBoProxy");
-        String status ="";
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
+        String status = "";
         try {
-            status= absensiBo.refreshDataAbsensi(nip,tanggal);
+            status = absensiBo.refreshDataAbsensi(nip, tanggal);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -3276,15 +3396,16 @@ public class AbsensiAction extends BaseMasterAction {
                 return ERROR;
             }
             logger.error("[AbsensiAction.refreshAbsensi] Error when searching lembur by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }
         logger.info("[AbsensiAction.refreshAbsensi] end process <<<");
         return status;
     }
+
     public String getDataFromMesin() throws Exception {
         logger.info("[AbsensiAction.getDataFromMesin] start process >>>");
-        String status="00";
+        String status = "00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -3295,7 +3416,7 @@ public class AbsensiAction extends BaseMasterAction {
             absensiBo.getDataFromMesin(mesinAbsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
-            status="fail";
+            status = "fail";
             try {
                 logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.inquiry");
             } catch (GeneralBOException e1) {
@@ -3309,7 +3430,7 @@ public class AbsensiAction extends BaseMasterAction {
 
     public String getAllDataFromMesin() throws Exception {
         logger.info("[AbsensiAction.getDataFromMesin] start process >>>");
-        String status="00";
+        String status = "00";
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
@@ -3320,7 +3441,7 @@ public class AbsensiAction extends BaseMasterAction {
             absensiBo.getAllDataFromMesin(mesinAbsensi);
         } catch (GeneralBOException e) {
             Long logId = null;
-            status="fail";
+            status = "fail";
             try {
                 logId = absensiBoProxy.saveErrorMessage(e.getMessage(), "AbsensiBO.inquiry");
             } catch (GeneralBOException e1) {
@@ -3331,6 +3452,7 @@ public class AbsensiAction extends BaseMasterAction {
         }
         return status;
     }
+
     public void inquiry() throws Exception {
         AbsensiPegawai absen = getAbsensiPegawai();
         String tanggalAwal = absen.getStTanggalDari();
@@ -3340,8 +3462,8 @@ public class AbsensiAction extends BaseMasterAction {
         session.removeAttribute("listOfResultMesinAbsensi");
         session.removeAttribute("listOfResultAbsensiFinal");
         logger.info("[AbsensiAction.inquiry] start process >>>");
-        List<MesinAbsensi> mesinAbsensiList= new ArrayList<>();
-        List<MesinAbsensi> mesinAbsensiFinalList= new ArrayList<>();
+        List<MesinAbsensi> mesinAbsensiList = new ArrayList<>();
+        List<MesinAbsensi> mesinAbsensiFinalList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         Date startDate = CommonUtil.convertToDate(tanggalAwal);
@@ -3350,17 +3472,17 @@ public class AbsensiAction extends BaseMasterAction {
         start.setTime(startDate);
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
-        end.add(Calendar.DATE,1);
+        end.add(Calendar.DATE, 1);
         java.util.Date date;
-        Boolean awalTanggal=false;
+        Boolean awalTanggal = false;
         for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            if (date==startDate){
-                awalTanggal=true;
+            if (date == startDate) {
+                awalTanggal = true;
             }
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                mesinAbsensiList = absensiBo.inquiry(tanggal,awalTanggal, absen.getCekPegawaiStatus(), branchId);
+                mesinAbsensiList = absensiBo.inquiry(tanggal, awalTanggal, absen.getCekPegawaiStatus(), branchId);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -3369,7 +3491,7 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.inquiry] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.inquiry] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
             mesinAbsensiFinalList.addAll(mesinAbsensiList);
         }
@@ -3377,6 +3499,7 @@ public class AbsensiAction extends BaseMasterAction {
         session.setAttribute("listOfResultMesinAbsensi", mesinAbsensiFinalList);
         session.removeAttribute("listOfResultAbsensiFinal");
     }
+
     public void inquiryTambahan() throws Exception {
         logger.info("[AbsensiAction.inquiry] start process >>>");
         AbsensiPegawai absen = getAbsensiPegawai();
@@ -3385,8 +3508,8 @@ public class AbsensiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultMesinAbsensi");
         session.removeAttribute("listOfResultAbsensiFinal");
-        List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiList= new ArrayList<>();
-        List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiFinalList= new ArrayList<>();
+        List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiList = new ArrayList<>();
+        List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiFinalList = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         Date startDate = CommonUtil.convertToDate(tanggalAwal);
@@ -3395,17 +3518,17 @@ public class AbsensiAction extends BaseMasterAction {
         start.setTime(startDate);
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
-        end.add(Calendar.DATE,1);
+        end.add(Calendar.DATE, 1);
         java.util.Date date;
-        Boolean awalTanggal=false;
+        Boolean awalTanggal = false;
         for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
-            if (date==startDate){
-                awalTanggal=true;
+            if (date == startDate) {
+                awalTanggal = true;
             }
             try {
                 DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
                 String tanggal = df.format(date);
-                pegawaiTambahanAbsensiList = absensiBo.inquiryTambahan(tanggal,awalTanggal);
+                pegawaiTambahanAbsensiList = absensiBo.inquiryTambahan(tanggal, awalTanggal);
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -3414,7 +3537,7 @@ public class AbsensiAction extends BaseMasterAction {
                     logger.error("[AbsensiAction.inquiry] Error when saving error,", e1);
                 }
                 logger.error("[AbsensiAction.inquiry] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             }
             pegawaiTambahanAbsensiFinalList.addAll(pegawaiTambahanAbsensiList);
         }
@@ -3422,23 +3545,25 @@ public class AbsensiAction extends BaseMasterAction {
         session.removeAttribute("listOfResultAbsensiFinal");
     }
 
-    public List<MesinAbsensi> loadAbsensi(){
-        List<MesinAbsensi> mesinAbsensiList= new ArrayList<>();
+    public List<MesinAbsensi> loadAbsensi() {
+        List<MesinAbsensi> mesinAbsensiList = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
-        mesinAbsensiList= (List<MesinAbsensi>) session.getAttribute("listOfResultMesinAbsensi");
+        mesinAbsensiList = (List<MesinAbsensi>) session.getAttribute("listOfResultMesinAbsensi");
 
         return mesinAbsensiList;
     }
-    public List<PegawaiTambahanAbsensi> loadAbsensiTambahan(){
-        List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiList= new ArrayList<>();
+
+    public List<PegawaiTambahanAbsensi> loadAbsensiTambahan() {
+        List<PegawaiTambahanAbsensi> pegawaiTambahanAbsensiList = new ArrayList<>();
         HttpSession session = ServletActionContext.getRequest().getSession();
-        pegawaiTambahanAbsensiList= (List<PegawaiTambahanAbsensi>) session.getAttribute("listOfResultMesinAbsensi");
+        pegawaiTambahanAbsensiList = (List<PegawaiTambahanAbsensi>) session.getAttribute("listOfResultMesinAbsensi");
 
         return pegawaiTambahanAbsensiList;
     }
+
     public List<AbsensiPegawai> cariAbseni(String nip, String tanggal, String statusabsensi) throws Exception {
         logger.info("[AbsensiAction.inquiry] start process >>>");
-        List<AbsensiPegawai> absensiPegawai= new ArrayList<>();
+        List<AbsensiPegawai> absensiPegawai = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
@@ -3452,14 +3577,15 @@ public class AbsensiAction extends BaseMasterAction {
                 logger.error("[AbsensiAction.search] Error when saving error,", e1);
             }
             logger.error("[AbsensiAction.search] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
 
         return absensiPegawai;
     }
+
     public List<AbsensiPegawai> searchDetailLembur(String nip, String tanggal) throws Exception {
         logger.info("[AbsensiAction.searchDetailLembur] start process >>>");
-        List<AbsensiPegawai> absensiPegawai= new ArrayList<>();
+        List<AbsensiPegawai> absensiPegawai = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
@@ -3473,20 +3599,21 @@ public class AbsensiAction extends BaseMasterAction {
                 logger.error("[AbsensiAction.searchDetailLembur] Error when saving error,", e1);
             }
             logger.error("[AbsensiAction.searchDetailLembur] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
 
         return absensiPegawai;
     }
+
     @Override
     public String downloadXls() {
         logger.info("[FunctionAction.downloadXls] start process >>>");
-        List<AbsensiPegawai> listDataFinal = new ArrayList<>() ;
+        List<AbsensiPegawai> listDataFinal = new ArrayList<>();
         String tglTo = getTglTo();
         String tglFrom = getTglFrom();
         String branchId = getBranchId();
         String divisiId = getDivisiId();
-        listDataFinal = getListUangMakan(tglFrom,tglTo,branchId,divisiId);
+        listDataFinal = getListUangMakan(tglFrom, tglTo, branchId, divisiId);
         AbsensiPegawai absensiPegawai = new AbsensiPegawai();
 
         CellDetail cellDetail;
@@ -3605,7 +3732,7 @@ public class AbsensiAction extends BaseMasterAction {
     public String printReportAbsensiTriwulan() {
         logger.info("[ReportAction.printReportAbsensiTriwulan] start process >>>");
         List<AbsensiTriwulanDTO> listDataFinal = new ArrayList<>();
-        String unit = "",bagian =getBagian(),nip=getNip(),stTanggalAwal=getTglFrom(),stTanggalAkhir=getTglTo();
+        String unit = "", bagian = getBagian(), nip = getNip(), stTanggalAwal = getTglFrom(), stTanggalAkhir = getTglTo();
         Branch searchBranch = new Branch();
         searchBranch.setFlag("Y");
         searchBranch.setBranchId(getBranchId());
@@ -3619,16 +3746,16 @@ public class AbsensiAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
         BranchBo branchBo = (BranchBo) ctx.getBean("branchBoProxy");
-        PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
 
         List<PositionBagian> positionBagians = new ArrayList<>();
         PositionBagian positionBagian2 = new PositionBagian();
         positionBagian2.setBranchId(getBranchId());
-        positionBagians=positionBagianBo.getBagian(positionBagian2);
+        positionBagians = positionBagianBo.getBagian(positionBagian2);
 
         List<Branch> branchList = branchBo.getByCriteria(searchBranch);
-        for (Branch branch:branchList){
-            unit=branch.getBranchName();
+        for (Branch branch : branchList) {
+            unit = branch.getBranchName();
         }
         PositionBagian positionBagian = new PositionBagian();
         if (!getBagian().equalsIgnoreCase("")){
@@ -3636,7 +3763,7 @@ public class AbsensiAction extends BaseMasterAction {
             bagian=positionBagian.getBagianName();
         }
         try {
-            listDataFinal = absensiBo.searchBiodataForTriwulan(getBranchId(),nip,stTanggalAwal,stTanggalAkhir,getBagian());
+            listDataFinal = absensiBo.searchBiodataForTriwulan(getBranchId(), nip, stTanggalAwal, stTanggalAkhir, getBagian());
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -3645,22 +3772,22 @@ public class AbsensiAction extends BaseMasterAction {
                 logger.error("[AbsensiAction.searchDetailLembur] Error when saving error,", e1);
             }
             logger.error("[AbsensiAction.searchDetailLembur] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
         }
 
         List<AbsensiTriwulanDTO> forReport = new ArrayList<>();
-        if (!("").equalsIgnoreCase(getBagian())){
+        if (!("").equalsIgnoreCase(getBagian())) {
             String bagianPegawai = getBagian();
-            int a =1;
-            int z=1;
-            for(AbsensiTriwulanDTO absensi: listDataFinal) {
-                if (bagianPegawai.equalsIgnoreCase(absensi.getBagian())){
+            int a = 1;
+            int z = 1;
+            for (AbsensiTriwulanDTO absensi : listDataFinal) {
+                if (bagianPegawai.equalsIgnoreCase(absensi.getBagian())) {
                     absensi.setNo(String.valueOf(a));
                     forReport.add(absensi);
                     a++;
                 }
             }
-        }else{
+        } else {
             String bagianPegawai = "";
             char x='A';
             int a =1;
@@ -3669,7 +3796,7 @@ public class AbsensiAction extends BaseMasterAction {
                 for(AbsensiTriwulanDTO absensi: listDataFinal) {
                     if (!bagianPegawai.equalsIgnoreCase(positionBagian1.getBagianName())){
                         AbsensiTriwulanDTO tmp = new AbsensiTriwulanDTO();
-                        if (z!=1){
+                        if (z != 1) {
                             tmp.setNo("");
                             tmp.setNama("");
                             tmp.setJabatan("");
@@ -3717,11 +3844,11 @@ public class AbsensiAction extends BaseMasterAction {
                         forReport.add(tmp);
                         bagianPegawai = positionBagian1.getBagianName();
                         x++;
-                        a=1;
+                        a = 1;
                     }
-                    if (positionBagian1.getBagianName().equalsIgnoreCase(absensi.getBagianName())){
+                    if (positionBagian1.getBagianName().equalsIgnoreCase(absensi.getBagianName())) {
                         absensi.setNo(String.valueOf(a));
-                        if (absensi.getJabatan()==null){
+                        if (absensi.getJabatan() == null) {
                             absensi.setJabatan("-");
                         }
                         forReport.add(absensi);
@@ -3774,12 +3901,12 @@ public class AbsensiAction extends BaseMasterAction {
         return "report_absensi";
     }
 
-    public String refreshAllAbsensi( String unit, String stTanggalAwal , String stTanggalSampai ){
+    public String refreshAllAbsensi(String unit, String stTanggalAwal, String stTanggalSampai) {
         logger.info("[AbsensiAction.refreshAbsensi start process >>>");
-        String status ="";
+        String status = "";
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-        AbsensiBo absensiBo= (AbsensiBo) ctx.getBean("absensiBoProxy");
+        AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
 
         AbsensiPegawai searchAbsensiPegawai = new AbsensiPegawai();
         searchAbsensiPegawai.setUnit(unit);
@@ -3798,13 +3925,13 @@ public class AbsensiAction extends BaseMasterAction {
                 return ERROR;
             }
             logger.error("[AbsensiAction.refreshAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+            addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
             return ERROR;
         }
 
-        for (AbsensiPegawai data : listOfSearchAbsensiPegawai){
+        for (AbsensiPegawai data : listOfSearchAbsensiPegawai) {
             try {
-                status= absensiBo.refreshDataAbsensi(data.getNip(),data.getTanggal());
+                status = absensiBo.refreshDataAbsensi(data.getNip(), data.getTanggal());
             } catch (GeneralBOException e) {
                 Long logId = null;
                 try {
@@ -3814,7 +3941,7 @@ public class AbsensiAction extends BaseMasterAction {
                     return ERROR;
                 }
                 logger.error("[AbsensiAction.refreshAbsensi] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
                 return ERROR;
             }
         }
@@ -3823,7 +3950,7 @@ public class AbsensiAction extends BaseMasterAction {
         return status;
     }
 
-    public void cronInquiry()  {
+    public void cronInquiry() {
         logger.info("[AbsensiAction.cronInquiry] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultAbsensiPegawai");
@@ -3840,10 +3967,10 @@ public class AbsensiAction extends BaseMasterAction {
         start.setTime(startDate);
         Calendar end = Calendar.getInstance();
         end.setTime(endDate);
-        end.add(Calendar.DATE,1);
+        end.add(Calendar.DATE, 1);
         java.util.Date date;
 
-        if (!"".equalsIgnoreCase(tanggalAwal)&&!"".equalsIgnoreCase(tanggalAkhir)&&!"".equalsIgnoreCase(branchId)){
+        if (!"".equalsIgnoreCase(tanggalAwal) && !"".equalsIgnoreCase(tanggalAkhir) && !"".equalsIgnoreCase(branchId)) {
             for (date = start.getTime(); start.before(end); start.add(Calendar.DATE, 1), date = start.getTime()) {
                 try {
                     AbsensiPegawai data = new AbsensiPegawai();
@@ -3851,7 +3978,7 @@ public class AbsensiAction extends BaseMasterAction {
                     data.setBranchId(branchId);
                     data.setNip("");
 
-                    absensiPegawaiList=absensiBo.cronInquiry(data);
+                    absensiPegawaiList = absensiBo.cronInquiry(data);
                 } catch (GeneralBOException e) {
                     Long logId = null;
                     try {
@@ -3860,24 +3987,24 @@ public class AbsensiAction extends BaseMasterAction {
                         logger.error("[AbsensiAction.inquiry] Error when saving error,", e1);
                     }
                     logger.error("[AbsensiAction.inquiry] Error when searching absensi by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
-                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin" );
+                    addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
                 }
             }
-        }else{
-            String status="ERROR : [AbsensiAction.cronInquiry] ";
-            if ("".equalsIgnoreCase(tanggalAwal)){
+        } else {
+            String status = "ERROR : [AbsensiAction.cronInquiry] ";
+            if ("".equalsIgnoreCase(tanggalAwal)) {
                 status += "Tanggal Awal Belum diisi \n";
             }
-            if ("".equalsIgnoreCase(tanggalAkhir)){
+            if ("".equalsIgnoreCase(tanggalAkhir)) {
                 status += "Tanggal Akhir Belum diisi \n";
             }
-            if ("".equalsIgnoreCase(branchId)){
+            if ("".equalsIgnoreCase(branchId)) {
                 status += "Unit Belum diisi \n";
             }
             logger.error(status);
             throw new GeneralBOException(status);
         }
-        session.setAttribute("listOfResultAbsensiPegawai",absensiPegawaiList);
+        session.setAttribute("listOfResultAbsensiPegawai", absensiPegawaiList);
 
         logger.info("[AbsensiAction.cronInquiry] end process <<<");
     }
@@ -3890,16 +4017,16 @@ public class AbsensiAction extends BaseMasterAction {
         return absensiOnCallList;
     }
 
-    public void searchAbsensiOnCall(String nip,String tanggal) {
+    public void searchAbsensiOnCall(String nip, String tanggal) {
         HttpSession session = ServletActionContext.getRequest().getSession();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         AbsensiBo absensiBo = (AbsensiBo) ctx.getBean("absensiBoProxy");
-        AbsensiOnCall absensiOnCall= new AbsensiOnCall();
+        AbsensiOnCall absensiOnCall = new AbsensiOnCall();
         absensiOnCall.setFlag("Y");
         absensiOnCall.setTanggal(CommonUtil.convertStringToDate(tanggal));
         absensiOnCall.setNip(nip);
 
         List<AbsensiOnCall> absensiOnCallList = absensiBo.getAbsensiOnCall(absensiOnCall);
-        session.setAttribute("listOfResultAbsensiOnCall",absensiOnCallList);
+        session.setAttribute("listOfResultAbsensiOnCall", absensiOnCallList);
     }
 }
