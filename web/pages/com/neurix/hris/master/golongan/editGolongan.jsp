@@ -18,10 +18,13 @@
         $.subscribe('beforeProcessSave', function (event, data) {
             var idGolongan = document.getElementById("golonganId").value;
             var nameGolongan    = document.getElementById("golonganName1").value;
-            var level    = document.getElementById("level1").value;
+            var level           = document.getElementById("level1").value;
+            var golPensiun      = document.getElementById("golPensiun1").value;
+            var msKerjaAwal     = document.getElementById("msKerjaAwal1").value;
+            var msKerjaAkhir    = document.getElementById("msKerjaAkhir1").value;
 
 
-            if (nameGolongan != ''&& level!='' ) {
+            if (nameGolongan != ''&& level!='' && golPensiun!="" && msKerjaAwal!="" && msKerjaAkhir!="") {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -40,6 +43,15 @@
 
                 if (nameGolongan == '') {
                     msg += 'Field <strong>Golongan Name</strong> is required.' + '<br/>';
+                }
+                if (golPensiun == '') {
+                    msg += 'Field <strong>Nama Gol. Pensiun</strong> is required.' + '<br/>';
+                }
+                if (msKerjaAwal == '') {
+                    msg += 'Field <strong>Masa Kerja Awal</strong> is required.' + '<br/>';
+                }
+                if (msKerjaAkhir == '') {
+                    msg += 'Field <strong>Masa Kerja Akhir</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
@@ -140,8 +152,38 @@
                         </td>
                     </tr>
 
-                </table>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Nama Gol. Pensiun :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="golPensiun1" name="golongan.golPensiun" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Masa Kerja Awal :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="msKerjaAwal1" name="golongan.msKerjaAwal" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Masa Kerja Akhir :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield type="number" min="0" id="msKerjaAkhir1" name="golongan.msKerjaAkhir" required="true" disabled="false" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
 
+                </table>
 
 
                 <br>
