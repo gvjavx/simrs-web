@@ -491,8 +491,9 @@ public class PositionBoImpl implements PositionBo {
             //validasi
             List<ItPersonilPositionEntity> personilPositionEntityList = new ArrayList<>();
 
+            List<ImPosition> imPositionList = new ArrayList<>();
+
             if("Y".equalsIgnoreCase(position.getFlagCostUnit())){
-                List<ImPosition> imPositionList = new ArrayList<>();
                 Map criteria = new HashMap();
                 criteria.put("kodering", position.getKodering());
                 criteria.put("flag_cost_unit", "N");
@@ -546,8 +547,8 @@ public class PositionBoImpl implements PositionBo {
                     // Generating ID, get from postgre sequence
                     positionHistoryId = positionHistoryDao.getNextPositionHistory();
                 } catch (HibernateException e) {
-                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when getting sequence payrollTunjanganJabatanStruktural id, please info to your admin..." + e.getMessage());
+                    logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence Position History id, please info to your admin..." + e.getMessage());
                 }
 
                 historyEntity.setPositionIdHistory(positionHistoryId);
@@ -570,9 +571,10 @@ public class PositionBoImpl implements PositionBo {
                     // insert into database
                     positionHistoryDao.addAndSave(historyEntity);
                 } catch (HibernateException e) {
-                    logger.error("[PayrollTunjanganJabatanStrukturalBoImpl.saveAdd] Error, " + e.getMessage());
-                    throw new GeneralBOException("Found problem when saving new data PayrollTunjanganJabatanStruktural, please info to your admin..." + e.getMessage());
+                    logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence Position History id, please info to your admin..." + e.getMessage());
                 }
+
 
                 imPosition.setPositionId(position.getPositionId());
 //                imPosition.setPositionName(bean.getPositionName());
@@ -588,8 +590,58 @@ public class PositionBoImpl implements PositionBo {
                 try{
                     positionDao.updateAndSave(imPosition);
                 }catch (HibernateException e){
-                    logger.error("[PositionBoImpl.saveEdit] Error, " + e.getMessage());
+                    logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data Position, please info to your admin..." + e.getMessage());
+                }
+
+                if("Y".equalsIgnoreCase(position.getFlagCostUnit())) {
+                    for (ImPosition jabatan : imPositionList) {
+                        try {
+                            // Generating ID, get from postgre sequence
+                            positionHistoryId = positionHistoryDao.getNextPositionHistory();
+                        } catch (HibernateException e) {
+                            logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when getting sequence Position History id, please info to your admin..." + e.getMessage());
+                        }
+
+                        historyEntity.setPositionIdHistory(positionHistoryId);
+                        historyEntity.setPositionName(imPosition.getPositionName());
+                        historyEntity.setDepartmentId(imPosition.getDepartmentId());
+                        historyEntity.setKelompokId(imPosition.getKelompokId());
+                        historyEntity.setBagianId(imPosition.getBagianId());
+                        historyEntity.setKodering(imPosition.getKodering());
+                        historyEntity.setPositionId(imPosition.getPositionId());
+                        historyEntity.setFlagDijabatSatuOrang(imPosition.getFlagDijabatSatuOrang());
+                        historyEntity.setKodering(imPosition.getKodering());
+                        historyEntity.setCreatedDate(imPosition.getLastUpdate());
+                        historyEntity.setCreatedWho(imPosition.getLastUpdateWho());
+                        historyEntity.setLastUpdate(imPosition.getLastUpdate());
+                        historyEntity.setLastUpdateWho(imPosition.getLastUpdateWho());
+                        historyEntity.setFlag("Y");
+                        historyEntity.setAction(imPosition.getAction());
+
+                        try {
+                            // insert into database
+                            positionHistoryDao.addAndSave(historyEntity);
+                        } catch (HibernateException e) {
+                            logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when getting sequence Position History id, please info to your admin..." + e.getMessage());
+                        }
+
+                        imPosition.setPositionId(jabatan.getPositionId());
+
+                        imPosition.setFlag(position.getFlag());
+                        imPosition.setAction(position.getAction());
+                        imPosition.setLastUpdateWho(position.getLastUpdateWho());
+                        imPosition.setLastUpdate(position.getLastUpdate());
+
+                        try{
+                            positionDao.updateAndSave(imPosition);
+                        }catch (HibernateException e){
+                            logger.error("[PositionBoImpl.saveDelete] Error, " + e.getMessage());
+                            throw new GeneralBOException("Found problem when saving update data Position, please info to your admin..." + e.getMessage());
+                        }
+                    }
                 }
 
 
@@ -630,7 +682,7 @@ public class PositionBoImpl implements PositionBo {
 //                }
             } else {
                 logger.error("[PositionBoImpl.saveDelete] Unable to delete cause no found position key.");
-                throw new GeneralBOException("Found problem when saving delete data role cause no found position key., please info to your admin...");
+                throw new GeneralBOException("Found problem when saving delete data., please info to your admin...");
             }
         }
 

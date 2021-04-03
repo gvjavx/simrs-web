@@ -62,10 +62,10 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 criteria.add(Restrictions.eq("kategori", (String) mapCriteria.get("kategori")));
             }
             if (mapCriteria.get("flag_cost_unit")!=null) {
-                if(!"all".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))) {
-                    criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("flag_cost_unit")));
-                }else if("N".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))){
+                if("N".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))){
                     criteria.add(Restrictions.or(Restrictions.eq("flagCostUnit", "N"),Restrictions.isNull("flagCostUnit")));
+                }else if("Y".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))) {
+                    criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("flag_cost_unit")));
                 }
             }else{
                 criteria.add(Restrictions.or(Restrictions.eq("flagCostUnit", "N"),Restrictions.isNull("flagCostUnit")));
