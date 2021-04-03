@@ -9,6 +9,11 @@
             </div>
             <div class="modal-body">
                 <div class="box-body btn-hide">
+                    <div class="alert alert-danger alert-dismissible" style="display: none"
+                         id="warn_tindakan_icu">
+                        <h4><i class="icon fa fa-warning"></i> Warning!</h4>
+                        <p id="msg_tindakan_icu"></p>
+                    </div>
                     <div class="alert alert-success alert-dismissible" style="display: none"
                          id="warning_icu_tindakan_icu">
                         <h4><i class="icon fa fa-info"></i> Info!</h4>
@@ -66,6 +71,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="nama_tindakan_medis">
                 <div class="box-body" style="display: none" id="form-tindakan_icu">
                     <div class="row">
                         <div class="form-group">

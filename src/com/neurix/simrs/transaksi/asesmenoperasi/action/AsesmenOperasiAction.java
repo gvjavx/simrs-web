@@ -278,7 +278,7 @@ public class AsesmenOperasiAction {
         return list;
     }
 
-    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien, String date) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -291,6 +291,9 @@ public class AsesmenOperasiAction {
                 operasi.setKeterangan(keterangan);
                 operasi.setLastUpdate(time);
                 operasi.setLastUpdateWho(userLogin);
+                if(date != null && !"".equalsIgnoreCase(date)){
+                    operasi.setCreatedDate(Timestamp.valueOf(date));
+                }
                 response = asesmenOperasiBo.saveDelete(operasi);
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     try {

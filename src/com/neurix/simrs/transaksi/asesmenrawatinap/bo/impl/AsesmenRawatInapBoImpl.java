@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.asesmenrawatinap.bo.AsesmenRawatInapBo;
 import com.neurix.simrs.transaksi.asesmenrawatinap.dao.AsesmenRawatInapDao;
 import com.neurix.simrs.transaksi.asesmenrawatinap.model.AsesmenRawatInap;
 import com.neurix.simrs.transaksi.asesmenrawatinap.model.ItSimrsAsesmenRawatInapEntity;
+import com.neurix.simrs.transaksi.asesmenrawatinap.model.PersetujuanTindakanMedis;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -236,8 +237,8 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     }
 
     @Override
-    public AsesmenRawatInap getPersetujuanTindakan(AsesmenRawatInap bean) throws GeneralBOException {
-        AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
+    public PersetujuanTindakanMedis getPersetujuanTindakan(AsesmenRawatInap bean) throws GeneralBOException {
+        PersetujuanTindakanMedis persetujuanTindakanMedis = new PersetujuanTindakanMedis();
         List<ItSimrsAsesmenRawatInapEntity> entityList = new ArrayList<>();
         Map hsCriteria = new HashMap();
         if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
@@ -256,32 +257,63 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             logger.error(e.getMessage());
         }
         if (entityList.size() > 0) {
-            List<AsesmenRawatInap> asesmenRawatInapList = new ArrayList<>();
+            List<PersetujuanTindakanMedis> persetujuanTindakanMedisList = new ArrayList<>();
             for (ItSimrsAsesmenRawatInapEntity list : entityList) {
-                AsesmenRawatInap asesmenRanap = new AsesmenRawatInap();
-                if ("TTD yang menyatakan".equalsIgnoreCase(list.getParameter())) {
-                    asesmenRawatInap.setTtdMenyatakan(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + list.getJawaban());
-                    asesmenRawatInap.setNamaMenyatakan(list.getNamaTerang());
-                    asesmenRawatInap.setSipMenyatakan(list.getSip());
-                } else if ("Saksi I".equalsIgnoreCase(list.getParameter())) {
-                    asesmenRawatInap.setTtdPihak1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + list.getJawaban());
-                    asesmenRawatInap.setPihak1(list.getNamaTerang());
-                } else if ("Saksi II".equalsIgnoreCase(list.getParameter())) {
-                    asesmenRawatInap.setTtdPihak2(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + list.getJawaban());
-                    asesmenRawatInap.setPihak2(list.getNamaTerang());
+                String parameter = "";
+                String jawaban = "";
+                String informasi = "";
+                if(list.getParameter() != null){
+                    parameter = list.getParameter();
+                }
+                if(list.getJawaban() != null){
+                    jawaban = list.getJawaban();
+                }
+                if(list.getInformasi() != null){
+                    informasi = list.getInformasi();
+                }
+                PersetujuanTindakanMedis persetujuan = new PersetujuanTindakanMedis();
+                if ("TTD yang menyatakan".equalsIgnoreCase(parameter)) {
+                    persetujuanTindakanMedis.setTtdMenyatakan(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
+                    persetujuanTindakanMedis.setNamaMenyatakan(list.getNamaTerang());
+                    persetujuanTindakanMedis.setSipMenyatakan(list.getSip());
+                } else if ("Saksi I".equalsIgnoreCase(parameter)) {
+                    persetujuanTindakanMedis.setTtdPihak1(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
+                    persetujuanTindakanMedis.setPihak1(list.getNamaTerang());
+                } else if ("Saksi II".equalsIgnoreCase(parameter)) {
+                    persetujuanTindakanMedis.setTtdPihak2(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
+                    persetujuanTindakanMedis.setPihak2(list.getNamaTerang());
                 } else {
-                    if ("pernyataan".equalsIgnoreCase(list.getParameter())) {
-                        asesmenRanap.setParameter(list.getJawaban());
-                    } else {
-                        asesmenRanap.setParameter(list.getParameter());
-                        asesmenRanap.setJawaban(list.getJawaban());
-                        asesmenRanap.setInformasi(list.getInformasi());
+                    String pernytaan1 = "sedemikian rupa sehingga telah memahaminya";
+                    String pernytaan2 = "informasi sebagaimana di atas dan telah memahaminya";
+                    String pernytaan3 = "Yang bertanda tangan dibawah ini";
+                    if(parameter.toLowerCase().contains(pernytaan1.toLowerCase())){
+                        persetujuanTindakanMedis.setPernyataan1(parameter);
+                        persetujuanTindakanMedis.setNamaPernyataan1(list.getNamaTerang());
+                        persetujuanTindakanMedis.setSipPernyataan1(list.getSip());
+                        persetujuanTindakanMedis.setTtdPernyataan1(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
+                    }else if(parameter.toLowerCase().contains(pernytaan2.toLowerCase())){
+                        persetujuanTindakanMedis.setPernyataan2(parameter);
+                        persetujuanTindakanMedis.setNamaPernyataan2(list.getNamaTerang());
+                        persetujuanTindakanMedis.setTtdPernyataan2(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban);
+                    }else if(jawaban.toLowerCase().contains(pernytaan3.toLowerCase())){
+                        persetujuanTindakanMedis.setPernyataan3(jawaban);
+                    }else{
+                        if(!"Persetujuan Tindakan Medis".equalsIgnoreCase(jawaban)){
+                            if ("pernyataan".equalsIgnoreCase(parameter)) {
+                                persetujuan.setParameter(jawaban);
+                            } else {
+                                persetujuan.setParameter(parameter);
+                                persetujuan.setJawaban(jawaban);
+                                persetujuan.setInformasi(informasi);
+                            }
+                            persetujuanTindakanMedisList.add(persetujuan);
+                        }
                     }
                 }
             }
-            asesmenRawatInap.setAsesmenRawatInapList(asesmenRawatInapList);
+            persetujuanTindakanMedis.setTindakanMedisList(persetujuanTindakanMedisList);
         }
-        return asesmenRawatInap;
+        return persetujuanTindakanMedis;
     }
 
     public static Logger getLogger() {

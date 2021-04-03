@@ -91,16 +91,6 @@ public class AsesmenRawatInap extends BaseModel {
         this.sipMenyatakan = sipMenyatakan;
     }
 
-    private List<AsesmenRawatInap> asesmenRawatInapList = new ArrayList<>();
-
-    public List<AsesmenRawatInap> getAsesmenRawatInapList() {
-        return asesmenRawatInapList;
-    }
-
-    public void setAsesmenRawatInapList(List<AsesmenRawatInap> asesmenRawatInapList) {
-        this.asesmenRawatInapList = asesmenRawatInapList;
-    }
-
     public String getNoCheckup() {
         return noCheckup;
     }
