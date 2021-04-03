@@ -196,6 +196,15 @@ public class HeaderCheckup {
     private String jumlah;
 
     private String namaPaket;
+    private String formatTglMasuk;
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
 
     public String getNamaPaket() {
         return namaPaket;

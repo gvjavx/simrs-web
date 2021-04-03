@@ -296,7 +296,12 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setIdPasien(obj[2] == null ? "" : obj[2].toString());
                     rawatInap.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
                     String jalan = obj[4] == null ? "" : obj[4].toString();
-                    rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                    if(obj[5] != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp)obj[5]);
+                        rawatInap.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                        rawatInap.setFormatTglMasuk(formatDate);
+
+                    }
                     rawatInap.setDesaId(obj[6] == null ? "" : obj[6].toString());
                     rawatInap.setStatusPeriksa(obj[7].toString());
                     rawatInap.setStatusPeriksaName(obj[8].toString());

@@ -165,6 +165,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String kategoriPelayanan;
     private String pemeriksaanTerakhir;
     private String dibayarPasien;
+    private String formatTglMasuk;
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
 
     public String getDibayarPasien() {
         return dibayarPasien;

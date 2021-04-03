@@ -199,10 +199,11 @@
                     <div class="box-body">
                         <table id="myTable" class="table table-bordered table-striped">
                             <thead >
-                            <tr bgcolor="#90ee90">
+                            <tr bgcolor="#90ee90" style="font-size: 12px">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -215,6 +216,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
