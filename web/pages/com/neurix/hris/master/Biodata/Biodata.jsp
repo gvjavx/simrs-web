@@ -159,9 +159,10 @@
                 event.originalEvent.options.submit = true;
                 $('#modal-edit').modal('hide');
                 $('#myFormDocument')[0].reset();
-                alert('Record has been Saved successfully.');
                 var nip = document.getElementById("nip1").value;
                 loadStudy(nip);
+                alert('Record has been Saved successfully.');
+
             } else{
                 event.originalEvent.options.submit = false;
             }
@@ -211,7 +212,6 @@
                     $.publish('showDialog');
                     $('#modal-edit').modal('hide');
                     $('#myFormDocument')[0].reset();
-                    alert('Record has been Saved successfully.');
 //                loadSessionStudy();
 
                     <s:if test="isAdd()">
@@ -221,6 +221,7 @@
                     var nip = document.getElementById("nip1").value;
                     loadStudy(nip);
                     </s:else>
+                    alert('Record has been Saved successfully.');
                 } else{
                     event.originalEvent.options.submit = false;
                 }
@@ -1079,11 +1080,11 @@
                                                         </s:if>
                                                         <s:elseif test="isAdd()">
                                                             <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                                      listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                      listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="setGolPensiun(this.value)"/>
                                                         </s:elseif>
                                                         <s:else>
                                                             <s:select list="#initComboTipe.listComboGolongan" id="golongan1" name="biodata.golongan"
-                                                                      listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                                                      listKey="golonganId" listValue="golonganName" headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="setGolPensiun(this.value)"/>
                                                         </s:else>
 
                                                     </table>
@@ -5332,6 +5333,7 @@
                     if (jenis == '') {
                         alert('Semua Field Harus Diisi !');
                     } else {
+                        console.log("Jenis : " + jenis);
                         if (confirm('Apakah anda yakin ingin menyimpan data?')) {
                             dwr.engine.setAsync(false);
                             BiodataAction.saveAddSertifikat(nip, namaPelatihan , judulPelatihan , penyelenggara , jumlahJamPelatihan ,
@@ -6651,6 +6653,10 @@
             var seq = nip.slice(nip.length - 4);
             $("#nip1").val(headNip[0] + headNip[1] + headNip[2] + seq);
         }
+    }
+
+    function setGolPensiun(gol){
+        $("#golongan2").val(gol);
     }
 
     function getRangeMsKerja(gol){
