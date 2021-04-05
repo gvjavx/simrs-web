@@ -105,7 +105,7 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="modifyRolefuncForm" method="post" theme="simple" namespace="/admin/position" action="saveDelete_position" cssClass="well form-horizontal">
+            <s:form id="delPositionForm" method="post" theme="simple" namespace="/admin/position" action="saveDelete_position" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
@@ -211,7 +211,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="modifyRolefuncForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="delPositionForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-trash"></i>
