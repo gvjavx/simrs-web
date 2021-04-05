@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.neurix.hris.transaksi.logcron.model.ItLogCronEntity" dynamic-update="true"
+           table="it_log_cron" select-before-update="true" schema="public">
+
+        <id name="logCronId">
+            <column name="log_cron_id"/>
+        </id>
+        <property name="cronName">
+            <column name="cron_name"/>
+        </property>
+        <property name="cronDate">
+            <column name="cron_date"/>
+        </property>
+        <property name="status">
+            <column name="status"/>
+        </property>
+        <property name="note">
+            <column name="note"/>
+        </property>
+        <property name="flag">
+            <column name="flag"/>
+        </property>
+        <property name="action">
+            <column name="action"/>
+        </property>
+        <property name="createdDate">
+            <column name="created_date"/>
+        </property>
+        <property name="createdWho">
+            <column name="created_who"/>
+        </property>
+        <property name="lastUpdate">
+            <column name="last_update"/>
+        </property>
+        <property name="lastUpdateWho">
+            <column name="last_update_who"/>
+        </property>
+
+    </class>
+</hibernate-mapping>
