@@ -737,7 +737,7 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     "c.keterangan,\n" +
                     "b.metode_pembayaran, \n" +
                     "b.id_jenis_periksa_pasien,\n" +
-                    "b.created_date,\n" +
+                    "a.created_date,\n" +
                     "b.flag_tppri\n" +
                     "FROM it_simrs_header_checkup a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
@@ -766,6 +766,11 @@ public class RawatInapDao extends GenericDao<ItSimrsRawatInapEntity, String> {
                     rawatInap.setMetodePembayaran(obj[9] == null ? null : obj[9].toString());
                     rawatInap.setIdJenisPeriksa(obj[10] == null ? null : obj[10].toString());
                     rawatInap.setCreatedDate(obj[11] == null ? null : (Timestamp) obj[11]);
+                    if(obj[11] != null){
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp) obj[11]);
+                        rawatInap.setFormatTglMasuk(formatDate);
+
+                    }
                     rawatInap.setFlagTppri(obj[12] == null ? null : (String) obj[12]);
                     response.add(rawatInap);
                 }

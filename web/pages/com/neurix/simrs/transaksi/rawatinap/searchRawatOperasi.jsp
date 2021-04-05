@@ -154,7 +154,7 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Inap Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
