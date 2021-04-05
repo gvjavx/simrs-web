@@ -329,4 +329,6 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/asesmengizi/spring/AsesmenMonitoringBean.xml"/>
     <import resource="sshconfig/com/neurix/simrs/transaksi/konsultasigizi/spring/KonsultasiGiziBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/hris/transaksi/logcron/spring/LogCronBean.xml"/>
+
 </beans>

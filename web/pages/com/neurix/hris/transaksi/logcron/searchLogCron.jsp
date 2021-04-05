@@ -76,7 +76,6 @@
                                 </td>
                             </tr>
 
-                            <%--RAKA-05APR2021 ==> Sementara pada satu hari--%>
                             <tr>
                                 <td>
                                     <label class="control-label"><small>Cron Date :</small></label>
@@ -99,7 +98,6 @@
                                     </div>
                                 </td>
                             </tr>
-                            <%--RAKA-end--%>
 
                             <tr>
                                 <td>
@@ -107,7 +105,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:select list="#{'success':'Success', 'connection_problem':'Connection Problem', 'program_error':'Program Error', 'other':'Others'}" id="statusLog" name="logCron.status"
+                                        <s:select list="#{'success':'Success', 'connection_problem':'Connection Has Problem', 'program_problem':'Program Has Problem', 'other':'Others'}" id="statusLog" name="logCron.status"
                                                   headerKey="" headerValue="[all status]" cssClass="form-control" />
                                     </table>
                                 </td>
@@ -224,7 +222,10 @@
 
 <script>
     $(document).ready(function() {
-        $('#tgl1').datepicker({
+        $('#cronDateStr').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('#cronDateEnd').datepicker({
             dateFormat: 'dd-mm-yy'
         });
     })

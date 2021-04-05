@@ -8,37 +8,37 @@
            table="it_log_cron" select-before-update="true" schema="public">
 
         <id name="logCronId">
-            <column name="log_cron_id"/>
+            <column name="log_cron_id" sql-type="varchar" length="10"/>
         </id>
         <property name="cronName">
-            <column name="cron_name"/>
+            <column name="cron_name" sql-type="varchar" length="50"/>
         </property>
         <property name="cronDate">
-            <column name="cron_date"/>
+            <column name="cron_date" sql-type="timestamp"/>
         </property>
         <property name="status">
-            <column name="status"/>
+            <column name="status" sql-type="varchar" length="20"/>
         </property>
         <property name="note">
-            <column name="note"/>
+            <column name="note" sql-type="varchar" length="1000"/>
         </property>
         <property name="flag">
-            <column name="flag"/>
+            <column name="flag" sql-type="varchar" length="1"/>
         </property>
         <property name="action">
-            <column name="action"/>
+            <column name="action" sql-type="varchar" length="1"/>
         </property>
         <property name="createdDate">
-            <column name="created_date"/>
+            <column name="created_date" sql-type="timestamp"/>
         </property>
         <property name="createdWho">
-            <column name="created_who"/>
+            <column name="created_who"  sql-type="varchar" length="100"/>
         </property>
         <property name="lastUpdate">
-            <column name="last_update"/>
+            <column name="last_update" sql-type="timestamp"/>
         </property>
         <property name="lastUpdateWho">
-            <column name="last_update_who"/>
+            <column name="last_update_who"  sql-type="varchar" length="100"/>
         </property>
 
     </class>

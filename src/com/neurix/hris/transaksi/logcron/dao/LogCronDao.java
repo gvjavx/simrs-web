@@ -28,7 +28,7 @@ public class LogCronDao extends GenericDao<ItLogCronEntity, String> {
                 criteria.add(Restrictions.eq("logCronId",(String) mapCriteria.get("logCronId")));
             }
             if(mapCriteria.get("cronName")!=null){
-                criteria.add(Restrictions.eq("cronName","%" + (String) mapCriteria.get("cronName") + "%"));
+                criteria.add(Restrictions.ilike("cronName","%" + (String) mapCriteria.get("cronName") + "%"));
             }
             if(mapCriteria.get("status")!=null){
                 criteria.add(Restrictions.eq("status",(String) mapCriteria.get("status")));

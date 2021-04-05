@@ -59,6 +59,44 @@ public class LogCronAction extends BaseMasterAction{
         return getLogCron();
     }
 
+    public String saveAdd(){
+        logger.info("[LogCronAction.saveAdd] start process >>>");
+
+        try {
+            LogCron logCron = getLogCron();
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+
+            logCron.setCreatedWho(userLogin);
+            logCron.setLastUpdate(updateTime);
+            logCron.setCreatedDate(updateTime);
+            logCron.setLastUpdateWho(userLogin);
+            logCron.setAction("C");
+            logCron.setFlag("Y");
+
+            logCronBoProxy.saveAdd(logCron);
+        }catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = logCronBoProxy.saveErrorMessage(e.getMessage(), "LogCronBO.saveAdd");
+            } catch (GeneralBOException e1) {
+                logger.error("[LogCronAction.saveAdd] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[LogCronAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+
+        HttpSession session = ServletActionContext.getRequest().getSession();
+        session.removeAttribute("listOfResult");
+
+        logger.info("[LogCronAction.saveAdd] end process >>>");
+        return "success_save_add";
+    }
+    
     public String saveDelete(){
         logger.info("[LogCronAction.saveDelete] start process >>>");
         try {

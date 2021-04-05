@@ -127,7 +127,6 @@
                         </td>
                     </tr>
 
-                        <%--RAKA-05APR2021 ==> Sementara pada satu hari--%>
                     <tr>
                         <td>
                             <label class="control-label"><small>Cron Date :</small></label>
@@ -138,11 +137,10 @@
                                     <i class="fa fa-calendar"></i>
                                 </div>
                                 <s:textfield id="cronDate" readonly="true" name="logCron.stCronDate" cssClass="form-control pull-right"
-                                             required="false" size="7"  cssStyle=""/>
+                                             required="false"  cssStyle=""/>
                             </div>
                         </td>
                     </tr>
-                        <%--RAKA-end--%>
 
                     <tr>
                         <td>

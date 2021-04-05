@@ -74,6 +74,35 @@ public class LogCronBoImpl implements LogCronBo {
 
     @Override
     public LogCron saveAdd(LogCron bean) throws GeneralBOException {
+        logger.info("[LogCronBoImpl.saveAdd] start process >>>");
+
+        if (bean!=null) {
+            // creating object entity serializables
+            ItLogCronEntity itLogCronEntity = new ItLogCronEntity();
+            String logId = logCronDao.getNextLogCronId();
+            itLogCronEntity.setLogCronId(logId);
+            itLogCronEntity.setCronName(bean.getCronName());
+            itLogCronEntity.setStatus(bean.getStatus());
+            itLogCronEntity.setCronDate(bean.getCronDate());
+            itLogCronEntity.setNote(bean.getNote());
+
+            itLogCronEntity.setFlag(bean.getFlag());
+            itLogCronEntity.setAction(bean.getAction());
+            itLogCronEntity.setCreatedWho(bean.getCreatedWho());
+            itLogCronEntity.setLastUpdateWho(bean.getLastUpdateWho());
+            itLogCronEntity.setCreatedDate(bean.getCreatedDate());
+            itLogCronEntity.setLastUpdate(bean.getLastUpdate());
+
+            try {
+                // insert into database
+                logCronDao.addAndSave(itLogCronEntity);
+            } catch (HibernateException e) {
+                logger.error("[LogCronBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data Log Cron, please info to your admin..." + e.getMessage());
+            }
+        }
+
+        logger.info("[LogCronBoImpl.saveAdd] end process <<<");
         return null;
     }
 
