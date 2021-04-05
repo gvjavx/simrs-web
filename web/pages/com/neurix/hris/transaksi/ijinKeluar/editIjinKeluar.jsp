@@ -587,7 +587,8 @@
         console.log(enddate);
         console.log(dateFinal);
         if(startdate<enddate) {
-            var days   = (enddate - startdate)/1000/60/60/24;
+            // var days   = (enddate - startdate)/1000/60/60/24;
+            var days = enddate.workingDaysFrom(startdate);
             if (days > 90){
                 days = 90;
                 var date = $('#tgl2').datepicker('getDate');
