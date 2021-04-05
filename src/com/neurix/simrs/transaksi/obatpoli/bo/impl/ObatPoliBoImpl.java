@@ -145,84 +145,88 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             bean.setRequest(false);
         }
 
-        List<MtSimrsPermintaanObatPoliEntity> entities = null;
+//        List<MtSimrsPermintaanObatPoliEntity> entities = null;
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
 
         try {
-            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean, isPoli);
+//            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean, isPoli);
+            permintaanObatPolis = permintaanObatPoliDao.getListPermintaanObatPoliGudang(bean, isPoli);
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
             throw new GeneralBOException("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
         }
 
-        if (!entities.isEmpty() && entities.size() > 0) {
-            PermintaanObatPoli permintaanObatPoli;
-            for (MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity : entities) {
-                permintaanObatPoli = new PermintaanObatPoli();
-                permintaanObatPoli.setIdPermintaanObatPoli(permintaanObatPoliEntity.getIdPermintaanObatPoli());
-                permintaanObatPoli.setIdApprovalObat(permintaanObatPoliEntity.getIdApprovalObat());
-                permintaanObatPoli.setIdObat(permintaanObatPoliEntity.getIdObat());
-                permintaanObatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
-                permintaanObatPoli.setQty(permintaanObatPoliEntity.getQty());
-                permintaanObatPoli.setFlag(permintaanObatPoliEntity.getFlag());
-                permintaanObatPoli.setAction(permintaanObatPoliEntity.getAction());
-                permintaanObatPoli.setLastUpdate(permintaanObatPoliEntity.getLastUpdate());
-                permintaanObatPoli.setLastUpdateWho(permintaanObatPoliEntity.getLastUpdateWho());
-                permintaanObatPoli.setCreatedDate(permintaanObatPoliEntity.getCreatedDate());
-                permintaanObatPoli.setCreatedWho(permintaanObatPoliEntity.getCreatedWho());
-                permintaanObatPoli.setDiterimaFlag(permintaanObatPoli.getDiterimaFlag());
-                permintaanObatPoli.setRetureFlag(permintaanObatPoli.getRetureFlag());
-                permintaanObatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
-                permintaanObatPoli.setDiterimaFlag(permintaanObatPoliEntity.getDiterimaFlag());
-                permintaanObatPoli.setRetureFlag(permintaanObatPoliEntity.getRetureFlag());
-
-                ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat(), bean.getBranchId());
-                if (simrsObatEntity != null) {
-                    permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
-                    permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
-                }
-
-                Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getIdPelayanan());
-                if (pelayananEntity != null) {
-                    permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
-                }
-
-                Pelayanan tujuanPelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getTujuanPelayanan());
-                if (tujuanPelayananEntity != null) {
-                    permintaanObatPoli.setNamaTujuanPelayanan(tujuanPelayananEntity.getNamaPelayanan());
-                }
-
-                ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanObatPoli.getIdApprovalObat());
-                if (approvalEntity != null) {
-
-                    if (approvalEntity.getApprovalFlag() != null && !"".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
-                        permintaanObatPoli.setKeterangan("Telah Dikonfirmasi");
-                    } else {
-                        permintaanObatPoli.setKeterangan("Menunggu Konfirmasi");
-                    }
-
-                    permintaanObatPoli.setApprovalFlag(approvalEntity.getApprovalFlag());
-                    permintaanObatPoli.setApprovePerson(approvalEntity.getApprovePerson());
-                    permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
-                    permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
-                }
-
-                if(permintaanObatPoliEntity.getCreatedDate() != null){
-                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
-                    permintaanObatPoli.setStCreatedDate(formatDate);
-                }
-                permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
-                permintaanObatPoli.setRequest(bean.getRequest());
-
-                TransaksiObatDetail detail = new TransaksiObatDetail();
-                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                List<ImtSimrsTransaksiObatDetailEntity> entityList = getListEntityObatDetail(detail);
-                permintaanObatPoli.setJumlahObat(String.valueOf(entityList.size()));
-                permintaanObatPoliList.add(permintaanObatPoli);
-            }
-        }
-
         logger.info("[ObatPoliBoImpl.getSearchPermintaanObatPoli] END <<<<<<<<<<");
-        return permintaanObatPoliList;
+        return permintaanObatPolis;
+
+//        if (!entities.isEmpty() && entities.size() > 0) {
+//            PermintaanObatPoli permintaanObatPoli;
+//            for (MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity : entities) {
+//                permintaanObatPoli = new PermintaanObatPoli();
+//                permintaanObatPoli.setIdPermintaanObatPoli(permintaanObatPoliEntity.getIdPermintaanObatPoli());
+//                permintaanObatPoli.setIdApprovalObat(permintaanObatPoliEntity.getIdApprovalObat());
+//                permintaanObatPoli.setIdObat(permintaanObatPoliEntity.getIdObat());
+//                permintaanObatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
+//                permintaanObatPoli.setQty(permintaanObatPoliEntity.getQty());
+//                permintaanObatPoli.setFlag(permintaanObatPoliEntity.getFlag());
+//                permintaanObatPoli.setAction(permintaanObatPoliEntity.getAction());
+//                permintaanObatPoli.setLastUpdate(permintaanObatPoliEntity.getLastUpdate());
+//                permintaanObatPoli.setLastUpdateWho(permintaanObatPoliEntity.getLastUpdateWho());
+//                permintaanObatPoli.setCreatedDate(permintaanObatPoliEntity.getCreatedDate());
+//                permintaanObatPoli.setCreatedWho(permintaanObatPoliEntity.getCreatedWho());
+//                permintaanObatPoli.setDiterimaFlag(permintaanObatPoli.getDiterimaFlag());
+//                permintaanObatPoli.setRetureFlag(permintaanObatPoli.getRetureFlag());
+//                permintaanObatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
+//                permintaanObatPoli.setDiterimaFlag(permintaanObatPoliEntity.getDiterimaFlag());
+//                permintaanObatPoli.setRetureFlag(permintaanObatPoliEntity.getRetureFlag());
+//
+//                ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat(), bean.getBranchId());
+//                if (simrsObatEntity != null) {
+//                    permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
+//                    permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
+//                }
+//
+//                Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getIdPelayanan());
+//                if (pelayananEntity != null) {
+//                    permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+//                }
+//
+//                Pelayanan tujuanPelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getTujuanPelayanan());
+//                if (tujuanPelayananEntity != null) {
+//                    permintaanObatPoli.setNamaTujuanPelayanan(tujuanPelayananEntity.getNamaPelayanan());
+//                }
+//
+//                ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanObatPoli.getIdApprovalObat());
+//                if (approvalEntity != null) {
+//
+//                    if (approvalEntity.getApprovalFlag() != null && !"".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
+//                        permintaanObatPoli.setKeterangan("Telah Dikonfirmasi");
+//                    } else {
+//                        permintaanObatPoli.setKeterangan("Menunggu Konfirmasi");
+//                    }
+//
+//                    permintaanObatPoli.setApprovalFlag(approvalEntity.getApprovalFlag());
+//                    permintaanObatPoli.setApprovePerson(approvalEntity.getApprovePerson());
+//                    permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
+//                    permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
+//                }
+//
+//                if(permintaanObatPoliEntity.getCreatedDate() != null){
+//                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
+//                    permintaanObatPoli.setStCreatedDate(formatDate);
+//                }
+//                permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
+//                permintaanObatPoli.setRequest(bean.getRequest());
+//
+//                TransaksiObatDetail detail = new TransaksiObatDetail();
+//                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+//                List<ImtSimrsTransaksiObatDetailEntity> entityList = getListEntityObatDetail(detail);
+//                permintaanObatPoli.setJumlahObat(String.valueOf(entityList.size()));
+//                permintaanObatPoliList.add(permintaanObatPoli);
+//            }
+//        }
+
+//        return permintaanObatPoliList;
     }
 
 //    @Override
