@@ -35,7 +35,8 @@ public class LogCronAction extends BaseMasterAction{
     public void setLogCron(LogCron logCron) {
         this.logCron = logCron;
     }
-
+    
+    
     public LogCron init(String id, String flag){
         logger.info("[LogCronAction.init] start process >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -56,6 +57,39 @@ public class LogCronAction extends BaseMasterAction{
             logger.info("[LogCronAction.init] end process >>>");
         }
         return getLogCron();
+    }
+
+    public String saveDelete(){
+        logger.info("[LogCronAction.saveDelete] start process >>>");
+        try {
+
+            LogCron deleteLogCron = getLogCron();
+
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
+            deleteLogCron.setLastUpdate(updateTime);
+            deleteLogCron.setLastUpdateWho(userLogin);
+            deleteLogCron.setAction("U");
+            deleteLogCron.setFlag("N");
+
+            logCronBoProxy.saveDelete(deleteLogCron);
+        } catch (GeneralBOException e) {
+            Long logId = null;
+            try {
+                logId = logCronBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.saveDelete");
+            } catch (GeneralBOException e1) {
+                logger.error("[LogCronAction.saveDelete] Error when saving error,", e1);
+                return ERROR;
+            }
+            logger.error("[LogCronAction.saveDelete] Error when editing item," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
+            return ERROR;
+        }
+
+        logger.info("[LogCronAction.saveDelete] end process <<<");
+
+        return "success_save_delete";
     }
     
     @Override

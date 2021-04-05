@@ -21,6 +21,11 @@ public class LogCron extends BaseModel {
     private String createdWho;
     private String lastUpdateWho;
 
+    private Timestamp cronDateStr;
+    private String stCronDateStr;
+    private Timestamp cronDateEnd;
+    private String stCronDateEnd;
+
     public String getLogCronId() {
         return logCronId;
     }
@@ -147,5 +152,37 @@ public class LogCron extends BaseModel {
     @Override
     public void setLastUpdateWho(String lastUpdateWho) {
         this.lastUpdateWho = lastUpdateWho;
+    }
+
+    public Timestamp getCronDateStr() {
+        return cronDateStr;
+    }
+
+    public void setCronDateStr(Timestamp cronDateStr) {
+        this.cronDateStr = cronDateStr;
+    }
+
+    public String getStCronDateStr() {
+        return stCronDateStr;
+    }
+
+    public void setStCronDateStr(String stCronDateStr) {
+        this.stCronDateStr = stCronDateStr;
+    }
+
+    public Timestamp getCronDateEnd() {
+        return cronDateEnd;
+    }
+
+    public void setCronDateEnd(Timestamp cronDateEnd) {
+        this.cronDateEnd = cronDateEnd;
+    }
+
+    public String getStCronDateEnd() {
+        return stCronDateEnd;
+    }
+
+    public void setStCronDateEnd(String stCronDateEnd) {
+        this.stCronDateEnd = stCronDateEnd;
     }
 }

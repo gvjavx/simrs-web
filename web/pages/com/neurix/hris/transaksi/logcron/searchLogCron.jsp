@@ -86,7 +86,15 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <s:textfield id="cronDate" name="logCron.stCronDate" cssClass="form-control pull-right"
+                                        <s:textfield id="cronDateStr" name="logCron.stCronDateStr" cssClass="form-control pull-right"
+                                                     required="false" size="7"  cssStyle=""/>
+                                        <div class="input-group-addon">
+                                            s/d
+                                        </div>
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <s:textfield id="cronDateEnd" name="logCron.stCronDateEnd" cssClass="form-control pull-right"
                                                      required="false" size="7"  cssStyle=""/>
                                     </div>
                                 </td>

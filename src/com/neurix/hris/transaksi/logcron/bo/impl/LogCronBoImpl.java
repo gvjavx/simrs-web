@@ -29,7 +29,42 @@ public class LogCronBoImpl implements LogCronBo {
 
     @Override
     public void saveDelete(LogCron bean) throws GeneralBOException {
+        logger.info("[saveDelete.saveDelete] start process >>>");
 
+        if (bean!=null) {
+
+            String logId = bean.getLogCronId();
+
+            ItLogCronEntity itLogCronEntity = null;
+
+            try {
+                // Get data from database by ID
+                itLogCronEntity = logCronDao.getById("logCronId", logId);
+            } catch (HibernateException e) {
+                logger.error("[LogCronBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by ID, please inform to your admin...," + e.getMessage());
+            }
+
+            if (itLogCronEntity != null) {
+                itLogCronEntity.setFlag(bean.getFlag());
+                itLogCronEntity.setAction(bean.getAction());
+                itLogCronEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                itLogCronEntity.setLastUpdate(bean.getLastUpdate());
+
+                try {
+                    // Delete (Edit) into database
+                    logCronDao.updateAndSave(itLogCronEntity);
+                } catch (HibernateException e) {
+                    logger.error("[LogCronBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving update data Log Cron, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[LogCronBoImpl.saveDelete] Error, not found data Log Cron with request id, please check again your data ...");
+                throw new GeneralBOException("Error, not found data Log Cron with request id, please check again your data ...");
+
+            }
+        }
+        logger.info("[LogCronBoImpl.saveDelete] end process <<<");
     }
 
     @Override
@@ -61,9 +96,13 @@ public class LogCronBoImpl implements LogCronBo {
             if (searchBean.getStatus() != null && !"".equalsIgnoreCase(searchBean.getStatus())) {
                 hsCriteria.put("status", searchBean.getStatus());
             }
-            if (searchBean.getStCronDate() != null && !"".equalsIgnoreCase(searchBean.getStCronDate())) {
-                Timestamp cronDate = CommonUtil.convertToTimestamp(searchBean.getStCronDate());
-                hsCriteria.put("cronDate", cronDate);
+            if (searchBean.getStCronDateStr() != null && !"".equalsIgnoreCase(searchBean.getStCronDateStr())) {
+                Timestamp cronDateStr = CommonUtil.convertToTimestamp(searchBean.getStCronDateStr());
+                hsCriteria.put("cronDateStr", cronDateStr);
+            }
+            if (searchBean.getStCronDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStCronDateEnd())) {
+                Timestamp cronDateEnd = CommonUtil.convertToTimestamp(searchBean.getStCronDateEnd());
+                hsCriteria.put("cronDateEnd", cronDateEnd);
             }
 
 
