@@ -10,10 +10,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LogCronBoImpl implements LogCronBo {
     protected static transient Logger logger = Logger.getLogger(LogCronBoImpl.class);
@@ -77,21 +74,33 @@ public class LogCronBoImpl implements LogCronBo {
         logger.info("[LogCronBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+
             // creating object entity serializables
             ItLogCronEntity itLogCronEntity = new ItLogCronEntity();
-            String logId = logCronDao.getNextLogCronId();
-            itLogCronEntity.setLogCronId(logId);
+            try {
+                String logId = logCronDao.getNextLogCronId();
+                itLogCronEntity.setLogCronId(logId);
+            }catch (HibernateException e){
+                logger.error("[LogCronBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Next Log Cron ID, " + e.getMessage());
+            }
             itLogCronEntity.setCronName(bean.getCronName());
             itLogCronEntity.setStatus(bean.getStatus());
-            itLogCronEntity.setCronDate(bean.getCronDate());
             itLogCronEntity.setNote(bean.getNote());
 
-            itLogCronEntity.setFlag(bean.getFlag());
-            itLogCronEntity.setAction(bean.getAction());
-            itLogCronEntity.setCreatedWho(bean.getCreatedWho());
-            itLogCronEntity.setLastUpdateWho(bean.getLastUpdateWho());
-            itLogCronEntity.setCreatedDate(bean.getCreatedDate());
-            itLogCronEntity.setLastUpdate(bean.getLastUpdate());
+            if(bean.getCronDate()!=null) {
+                itLogCronEntity.setCronDate(bean.getCronDate());
+            }else {
+                itLogCronEntity.setCronDate(updateTime);
+            }
+
+            itLogCronEntity.setFlag("Y");
+            itLogCronEntity.setAction("C");
+            itLogCronEntity.setCreatedWho("Cron");
+            itLogCronEntity.setLastUpdateWho("Cron");
+            itLogCronEntity.setCreatedDate(updateTime);
+            itLogCronEntity.setLastUpdate(updateTime);
 
             try {
                 // insert into database

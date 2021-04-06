@@ -11,6 +11,9 @@
           p:logCronDao-ref="logCronDao"
           />
 
+    <bean id="BpjsController" class="com.neurix.hris.mobileapi.BpjsController"
+          p:logCronBoProxy-ref="logCronBoProxy" />
+
     <bean id="logCronBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
           p:target-ref="logCronBo">
         <property name="interceptorNames">
