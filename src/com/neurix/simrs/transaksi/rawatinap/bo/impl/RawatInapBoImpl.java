@@ -548,6 +548,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdate(entity.getLastUpdate());
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
+                    monCairan.setSisa(entity.getSisa());
                     monCairans.add(monCairan);
                 }
             }
