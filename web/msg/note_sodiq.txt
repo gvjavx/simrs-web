@@ -2232,7 +2232,6 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ALTER TABLE it_simrs_hemodinamika
 ALTER COLUMN tensi TYPE VARCHAR(10);
 
---BARU SETELAH DI DEV
 ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
 ADD COLUMN no_checkup VARCHAR(50);
 
@@ -2345,11 +2344,69 @@ INSERT INTO im_func_roles VALUES
 (6915, 40, 'Y', now(), now(), 'admin', 'admin'),
 (6916, 40, 'Y', now(), now(), 'admin', 'admin');
 
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||                    ---------
+----------- ||   ||   || -----------        |  ------
+---------- SUDAH DI PROD -----------        | |
+----------- +++++++++++ ------------        |  ------
+                                            ------  |
+                                                  | |
+                                            ------  |
+                                            ---------
+
 --BELUM DI PROD
 UPDATE im_func_roles
 SET flag = 'N'
 WHERE func_id = 2
-AND role_id = 41
+AND role_id = 41;
+
+INSERT INTO im_functions VALUES
+(6900, 'Laporan', '/laporanops/initForm_laporanops.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6900),
+(6901, 'Init Laporan', '/laporanops/initForm_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6902, 'Search', '/laporanops/search_laporanops.action', 6900, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6900, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6901, 32, 'Y', now(), now(), 'admin', 'admin'),
+(6902, 32, 'Y', now(), now(), 'admin', 'admin');
+
+CREATE TABLE im_simrs_laporan_ops(
+  id_laporan_ops VARCHAR(100) NOT NULL PRIMARY KEY,
+  nama_laporan VARCHAR(500),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  created_who character varying(100),
+  last_update_who character varying(100)
+);
+
+INSERT INTO im_simrs_laporan_ops VALUES
+('kpi','KPI Operasional','Y','C',now(),now(),'admin','admin'),
+('formularium','Formularium','Y','C',now(),now(),'admin','admin'),
+('rawat_jalan','Rawat Jalan','Y','C',now(),now(),'admin','admin'),
+('rawat_inap','Rawat Inap','Y','C',now(),now(),'admin','admin'),
+('penunjang_medis','Penunjang Medis','Y','C',now(),now(),'admin','admin'),
+('bor','Bed Occupation Rate (BOR)','Y','C',now(),now(),'admin','admin'),
+('diagnosa','Diagnosis Terbanyak','Y','C',now(),now(),'admin','admin'),
+('kematian','Indikator Kematian','Y','C',now(),now(),'admin','admin'),
+('kegiatan','Form Kegiatan','Y','C',now(),now(),'admin','admin'),
+('statistik','Statistik Rumah Sakit','Y','C',now(),now(),'admin','admin'),
+('mutu','Indikator Mutu Pelayanan Kriyandas','Y','C',now(),now(),'admin','admin'),
+('kapitasi','Kapitasi','Y','C',now(),now(),'admin','admin'),
+('unggulan','Layanan Unggulan','Y','C',now(),now(),'admin','admin');
+
+--it_simrs_periksa_lab
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN id_kategori_pemeriksaan VARCHAR(50);
+
+CREATE SEQUENCE seq_kategori_pemeriksaan;
 
 
 
