@@ -1022,6 +1022,13 @@ public class ObatBoImpl implements ObatBo {
             hsCriteria.put("id_barang", bean.getIdBarang());
         }
 
+        // Sigit 2021-04-06, mencari obat selain bpjs
+        if (bean.getFlagBpjs() != null && !"".equalsIgnoreCase(bean.getFlagBpjs())) {
+            hsCriteria.put("flag_bpjs", bean.getFlagBpjs());
+        } else {
+            hsCriteria.put("non_flag_bpjs", "Y");
+        }
+
         hsCriteria.put("exp", "Y");
 
         List<ImSimrsObatEntity> obatEntityList = new ArrayList<>();

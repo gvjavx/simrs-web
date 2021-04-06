@@ -75,7 +75,10 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             if (mapCriteria.get("flag_bpjs") != null) {
                 criteria.add(Restrictions.eq("flagBpjs", mapCriteria.get("flag_bpjs")));
             }
-
+            // Sigit 2021-04-06, mencari obat selain bpjs
+            if (mapCriteria.get("non_flag_bpjs") != null) {
+                criteria.add(Restrictions.ne("flagBpjs", mapCriteria.get("non_flag_bpjs")));
+            }
 
             if (mapCriteria.get("asc") != null) {
                 criteria.addOrder(Order.asc("createdDate"));

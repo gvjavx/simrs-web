@@ -219,6 +219,9 @@ public class ObatPoliAction extends BaseMasterAction {
                         obatDetail.setIdObat(obj.getString("id_obat"));
                         obatDetail.setQty(new BigInteger(obj.getString("qty")));
                         obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
+
+                        if (obj.has("jenis_obat"))
+                            obatDetail.setFlagBpjs("bpjs".equalsIgnoreCase(obj.getString("jenis_obat")) ? "Y" : "N");
                         obatDetailList.add(obatDetail);
                     }
                 }

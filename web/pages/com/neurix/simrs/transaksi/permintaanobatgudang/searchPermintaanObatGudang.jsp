@@ -382,6 +382,20 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Obat</label>
+                        <div class="col-md-7">
+                            <select class="form-control select2" id="req_jenis_obat" style="width: 100%">
+                                <option value="umum"> UMUM </option>
+                                <option value="bpjs"> BPJS </option>
+                            </select>
+                            <input type="hidden" id="id-jenis-obat"/>
+                        </div>
+                        <div class="col-md-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px"></label>
                         <div class="col-md-7">
 
@@ -610,6 +624,8 @@
     }
 
     function showModal() {
+        $("#req_gudang_obat").removeAttr("disabled");
+        $("#id-jenis-obat").val('');
         getListGudangObat();
         $('#req_nama_obat').val('').trigger('change');
         $('#req_qty').val('');
@@ -693,6 +709,8 @@
 
     function addObatToList() {
 
+        var jenisObat = $("#id-jenis-obat").val();
+
         var obat = $('#req_nama_obat').val();
         var data = $('#tabel_request').tableToJSON();
         var qty = $('#req_qty').val();
@@ -708,8 +726,13 @@
         var berubahBentuk = false;
         var isTransaksi = false;
         var pesan = "";
-
         var cek = false;
+
+        if (jenisObat == ''){
+            var valJenisObat = $("#req_jenis_obat option:selected").val();
+            $("#id-jenis-obat").val(valJenisObat);
+            $("#req_jenis_obat").attr("disabled","true");
+        }
 
         if (obat != '' && qty != '' && jenisSatuan != '') {
 
@@ -839,14 +862,16 @@
 
     function saveAddRequest(){
 
-        var data = $('#tabel_request').tableToJSON();
-        var gudang = $('#req_gudang_obat').val();
-        var temp = [];
+        var jenisObat   = $("#id-jenis-obat").val();
+        var data        = $('#tabel_request').tableToJSON();
+        var gudang      = $('#req_gudang_obat').val();
+        var temp        = [];
         $.each(data, function (i, item) {
             temp.push({
                 'id_obat': data[i]["ID"],
                 'qty': data[i]["Qty"],
-                'jenis_satuan': 'biji'
+                'jenis_satuan': 'biji',
+                'jenis_obat' : jenisObat
             })
         });
         var stringData = JSON.stringify(temp);

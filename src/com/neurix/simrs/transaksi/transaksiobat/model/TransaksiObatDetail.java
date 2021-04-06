@@ -107,6 +107,15 @@ public class TransaksiObatDetail extends BaseModel {
     private String idPabrikObat;
     private String idBatch;
     private String nomorProduksi;
+    private String flagBpjs;
+
+    public String getFlagBpjs() {
+        return flagBpjs;
+    }
+
+    public void setFlagBpjs(String flagBpjs) {
+        this.flagBpjs = flagBpjs;
+    }
 
     public String getNomorProduksi() {
         return nomorProduksi;
