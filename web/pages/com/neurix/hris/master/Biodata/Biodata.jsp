@@ -3513,7 +3513,12 @@
 
     $(document).ready(function() {
         loadStatusPegawai();
-        loadPositionJabatan();
+        <s:if test="isAddOrEdit()">
+            loadPositionJabatan("addOrEdit");
+        </s:if>
+        <s:else>
+            loadPositionJabatan("viewOrDelete");
+        </s:else>
         getAllDepartment();
         getAllJenisPegawai();
 
