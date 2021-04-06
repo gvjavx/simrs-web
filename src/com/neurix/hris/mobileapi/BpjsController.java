@@ -922,7 +922,13 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 absensiBoProxy.saveAddAbsensi(absensiPegawaiList, listOfResultOnCall, search);
 
                 logCron.setStatus(CommonConstant.LOG_CRON_SUCCESS);
-                logCron.setStatus("SUCCESS");
+                logCron.setNote("SUCCESS");
+                try{
+                    logCronBoProxy.saveAdd(logCron);
+                }catch (GeneralBOException err){
+                    logger.error("[BpjsController.cronJobAbsensiPegawai] Error, " + err.getMessage());
+                    throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
+                }
             }catch (GeneralBOException e){
                 String error = "ERROR WHEN SAVE ABSENSI PEGAWAI : " + "[" + e + "]";
                 statusInquiry = "{status:3;}";
@@ -934,7 +940,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
                 try{
                     logCronBoProxy.saveAdd(logCron);
                 }catch (GeneralBOException err){
-                    logger.error("[BpjsController.cronJobMesinAbsensi] Error, " + err.getMessage());
+                    logger.error("[BpjsController.cronJobAbsensiPegawai] Error, " + err.getMessage());
                     throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
                 }
 
@@ -966,7 +972,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             try{
                 logCronBoProxy.saveAdd(logCron);
             }catch (GeneralBOException err){
-                logger.error("[BpjsController.cronJobMesinAbsensi] Error, " + err.getMessage());
+                logger.error("[BpjsController.cronJobAbsensiPegawai] Error, " + err.getMessage());
                 throw new GeneralBOException("Error when saving Log Cron, " + err.getMessage());
             }
             //Kirim Notif
