@@ -541,7 +541,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public List<ObatPoli> getStokObatPoli(String idObat) {
+    public List<ObatPoli> getStokObatPoli(String idObat , String jenisObat) {
 
         logger.info("[ObatPoliAction.getStokObat] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
@@ -551,6 +551,7 @@ public class ObatPoliAction extends BaseMasterAction {
         obatpoli.setIdObat(idObat);
         obatpoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatpoli.setBranchId(branchId);
+        obatpoli.setFlagBpjs("bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");

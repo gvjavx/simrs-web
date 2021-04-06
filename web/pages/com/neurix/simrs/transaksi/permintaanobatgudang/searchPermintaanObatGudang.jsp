@@ -684,7 +684,10 @@
         }
 
         if (idObat != '') {
-            ObatPoliAction.getStokObatPoli(id, function (response) {
+
+            var jenisObat   = $("#id-jenis-obat").val() == '' ? $("#req_jenis_obat option:selected").val() : $("#id-jenis-obat").val();
+
+            ObatPoliAction.getStokObatPoli(id, jenisObat, function (response) {
                 if (response != null) {
                     $.each(response, function (i, item) {
                         if (item.idObat == id) {

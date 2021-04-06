@@ -186,13 +186,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 //            }
         }
 
-        List<ObatPoli> filteredList = obatPoliList.stream().filter(
-                p->p.getFlagBpjs().equalsIgnoreCase(bean.getFlagBpjs())
-        ).collect(Collectors.toList());
-
         logger.info("[ObatPoliBoImpl.getObatPoliByCriteria] END <<<<<<<<<<");
-        //return obatPoliList;
-        return filteredList;
+        if (bean.getFlagBpjs() != null && !"".equalsIgnoreCase(bean.getFlagBpjs())){
+            List<ObatPoli> filteredList = obatPoliList.stream().filter(
+                    p->p.getFlagBpjs().equalsIgnoreCase(bean.getFlagBpjs())
+            ).collect(Collectors.toList());
+            return filteredList;
+        }
+        return obatPoliList;
     }
 
     @Override

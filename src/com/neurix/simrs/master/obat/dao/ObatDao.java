@@ -370,7 +370,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "FROM im_simrs_obat \n" +
                     "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
                     "AND id_obat = :id\n" +
-                    "AND branch_id = :branchId\n" +
+                    "AND branch_id = :branchId\n" + andFlag +
                     "GROUP BY id_obat";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -451,13 +451,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
                     .setParameter("branchId1", branchId)
-                    .setParameter("flagBpjs", flagBpjs)
+                    //.setParameter("flagBpjs", flagBpjs)
                     .list();
 
             List<Object[]> results2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLPoli)
                     .setParameter("id2", id)
                     .setParameter("branchId2", branchId)
-                    .setParameter("flagBpjs", flagBpjs)
+                    //.setParameter("flagBpjs", flagBpjs)
                     .list();
 
             String idObat = "";
