@@ -1,5 +1,5 @@
 
-function loadPositionJabatan() {
+function loadPositionJabatan(stAction) {
     $("#inputKodeDokter").css('display','block');
     var nip = $("#nip1").val();
     BiodataAction.listPersonilPosition(nip, function (res) {
@@ -23,8 +23,10 @@ function loadPositionJabatan() {
                 '<td align="center">';
 
             if (item.flag != 'N'){
-                str += '<button class="btn btn-primary btn-sm" onclick="initEditJabatan(\''+item.nip+'\',\''+item.positionId+'\')"><i class="fa fa-edit"></i></button>' +
-                    '<button class="btn btn-danger btn-sm" onclick="initDeleteJabatan(\''+item.nip+'\',\''+item.positionId+'\')"><i class="fa fa-trash"></i></button>';
+                if(stAction === 'addOrEdit') {
+                    str += '<button class="btn btn-primary btn-sm" onclick="initEditJabatan(\'' + item.nip + '\',\'' + item.positionId + '\')"><i class="fa fa-edit"></i></button>' +
+                        '<button class="btn btn-danger btn-sm" onclick="initDeleteJabatan(\'' + item.nip + '\',\'' + item.positionId + '\')"><i class="fa fa-trash"></i></button>';
+                }
             }
 
             str += '</td>' +
