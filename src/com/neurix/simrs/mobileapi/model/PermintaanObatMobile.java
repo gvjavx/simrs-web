@@ -68,7 +68,6 @@ public class PermintaanObatMobile implements Serializable {
     private String namaKeterangan;
 
     private String message;
-
     private String jumlahObat;
 
     public String getJumlahObat() {

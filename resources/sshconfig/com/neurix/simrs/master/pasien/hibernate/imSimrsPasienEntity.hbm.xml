@@ -102,6 +102,12 @@
         <property name="flagLogin">
             <column name="flag_login"/>
         </property>
+        <property name="flagMeninggal">
+            <column name="flag_meninggal"/>
+        </property>
+        <property name="tanggalMeninggal">
+            <column name="tanggal_meninggal"/>
+        </property>
 
 
     </class>

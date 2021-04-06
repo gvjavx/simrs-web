@@ -26,15 +26,14 @@ function showModalRingkasanPasien(jenis, idRM, isSetIdRM) {
 function saveRingkasanPasien(jenis, ket) {
     var data = [];
     var cek = false;
-    var dataPasien = "";
+    var dataPasien = {
+        'no_checkup': noCheckup,
+        'id_detail_checkup': idDetailCheckup,
+        'id_pasien': idPasien,
+        'id_rm': tempidRm
+    }
 
     if ("ringkasan_pulang_pasien" == jenis) {
-        dataPasien = {
-            'no_checkup': idDetailCheckup,
-            'id_detail_checkup': idDetail,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
         var pe1 = $('#rps1').val();
         var pe2 = $('#rps2').val();
         var pe3 = $('#rps3').val();
@@ -466,14 +465,7 @@ function saveRingkasanPasien(jenis, ket) {
     }
 
     if ("ringkasan_keluar_pasien" == jenis) {
-        var idDetail = $('#h_id_detail_pasien').val();
-        dataPasien = {
-            'no_checkup': $('#h_no_checkup').val(),
-            'id_detail_checkup': idDetail,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
-        var pe1 = $('[name=rkp1]:checked').val();
+        var pe1 = $('#rkp1').val();
         var pe2 = "";
         var p2 = $('[name=rkp2]:checked').val();
         if (p2 != undefined) {
@@ -513,34 +505,34 @@ function saveRingkasanPasien(jenis, ket) {
             }
         }
 
-        if (pe1 && pe11 && pe12 != undefined && pe3 && pe4 && pe5 && pe6 && pe7 && pe8 && pe9 && pe10 && pe2 && pe13 != '') {
+        if (pe1 != '') {
             data.push({
                 'parameter': 'MRS Melalui',
                 'jawaban': pe1,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Rujukan dari',
                 'jawaban': pe2,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Diagnosa Utama',
                 'jawaban': pe3,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Diagnosa Sekunder',
                 'jawaban': pe4,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
 
             //tindakan operasi
@@ -568,7 +560,7 @@ function saveRingkasanPasien(jenis, ket) {
                     'jawaban': ope,
                     'keterangan': jenis,
                     'jenis': 'ringkasan_keluar',
-                    'id_detail_checkup': idDetail
+                    'id_detail_checkup': idDetailCheckup
                 });
             }
             //end
@@ -578,62 +570,55 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': pe5 + ' CC ' + ', Tanggal ' + pe6,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Packet Red Cells',
                 'jawaban': pe7 + ' CC ' + ', Tanggal ' + pe8,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Liquid Plasma',
                 'jawaban': pe9 + ' CC ' + ', Tanggal ' + pe10,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Lahir Hidup',
                 'jawaban': pe11,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Keluar RS',
                 'jawaban': 'Tanggal ' + krs1 + ', Jam ' + krs2 + ', Lama dirawat ' + krs3,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Keadaan Keluar',
                 'jawaban': pe12,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Cara Keluar RS',
                 'jawaban': pe13,
                 'keterangan': jenis,
                 'jenis': 'ringkasan_keluar',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             cek = true;
         }
     }
 
     if ("pre_admisi" == jenis) {
-        var idDetail = $('#h_id_detail_pasien').val();
-        dataPasien = {
-            'no_checkup': $('#h_no_checkup').val(),
-            'id_detail_checkup': idDetail,
-            'id_pasien': $('#h_id_pasien').val(),
-            'id_rm': tempidRm
-        }
         var check1 = $('[name=pre01]:checked').val();
         var check2 = $('[name=pre02]:checked').val();
         var check3 = $('[name=pre03]:checked').val();
@@ -702,42 +687,42 @@ function saveRingkasanPasien(jenis, ket) {
                 'jawaban': va1,
                 'keterangan': jenis,
                 'jenis': 'admisi',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Apakah anda membutuhkan penerjemah bahasa ?',
                 'jawaban': va2,
                 'keterangan': jenis,
                 'jenis': 'admisi',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Apakah anda memiliki masalah dalam berbicara, pendengaran, penglihatan ?',
                 'jawaban': va3,
                 'keterangan': jenis,
                 'jenis': 'admisi',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Apakah kontak yang diisi sudah benar ?',
                 'jawaban': va4,
                 'keterangan': jenis,
                 'jenis': 'admisi',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Apakah anda membutuhkan alat bantu khusus ?',
                 'jawaban': va5,
                 'keterangan': jenis,
                 'jenis': 'admisi',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Apakah anda mempunyai riwayat alergi ?',
                 'jawaban': va6,
                 'keterangan': jenis,
                 'jenis': 'admisi',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
 
             var cvs1 = convertToDataURL(ttd1);
@@ -750,7 +735,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'nama_terang': nama1,
                 'sip':sip1,
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'TTD Dokter',
@@ -760,7 +745,7 @@ function saveRingkasanPasien(jenis, ket) {
                 'nama_terang': nama2,
                 'sip':sip2,
                 'tipe': 'ttd',
-                'id_detail_checkup': idDetail
+                'id_detail_checkup': idDetailCheckup
             });
             cek = true;
         }
@@ -782,6 +767,8 @@ function saveRingkasanPasien(jenis, ket) {
                        $('#warning_ring_' + ket).show().fadeOut(5000);
                        $('#msg_ring_' + ket).text("Berhasil menambahkan data ringkasan pasien...");
                        $('#modal-ring-' + jenis).scrollTop(0);
+                       delRowRingkasanPasien(jenis);
+                       detailRingkasanPasien(jenis);
                    } else {
                        $('#save_ring_' + jenis).show();
                        $('#load_ring_' + jenis).hide();
@@ -801,13 +788,6 @@ function saveRingkasanPasien(jenis, ket) {
 
 function detailRingkasanPasien(jenis) {
     if(!cekSession()){
-        var cekId = "";
-        var idDetail = $('#h_id_detail_pasien').val();
-        if(idDetail != null && idDetail != ''){
-            cekId = idDetail;
-        }else{
-            cekId = idDetailCheckup;
-        }
         if (jenis != '') {
             var head = "";
             var body = "";
@@ -817,7 +797,7 @@ function detailRingkasanPasien(jenis) {
             var tgl = "";
             var cekData = false;
 
-            RingkasanPasienAction.getListDetail(cekId, jenis, function (res) {
+            RingkasanPasienAction.getListDetail(idDetailCheckup, jenis, function (res) {
                 if (res.length > 0) {
                     $.each(res, function (i, item) {
                         var jwb = "";
@@ -1168,6 +1148,7 @@ function delRing(jenis, ket) {
         dwr.engine.setAsync(true);
         RingkasanPasienAction.saveDelete(idDetailCheckup, jenis, result, {
             callback: function (res) {
+                console.log(res);
                 if (res.status == "success") {
                     stopSpin('delete_'+jenis);
                     $('#modal-ring-'+ket).scrollTop(0);
@@ -1179,7 +1160,17 @@ function delRing(jenis, ket) {
                     $('#warn_'+ket).show().fadeOut(5000);
                     $('#msg_'+ket).text(res.msg);
                 }
+                delRowRingkasanPasien(jenis);
+                detailRingkasanPasien(jenis);
             }
         });
+    }
+}
+
+function setSideValue(id, value) {
+    if (value == '' || value == '___/___') {
+        $('#' + id).val('');
+    } else {
+        $('#' + id).val(value);
     }
 }

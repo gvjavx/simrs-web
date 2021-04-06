@@ -2108,7 +2108,6 @@ last_update_who character varying(100)
 
 CREATE SEQUENCE seq_asesmen_monitoring_gizi;
 
-
 --Tindakan Header
 ALTER TABLE im_simrs_header_tindakan
 ADD COLUMN flag_konsul_gizi VARCHAR(1);
@@ -2206,7 +2205,12 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000257','RMM00000026','pindah_ri','3','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000258','RMM00000027','pindah_ri','4','Y','C','migrasi',now(),now(),'migrasi'),
 ('RMP000000259','RMM00000028','pindah_ri','5','Y','C','migrasi',now(),now(),'migrasi'),
-('RMP000000260','RMM00000095','pindah_ri','6','Y','C','migrasi',now(),now(),'migrasi');
+('RMP000000260','RMM00000095','pindah_ri','6','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000267','RMM00000025','pindah_ok','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000268','RMM00000026','pindah_ok','4','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000269','RMM00000027','pindah_ok','5','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000270','RMM00000028','pindah_ok','6','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000271','RMM00000095','pindah_ok','7','Y','C','migrasi',now(),now(),'migrasi');
 
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000261','RMM00000111','rawat_jalan','20','Y','C','migrasi',now(),now(),'migrasi'),
@@ -2214,6 +2218,141 @@ INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 
 INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
 ('RMP000000263','RMM00000059','igd','3','Y','C','migrasi',now(),now(),'migrasi');
+
+INSERT INTO im_simrs_rekam_medis_pasien VALUES
+('RMM00000113','RI 001','Persetujuan Tindakan Medis','form','tindakan_ri','tindakan_ina','showModalAsesmenRawatInap','Y','C','migrasi',now(),now(),'migrasi','1'),
+('RMM00000114','ICU 002','Persetujuan Tindakan Medis','form','tindakan_icu','tindakan_icu','showModalICU','Y','C','migrasi',now(),now(),'migrasi','1'),
+('RMM00000115','RB 003','Persetujuan Tindakan Medis','form','tindakan_rb','tindakan_rb','showModalRB','Y','C','migrasi',now(),now(),'migrasi','1');
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000264','RMM00000113','rawat_inap','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000265','RMM00000114','rawat_intensif','3','Y','C','migrasi',now(),now(),'migrasi'),
+('RMP000000266','RMM00000115','ruang_bersalin','3','Y','C','migrasi',now(),now(),'migrasi');
+
+ALTER TABLE it_simrs_hemodinamika
+ALTER COLUMN tensi TYPE VARCHAR(10);
+
+--BARU SETELAH DI DEV
+ALTER TABLE it_simrs_asesmen_keperawatan_rawat_inap
+ADD COLUMN no_checkup VARCHAR(50);
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET flag = 'N'
+WHERE id_rekam_medis_pasien = 'RMM00000089'
+AND tipe_pelayanan = 'rawat_inap';
+
+UPDATE im_simrs_rekam_medis_pelayanan
+SET urutan = '45'
+WHERE id_rekam_medis_pasien = 'RMM00000105'
+AND tipe_pelayanan = 'rawat_inap';
+
+ALTER TABLE it_simrs_asesmen_operasi
+ADD COLUMN no_checkup VARCHAR(100);
+
+--SABTU MENJELANG MALAM MINGGU
+ALTER TABLE it_simrs_periksa_lab
+ADD COLUMN ttd_pengirim VARCHAR(100);
+
+INSERT INTO im_simrs_rekam_medis_pelayanan VALUES
+('RMP000000272','RMM00000033','gizi','6','Y','C','migrasi',now(),now(),'migrasi');
+
+ALTER TABLE it_simrs_pendamping_gizi
+RENAME COLUMN id_order_gizi TO id_detail_checkup;
+
+ALTER TABLE it_simrs_pendamping_gizi
+ADD COLUMN status VARCHAR(1);
+
+ALTER TABLE it_simrs_periksa_lab_detail
+ALTER COLUMN hasil TYPE text;
+
+ALTER TABLE it_simrs_upload_hasil_pemeriksaan
+ADD COLUMN id_periksa_lab_detail VARCHAR(50),
+ADD COLUMN nama_detail_periksa VARCHAR(100);
+
+ALTER TABLE im_simrs_pasien
+ADD COLUMN flag_meninggal VARCHAR(1),
+ADD COLUMN tanggal_meninggal TIMESTAMP WITHOUT TIME ZONE;
+
+ALTER TABLE im_simrs_keterangan_keluar
+ADD COLUMN kategori VARCHAR(100);
+
+UPDATE im_simrs_keterangan_keluar
+SET kategori = 'meninggal'
+WHERE id_keterangan = '04';
+
+--SENNINN
+DROP TABLE it_simrs_pendamping_gizi;
+
+CREATE TABLE public.it_simrs_header_pendamping_makanan
+(
+  id_header_pendamping_makanan character varying(50) NOT NULL,
+  id_detail_checkup character varying(50),
+  id_ruangan character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT id_header_pendamping_makanan_pkey PRIMARY KEY (id_header_pendamping_makanan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_header_pendamping_makanan
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_header_pendamping_makanan;
+
+CREATE TABLE public.it_simrs_detail_pendamping_makanan
+(
+  id_detail_pendamping_makanan character varying(50) NOT NULL,
+  id_header_pendamping_makanan character varying(50),
+  nama character varying(100),
+  qty integer,
+  tarif numeric,
+  total_tarif numeric,
+  keterangan character varying(100),
+  flag character varying(1),
+  action character varying(1),
+  created_who character varying(100),
+  created_date timestamp without time zone,
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT id_detail_pendamping_makanan_pkey PRIMARY KEY (id_detail_pendamping_makanan)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_detail_pendamping_makanan
+  OWNER TO postgres;
+
+CREATE SEQUENCE seq_detail_pendamping_makanan;
+
+ALTER TABLE it_simrs_header_pendamping_makanan
+ADD COLUMN status VARCHAR(1);
+
+--Function Makanan Pendamping
+INSERT INTO im_functions VALUES
+(6913, 'Makanan Pendamping', '/pendampingmakanan/initForm_pendampingmakanan.action', 0, 1, now(), 'admin', now(), 'admin', 'Y','C', 6913),
+(6914, 'init', '/pendampingmakanan/initForm_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6915, 'search', '/pendampingmakanan/search_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6916, 'print', '/pendampingmakanan/printBarcodeMakanan_pendampingmakanan.action', 6913, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6913, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6914, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6915, 40, 'Y', now(), now(), 'admin', 'admin'),
+(6916, 40, 'Y', now(), now(), 'admin', 'admin');
+
+--BELUM DI PROD
+UPDATE im_func_roles
+SET flag = 'N'
+WHERE func_id = 2
+AND role_id = 41
+
+
+
 
 
 

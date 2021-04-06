@@ -165,4 +165,20 @@ public class RekeningTelemedicBoImpl implements RekeningTelemedicBo {
         logger.info("[RekeningTelemedicBoImpl.getNextIdRekening] End >>>>>>>");
         return id;
     }
+
+    @Override
+    public ImSimrsRekeningTelemedicEntity getRekeningTelemedicById(String id) throws GeneralBOException {
+        logger.info("[RekeningTelemedicBoImpl.getRekeningTelemedicById] Start >>>>>>>");
+
+        ImSimrsRekeningTelemedicEntity rekeningTelemedicEntity = new ImSimrsRekeningTelemedicEntity();
+
+        try {
+            rekeningTelemedicEntity = rekeningTelemedicDao.getById("idRekening", id);
+        } catch (HibernateException e){
+            logger.info("[RekeningTelemedicBoImpl.getRekeningTelemedicById] Error :"+ e );
+        }
+
+        logger.info("[RekeningTelemedicBoImpl.getRekeningTelemedicById] End <<<<<<<");
+        return rekeningTelemedicEntity;
+    }
 }

@@ -168,7 +168,7 @@ public class PermintaanGiziAction extends BaseMasterAction {
                     if (id.equalsIgnoreCase(rawatInap.getNoCheckup())) {
                         reportParams.put("idOrderGizi",idOrder);
                         reportParams.put("nama",rawatInap.getNamaPasien());
-                        reportParams.put("tglLahir",rawatInap.getTglLahir());
+                        reportParams.put("tgllahir",rawatInap.getTglLahir());
                         reportParams.put("idPasien",rawatInap.getIdPasien());
                         if(rawatInap.getNoRuangan() != null && !"".equalsIgnoreCase(rawatInap.getNoRuangan())){
                             reportParams.put("ruang",rawatInap.getNamaRangan()+" ["+rawatInap.getNoRuangan()+"]");

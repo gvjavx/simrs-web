@@ -165,6 +165,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String kategoriPelayanan;
     private String pemeriksaanTerakhir;
     private String dibayarPasien;
+    private String formatTglMasuk;
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
 
     public String getDibayarPasien() {
         return dibayarPasien;
@@ -209,6 +218,15 @@ public class HeaderDetailCheckup extends BaseModel{
     private String noTelp;
     private String isEksekutif;
     private String isVaksin;
+    private String isMeninggal;
+
+    public String getIsMeninggal() {
+        return isMeninggal;
+    }
+
+    public void setIsMeninggal(String isMeninggal) {
+        this.isMeninggal = isMeninggal;
+    }
 
     public String getIsVaksin() {
         return isVaksin;

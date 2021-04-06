@@ -42,6 +42,10 @@ import com.neurix.simrs.transaksi.checkupdetail.model.UangMuka;
 import com.neurix.simrs.transaksi.diagnosarawat.bo.DiagnosaRawatBo;
 import com.neurix.simrs.transaksi.diagnosarawat.model.DiagnosaRawat;
 import com.neurix.simrs.transaksi.kasirrawatjalan.bo.KasirRawatJalanBo;
+import com.neurix.simrs.transaksi.makananpendamping.bo.DetailPendampingMakananBo;
+import com.neurix.simrs.transaksi.makananpendamping.bo.HeaderPendampingMakananBo;
+import com.neurix.simrs.transaksi.makananpendamping.model.DetailPendampingMakanan;
+import com.neurix.simrs.transaksi.makananpendamping.model.HeaderPendampingMakanan;
 import com.neurix.simrs.transaksi.moncairan.model.ItSimrsMonCairanEntity;
 import com.neurix.simrs.transaksi.moncairan.model.MonCairan;
 import com.neurix.simrs.transaksi.monpemberianobat.model.ItSimrsMonPemberianObatEntity;
@@ -2002,6 +2006,7 @@ public class RawatInapAction extends BaseMasterAction {
                 String unitLab = null;
                 String isOrderLab = null;
                 String idRuanganLama = null;
+                String isMeninggal = "";
                 JSONArray jsonParameter = new JSONArray();
 
                 if (object.has("id_ruangan")) {
@@ -2030,6 +2035,9 @@ public class RawatInapAction extends BaseMasterAction {
                 }
                 if (object.has("id_ruangan_lama")) {
                     idRuanganLama = object.getString("id_ruangan_lama");
+                }
+                if (object.has("is_meninggal")) {
+                    isMeninggal = object.getString("is_meninggal");
                 }
 
                 List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
@@ -2087,6 +2095,7 @@ public class RawatInapAction extends BaseMasterAction {
                     rawatInap.setKeteranganSelesai(keterangan);
                     rawatInap.setIdRuangLama(idRuanganLama);
                     rawatInap.setIdJenisPeriksa(jenisPasien);
+                    rawatInap.setIsMeninggal(isMeninggal);
 
                     saveApproveAllTindakan(idDetailCheckup, jenisPasien);
                     response = rawatInapBo.saveAdd(rawatInap);
@@ -2139,6 +2148,8 @@ public class RawatInapAction extends BaseMasterAction {
             OrderGiziBo orderGiziBo = (OrderGiziBo) ctx.getBean("orderGiziBoProxy");
             CheckupDetailBo checkupDetailBo = (CheckupDetailBo) ctx.getBean("checkupDetailBoProxy");
             RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
+            HeaderPendampingMakananBo headerPendampingMakananBo = (HeaderPendampingMakananBo) ctx.getBean("headerPendampingMakananBoProxy");
+            DetailPendampingMakananBo detailPendampingMakananBo = (DetailPendampingMakananBo) ctx.getBean("detailPendampingMakananBoProxy");
             String userBranch = CommonUtil.userBranchLogin();
 
             RekananOps ops = new RekananOps();
@@ -2457,6 +2468,62 @@ public class RawatInapAction extends BaseMasterAction {
                                 riwayatTindakan.setLastUpdate(updateTime);
                                 riwayatTindakan.setLastUpdateWho(user);
                                 riwayatTindakan.setTanggalTindakan(gizi.getCreatedDate());
+
+                                try {
+                                    riwayatTindakanBo.saveAdd(riwayatTindakan);
+                                } catch (GeneralBOException e) {
+                                    logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            HeaderPendampingMakanan headerPendampingMakanan = new HeaderPendampingMakanan();
+            headerPendampingMakanan.setIdDetailCheckup(idDetail);
+            List<HeaderPendampingMakanan> headerPendampingMakananList = new ArrayList<>();
+            try {
+                headerPendampingMakananList = headerPendampingMakananBo.getByCriteria(headerPendampingMakanan);
+            }catch (HibernateException e){
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Error, "+e.getMessage());
+            }
+            if(headerPendampingMakananList.size() > 0){
+                for (HeaderPendampingMakanan header: headerPendampingMakananList){
+                    DetailPendampingMakanan detailPendampingMakanan = new DetailPendampingMakanan();
+                    detailPendampingMakanan.setIdHeaderPendampingMakanan(header.getIdHeaderPendampingMakanan());
+                    List<DetailPendampingMakanan> detailPendampingMakananList = new ArrayList<>();
+                    try {
+                        detailPendampingMakananList = detailPendampingMakananBo.getByCriteria(detailPendampingMakanan);
+                    }catch (HibernateException e){
+                        logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Error, "+e.getMessage());
+                    }
+                    if(detailPendampingMakananList.size() > 0){
+                        for (DetailPendampingMakanan detail: detailPendampingMakananList){
+                            List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
+                            RiwayatTindakan tindakan = new RiwayatTindakan();
+                            tindakan.setIdTindakan(detail.getIdDetailPendampingMakanan());
+
+                            try {
+                                riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
+                            } catch (HibernateException e) {
+                                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+                            }
+                            if (riwayatTindakanList.isEmpty()) {
+                                RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
+                                riwayatTindakan.setIdTindakan(detail.getIdDetailPendampingMakanan());
+                                riwayatTindakan.setIdDetailCheckup(rawatInap.getIdDetailCheckup());
+                                riwayatTindakan.setNamaTindakan(detail.getNama()+" (Qty "+detail.getQty()+")");
+                                riwayatTindakan.setTotalTarif(detail.getTotalTarif());
+                                riwayatTindakan.setKeterangan("gizi");
+                                riwayatTindakan.setJenisPasien(jenPasien);
+                                riwayatTindakan.setAction("C");
+                                riwayatTindakan.setFlag("Y");
+                                riwayatTindakan.setCreatedWho(user);
+                                riwayatTindakan.setCreatedDate(updateTime);
+                                riwayatTindakan.setLastUpdate(updateTime);
+                                riwayatTindakan.setLastUpdateWho(user);
+                                riwayatTindakan.setTanggalTindakan(detail.getCreatedDate());
 
                                 try {
                                     riwayatTindakanBo.saveAdd(riwayatTindakan);

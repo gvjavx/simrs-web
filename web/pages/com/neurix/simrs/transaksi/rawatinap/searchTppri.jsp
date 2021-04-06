@@ -198,13 +198,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
-                                <td>Jenis Pasien</td>
+                                <td>Tanggal Masuk</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td>Tindak Lanjut</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -215,7 +216,12 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="jenisPeriksaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
+                                    <td align="center">
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksa"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
+                                    </td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagTppri == "Y"'>
@@ -226,8 +232,11 @@
                                         </s:if>
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>"
-                                                 onclick="detail('<s:property value="noCheckup"/>','<s:property
-                                                         value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
+                                                 onclick="detail('<s:property value="noCheckup"/>',
+                                                         '<s:property value="idDetailCheckup"/>',
+                                                         '<s:property value="idPasien"/>',
+                                                         '<s:property value="tindakLanjut"/>',
+                                                         '<s:property value="keteranganSelesai"/>')" class="hvr-grow"
                                                  src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
                                                  style="cursor: pointer;">
                                         </s:else>
@@ -892,6 +901,7 @@
     var diagnosa = "";
     var idPasien = "";
     var tglLahir = "";
+    var tanggalMasuk = "";
 
     function printGelangPasien(noCheckup) {
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
@@ -901,12 +911,13 @@
         $('#' + id).val(formatRupiahAtas2(val));
     }
 
-    function detail(noCheckup, idDCP, tindakLanjut, keteranganSelesai) {
+    function detail(noCKP, idDCP, idPsn, tindakLanjut, keteranganSelesai) {
         idDetailCheckup = idDCP;
+        noCheckup = noCKP;
+        idPasien = idPsn;
         startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDCP,
-            {
+        CheckupAction.listDataPasien(idDCP, {
                 callback: function (res) {
                     if (res.idPasien != null) {
                         stopSpinner('t_', idDCP);
@@ -979,7 +990,7 @@
                         }
 
                         $('#no_rm').html(res.idPasien);
-                        $('#no_detail_checkup').html(noCheckup);
+                        $('#no_detail_checkup').html(noCKP);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);

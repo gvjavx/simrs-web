@@ -766,7 +766,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return "print_reture_permintaan_obat";
     }
 
-    public String updateDiterimaFlagBatch(BigInteger idBatch, String flag){
+    public String updateDiterimaFlagBatch(String idBatch, String flag){
 
         logger.info("[ObatPoliAction.updateDiterimaFlagBatch] START process >>>");
 

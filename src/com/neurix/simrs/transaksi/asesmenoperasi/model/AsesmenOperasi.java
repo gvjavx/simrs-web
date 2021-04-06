@@ -23,6 +23,15 @@ public class AsesmenOperasi extends BaseModel {
     private String tipe;
     private String namaterang;
     private String sip;
+    private String noCheckup;
+
+    public String getNoCheckup() {
+        return noCheckup;
+    }
+
+    public void setNoCheckup(String noCheckup) {
+        this.noCheckup = noCheckup;
+    }
 
     public String getNamaterang() {
         return namaterang;

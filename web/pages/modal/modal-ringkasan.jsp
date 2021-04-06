@@ -115,7 +115,7 @@
                             <label class="col-md-2" style="margin-top: 7px">Suhu</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control suhu-pasien" type="number" id="rps5">
+                                    <input class="form-control suhu-pasien" type="number" id="rps5" oninput="setSideValue('rps16', this.value)">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         C
                                     </div>
@@ -124,8 +124,8 @@
                             <label class="col-md-1" style="margin-top: 7px">Nadi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control nadi-pasien" type="number" id="rps6">
-                                    <div class="input-group-addon" style="font-size: 10px">
+                                    <input class="form-control nadi-pasien" type="number" id="rps6"  oninput="setSideValue('rps17', this.value)">
+                                    <div class="input-group-addon" style="font-size: 10px" >
                                         x/mnt
                                     </div>
                                 </div>
@@ -137,7 +137,7 @@
                             <label class="col-md-2" style="margin-top: 7px">RR</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control rr-pasien" type="number" id="rps7">
+                                    <input class="form-control rr-pasien" type="number" id="rps7"  oninput="setSideValue('rps18', this.value)">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         x/mnt
                                     </div>
@@ -146,7 +146,7 @@
                             <label class="col-md-1" style="margin-top: 7px">Tensi</label>
                             <div class="col-md-4">
                                 <div class="input-group" style="margin-top: 7px">
-                                    <input class="form-control tensi-pasien" id="rps8" data-inputmask="'mask': ['999/999']" data-mask="">
+                                    <input class="form-control tensi-pasien" id="rps8" data-inputmask="'mask': ['999/999']" data-mask=""  oninput="setSideValue('rps19', this.value)">
                                     <div class="input-group-addon" style="font-size: 10px">
                                         mmHg
                                     </div>
@@ -158,7 +158,7 @@
                         <div class="form-group">
                             <label class="col-md-2" style="margin-top: 7px">GCS</label>
                             <div class="col-md-4">
-                                <input class="form-control" id="rps9" style="margin-top: 7px">
+                                <input class="form-control" id="rps9" style="margin-top: 7px"  oninput="setSideValue('rps20', this.value)">
                             </div>
                         </div>
                     </div>
@@ -712,21 +712,24 @@
                     <div class="row">
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">MRS Melalui</label>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Poliklinik" id="rkp11" name="rkp1" /><label for="rkp11">Poliklinik</label>
-                                </div>
+                            <div class="col-md-6">
+                                <input class="form-control asal_masuk" id="rkp1">
                             </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="IGD" id="rkp12" name="rkp1" /><label for="rkp12">IGD</label>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="custom02">
-                                    <input type="radio" value="Persalinan" id="rkp13" name="rkp1" /><label for="rkp13">Persalinan</label>
-                                </div>
-                            </div>
+                            <%--<div class="col-md-3">--%>
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="Poliklinik" id="rkp11" name="rkp1" /><label for="rkp11">Poliklinik</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="IGD" id="rkp12" name="rkp1" /><label for="rkp12">IGD</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                            <%--<div class="col-md-3">--%>
+                                <%--<div class="custom02">--%>
+                                    <%--<input type="radio" value="Persalinan" id="rkp13" name="rkp1" /><label for="rkp13">Persalinan</label>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
                         </div>
                     </div>
                     <hr class="garis">
@@ -777,7 +780,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Diagnosa Utama</label>
                             <div class="col-md-8">
-                                <textarea class="form-control diagnosa-primer" id="rkp3" rows="3"></textarea>
+                                <textarea class="form-control diagnosa-pasien" id="rkp3" rows="3"></textarea>
                             </div>
                         </div>
                     </div>
@@ -785,7 +788,7 @@
                         <div class="form-group">
                             <label class="col-md-3" style="margin-top: 7px">Diagnosa Sekunder</label>
                             <div class="col-md-8">
-                                <textarea class="form-control diagnosa-sekunder" id="rkp4" rows="3" style="margin-top: 7px"></textarea>
+                                <textarea class="form-control" id="rkp4" rows="3" style="margin-top: 7px"></textarea>
                             </div>
                         </div>
                     </div>
@@ -808,8 +811,13 @@
                                 <input class="form-control" type="number" placeholder="CC" id="rkp5">
                             </div>
                             <label class="col-md-2">Tanggal</label>
-                            <div class="col-md-3">
-                                <input class="form-control tgl" id="rkp6">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control ptr-tgl" id="rkp6">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -818,8 +826,13 @@
                                 <input class="form-control" type="number" placeholder="CC" style="margin-top: 7px" id="rkp7">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Tanggal</label>
-                            <div class="col-md-3">
-                                <input class="form-control tgl" style="margin-top: 7px" id="rkp8">
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control ptr-tgl" id="rkp8">
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
@@ -828,8 +841,13 @@
                                 <input class="form-control" type="number" placeholder="CC" style="margin-top: 7px" id="rkp9">
                             </div>
                             <label class="col-md-2" style="margin-top: 7px">Tanggal</label>
-                            <div class="col-md-3">
-                                <input class="form-control tgl" style="margin-top: 7px" id="rkp10">
+                            <div class="col-md-4">
+                                <div class="input-group" style="margin-top: 7px">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input class="form-control ptr-tgl" id="rkp10">
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -11,7 +11,7 @@ public class Hemodinamika extends BaseModel {
     private String idDetailCheckup;
     private String waktu;
     private Date tanggal;
-    private Integer tensi;
+    private String tensi;
     private Integer bp;
     private Integer hi;
     private Integer rr;
@@ -78,11 +78,11 @@ public class Hemodinamika extends BaseModel {
         this.idDetailCheckup = idDetailCheckup;
     }
 
-    public Integer getTensi() {
+    public String getTensi() {
         return tensi;
     }
 
-    public void setTensi(Integer tensi) {
+    public void setTensi(String tensi) {
         this.tensi = tensi;
     }
 

@@ -268,6 +268,7 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
         String where = "";
         String idPasien = bean.getIdPasien();
         String id = bean.getId();
+        String order = "";
 
         if (bean.getIdDokter() != null && !"".equalsIgnoreCase(bean.getIdDokter())){
             where += "AND at.id_dokter = '"+bean.getIdDokter()+"' \n";
@@ -300,6 +301,10 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
             idPasien = "%";
         if (id == null || "".equalsIgnoreCase(id))
             id = "%";
+        if (!"mobile".equalsIgnoreCase(bean.getTipePencarian()))
+            order +=  "ORDER BY b.tanggal_upload";
+        else
+            order += "ORDER BY b.last_update";
 
         String SQL = "SELECT \n" +
                 "a.id,\n" +
@@ -327,8 +332,8 @@ public class TelemedicDao extends GenericDao<ItSimrsAntrianTelemedicEntity, Stri
                 "\t) a \n" +
                 "\tWHERE a.last_update IS NOT NULL\n" +
                 ") a \n" +
-                "LEFT JOIN (SELECT * FROM it_simrs_pembayaran_online WHERE tanggal_upload IS NOT NULL) b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update\n" +
-                "ORDER BY tanggal_upload";
+                "LEFT JOIN (SELECT * FROM it_simrs_pembayaran_online WHERE tanggal_upload IS NOT NULL) b ON b.id_antrian_telemedic = a.id AND b.last_update = a.last_update \n" + order;
+
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
 

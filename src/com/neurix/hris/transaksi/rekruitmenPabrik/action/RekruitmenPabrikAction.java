@@ -9,13 +9,11 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
-import com.neurix.hris.transaksi.rekruitmen.bo.RekruitmenBo;
 import com.neurix.hris.transaksi.rekruitmenPabrik.bo.RekruitmenPabrikBo;
-import com.neurix.hris.transaksi.rekruitmenPabrik.model.ItRekruitmenPabrikDetailEntity;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrik;
 import com.neurix.hris.transaksi.rekruitmenPabrik.model.RekruitmenPabrikDetail;
 import org.apache.log4j.Logger;
@@ -900,10 +898,10 @@ public class RekruitmenPabrikAction extends BaseMasterAction{
             setAdmin(true);
         }
         if ("Admin Bagian".equalsIgnoreCase(CommonUtil.roleAsLogin())){
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 if (searchRekruitmenPabrik==null){
                     searchRekruitmenPabrik=new RekruitmenPabrik();
                 }

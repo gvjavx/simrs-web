@@ -193,13 +193,17 @@ function listSelectRuangan(id) {
             } else {
                 option = option;
             }
+            // alert(option);
+            // console.log(option);
+
+            $('#kamar_detail').html(option);
+            $('#ruangan_ruang').html(option);
         });
     }
-    $('#kamar_detail').html(option);
-    $('#ruangan_ruang').html(option);
 }
 
 function selectKeterangan(idKtg) {
+    var keteranganPindah = $('#keterangan option:selected').text();
     var jenisPasien = $('#id_jenis_pasien').val();
     if (idKtg != '') {
         if (idKtg == "selesai") {
@@ -231,6 +235,8 @@ function selectKeterangan(idKtg) {
                 $('#form-hak_kamar').hide();
                 $('#hak_kamar_bpjs').text('');
             }
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\')');
 
             $('#form-selesai').hide();
             $('#form-tgl-kontrol').hide();
@@ -280,6 +286,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else if (idKtg == "rawat_isolasi") {
             getKamar(null, 'rawat_isolasi');
@@ -297,6 +305,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else if (idKtg == "kamar_operasi") {
             getKamar(null, 'kamar_operasi');
@@ -314,6 +324,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ok\',\'asesmen_pindah\')');
 
         } else if (idKtg == "ruang_bersalin") {
             getKamar(null, 'ruang_bersalin');
@@ -331,6 +343,8 @@ function selectKeterangan(idKtg) {
             $('#form-pemeriksaan').hide();
             $('#form-kelas_kamar').hide();
             $('#form-asesmen').show();
+            $('#title_asesmen').html(keteranganPindah);
+            $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
 
         } else if (idKtg == "rr") {
             getKamar(null, 'rr');
@@ -629,6 +643,8 @@ function toContent() {
         window.location.href = 'add_' + urlPage + '.action?id=' + idDetailCheckup + '&idx=' + idHref;
     } else if (back == 14) {
         desti = '#pos_rm';
+    } else if (back == 15){
+        desti = '#pos_pendamping';
     }
 
     $('html, body').animate({
@@ -683,6 +699,7 @@ function showModal(select) {
         $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 
     } else if (select == 4) {
+        dokterDpjp();
         $('#is_luar, #is_pending_lab').prop('checked', false);
         $('#is_luar, #is_pending_lab').attr('disabled', false);
         $('#form_pending, #form_lab_luar').hide();
@@ -775,6 +792,14 @@ function showModal(select) {
         $('#load_icd9').hide();
         $('#save_icd9').attr('onclick', 'saveICD9(\'' + id + '\')').show();
         $('#modal-icd9').modal({show: true, backdrop: 'static'});
+    }else if (select == 9) {
+        $('#body_add_pendamping_makanan').html('');
+        $('#nama_makanan').val('');
+        $('#qty_makanan').val('1');
+        $('#keterangan_makanan').val('');
+        $('#load_makanan_pendamping').hide();
+        $('#save_makanan_pendamping').attr('onclick', 'saveMakananPendamping()').show();
+        $('#modal-makanan_pendamping').modal({show: true, backdrop: 'static'});
     }
 }
 
@@ -1224,6 +1249,12 @@ function listDiagnosa() {
                 if (item.idDiagnosa != null) {
                     id = item.idDiagnosa;
                 }
+
+                var blink = "";
+                if("B20" == id){
+                    blink = 'class="blink_me_atas" style="color: red"';
+                }
+
                 if (item.keteranganDiagnosa != null) {
                     ket = item.keteranganDiagnosa;
                 }
@@ -1236,7 +1267,7 @@ function listDiagnosa() {
                         jen = "Diagnosa Sekunder";
                     }
                 }
-                table += "<tr>" +
+                table += '<tr '+blink+'>' +
                     "<td>" + dateFormat + "</td>" +
                     "<td>" + id + "</td>" +
                     "<td>" + ket + "</td>" +
@@ -1245,9 +1276,8 @@ function listDiagnosa() {
                     "</tr>"
             });
         }
+        $('#body_diagnosa').html(table);
     });
-
-    $('#body_diagnosa').html(table);
 }
 
 function listSelectLab(idx) {
@@ -1288,13 +1318,7 @@ function listSelectParameter(idLab) {
 }
 
 function saveLab(id) {
-    var data = $('#tbl_dokter').tableToJSON();
-    var idDokter = "";
-    $.each(data, function (i, item) {
-        if (i == 0) {
-            idDokter = data[i]["ID Dokter"];
-        }
-    });
+    var idDokter = $('#sip_pengirim').val();
     var idKategori = $('#lab_kategori').val();
     var idLab = $('#lab_lab').val();
     var idParameter = $('#lab_parameter').val();
@@ -1304,6 +1328,10 @@ function saveLab(id) {
 
     var idLabLuar = $('#lab_luar').val();
     var idParameterLuar = $('#lab_parameter_luar').val();
+
+    var canvas = document.getElementById('ttd_dokter_pengirim');
+    var ttdPengirim = convertToDataURLAtas(canvas);
+    var ttd = isBlank(canvas);
 
     var tempLab = "";
     var tempParams = "";
@@ -1367,23 +1395,28 @@ function saveLab(id) {
                         }
                     });
                 }else{
-                    $('#save_lab').hide();
-                    $('#load_lab').show();
-                    dwr.engine.setAsync(true);
-                    PeriksaLabAction.saveOrderLab(idDetailCheckup, tempLab, tempParams, isLuar, idDokter, idKategori, waktu, {
-                        callback: function (response) {
-                            if (response.status == "success") {
-                                dwr.engine.setAsync(false);
-                                listLab();
-                                $('#modal-lab').modal('hide');
-                                $('#info_dialog').dialog('open');
-                                $('#close_pos').val(4);
-                            } else {
-                                $('#warning_lab').show().fadeOut(5000);
-                                $('#msg_lab').text(response.msg);
+                    if(!ttd){
+                        $('#save_lab').hide();
+                        $('#load_lab').show();
+                        dwr.engine.setAsync(true);
+                        PeriksaLabAction.saveOrderLab(idDetailCheckup, tempLab, tempParams, isLuar, idDokter, idKategori, waktu, ttdPengirim, {
+                            callback: function (response) {
+                                if (response.status == "success") {
+                                    dwr.engine.setAsync(false);
+                                    listLab();
+                                    $('#modal-lab').modal('hide');
+                                    $('#info_dialog').dialog('open');
+                                    $('#close_pos').val(4);
+                                } else {
+                                    $('#warning_lab').show().fadeOut(5000);
+                                    $('#msg_lab').text(response.msg);
+                                }
                             }
-                        }
-                    });
+                        });
+                    }else{
+                        $('#warning_lab').show().fadeOut(5000);
+                        $('#msg_lab').text("Silhakan cek tanda tangan dokter pengirim...!");
+                    }
                 }
             } else {
                 $('#warning_lab').show().fadeOut(5000);
@@ -1745,9 +1778,8 @@ function listObat() {
                     "</tr>"
             });
         }
+        $('#body_obat').html(table);
     });
-
-    $('#body_obat').html(table);
 }
 
 function saveDiet(id) {
@@ -1793,14 +1825,10 @@ function saveDiet(id) {
         var ketData = $('[name=ket_diet]');
         var untukKapan = $('[name=untuk]:checked').val();
         var isSonde = $('#h_is_sonde').val();
-        var snack = $('#snack').val();
-        var makanLuar = $('.makanan_luar');
         var jam = $('#jam_awal').val();
         var pemberian = $('#jumlah_pemberian').val();
         var satuan = $('#jumlah_satuan').val();
 
-        var tempMakanLuar = [];
-        var tempSnack = [];
         var keteranganDiet = "";
 
         $.each(ketData, function (i, item) {
@@ -1809,38 +1837,15 @@ function saveDiet(id) {
             }
         });
 
-        $.each(makanLuar, function (i, item) {
-            if (item.value != '') {
-                tempMakanLuar.push({
-                    'makanan': item.value
-                });
-            }
-        });
-
-        if(snack != null){
-            $.each(snack, function (i, item) {
-                tempSnack.push({
-                    'snack': item
-                });
-            });
-        }
-
         var table = $('#table_add_diet').tableToJSON();
-        $.each(table, function (i, item) {
-            var waktu = $('#waktu_' + i).val();
-            var bentuk = $('#bentuk_' + i).val();
-            var jenis = $('#jenis_' + i).val();
-            var mknLuar = $('#makan_luar_' + i).val();
-            var snack = $('#snack_' + i).val();
-            var bentukText = $('#bentuk_text_' + i).val();
+        var tempWaktu = $('.waktu_diet');
+        $.each(tempWaktu, function (i, item) {
             data.push({
                 'id_detail_checkup': idDetailCheckup,
-                'waktu': waktu,
-                'id_diet_gizi': bentuk,
-                'id_jenis_diet': jenis,
-                'id_rawat_inap': idRawatInap,
-                'makanan_luar': mknLuar != '' ? mknLuar : '',
-                'snack': snack != '' ? snack : ''
+                'waktu': item.value,
+                'id_diet_gizi': $('.bentuk_diet')[i].value,
+                'id_jenis_diet': $('.jenis_diet')[i].value,
+                'id_rawat_inap': idRawatInap
             });
         });
 
@@ -2807,9 +2812,8 @@ function listResepPasien() {
                     "</tr>"
             });
         }
+        $('#body_resep').html(table);
     });
-
-    $('#body_resep').html(table);
 }
 
 function detailResep(id) {
@@ -3515,7 +3519,7 @@ function savePemeriksaanPasien() {
     var data = "";
     var tindakLanjut = $('#keterangan').val();
     var catatan = $('#pesan_dokter').val();
-    var keterangan = $('#ket_selesai').val();
+    var keterangan = $('#ket_selesai option:selected').text();
     var ketRawatInap = $('#keterangan_rw').val();
     var rsRujukan = $('#rs_rujukan').val();
     var tglKontrol = $('#tgl_kontrol').val().split("-").reverse().join("-");
@@ -3528,6 +3532,7 @@ function savePemeriksaanPasien() {
     var idRuanganLama = $('#id_ruangan_lama').val();
     var cek = false;
     var cekTindakan = $('#tabel_tindakan').tableToJSON();
+    var idKeterangan = $('#ket_selesai').val();
 
     if (cekTindakan.length > 0) {
         if (tindakLanjut != '') {
@@ -3611,6 +3616,16 @@ function savePemeriksaanPasien() {
                 }
                 var ket = tindakLanjut.replace("_", " ");
                 var ktr = convertSentenceCaseUp(ket);
+                var meninggal = "";
+
+                if("selesai" == tindakLanjut){
+                    CheckupDetailAction.initKeteranganKeluar(idKeterangan, function (res) {
+                        if("meninggal" == res.kategori){
+                            meninggal = "Y";
+                        }
+                    });
+                }
+
                 data = {
                     'id_detail_checkup': idDetailCheckup,
                     'no_checkup': noCheckup,
@@ -3621,7 +3636,8 @@ function savePemeriksaanPasien() {
                     'id_ruangan': idRuangan,
                     'is_stay': stay,
                     'jenis_pasien': jenisPeriksaPasien,
-                    'id_ruangan_lama': idRuanganLama
+                    'id_ruangan_lama': idRuanganLama,
+                    'is_meninggal': meninggal
                 }
                 cek = true;
             }
@@ -3677,6 +3693,7 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                 var labelPrint = "";
                 var terIsiPrint = "";
                 var tolText = "";
+                var enter = '';
 
                 if (item.jumlahKategori != null) {
                     constan = item.jumlahKategori;
@@ -3696,15 +3713,16 @@ function getListRekamMedis(tipePelayanan, jenis, id) {
                     }
                     icons = '<i class="fa fa-check" style="color: #449d44"></i>';
                     icons2 = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    enter = '<br>';
                 }
 
                 labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
                 labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
 
                 if (item.keterangan == 'form') {
-                    li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                    li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
                 } else if (item.keterangan == "surat") {
-                    li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
+                    li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
                 }
             });
             $('#asesmen_ri').html(li);
@@ -3874,15 +3892,9 @@ function setDiet(id) {
     var jenis = $('#jenis_diet').val();
     var bentukText = $('#bentuk_diet option:selected').text();
     var jenisText = $('#jenis_diet option:selected');
-    var snack = $('#snack').val();
-    var makanLuar = $('.makanan_luar');
 
     var tempText = "";
     var tempTextLi = "";
-    var tempMakanLuar = "";
-    var tempMknLuar = "";
-    var tempSnack = "";
-    var tempPendamping = "";
     var tempJenis = "";
 
     if(jenisText.length > 0){
@@ -3893,30 +3905,6 @@ function setDiet(id) {
                 tempText = item.innerText;
             }
             tempTextLi += '<li>'+item.innerText+'</li>';
-        });
-    }
-
-    $.each(makanLuar, function (i, item) {
-        if (item.value != '') {
-            tempMakanLuar += '<li>'+item.value+'</li>';
-            if(tempMknLuar != ''){
-                tempMknLuar = tempMknLuar+'#'+item.value;
-            }else{
-                tempMknLuar = item.value;
-            }
-        }
-    });
-
-    if(snack != null){
-        $.each(snack, function (i, item) {
-            var id = item.split("|")[0];
-            var sak = item.split("|")[1];
-            tempSnack += '<li>'+sak+'</li>';
-            if(tempPendamping != ''){
-                tempPendamping = tempPendamping+'#'+id;
-            }else{
-                tempPendamping = id;
-            }
         });
     }
 
@@ -3946,19 +3934,16 @@ function setDiet(id) {
     if($('#'+id).is(':checked')){
         if (bentuk && jenis != '') {
             table = '<tr id="' + ket + '">' +
-                '<td>' + keterangan + '<input type="hidden" value="' + ket + '" id="waktu_' + idCount + '"></td>' +
-                '<td>' + '<ul style="margin-left: 10px">'+tempTextLi+'</ul>' +
-                '<input type="hidden" value="' + tempJenis + '" id="jenis_' + idCount + '"></td>' +
+                '<td>' + keterangan + '</td>' +
+                '<td>' + '<ul style="margin-left: 10px">'+tempTextLi+'</ul>' + '</td>' +
                 '<td>' + bentukText +
-                '<input type="hidden" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
-                '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
-                '<input type="hidden" value="' + tempMknLuar + '" id="makan_luar_' + idCount + '">' +
-                '<input type="hidden" value="' + tempPendamping + '" id="snack_' + idCount + '">' +
+                '<input type="hidden" class="waktu_diet" value="' + ket + '" id="waktu_' + idCount + '">' +
+                '<input type="hidden" class="jenis_diet" value="' + tempJenis + '" id="jenis_' + idCount + '">'+
+                '<input type="hidden" class="bentuk_diet" value="' + bentuk + '" id="bentuk_' + idCount + '">' +
+                '<input type="hidden" class="bentuk_text_diet" value="' + bentukText + '" id="bentuk_text_' + idCount + '">' +
                 '</td>' +
-                '<td><ul style="margin-left: 10px">'+tempSnack+'</ul></td>'+
-                '<td><ul style="margin-left: 10px">'+tempMakanLuar+'</ul></td>'+
                 '</tr>';
-            $('#body_add_diet').append(table);
+            $('#body_add_diet').append(table).hide().show('slow');
         } else {
             $('#warning_diet').show().fadeOut(5000);
             $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
@@ -4012,22 +3997,6 @@ function setDiskonHarga(id) {
             }
         });
     }
-}
-
-function cekTranfersPasien(jenis) {
-    AsesmenRawatInapAction.getListAsesmenRI(noCheckup, jenis, function (res) {
-        if(res.length > 0){
-            $.each(res, function (i, item) {
-                if("kondisi_serah_terima" == item.keterangan){
-                    var isi = item.jawaban.split("|");
-                    var cek = isi[2];
-                    if(cek == undefined){
-                        $('#btn_tranfer_pasien').attr('onclick', 'showModalAsesmenRawatInap(\'transfer_pasien\', \'\', \'\', \''+item.idDetailCheckup+'\')');
-                    }
-                }
-            });
-        }
-    });
 }
 
 function cekRacik(id){
@@ -4215,9 +4184,17 @@ function showHasil(id, tipe, kategori){
                     cla = 'class="item active"';
                     claLi = 'class="active"';
                 }
-                set += '<div '+cla+'>\n' +
-                    '<img src="'+item.urlImg+'" style="width: 100%">\n' +
-                    '</div>';
+                var x = item.urlImg;
+                var tipe = x.split('.').pop();
+                if("pdf" == tipe){
+                    set += '<div ' + cla + '>\n' +
+                        '<embed src="'+item.urlImg+'" style="width: 100%; height: 70%"/>'+
+                        '</div>';
+                }else{
+                    set += '<div ' + cla + '>\n' +
+                        '<img src="' + item.urlImg + '" style="width: 100%">\n' +
+                        '</div>';
+                }
                 li += '<li data-target="#carousel-hasil_lab" data-slide-to="'+i+'" '+claLi+'></li>';
             });
             $('#item_hasil_lab').html(set);
@@ -4244,84 +4221,86 @@ function dataDiet(id){
     });
 }
 
-function generateSonde(val){
+function generateSonde(){
     $('#body_add_diet').html('');
-    if(val != ''){
-        var bentuk = $('#bentuk_diet').val();
-        var jenis = $('#jenis_diet').val();
-        var bentukText = $('#bentuk_diet option:selected').text();
-        var jenisText = $('#jenis_diet option:selected');
-        var jam = $('#jam_awal').val();
-        var pemberian = $('#jumlah_pemberian').val();
-        var satuan = $('#jumlah_satuan').val();
+    var bentuk = $('#bentuk_diet').val();
+    var jenis = $('#jenis_diet').val();
+    var bentukText = $('#bentuk_diet option:selected').text();
+    var jenisText = $('#jenis_diet option:selected');
+    var jam = $('#jam_awal').val();
+    var pemberian = $('#jumlah_pemberian').val();
+    var satuan = $('#jumlah_satuan').val();
+    var tempTextLi = "";
 
-        var tempText = "";
-        if(jenisText.length > 0){
-            $.each(jenisText, function (i, item) {
-                if(tempText != ''){
-                    tempText = tempText+', '+item.innerText;
-                }else{
-                    tempText = item.innerText;
+    var tempText = "";
+    if(jenisText.length > 0){
+        $.each(jenisText, function (i, item) {
+            if(tempText != ''){
+                tempText = tempText+', '+item.innerText;
+            }else{
+                tempText = item.innerText;
+            }
+            tempTextLi += '<li>'+item.innerText+'</li>';
+        });
+    }
+    var table = "";
+    if (bentuk && jenis && jam && pemberian && satuan != '') {
+        var time = $('#jam_awal').val();
+        var char = time.split(":");
+        var hh = char[0];
+        var min = char[1];
+        var timeSonde = new Date();
+        timeSonde.setHours(hh, min, 0);
+        var tempDate = "";
+        for (var i = 0; i < pemberian; i++){
+
+            var cek = false;
+            if(i != 0){
+                timeSonde.setHours(timeSonde.getHours() + 3, timeSonde.getMinutes(), 0);
+            }
+
+            if(tempDate != ""){
+                if(tempDate != timeSonde.getDate()){
+                    cek = true;
                 }
-            });
+            }
+
+            if(!cek){
+                tempDate = timeSonde.getDate();
+                var tgl = converterTime(timeSonde);
+                table = '<tr id="' + i + '">' +
+                    '<td>' + tgl + '</td>' +
+                    '<td>' + bentukText +
+                    '<input class="waktu_diet" type="hidden" value="' + tgl + '" id="waktu_' + i + '">'+
+                    '<input class="bentuk_diet" type="hidden" value="' + bentuk + '" id="bentuk_' + i + '">' +
+                    '<input class="bentuk_text_diet" type="hidden" value="' + bentukText + '" id="bentuk_text_' + i + '">' +
+                    '<input class="jenis_diet" type="hidden" value="' + jenis + '" id="jenis_' + i + '">'+
+                    '</td>' +
+                    '<td>' + '<ul style="margin-left: 10px">'+tempTextLi+'</ul>' + '</td>' +
+                    '</tr>';
+                $('#body_add_diet').append(table);
+            }else{
+                $('#warning_diet').show().fadeOut(5000);
+                $('#msg_diet').text("Pemberian hanya untuk hari ini saja...!");
+            }
         }
-        var table = "";
-        if (bentuk && jenis && jam && pemberian && satuan != '') {
-            var time = $('#jam_awal').val();
-            var char = time.split(":");
-            var hh = char[0];
-            var min = char[1];
-            var timeSonde = new Date();
-            timeSonde.setHours(hh, min, 0);
-            var tempDate = "";
-            for (var i = 0; i < val; i++){
-
-                var cek = false;
-                if(i != 0){
-                    timeSonde.setHours(timeSonde.getHours() + 3, timeSonde.getMinutes(), 0);
-                }
-
-                if(tempDate != ""){
-                    if(tempDate != timeSonde.getDate()){
-                        cek = true;
-                    }
-                }
-
-                if(!cek){
-                    tempDate = timeSonde.getDate();
-                    var tgl = converterDateTime(timeSonde);
-                    table = '<tr id="' + i + '">' +
-                        '<td>' + tgl + '<input type="hidden" value="' + tgl + '" id="waktu_' + i + '"></td>' +
-                        '<td>' + bentukText +
-                        '<input type="hidden" value="' + bentuk + '" id="bentuk_' + i + '">' +
-                        '<input type="hidden" value="' + bentukText + '" id="bentuk_text_' + i + '">' +
-                        '</td>' +
-                        '<td>' + tempText + '<input type="hidden" value="' + jenis + '" id="jenis_' + i + '"></td>' +
-                        '</tr>';
-                    $('#body_add_diet').append(table);
-                }else{
-                    $('#warning_diet').show().fadeOut(5000);
-                    $('#msg_diet').text("Pemberian hanya untuk hari ini saja...!");
-                }
-            }
-        } else {
-            $('#warning_diet').show().fadeOut(5000);
-            $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
-            if (bentuk == '') {
-                $('#war_bentuk_diet').show();
-            }
-            if (jenis == '' || jenis == null) {
-                $('#war_jenis_diet').show();
-            }
-            if (jam == '') {
-                $('#war_jam_awal').show();
-            }
-            if (pemberian == '') {
-                $('#war_jml_pemberian').show();
-            }
-            if (satuan == '') {
-                $('#war_jml_pemberian').show();
-            }
+    } else {
+        $('#warning_diet').show().fadeOut(5000);
+        $('#msg_diet').text("Silahkan cek kembali inputan anda...!");
+        if (bentuk == '') {
+            $('#war_bentuk_diet').show();
+        }
+        if (jenis == '' || jenis == null) {
+            $('#war_jenis_diet').show();
+        }
+        if (jam == '') {
+            $('#war_jam_awal').show();
+        }
+        if (pemberian == '') {
+            $('#war_jml_pemberian').show();
+        }
+        if (satuan == '') {
+            $('#war_jml_pemberian').show();
         }
     }
 }
@@ -4357,4 +4336,338 @@ function listMakanan(){
         }
     });
 }
+
+function setRekamMedisPindah(tipePelayanan, id) {
+    var temp = "";
+    dwr.engine.setAsync(true);
+    CheckupAction.getListRekammedisPasien(tipePelayanan, null, idDetailCheckup, {
+        callback: function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var terIsiPrint = "";
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+
+                    if (item.keterangan == 'form') {
+                        if (item.jenis != "ugd_anak" && item.jenis != "ugd_dewasa" && item.jenis != "ugd_geriatri" && item.jenis != "mpp" && item.jenis != "asesmen_triase") {
+                            temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \'' + item.function + '\', \'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\', \'N\', \'Y\')">' + icons + item.namaRm +' '+ labelTerisi + tolText + '</a></li>';
+                        }
+                    }
+                });
+                $('#' + id).html(temp);
+            }
+        }
+    });
+}
+
+function setRekamMedisHasilPindah(tipePelayanan, id) {
+    var temp = "";
+    var show = false;
+    dwr.engine.setAsync(true);
+    CheckupAction.getListRekammedisPasienByNoCheckup(tipePelayanan, null, noCheckup, {
+        callback: function (res) {
+            if (res.length > 0) {
+                $.each(res, function (i, item) {
+                    var cek = "";
+                    var tgl = "";
+                    var icons = '<i class="fa fa-file-o"></i>';
+                    var icons2 = '<i class="fa fa-print"></i>';
+                    var tol = "";
+                    var tolText = "";
+                    var labelTerisi = "";
+                    var constan = 0;
+                    var terIsi = 0;
+                    var labelPrint = "";
+                    var terIsiPrint = "";
+
+                    if (item.jumlahKategori != null) {
+                        constan = item.jumlahKategori;
+                    }
+                    if (item.terisi != null && item.terisi != '') {
+                        terIsi = item.terisi;
+                        terIsiPrint = item.terisi;
+                    }
+
+                    if (constan == terIsi || parseInt(terIsi) > parseInt(constan)) {
+                        var conver = "";
+                        if (item.createdDate != null) {
+                            conver = converterDate(new Date(item.createdDate));
+                            tgl = '<label class="label label-success">' + conver + '</label>';
+                            tol = 'class="box-rm"';
+                            tolText = '<span class="box-rmtext">Tanggal mengisi ' + conver + '</span>';
+                        }
+                        icons = '<i class="fa fa-check" style="color: #449d44"></i>';
+                    }
+
+                    labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
+
+                    if(parseInt(terIsi) > 0){
+                        temp += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \'' + item.function + '\', \'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\', \'Y\', \'N\')">' + icons + item.namaRm +' '+ labelTerisi + tolText + '</a></li>';
+                        show = true;
+                    }
+
+                });
+                $('#' + id).html(temp);
+            }
+
+            if(show){
+                $('#form_pindahan').show();
+            }else{
+                $('#form_pindahan').hide();
+            }
+        }
+    });
+}
+
+function dokterDpjp(){
+    var data = $('#tbl_dokter').tableToJSON();
+    var option = "";
+    $.each(data, function (i, item) {
+        var idDokter = data[i]["ID Dokter"];
+        var namaDokter = data[i]["Nama"];
+        option += '<option value="'+idDokter+'">'+namaDokter+'</option>';
+        if(i == 0){
+            $('#sip_pengirim').val(idDokter);
+        }
+    });
+    $('#select_pengirim').html(option);
+}
+
+function onChangePengirim(dokter){
+    if(dokter != ''){
+        $('#sip_pengirim').val(dokter);
+    }
+}
+
+function addListMakananPendamping(){
+    var table = $('#table_add_catering').tableToJSON();
+    var count = table.length;
+    var row = "";
+    var makanan = $('#nama_makanan').val();
+    var qty = $('#qty_makanan').val();
+    var keterangan = $('#keterangan_makanan').val();
+    if(makanan && qty != ''){
+        if(keterangan == ''){
+            keterangan = '-';
+        }
+        var cek = false;
+        var temp = $('.makanan_pendamping');
+        $.each(temp, function (i, item) {
+            if(item.value.toUpperCase() == makanan.toUpperCase()){
+                cek = true;
+            }
+        });
+
+        if(!cek){
+            makanan = convertSentenceCase(makanan);
+            row = '<tr id="makanan_'+count+'">' +
+                '<td>'+makanan+
+                '<input type="hidden" value="'+makanan+'" class="makanan_pendamping" id="nama_makanan_'+count+'">'+
+                '<input type="hidden" value="'+qty+'" class="qty_makanan_pendamping" id="qty_makanan_'+count+'">'+
+                '<input type="hidden" value="'+keterangan+'" class="keterangan_makanan_pendamping" id="keterangan_makanan_'+count+'">'+
+                '</td>'+
+                '<td align="center">'+qty+'</td>'+
+                '<td>'+keterangan+'</td>'+
+                '<td align="center"><img onclick="delPendamping(\'makanan_' + count + '\')" class="hvr-grow" src="' + contextPath + '/pages/images/cancel-flat-new.png" style="cursor: pointer; height: 25px; width: 25px;"></td>' +
+                '</tr>';
+            $('#body_add_pendamping_makanan').append(row).hide().show('slow');
+        }else{
+            $('#warning_catering').show().fadeOut(5000);
+            $('#msg_catering').text("Makanan "+makanan+" Sudah ada dalam list");
+        }
+    }else{
+        if(makanan == ''){
+            $('#war_nama_makanan').show();
+        }
+        if(qty == '' || parseInt(qty) <= 0){
+            $('#war_qty_makanan').show();
+        }
+        $('#warning_catering').show().fadeOut(5000);
+        $('#msg_catering').text("Silahkan cek kembali inputan berikut");
+    }
+}
+
+function delPendamping(id){
+    $('#'+id).remove();
+}
+
+function saveMakananPendamping(){
+    var table = $('#table_add_catering').tableToJSON();
+    if(table.length > 0){
+        var makanan = $('.makanan_pendamping');
+        var tempData = [];
+        $.each(makanan, function (i, item) {
+            if(item.value != ''){
+                tempData.push({
+                    'nama': item.value,
+                    'qty': $('.qty_makanan_pendamping')[i].value,
+                    'keterangan': $('.keterangan_makanan_pendamping')[i].value
+                });
+            }
+        });
+        var data = {
+            'id_detail_checkup': idDetailCheckup,
+            'id_ruangan': idRuangan,
+            'detail': JSON.stringify(tempData)
+        }
+
+        var result = JSON.stringify(data);
+        $('#load_makanan_pendamping').show();
+        $('#save_makanan_pendamping').hide();
+        dwr.engine.setAsync(true);
+        PendampingMakananAction.savePendampingMakanan(result, {
+            callback: function (res) {
+                if(res.status == "success"){
+                    $('#modal-makanan_pendamping').modal('hide');
+                    $('#load_makanan_pendamping').hide();
+                    $('#save_makanan_pendamping').show();
+                    $('#info_dialog').dialog('open');
+                    $('#close_pos').val(15);
+                    listMakananPendamping();
+                }else{
+                    $('#load_makanan_pendamping').hide();
+                    $('#save_makanan_pendamping').show();
+                    $('#warning_catering').show().fadeOut(5000);
+                    $('#msg_catering').text(res.msg);
+                }
+            }
+        });
+    }else{
+        $('#warning_catering').show().fadeOut(5000);
+        $('#msg_catering').text("Silahkan cek kembali inputan anda...!");
+    }
+}
+
+function resetMakanan(){
+    $('#body_add_pendamping_makanan').html('');
+    $('#nama_makanan').val('');
+    $('#qty_makanan').val('1');
+    $('#keterangan_makanan').val('');
+}
+
+function listMakananPendamping() {
+    var table = "";
+    PendampingMakananAction.listHeaderPendampingMakanan(idDetailCheckup, function (response) {
+        if (response.length > 0) {
+            $.each(response, function (i, item) {
+                var status = "-";
+                var dateFormat = converterDate(item.createdDate);
+                var btn = '<img border="0" class="hvr-grow" onclick="detailMakananPendamping(\'' + item.idHeaderPendampingMakanan + '\', \''+item.status+'\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
+                if("0" == item.status){
+                    status = '<span class="span-warning">Proses</span>';
+                }else{
+                    status = '<span class="span-success">Selesai</span>';
+                }
+                table += "<tr>" +
+                    "<td>" + dateFormat + "</td>" +
+                    "<td>" + item.idHeaderPendampingMakanan + "</td>" +
+                    "<td align='center'>" + status + "</td>" +
+                    "<td align='center'>" + btn + "</td>" +
+                    "</tr>";
+            });
+            $('#body_pendamping').html(table);
+        }
+    });
+}
+
+function detailMakananPendamping(id, status){
+    var table = "";
+    PendampingMakananAction.listDetailPendampingMakanan(id, function (json) {
+        $.each(json, function (i, item) {
+            var btn = "";
+            if(status == "0"){
+                btn = '<img id="btn_edit_'+item.idDetailPendampingMakanan+'" onclick="edtiDetailMP(\''+item.idDetailPendampingMakanan+'\')" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer; height: 25px; width: 25px;">';
+            }
+            var nomor = i+1;
+            table += '<tr id="'+item.idDetailPendampingMakanan+'">' +
+                '<td>'+nomor+'</td>'+
+                '<td><span id="l_nama_'+item.idDetailPendampingMakanan+'">'+item.nama+'</span>'+
+                '<input type="hidden" value="'+item.nama+'" class="form-control" id="nama_makanan_'+item.idDetailPendampingMakanan+'">'+
+                '</td>'+
+                '<td align="center"><span id="l_qty_'+item.idDetailPendampingMakanan+'">'+item.qty+'</span>'+
+                '<input type="hidden" value="'+item.qty+'" class="form-control" id="qty_makanan_'+item.idDetailPendampingMakanan+'">'+
+                '</td>'+
+                '<td><span id="l_keterangan_'+item.idDetailPendampingMakanan+'">'+item.keterangan+'</span>'+
+                '<input type="hidden" value="'+item.keterangan+'" class="form-control" id="keterangan_makanan_'+item.idDetailPendampingMakanan+'">'+
+                '</td>'+
+                '<td align="center">'+btn+'</td>' +
+                '</tr>';
+        });
+        $('#body_pendamping_makanan').html(table);
+    });
+    $('#modal-detail_makanan').modal({show: true, backdrop: 'static'});
+}
+
+function edtiDetailMP(id){
+    $('#l_nama_'+id).hide();
+    $('#l_qty_'+id).hide();
+    $('#l_keterangan_'+id).hide();
+    $('#nama_makanan_'+id).removeAttr('type').attr('type','text');
+    $('#qty_makanan_'+id).removeAttr('type').attr('type','number');
+    $('#keterangan_makanan_'+id).removeAttr('type').attr('type','text');
+    var url = contextPath + '/pages/images/icons8-save-25.png';
+    $('#btn_edit_' + id).attr('src', url);
+    $('#btn_edit_' + id).attr('onclick', 'saveEditMP(\'' + id + '\')');
+}
+
+function saveEditMP(id){
+    $('#l_nama_'+id).show();
+    $('#l_qty_'+id).show();
+    $('#l_keterangan_'+id).show();
+    $('#nama_makanan_'+id).removeAttr('type').attr('type','hidden');
+    $('#qty_makanan_'+id).removeAttr('type').attr('type','hidden');
+    $('#keterangan_makanan_'+id).removeAttr('type').attr('type','hidden');
+    var nama = $('#nama_makanan_'+id).val();
+    var qty = $('#qty_makanan_'+id).val();
+    var keterangan = $('#keterangan_makanan_'+id).val();
+    $('#l_nama_'+id).text(nama);
+    $('#l_qty_'+id).text(qty);
+    $('#l_keterangan_'+id).text(keterangan);
+    var url = contextPath + '/pages/images/spinner.gif';
+    $('#btn_edit_' + id).attr('src', url);
+    dwr.engine.setAsync(true);
+    PendampingMakananAction.editDetailPendampingMakanan(id, nama, qty, keterangan, {
+        callback:function (res) {
+            if(res.status == "success"){
+                $('#warning_suc_detail_makanan').show().fadeOut(5000);
+                $('#msg_suc_detail_makanan').text("Berhasil menyimpan data...!");
+                var url = contextPath + '/pages/images/icons8-create-25.png';
+                $('#btn_edit_' + id).attr('src', url);
+                $('#btn_edit_' + id).attr('onclick', 'edtiDetailMP(\'' + id + '\')');
+            }else{
+                $('#warning_detail_makanan').show().fadeOut(5000);
+                $('#msg_detail_makanan').text(res.msg);
+            }
+        }
+    });
+}
+
 

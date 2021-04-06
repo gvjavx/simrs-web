@@ -39,6 +39,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String isPeriksaLuar;
     private String namaLabLuar;
     private BigDecimal tarifLabLuar;
+    private String catatan;
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
 
     public BigDecimal getTarifLabLuar() {
         return tarifLabLuar;

@@ -6,12 +6,14 @@ import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
+import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.simrs.transaksi.CrudResponse;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
@@ -79,7 +81,7 @@ public class PositionAction extends BaseMasterAction {
         return initPosition;
     }
 
-    private String initComboPosition(){
+    public String initComboPosition(){
         logger.info("[PositionAction.search] start process >>>");
 
         Position searchPosition = new Position();
@@ -267,7 +269,6 @@ public class PositionAction extends BaseMasterAction {
             entryPosition.setCreatedWho(userLogin);
             entryPosition.setLastUpdate(createTime);
             entryPosition.setLastUpdateWho(userLogin);
-            entryPosition.setAction("C");
             positionBoProxy.saveAdd(entryPosition);
         }  catch (GeneralBOException e) {
             throw new GeneralBOException(e.getMessage());
@@ -662,5 +663,86 @@ public class PositionAction extends BaseMasterAction {
 
         logger.info("[PositionAction.typeHeadPosition] END process <<<");
         return response;
+    }
+
+    public PositionBagian getBagianById(String id) {
+        logger.info("[PositionAction.getBagianById] START process >>>");
+
+        PositionBagian positionBagian = new PositionBagian();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBagianBo positionBagianBo = (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
+
+        try {
+            positionBagian = positionBagianBo.getPositionBagianById(id);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getBagianById] Found problem when searching data by criteria, please inform to your admin.", e);
+
+        }
+
+        logger.info("[PositionAction.getBagianById] END process <<<");
+        return positionBagian;
+    }
+
+    public List<Position> getUnitCostBySubBid(String bagianId){
+        logger.info("[PositionAction.getUnitCostBySubBid] START process >>>");
+
+        List<Position> positions = new ArrayList<>();
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        try {
+            positions = positionBo.getUnitCostByBagian(bagianId);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getBagianById] Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+
+        logger.info("[PositionAction.getUnitCostBySubBid] END process <<<");
+        return positions;
+    }
+
+    public CrudResponse getOnePositionByKodering(String kodering){
+        logger.info("[PositionAction.getUnitCostBySubBid] START process >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+
+        CrudResponse response = new CrudResponse();
+
+        Position position = new Position();
+
+        try {
+            position = positionBo.getOnePositionByKodering(kodering);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getOnePositionByKodering] Found problem when searching data by criteria, please inform to your admin.", e);
+            response.addResponse("error", "[PositionAction.getOnePositionByKodering] Found problem when searching data by criteria, please inform to your admin."+ e);
+            return response;
+        }
+
+        if (position != null && position.getPositionId() != null){
+            String positionName = position.getPositionName();
+            response.addResponse("error", "Ditemukan Kodering yang sama pada : " + positionName);
+            return response;
+        }
+
+        response.addResponse("success", "Tidak ditemukan kodering yang sama.");
+        logger.info("[PositionAction.getUnitCostBySubBid] END process <<<");
+        return response;
+    }
+
+    public String getSugestKodering(String idSubBidang){
+        logger.info("[PositionAction.getSugestKodering] START process >>>");
+
+        String sugestKodering = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PositionBo positionBo = (PositionBo) ctx.getBean("positionBoProxy");
+        try {
+            sugestKodering = positionBo.sugestLastKoderingBySubbidId(idSubBidang);
+        } catch (GeneralBOException e){
+            logger.error("[PositionAction.getSugestKodering] Found problem when searching data by criteria, please inform to your admin.", e);
+        }
+        logger.info("[PositionAction.getSugestKodering] END process <<<");
+        return sugestKodering;
     }
 }

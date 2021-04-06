@@ -128,6 +128,33 @@ public class RawatInap {
     private String tipePelayanan;
     private String waktu;
     private Timestamp tglOrder;
+    private String isMeninggal;
+    private String isSonde;
+    private String formatTglMasuk;
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
+
+    public String getIsSonde() {
+        return isSonde;
+    }
+
+    public void setIsSonde(String isSonde) {
+        this.isSonde = isSonde;
+    }
+
+    public String getIsMeninggal() {
+        return isMeninggal;
+    }
+
+    public void setIsMeninggal(String isMeninggal) {
+        this.isMeninggal = isMeninggal;
+    }
 
     public Timestamp getTglOrder() {
         return tglOrder;

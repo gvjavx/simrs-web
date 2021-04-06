@@ -465,7 +465,7 @@ public class MutasiAction extends BaseMasterAction{
 
             Branch branch = new Branch();
             try{
-                branch = branchBo.getBranchById("KP","Y");
+                branch = branchBo.getBranchById(CommonConstant.BRANCH_KP,"Y");
             }catch( HibernateException e){
                 logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
             }

@@ -61,10 +61,14 @@ public class PositionDao extends GenericDao<ImPosition,String> {
             if (mapCriteria.get("kategori")!=null) {
                 criteria.add(Restrictions.eq("kategori", (String) mapCriteria.get("kategori")));
             }
+            if (mapCriteria.get("flag_cost_unit")!=null) {
+                criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("flag_cost_unit")));
+            }
         }
 
         criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
         criteria.addOrder(Order.asc("kodering"));
+        criteria.addOrder(Order.desc("flagCostUnit"));
 //        criteria.addOrder(Order.asc("departmentId"));
 //        criteria.addOrder(Order.asc("bagianId"));
 //        criteria.addOrder(Order.asc("kelompokId"));
@@ -541,5 +545,87 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         }
 
         return null;
+    }
+
+    public List<Position> getListUnitCost(String bagianId){
+
+        String id = bagianId == null || "".equalsIgnoreCase(bagianId) ? "%" : bagianId;
+
+        String SQL = "SELECT \n" +
+                "position_id, \n" +
+                "position_name, \n" +
+                "kodering \n" +
+                "FROM im_position\n" +
+                "WHERE bagian_id LIKE '"+id+"'\n" +
+                "AND flag_cost_unit = 'Y'";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        List<Position> positionList = new ArrayList<>();
+        if (list.size() > 0){
+            for (Object[] obj : list){
+                Position position = new Position();
+                position.setPositionId(obj[0].toString());
+                position.setPositionName(obj[1].toString());
+                position.setKodering(obj[2] == null ? "" : obj[2].toString());
+                positionList.add(position);
+            }
+        }
+
+        return positionList;
+    }
+
+    public Position getOnePositionByKodering(String kodering){
+
+        String SQL = "SELECT \n" +
+                "position_id, \n" +
+                "position_name,\n" +
+                "kodering\n" +
+                "FROM im_position \n" +
+                "WHERE kodering = '"+kodering+"'\n" +
+                "ORDER BY flag_cost_unit\n";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0){
+            Object[] obj = list.get(0);
+            Position position = new Position();
+            position.setPositionId(obj[0].toString());
+            position.setPositionName(obj[1].toString());
+            position.setKodering(obj[2] == null ? "" : obj[2].toString());
+            return position;
+        }
+        return null;
+
+    }
+
+    public String getLastKodering(String koderingsubbid){
+
+        String kodering = koderingsubbid + "%";
+
+        String SQL = "SELECT \n" +
+                "RIGHT(a.kodering, 2) as kodering\n" +
+                "FROM (\n" +
+                "\tSELECT kodering FROM im_position \n" +
+                "\tWHERE kodering LIKE '"+kodering+"' ORDER BY kodering DESC LIMIT 1\n" +
+                ") a";
+
+        List<Object> objects = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        String stCount = "";
+        if (objects.size() > 0){
+            stCount = objects.get(0).toString();
+        } else {
+            stCount = "0";
+        }
+
+        int count = Integer.parseInt(stCount);
+        int finalCount = count + 1;
+        String stFinalCount = String.valueOf(finalCount);
+
+        if (stFinalCount.length() == 1){
+            stFinalCount = "0" + stFinalCount;
+        }
+
+        return stFinalCount;
     }
 }

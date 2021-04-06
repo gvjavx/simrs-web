@@ -446,8 +446,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
                 permintaanObatPoli.setStCreatedDate(item.getStCreatedDate());
                 permintaanObatPoli.setTipePermintaan(item.getTipePermintaan());
                 permintaanObatPoli.setIsRequest(item.getRequest().toString());
-                permintaanObatPoli.setJumlahObat(item.getJumlahObat().toString());
-
+                permintaanObatPoli.setJumlahObat(item.getJumlahObat());
                 listOfPermintaanObat.add(permintaanObatPoli);
             }
         }
@@ -607,7 +606,7 @@ public class PermintaanObatController implements ModelDriven<Object> {
 
         if (action.equalsIgnoreCase("updateDiterimaFlag")){
             TransaksiObatBatch batch = new TransaksiObatBatch();
-            batch.setId(new BigInteger(idBatch));
+            batch.setId("TBA"+idBatch);
             batch.setDiterimaFlag("Y");
 
             try{

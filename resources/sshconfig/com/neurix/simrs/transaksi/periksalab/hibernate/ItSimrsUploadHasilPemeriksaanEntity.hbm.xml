@@ -35,6 +35,12 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="idPeriksaLabDetail">
+                <column name="id_periksa_lab_detail"/>
+            </basic>
+            <basic name="namaDetailPeriksa">
+                <column name="nama_detail_periksa"/>
+            </basic>
         </attributes>
     </entity>
 </entity-mappings>

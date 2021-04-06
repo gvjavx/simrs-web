@@ -577,7 +577,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                     MtSimrsTransaksiObatDetailBatchEntity batchEntity = new MtSimrsTransaksiObatDetailBatchEntity();
 
                     String seqBatch = batchDao.getNextId();
-                    batchEntity.setId(new BigInteger(seqBatch));
+                    batchEntity.setId("TBA"+seqBatch);
                     batchEntity.setIdBarang(obatDetail.getIdBarang());
                     batchEntity.setIdTransaksiObatDetail(obatDetail.getIdTransaksiObatDetail());
                     batchEntity.setQtyApprove(obatDetail.getQtyApprove());
@@ -2336,7 +2336,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
             Obat sumObat = new Obat();
             try {
-                sumObat = obatDao.getSumStockObatGudangById(bean.getIdObat(), "", bean.getBranchId());
+                sumObat = obatDao.getSumStockObatGudangById(bean.getIdObat(), "", bean.getBranchId(), bean.getTipeObat());
             } catch (HibernateException e) {
                 logger.error("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR.", e);
                 throw new GeneralBOException("[PermintaanVendorBoImpl.updateAddStockGudang] ERROR." + e.getMessage());
@@ -3005,7 +3005,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             } else {
                 batchEntity.setIdBarang(obat.getIdBarang());
                 batchEntity.setIdTransaksiObatDetail(obat.getIdTransaksiDetail());
-                batchEntity.setId(new BigInteger(batchDao.getNextId()));
+                batchEntity.setId("TBA"+batchDao.getNextId());
                 batchEntity.setApproveFlag("Y");
                 batchEntity.setStatus("Y");
                 batchEntity.setQtyApprove(obat.getQtyApprove());

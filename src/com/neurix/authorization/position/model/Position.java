@@ -22,6 +22,24 @@ public class Position extends BaseModel implements Serializable, Comparable<Posi
     private String flagDijabatSatuOrang;
     private String kodering;
     private String kategori;
+    private String flagCostUnit;
+    private String koderingCostUnit;
+
+    public String getKoderingCostUnit() {
+        return koderingCostUnit;
+    }
+
+    public void setKoderingCostUnit(String koderingCostUnit) {
+        this.koderingCostUnit = koderingCostUnit;
+    }
+
+    public String getFlagCostUnit() {
+        return flagCostUnit;
+    }
+
+    public void setFlagCostUnit(String flagCostUnit) {
+        this.flagCostUnit = flagCostUnit;
+    }
 
     public String getKodering() {
         return kodering;

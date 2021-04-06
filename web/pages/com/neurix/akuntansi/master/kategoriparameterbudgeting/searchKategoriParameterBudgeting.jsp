@@ -8,11 +8,26 @@
 <html>
 <head>
     <%@ include file="/pages/common/header.jsp" %>
+
+    <style>
+        .pagebanner{
+            background-color: #ededed;
+            width: 100%;
+            font-size: 14px;
+        }
+        .pagelinks{
+            background-color: #ededed;
+            width: 100%;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+    </style>
     <script type='text/javascript'>
 
         function link(){
-            window.location.href="<s:url action='initForm_kategoriparameterbudgeting'/>";
+            window.location.href="<s:url action='initForm_pelayanan'/>";
         }
+
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini" >
@@ -26,7 +41,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Kategori Budgeting
+            Pelayanan
         </h1>
     </section>
     <!-- Main content -->
@@ -35,14 +50,14 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i>Kategori Budgeting </h3>
+                        <h3 class="box-title"><i class="fa fa-filter"></i>Pelayanan</h3>
                     </div>
                     <div class="box-body">
                         <table width="100%" align="center">
                             <tr>
                                 <td align="center">
-                                    <s:form id="SearchKategoriParameterBudgetingForm" method="post"  theme="simple"
-                                            namespace="/kategoriparameterbudgeting" action="search_kategoriparameterbudgeting.action" cssClass="form-horizontal">
+                                    <s:form id="pelayananForm" method="post"  theme="simple"
+                                            namespace="/pelayanan" action="search_pelayanan.action" cssClass="form-horizontal">
                                         <table>
                                             <tr>
                                                 <td width="10%" align="center">
@@ -52,32 +67,74 @@
                                         </table>
                                         <table>
 
-
                                             <tr>
-                                                <td width="40%" >
-                                                    <label class="control-label"><small>Nama Kategori Budgeting :</small></label>
+                                                <td width="18%">
+                                                    <label class="control-label"><small>Pelayanan ID :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:textfield id="kategoriparameterbudgeting" name="kategoriParameterBudgeting.nama"
-                                                                     required="true" cssStyle="margin-top: 7px"
-                                                                     disabled="false" cssClass="form-control"/>
+                                                        <s:textfield cssStyle="margin-top: 7px"
+                                                                     id="idPelayanans"
+                                                                     name="pelayanan.idPelayanan"
+                                                                     required="false"
+                                                                     readonly="false" cssClass="form-control"/>
                                                     </table>
                                                 </td>
                                             </tr>
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Jenis Budgeting :</small></label>
+                                                    <label class="control-label"><small>Nama Pelayanan :</small></label>
                                                 </td>
-                                                <td >
+                                                <td>
                                                     <table>
-                                                        <s:action id="jenisBudgeting5" namespace="/kategoriparameterbudgeting"
-                                                                  name="initComboJenisBudgeting_kategoriparameterbudgeting" />
-                                                        <s:select cssStyle="margin-top: 7px; width: 100%" list="#jenisBudgeting5.listOfComboJenisBudgeting"
-                                                                  id="jenisbg" name="kategoriParameterBudgeting.idJenisBudgeting"
-                                                                  listKey="id" listValue="namaJenis" headerKey="" headerValue="[Select one]"
-                                                                  cssClass="form-control select2" />
+                                                        <s:textfield cssStyle="margin-top: 7px"
+                                                                     id="namaPelayanan"
+                                                                     name="pelayanan.namaPelayanan"
+                                                                     required="true" disabled="false" cssClass="form-control"/>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Unit :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                            <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
+                                                            <%--<s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pendapatanDokter.branchId"--%>
+                                                            <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                        <s:if test='pelayanan.branchUser == "01"'>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="pelayanan.branchId"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                                      cssClass="form-control"/>
+                                                        </s:if>
+                                                        <s:else>
+                                                            <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
+                                                            <s:select list="#initComboBranch.listOfComboBranch" id="branchIdView" name="pelayanan.branchId" disabled="true"
+                                                                      listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]"
+                                                                      cssClass="form-control select2"/>
+                                                            <s:hidden id="branchId" name="pelayanan.branchId" />
+                                                        </s:else>
+                                                    </table>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>
+                                                    <label class="control-label"><small>Tipe :</small></label>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <%--<s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Apotek',--%>
+                                                                <%--'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'LAB'}" id="tipePelayanan" name="pelayanan.tipePelayanan"--%>
+                                                                  <%--listKey="positionId" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                        <s:select list="#{'igd':'IGD', 'rawat_jalan' : 'Rawat Jalan', 'apotek' : 'Instalasi Farmasi RJ', 'apotek_ri' : 'Instalasi Farmasi RI',
+                                                                'rawat_inap' : 'Rawat Inap', 'radiologi' : 'Radiologi', 'lab' : 'Laboratorium', 'gizi':'Instalasi Gizi'}"
+                                                                  id="tipePelayanan" name="pelayanan.tipePelayanan"
+                                                                  headerKey="" headerValue="[Select one]" cssClass="form-control select2"/>
                                                     </table>
                                                 </td>
                                             </tr>
@@ -88,7 +145,7 @@
                                                 </td>
                                                 <td>
                                                     <table>
-                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="kategoriParameterBudgeting.flag"
+                                                        <s:select list="#{'N':'Non-Active'}" id="flag" name="pelayanan.flag"
                                                                   headerKey="Y" headerValue="Active" cssClass="form-control select2" />
                                                     </table>
 
@@ -101,25 +158,22 @@
                                             <table align="center">
                                                 <tr>
                                                     <td >
-                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary"
-                                                                   formIds="SearchKategoriParameterBudgetingForm" id="search" name="search"
+                                                        <sj:submit type="button" cssStyle="margin-right: 5px" cssClass="btn btn-primary" formIds="pelayananForm" id="search" name="search"
                                                                    onClickTopics="showDialog" onCompleteTopics="closeDialog" >
                                                             <i class="fa fa-search"></i>
                                                             Search
                                                         </sj:submit>
                                                     </td>
                                                     <td>
-                                                        <s:url var="urlAdd"  namespace="/kategoriparameterbudgeting" action="add_kategoriparameterbudgeting" escapeAmp="false">
+                                                        <s:url var="urlAdd" namespace="/pelayanan" action="add_pelayanan" escapeAmp="false">
                                                         </s:url>
-                                                        <sj:a cssClass="btn btn-success"  id="addd" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
+                                                        <sj:a cssClass="btn btn-success" cssStyle="margin-right: 5px" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                                             <i class="fa fa-plus"></i>
-                                                            Add Kategori Budgeting
+                                                            Add Pelayanan
                                                         </sj:a>
                                                     </td>
                                                     <td>
-                                                        <button type="button" class="btn btn-danger" id="reset" cssStyle="margin-right: 5px"
-                                                                onclick="window.location.href='<s:url
-                                                                action="initForm_kategoriparameterbudgeting"/>'">
+                                                        <button type="button" class="btn btn-danger" cssStyle="margin-right: 5px" onclick="window.location.href='<s:url action="initForm_pelayanan"/>'">
                                                             <i class="fa fa-refresh"></i> Reset
                                                         </button>
                                                     </td>
@@ -151,10 +205,9 @@
                                                         </sj:dialog>
 
                                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                                   height="310" width="600" autoOpen="false"
-                                                                   title="Kategori Budgeting ">
-                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>"
-                                                                         alt="Loading..."/></center>
+                                                                   height="440" width="600" autoOpen="false"
+                                                                   title="Pelayanan ">
+                                                            <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                                         </sj:dialog>
 
                                                         <sj:dialog id="view_dialog_menu_pendapatan" openTopics="showDialogMenuView" modal="true"
@@ -166,15 +219,16 @@
                                                                    title="Pendapatan Dokter">
                                                         </sj:dialog>
 
-                                                        <s:set name="listOfsearchKategoriParameterBudgeting" value="#session.listOfResultKategoriParameterBudgeting" scope="request" />
-                                                        <display:table name="listOfsearchKategoriParameterBudgeting" class="table table-condensed table-striped table-hover"
-                                                                       requestURI="paging_displaytag_kategoriParameterBudgeting.action" export="true" id="row"
+                                                        <s:set name="listOfsearchPelayanan" value="#session.listOfResultPelayanan" scope="request" />
+                                                        <display:table name="listOfsearchPelayanan"
+                                                                       class="table table-condensed table-striped table-hover"
+                                                                       requestURI="paging_displaytag_pelayanan.action" export="true" id="row"
                                                                        pagesize="14" style="font-size:12">
 
                                                             <display:column media="html" title="Edit">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlEdit" namespace="/kategoriparameterbudgeting" action="edit_kategoriparameterbudgeting" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.id"/></s:param>
+                                                                    <s:url var="urlEdit" namespace="/pelayanan" action="edit_pelayanan" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idPelayanan"/></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">
@@ -185,8 +239,8 @@
 
                                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
                                                                 <s:if test='#attr.row.flag == "Y"'>
-                                                                    <s:url var="urlViewDelete" namespace="/kategoriparameterbudgeting" action="delete_kategoriparameterbudgeting" escapeAmp="false">
-                                                                        <s:param name="id"><s:property value="#attr.row.id" /></s:param>
+                                                                    <s:url var="urlViewDelete" namespace="/pelayanan" action="delete_pelayanan" escapeAmp="false">
+                                                                        <s:param name="id"><s:property value="#attr.row.idPelayanan" /></s:param>
                                                                         <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                                     </s:url>
                                                                     <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
@@ -194,13 +248,18 @@
                                                                     </sj:a>
                                                                 </s:if>
                                                             </display:column>
-                                                            <display:column property="nama" sortable="true" title="Nama Kategori Budgeting " />
-                                                            <display:column property="jenisBudgeting" sortable="true" title="Jenis Budgeting" />
-
+                                                            <display:column property="idPelayanan" sortable="true" title="ID Pelayanan" />
+                                                            <display:column property="namaPelayanan" sortable="true" title="Nama Pelayanan"  />
+                                                            <display:column property="tipePelayanan" sortable="true" title="Tipe Pelayanan"  />
+                                                            <display:column property="branchName" sortable="true" title="Unit"  />
+                                                            <%--<display:column property="kodering" sortable="true" title="Kode"  />--%>
+                                                            <display:column property="divisiName" sortable="true" title="ID Divisi"  />
+                                                            <display:column property="isEksekutif" sortable="true" title="Ekseskutif"  />
+                                                            <%--<display:column property="flag" sortable="true" title="flag"  />--%>
                                                             <%--<display:column property="action" sortable="true" title="action"  />--%>
-                                                            <display:column property="createdDate" sortable="true" title="Created date"  />
+                                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
                                                             <display:column property="createdWho" sortable="true" title="Created who"  />
-                                                            <display:column property="lastUpdate" sortable="true" title="Last update"  />
+                                                            <display:column property="stLastUpdate" sortable="true" title="Last update"  />
                                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
                                                         </display:table>
                                                     </td>

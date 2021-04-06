@@ -30,6 +30,9 @@ public class AsesmenRawatInapDao extends GenericDao<ItSimrsAsesmenRawatInapEntit
             if (mapCriteria.get("id_asesmen_keperawatan_rawat_inap") != null) {
                 criteria.add(Restrictions.eq("idAsesmenKeperawatanRawatInap", (String) mapCriteria.get("id_asesmen_keperawatan_rawat_inap")));
             }
+            if (mapCriteria.get("no_checkup") != null) {
+                criteria.add(Restrictions.eq("noCheckup", (String) mapCriteria.get("no_checkup")));
+            }
             if (mapCriteria.get("id_detail_checkup") != null) {
                 criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
             }

@@ -77,7 +77,8 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                     "ht.harga_terakhir,\n" +
                     "ho.diskon_umum,\n" +
                     "ho.harga_net_umum,\n" +
-                    "ho.harga_jual_umum\n" +
+                    "ho.harga_jual_umum,\n" +
+                    "ho.id_harga_obat\n" +
                     "FROM im_simrs_obat ob\n" +
                     "INNER JOIN (SELECT id_obat, MAX(id_barang) as id_barang FROM im_simrs_obat WHERE branch_id = :branch GROUP BY id_obat ) \n" +
                     "obb ON obb.id_obat = ob.id_obat AND obb.id_barang = ob.id_barang\n" +
@@ -112,6 +113,7 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
                     obat.setDiskonUmum(obj[14] == null ? new BigDecimal(0) : (BigDecimal) obj[14]);
                     obat.setHargaNetUmum(obj[15] == null ? new BigDecimal(0) : (BigDecimal) obj[15]);
                     obat.setHargaJualUmum(obj[16] == null ? new BigDecimal(0) : (BigDecimal) obj[16]);
+                    obat.setIdHargaObat(obj[17] == null ? "" : (String) obj[17]);
 
                     // Sigit 2020-12-08, hitung margin obat khusus, Start
                     BigDecimal hargaRata    = obat.getAverageHargaBiji();

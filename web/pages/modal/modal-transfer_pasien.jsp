@@ -98,7 +98,7 @@
                         <div class="form-group">
                             <label class="col-md-4" style="margin-top: 7px">Ruang Asal</label>
                             <div class="col-md-8">
-                                <input class="form-control" id="dr1" style="margin-top: 7px">
+                                <input class="form-control nama_ruangan" id="dr1" style="margin-top: 7px">
                             </div>
                         </div>
                     </div>

@@ -168,6 +168,7 @@
                                 <td>ID PO</td>
                                 <td>Nama Vendor</td>
                                 <td>Tanggal Permintaan</td>
+                                <td>Jenis PO</td>
                                 <td align="center">Jumlah Obat</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -179,6 +180,7 @@
                                     <td><s:property value="idPermintaanVendor"/></td>
                                     <td><s:property value="namaVendor"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
+                                    <td><s:property value="jenisPo"/></td>
                                     <td align="center"><span style="padding: 6px; background-color: #fbec88; color: black; border-radius: 20px"><s:property value="jumlahObat"/></span></td>
                                     <td><s:if test='#row.keterangan == "Telah Dikonfirmasi"'>
                                         <label class="label label-success"><s:property value="keterangan"/></label>

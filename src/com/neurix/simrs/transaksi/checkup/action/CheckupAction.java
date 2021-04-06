@@ -699,7 +699,7 @@ public class CheckupAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = checkupBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+                logId = checkupBoProxy.saveErrorMessage(e.getMessage(), "CheckupAction.search");
             } catch (GeneralBOException e1) {
                 logger.error("[CheckupAction.search] Error when saving error,", e1);
                 return ERROR;
@@ -746,9 +746,7 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public String saveAdd() {
-
         logger.info("[CheckupAction.saveAdd] start process >>>");
-
         HeaderCheckup checkup = getHeaderCheckup();
         RekananOps ops = new RekananOps();
         String genNoSep = "";
@@ -762,22 +760,26 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
         if(checkup.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
+            List<Pasien> pasienList = new ArrayList<>();
+            List<Branch> branchList = new ArrayList<>();
+            Pasien pasien = new Pasien();
+            pasien.setIdPasien(checkup.getIdPasien());
+            pasien.setFlag("Y");
+
+            try {
+                pasienList = pasienBoProxy.getByCriteria(pasien);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.saveAdd] Error when search pasien id ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                throw new GeneralBOException("Error when pasien id", e);
+            }
+
+            if(pasienList.isEmpty()){
+                logger.error("[CheckupAction.saveAdd] Error when search branch id");
+                throw new GeneralBOException("Data pasien tidak ditemukan...!");
+            }
+
             //jika bpjs dan bpjs rekanan
             if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
-
-                List<Pasien> pasienList = new ArrayList<>();
-                List<Branch> branchList = new ArrayList<>();
-                Pasien pasien = new Pasien();
-                pasien.setIdPasien(checkup.getIdPasien());
-                pasien.setFlag("Y");
-
-                try {
-                    pasienList = pasienBoProxy.getByCriteria(pasien);
-                } catch (GeneralBOException e) {
-                    logger.error("[CheckupAction.saveAdd] Error when search pasien id ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                    throw new GeneralBOException("Error when pasien id", e);
-                }
-
                 Branch branch = new Branch();
                 branch.setBranchId(userArea);
                 branch.setFlag("Y");
@@ -3653,22 +3655,42 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public List<RekamMedisPasien> getListRekammedisPasien(String tipePelayanan, String jenis, String id) {
-
         logger.info("[CheckupAction.getListRekammedisPasien] START process >>>");
-
         List<RekamMedisPasien> listRM = new ArrayList<>();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
-
         if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan)) {
+            RekamMedisPasien pasien = new RekamMedisPasien();
+            pasien.setIdDetailCheckup(id);
+            pasien.setJenis(jenis);
+            pasien.setTipePelayanan(tipePelayanan);
             try {
-                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(tipePelayanan, jenis, id);
+                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(pasien);
             } catch (GeneralBOException e) {
                 logger.error("Found Error, " + e.getMessage());
             }
         }
-
         logger.info("[CheckupAction.getListRekammedisPasien] END process >>>");
+        return listRM;
+    }
+
+    public List<RekamMedisPasien> getListRekammedisPasienByNoCheckup(String tipePelayanan, String jenis, String id) {
+        logger.info("[CheckupAction.getListRekammedisPasienByNoCheckup] START process >>>");
+        List<RekamMedisPasien> listRM = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        RekamMedisPasienBo rekamMedisPasienBo = (RekamMedisPasienBo) ctx.getBean("rekamMedisPasienBoProxy");
+        if (tipePelayanan != null && !"".equalsIgnoreCase(tipePelayanan)) {
+            RekamMedisPasien pasien = new RekamMedisPasien();
+            pasien.setNoCheckup(id);
+            pasien.setJenis(jenis);
+            pasien.setTipePelayanan(tipePelayanan);
+            try {
+                listRM = rekamMedisPasienBo.getListRekamMedisByTipePelayanan(pasien);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.getListRekammedisPasienByNoCheckup]Found Error, " + e.getMessage());
+            }
+        }
+        logger.info("[CheckupAction.getListRekammedisPasienByNoCheckup] END process >>>");
         return listRM;
     }
 

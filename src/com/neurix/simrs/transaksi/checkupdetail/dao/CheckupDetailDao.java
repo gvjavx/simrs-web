@@ -218,7 +218,7 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
 
             String forRekanan = "";
             if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) ||
-                    "ptpn".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) ||
+                    "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) ||
                     "bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
 
                 forRekanan = "\n AND dt.flag_sisa = 'Y' \n";
@@ -342,7 +342,11 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setIdPasien(obj[2] == null ? "" : obj[2].toString());
                     headerDetailCheckup.setNamaPasien(obj[3] == null ? "" : obj[3].toString());
                     String jalan = obj[4] == null ? "" : obj[4].toString();
-                    headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                    if(obj[5] != null){
+                        headerDetailCheckup.setCreatedDate(obj[5] == null ? null : (Timestamp) obj[5]);
+                        String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format((Timestamp)obj[5]);
+                        headerDetailCheckup.setFormatTglMasuk(formatDate);
+                    }
                     headerDetailCheckup.setDesaId(obj[6] == null ? "" : obj[6].toString());
                     headerDetailCheckup.setStatusPeriksa(obj[7].toString());
                     headerDetailCheckup.setStatusPeriksaName(obj[8].toString());

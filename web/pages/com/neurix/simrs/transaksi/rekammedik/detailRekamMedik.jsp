@@ -986,7 +986,7 @@
     var jenisKelamin = $('#h_jenis_kelamin').val();
     var noCheckup = $('#no_checkup').val();
     var tipePelayanan = $('#h_tipe_pelayanan').val();
-    var kategoriPelayanan = "";
+    var kategoriPelayanan =$('#h_kategori_pelayanan').val();;
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";

@@ -1636,8 +1636,33 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 --2021-03-16
 
     ALTER TABLE im_simrs_detail_rekanan_ops
-    ADD COLUMN tarif_bpjs numeric(10,2),
-    ADD COLUMN diskon_non_bpjs numeric(10,2),
-    ADD COLUMN diskon_bpjs numeric(10,2);
+    ADD COLUMN tarif_bpjs NUMERIC,
+    ADD COLUMN diskon_non_bpjs NUMERIC,
+    ADD COLUMN diskon_bpjs NUMERIC;
 
+--
+
+--2021-03-24
+    ALTER TABLE im_position
+    ADD COLUMN flag_cost_unit VARCHAR(1);
+--
+
+--2021-03-25
+
+    ALTER TABLE mt_simrs_transaksi_obat_detail_batch
+    ALTER COLUMN id TYPE VARCHAR(100);
+
+    ALTER TABLE mt_simrs_harga_terakhir
+    ADD COLUMN harga_terakhir_bpjs NUMERIC;
+
+    ALTER TABLE mt_simrs_harga_obat
+    ADD COLUMN diskon_umum_bpjs numeric,
+    ADD COLUMN diskon_khusus_bpjs numeric,
+    ADD COLUMN margin_umum_bpjs numeric,
+    ADD COLUMN margin_khusus_bpjs numeric,
+    ADD COLUMN harga_terakhir_umum_bpjs numeric,
+    ADD COLUMN harga_net_umum_bpjs numeric,
+    ADD COLUMN harga_net_khusus_bpjs numeric,
+    ADD COLUMN harga_jual_umum_bpjs numeric,
+    ADD COLUMN harga_jual_khusus_bpjs numeric;
 --

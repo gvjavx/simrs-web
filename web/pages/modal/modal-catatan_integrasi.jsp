@@ -7,6 +7,7 @@
                 <h4 class="modal-title"><i class="fa fa-user-md"></i> Catatan Perkembangan Pasien Terintegrasi
                 </h4>
             </div>
+            <input type="hidden" id="is_gizi">
             <div class="modal-body">
                 <div class="box-body">
                     <div class="alert alert-success alert-dismissible" style="display: none"
@@ -26,7 +27,7 @@
                         <tr id="row_ina_catatan_integrasi_pasien_ina">
                             <td>Catatan Perkembangan Pasien Terintegrasi</td>
                             <td width="20%" align="center">
-                                <img id="btn_ina_catatan_integrasi_pasien_ina" class="hvr-grow" onclick="detailCPPT('catatan_integrasi_pasien_ina', 'catatan_terintegrasi_ina', 'ina')"
+                                <img id="btn_ina_catatan_integrasi_pasien_ina" class="hvr-grow"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
@@ -104,12 +105,7 @@
                                 <label class="col-md-3" style="margin-top: 7px">PPA</label>
                                 <div class="col-md-8">
                                     <select class="form-control" id="cppt3" style="margin-top: 7px">
-                                        <option value="">[Select One]</option>
-                                        <option value="Dokter">Dokter</option>
-                                        <option value="Perawat">Perawat</option>
-                                        <option value="Apoteker">Apoteker</option>
-                                        <option value="Gizi">Gizi</option>
-                                        <option value="Bidan">Bidan</option>
+
                                     </select>
                                 </div>
                             </div>

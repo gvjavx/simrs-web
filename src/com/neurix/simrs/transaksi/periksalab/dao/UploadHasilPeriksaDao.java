@@ -31,6 +31,9 @@ public class UploadHasilPeriksaDao extends GenericDao<ItSimrsUploadHasilPemeriks
             if (mapCriteria.get("tipe")!= null) {
                 criteria.add(Restrictions.eq("tipe", (String) mapCriteria.get("tipe")));
             }
+            if (mapCriteria.get("url_img")!= null) {
+                criteria.add(Restrictions.like("urlImg", (String) mapCriteria.get("url_img")+"%"));
+            }
         }
         criteria.add(Restrictions.eq("flag", "Y"));
         criteria.addOrder(Order.desc("idUploadHasilPemeriksaan"));
@@ -42,6 +45,6 @@ public class UploadHasilPeriksaDao extends GenericDao<ItSimrsUploadHasilPemeriks
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_upload_hasil_pemeriksaan')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "UHP"+sId;
     }
 }

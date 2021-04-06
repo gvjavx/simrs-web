@@ -112,11 +112,11 @@
                                                      readonly="false" cssClass="form-control"/>
                                     </div>
                                 </div>
-                                <div class="form-group">N
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Nama</label>
                                     <div class="col-sm-4">
                                         <s:textfield id="nama_pasien" name="pasien.nama"
-                                                     required="false" readonly="false"BDa
+                                                     required="false" readonly="false"
                                                      cssClass="form-control" cssStyle="margin-top: 7px"/>
                                     </div>
                                 </div>

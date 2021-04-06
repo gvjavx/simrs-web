@@ -14,6 +14,15 @@ public class KeteranganKeluar {
     private String createdWho;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String kategori;
+
+    public String getKategori() {
+        return kategori;
+    }
+
+    public void setKategori(String kategori) {
+        this.kategori = kategori;
+    }
 
     public String getIdKeterangan() {
         return idKeterangan;
