@@ -3205,7 +3205,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                 Obat obat = new Obat();
                 try {
-                    obat = obatDao.getLastIdSeqObat(idObat);
+                    obat = obatDao.getLastIdSeqObat(idObat, null);
                 } catch (HibernateException e){
                     logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
                     throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);

@@ -368,7 +368,7 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         Obat obat = new Obat();
 
         try {
-            obat = obatDao.getLastIdSeqObat(id);
+            obat = obatDao.getLastIdSeqObat(id, null);
         } catch (HibernateException e) {
             logger.error("[PermintaanVendorBoImpl.getObatById] ERROR. ", e);
             throw new GeneralBOException("[PermintaanVendorBoImpl.getObatById] ERROR. ", e);

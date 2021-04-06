@@ -354,6 +354,12 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
 
         Obat obat = new Obat();
 
+        String andFlag = "";
+        if (flagBpjs != null && "Y".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs = 'Y' \n";
+        else if (flagBpjs != null && "N".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs != 'Y' \n";
+
         if ("stok".equalsIgnoreCase(ket)) {
 
             String SQL = "SELECT \n" +
@@ -401,11 +407,16 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "\tid_obat,\n" +
                     "\tbranch_id\n" +
                     "\tFROM im_simrs_obat\n" +
-                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
-                    "\tAND flag_bpjs = :flagBpjs \n" +
+                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" + andFlag +
+                    //"\tAND flag_bpjs = :flagBpjs \n" +
                     ") a\n" +
                     "WHERE a.id_obat = :id1 \n" +
                     "AND a.branch_id = :branchId1 ";
+
+            if (flagBpjs != null && "Y".equalsIgnoreCase(flagBpjs))
+                andFlag = "WHERE a.flag_bpjs = 'Y' \n";
+            else if (flagBpjs != null && "N".equalsIgnoreCase(flagBpjs))
+                andFlag = "WHERE a.flag_bpjs != 'Y' \n";
 
             String SQLPoli = "\n" +
                     "SELECT  \n" +
@@ -427,8 +438,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "\tFROM im_simrs_obat a\n" +
                     "\tINNER JOIN ( \n" +
                     "\t\tSELECT id_barang, qty_box, qty_lembar, qty_biji FROM mt_simrs_obat_poli\n" +
-                    "\t\t) b ON b.id_barang = a.id_barang\n" +
-                    "\t\tWHERE a.flag_bpjs = :flagBpjs \n" +
+                    "\t\t) b ON b.id_barang = a.id_barang\n" + andFlag +
                     "\tGROUP BY \n" +
                     "\ta.lembar_per_box, \n" +
                     "\ta.biji_per_lembar,\n" +
@@ -554,11 +564,17 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obat;
     }
 
-    public Obat getLastIdSeqObat(String idObat) {
+    public Obat getLastIdSeqObat(String idObat, String flagBpjs) {
+
+        String andFlag = "";
+        if (flagBpjs != null && "Y".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs = 'Y' \n";
+        else if (flagBpjs != null && "N".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs != 'Y' \n";
 
         String SQL = "SELECT id_seq_obat, created_date\n" +
                 "FROM im_simrs_obat\n" +
-                "WHERE id_obat = :id\n" +
+                "WHERE id_obat = :id\n" + andFlag +
                 "GROUP BY id_seq_obat\n" +
                 "ORDER BY created_date desc\n" +
                 "LIMIT 1";

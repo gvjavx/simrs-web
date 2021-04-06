@@ -1135,7 +1135,7 @@ public class ObatBoImpl implements ObatBo {
             Obat obat = new Obat();
 
             try {
-                Obat seqObat = obatDao.getLastIdSeqObat(idObat);
+                Obat seqObat = obatDao.getLastIdSeqObat(idObat, bean.getFlagBpjs());
                 if (seqObat != null){
                     obat.setIdSeqObat(seqObat.getIdSeqObat());
                     obat.setCreatedDate(seqObat.getCreatedDate());
