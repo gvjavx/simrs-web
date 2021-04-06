@@ -16,6 +16,7 @@ public class LogCronBoImpl implements LogCronBo {
     protected static transient Logger logger = Logger.getLogger(LogCronBoImpl.class);
     private LogCronDao logCronDao;
 
+
     public static Logger getLogger() {
         return logger;
     }
@@ -28,21 +29,26 @@ public class LogCronBoImpl implements LogCronBo {
     public void saveDelete(LogCron bean) throws GeneralBOException {
         logger.info("[saveDelete.saveDelete] start process >>>");
 
-        if (bean!=null) {
+        if (bean != null) {
+
+            ItLogCronEntity itLogCronEntity = new ItLogCronEntity();
 
             String logId = bean.getLogCronId();
-
-            ItLogCronEntity itLogCronEntity = null;
+            List<ItLogCronEntity> itLogCronEntities = new ArrayList<>();
+            Map criteria = new HashMap();
+            criteria.put("logCronId", logId);
+            criteria.put("flag", "Y");
 
             try {
                 // Get data from database by ID
-                itLogCronEntity = logCronDao.getById("logCronId", logId);
+                itLogCronEntities = logCronDao.getByCriteria(criteria);
             } catch (HibernateException e) {
                 logger.error("[LogCronBoImpl.saveDelete] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data by ID, please inform to your admin...," + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by ID, please inform to your admin..., " + e.getMessage());
             }
+            if (itLogCronEntities.size() > 0) {
+                itLogCronEntity = itLogCronEntities.get(0);
 
-            if (itLogCronEntity != null) {
                 itLogCronEntity.setFlag(bean.getFlag());
                 itLogCronEntity.setAction(bean.getAction());
                 itLogCronEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -58,7 +64,6 @@ public class LogCronBoImpl implements LogCronBo {
             } else {
                 logger.error("[LogCronBoImpl.saveDelete] Error, not found data Log Cron with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data Log Cron with request id, please check again your data ...");
-
             }
         }
         logger.info("[LogCronBoImpl.saveDelete] end process <<<");
@@ -73,7 +78,7 @@ public class LogCronBoImpl implements LogCronBo {
     public LogCron saveAdd(LogCron bean) throws GeneralBOException {
         logger.info("[LogCronBoImpl.saveAdd] start process >>>");
 
-        if (bean!=null) {
+        if (bean != null) {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
 
             // creating object entity serializables
@@ -81,7 +86,7 @@ public class LogCronBoImpl implements LogCronBo {
             try {
                 String logId = logCronDao.getNextLogCronId();
                 itLogCronEntity.setLogCronId(logId);
-            }catch (HibernateException e){
+            } catch (HibernateException e) {
                 logger.error("[LogCronBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Error when retrieving Next Log Cron ID, " + e.getMessage());
             }
@@ -89,9 +94,9 @@ public class LogCronBoImpl implements LogCronBo {
             itLogCronEntity.setStatus(bean.getStatus());
             itLogCronEntity.setNote(bean.getNote());
 
-            if(bean.getCronDate()!=null) {
+            if (bean.getCronDate() != null) {
                 itLogCronEntity.setCronDate(bean.getCronDate());
-            }else {
+            } else {
                 itLogCronEntity.setCronDate(updateTime);
             }
 
@@ -162,10 +167,10 @@ public class LogCronBoImpl implements LogCronBo {
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
-            if(itLogCronEntities != null){
+            if (itLogCronEntities != null) {
                 LogCron returnLogCron;
                 // Looping from dao to object and save in collection
-                for(ItLogCronEntity itLogCronEntity : itLogCronEntities){
+                for (ItLogCronEntity itLogCronEntity : itLogCronEntities) {
                     returnLogCron = new LogCron();
 
                     returnLogCron.setLogCronId(itLogCronEntity.getLogCronId());

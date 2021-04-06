@@ -283,7 +283,7 @@ public class ShiftAction extends BaseMasterAction {
             groupShift.setAction("U");
             groupShift.setFlag("N");
 
-            shiftBoProxy.saveEdit(groupShift);
+            shiftBoProxy.saveDelete(groupShift);
         }catch (GeneralBOException e) {
             Long logId = null;
             try {

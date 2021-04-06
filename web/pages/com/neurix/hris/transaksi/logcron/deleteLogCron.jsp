@@ -22,14 +22,19 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var logId = document.getElementById("logId").value;
-            var cronName = document.getElementById("cronName").value;
-            var note = document.getElementById("noteLog").value;
-            var status = document.getElementById("statusLog").value;
-            var cronDate = document.getElementById("cronDate").value;
+            var logId = document.getElementById("delLogId").value;
+            var cronName = document.getElementById("delCronName").value;
+            var note = document.getElementById("delNoteLog").value;
+            var status = document.getElementById("delStatusLog").value;
+            var cronDate = document.getElementById("delCronDate").value;
 
+            console.log("<"+logId+">");
+            console.log("<"+cronName+">");
+            console.log("<"+note+">");
+            console.log("<"+status+">");
+            console.log("<"+cronDate+">");
             if (logId !='' && cronName !='' && note != '' && status !='' && cronDate !='') {
-                if (confirm('Do you want to save this record?')) {
+                if (confirm('Do you want to delete this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -112,7 +117,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="logId" readonly="true" name="logCron.logCronId" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delLogId" readonly="true" name="logCron.logCronId" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -122,7 +127,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="cronName" readonly="true" name="logCron.cronName" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delCronName" readonly="true" name="logCron.cronName" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -136,7 +141,7 @@
                                 <div class="input-group-addon">
                                     <i class="fa fa-calendar"></i>
                                 </div>
-                                <s:textfield id="cronDate" readonly="true" name="logCron.stCronDate" cssClass="form-control pull-right"
+                                <s:textfield id="delCronDate" readonly="true" name="logCron.stCronDate" cssClass="form-control pull-right"
                                              required="false"  cssStyle=""/>
                             </div>
                         </td>
@@ -148,7 +153,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:select list="#{'success':'Success', 'connection_problem':'Connection Problem', 'program_error':'Program Error', 'other':'Others'}" id="statusLog" name="logCron.status"
+                                <s:select list="#{'success':'Success', 'connection_problem':'Connection Problem', 'program_error':'Program Error', 'other':'Others'}" id="delStatusLog" name="logCron.status"
                                           readonly="true" headerKey="" headerValue="[all status]" cssClass="form-control" />
                             </table>
                         </td>
@@ -160,7 +165,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="noteLog" readonly="true" name="logCron.note" required="true" cssClass="form-control"/>
+                                <s:textarea id="delNoteLog" readonly="true" name="logCron.note" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
