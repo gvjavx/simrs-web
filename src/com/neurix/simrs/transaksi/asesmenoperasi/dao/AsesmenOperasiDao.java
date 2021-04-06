@@ -8,6 +8,7 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +39,9 @@ public class AsesmenOperasiDao extends GenericDao<ItSimrsAsesmenOperasiEntity, S
             }
             if (mapCriteria.get("jenis")!=null) {
                 criteria.add(Restrictions.eq("jenis", (String) mapCriteria.get("jenis")));
+            }
+            if (mapCriteria.get("created_date")!=null) {
+                criteria.add(Restrictions.eq("createdDate", (Timestamp) mapCriteria.get("created_date")));
             }
         }
 

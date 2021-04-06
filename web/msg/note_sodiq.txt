@@ -2249,7 +2249,6 @@ AND tipe_pelayanan = 'rawat_inap';
 ALTER TABLE it_simrs_asesmen_operasi
 ADD COLUMN no_checkup VARCHAR(100);
 
---BELUM DI PROD
 --SABTU MENJELANG MALAM MINGGU
 ALTER TABLE it_simrs_periksa_lab
 ADD COLUMN ttd_pengirim VARCHAR(100);
@@ -2345,6 +2344,12 @@ INSERT INTO im_func_roles VALUES
 (6914, 40, 'Y', now(), now(), 'admin', 'admin'),
 (6915, 40, 'Y', now(), now(), 'admin', 'admin'),
 (6916, 40, 'Y', now(), now(), 'admin', 'admin');
+
+--BELUM DI PROD
+UPDATE im_func_roles
+SET flag = 'N'
+WHERE func_id = 2
+AND role_id = 41
 
 
 

@@ -973,7 +973,7 @@ function saveDataOperasi(jenis, ket) {
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
-                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
+                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date())+' WIB',
                 'keterangan': jenis,
                 'jenis': persetujuan,
                 'tipe': 'colspan',
@@ -2910,6 +2910,11 @@ function detailOperasi(jenis) {
                                     '</tr>';
                             }
                         }else if("tindakan_medis_op" == item.keterangan){
+                            var del = '';
+                            if("Tanggal" == item.parameter){
+                                del = '<span style="margin-right: 60px" onclick="conOP(\'' + jenis + '\',\'tindakan_medis\', \'\', \'' + converterDateTimeComplex(item.createdDate) + '\')" class="pull-right"><i id="delete_' + item.idAsesmenKeperawatanRawatInap + '" class="fa fa-trash hvr-grow" style="color: red"></i></span>' +
+                                    '<a target="_blank" href="'+contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id='+idDetailCheckup+'&tipe=OK&keterangan='+item.keterangan+'&createdDate='+converterDateTimeComplex(item.createdDate)+'" class="pull-right"><i class="fa fa-print hvr-grow" style="color: deepskyblue"></i></a>';
+                            }
                             if ("colspan" == item.tipe) {
                                 body += '<tr>' +
                                     '<td colspan="3">' + cekItemIsNull(item.jawaban1) + '</td>' +
@@ -2936,7 +2941,7 @@ function detailOperasi(jenis) {
                             }else {
                                 body += '<tr>' +
                                     '<td width="30%">' + item.parameter + '</td>' +
-                                    '<td colspan="2">' + item.jawaban1 + '</td>' +
+                                    '<td colspan="2">' + item.jawaban1 + del + '</td>' +
                                     '</tr>';
                             }
                         } else {
@@ -3700,13 +3705,13 @@ function showChartAnestesi(jenis) {
     }
 }
 
-function conOP(jenis, ket, idAsesmen) {
+function conOP(jenis, ket, idAsesmen, date) {
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
     if (idAsesmen != undefined && idAsesmen != '') {
         $('#save_con_rm').attr('onclick', 'delOPM(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\')');
     } else {
-        $('#save_con_rm').attr('onclick', 'delOP(\'' + jenis + '\', \'' + ket + '\')');
+        $('#save_con_rm').attr('onclick', 'delOP(\'' + jenis + '\', \'' + ket + '\', \''+date+'\')');
     }
 }
 
@@ -3740,7 +3745,7 @@ function delOPM(jenis, ket, idAsesmen) {
     }
 }
 
-function delOP(jenis, ket) {
+function delOP(jenis, ket, date) {
     $('#modal-confirm-rm').modal('hide');
     if(!cekSession()){
         var dataPasien = {
@@ -3749,11 +3754,15 @@ function delOP(jenis, ket) {
             'id_pasien': idPasien,
             'id_rm': tempidRm
         }
+        var createdDate = null;
+        if(date != '' && date != null && date != undefined){
+            createdDate = date;
+        }
         delRowOperasi(jenis);
         var result = JSON.stringify(dataPasien);
         startSpin('delete_' + jenis);
         dwr.engine.setAsync(true);
-        AsesmenOperasiAction.saveDelete(idDetailCheckup, jenis, result, {
+        AsesmenOperasiAction.saveDelete(idDetailCheckup, jenis, result, createdDate, {
             callback: function (res) {
                 if (res.status == "success") {
                     stopSpin('delete_' + jenis);

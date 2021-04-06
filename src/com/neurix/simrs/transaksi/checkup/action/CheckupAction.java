@@ -699,7 +699,7 @@ public class CheckupAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
-                logId = checkupBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getByCriteria");
+                logId = checkupBoProxy.saveErrorMessage(e.getMessage(), "CheckupAction.search");
             } catch (GeneralBOException e1) {
                 logger.error("[CheckupAction.search] Error when saving error,", e1);
                 return ERROR;

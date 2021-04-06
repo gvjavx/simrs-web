@@ -66,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+                <input type="hidden" id="nama_tindakan_medis">
                 <div class="box-body" style="display: none" id="form-tindakan_rb">
                     <div class="row">
                         <div class="form-group">

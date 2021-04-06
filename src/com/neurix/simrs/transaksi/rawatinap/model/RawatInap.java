@@ -130,6 +130,15 @@ public class RawatInap {
     private Timestamp tglOrder;
     private String isMeninggal;
     private String isSonde;
+    private String formatTglMasuk;
+
+    public String getFormatTglMasuk() {
+        return formatTglMasuk;
+    }
+
+    public void setFormatTglMasuk(String formatTglMasuk) {
+        this.formatTglMasuk = formatTglMasuk;
+    }
 
     public String getIsSonde() {
         return isSonde;

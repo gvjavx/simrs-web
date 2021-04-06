@@ -7,6 +7,7 @@ import com.neurix.simrs.transaksi.asesmenoperasi.bo.AsesmenOperasiBo;
 import com.neurix.simrs.transaksi.asesmenoperasi.dao.AsesmenOperasiDao;
 import com.neurix.simrs.transaksi.asesmenoperasi.model.AsesmenOperasi;
 import com.neurix.simrs.transaksi.asesmenoperasi.model.ItSimrsAsesmenOperasiEntity;
+import com.neurix.simrs.transaksi.asesmenrawatinap.model.PersetujuanTindakanMedis;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -177,6 +178,9 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
         Map hsCriteria = new HashMap();
         hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         hsCriteria.put("keterangan", bean.getKeterangan());
+        if(bean.getCreatedDate() != null && !"".equalsIgnoreCase(bean.getCreatedWho())){
+            hsCriteria.put("created_date", bean.getCreatedDate());
+        }
         List<ItSimrsAsesmenOperasiEntity> entityList = new ArrayList<>();
         try {
             entityList = asesmenOperasiDao.getByCriteria(hsCriteria);
@@ -238,6 +242,86 @@ public class AsesmenOperasiBoImpl implements AsesmenOperasiBo {
                 throw new GeneralBOException("Errror, "+e.getMessage());
             }
         }
+    }
+
+    @Override
+    public PersetujuanTindakanMedis getPersetujuanTindakan(AsesmenOperasi bean) throws GeneralBOException {
+        PersetujuanTindakanMedis persetujuanTindakanMedis = new PersetujuanTindakanMedis();
+        List<ItSimrsAsesmenOperasiEntity> entityList = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+        if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
+            hsCriteria.put("keterangan", bean.getKeterangan());
+        }
+        if (bean.getCreatedDate() != null && !"".equalsIgnoreCase(bean.getCreatedDate().toString())) {
+            hsCriteria.put("created_date", bean.getCreatedDate());
+        }
+
+        try {
+            entityList = asesmenOperasiDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
+        if (entityList.size() > 0) {
+            List<PersetujuanTindakanMedis> persetujuanTindakanMedisList = new ArrayList<>();
+            for (ItSimrsAsesmenOperasiEntity list : entityList) {
+                String parameter = "";
+                String jawaban1 = "";
+                String jawaban2 = "";
+                if(list.getParameter() != null){
+                    parameter = list.getParameter();
+                }
+                if(list.getJawaban1() != null){
+                    jawaban1 = list.getJawaban1();
+                }
+                if(list.getJawaban2() != null){
+                    jawaban2 = list.getJawaban2();
+                }
+                PersetujuanTindakanMedis persetujuan = new PersetujuanTindakanMedis();
+                if ("TTD yang menyatakan".equalsIgnoreCase(parameter)) {
+                    persetujuanTindakanMedis.setTtdMenyatakan(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban1);
+                    persetujuanTindakanMedis.setNamaMenyatakan(list.getNamaterang());
+                    persetujuanTindakanMedis.setSipMenyatakan(list.getSip());
+                } else if ("Saksi I".equalsIgnoreCase(parameter)) {
+                    persetujuanTindakanMedis.setTtdPihak1(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban1);
+                    persetujuanTindakanMedis.setPihak1(list.getNamaterang());
+                } else if ("Saksi II".equalsIgnoreCase(parameter)) {
+                    persetujuanTindakanMedis.setTtdPihak2(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban1);
+                    persetujuanTindakanMedis.setPihak2(list.getNamaterang());
+                } else {
+                    String pernytaan1 = "sedemikian rupa sehingga telah memahaminya";
+                    String pernytaan2 = "informasi sebagaimana di atas dan telah memahaminya";
+                    String pernytaan3 = "Yang bertanda tangan dibawah ini";
+                    if(parameter.toLowerCase().contains(pernytaan1.toLowerCase())){
+                        persetujuanTindakanMedis.setPernyataan1(parameter);
+                        persetujuanTindakanMedis.setNamaPernyataan1(list.getNamaterang());
+                        persetujuanTindakanMedis.setSipPernyataan1(list.getSip());
+                        persetujuanTindakanMedis.setTtdPernyataan1(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban1);
+                    }else if(parameter.toLowerCase().contains(pernytaan2.toLowerCase())){
+                        persetujuanTindakanMedis.setPernyataan2(parameter);
+                        persetujuanTindakanMedis.setNamaPernyataan2(list.getNamaterang());
+                        persetujuanTindakanMedis.setTtdPernyataan2(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_RM + jawaban1);
+                    }else if(jawaban1.toLowerCase().contains(pernytaan3.toLowerCase())){
+                        persetujuanTindakanMedis.setPernyataan3(jawaban1);
+                    }else{
+                        if(!"Persetujuan Tindakan Medis".equalsIgnoreCase(jawaban1)){
+                            if ("pernyataan".equalsIgnoreCase(parameter)) {
+                                persetujuan.setParameter(jawaban1);
+                            } else {
+                                persetujuan.setParameter(parameter);
+                                persetujuan.setJawaban(jawaban1);
+                                persetujuan.setInformasi(jawaban2);
+                            }
+                            persetujuanTindakanMedisList.add(persetujuan);
+                        }
+                    }
+                }
+            }
+            persetujuanTindakanMedis.setTindakanMedisList(persetujuanTindakanMedisList);
+        }
+        return persetujuanTindakanMedis;
     }
 
     public static Logger getLogger() {

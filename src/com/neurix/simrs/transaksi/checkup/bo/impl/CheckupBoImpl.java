@@ -306,7 +306,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setAgama(headerList.getAgama());
             headerCheckup.setProfesi(headerList.getProfesi());
             headerCheckup.setNoTelp(headerList.getNoTelp());
-//            headerCheckup.setIdJenisPeriksaPasien(headerList.getIdJenisPeriksaPasien());
             headerCheckup.setKeteranganKeluar(headerList.getKeteranganKeluar());
             headerCheckup.setTinggi(headerList.getTinggi());
             headerCheckup.setBerat(headerList.getBerat());
@@ -319,21 +318,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             logger.info("[CheckupBoImpl.getByCriteria] URL KTP : " + headerCheckup.getUrlKtp());
             headerCheckup.setBranchId(headerList.getBranchId());
             headerCheckup.setFlag(headerList.getFlag());
-            headerCheckup.setCreatedDate(headerList.getCreatedDate());
+            if(headerList.getCreatedDate() != null){
+                headerCheckup.setCreatedDate(headerList.getCreatedDate());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(headerList.getCreatedDate());
+                headerCheckup.setFormatTglMasuk(formatDate);
+            }
             headerCheckup.setLastUpdate(headerList.getLastUpdate());
             headerCheckup.setCreatedWho(headerList.getCreatedWho());
             headerCheckup.setLastUpdateWho(headerList.getLastUpdateWho());
             headerCheckup.setNamaPenanggung(headerList.getNamaPenanggung());
             headerCheckup.setHubunganKeluarga(headerList.getHubunganKeluarga());
-//            headerCheckup.setRujuk(headerList.getRujuk());
             headerCheckup.setJenisKunjungan(headerList.getJenisKunjungan());
-//            headerCheckup.setDiagnosa(headerList.getKodeDiagnosa());
-//            headerCheckup.setJenisTransaksi(headerList.getJenisTransaksi());
-//            headerCheckup.setNoRujukan(headerList.getNoRujukan());
-//            headerCheckup.setNoPpkRujukan(headerList.getNoPpkRujukan());
-//            headerCheckup.setTglRujukan(headerList.getNoRujukan());
-//            headerCheckup.setKelasPasien(headerList.getKelasPasien());
-//            headerCheckup.setIdPelayananBpjs(headerList.getIdPelayananBpjs());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
 

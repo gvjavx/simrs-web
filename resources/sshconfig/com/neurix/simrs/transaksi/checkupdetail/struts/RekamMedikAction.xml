@@ -264,30 +264,9 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
-            <result name="print_persetujuan_ina" type="jasper">
+            <result name="print_persetujuan_medis" type="jasper">
                 <param name="location">/pages/report/com/neurix/simrs/printPersetujuanMedisIna.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_persetujuan_rb" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printPersetujuanMedisRb.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_persetujuan_icu" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printPersetujuanMedisIcu.jasper</param>
-                <param name="connection">connection</param>
-                <param name="format">PDF</param>
-                <param name="reportParameters">reportParams</param>
-            </result>
-
-            <result name="print_persetujuan_ok" type="jasper">
-                <param name="location">/pages/report/com/neurix/simrs/printPersetujuanMedisOk.jasper</param>
-                <param name="connection">connection</param>
+                <param name="dataSource">myList</param>
                 <param name="format">PDF</param>
                 <param name="reportParameters">reportParams</param>
             </result>

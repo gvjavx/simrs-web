@@ -163,7 +163,7 @@ public class KandunganAction {
         return list;
     }
 
-    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien, String date) {
         CrudResponse response = new CrudResponse();
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         KandunganBo kandunganBo = (KandunganBo) ctx.getBean("kandunganBoProxy");
@@ -174,6 +174,9 @@ public class KandunganAction {
                 kandungan.setKeterangan(keterangan);
                 kandungan.setLastUpdate(time);
                 kandungan.setLastUpdateWho(userLogin);
+                if(date != null && !"".equalsIgnoreCase(date)){
+                    kandungan.setCreatedDate(Timestamp.valueOf(date));
+                }
                 response = kandunganBo.saveDelete(kandungan);
                 if("success".equalsIgnoreCase(response.getStatus())){
                     try {
