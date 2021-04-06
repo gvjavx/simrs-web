@@ -291,6 +291,7 @@
     function getLaporan() {
         var option = '<option value="">[Select One]</option>';
         LaporanOpsAction.getListLaporanOps(function (res) {
+            console.log(res);
             if (res.length > 0) {
                 $.each(res, function (i, item) {
                     option += '<option value="' + item.idLaporanOps + '">' + item.namaLaporan + '</option>';
