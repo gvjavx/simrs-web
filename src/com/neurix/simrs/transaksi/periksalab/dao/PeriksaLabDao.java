@@ -4,7 +4,6 @@ import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
-import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import org.hibernate.Criteria;
@@ -27,46 +26,27 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     @Override
     public List<ItSimrsPeriksaLabEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsPeriksaLabEntity.class);
-
-        // Get Collection and sorting
         if (mapCriteria != null) {
             if (mapCriteria.get("id_periksa_lab") != null) {
                 criteria.add(Restrictions.eq("idPeriksaLab", (String) mapCriteria.get("id_periksa_lab")));
             }
-            if (mapCriteria.get("id_detail_checkup") != null) {
-                criteria.add(Restrictions.eq("idDetailCheckup", (String) mapCriteria.get("id_detail_checkup")));
+            if (mapCriteria.get("id_header_pemeriksaan") != null) {
+                criteria.add(Restrictions.eq("idHeaderPemeriksaan", (String) mapCriteria.get("id_header_pemeriksaan")));
             }
-            if (mapCriteria.get("tanggal_masuk_lab") != null) {
-                criteria.add(Restrictions.eq("tanggalMasukLab", (Date) mapCriteria.get("tanggal_masuk_lab")));
+            if (mapCriteria.get("id_pemeriksaan") != null) {
+                criteria.add(Restrictions.eq("idPemeriksaan", (String) mapCriteria.get("id_pemeriksaan")));
             }
-            if (mapCriteria.get("tanggal_selesai_periksa") != null) {
-                criteria.add(Restrictions.eq("tanggalSelesaiPeriksa", (Timestamp) mapCriteria.get("tanggal_selesai_periksa")));
+            if (mapCriteria.get("nama_pemeriksaan") != null) {
+                criteria.add(Restrictions.eq("namaPemeriksaan", (String) mapCriteria.get("nama_pemeriksaan")));
             }
-            if (mapCriteria.get("id_dokter_pengirim") != null) {
-                criteria.add(Restrictions.eq("idDokterPengirim", (String) mapCriteria.get("id_dokter_pengirim")));
-            }
-            if (mapCriteria.get("id_dokter") != null) {
-                criteria.add(Restrictions.eq("idDokter", (String) mapCriteria.get("id_dokter")));
-            }
-            if (mapCriteria.get("id_pemeriksa") != null) {
-                criteria.add(Restrictions.eq("idPemeriksa", (String) mapCriteria.get("id_pemeriksa")));
-            }
-            if (mapCriteria.get("id_lab") != null) {
-                criteria.add(Restrictions.eq("idLab", (String) mapCriteria.get("id_lab")));
-            }
-            if (mapCriteria.get("status") != null) {
-                criteria.add(Restrictions.eq("statusPeriksa", (String) mapCriteria.get("status")));
-            }
-            if (mapCriteria.get("approve_flag") != null) {
-                criteria.add(Restrictions.eq("approveFlag", (String) mapCriteria.get("approve_flag")));
+            if(mapCriteria.get("flag") != null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }else{
+                criteria.add(Restrictions.eq("flag", "Y"));
             }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-
-        // Order by
         criteria.addOrder(Order.asc("idPeriksaLab"));
-
         List<ItSimrsPeriksaLabEntity> results = criteria.list();
         return results;
     }
@@ -209,7 +189,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_periksa_lab')");
         Iterator<BigInteger> iter = query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "PRL"+sId;
     }
 
     public BigDecimal getTotalTarif(String idPeriksa) {
@@ -507,7 +487,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                     namaPelayanan = obj[4].toString();
                     lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
                 }
-                lab.setTanggalMasukLab(obj[0] == null ? null : (java.sql.Date) obj[0]);
+                lab.setTanggalMasukLab(obj[0] == null ? null : (Timestamp) obj[0]);
                 lab.setIdPasien(obj[1] == null ? "" : obj[1].toString());
                 lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
                 lab.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
@@ -523,12 +503,5 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             }
         }
         return labList;
-    }
-
-    public String getNextIdKategoriPemeriksaan() {
-        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kategori_pemeriksaan')");
-        Iterator<BigInteger> iter = query.list().iterator();
-        String sId = String.format("%08d", iter.next());
-        return "KPE"+sId;
     }
 }

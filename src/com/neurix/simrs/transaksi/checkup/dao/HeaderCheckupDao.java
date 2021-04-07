@@ -930,7 +930,6 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     checkup.setSuhu(hdr.getSuhu());
                     checkup.setNadi(hdr.getNadi());
                     checkup.setPernafasan(hdr.getPernafasan());
-                    checkup.setPenunjangMedis(getPenunjangMendis(obj[15].toString(), null));
                 }
             }
         }
@@ -1038,14 +1037,14 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
         if(tipe != null && !"".equalsIgnoreCase(tipe)){
             kat = "AND c.kategori = '"+tipe+"' \n";
         }
-        String SQL = "SELECT\n" +
-                "a.id_periksa_lab,\n" +
-                "b.nama_lab,\n" +
+        String SQL = "SELECT \n" +
+                "a.id_header_pemeriksaan,\n" +
+                "b.nama_pemeriksaan,\n" +
                 "c.kategori\n" +
-                "FROM it_simrs_periksa_lab a\n" +
-                "INNER JOIN im_simrs_lab b ON a.id_lab = b.id_lab\n" +
+                "FROM it_simrs_header_pemeriksaan a\n" +
+                "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
                 "INNER JOIN im_simrs_kategori_lab c ON a.id_kategori_lab = c.id_kategori_lab\n" +
-                "WHERE id_detail_checkup = :id \n"+ kat;
+                "WHERE a.id_detail_checkup = :id \n"+ kat;
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("id", idDetailCheckup)

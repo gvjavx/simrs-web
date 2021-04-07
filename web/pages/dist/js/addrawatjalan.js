@@ -1458,69 +1458,88 @@ function listSelectParameter(idLab) {
 }
 
 function saveLab(id) {
-    var idDokter = $('#sip_pengirim').val();
-    var idKategori = $('#lab_kategori').val();
-    var idLab = $('#lab_lab').val();
-    var idParameter = $('#lab_parameter').val();
-    var cekPending = $('#is_pending_lab').is(':checked');
-    var tglPending = $('#tgl_pending').val();
-    var jamPending = $('#jam_pending').val();
-
-    var idLabLuar = $('#lab_luar').val();
-    var idParameterLuar = $('#lab_parameter_luar').val();
-
+    var table = $('#tabel_pemeriksaan').tableToJSON().length;
+    var cekLuar = $('#is_luar').is(':checked');
+    var isLuar = "N";
+    if(cekLuar){
+        isLuar = "Y";
+    }
     var canvas = document.getElementById('ttd_dokter_pengirim');
     var ttdPengirim = convertToDataURLAtas(canvas);
     var ttd = isBlank(canvas);
+    var idKategori = $('#lab_kategori').val();
+    var cekPending = $('#is_pending_lab').is(':checked');
+    var tglPending = $('#tgl_pending').val();
+    var jamPending = $('#jam_pending').val();
+    var idDokter = $('#sip_pengirim').val();
+    var namaDokter = $('#select_pengirim').val();
 
-    var tempLab = "";
-    var tempParams = "";
-    var isLuar = "N";
-
-    var cekLuar = $('#is_luar').is(':checked');
-    if (cekLuar) {
-        var tempL = [];
-        var luar = $('.parameter_luar');
-        $.each(luar, function (i, item) {
-            if (item.value != '') {
-                tempL.push(item.value);
-            }
-        });
-        if (idLabLuar != '') {
-            tempLab = idLabLuar;
-        }
-        if (tempL.length > 0) {
-            tempParams = tempL
-        }
-        isLuar = "Y";
-
-    } else {
-        if (idLab != '') {
-            tempLab = idLab;
-        }
-        if (idParameter != '' && idParameter != null) {
-            tempParams = idParameter;
-        }
-    }
-
-    var waktu = "";
-    if (!cekSession()) {
-        if (idDetailCheckup != '' && idKategori != '' && tempLab != '' && tempParams != null) {
-            var saveCek = false;
-            if (cekPending) {
-                if (tglPending && jamPending != '') {
-                    saveCek = true;
-                    waktu = tglPending.split("-").reverse().join("-") + " " + jamPending + ":00";
-                }
-            } else {
+    var namaPemeriksaan = $('.nama_jenis_pemeriksaan');
+    var idPemeriksaan = $('.id_jenis_pemeriksaan');
+    var parameterPemeriksaan = $('.nama_parameter_pemeriksaan');
+    var idParameter = $('.id_parameter_pemeriksaan');
+    if(table > 0){
+        var saveCek = false;
+        var waktu = "";
+        if (cekPending) {
+            if (tglPending && jamPending != '') {
                 saveCek = true;
+                waktu = tglPending.split("-").reverse().join("-") + " " + jamPending + ":00";
             }
-            if (saveCek) {
-                if (id != '') {
+        } else {
+            saveCek = true;
+        }
+        if(saveCek){
+            if(!ttd){
+                var pemeriksan = [];
+                $.each(namaPemeriksaan, function (i, item) {
+                    if(item.value){
+                        var tempItem = [];
+                        if("N" == isLuar){
+                            var tmep = parameterPemeriksaan[i].value;
+                            var imep = idParameter[i].value;
+                            if(tmep != '' && imep != ''){
+                                var pp = tmep.split("#");
+                                var mp = imep.split("#");
+                                $.each(pp, function (i, item) {
+                                    tempItem.push({
+                                        'id_parameter': mp[i],
+                                        'nama_parameter': item
+                                    })
+                                });
+                            }
+                        }else{
+                            var tmep = parameterPemeriksaan[i].value;
+                            if(tmep != ''){
+                                var pp = tmep.split("#");
+                                $.each(pp, function (i, item) {
+                                    tempItem.push({
+                                        'id_parameter': "",
+                                        'nama_parameter': item
+                                    })
+                                });
+                            }
+                        }
+
+                        pemeriksan.push({
+                            'id_pemeriksaan': idPemeriksaan[i].value,
+                            'nama_pemeriksaan': item.value,
+                            'list_parameter': JSON.stringify(tempItem)
+                        });
+                    }
+                });
+
+                if(id != ''){
+                    var data = {
+                        'id_header_pemeriksaan': id,
+                        'list_pemeriksaan': JSON.stringify(pemeriksan),
+                        'is_luar': isLuar
+                    }
+                    var result = JSON.stringify(data);
                     $('#save_lab').hide();
                     $('#load_lab').show();
                     dwr.engine.setAsync(true);
-                    PeriksaLabAction.editOrderLab(id, tempLab, tempParams, isLuar, {
+                    PeriksaLabAction.editOrderLab(result, {
                         callback: function (response) {
                             if (response.status == "success") {
                                 dwr.engine.setAsync(false);
@@ -1531,59 +1550,62 @@ function saveLab(id) {
                             } else {
                                 $('#warning_lab').show().fadeOut(5000);
                                 $('#msg_lab').text(response.msg);
+                                $('#modal-lab').scrollTop(0);
                             }
                         }
                     });
-                } else {
-                    if(!ttd){
-                        $('#save_lab').hide();
-                        $('#load_lab').show();
-                        dwr.engine.setAsync(true);
-                        PeriksaLabAction.saveOrderLab(idDetailCheckup, tempLab, tempParams, isLuar, idDokter, idKategori, waktu, {
-                            callback: function (response) {
-                                if (response.status == "success") {
-                                    dwr.engine.setAsync(false);
-                                    listLab();
-                                    $('#modal-lab').modal('hide');
-                                    $('#info_dialog').dialog('open');
-                                    $('#close_pos').val(4);
-                                } else {
-                                    $('#warning_lab').show().fadeOut(5000);
-                                    $('#msg_lab').text(response.msg);
-                                }
-                            }
-                        });
-                    }else{
-                        $('#warning_lab').show().fadeOut(5000);
-                        $('#msg_lab').text("Silhakan cek tanda tangan dokter pengirim...!");
+                }else{
+                    var data = {
+                        'id_detail_checkup': idDetailCheckup,
+                        'list_pemeriksaan': JSON.stringify(pemeriksan),
+                        'is_luar': isLuar,
+                        'id_dokter_pengirim': idDokter,
+                        'nama_dokter_pengirim':namaDokter,
+                        'id_kategori_lab': idKategori,
+                        'waktu_pending': waktu,
+                        'ttd_pengirim': ttdPengirim
                     }
+                    var result = JSON.stringify(data);
+                    $('#save_lab').hide();
+                    $('#load_lab').show();
+                    dwr.engine.setAsync(true);
+                    PeriksaLabAction.saveOrderLab(result, {
+                        callback: function (response) {
+                            if (response.status == "success") {
+                                dwr.engine.setAsync(false);
+                                listLab();
+                                $('#modal-lab').modal('hide');
+                                $('#info_dialog').dialog('open');
+                                $('#close_pos').val(4);
+                                $('#save_lab').show();
+                                $('#load_lab').hide();
+                            } else {
+                                $('#warning_lab').show().fadeOut(5000);
+                                $('#msg_lab').text(response.msg);
+                                $('#modal-lab').scrollTop(0);
+                                $('#save_lab').show();
+                                $('#load_lab').hide();
+                            }
+                        }
+                    });
                 }
-            } else {
+            }else{
                 $('#warning_lab').show().fadeOut(5000);
-                $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
-                if (tglPending == '' || jamPending == '') {
-                    $('#war_pending').show();
-                }
+                $('#msg_lab').text("Silhakan cek tanda tangan dokter pengirim...!");
+                $('#modal-lab').scrollTop(0);
             }
-        } else {
+        }else{
             $('#warning_lab').show().fadeOut(5000);
-            $('#msg_lab').text("Silahkan cek kembali data inputan!");
-            if (idKategori == '') {
-                $('#war_kategori_lab').show();
-            }
-            if (idLab == '' || idLab == null) {
-                $('#war_lab').show();
-            }
-            if (idParameter == '' || idParameter == null) {
-                $('#war_parameter').show();
-            }
-            if (idLabLuar == '') {
-                $('#war_lab_luar').show();
-            }
-            if (idParameterLuar == '') {
-                $('#war_lab_parameter_luar').show();
+            $('#msg_lab').text("Silhakan cek kembali tanggal dan jam inputan...!");
+            $('#modal-lab').scrollTop(0);
+            if (tglPending == '' || jamPending == '') {
+                $('#war_pending').show();
             }
         }
+    }else{
+        $('#warning_lab').show().fadeOut(5000);
+        $('#msg_lab').text("Silhakan cek kembali inputan berikut...!");
+        $('#modal-lab').scrollTop(0);
     }
 }
 
@@ -4287,10 +4309,20 @@ function addParameter() {
         '</div>';
     $('#params_luar').append(set);
     $('#lab_parameter_luar_' + count).focus();
+    var place = $('.parameter_luar');
+    $.each(place, function (i, item) {
+        var nomor = i+1;
+        $('#'+item.id).attr('placeholder', 'masukkan parameter '+nomor);
+    });
 }
 
 function delParamrs(id) {
     $('#' + id).remove();
+    var place = $('.parameter_luar');
+    $.each(place, function (i, item) {
+        var nomor = i+1;
+        $('#'+item.id).attr('placeholder', 'masukkan parameter '+nomor);
+    });
 }
 
 function showHasil(id, tipe, kategori) {
@@ -4416,4 +4448,172 @@ function onChangePengirim(dokter){
     if(dokter != ''){
         $('#sip_pengirim').val(dokter);
     }
+}
+
+function addListPemeriksaan(){
+    var count = $('#tabel_pemeriksaan').tableToJSON().length;
+    var idKategori = $('#lab_kategori').val();
+    var namaPemeriksaan = $('#lab_lab option:selected').text();
+    var idPemeriksaan = $('#lab_lab').val();
+
+    var namaParameter = $('#lab_parameter option:selected');
+    var idParameter = $('#lab_parameter').val();
+
+    var cekPending = $('#is_pending_lab').is(':checked');
+    var tglPending = $('#tgl_pending').val();
+    var jamPending = $('#jam_pending').val();
+
+    var namaPemeriksaanLuar = $('#lab_luar').val();
+    var idParameterLuar = $('.parameter_luar');
+
+    var idLabLuar = $('#lab_luar').val();
+    var idParamLuar = $('#lab_parameter_luar').val();
+
+    var tempPemeriksaan = "";
+    var tempIdPemeriksan= "";
+    var tempPemeriksanLi = "";
+
+    var tempParameter = "";
+    var tempIdParameter = "";
+    var tempParameterLi = "";
+    var cekLuar = $('#is_luar').is(':checked');
+
+    if (cekLuar) {
+        if(namaPemeriksaanLuar != ''){
+            tempPemeriksaan = namaPemeriksaanLuar;
+        }
+        if(idParameterLuar[0].value != ''){
+            $.each(idParameterLuar, function (i, item) {
+                if(item.value != ''){
+                    if(tempPemeriksaan != ''){
+                        tempPemeriksaan = tempPemeriksaan+'#'+item;
+                    }else{
+                        tempPemeriksaan = item;
+                    }
+                    tempPemeriksanLi += '<li>'+item.value+'</li>';
+                }
+            });
+        }
+    }else{
+        if(idPemeriksaan != ''){
+            tempPemeriksaan = namaPemeriksaan;
+            tempIdPemeriksan = idPemeriksaan;
+        }
+        if(idParameter != '' && idParameter != null){
+            $.each(namaParameter, function (i, item) {
+                if(tempIdParameter != ''){
+                    tempIdParameter = tempIdParameter+'#'+item.value;
+                }else{
+                    tempIdParameter = item.value;
+                }
+
+                if(tempParameter != ''){
+                    tempParameter = tempParameter+'#'+item.innerHTML;
+                }else{
+                    tempParameter = item.innerHTML;
+                }
+                tempParameterLi += '<li>'+item.innerHTML+'</li>';
+            });
+        }
+    }
+    if(tempPemeriksaan && tempParameter != ''){
+        var cek = false;
+        $.each($('.nama_jenis_pemeriksaan'), function (i, item) {
+            if(item.value != ''){
+                if(item.value.toLowerCase() == tempPemeriksaan.toLowerCase()){
+                    cek = true;
+                }
+            }
+        });
+        if(!cek){
+            var row =
+                '<tr id="row_'+count+'">' +
+                '<td>'+
+                tempPemeriksaan +
+                '<input type="hidden" class="nama_jenis_pemeriksaan" value="'+tempPemeriksaan+'">'+
+                '<input type="hidden" class="id_jenis_pemeriksaan" value="'+tempIdPemeriksan+'">'+
+                '<input type="hidden" class="nama_parameter_pemeriksaan" value="'+tempParameter+'">'+
+                '<input type="hidden" class="id_parameter_pemeriksaan" value="'+tempIdParameter+'">'+
+                '</td>'+
+                '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
+                '<td align="center"><img onclick="delPemeriksaan(\'row_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
+                '</tr>';
+            $('#body_pemeriksaan').append(row);
+            $('#lab_kategori').attr('disabled', true);
+            $('#lab_lab').val(null).trigger('change');
+            $('#lab_parameter').val(null).trigger('change');
+            $('#is_pending_lab').attr('disabled', true);
+            $('#is_luar').attr('disabled', true);
+            $('#tgl_pending').attr('disabled', true);
+            $('#jam_pending').attr('disabled', true);
+            $('#lab_parameter_luar').val(null);
+            $('#lab_luar').val(null);
+            var par = $('.parameter_luar');
+            $.each(par, function (i, item) {
+                if (i != 0) {
+                    $('#par_' + i).remove();
+                }
+            });
+            $('#cek_luar').css('cursor', 'no-drop');
+            $('#cek_pending').css('cursor', 'no-drop');
+        }else{
+            $('#modal-lab').scrollTop(0);
+            $('#warning_lab').show().fadeOut(5000);
+            $('#msg_lab').text("Pemeriksaan "+tempPemeriksaan+" sudah ada dalam ist");
+        }
+    }else{
+        $('#modal-lab').scrollTop(0);
+        $('#warning_lab').show().fadeOut(5000);
+        $('#msg_lab').text("Silahkan cek kembali inputan berikut...!");
+        if (idKategori == '') {
+            $('#war_kategori_lab').show();
+        }
+        if (idPemeriksaan == '') {
+            $('#war_lab').show();
+        }
+        if (idParameter == '' || idParameter == null) {
+            $('#war_parameter').show();
+        }
+        if (idLabLuar == '') {
+            $('#war_lab_luar').show();
+        }
+        if (idParamLuar == '') {
+            $('#war_lab_parameter_luar').show();
+        }
+    }
+}
+
+function delPemeriksaan(id){
+    $('#'+id).remove();
+    var table = $('#tabel_pemeriksaan').tableToJSON().length;
+    if(table == 0){
+        $('#lab_kategori').attr('disabled', false);
+        $('#is_pending_lab').attr('disabled', false);
+        $('#is_luar').attr('disabled', false);
+        $('#tgl_pending').attr('disabled', false);
+        $('#jam_pending').attr('disabled', false);
+        $('#cek_luar').css('cursor', 'pointer');
+        $('#cek_pending').css('cursor', 'pointer');
+    }
+}
+
+function resetPemeriksaan(){
+    $('#body_pemeriksaan').html('');
+    $('#lab_kategori').attr('disabled', false);
+    $('#lab_lab').val(null).trigger('change');
+    $('#lab_parameter').val(null).trigger('change');
+    $('#is_pending_lab').attr('disabled', false);
+    $('#is_luar').attr('disabled', false);
+    $('#tgl_pending').attr('disabled', false);
+    $('#jam_pending').attr('disabled', false);
+    $('#lab_parameter_luar').val(null);
+    $('#lab_luar').val(null);
+    var par = $('.parameter_luar');
+    $.each(par, function (i, item) {
+        if (i != 0) {
+            $('#par_' + i).remove();
+        }
+    });
+    $('#cek_luar').css('cursor', 'pointer');
+    $('#cek_pending').css('cursor', 'pointer');
 }

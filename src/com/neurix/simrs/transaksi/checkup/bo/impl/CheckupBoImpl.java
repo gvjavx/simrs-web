@@ -847,18 +847,18 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             ItSimrsPeriksaLabEntity entity = new ItSimrsPeriksaLabEntity();
             String id = getNextPeriksaLabId();
             entity.setIdPeriksaLab("PRL" + id);
-            entity.setIdLab(bean.getIdLab());
-            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
-            entity.setIdDokterPengirim(bean.getIdDokterPengirim());
-            entity.setStatusPeriksa("0");
+//            entity.setIdLab(bean.getIdLab());
+//            entity.setIdDetailCheckup(bean.getIdDetailCheckup());
+//            entity.setIdDokterPengirim(bean.getIdDokterPengirim());
+//            entity.setStatusPeriksa("0");
             entity.setFlag("Y");
             entity.setAction("C");
             entity.setCreatedDate(bean.getCreatedDate());
             entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
-            entity.setKeterangan(bean.getKeterangan());
-            entity.setIdKategoriLab(bean.getIdKategoriLab());
+//            entity.setKeterangan(bean.getKeterangan());
+//            entity.setIdKategoriLab(bean.getIdKategoriLab());
 
             try {
                 periksaLabDao.addAndSave(entity);
@@ -893,17 +893,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     String idKategoriLab = labDetailDao.kategoriLab(order.getIdLab(), CommonUtil.userBranchLogin());
                     String id = getNextPeriksaLabId();
                     entity.setIdPeriksaLab("PRL" + id);
-                    entity.setIdLab(order.getIdLab());
-                    entity.setIdDetailCheckup(idDetailCheckup);
-                    entity.setIdDokterPengirim(idDokter);
-                    entity.setStatusPeriksa("0");
+//                    entity.setIdLab(order.getIdLab());
+//                    entity.setIdDetailCheckup(idDetailCheckup);
+//                    entity.setIdDokterPengirim(idDokter);
+//                    entity.setStatusPeriksa("0");
                     entity.setFlag("Y");
                     entity.setAction("C");
                     entity.setCreatedDate(now);
                     entity.setCreatedWho(userLogin);
                     entity.setLastUpdate(now);
                     entity.setLastUpdateWho(userLogin);
-                    entity.setIdKategoriLab(idKategoriLab);
+//                    entity.setIdKategoriLab(idKategoriLab);
 
                     try {
                         periksaLabDao.addAndSave(entity);
@@ -1036,17 +1036,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         kategoriLab = paketPeriksa.getIdKategoriItem();
                         String id = getNextPeriksaLabId();
                         entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-                        entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-                        entityPeriksaLab.setIdDetailCheckup(idDetailCheckup);
-                        entityPeriksaLab.setIdDokterPengirim(idDokter);
-                        entityPeriksaLab.setStatusPeriksa("0");
+//                        entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
+//                        entityPeriksaLab.setIdDetailCheckup(idDetailCheckup);
+//                        entityPeriksaLab.setIdDokterPengirim(idDokter);
+//                        entityPeriksaLab.setStatusPeriksa("0");
                         entityPeriksaLab.setFlag("Y");
                         entityPeriksaLab.setAction("C");
                         entityPeriksaLab.setCreatedDate(time);
                         entityPeriksaLab.setCreatedWho(userLogin);
                         entityPeriksaLab.setLastUpdate(time);
                         entityPeriksaLab.setLastUpdateWho(userLogin);
-                        entityPeriksaLab.setIdKategoriLab(idKategoriLab);
+//                        entityPeriksaLab.setIdKategoriLab(idKategoriLab);
 
                         try {
                             periksaLabDao.addAndSave(entityPeriksaLab);
@@ -2910,17 +2910,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             kategoriLab = paketPeriksa.getIdKategoriItem();
                             String id = getNextPeriksaLabId();
                             entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
-                            entityPeriksaLab.setStatusPeriksa("0");
+//                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
+//                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
+//                            entityPeriksaLab.setStatusPeriksa("0");
                             entityPeriksaLab.setFlag("Y");
                             entityPeriksaLab.setAction("C");
                             entityPeriksaLab.setCreatedDate(bean.getCreatedDate());
                             entityPeriksaLab.setCreatedWho(bean.getCreatedWho());
                             entityPeriksaLab.setLastUpdate(bean.getLastUpdate());
                             entityPeriksaLab.setLastUpdateWho(bean.getLastUpdateWho());
-                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
+//                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
 
                             try {
                                 periksaLabDao.addAndSave(entityPeriksaLab);

@@ -2402,11 +2402,54 @@ INSERT INTO im_simrs_laporan_ops VALUES
 ('kapitasi','Kapitasi','Y','C',now(),now(),'admin','admin'),
 ('unggulan','Layanan Unggulan','Y','C',now(),now(),'admin','admin');
 
---it_simrs_periksa_lab
-ALTER TABLE it_simrs_periksa_lab
-ADD COLUMN id_kategori_pemeriksaan VARCHAR(50);
+--create header for lab dan radiologi
+CREATE TABLE it_simrs_header_pemeriksaan(
+  id_header_pemeriksaan VARCHAR(100) NOT NULL PRIMARY KEY,
+  id_detail_checkup VARCHAR(50),
+  id_kategori_lab VARCHAR(50),
+  id_dokter_pengirim VARCHAR(50),
+  nama_dokter_pengirim VARCHAR(50),
+  ttd_dokter_pengirim VARCHAR(100),
+  id_petugas VARCHAR(50),
+  nama_petugas VARCHAR(100),
+  ttd_petugas VARCHAR(100),
+  id_validator VARCHAR(50),
+  nama_validator VARCHAR(100),
+  ttd_validator VARCHAR(100),
+  status_periksa VARCHAR(1),
+  catatan TEXT,
+  tarif_lab_luar NUMERIC,
+  approve_flag VARCHAR(1),
+  is_just_lab VARCHAR(1),
+  is_pending VARCHAR(1),
+  is_periksa_luar VARCHAR(1),
+  is_read VARCHAR(1),
+  tanggal_masuk_periksa TIMESTAMP WITHOUT TIME ZONE,
+  tanggal_selesai_periksa TIMESTAMP WITHOUT TIME ZONE,
+  flag VARCHAR(1),
+  action VARCHAR(1),
+  created_who VARCHAR(100),
+  created_date TIMESTAMP WITHOUT TIME ZONE,
+  last_update_who VARCHAR(100),
+  last_update TIMESTAMP WITHOUT TIME ZONE
+);
 
-CREATE SEQUENCE seq_kategori_pemeriksaan;
+CREATE SEQUENCE seq_header_pemeriksaan;
+
+DROP TABLE it_simrs_periksa_lab;
+CREATE TABLE public.it_simrs_periksa_lab
+(
+  id_periksa_lab VARCHAR(50) NOT NULL PRIMARY KEY,
+  id_header_pemeriksaan VARCHAR(50),
+  id_pemeriksaan VARCHAR(30),
+  nama_pemeriksaan VARCHAR(30),
+  flag VARCHAR(1),
+  action VARCHAR(1),
+  created_who VARCHAR(100),
+  created_date TIMESTAMP WITHOUT TIME ZONE,
+  last_update_who VARCHAR(100),
+  last_update TIMESTAMP WITHOUT TIME ZONE
+);
 
 
 

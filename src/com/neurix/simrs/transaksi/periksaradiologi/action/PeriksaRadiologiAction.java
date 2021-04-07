@@ -220,7 +220,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 periksa.setIdPeriksaLab(lab);
                 periksa.setLastUpdate(updateTime);
                 periksa.setLastUpdateWho(userArea);
-                periksa.setTanggalMasukLab(Date.valueOf(tglToday));
+//                periksa.setTanggalMasukLab(Date.valueOf(tglToday));
 
                 try {
                     periksaLabBoProxy.saveEditStatusPeriksa(periksa);

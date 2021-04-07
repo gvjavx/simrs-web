@@ -124,10 +124,17 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
             query = " AND dt.flag_approve = '" + flagApprove + "' ";
         }
 
-
         List<DokterTeam> listOfResult = new ArrayList<>();
 
-        String sql = "SELECT dt.id_team_dokter, dk.nama_dokter, dt.id_dokter, dt.id_detail_checkup, dt.jenis_dpjp, dt.flag_approve, dt.keterangan, pl.nama_pelayanan \n" +
+        String sql = "SELECT " +
+                "dt.id_team_dokter, " +
+                "dk.nama_dokter, " +
+                "dt.id_dokter, " +
+                "dt.id_detail_checkup, " +
+                "dt.jenis_dpjp, " +
+                "dt.flag_approve, " +
+                "dt.keterangan, " +
+                "pl.nama_pelayanan \n" +
                 "FROM it_simrs_dokter_team dt\n" +
                 "JOIN im_simrs_dokter dk ON dk.id_dokter = dt.id_dokter\n" +
                 "JOIN (SELECT\n" +
@@ -156,7 +163,6 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
                 dokterTeam.setFlagApprove(item[5] != null ? item[5].toString() : "");
                 dokterTeam.setKeterangan(item[6] != null ? item[6].toString() : "");
                 dokterTeam.setNamaPelayanan(item[7].toString());
-
                 listOfResult.add(dokterTeam);
             }
         }
