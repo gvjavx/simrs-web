@@ -28,11 +28,6 @@
             var status = document.getElementById("delStatusLog").value;
             var cronDate = document.getElementById("delCronDate").value;
 
-            console.log("<"+logId+">");
-            console.log("<"+cronName+">");
-            console.log("<"+note+">");
-            console.log("<"+status+">");
-            console.log("<"+cronDate+">");
             if (logId !='' && cronName !='' && note != '' && status !='' && cronDate !='') {
                 if (confirm('Do you want to delete this record?')) {
                     event.originalEvent.options.submit = true;
