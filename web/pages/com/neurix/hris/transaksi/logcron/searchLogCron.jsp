@@ -231,8 +231,8 @@
     })
 
     function validateRange() {
-        var start = $('#dateStr').val().split('-');
-        var end   = $('#dateEnd').val().split('-');
+        var start = $('#cronDateStr').val().split('-');
+        var end   = $('#cronDateEnd').val().split('-');
 
         var dateStr = new Date(start[2],start[1]-1,start[0]);
         var dateEnd = new Date(end[2],end[1]-1,end[0]);
@@ -242,7 +242,7 @@
         if(start!='' && end!='') {
             if (dateStr > dateEnd) {
                 alert("Range of Date is Wrong!");
-                $('#dateEnd').val('');
+                $('#cronDateEnd').val('');
             }
         }
     }
