@@ -153,7 +153,8 @@ public class DokterTeamDao extends GenericDao<ItSimrsDokterTeamEntity, String> {
                 "FROM im_simrs_pelayanan a\n" +
                 "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                 ") pl ON pl.id_pelayanan = dc.id_pelayanan\n" +
-                "WHERE dt.id_dokter = :id " + query ;
+                "WHERE dt.id_dokter = :id " + query +
+                "ORDER BY dt.created_date DESC";
         List<Object[]> result = new ArrayList<>();
         result = this.sessionFactory.getCurrentSession().createSQLQuery(sql)
                 .setParameter("id", idDokter)
