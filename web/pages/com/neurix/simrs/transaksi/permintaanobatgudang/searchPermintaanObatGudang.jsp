@@ -406,8 +406,8 @@
                             <button class="btn btn-success" style="margin-top: 7px; margin-left: 4px"
                                     onclick="addObatToList()"><i class="fa fa-plus"></i> Tambah
                             </button>
-                            <button class="btn btn-danger" style="margin-top: 7px" onclick="resetAll()"><i
-                                    class="fa fa-refresh"></i> Reset
+                            <button class="btn btn-danger" style="margin-top: 7px" onclick="resetAll()">
+                                <i class="fa fa-refresh"></i> Reset
                             </button>
                         </div>
                     </div>
@@ -691,14 +691,14 @@
                 if (response != null) {
                     $.each(response, function (i, item) {
                         if (item.idObat == id) {
-                            if (item.qtyBox != null) {
-                                stokQtyBox = item.qtyBox;
-                            }
-                            if (item.qtyLembar != null) {
-                                stokQtylembar = item.qtyLembar;
-                            }
-                            if (item.qtyBiji != null) {
-                                stokQtyBiji = item.qtyBiji;
+//                            if (item.qtyBox != null) {
+//                                stokQtyBox = item.qtyBox;
+//                            }
+//                            if (item.qtyLembar != null) {
+//                                stokQtylembar = item.qtyLembar;
+//                            }
+                            if (item.totalQty != null) {
+                                stokQtyBiji = parseInt(stokQtyBiji) + parseInt(item.totalQty);
                             }
                         }
                     });
@@ -708,7 +708,8 @@
 
         //set to biji semua
         tempBijiTujuan = parseInt(qtyBiji) + ((parseInt(lembarPerBox * parseInt(qtyBox))) * parseInt(bijiPerLembar)) + (parseInt(qtyLembar) * parseInt(bijiPerLembar));
-        tempBijiSendiri = parseInt(stokQtyBiji) + ((parseInt(lembarPerBox * parseInt(stokQtyBox))) * parseInt(bijiPerLembar)) + (parseInt(stokQtylembar) * parseInt(bijiPerLembar));
+        //tempBijiSendiri = parseInt(stokQtyBiji) + ((parseInt(lembarPerBox * parseInt(stokQtyBox))) * parseInt(bijiPerLembar)) + (parseInt(stokQtylembar) * parseInt(bijiPerLembar));
+        tempBijiSendiri = parseInt(stokQtyBiji);
 
         $('#req_stok_biji').val(tempBijiTujuan);
         $('#req_stok_biji_sendiri').val(tempBijiSendiri);
@@ -1333,6 +1334,19 @@
             $('#req_stok_biji').val(0);
             $('#req_stok_biji_sendiri').val(0);
         });
+    }
+
+    function resetAll() {
+        $("#req_gudang_obat").removeAttr("disabled");
+        $("#id-jenis-obat").val('');
+        getListGudangObat();
+        getListObat();
+        $('#req_nama_obat').val('').trigger('change');
+        $('#req_qty').val('');
+        $('#req_stok').val('');
+        $('#req_stok_apotek').val('');
+        $('#req_qty').val('');
+        $('#body_request').html('');
     }
 
 </script>
