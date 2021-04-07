@@ -19,6 +19,9 @@ public class LogCronAction extends BaseMasterAction{
     private LogCronBo logCronBoProxy;
     private LogCron logCron;
 
+    public static Logger getLogger() {
+        return logger;
+    }
 
     public LogCronBo getLogCronBoProxy() {
         return logCronBoProxy;

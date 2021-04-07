@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
+
+    <entity class="com.neurix.simrs.transaksi.logtransaction.model.ItPgLogTransactionEntity">
+        <table name="it_pg_log_transaction" schema="public" catalog="gomedsys_nmu_prod_mig"/>
+        <attributes>
+            <id name="pgLogTrxId">
+                <column name="pg_log_trx_id"/>
+            </id>
+            <basic name="trxId">
+                <column name="trx_id"/>
+            </basic>
+            <basic name="tipeTrx">
+                <column name="tipe_trx"/>
+            </basic>
+            <basic name="bankName">
+                <column name="bank_name"/>
+            </basic>
+            <basic name="noVirtualAccount">
+                <column name="no_virtual_account"/>
+            </basic>
+            <basic name="noRekamMedik">
+                <column name="no_rekam_medik"/>
+            </basic>
+            <basic name="trxAmount">
+                <column name="trx_amount"/>
+            </basic>
+            <basic name="namePerson">
+                <column name="name_person"/>
+            </basic>
+            <basic name="addressPerson">
+                <column name="address_person"/>
+            </basic>
+            <basic name="phonePerson">
+                <column name="phone_person"/>
+            </basic>
+            <basic name="emailPerson">
+                <column name="email_person"/>
+            </basic>
+            <basic name="status">
+                <column name="status"/>
+            </basic>
+            <basic name="message">
+                <column name="message"/>
+            </basic>
+            <basic name="sentDate">
+                <column name="sent_date"/>
+            </basic>
+            <basic name="receivedDate">
+                <column name="received_date"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

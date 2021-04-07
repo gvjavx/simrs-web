@@ -1,5 +1,5 @@
 ------ 2021-04-06 ===> Create Table Log Transaction
-
+-- Membuat Table
     CREATE TABLE public.it_pg_log_transaction
     (
       pg_log_trx_id bigint NOT NULL,
@@ -31,6 +31,37 @@
     ALTER TABLE public.it_pg_log_transaction
       OWNER TO postgres;
 
+------ 2021-04-05 ===> Create Table Log Cron
+-- Membuat table
+    CREATE TABLE public.it_log_cron
+    (
+        log_cron_id VARCHAR(10) NOT NULL primary key,
+        cron_name VARCHAR(50),
+        cron_date TIMESTAMP,
+        status VARCHAR(20),
+        note VARCHAR(1000),
+
+        flag VARCHAR(1),
+        action VARCHAR(1),
+        created_date timestamp without time zone NOT NULL,
+        created_who VARCHAR(100),
+        last_update timestamp without time zone NOT NULL,
+        last_update_who VARCHAR(100)
+    );
+
+-- Membuat Sequence
+    CREATE SEQUENCE public.seq_log_cron
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        CACHE 1;
+
+----------------------------------------
+----------------------------------------
+----------  SAMPAI SINI SAJA  ----------
+----------------------------------------
+----------------------------------------
 
 ------ 2021-03-21 ===> Memindahkan nilai Tunjangan ke Transaksi Tunjangan Lain
 -- Menambahkan field Tunjangan
@@ -76,12 +107,6 @@
     ADD COLUMN flag_tunj_pemondokan varchar(2);
     ALTER TABLE im_branches
     ADD COLUMN tunj_pemondokan numeric(15,2);
-
-----------------------------------------
-----------------------------------------
-----------  SAMPAI SINI SAJA  ----------
-----------------------------------------
-----------------------------------------
 
 ------ 2021-02-20 ===> Master Kelompok Position
 -- Memberi Flag Multiple Person untuk beberapa kelompok jabatan
