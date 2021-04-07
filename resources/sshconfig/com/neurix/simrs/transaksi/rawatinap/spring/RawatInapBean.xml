@@ -18,11 +18,12 @@
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
     />
-
     <bean id="checkupController" class="com.neurix.simrs.mobileapi.CheckupController"
           p:rawatInapBoProxy-ref="rawatInapBoProxy"
     />
-
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:dokterBoProxy-ref="dokterBoProxy"
+    />
     <bean id="rawatInapBo" class="com.neurix.simrs.transaksi.rawatinap.bo.impl.RawatInapBoImpl"
           p:rawatInapDao-ref="rawatInapDao"
           p:parameterSkorRanapDao-ref="parameterSkorRanapDao"
