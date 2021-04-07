@@ -241,17 +241,46 @@ public class LogCronAction extends BaseMasterAction{
 
     @Override
     public String view() {
-        logger.info("[LogCronAction.add] start process >>>");
-        LogCron addLogCron = new LogCron();
-        setLogCron(addLogCron);
-        setAddOrEdit(true);
-        setAdd(true);
+        logger.info("[LogCronAction.view] start process >>>");
+        String itemId = getId();
+        String itemFlag = getFlag();
+        LogCron viewLogCron = new LogCron();
 
-        HttpSession session = ServletActionContext.getRequest().getSession();
-        session.removeAttribute("listOfResult");
+        if (itemFlag != null ) {
 
-        logger.info("[LogCronAction.add] stop process >>>");
-        return "init_add_user";
+            try {
+                viewLogCron = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = logCronBoProxy.saveErrorMessage(e.getMessage(), "LogCronBO.getById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LogCronAction.view] Error when retrieving delete data,", e1);
+                }
+                logger.error("[LogCronAction.view] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (viewLogCron != null) {
+                setLogCron(viewLogCron);
+            } else {
+                viewLogCron.setLogCronId(itemId);
+                viewLogCron.setFlag(itemFlag);
+                setLogCron(viewLogCron);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            viewLogCron.setLogCronId(itemId);
+            viewLogCron.setFlag(itemFlag);
+            setLogCron(viewLogCron);
+            addActionError("Error, Unable to find data.");
+            return "failure";
+        }
+        setDelete(true);
+        logger.info("[LogCronAction.view] stop process >>>");
+        return "init_view";
     }
 
     @Override

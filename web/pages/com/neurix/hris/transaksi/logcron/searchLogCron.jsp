@@ -125,16 +125,7 @@
                                             Search
                                         </sj:submit>
                                     </td>
-                                    <%--RAKA-05APR2021 ==> Seharusnya tak perlu add log (tak bisa add atau edit)--%>
-                                    <%--<td>--%>
-                                        <%--<s:url var="urlAdd" namespace="/logcron" action="add_logcron" escapeAmp="false">--%>
-                                        <%--</s:url>--%>
-                                        <%--<sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">--%>
-                                            <%--<i class="fa fa-plus"></i>--%>
-                                            <%--Add Notifikasi--%>
-                                        <%--</sj:a>--%>
-                                    <%--</td>--%>
-                                    <%--RAKA-end--%>
+
                                     <td>
                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_logcron"/>'">
                                             <i class="fa fa-refresh"></i> Reset
@@ -151,7 +142,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="550" autoOpen="false"
+                                                   height="600" width="750" autoOpen="false"
                                                    title="Log Transaction">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
@@ -159,25 +150,14 @@
                                         <s:set name="listOfLogCron" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfLogCron" class="table table-condensed table-striped table-hover"
                                                        requestURI="paging_displaytag_master_logcron.action" export="true" id="row" pagesize="14" style="font-size:10">
-                                            <%--<display:column media="html" title="Edit">--%>
-                                                <%--<s:if test="#attr.row.flagYes">--%>
-                                                    <%--<s:url var="urlEdit" namespace="/notifikasi" action="edit_notifikasi" escapeAmp="false">--%>
-                                                        <%--<s:param name="id"><s:property value="#attr.row.notifId"/></s:param>--%>
-                                                        <%--<s:param name="flag"><s:property value="#attr.row.flag"/></s:param>--%>
-                                                    <%--</s:url>--%>
-                                                    <%--<sj:a onClickTopics="showDialogMenu" href="%{urlEdit}">--%>
-                                                        <%--<img border="0" src="<s:url value="/pages/images/icon_edit.ico"/>" name="icon_edit">--%>
-                                                    <%--</sj:a>--%>
-                                                <%--</s:if>--%>
-                                            <%--</display:column>--%>
 
-                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/logcron" action="delete_logcron" escapeAmp="false">
+                                            <display:column media="html" title="View" style="text-align:center;font-size:9">
+                                                <s:url var="urlView" namespace="/logcron" action="view_logcron" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.logCronId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </sj:a>
 
                                             </display:column>

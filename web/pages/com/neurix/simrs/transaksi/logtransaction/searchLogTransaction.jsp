@@ -151,18 +151,6 @@
                                 </td>
                             </tr>
 
-                            <tr>
-                                <td>
-                                    <label class="control-label"><small>Flag :</small></label>
-                                </td>
-                                <td>
-                                    <table>
-                                        <s:select list="#{'N':'Non-Active'}" id="flagTrx" name="logTransaction.flag"
-                                                  headerKey="Y" headerValue="Active" cssClass="form-control" />
-                                    </table>
-                                </td>
-                            </tr>
-
                         </table>
 
                         <br>
@@ -203,18 +191,18 @@
                                         <display:table name="listOfLogTransaction" class="table table-condensed table-striped table-hover"
                                                        requestURI="paging_displaytag_logtransaction.action" export="true" id="row" pagesize="14" style="font-size:10">
 
-                                            <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/logtransaction" action="delete_logtransaction" escapeAmp="false">
+                                            <display:column media="html" title="View" style="text-align:center;font-size:9">
+                                                <s:url var="urlView" namespace="/logtransaction" action="view_logtransaction" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.pgLogTrxId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
-                                                <sj:a onClickTopics="showDialogMenu" href="%{urlViewDelete}">
-                                                    <img border="0" src="<s:url value="/pages/images/icon_trash.ico"/>" name="icon_trash">
+                                                <sj:a onClickTopics="showDialogMenu" href="%{urlView}">
+                                                    <img border="0" src="<s:url value="/pages/images/icon_lup.ico"/>" name="icon_lup">
                                                 </sj:a>
 
                                             </display:column>
                                             <display:column property="pgLogTrxId" sortable="true" title="Log ID"  />
-                                            <display:column property="trxId" sortable="true" title="Transaction ID"  />
+                                            <display:column property="trxId" sortable="true" title="Trx ID"  />
                                             <display:column property="tipeTrx" sortable="true" title="Tipe Transaction"  />
                                             <display:column property="bankName" sortable="true" title="Bank Name"  />
                                             <display:column property="noVirtualAccount" sortable="true" title="No Virtual Account" />
@@ -222,8 +210,8 @@
                                             <display:column property="trxAmount" sortable="true" title="Transaction Amount"  />
                                             <display:column property="namePerson" sortable="true" title="Person Name"  />
                                             <%--<display:column property="addressPerson" sortable="true" title="Address Person"  />--%>
-                                            <display:column property="phonePerson" sortable="true" title="Person Phone"  />
-                                            <display:column property="emailPerson" sortable="true" title="Person Email" />
+                                            <%--<display:column property="phonePerson" sortable="true" title="Person Phone"  />--%>
+                                            <%--<display:column property="emailPerson" sortable="true" title="Person Email" />--%>
                                             <display:column property="status" sortable="true" title="Status"  />
                                             <display:column property="message" sortable="true" title="Message"  />
                                             <display:column property="sentDate" sortable="true" title="Send Date"  />

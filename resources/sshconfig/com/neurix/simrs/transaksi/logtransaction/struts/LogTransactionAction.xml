@@ -74,8 +74,8 @@
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
             <result name="success">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
-            <result name="init_delete">/pages/com/neurix/simrs/transaksi/logtransaction/deleteLogTransaction.jsp</result>
-            <result name="success_save_delete">/pages/com/neurix/simrs/transaksi/logtransaction/deleteLogTransaction.jsp</result>
+            <result name="init_view">/pages/com/neurix/simrs/transaksi/logtransaction/viewLogTransaction.jsp</result>
+            <!--<result name="success_save_delete">/pages/com/neurix/simrs/transaksi/logtransaction/viewLogTransaction.jsp</result>-->
         </action>
 
 

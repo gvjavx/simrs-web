@@ -53,12 +53,12 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formLogTrxDelete" method="post" theme="simple" namespace="/logtransaction" action="saveDelete_logtransaction" cssClass="well form-horizontal">
+            <s:form id="formViewTrxDelete" method="post" theme="simple" namespace="/logtransaction" action="view_logtransaction" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-                <legend align="left">Delete Log Transaction</legend>
+                <legend align="left">Detail Log Transaction</legend>
 
                 <table>
                     <tr>
@@ -242,12 +242,12 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formLogTrxDelete" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-trash"></i>
-                            Delete
-                        </sj:submit>
+                        <%--<sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formLogTrxDelete" id="save" name="save"--%>
+                                   <%--onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"--%>
+                                   <%--onSuccessTopics="successDialog" onErrorTopics="errorDialog" >--%>
+                            <%--<i class="fa fa-trash"></i>--%>
+                            <%--Delete--%>
+                        <%--</sj:submit>--%>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>

@@ -89,12 +89,12 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formDelete" method="post" theme="simple" namespace="/logcron" action="saveDelete_logcron" cssClass="well form-horizontal">
+            <s:form id="formView" method="post" theme="simple" namespace="/logcron" action="view_logcron" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
-                <legend align="left">Delete Log Cron</legend>
+                <legend align="left">Detail Log Cron</legend>
 
                 <table>
                     <tr>
@@ -104,7 +104,7 @@
                     </tr>
                 </table>
 
-                <table >
+                <table width="90%" align="center">
 
                     <tr>
                         <td>
@@ -160,25 +160,16 @@
                         </td>
                         <td>
                             <table>
-                                <s:textarea id="delNoteLog" readonly="true" name="logCron.note" required="true" cssClass="form-control"/>
+                                <s:textarea id="delNoteLog" height="10%" readonly="true" name="logCron.note" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
 
                 </table>
 
-
-
                 <br>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                            <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formDelete" id="save" name="save"
-                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-trash"></i>
-                            Delete
-                        </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
                         </button>

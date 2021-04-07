@@ -159,7 +159,54 @@ public class LogTransactionAction extends BaseMasterAction {
 
     @Override
     public String view() {
-        return null;
+        logger.info("[LogTransactionAction.view] start process >>>");
+
+        BigInteger itemId = new BigInteger(getId());
+        String itemFlag = getFlag();
+        LogTransaction viewLogTrx = new LogTransaction();
+
+        if (itemFlag != null ) {
+
+            try {
+                viewLogTrx = init(itemId, itemFlag);
+            } catch (GeneralBOException e) {
+                Long logId = null;
+                try {
+                    logId = logTransactionBoProxy.saveErrorMessage(e.getMessage(), "LogTransactionBo.getById");
+                } catch (GeneralBOException e1) {
+                    logger.error("[LogTransactionAction.delete] Error when retrieving delete data,", e1);
+                }
+                logger.error("[LogTransactionAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
+                return "failure";
+            }
+
+            if (viewLogTrx != null) {
+                if(viewLogTrx.getReceivedDate() != null) {
+                    viewLogTrx.setStReceivedDate(CommonUtil.convertTimestampToStringLengkap(viewLogTrx.getReceivedDate()));
+                }
+                if(viewLogTrx.getSentDate() != null) {
+                    viewLogTrx.setStSentDate(CommonUtil.convertTimestampToStringLengkap(viewLogTrx.getSentDate()));
+                }
+                setLogTransaction(viewLogTrx);
+            } else {
+                viewLogTrx.setPgLogTrxId(itemId);
+                viewLogTrx.setFlag(itemFlag);
+                setLogTransaction(viewLogTrx);
+                addActionError("Error, Unable to find data with id = " + itemId);
+                return "failure";
+            }
+        } else {
+            viewLogTrx.setPgLogTrxId(itemId);
+            viewLogTrx.setFlag(itemFlag);
+            setLogTransaction(viewLogTrx);
+            addActionError("Error, Unable to find data.");
+            return "failure";
+        }
+        setDelete(true);
+        logger.info("[LogTransactionAction.view] end process <<<");
+
+        return "init_view";
     }
 
     @Override

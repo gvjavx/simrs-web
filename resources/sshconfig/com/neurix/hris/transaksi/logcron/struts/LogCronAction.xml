@@ -74,15 +74,15 @@
             <interceptor-ref name="ivelinStack" />
             <result name="input">/pages/com/neurix/hris/transaksi/logcron/searchLogCron.jsp</result>
             <result name="success">/pages/com/neurix/hris/transaksi/logcron/searchLogCron.jsp</result>
-            <result name="init_delete">/pages/com/neurix/hris/transaksi/logcron/deleteLogCron.jsp</result>
-            <result name="success_save_delete">/pages/com/neurix/hris/transaksi/logcron/deleteLogCron.jsp</result>
+            <result name="init_view">/pages/com/neurix/hris/transaksi/logcron/viewLogCron.jsp</result>
+            <!--<result name="success_save_delete">/pages/com/neurix/hris/transaksi/logcron/deleteLogCron.jsp</result>-->
         </action>
 
 
         <action name="paging_displaytag_master_logcron"
                 class="com.neurix.hris.transaksi.logcron.action.LogCronAction" method="pagingLogcron">
             <interceptor-ref name="defaultStack"/>
-            <result name="success">/pages/com/neurix/hris/transaksi/logcron/SearchLogCron.jsp</result>
+            <result name="success">/pages/com/neurix/hris/transaksi/logcron/searchLogCron.jsp</result>
         </action>
 
     </package>
