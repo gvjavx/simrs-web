@@ -2451,6 +2451,9 @@ CREATE TABLE public.it_simrs_periksa_lab
   last_update TIMESTAMP WITHOUT TIME ZONE
 );
 
+ALTER TABLE it_simrs_upload_hasil_pemeriksaan
+RENAME id_periksa_lab TO id_header_pemeriksaan;
+
 
 
 

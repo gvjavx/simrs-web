@@ -326,14 +326,15 @@
                             <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                             <p id="msg_rad"></p>
                         </div>
-                        <table style="display: none" class="table table-bordered table-striped" id="tabel_lab">
+                        <table style="display: none; font-size: 15px" class="table table-bordered" id="tabel_lab">
                             <thead>
-                            <tr bgcolor="#90ee90">
+                            <tr bgcolor="#90ee90" style="font-weight: bold">
                                 <td>Pemeriksaan</td>
                                 <td>Hasil</td>
-                                <td>Nilai Normal</td>
-                                <td>Satuan</td>
+                                <td align="center">Nilai Normal</td>
+                                <td align="center">Satuan</td>
                                 <td>Keterangan</td>
+                                <td align="center" width="8%">Action</td>
                             </tr>
                             </thead>
                             <tbody id="body_parameter">
@@ -519,7 +520,7 @@
                                 <a href="initForm_periksalab.action" style="margin-top: 25px" class="btn btn-warning"><i
                                         class="fa fa-times"></i> Cancel</a>
                                 <button onclick="conSavePeriksaLab()" style="margin-top: 25px" class="btn btn-success">
-                                    <i class="fa fa-check"></i> Save
+                                    <i class="fa fa-check"></i> Selesai
                                 </button>
                             </div>
                         </div>
@@ -865,6 +866,7 @@
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
 
+    var idHeaderPemeriksaan = '<s:property value="periksaLab.idHeaderPemeriksaan"/>';
     var noCheckup = $('#no_checkup').val();
     var idDetailCheckup = $('#no_detail_checkup').val();
     var idPoli = $('#id_palayanan').val();
@@ -899,13 +901,13 @@
             }
         });
 
-        if (keterangan == "just_lab") {
+        if (keterangan == "Y") {
             $('#btn-add-parameter').show();
         } else {
             $('#btn-add-parameter').hide();
         }
 
-        var isLuar = '<s:property value="periksaLab.isLuar"/>';
+        var isLuar = '<s:property value="periksaLab.isPeriksaLuar"/>';
         if ("Y" == isLuar) {
             getlistParams();
             $('#form_hasil_lab_title').hide();
@@ -949,7 +951,7 @@
 
     function conSavePeriksaLab() {
         var data = $('#tabel_lab').tableToJSON();
-        var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
+        var cekIsKeluar = '<s:property value="periksaLab.isPeriksaLuar"/>';
         var totalTarif = $('#h_total_tarif').val();
 
         var tempHasilLuar = $('.hasil_luar');
@@ -1015,24 +1017,9 @@
         var nip1 = $('#nip_petugas').val();
         var nama2 = $('#nama_validator').val();
         var nip2 = $('#nip_validator').val();
-        var isiParam = $('#tabel_lab').tableToJSON();
         var totalTarif = $('#h_total_tarif').val();
         var keteranganHasil = CKEDITOR.instances['keterangan_hasil_lab'].getData();
-        var cekIsKeluar = '<s:property value="periksaLab.isLuar"/>';
-
-        var jsonData = [];
-        $.each(isiParam, function (i, item) {
-            var idLab = $('#id_periksa_lab_' + i).val();
-            var hasil = $('#hasil_' + i).val();
-            var kesan = $('#kesan_' + i).val();
-            if (hasil != '') {
-                jsonData.push({
-                    'id_periksa_lab': idLab,
-                    'hasil': hasil,
-                    'kesan': kesan,
-                });
-            }
-        });
+        var cekIsKeluar = '<s:property value="periksaLab.isPeriksaLuar"/>';
 
         var finalPetugas = "";
         var finalDokter = "";
@@ -1054,10 +1041,9 @@
         }
 
         var tempHasil = "";
-        if(jsonData.length > 0){
-            tempHasil = JSON.stringify(jsonData);
-        }
+
         var tempDataFinal = {
+            'id_header_pemeriksaan': idHeaderPemeriksaan,
             'id_periksa_lab': idPeriksaLab,
             'keterangan': keterangan,
             'data': JSON.stringify(data),
@@ -1075,7 +1061,7 @@
         var result = JSON.stringify(tempDataFinal);
         $('#waiting_dialog').dialog('open');
         dwr.engine.setAsync(true);
-        PeriksaLabAction.saveEditDokterLab(result, {
+        PeriksaLabAction.selesaiPemeriksaan(result, {
             callback: function (response) {
                 if (response.status == "success") {
                     $('#waiting_dialog').dialog('close');
@@ -1177,15 +1163,12 @@
     }
 
     function listParameter() {
-
         var table = "";
         var data = [];
         var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
-
-        PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
-            data = response;
-            if (data.length > 0) {
-                $.each(data, function (i, item) {
+        PeriksaLabAction.listParameterPemeriksaan(idHeaderPemeriksaan, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
 
                     var pemeriksaan = "";
                     var hasil = "";
@@ -1193,11 +1176,8 @@
                     var acuan = "";
                     var keterangan = "";
 
-                    if (item.namaDetailPeriksa != null) {
-                        pemeriksaan = item.namaDetailPeriksa;
-                    }
-                    if (item.hasil != null) {
-                        hasil = item.hasil;
+                    if (item.namaDetailPemeriksaan != null) {
+                        pemeriksaan = '<div style="margin-left: 10px">'+item.namaDetailPemeriksaan+'</div>';
                     }
                     if (item.satuan != null) {
                         satuan = item.satuan;
@@ -1211,17 +1191,45 @@
                             acuan = item.keteranganAcuanL;
                         }
                     }
-                    if (item.keteranganPeriksa != null) {
-                        keterangan = item.keteranganPeriksa;
+
+                    var jenisPemeriksaan = "";
+                    if(i == 0){
+                        jenisPemeriksaan = '<b>'+item.namaPemeriksaan+'</b><br>';
+                    }else{
+                        if(response[i - 1]["namaPemeriksaan"].toLowerCase() == item.namaPemeriksaan.toLowerCase()){
+                            jenisPemeriksaan = "";
+                        }else{
+                            jenisPemeriksaan = '<b>'+item.namaPemeriksaan+'</b><br>';
+                        }
                     }
+
+                    if (item.keteranganHasil != null) {
+                        keterangan = item.keteranganHasil;
+                    }
+                    if (item.hasil != null) {
+                        hasil = item.hasil;
+                    }
+
+                    var btn = '<button onclick="saveDetail(\''+item.idPeriksaLabDetail+'\', \''+i+'\')" class="btn btn-success"><i class="fa fa-check"></i> Save</button>';
+                    var status = "N";
+                    var disabel = "";
+                    if(hasil != ''){
+                        status = "Y";
+                        btn = '<button onclick="editDetail(\''+item.idPeriksaLabDetail+'\', \''+i+'\')" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</button>';
+                        disabel = 'disabled="true"';
+                    }
+
                     table += "<tr>" +
-                        "<td>" + pemeriksaan +
-                        '<input id="id_periksa_lab_' + i + '" type="hidden" value="' + item.idPeriksaLabDetail + '">' +
+                        "<td style='vertical-align: middle'>" +
+                        jenisPemeriksaan +
+                        pemeriksaan +
+                        '<input id="status_pengisian_' + i + '" type="hidden" value="' + status + '">' +
                         "</td>" +
-                        '<td>' + '<textarea id="kesan_' + i + '" class="form-control" value="' + keterangan + '"/>' + '</td>' +
-                        "<td>" + acuan + "</td>" +
-                        "<td>" + satuan + "</td>" +
-                        '<td>' + '<textarea id="hasil_' + i + '" class="form-control" value="' + hasil + '"/>' + '</td>' +
+                        '<td width="30%">' + '<textarea '+disabel+' oninput="$(this).css(\'border\',\'\')" rows="3" id="hasil_' + i + '" class="form-control">'+hasil+'</textarea>' + '</td>' +
+                        "<td width='10%' align='center' style='vertical-align: middle'>" + acuan + "</td>" +
+                        "<td width='5%' align='center' style='vertical-align: middle'>" + satuan + "</td>" +
+                        '<td width="20%">' + '<textarea '+disabel+' oninput="$(this).css(\'border\',\'\')" rows="3" id="kesan_' + i + '" class="form-control">'+keterangan+'</textarea>' + '</td>' +
+                        '<td align="center" style=\'vertical-align: middle\'>' + '<div id="btn_save_'+i+'">'+btn+'</div>' + '</td>' +
                         "</tr>"
                 });
                 $('#body_parameter').html(table);
@@ -1293,7 +1301,7 @@
     }
 
     function printPeriksaLab() {
-        window.open('printLab_periksalab.action?id=' + idDetailCheckup + '&lab=' + idPeriksaLab + '&ket=label', "_blank");
+        window.open('printLab_periksalab.action?id=' + idDetailCheckup + '&lab=' + idHeaderPemeriksaan + '&ket=label', "_blank");
     }
 
     function addUpload(jen, idset) {
@@ -1357,11 +1365,11 @@
     }
 
     function getlistParams() {
-        PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
+        PeriksaLabAction.listParameterPemeriksaan(idHeaderPemeriksaan, function (response) {
             if (response.length > 0) {
                 var set = "";
                 $.each(response, function (i, item) {
-                    set += '<li>' + item.namaDetailPeriksa + '</li>';
+                    set += '<li>' + item.namaDetailPemeriksaan + '</li>';
                 });
                 $('#params').html(set);
             }
@@ -1399,7 +1407,7 @@
                     var eks = cekEks(base64File);
                     var base = replaceFile(base64File);
                     var data = {
-                        'id_periksa_lab': idPeriksaLab,
+                        'id_header_pemeriksaan': idHeaderPemeriksaan,
                         'byte': base,
                         'id_periksa_detail': "",
                         'nama_periksa': id,
@@ -1450,6 +1458,49 @@
             res = "pdf";
         }
         return res;
+    }
+
+    function saveDetail(id, index){
+        var hasil = $('#hasil_'+index).val();
+        var keterangan = $('#kesan_'+index).val();
+        var ket = "-";
+        if(keterangan != ''){
+            ket = keterangan;
+        }
+        if(hasil != ''){
+            var data = {
+                'id_header_pemeriksaan': idHeaderPemeriksaan,
+                'id_periksa_detail': id,
+                'hasil': hasil,
+                'keterangan': ket
+            }
+            var result = JSON.stringify(data);
+
+            $('#btn_save_'+index).html('<i class="fa fa-circle-o-notch fa-spin"></i> Menyimpan...');
+            dwr.engine.setAsync(true);
+            PeriksaLabAction.saveDetailParameter(result, {
+                callback:function (response) {
+                    if (response.status == "success") {
+                        $('#hasil_'+index).attr('disabled', true);
+                        $('#kesan_'+index).attr('disabled', true);
+                        $('#btn_save_'+index).html('<button onclick="editDetail(\''+id+'\', \''+index+'\')" class="btn btn-warning"><i class="fa fa-edit"></i> Edit</button>');
+                        listParameter();
+                    }else{
+                        $('#warning_rad').show().fadeOut(5000);
+                        $('#msg_rad').text(response.msg);
+                    }
+                }
+            });
+        }else{
+            $('#hasil_'+index).focus();
+            $('#hasil_'+index).css('border','red solid 1px');
+        }
+    }
+
+    function editDetail(id, index){
+        $('#hasil_'+index).attr('disabled', false);
+        $('#kesan_'+index).attr('disabled', false);
+        $('#btn_save_'+index).html('<button onclick="saveDetail(\''+id+'\', \''+index+'\')" class="btn btn-success"><i class="fa fa-check"></i> Save</button>');
     }
 
 

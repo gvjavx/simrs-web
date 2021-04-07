@@ -165,7 +165,7 @@
                                 <td>Tanggal Masuk</td>
                                 <td>ID Detail Checkup</td>
                                 <td>Nama Pasien</td>
-                                <td>Pemeriksaan</td>
+                                <%--<td>Pemeriksaan</td>--%>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -175,14 +175,14 @@
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td>
-                                        <s:if test='#row.isLuar == "Y"'>
-                                            <s:property value="namaLabLuar"/>
-                                        </s:if>
-                                        <s:else>
-                                            <s:property value="labName"/>
-                                        </s:else>
-                                    </td>
+                                    <%--<td>--%>
+                                        <%--<s:if test='#row.isLuar == "Y"'>--%>
+                                            <%--<s:property value="namaLabLuar"/>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<s:property value="labName"/>--%>
+                                        <%--</s:else>--%>
+                                    <%--</td>--%>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa == "3"'>
                                             <a target="_blank" href="printLab_periksalab.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
@@ -194,8 +194,8 @@
                                                 <s:if test='#row.statusBayar == "Y"'>
                                                     <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
                                                         <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                        <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                                        <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                        <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
+                                                        <s:param name="ket"><s:property value="isJustLab"/></s:param>
                                                     </s:url>
                                                     <s:a href="%{add_periksa_lab}">
                                                         <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">
@@ -208,8 +208,8 @@
                                             <s:else>
                                                 <s:url var="add_periksa_lab" namespace="/periksalab" action="add_periksalab" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                    <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
-                                                    <s:param name="ket"><s:property value="keterangan"/></s:param>
+                                                    <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
+                                                    <s:param name="ket"><s:property value="isJustLab"/></s:param>
                                                 </s:url>
                                                 <s:a href="%{add_periksa_lab}">
                                                     <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer; ">

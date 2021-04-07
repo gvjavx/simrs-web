@@ -113,6 +113,61 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String idPemeriksaan;
     private String isJustLab;
     private String isPeriksaLuar;
+    private String idDetailPemeriksaan;
+    private String namaDetailPemeriksaan;
+
+    private String keteranganAcuanL;
+    private String keteranganAcuanP;
+    private String keteranganHasil;
+    private String satuan;
+
+    public String getSatuan() {
+        return satuan;
+    }
+
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
+
+    public String getKeteranganAcuanP() {
+        return keteranganAcuanP;
+    }
+
+    public void setKeteranganAcuanP(String keteranganAcuanP) {
+        this.keteranganAcuanP = keteranganAcuanP;
+    }
+
+    public String getKeteranganHasil() {
+        return keteranganHasil;
+    }
+
+    public void setKeteranganHasil(String keteranganHasil) {
+        this.keteranganHasil = keteranganHasil;
+    }
+
+    public String getKeteranganAcuanL() {
+        return keteranganAcuanL;
+    }
+
+    public void setKeteranganAcuanL(String keteranganAcuanL) {
+        this.keteranganAcuanL = keteranganAcuanL;
+    }
+
+    public String getIdDetailPemeriksaan() {
+        return idDetailPemeriksaan;
+    }
+
+    public void setIdDetailPemeriksaan(String idDetailPemeriksaan) {
+        this.idDetailPemeriksaan = idDetailPemeriksaan;
+    }
+
+    public String getNamaDetailPemeriksaan() {
+        return namaDetailPemeriksaan;
+    }
+
+    public void setNamaDetailPemeriksaan(String namaDetailPemeriksaan) {
+        this.namaDetailPemeriksaan = namaDetailPemeriksaan;
+    }
 
     public String getIsPeriksaLuar() {
         return isPeriksaLuar;

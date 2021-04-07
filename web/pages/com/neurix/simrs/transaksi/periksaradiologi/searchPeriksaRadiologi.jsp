@@ -165,7 +165,7 @@
                                 <td>Tanggal Masuk</td>
                                 <td>ID Detail Checkup</td>
                                 <td>Nama Pasien</td>
-                                <td>Pemeriksaan</td>
+                                <%--<td>Pemeriksaan</td>--%>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -175,17 +175,17 @@
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td>
-                                        <s:if test='#row.isLuar == "Y"'>
-                                            <s:property value="namaLabLuar"/>
-                                        </s:if>
-                                        <s:else>
-                                            <s:property value="labName"/>
-                                        </s:else>
-                                    </td>
+                                    <%--<td>--%>
+                                        <%--<s:if test='#row.isLuar == "Y"'>--%>
+                                            <%--<s:property value="namaLabLuar"/>--%>
+                                        <%--</s:if>--%>
+                                        <%--<s:else>--%>
+                                            <%--<s:property value="labName"/>--%>
+                                        <%--</s:else>--%>
+                                    <%--</td>--%>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa == "3"'>
-                                            <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
+                                            <a target="_blank" href="printRadiologi_radiologi.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idHeaderPemeriksaan"/>">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
                                             </a>
                                         </s:if>
@@ -194,7 +194,7 @@
                                                 <s:if test='#row.statusBayar == "Y"'>
                                                     <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                         <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                        <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
+                                                        <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
                                                         <s:param name="ket"><s:property value="keterangan"/></s:param>
                                                     </s:url>
                                                     <s:a href="%{add_periksa_radiologi}">
@@ -208,7 +208,7 @@
                                             <s:else>
                                                 <s:url var="add_periksa_radiologi" namespace="/radiologi" action="add_radiologi" escapeAmp="false">
                                                     <s:param name="id"><s:property value="idDetailCheckup"/></s:param>
-                                                    <s:param name="lab"><s:property value="idPeriksaLab"/></s:param>
+                                                    <s:param name="lab"><s:property value="idHeaderPemeriksaan"/></s:param>
                                                     <s:param name="ket"><s:property value="keterangan"/></s:param>
                                                 </s:url>
                                                 <s:a href="%{add_periksa_radiologi}">

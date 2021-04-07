@@ -1119,19 +1119,25 @@ public class RawatInapAction extends BaseMasterAction {
 
         if (checkup != null) {
 
-            PeriksaLab periksalb = new PeriksaLab();
+            List<PeriksaLab> periksaLabList = new ArrayList<>();
+            PeriksaLab labData = new PeriksaLab();
+            labData.setIdHeaderPemeriksaan(lab);
             try {
-                periksalb = periksaLabBoProxy.getNamaLab(lab);
+                periksaLabList = periksaLabBoProxy.getByCriteriaHeaderPemeriksaan(labData);
             } catch (HibernateException e) {
                 logger.error("Found Error " + e.getMessage());
             }
 
-            if (periksalb.getIdPeriksaLab() != null) {
-                if ("lab".equalsIgnoreCase(tipe)) {
-                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
-                } else {
-                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
-                }
+            if(periksaLabList.size() > 0) {
+                labData = periksaLabList.get(0);
+            }
+
+            if ("lab".equalsIgnoreCase(tipe)) {
+                reportParams.put("title", "Hasil Periksa Lab");
+                reportParams.put("divisi", "Laboratorium");
+            } else {
+                reportParams.put("title", "Hasil Periksa Radiologi");
+                reportParams.put("divisi", "Radiologi");
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -1157,14 +1163,15 @@ public class RawatInapAction extends BaseMasterAction {
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
 
-            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
-            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
-            reportParams.put("idPetugas", periksalb.getIdPetugas());
-            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
-            reportParams.put("idValidator", periksalb.getIdValidator());
-            reportParams.put("namaValidator", periksalb.getNamaValidator());
-            reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("ttdValidator", periksalb.getTtdValidator());
+            reportParams.put("idDokterPengirim", labData.getIdDokterPengirim());
+            reportParams.put("dokterPengirim", labData.getDokterPengirim());
+            reportParams.put("idPetugas", labData.getIdPetugas());
+            reportParams.put("namaPetugas", labData.getNamaPetugas());
+            reportParams.put("idValidator", labData.getIdValidator());
+            reportParams.put("namaValidator", labData.getNamaValidator());
+            reportParams.put("ttdPetugas", labData.getTtdPetugas());
+            reportParams.put("ttdValidator", labData.getTtdValidator());
+            reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true));
 
             try {
                 preDownload();

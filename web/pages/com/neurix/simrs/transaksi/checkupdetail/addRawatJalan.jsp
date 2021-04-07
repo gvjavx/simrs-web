@@ -909,7 +909,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Order</td>
                                 <td>Jenis Penunjang</td>
-                                <td>Pemeriksaan</td>
+                                <%--<td>Pemeriksaan</td>--%>
                                 <td>Status</td>
                                 <td align="center" width="10%">Action</td>
                             </tr>
@@ -2416,10 +2416,11 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered" style="font-size: 13px">
                         <thead>
-                        <td>Pemeriksaan</td>
                         <td>Jenis Penunjang</td>
+                        <td>Jenis Pemeriksaan</td>
+                        <td>Parameter</td>
                         <tbody id="body_detail_lab">
                         </tbody>
                     </table>
@@ -2943,7 +2944,7 @@
         listDokter();
         listTindakan();
         listDiagnosa();
-        // listLab();
+        listLab();
         listResepPasien();
         listAlergi();
         hitungStatusBiaya();

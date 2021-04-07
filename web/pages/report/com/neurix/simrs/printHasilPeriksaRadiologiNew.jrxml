@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaRadiollogiNew" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="0.9090909090909163"/>
+	<property name="ireport.zoom" value="1.3310000000000126"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="85"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -52,37 +52,32 @@
 	<parameter name="namaDpjp" class="java.lang.String"/>
 	<parameter name="idDpjp" class="java.lang.String"/>
 	<parameter name="jenisPemeriksaan" class="java.lang.String"/>
+	<parameter name="umur" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT
 a.id_detail_checkup,
-a.id_periksa_lab,
-b.id_periksa_lab_detail,
-b.nama_detail_periksa,
-CASE
- WHEN d.jenis_kelamin = 'P' THEN b.keterangan_acuan_p
- WHEN d.jenis_kelamin = 'L' THEN b.keterangan_acuan_l
- ELSE NULL
-END as keterangan_acuan,
-b.satuan,
-b.hasil,
-b.keterangan_periksa,
-b.last_update
-FROM it_simrs_periksa_lab a
-INNER JOIN it_simrs_periksa_lab_detail b ON a.id_periksa_lab = b.id_periksa_lab
-INNER JOIN it_simrs_header_detail_checkup c ON a.id_detail_checkup = c.id_detail_checkup
-INNER JOIN it_simrs_header_checkup d ON c.no_checkup = d.no_checkup
-WHERE a.id_periksa_lab = $P{reportParams.idPeriksaLab}
-AND b.flag = 'Y']]>
+b.nama_pemeriksaan,
+c.nama_detail_periksa,
+c.hasil,
+c.keterangan_periksa,
+a.catatan,
+to_char(c.last_update, 'DD-MM-YYYY HH24:MI') as last_update
+FROM it_simrs_header_pemeriksaan a
+INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan
+INNER JOIN it_simrs_periksa_lab_detail c ON b.id_periksa_lab = c.id_periksa_lab
+INNER JOIN it_simrs_header_detail_checkup d ON a.id_detail_checkup = d.id_detail_checkup
+INNER JOIN it_simrs_header_checkup e ON d.no_checkup = e.no_checkup
+WHERE a.id_header_pemeriksaan = $P{reportParams.idPeriksaLab}
+AND a.flag = 'Y'
+ORDER BY b.id_pemeriksaan, id_lab_detail ASC]]>
 	</queryString>
 	<field name="id_detail_checkup" class="java.lang.String"/>
-	<field name="id_periksa_lab" class="java.lang.String"/>
-	<field name="id_periksa_lab_detail" class="java.lang.String"/>
+	<field name="nama_pemeriksaan" class="java.lang.String"/>
 	<field name="nama_detail_periksa" class="java.lang.String"/>
-	<field name="keterangan_acuan" class="java.lang.String"/>
-	<field name="satuan" class="java.lang.String"/>
 	<field name="hasil" class="java.lang.String"/>
 	<field name="keterangan_periksa" class="java.lang.String"/>
-	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="catatan" class="java.lang.String"/>
+	<field name="last_update" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -90,9 +85,9 @@ AND b.flag = 'Y']]>
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="555" splitType="Stretch">
+		<band height="422" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="202" width="381" height="246" isPrintWhenDetailOverflows="true" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="202" width="381" height="28" isPrintWhenDetailOverflows="true" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
 				<box leftPadding="0"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
 					<font size="8"/>
@@ -143,7 +138,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="274" y="100" width="5" height="15" uuid="725e93d7-7404-4ef8-a696-10c6d435c94e"/>
+				<reportElement x="274" y="115" width="5" height="15" uuid="725e93d7-7404-4ef8-a696-10c6d435c94e"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -209,7 +204,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{reportParams.nik} == null ? "" : $P{reportParams.nik}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="279" y="102" width="102" height="28" uuid="16d2202a-f971-4d52-aee5-8348b4afee9b"/>
+				<reportElement x="279" y="115" width="102" height="28" uuid="16d2202a-f971-4d52-aee5-8348b4afee9b"/>
 				<box topPadding="1" leftPadding="1"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
@@ -217,7 +212,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{reportParams.desa} == null ? "" : $P{reportParams.desa}+", "+$P{reportParams.kecamatan}+", "+$P{reportParams.kabupaten}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="214" y="100" width="60" height="15" uuid="9144e08b-73cd-46ab-aca1-becda7ff2e6c"/>
+				<reportElement x="214" y="115" width="60" height="15" uuid="9144e08b-73cd-46ab-aca1-becda7ff2e6c"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -254,7 +249,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{title} == null ? "" : $P{title}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="279" y="130" width="102" height="30" uuid="d629158a-a7ad-426c-9736-a08c57820adc"/>
+				<reportElement x="279" y="143" width="102" height="30" uuid="d629158a-a7ad-426c-9736-a08c57820adc"/>
 				<box topPadding="3" leftPadding="1"/>
 				<textElement verticalAlignment="Top">
 					<font size="8"/>
@@ -262,7 +257,7 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{reportParams.diagnosa} == null ? "" : $P{reportParams.diagnosa}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement x="274" y="130" width="5" height="15" uuid="6d49b789-7643-44a1-a5f1-e273ab2109d1"/>
+				<reportElement x="274" y="143" width="5" height="15" uuid="6d49b789-7643-44a1-a5f1-e273ab2109d1"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
@@ -340,17 +335,17 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[Nomor RM]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="214" y="130" width="60" height="15" uuid="127693a0-e5a5-44b6-93d6-76b34d07f4b6"/>
+				<reportElement x="214" y="143" width="60" height="15" uuid="127693a0-e5a5-44b6-93d6-76b34d07f4b6"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Diagnosa]]></text>
 			</staticText>
 			<line>
-				<reportElement x="284" y="539" width="87" height="1" uuid="c1ad4a7e-d7fe-4b69-aae7-00f7bea8e582"/>
+				<reportElement x="266" y="406" width="87" height="1" uuid="c1ad4a7e-d7fe-4b69-aae7-00f7bea8e582"/>
 			</line>
 			<textField>
-				<reportElement x="266" y="524" width="115" height="15" uuid="d2813557-9183-47f2-b301-1ad223e6c63a"/>
+				<reportElement x="248" y="391" width="115" height="15" uuid="d2813557-9183-47f2-b301-1ad223e6c63a"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -358,18 +353,18 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{namaPetugas} == null ? "" : $P{namaPetugas}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="277" y="474" width="94" height="50" uuid="02dc6ddb-e3e2-40e9-acfc-cb4329c1673d"/>
+				<reportElement x="259" y="341" width="94" height="50" uuid="02dc6ddb-e3e2-40e9-acfc-cb4329c1673d"/>
 				<imageExpression><![CDATA[$P{reportParams.ttdPetugas}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="266" y="460" width="115" height="14" uuid="f39c5816-6fd3-4063-bf89-91d6df0d55e8"/>
+				<reportElement x="248" y="327" width="115" height="14" uuid="f39c5816-6fd3-4063-bf89-91d6df0d55e8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pemeriksa]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="266" y="540" width="115" height="15" uuid="45c7b2ea-8aaa-474f-8afa-e09ad817f163"/>
+				<reportElement x="248" y="407" width="115" height="15" uuid="45c7b2ea-8aaa-474f-8afa-e09ad817f163"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -382,7 +377,7 @@ AND b.flag = 'Y']]>
 				<textElement verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{jenisPemeriksaan} == null ? "" : $P{jenisPemeriksaan}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{nama_pemeriksaan} == null ? "" : $F{nama_pemeriksaan}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="0" y="130" width="89" height="15" uuid="3d5f3289-cbdc-4228-9c12-2a44b8f81d21"/>
@@ -434,6 +429,28 @@ AND b.flag = 'Y']]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{last_update} == null ? "" : $F{last_update}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="274" y="100" width="5" height="15" uuid="a316df1f-2b7f-4818-8271-85aa3c694b6e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="279" y="100" width="102" height="15" uuid="36d825d9-46ff-4f54-863b-3f494bfaf6dd"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{umur} == null ? "" : $P{umur}+" Tahun"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="214" y="100" width="60" height="15" uuid="0a75f6d8-b26c-4988-9050-9709a0904555"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umur]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

@@ -25,8 +25,8 @@ public class UploadHasilPeriksaDao extends GenericDao<ItSimrsUploadHasilPemeriks
             if (mapCriteria.get("id_upload_hasil_pemeriksaan")!= null) {
                 criteria.add(Restrictions.eq("idUploadHasilPemeriksaan", (String) mapCriteria.get("id_upload_hasil_pemeriksaan")));
             }
-            if (mapCriteria.get("id_periksa_lab")!= null) {
-                criteria.add(Restrictions.eq("idPeriksaLab", (String) mapCriteria.get("id_periksa_lab")));
+            if (mapCriteria.get("id_header_pemeriksaan")!= null) {
+                criteria.add(Restrictions.eq("idHeaderPemeriksaan", (String) mapCriteria.get("id_header_pemeriksaan")));
             }
             if (mapCriteria.get("tipe")!= null) {
                 criteria.add(Restrictions.eq("tipe", (String) mapCriteria.get("tipe")));

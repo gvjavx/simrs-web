@@ -947,6 +947,7 @@ function showModal(select) {
 
     } else if (select == 4) {
         dokterDpjp();
+        $('#body_pemeriksaan').html('');
         $('#is_luar, #is_pending_lab').prop('checked', false);
         $('#is_luar, #is_pending_lab').attr('disabled', false);
         $('#form_pending, #form_lab_luar').hide();
@@ -1478,6 +1479,7 @@ function saveLab(id) {
     var idPemeriksaan = $('.id_jenis_pemeriksaan');
     var parameterPemeriksaan = $('.nama_parameter_pemeriksaan');
     var idParameter = $('.id_parameter_pemeriksaan');
+
     if(table > 0){
         var saveCek = false;
         var waktu = "";
@@ -1490,6 +1492,11 @@ function saveLab(id) {
             saveCek = true;
         }
         if(saveCek){
+
+            if(id != ''){
+                ttd = false;
+            }
+
             if(!ttd){
                 var pemeriksan = [];
                 $.each(namaPemeriksaan, function (i, item) {
@@ -1533,7 +1540,8 @@ function saveLab(id) {
                     var data = {
                         'id_header_pemeriksaan': id,
                         'list_pemeriksaan': JSON.stringify(pemeriksan),
-                        'is_luar': isLuar
+                        'is_luar': isLuar,
+                        'id_kategori_lab': idKategori
                     }
                     var result = JSON.stringify(data);
                     $('#save_lab').hide();
@@ -1622,7 +1630,7 @@ function listLab() {
                 var tanggal = item.createdDate;
                 var dateFormat = converterDate(new Date(tanggal));
                 var btn = '';
-                var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idPeriksaLab + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
+                var crn = '<img border="0" class="hvr-grow" onclick="detailLab(\'' + item.idHeaderPemeriksaan + '\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-search-25.png" style="cursor: pointer;">';
                 var tipe = "";
                 var dalam = '';
                 var luar = '';
@@ -1644,11 +1652,11 @@ function listLab() {
                 }
 
                 if (item.uploadDalam.length > 0) {
-                    dalam = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idPeriksaLab + '\',\'dalam\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    dalam = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idHeaderPemeriksaan + '\',\'dalam\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                     hiddeDalam = JSON.stringify(item.uploadDalam);
                 }
                 if (item.uploadLuar.length > 0) {
-                    luar = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idPeriksaLab + '\',\'luar\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                    luar = '<img border="0" class="hvr-grow" onclick="showHasil(\'' + item.idHeaderPemeriksaan + '\',\'luar\',\'' + item.kategoriLabName + '\')" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                     hiddeLuar = JSON.stringify(item.uploadLuar);
                 }
 
@@ -1661,18 +1669,18 @@ function listLab() {
                 }
 
                 if ("Pending" == item.statusPeriksaName) {
-                    btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
                 } else if ("Selesai" == item.statusPeriksaName) {
-                    btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idPeriksaLab + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
                 } else if ("Antrian" == item.statusPeriksaName) {
-                    btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idPeriksaLab + '\',\'' + item.idLab + '\',\'' + item.idKategoriLab + '\',\'' + item.kategoriLabName + '\',\'' + item.isLuar + '\', \'' + item.namaLabLuar + '\',\'' + item.statusPeriksaName + '\', \'' + tanggal + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
+                    btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idHeaderPemeriksaan + '\', \'' + item.idKategoriLab + '\', \'' + item.isPeriksaLuar + '\', \'' + item.statusPeriksaName + '\', \'' + tanggal + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 }
 
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + item.kategoriLabName + "</td>" +
-                        "<td>" + lab + "</td>" +
+                        // "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + btn + "</td>" +
                         "</tr>";
@@ -1680,11 +1688,11 @@ function listLab() {
                     table += "<tr>" +
                         "<td>" +
                         dateFormat +
-                        '<textarea style="display: none" id="dalam_' + item.idPeriksaLab + '">' + hiddeDalam + '</textarea>' +
-                        '<textarea style="display: none" id="luar_' + item.idPeriksaLab + '">' + hiddeLuar + '</textarea>' +
+                        '<textarea style="display: none" id="dalam_' + item.idHeaderPemeriksaan + '">' + hiddeDalam + '</textarea>' +
+                        '<textarea style="display: none" id="luar_' + item.idHeaderPemeriksaan + '">' + hiddeLuar + '</textarea>' +
                         "</td>" +
                         "<td>" + item.kategoriLabName + "</td>" +
-                        "<td>" + lab + "</td>" +
+                        // "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + btn + dalam + luar + crn + "</td>" +
                         "</tr>";
@@ -1961,12 +1969,14 @@ function editDiagnosa(id, idDiagnosa, jenis, ket) {
     $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 }
 
-function editLab(id, idLab, idKategoriLab, kategoriName, isLuar, namaLabLuar, isPending, tanggal) {
+function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal) {
+    console.log(isLuar);
     $('#form_ttd').hide();
     $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
     $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
     $('#lab_kategori').val(idKategoriLab).trigger('change').attr('disabled', true);
-    if ("Pending" == isPending) {
+    $('#body_pemeriksaan').html('');
+    if ("Pending" == statusPeriksa) {
         $('#form_is_pending').show();
         var tgl = converterDate(new Date(tanggal));
         var time = converterTime(new Date(tanggal));
@@ -1989,64 +1999,147 @@ function editLab(id, idLab, idKategoriLab, kategoriName, isLuar, namaLabLuar, is
         $('#form_is_luar').show();
         $('#form_lab_luar').show();
         $('#form_lab_dalam').hide();
-        var idParameter = "";
-        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-            if (response.length > 0) {
-                var temp = "";
-                $.each(response, function (i, item) {
-                    var count = i;
-                    var idROw = 'par_' + count;
-                    var onclick = '<div onclick="delParamrs(\'' + idROw + '\')" class="input-group-addon" style="background-color: #a94442; color: white; cursor: pointer">\n' +
-                        '<i class="fa fa-trash"></i>\n' +
-                        '</div>\n';
-                    if (i == 0) {
-                        onclick = '<div onclick="addParameter()" class="input-group-addon" style="background-color: #5cb85c; color: white; cursor: pointer">\n' +
-                            '<i class="fa fa-plus"></i>\n' +
-                            '</div>';
-                    }
-                    temp += '<div class="input-group" style="margin-top: 7px;" id="' + idROw + '">\n' +
-                        '<input id="lab_parameter_luar_' + count + '" class="form-control parameter_luar" value="' + item.namaDetailPeriksa + '" \n' +
-                        'placeholder="masukkan parameter ' + (parseInt(count) + parseInt(1)) + '">\n' + onclick +
-                        '</div>';
-                });
-                $('#params_luar').html(temp);
-            }
-        });
-        $('#lab_luar').val(namaLabLuar);
     } else {
         $('#is_luar').attr('disabled', true);
         $('#is_luar').attr('checked', false);
         $('#form_is_luar').hide();
         $('#form_lab_luar').hide();
         $('#form_lab_dalam').show();
-        var idParameter = [];
-        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
-            if (response.length > 0) {
-                $.each(response, function (i, item) {
-                    idParameter.push(item.idLabDetail);
-                });
-            }
+    }
+
+    var tempPemeriksaan = "";
+    var tempPemeriksa = "";
+    var tempDetail = "";
+    var tempIdPemeriksa = "";
+    var tempIdDetail = "";
+    PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
+        if (response.length > 0) {
+            $.each(response, function (i, item) {
+                if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                    tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
+                    if(tempPemeriksa != ''){
+                        tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
+                        tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                    }else{
+                        tempPemeriksa = item.namaPemeriksaan;
+                        tempIdPemeriksa = item.idPemeriksaan;
+                    }
+                }
+
+                if(i == 0){
+                    tempDetail = item.namaDetailPemeriksaan;
+                    tempIdDetail = item.idDetailPemeriksaan;
+                }else{
+                    if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
+                        tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                    }else{
+                        tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                    }
+                }
+            });
+        }else{
+            $('#body_pemeriksaan').html('');
+        }
+    });
+
+    if(tempPemeriksa != '' && tempDetail != ''){
+        var templ = tempPemeriksa.split("=");
+        var temp2 = tempDetail.split("=");
+        var temp3 = tempIdPemeriksa.split("=");
+        var temp4 = tempIdDetail.split("=");
+        var row = "";
+        $.each(templ, function (i, item) {
+            var tempParameter = temp2[i].split("#");
+            var tempParameterLi = "";
+            $.each(tempParameter, function (i, item) {
+                tempParameterLi += '<li>'+item+'</li>';
+            });
+            row += '<tr id="row_'+i+'">' +
+                '<td>' +
+                item +
+                '<input type="hidden" class="nama_jenis_pemeriksaan" value="'+item+'">'+
+                '<input type="hidden" class="id_jenis_pemeriksaan" value="'+temp3[i]+'">'+
+                '<input type="hidden" class="nama_parameter_pemeriksaan" value="'+temp2[i]+'">'+
+                '<input type="hidden" class="id_parameter_pemeriksaan" value="'+temp4[i]+'">'+
+                '</td>'+
+                '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
+                '<td align="center"><img onclick="delPemeriksaan(\'row_'+i+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
+                '</tr>';
         });
-        $('#lab_lab').val(idLab).trigger('change').attr('disabled', true);
-        $('#lab_parameter').val(idParameter).trigger('change');
+        if(row != ''){
+            $('#body_pemeriksaan').html(row);
+        }
     }
     $('#modal-lab').modal({show: true, backdrop: 'static'});
 }
 
 function detailLab(id, kategoriName) {
-    var idParameter = [];
-    var body = [];
+    var tempPemeriksaan = "";
+    var tempPemeriksa = "";
+    var tempDetail = "";
+    var tempIdPemeriksa = "";
+    var tempIdDetail = "";
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
-                body += '<tr>' +
-                    '<td>' + item.namaDetailPeriksa + '</td>' +
-                    '<td>' + kategoriName + '</td>' +
-                    '</tr>';
+                if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                    tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
+                    if(tempPemeriksa != ''){
+                        tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
+                        tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                    }else{
+                        tempPemeriksa = item.namaPemeriksaan;
+                        tempIdPemeriksa = item.idPemeriksaan;
+                    }
+                }
+
+                if(i == 0){
+                    tempDetail = item.namaDetailPemeriksaan;
+                    tempIdDetail = item.idDetailPemeriksaan;
+                }else{
+                    if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
+                        tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                    }else{
+                        tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                    }
+                }
             });
-            $('#body_detail_lab').html(body);
+        }else{
+            $('#body_pemeriksaan').html('');
         }
     });
+
+    if(tempPemeriksa != '' && tempDetail != '') {
+        var templ = tempPemeriksa.split("=");
+        var temp2 = tempDetail.split("=");
+        var temp3 = tempIdPemeriksa.split("=");
+        var temp4 = tempIdDetail.split("=");
+        var row = "";
+        $.each(templ, function (i, item) {
+            var tempParameter = temp2[i].split("#");
+            var tempParameterLi = "";
+            $.each(tempParameter, function (i, item) {
+                tempParameterLi += '<li>' + item + '</li>';
+            });
+
+            var pj = "";
+            if(i == 0){
+                pj = kategoriName;
+            }
+            row += '<tr id="row_' + i + '">' +
+                '<td>' + pj + '</td>' +
+                '<td>' + item + '</td>' +
+                '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
+                '</tr>';
+        });
+        if (row != '') {
+            $('#body_detail_lab').html(row);
+        }
+    }
     $('#modal-detail_lab').modal({show: true, backdrop: 'static'});
 }
 
@@ -4485,12 +4578,12 @@ function addListPemeriksaan(){
         if(idParameterLuar[0].value != ''){
             $.each(idParameterLuar, function (i, item) {
                 if(item.value != ''){
-                    if(tempPemeriksaan != ''){
-                        tempPemeriksaan = tempPemeriksaan+'#'+item;
+                    if(tempParameter != ''){
+                        tempParameter = tempParameter+'#'+item.value;
                     }else{
-                        tempPemeriksaan = item;
+                        tempParameter = item.value;
                     }
-                    tempPemeriksanLi += '<li>'+item.value+'</li>';
+                    tempParameterLi += '<li>'+item.value+'</li>';
                 }
             });
         }
@@ -4516,6 +4609,9 @@ function addListPemeriksaan(){
             });
         }
     }
+
+
+
     if(tempPemeriksaan && tempParameter != ''){
         var cek = false;
         $.each($('.nama_jenis_pemeriksaan'), function (i, item) {
