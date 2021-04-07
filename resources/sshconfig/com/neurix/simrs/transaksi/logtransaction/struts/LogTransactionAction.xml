@@ -72,17 +72,17 @@
         <action name="*_logtransaction"
                 class="com.neurix.simrs.transaksi.logtransaction.action.LogTransactionAction" method="{1}">
             <interceptor-ref name="ivelinStack" />
-            <!--<result name="input">/pages/com/neurix/hris/transaksi/logcron/searchLogCron.jsp</result>-->
-            <!--<result name="success">/pages/com/neurix/hris/transaksi/logcron/searchLogCron.jsp</result>-->
-            <!--<result name="init_delete">/pages/com/neurix/hris/transaksi/logcron/deleteLogCron.jsp</result>-->
-            <!--<result name="success_save_delete">/pages/com/neurix/hris/transaksi/logcron/deleteLogCron.jsp</result>-->
+            <result name="input">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
+            <result name="success">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
+            <result name="init_delete">/pages/com/neurix/simrs/transaksi/logtransaction/deleteLogTransaction.jsp</result>
+            <result name="success_save_delete">/pages/com/neurix/simrs/transaksi/logtransaction/deleteLogTransaction.jsp</result>
         </action>
 
 
         <action name="paging_displaytag_logtransaction"
                 class="com.neurix.simrs.transaksi.logtransaction.action.LogTransactionAction" method="pagingLogTransaction">
             <interceptor-ref name="defaultStack"/>
-            <!--<result name="success">/pages/com/neurix/hris/transaksi/logcron/SearchLogCron.jsp</result>-->
+            <result name="success">/pages/com/neurix/simrs/transaksi/logtransaction/searchLogTransaction.jsp</result>
         </action>
 
     </package>

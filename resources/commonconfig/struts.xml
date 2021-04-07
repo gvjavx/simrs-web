@@ -237,6 +237,8 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanUnitAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/ApprovePermintaanUnitAction.xml"/>
 
+    <include file="sshconfig/com/neurix/simrs/transaksi/logtransaction/struts/LogTransactionAction.xml"/>
+
     <!--AKUNTANSI-->
     <!--MASTER -->
     <include file="sshconfig/com/neurix/akuntansi/master/kodeRekening/struts/KodeRekeningAction.xml"/>

@@ -38,30 +38,43 @@ public class LogTransactionDao extends GenericDao<ItPgLogTransactionEntity, Stri
             if(mapCriteria.get("status")!=null){
                 criteria.add(Restrictions.eq("status",(String) mapCriteria.get("status")));
             }
-            if(mapCriteria.get("trx_id")!=null){
-                criteria.add(Restrictions.eq("trxId",(String) mapCriteria.get("trx_id")));
-            }
 
 
-            if(mapCriteria.get("sentDate_str")!=null && mapCriteria.get("sentDate_end")!=null){
-                criteria.add(Restrictions.between("sentDate",mapCriteria.get("sentDate_str"),mapCriteria.get("sentDate_end")));
+            if(mapCriteria.get("dateStr")!=null && mapCriteria.get("dateEnd")!=null){
+                if("in".equalsIgnoreCase((String) mapCriteria.get("status"))) {
+                    criteria.add(Restrictions.between("receivedDate", mapCriteria.get("dateStr"), mapCriteria.get("dateEnd")));
+                }else if("out".equalsIgnoreCase((String) mapCriteria.get("status"))){
+                    criteria.add(Restrictions.between("sentDate", mapCriteria.get("dateStr"), mapCriteria.get("dateEnd")));
+                }else{
+                    criteria.add(Restrictions.or(
+                            Restrictions.between("receivedDate", mapCriteria.get("dateStr"), mapCriteria.get("dateEnd")),
+                            Restrictions.between("sentDate", mapCriteria.get("dateStr"), mapCriteria.get("dateEnd"))
+                    ));
+                }
             }else{
-                if (mapCriteria.get("sentDate_str")!=null) {
-                    criteria.add(Restrictions.ge("sentDate",mapCriteria.get("sentDate_str")));
+                if (mapCriteria.get("dateStr")!=null) {
+                    if("in".equalsIgnoreCase((String) mapCriteria.get("status"))) {
+                        criteria.add(Restrictions.ge("receivedDate", mapCriteria.get("dateStr")));
+                    }else if("out".equalsIgnoreCase((String) mapCriteria.get("status"))){
+                        criteria.add(Restrictions.ge("sentDate", mapCriteria.get("dateStr")));
+                    }else{
+                        criteria.add(Restrictions.or(
+                                Restrictions.ge("receivedDate", mapCriteria.get("dateStr")),
+                                Restrictions.ge("sentDate", mapCriteria.get("dateStr"))
+                                ));
+                    }
                 }
-                if (mapCriteria.get("sentDate_end")!=null) {
-                    criteria.add(Restrictions.le("sentDate",mapCriteria.get("sentDate_end")));
-                }
-            }
-
-            if(mapCriteria.get("receivedDate_str")!=null && mapCriteria.get("receivedDate_end")!=null){
-                criteria.add(Restrictions.between("receivedDate",mapCriteria.get("sentDate_str"),mapCriteria.get("sentDate_end")));
-            }else{
-                if (mapCriteria.get("receivedDate_str")!=null) {
-                    criteria.add(Restrictions.ge("receivedDate",mapCriteria.get("receivedDate_str")));
-                }
-                if (mapCriteria.get("receivedDate_end")!=null) {
-                    criteria.add(Restrictions.le("receivedDate",mapCriteria.get("receivedDate_end")));
+                if (mapCriteria.get("dateEnd")!=null) {
+                    if("in".equalsIgnoreCase((String) mapCriteria.get("status"))) {
+                        criteria.add(Restrictions.le("receivedDate", mapCriteria.get("dateEnd")));
+                    }else if("out".equalsIgnoreCase((String) mapCriteria.get("status"))){
+                        criteria.add(Restrictions.le("sentDate", mapCriteria.get("dateEnd")));
+                    }else{
+                        criteria.add(Restrictions.or(
+                                Restrictions.le("receivedDate", mapCriteria.get("dateEnd")),
+                                Restrictions.le("sentDate", mapCriteria.get("dateEnd"))
+                        ));
+                    }
                 }
             }
         }

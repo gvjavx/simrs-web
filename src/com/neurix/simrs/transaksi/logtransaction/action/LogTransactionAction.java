@@ -212,4 +212,8 @@ public class LogTransactionAction extends BaseMasterAction {
     public String downloadXls() {
         return null;
     }
+
+    public String pagingLogTransaction() {
+        return SUCCESS;
+    }
 }

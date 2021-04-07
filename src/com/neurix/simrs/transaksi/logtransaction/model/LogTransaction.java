@@ -27,78 +27,43 @@ public class LogTransaction {
     private String action;
     private String flag;
 
-    private Timestamp SentDateStr;
-    private String stSentDateStr;
-    private Timestamp SentDateEnd;
-    private String stSentDateEnd;
-    private Timestamp receivedDateStr;
-    private String stReceivedDateStr;
-    private Timestamp receivedDateEnd;
-    private String stReceivedDateEnd;
+    //RAKA-untuk search berdasarkan tanggal
+    private Timestamp DateStr;
+    private String stDateStr;
+    private Timestamp DateEnd;
+    private String stDateEnd;
 
 
-    public Timestamp getSentDateStr() {
-        return SentDateStr;
+    public Timestamp getDateStr() {
+        return DateStr;
     }
 
-    public void setSentDateStr(Timestamp sentDateStr) {
-        SentDateStr = sentDateStr;
+    public void setDateStr(Timestamp dateStr) {
+        DateStr = dateStr;
     }
 
-    public String getStSentDateStr() {
-        return stSentDateStr;
+    public String getStDateStr() {
+        return stDateStr;
     }
 
-    public void setStSentDateStr(String stSentDateStr) {
-        this.stSentDateStr = stSentDateStr;
+    public void setStDateStr(String stDateStr) {
+        this.stDateStr = stDateStr;
     }
 
-    public Timestamp getSentDateEnd() {
-        return SentDateEnd;
+    public Timestamp getDateEnd() {
+        return DateEnd;
     }
 
-    public void setSentDateEnd(Timestamp sentDateEnd) {
-        SentDateEnd = sentDateEnd;
+    public void setDateEnd(Timestamp dateEnd) {
+        DateEnd = dateEnd;
     }
 
-    public String getStSentDateEnd() {
-        return stSentDateEnd;
+    public String getStDateEnd() {
+        return stDateEnd;
     }
 
-    public void setStSentDateEnd(String stSentDateEnd) {
-        this.stSentDateEnd = stSentDateEnd;
-    }
-
-    public Timestamp getReceivedDateStr() {
-        return receivedDateStr;
-    }
-
-    public void setReceivedDateStr(Timestamp receivedDateStr) {
-        this.receivedDateStr = receivedDateStr;
-    }
-
-    public String getStReceivedDateStr() {
-        return stReceivedDateStr;
-    }
-
-    public void setStReceivedDateStr(String stReceivedDateStr) {
-        this.stReceivedDateStr = stReceivedDateStr;
-    }
-
-    public Timestamp getReceivedDateEnd() {
-        return receivedDateEnd;
-    }
-
-    public void setReceivedDateEnd(Timestamp receivedDateEnd) {
-        this.receivedDateEnd = receivedDateEnd;
-    }
-
-    public String getStReceivedDateEnd() {
-        return stReceivedDateEnd;
-    }
-
-    public void setStReceivedDateEnd(String stReceivedDateEnd) {
-        this.stReceivedDateEnd = stReceivedDateEnd;
+    public void setStDateEnd(String stDateEnd) {
+        this.stDateEnd = stDateEnd;
     }
 
     public BigInteger getPgLogTrxId() {

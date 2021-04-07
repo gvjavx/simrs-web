@@ -106,24 +106,14 @@ public class LogTransactionBoImpl implements LogTransactionBo {
                 hsCriteria.put("status", searchBean.getStatus());
             }
 
-            if (searchBean.getStSentDateStr() != null && !"".equalsIgnoreCase(searchBean.getStSentDateStr())) {
-                Timestamp sendDate_str = CommonUtil.convertToTimestamp(searchBean.getStSentDateStr());
-                hsCriteria.put("sentDate_str", sendDate_str);
+            if (searchBean.getStDateStr() != null && !"".equalsIgnoreCase(searchBean.getStDateStr())) {
+                Timestamp date_str = CommonUtil.convertToTimestamp(searchBean.getStDateStr());
+                hsCriteria.put("dateStr", date_str);
             }
-            if (searchBean.getStSentDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStSentDateEnd())) {
-                Timestamp sendDate_end = CommonUtil.convertToTimestamp(searchBean.getStSentDateEnd());
-                hsCriteria.put("sentDate_end", sendDate_end);
+            if (searchBean.getStDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStDateEnd())) {
+                Timestamp date_end = CommonUtil.convertToTimestamp(searchBean.getStDateEnd());
+                hsCriteria.put("dateEnd", date_end);
             }
-
-            if (searchBean.getStReceivedDateStr() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateStr())) {
-                Timestamp receivedDate_str = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateStr());
-                hsCriteria.put("receivedDate_str", receivedDate_str);
-            }
-            if (searchBean.getStReceivedDateEnd() != null && !"".equalsIgnoreCase(searchBean.getStReceivedDateEnd())) {
-                Timestamp receivedDate_end = CommonUtil.convertToTimestamp(searchBean.getStReceivedDateEnd());
-                hsCriteria.put("receivedDate_end", receivedDate_end);
-            }
-
 
             if (searchBean.getFlag() != null && !"".equalsIgnoreCase(searchBean.getFlag())) {
                 if ("N".equalsIgnoreCase(searchBean.getFlag())) {

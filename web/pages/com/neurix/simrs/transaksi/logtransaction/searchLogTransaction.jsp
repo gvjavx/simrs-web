@@ -128,16 +128,16 @@
                                 </td>
                             </tr>
 
-                            <tr id="sentDateRange">
+                            <tr>
                                 <td>
-                                    <label class="control-label"><small>Sent Date :</small></label>
+                                    <label class="control-label"><small>Date :</small></label>
                                 </td>
                                 <td>
                                     <div class="input-group date">
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <s:textfield id="sentDateStr" name="logTransaction.stSentDateStr" cssClass="form-control pull-right"
+                                        <s:textfield id="dateStr" name="logTransaction.stDateStr" cssClass="form-control pull-right"
                                                      required="false" size="7"  cssStyle=""/>
                                         <div class="input-group-addon">
                                             s/d
@@ -145,29 +145,7 @@
                                         <div class="input-group-addon">
                                             <i class="fa fa-calendar"></i>
                                         </div>
-                                        <s:textfield id="sentDateEnd" name="logTransaction.stSentDateEnd" cssClass="form-control pull-right"
-                                                     required="false" size="7"  cssStyle=""/>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr id="receivedDateRange">
-                                <td>
-                                    <label class="control-label"><small>Received Date :</small></label>
-                                </td>
-                                <td>
-                                    <div class="input-group date">
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <s:textfield id="receivedDateStr" name="logTransaction.stReceivedDateStr" cssClass="form-control pull-right"
-                                                     required="false" size="7"  cssStyle=""/>
-                                        <div class="input-group-addon">
-                                            s/d
-                                        </div>
-                                        <div class="input-group-addon">
-                                            <i class="fa fa-calendar"></i>
-                                        </div>
-                                        <s:textfield id="receivedDateEnd" name="logTransaction.stReceivedDateEnd" cssClass="form-control pull-right"
+                                        <s:textfield id="dateEnd" name="logTransaction.stDateEnd" cssClass="form-control pull-right"
                                                      required="false" size="7"  cssStyle=""/>
                                     </div>
                                 </td>
@@ -283,37 +261,3 @@
 
 </body>
 </html>
-
-<script>
-    $(document).ready(function () {
-        $('#sentDateRange').hide();
-        $('#receivedDateRange').hide();
-    })
-
-    function dateRange() {
-        var status = $('#statusTrx').val();
-
-        if(status == 'in'){
-            $('#sentDateRange').hide();
-            $('#receivedDateRange').show();
-
-            $('#sentDateStr').val('');
-            $('#sentDateEnd').val('');
-        }else if (status == 'out'){
-            $('#sentDateRange').show();
-            $('#receivedDateRange').hide();
-
-            $('#receivedDateStr').val('');
-            $('#receivedDateEnd').val('');
-        }else{
-            $('#sentDateRange').hide();
-            $('#receivedDateRange').hide();
-
-            $('#receivedDateStr').val('');
-            $('#receivedDateEnd').val('');
-
-            $('#sentDateStr').val('');
-            $('#sentDateEnd').val('');
-        }
-    }
-</script>
