@@ -52,4 +52,5 @@ public interface ObatPoliBo {
     public ImtSimrsApprovalTransaksiObatEntity getApprovalEntityById(String id) throws GeneralBOException;
 
     public List<ObatPoli> getStokObatPoli(ObatPoli bean) throws GeneralBOException;
+    public List<PermintaanObatPoli> getListDetailPermintaanByIdApproval(String idApproval) throws GeneralBOException;
 }
