@@ -72,148 +72,157 @@
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
                 && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '') {
 
-
-                if (tipe == "umum") {
-                    if(cekEksekutif == 'Y'){
-                        $('#confirm_dialog').dialog('open');
-                    }else{
-                        if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
-                            $('#confirm_dialog').dialog('open');
-                        } else {
-                            $("html, body").animate({scrollTop: 0}, 600);
-                            $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                            if (pembayaran == '') {
-                                $('#war_pembayaran').show();
-                            }
-                            if (uangMuka == '' || parseInt(uangMuka) == 0) {
-                                $('#war_uang_muka').show();
+                PasienAction.getDataPasien(idPasien, function (res) {
+                    if(res.idPasien != '' && res.idPasien != null){
+                        if (tipe == "umum") {
+                            if(cekEksekutif == 'Y'){
+                                $('#confirm_dialog').dialog('open');
+                            }else{
+                                if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
+                                    $('#confirm_dialog').dialog('open');
+                                } else {
+                                    $("html, body").animate({scrollTop: 0}, 600);
+                                    $('#warning_pasien').show().fadeOut(10000);
+                                    $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                                    if (pembayaran == '') {
+                                        $('#war_pembayaran').show();
+                                    }
+                                    if (uangMuka == '' || parseInt(uangMuka) == 0) {
+                                        $('#war_uang_muka').show();
+                                    }
+                                }
                             }
                         }
-                    }
-                }
 
-                if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
-                    if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
-                        && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '') {
-                        if (statusBpjs != '' && statusRujukan != '') {
-                            if (statusBpjs == "aktif" && statusRujukan == "aktif") {
-                                if(tipe == "bpjs_rekanan"){
-                                    if (noKartuPtpn != '' && unitPtpn != '') {
+                        if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
+                            if (diagnosaBpjs != '' && perujuk != '' && ketPerujuk != ''
+                                && noRujukan != '' && ppkRujukan != '' && tglRujukan != '' && fotoRujukan != '') {
+                                if (statusBpjs != '' && statusRujukan != '') {
+                                    if (statusBpjs == "aktif" && statusRujukan == "aktif") {
+                                        if(tipe == "bpjs_rekanan"){
+                                            if (noKartuPtpn != '' && unitPtpn != '') {
+                                                $('#confirm_dialog').dialog('open');
+                                            } else {
+                                                $("html, body").animate({scrollTop: 0}, 600);
+                                                $('#warning_pasien').show().fadeOut(10000);
+                                                $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                                if (noKartuPtpn == '') {
+                                                    $('#war_no_kartu_ptpn').show();
+                                                }
+                                                if (unitPtpn == '') {
+                                                    $('#war_ptpn').show();
+                                                }
+                                            }
+                                        }else{
+                                            $('#confirm_dialog').dialog('open');
+                                        }
+                                    } else {
+                                        var msg1 = "";
+                                        var msg2 = "";
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        if (statusBpjs != "aktif") {
+                                            msg1 = "No BPJS Tidak Aktif";
+                                        }
+                                        if (statusRujukan != "aktif") {
+                                            msg2 = "No Rujukan Tidak Aktif";
+                                        }
+                                        $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan " + msg1 + ". " + msg2 + "...!");
+                                    }
+                                } else {
+                                    $("html, body").animate({scrollTop: 0}, 600);
+                                    $('#warning_pasien').show().fadeOut(10000);
+                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                                }
+                            } else {
+                                $("html, body").animate({scrollTop: 0}, 600);
+                                $('#warning_pasien').show().fadeOut(10000);
+                                $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                                if (diagnosaBpjs == '') {
+                                    $('#diagnosa_awal').css('border', 'solid 1px red');
+                                }
+                                if (perujuk == '') {
+                                    $('#war_perujuk').show();
+                                }
+                                if (ketPerujuk == '') {
+                                    $('#war_ket_perujuk').show();
+                                }
+                                if (noRujukan == '') {
+                                    $('#war_no_rujukan').show();
+                                }
+                                if (ppkRujukan == '') {
+                                    $('#war_ppk_rujukan').show();
+                                }
+                                if (tglRujukan == '') {
+                                    $('#war_tgl_rujukan').show();
+                                }
+                                if (fotoRujukan == '') {
+                                    $('#war_foto_rujukan').show();
+                                }
+                            }
+                        }
+
+                        if (tipe == "asuransi") {
+                            // if(asuransi != '' && coverBiaya != ''){
+                            if (asuransi != '') {
+
+                                if (isLaka == "Y") {
+                                    $('#confirm_dialog').dialog('open');
+                                } else {
+                                    if (noKartu != '') {
                                         $('#confirm_dialog').dialog('open');
                                     } else {
                                         $("html, body").animate({scrollTop: 0}, 600);
                                         $('#warning_pasien').show().fadeOut(10000);
-                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
-                                        if (noKartuPtpn == '') {
-                                            $('#war_no_kartu_ptpn').show();
-                                        }
-                                        if (unitPtpn == '') {
-                                            $('#war_ptpn').show();
+                                        $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
+                                        if (noKartu == '') {
+                                            $('#war_no_asuransi').show();
                                         }
                                     }
-                                }else{
-                                    $('#confirm_dialog').dialog('open');
                                 }
-                            } else {
-                                var msg1 = "";
-                                var msg2 = "";
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                if (statusBpjs != "aktif") {
-                                    msg1 = "No BPJS Tidak Aktif";
-                                }
-                                if (statusRujukan != "aktif") {
-                                    msg2 = "No Rujukan Tidak Aktif";
-                                }
-                                $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan " + msg1 + ". " + msg2 + "...!");
-                            }
-                        } else {
-                            $("html, body").animate({scrollTop: 0}, 600);
-                            $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
-                        }
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
-                        if (diagnosaBpjs == '') {
-                            $('#diagnosa_awal').css('border', 'solid 1px red');
-                        }
-                        if (perujuk == '') {
-                            $('#war_perujuk').show();
-                        }
-                        if (ketPerujuk == '') {
-                            $('#war_ket_perujuk').show();
-                        }
-                        if (noRujukan == '') {
-                            $('#war_no_rujukan').show();
-                        }
-                        if (ppkRujukan == '') {
-                            $('#war_ppk_rujukan').show();
-                        }
-                        if (tglRujukan == '') {
-                            $('#war_tgl_rujukan').show();
-                        }
-                        if (fotoRujukan == '') {
-                            $('#war_foto_rujukan').show();
-                        }
-                    }
-                }
-
-                if (tipe == "asuransi") {
-                    // if(asuransi != '' && coverBiaya != ''){
-                    if (asuransi != '') {
-
-                        if (isLaka == "Y") {
-                            $('#confirm_dialog').dialog('open');
-                        } else {
-                            if (noKartu != '') {
-                                $('#confirm_dialog').dialog('open');
                             } else {
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
                                 $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
+                                if (asuransi == '') {
+                                    $('#war_asuransi').show();
+                                }
                                 if (noKartu == '') {
                                     $('#war_no_asuransi').show();
                                 }
+                                if (coverBiaya == '') {
+                                    $('#war_jml_cover').show();
+                                }
                             }
                         }
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
-                        if (asuransi == '') {
-                            $('#war_asuransi').show();
-                        }
-                        if (noKartu == '') {
-                            $('#war_no_asuransi').show();
-                        }
-                        if (coverBiaya == '') {
-                            $('#war_jml_cover').show();
-                        }
-                    }
-                }
 
-                if (tipe == "rekanan") {
-                    if (noKartuPtpn != '' && unitPtpn != '') {
-                        $('#confirm_dialog').dialog('open');
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
-                        if (noKartuPtpn == '') {
-                            $('#war_no_kartu_ptpn').show();
+                        if (tipe == "rekanan") {
+                            if (noKartuPtpn != '' && unitPtpn != '') {
+                                $('#confirm_dialog').dialog('open');
+                            } else {
+                                $("html, body").animate({scrollTop: 0}, 600);
+                                $('#warning_pasien').show().fadeOut(10000);
+                                $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                if (noKartuPtpn == '') {
+                                    $('#war_no_kartu_ptpn').show();
+                                }
+                                if (unitPtpn == '') {
+                                    $('#war_ptpn').show();
+                                }
+                            }
                         }
-                        if (unitPtpn == '') {
-                            $('#war_ptpn').show();
-                        }
-                    }
-                }
 
-                if (tipe == "paket_perusahaan" || tipe == "paket_individu") {
-                    $('#confirm_dialog').dialog('open');
-                }
+                        if (tipe == "paket_perusahaan" || tipe == "paket_individu") {
+                            $('#confirm_dialog').dialog('open');
+                        }
+                    }else{
+                        $("html, body").animate({scrollTop: 0}, 600);
+                        $('#warning_pasien').show().fadeOut(15000);
+                        $('#msg_pasien').text("Data pasien atas Nama "+namaPasien+" belum terdaftar sebagai pasien. Mohon didaftarkan terlabih dahulu dengan menekan tombol Pasien Baru");
+                        $('#btn_new').removeClass("btn btn-success pull-right");
+                        $('#btn_new').addClass("btn btn-success pull-right blink_me_atas");
+                    }
+                });
 
             } else {
 
@@ -596,7 +605,7 @@
                             <input type="hidden" id="status_bpjs">
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
-                                <a onclick="showPasienBaru()" class="btn btn-success pull-right"><i
+                                <a id="btn_new" onclick="showPasienBaru()" class="btn btn-success pull-right"><i
                                         class="fa fa-plus"></i> Pasien Baru
                                 </a>
                                 <a style="display: none" id="btn-finger" onclick="setFingerPrint()"
@@ -702,7 +711,7 @@
                                                 <label class="col-md-4" style="margin-top: 7px">NIK Pasien</label>
                                                 <div class="col-md-8">
                                                     <s:textfield id="no_ktp" name="headerCheckup.noKtp" type="number"
-                                                                 onkeypress="$(this).css('border',''); searchNo"
+                                                                 onkeypress="$(this).css('border','');"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"
                                                     />
                                                 </div>
@@ -2510,7 +2519,6 @@
             if (response != null && response.namaPasien != null) {
 
                 namapasien = "<h4><i class=\"fa fa-user\"></i> " + response.namaPasien + "</h4>";
-                diagnosa = response.diagnosa;
                 tglperiksa = "Pemeriksaan terakhir pasien pada : <strong>" + converterDate(new Date(response.stTglKeluar)) + "</strong>";
 
                 if (response.listOfAlergi != null) {
@@ -2527,7 +2535,11 @@
                 $('#date-periksa').val(converterDate(response.stTglKeluar));
                 $("#nama-pasien").html(namapasien);
                 $("#alergi").html(alergi);
-                $("#diagnosa").html(diagnosa);
+                if("B20" == response.idDiagnosa){
+                    $("#diagnosa").html('<span class="blink_me_atas" style="color: red; font-weight: bold">'+'['+response.idDiagnosa+']'+response.diagnosa+'<span>');
+                }else{
+                    $("#diagnosa").html('['+response.idDiagnosa+']-'+response.diagnosa);
+                }
                 $("#alert-pasien").removeAttr("style");
                 $("#btn-rm").removeAttr("style");
             } else {
@@ -2980,15 +2992,21 @@
                             $('#cover_biaya_paket').val(selectedObj.tarif);
                         }
 
-                        if (res.isDaftar == "Y") {
+                        if(res.flagMeninggal == "Y"){
                             $('#btn-save').hide();
                             $('#warning_pasien').show();
-                            $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                        } else {
-                            $('#btn-save').show();
-                            $('#warning_pasien').hide();
-                            $('#msg_pasien').text("");
-                            alertObatKronis(selectedObj.id);
+                            $('#msg_pasien').text("Pasien Sudah Meninggal Dunia Pada Tanggal ["+converterDate(res.tglMeninggal)+"]");
+                        }else{
+                            if (res.isDaftar == "Y") {
+                                $('#btn-save').hide();
+                                $('#warning_pasien').show();
+                                $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                            } else {
+                                $('#btn-save').show();
+                                $('#warning_pasien').hide();
+                                $('#msg_pasien').text("");
+                                alertObatKronis(selectedObj.id);
+                            }
                         }
                     }
                 });
@@ -3110,15 +3128,21 @@
                                 $('#cover_biaya_paket').val(selectedObj.tarif);
                             }
 
-                            if (res.isDaftar == "Y") {
+                            if(res.flagMeninggal == "Y"){
                                 $('#btn-save').hide();
                                 $('#warning_pasien').show();
-                                $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
-                            } else {
-                                $('#btn-save').show();
-                                $('#warning_pasien').hide();
-                                $('#msg_pasien').text("");
-                                alertObatKronis(selectedObj.id);
+                                $('#msg_pasien').text("Pasien Sudah Meninggal Dunia Pada Tanggal ["+converterDate(res.tglMeninggal)+"]");
+                            }else{
+                                if (res.isDaftar == "Y") {
+                                    $('#btn-save').hide();
+                                    $('#warning_pasien').show();
+                                    $('#msg_pasien').text("Pasien Sudah melakukan pendafataran...!");
+                                } else {
+                                    $('#btn-save').show();
+                                    $('#warning_pasien').hide();
+                                    $('#msg_pasien').text("");
+                                    alertObatKronis(selectedObj.id);
+                                }
                             }
                         }
                     });
@@ -3286,6 +3310,8 @@
     }
 
     function showPasienBaru() {
+        $('#btn_new').removeClass("btn btn-success pull-right blink_me_atas");
+        $('#btn_new').addClass("btn btn-success pull-right");
         $('#add_no_bpjs').val('');
         $('#add_nik').val('');
         $('#add_nama').val('');

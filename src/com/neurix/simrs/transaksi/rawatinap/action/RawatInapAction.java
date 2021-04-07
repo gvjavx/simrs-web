@@ -1124,9 +1124,9 @@ public class RawatInapAction extends BaseMasterAction {
 
             if (periksalb.getIdPeriksaLab() != null) {
                 if ("lab".equalsIgnoreCase(tipe)) {
-                    reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
+                    reportParams.put("title", "Hasil Pemeriksaan Lab " + periksalb.getLabName());
                 } else {
-                    reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
+                    reportParams.put("title", "Hasil Pemeriksaan Radiologi " + periksalb.getLabName());
                 }
             }
 
@@ -2014,6 +2014,7 @@ public class RawatInapAction extends BaseMasterAction {
                 String unitLab = null;
                 String isOrderLab = null;
                 String idRuanganLama = null;
+                String isMeninggal = "";
                 JSONArray jsonParameter = new JSONArray();
 
                 if (object.has("id_ruangan")) {
@@ -2042,6 +2043,9 @@ public class RawatInapAction extends BaseMasterAction {
                 }
                 if (object.has("id_ruangan_lama")) {
                     idRuanganLama = object.getString("id_ruangan_lama");
+                }
+                if (object.has("is_meninggal")) {
+                    isMeninggal = object.getString("is_meninggal");
                 }
 
                 List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
@@ -2099,6 +2103,7 @@ public class RawatInapAction extends BaseMasterAction {
                     rawatInap.setKeteranganSelesai(keterangan);
                     rawatInap.setIdRuangLama(idRuanganLama);
                     rawatInap.setIdJenisPeriksa(jenisPasien);
+                    rawatInap.setIsMeninggal(isMeninggal);
 
                     saveApproveAllTindakan(idDetailCheckup, jenisPasien);
                     response = rawatInapBo.saveAdd(rawatInap);

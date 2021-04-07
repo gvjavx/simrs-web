@@ -69,6 +69,24 @@ public class Pasien {
     private String noRmLama;
 
     private String flagLogin;
+    private String flagMeninggal;
+    private Timestamp tglMeninggal;
+
+    public String getFlagMeninggal() {
+        return flagMeninggal;
+    }
+
+    public void setFlagMeninggal(String flagMeninggal) {
+        this.flagMeninggal = flagMeninggal;
+    }
+
+    public Timestamp getTglMeninggal() {
+        return tglMeninggal;
+    }
+
+    public void setTglMeninggal(Timestamp tglMeninggal) {
+        this.tglMeninggal = tglMeninggal;
+    }
 
     public String getFlagLogin() {
         return flagLogin;

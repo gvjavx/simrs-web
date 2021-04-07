@@ -200,10 +200,13 @@
                                             <display:column property="golonganId" sortable="true" title="Golongan ID" />
                                             <display:column property="golonganName" sortable="true" title="Nama"  />
                                             <display:column property="stLevel" sortable="true" title="Grade Level"  />
+                                            <display:column property="golPensiun" sortable="true" title="Nama Gol. Pensiun" />
+                                            <display:column property="msKerjaAwal" sortable="true" title="Masa Kerja Awal"  />
+                                            <display:column property="msKerjaAkhir" sortable="true" title="Masa Kerja Akhir"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
-                                            <display:column property="stCreatedDate" sortable="true" title="Created date"  />
-                                            <display:column property="createdWho" sortable="true" title="Created who"  />
+                                            <%--<display:column property="stCreatedDate" sortable="true" title="Created date"  />--%>
+                                            <%--<display:column property="createdWho" sortable="true" title="Created who"  />--%>
                                             <display:column property="stLastUpdate" sortable="true" title="Last update"  />
                                             <display:column property="lastUpdateWho" sortable="true" title="Last update who"  />
 

@@ -170,6 +170,7 @@ public class CatatanTerintegrasiAction {
                             response = rekamMedikBo.saveAdd(status);
 
                             HeaderCheckup checkup = new HeaderCheckup();
+                            checkup.setNoCheckup(status.getNoCheckup());
                             checkup.setLastUpdate(time);
                             checkup.setLastUpdateWho(userLogin);
                             checkup.setTensi(catatan.getTensi());

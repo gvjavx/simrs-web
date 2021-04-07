@@ -94,26 +94,26 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             rawatInap.setKeterangan(inap.getKeterangan());
             List<AsesmenRawatInap> rawatInapList = getByCriteria(rawatInap);
 
-            if("hand_over".equalsIgnoreCase(inap.getJenis())){
+            if ("hand_over".equalsIgnoreCase(inap.getJenis())) {
                 AsesmenRawatInap rw = new AsesmenRawatInap();
                 rw.setIdDetailCheckup(inap.getIdDetailCheckup());
                 rw.setJawaban(inap.getJawaban());
                 rw.setJenis(inap.getJenis());
                 Boolean cekData = asesmenRawatInapDao.cekHandOver(rw);
-                if(cekData){
+                if (cekData) {
                     response.setStatus("error");
-                    response.setMsg("Found error, Data pada shift "+inap.getJawaban()+" sudah ada..!");
-                }else{
+                    response.setMsg("Found error, Data pada shift " + inap.getJawaban() + " sudah ada..!");
+                } else {
                     response = saveAsesmen(list);
                 }
-            }else{
-                if("transfer_pasien".equalsIgnoreCase(inap.getJenis())){
+            } else {
+                if ("transfer_pasien".equalsIgnoreCase(inap.getJenis()) || "add_tindakan_ina".equalsIgnoreCase(inap.getKeterangan())) {
                     response = saveAsesmen(list);
-                }else{
-                    if(rawatInapList.size() > 0){
+                } else {
+                    if (rawatInapList.size() > 0) {
                         response.setStatus("error");
                         response.setMsg("Found error, Data yang anda masukan sudah ada...!");
-                    }else{
+                    } else {
                         response = saveAsesmen(list);
                     }
                 }
@@ -122,7 +122,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
         return response;
     }
 
-    private CrudResponse saveAsesmen(List<AsesmenRawatInap> list){
+    private CrudResponse saveAsesmen(List<AsesmenRawatInap> list) {
         CrudResponse response = new CrudResponse();
         for (AsesmenRawatInap bean : list) {
             ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = new ItSimrsAsesmenRawatInapEntity();
@@ -167,7 +167,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
         hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
         hsCriteria.put("keterangan", bean.getKeterangan());
 
-        if(bean.getIdAsesmenKeperawatanRawatInap() != null && !"".equalsIgnoreCase(bean.getIdAsesmenKeperawatanRawatInap())){
+        if (bean.getIdAsesmenKeperawatanRawatInap() != null && !"".equalsIgnoreCase(bean.getIdAsesmenKeperawatanRawatInap())) {
             ItSimrsAsesmenRawatInapEntity entity = asesmenRawatInapDao.getById("idAsesmenKeperawatanRawatInap", bean.getIdAsesmenKeperawatanRawatInap());
             hsCriteria.put("created_date", entity.getCreatedDate());
         }
@@ -176,13 +176,13 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             entityList = asesmenRawatInapDao.getByCriteria(hsCriteria);
         } catch (HibernateException e) {
             response.setStatus("error");
-            response.setMsg("Found Error, "+e.getMessage());
+            response.setMsg("Found Error, " + e.getMessage());
             logger.error(e.getMessage());
             return response;
         }
 
-        if(entityList.size() > 0){
-            for (ItSimrsAsesmenRawatInapEntity inap: entityList){
+        if (entityList.size() > 0) {
+            for (ItSimrsAsesmenRawatInapEntity inap : entityList) {
                 inap.setLastUpdate(bean.getLastUpdate());
                 inap.setLastUpdateWho(bean.getLastUpdateWho());
                 inap.setFlag("N");
@@ -191,14 +191,14 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInapDao.updateAndSave(inap);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     response.setStatus("error");
-                    response.setMsg("Found Error, "+e.getMessage());
+                    response.setMsg("Found Error, " + e.getMessage());
                     logger.error(e.getMessage());
                     return response;
                 }
             }
-        }else{
+        } else {
             response.setStatus("error");
             response.setMsg("Data yang anda delete tidak ditemukan");
         }
@@ -214,10 +214,10 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
     @Override
     public CrudResponse saveEdit(AsesmenRawatInap bean) throws GeneralBOException {
         CrudResponse response = new CrudResponse();
-        if(bean.getIdAsesmenKeperawatanRawatInap() != null){
+        if (bean.getIdAsesmenKeperawatanRawatInap() != null) {
             ItSimrsAsesmenRawatInapEntity asesmenRawatInapEntity = asesmenRawatInapDao.getById("idAsesmenKeperawatanRawatInap", bean.getIdAsesmenKeperawatanRawatInap());
-            if(asesmenRawatInapEntity != null){
-                asesmenRawatInapEntity.setJawaban(asesmenRawatInapEntity.getJawaban()+"|"+bean.getJawaban());
+            if (asesmenRawatInapEntity != null) {
+                asesmenRawatInapEntity.setJawaban(asesmenRawatInapEntity.getJawaban() + "|" + bean.getJawaban());
                 asesmenRawatInapEntity.setAction("U");
                 asesmenRawatInapEntity.setLastUpdate(bean.getLastUpdate());
                 asesmenRawatInapEntity.setLastUpdateWho(bean.getLastUpdateWho());
@@ -225,7 +225,7 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
                     asesmenRawatInapDao.updateAndSave(asesmenRawatInapEntity);
                     response.setStatus("success");
                     response.setMsg("Berhasil");
-                }catch (HibernateException e){
+                } catch (HibernateException e) {
                     logger.error(e.getMessage());
                     response.setStatus("error");
                     response.setMsg(e.getMessage());
@@ -233,6 +233,55 @@ public class AsesmenRawatInapBoImpl implements AsesmenRawatInapBo {
             }
         }
         return response;
+    }
+
+    @Override
+    public AsesmenRawatInap getPersetujuanTindakan(AsesmenRawatInap bean) throws GeneralBOException {
+        AsesmenRawatInap asesmenRawatInap = new AsesmenRawatInap();
+        List<ItSimrsAsesmenRawatInapEntity> entityList = new ArrayList<>();
+        Map hsCriteria = new HashMap();
+        if (bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())) {
+            hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
+        }
+        if (bean.getKeterangan() != null && !"".equalsIgnoreCase(bean.getKeterangan())) {
+            hsCriteria.put("keterangan", bean.getKeterangan());
+        }
+        if (bean.getCreatedDate() != null && !"".equalsIgnoreCase(bean.getCreatedDate().toString())) {
+            hsCriteria.put("created_date", bean.getCreatedDate());
+        }
+
+        try {
+            entityList = asesmenRawatInapDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e) {
+            logger.error(e.getMessage());
+        }
+        if (entityList.size() > 0) {
+            List<AsesmenRawatInap> asesmenRawatInapList = new ArrayList<>();
+            for (ItSimrsAsesmenRawatInapEntity list : entityList) {
+                AsesmenRawatInap asesmenRanap = new AsesmenRawatInap();
+                if ("TTD yang menyatakan".equalsIgnoreCase(list.getParameter())) {
+                    asesmenRawatInap.setTtdMenyatakan(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + list.getJawaban());
+                    asesmenRawatInap.setNamaMenyatakan(list.getNamaTerang());
+                    asesmenRawatInap.setSipMenyatakan(list.getSip());
+                } else if ("Saksi I".equalsIgnoreCase(list.getParameter())) {
+                    asesmenRawatInap.setTtdPihak1(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + list.getJawaban());
+                    asesmenRawatInap.setPihak1(list.getNamaTerang());
+                } else if ("Saksi II".equalsIgnoreCase(list.getParameter())) {
+                    asesmenRawatInap.setTtdPihak2(CommonConstant.EXTERNAL_IMG_URI + CommonConstant.RESOURCE_PATH_TTD_RM + list.getJawaban());
+                    asesmenRawatInap.setPihak2(list.getNamaTerang());
+                } else {
+                    if ("pernyataan".equalsIgnoreCase(list.getParameter())) {
+                        asesmenRanap.setParameter(list.getJawaban());
+                    } else {
+                        asesmenRanap.setParameter(list.getParameter());
+                        asesmenRanap.setJawaban(list.getJawaban());
+                        asesmenRanap.setInformasi(list.getInformasi());
+                    }
+                }
+            }
+            asesmenRawatInap.setAsesmenRawatInapList(asesmenRawatInapList);
+        }
+        return asesmenRawatInap;
     }
 
     public static Logger getLogger() {

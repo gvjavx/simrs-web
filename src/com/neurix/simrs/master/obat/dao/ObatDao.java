@@ -38,7 +38,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                 criteria.add(Restrictions.eq("idSeqObat", (String) mapCriteria.get("id_seq_obat")));
             }
             if (mapCriteria.get("id_barang") != null) {
-                criteria.add(Restrictions.eq("idBarang", mapCriteria.get("id_barang")));
+                criteria.add(Restrictions.eq("idBarang", (String) mapCriteria.get("id_barang")));
             }
             if (mapCriteria.get("id_obat") != null) {
                 criteria.add(Restrictions.eq("idObat", (String) mapCriteria.get("id_obat")));
@@ -71,6 +71,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             }
             if (mapCriteria.get("flag") != null) {
                 criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }
+            if (mapCriteria.get("flag_bpjs") != null) {
+                criteria.add(Restrictions.eq("flagBpjs", mapCriteria.get("flag_bpjs")));
+            }
+            // Sigit 2021-04-06, mencari obat selain bpjs
+            if (mapCriteria.get("non_flag_bpjs") != null) {
+                criteria.add(Restrictions.ne("flagBpjs", mapCriteria.get("non_flag_bpjs")));
             }
 
             if (mapCriteria.get("asc") != null) {
@@ -343,9 +350,15 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return listOfResults;
     }
 
-    public Obat getSumStockObatGudangById(String id, String ket, String branchId) {
+    public Obat getSumStockObatGudangById(String id, String ket, String branchId, String flagBpjs) {
 
         Obat obat = new Obat();
+
+        String andFlag = "";
+        if (flagBpjs != null && "Y".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs = 'Y' \n";
+        else if (flagBpjs != null && "N".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs != 'Y' \n";
 
         if ("stok".equalsIgnoreCase(ket)) {
 
@@ -357,7 +370,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "FROM im_simrs_obat \n" +
                     "WHERE (qty_box, qty_lembar, qty_biji) != ('0','0','0')\n" +
                     "AND id_obat = :id\n" +
-                    "AND branch_id = :branchId\n" +
+                    "AND branch_id = :branchId\n" + andFlag +
                     "GROUP BY id_obat";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -394,10 +407,16 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "\tid_obat,\n" +
                     "\tbranch_id\n" +
                     "\tFROM im_simrs_obat\n" +
-                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" +
+                    "\tWHERE (qty_box, qty_lembar, qty_biji) != (0,0,0) \n" + andFlag +
+                    //"\tAND flag_bpjs = :flagBpjs \n" +
                     ") a\n" +
                     "WHERE a.id_obat = :id1 \n" +
                     "AND a.branch_id = :branchId1 ";
+
+            if (flagBpjs != null && "Y".equalsIgnoreCase(flagBpjs))
+                andFlag = "WHERE a.flag_bpjs = 'Y' \n";
+            else if (flagBpjs != null && "N".equalsIgnoreCase(flagBpjs))
+                andFlag = "WHERE a.flag_bpjs != 'Y' \n";
 
             String SQLPoli = "\n" +
                     "SELECT  \n" +
@@ -419,7 +438,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "\tFROM im_simrs_obat a\n" +
                     "\tINNER JOIN ( \n" +
                     "\t\tSELECT id_barang, qty_box, qty_lembar, qty_biji FROM mt_simrs_obat_poli\n" +
-                    "\t\t) b ON b.id_barang = a.id_barang\n" +
+                    "\t\t) b ON b.id_barang = a.id_barang\n" + andFlag +
                     "\tGROUP BY \n" +
                     "\ta.lembar_per_box, \n" +
                     "\ta.biji_per_lembar,\n" +
@@ -432,11 +451,13 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
             List<Object[]> results1 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLMaster)
                     .setParameter("id1", id)
                     .setParameter("branchId1", branchId)
+                    //.setParameter("flagBpjs", flagBpjs)
                     .list();
 
             List<Object[]> results2 = this.sessionFactory.getCurrentSession().createSQLQuery(SQLPoli)
                     .setParameter("id2", id)
                     .setParameter("branchId2", branchId)
+                    //.setParameter("flagBpjs", flagBpjs)
                     .list();
 
             String idObat = "";
@@ -543,11 +564,17 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
         return obat;
     }
 
-    public Obat getLastIdSeqObat(String idObat) {
+    public Obat getLastIdSeqObat(String idObat, String flagBpjs) {
+
+        String andFlag = "";
+        if (flagBpjs != null && "Y".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs = 'Y' \n";
+        else if (flagBpjs != null && "N".equalsIgnoreCase(flagBpjs))
+            andFlag = "AND flag_bpjs != 'Y' \n";
 
         String SQL = "SELECT id_seq_obat, created_date\n" +
                 "FROM im_simrs_obat\n" +
-                "WHERE id_obat = :id\n" +
+                "WHERE id_obat = :id\n" + andFlag +
                 "GROUP BY id_seq_obat\n" +
                 "ORDER BY created_date desc\n" +
                 "LIMIT 1";

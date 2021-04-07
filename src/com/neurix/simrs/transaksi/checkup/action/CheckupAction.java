@@ -746,9 +746,7 @@ public class CheckupAction extends BaseMasterAction {
     }
 
     public String saveAdd() {
-
         logger.info("[CheckupAction.saveAdd] start process >>>");
-
         HeaderCheckup checkup = getHeaderCheckup();
         RekananOps ops = new RekananOps();
         String genNoSep = "";
@@ -762,22 +760,26 @@ public class CheckupAction extends BaseMasterAction {
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
         if(checkup.getIdJenisPeriksaPasien() != null && !"".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())){
+            List<Pasien> pasienList = new ArrayList<>();
+            List<Branch> branchList = new ArrayList<>();
+            Pasien pasien = new Pasien();
+            pasien.setIdPasien(checkup.getIdPasien());
+            pasien.setFlag("Y");
+
+            try {
+                pasienList = pasienBoProxy.getByCriteria(pasien);
+            } catch (GeneralBOException e) {
+                logger.error("[CheckupAction.saveAdd] Error when search pasien id ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                throw new GeneralBOException("Error when pasien id", e);
+            }
+
+            if(pasienList.isEmpty()){
+                logger.error("[CheckupAction.saveAdd] Error when search branch id");
+                throw new GeneralBOException("Data pasien tidak ditemukan...!");
+            }
+
             //jika bpjs dan bpjs rekanan
             if ("bpjs".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(checkup.getIdJenisPeriksaPasien())) {
-
-                List<Pasien> pasienList = new ArrayList<>();
-                List<Branch> branchList = new ArrayList<>();
-                Pasien pasien = new Pasien();
-                pasien.setIdPasien(checkup.getIdPasien());
-                pasien.setFlag("Y");
-
-                try {
-                    pasienList = pasienBoProxy.getByCriteria(pasien);
-                } catch (GeneralBOException e) {
-                    logger.error("[CheckupAction.saveAdd] Error when search pasien id ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
-                    throw new GeneralBOException("Error when pasien id", e);
-                }
-
                 Branch branch = new Branch();
                 branch.setBranchId(userArea);
                 branch.setFlag("Y");

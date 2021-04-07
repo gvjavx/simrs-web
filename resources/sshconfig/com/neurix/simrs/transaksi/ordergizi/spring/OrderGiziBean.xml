@@ -11,14 +11,11 @@
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:orderGiziBoProxy-ref="orderGiziBoProxy"/>
 
-
     <bean id="orderGiziBo" class="com.neurix.simrs.transaksi.ordergizi.bo.impl.OrderGiziBoImpl"
           p:orderGiziDao-ref="orderGiziDao"
           p:orderJenisDietDao-ref="orderJenisDietDao"
           p:jenisDietDao-ref="jenisDietDao"
           p:dietGiziDao-ref="dietGiziDao"
-          p:pendampingGiziDao-ref="pendampingGiziDao"
-          p:masterPendampingGiziDao-ref="masterPendampingGiziDao"
     />
 
     <bean id="orderGiziBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -46,7 +43,5 @@
     <bean id="orderGiziDao" class="com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="orderJenisDietDao" class="com.neurix.simrs.transaksi.ordergizi.dao.OrderJenisDietDao"
-          p:sessionFactory-ref="sessionFactory" />
-    <bean id="pendampingGiziDao" class="com.neurix.simrs.transaksi.ordergizi.dao.PendampingGiziDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>

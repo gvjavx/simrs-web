@@ -4,6 +4,8 @@ import com.neurix.common.model.BaseModel;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class AsesmenRawatInap extends BaseModel {
 
@@ -25,6 +27,79 @@ public class AsesmenRawatInap extends BaseModel {
     private String namaTerang;
     private String sip;
     private String noCheckup;
+    private String ttdPihak1;
+    private String ttdPihak2;
+    private String ttdMenyatakan;
+    private String pihak1;
+    private String pihak2;
+    private String namaMenyatakan;
+    private String sipMenyatakan;
+
+    public String getTtdPihak1() {
+        return ttdPihak1;
+    }
+
+    public void setTtdPihak1(String ttdPihak1) {
+        this.ttdPihak1 = ttdPihak1;
+    }
+
+    public String getTtdPihak2() {
+        return ttdPihak2;
+    }
+
+    public void setTtdPihak2(String ttdPihak2) {
+        this.ttdPihak2 = ttdPihak2;
+    }
+
+    public String getTtdMenyatakan() {
+        return ttdMenyatakan;
+    }
+
+    public void setTtdMenyatakan(String ttdMenyatakan) {
+        this.ttdMenyatakan = ttdMenyatakan;
+    }
+
+    public String getPihak1() {
+        return pihak1;
+    }
+
+    public void setPihak1(String pihak1) {
+        this.pihak1 = pihak1;
+    }
+
+    public String getPihak2() {
+        return pihak2;
+    }
+
+    public void setPihak2(String pihak2) {
+        this.pihak2 = pihak2;
+    }
+
+    public String getNamaMenyatakan() {
+        return namaMenyatakan;
+    }
+
+    public void setNamaMenyatakan(String namaMenyatakan) {
+        this.namaMenyatakan = namaMenyatakan;
+    }
+
+    public String getSipMenyatakan() {
+        return sipMenyatakan;
+    }
+
+    public void setSipMenyatakan(String sipMenyatakan) {
+        this.sipMenyatakan = sipMenyatakan;
+    }
+
+    private List<AsesmenRawatInap> asesmenRawatInapList = new ArrayList<>();
+
+    public List<AsesmenRawatInap> getAsesmenRawatInapList() {
+        return asesmenRawatInapList;
+    }
+
+    public void setAsesmenRawatInapList(List<AsesmenRawatInap> asesmenRawatInapList) {
+        this.asesmenRawatInapList = asesmenRawatInapList;
+    }
 
     public String getNoCheckup() {
         return noCheckup;

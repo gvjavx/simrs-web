@@ -102,30 +102,6 @@ public class OrderGiziAction extends BaseTransactionAction {
                                 }
                             }
                         }
-                        if (obj.has("makanan_luar")) {
-                            if (obj.getString("makanan_luar") != null && !"".equalsIgnoreCase(obj.getString("makanan_luar"))) {
-                                String[] list = obj.getString("makanan_luar").split("#");
-                                if (list.length > 0) {
-                                    List<String> stringList = new ArrayList<>();
-                                    for (String jenis : list) {
-                                        stringList.add(jenis);
-                                    }
-                                    orderGizi.setListMakananLuar(stringList);
-                                }
-                            }
-                        }
-                        if (obj.has("snack")) {
-                            if (obj.getString("snack") != null && !"".equalsIgnoreCase(obj.getString("snack"))) {
-                                String[] list = obj.getString("snack").split("#");
-                                if (list.length > 0) {
-                                    List<String> stringList = new ArrayList<>();
-                                    for (String jenis : list) {
-                                        stringList.add(jenis);
-                                    }
-                                    orderGizi.setListSnack(stringList);
-                                }
-                            }
-                        }
 
                         String id = orderGizi.getIdRawatInap();
                         if ("RJ".equalsIgnoreCase(type)) {

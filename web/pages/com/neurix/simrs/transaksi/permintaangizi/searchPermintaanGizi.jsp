@@ -14,6 +14,9 @@
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/KeperawatanRawatJalanAction.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenGiziAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/AsesmenRawatInapAction.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/CatatanTerintegrasiAction.js"/>'></script>
 
     <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatjalan.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/datapasien.js"/>'></script>
@@ -21,6 +24,8 @@
     <script type='text/javascript' src='<s:url value="/pages/dist/js/nyeri.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/resikojatuh.js"/>'></script>
     <script type='text/javascript' src='<s:url value="/pages/dist/js/gizi.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/asesmenrawatinap.js"/>'></script>
+    <script type='text/javascript' src='<s:url value="/pages/dist/js/cppt.js"/>'></script>
 
     <script type='text/javascript'>
 
@@ -31,7 +36,8 @@
                 ]
             });
             $('#permintaan_gizi').addClass('active');
-            setTipe('<s:property value="rawatInap.tipePelayanan"/>');
+            setSonde('is_sonde', '<s:property value="rawatInap.isSonde"/>');
+            <%--setTipe('<s:property value="rawatInap.tipePelayanan"/>');--%>
         });
 
     </script>
@@ -66,15 +72,16 @@
                         <div class="form-group">
                             <s:form id="giziForm" method="post" namespace="/ordergizi" action="search_ordergizi.action"
                                     theme="simple" cssClass="form-horizontal">
-                                <div class="form-group">
-                                    <label class="control-label col-sm-4">Tipe Pelayanan</label>
-                                    <div class="col-sm-4">
-                                        <s:select list="#{'RI':'Rawat Inap'}" onchange="setTipe(this.value)"
-                                                  id="tipe_pelayanan" name="rawatInap.tipePelayanan"
-                                                  headerKey="RJ" headerValue="Rawat Jalan"
-                                                  cssClass="form-control select2"/>
-                                    </div>
-                                </div>
+                                <%--<div class="form-group">--%>
+                                    <%--<label class="control-label col-sm-4">Tipe Pelayanan</label>--%>
+                                    <%--<div class="col-sm-4">--%>
+                                        <%--<s:select list="#{'RI':'Rawat Inap'}" onchange="setTipe(this.value)"--%>
+                                                  <%--id="tipe_pelayanan" name="rawatInap.tipePelayanan"--%>
+                                                  <%--headerKey="RJ" headerValue="Rawat Jalan"--%>
+                                                  <%--cssClass="form-control select2"/>--%>
+                                    <%--</div>--%>
+                                <%--</div>--%>
+                                <s:hidden name="rawatInap.tipePelayanan" value="RI"></s:hidden>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4">No RM</label>
                                     <div class="col-sm-4">
@@ -92,6 +99,18 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4" style="margin-top: 5px">Diet Sonde ?</label>
+                                    <div class="col-sm-4">
+                                        <div class="form-check" style="margin-top: 10px">
+                                            <input type="checkbox" onclick="setSonde('is_sonde', 'C')"
+                                                   id="is_sonde"
+                                                   value="Y">
+                                            <label for="is_sonde"></label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <s:hidden name="rawatInap.isSonde" id="val_sonde"></s:hidden>
+                                <div class="form-group" id="form_waktu">
                                     <label class="control-label col-sm-4">Waktu</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'siang':'Siang','malam':'Malam'}" cssStyle="margin-top: 7px"
@@ -100,7 +119,7 @@
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>
-                                <div style="display: none" id="form_ri">
+                                <div style="display: block" id="form_ri">
                                     <div class="form-group">
                                         <label class="control-label col-sm-4">Kelas Ruangan</label>
                                         <div class="col-sm-4">
@@ -248,6 +267,7 @@
                                 <td>Bentuk Diet</td>
                                 <td>Alergi</td>
                                 <td>Diagnosa</td>
+                                <td>Waktu</td>
                                 <td width="15%">Status</td>
                                 <td align="center" width="9%">
                                     <div class="form-check">
@@ -278,6 +298,7 @@
                                         <input type="hidden" id="no_checkup_<s:property value="idOrderGizi"/>" value="<s:property value="noCheckup"/>">
                                     </td>
                                     <td><s:property value="namaDiagnosa"/></td>
+                                    <td><s:property value="waktu"/></td>
                                     <td>
                                         <s:if test='#row.diterimaFlag == "R"'>
                                             <span class="span-danger">dibatalkan</span>
@@ -956,9 +977,8 @@
                         $.each(res, function (i, item) {
                             if (keterangan == "radiologi") {
                                 body += '<tr>' +
-                                    '<td>' + cekDataNull(item.namaDetailLab) + '</td>' +
-                                    '<td>' + cekDataNull(item.kesimpulan) + '</td>' +
-                                    '<td>' + cekDataNull(item.keterangan) + '</td>' +
+                                    '<td width="40%">' + cekDataNull(item.namaDetailLab) + '</td>' +
+                                    '<td><div style="margin-left: 25px">' + cekDataNull(item.kesimpulan) + '</div></td>' +
                                     '</tr>';
                             }
                             if (keterangan == "laboratorium") {
@@ -977,7 +997,6 @@
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                             '<td>Pemeriksaan</td>' +
                             '<td>Hasil</td>' +
-                            '<td>Kesan</td>' +
                             '</tr>';
                     }
                     if (keterangan == "laboratorium") {
@@ -1026,14 +1045,14 @@
         $('#modal-lab_luar').modal({show:true, backdrop:'static'});
     }
 
-    function loadModalRM(jenis, method, parameter, idRM, flag) {
+    function loadModalRM(jenis, method, parameter, idRM, flag, flagHide) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
             if(status == "success"){
-                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\', \''+flagHide+'\')');
                 func();
             }
         });
@@ -1091,25 +1110,42 @@
                     }
 
                     labelTerisi = '<span style="color: #367fa9; font-weight: bold">' + terIsi + '/' + constan + '</span>';
-                    labelPrint = '<span style="color: #367fa9; font-weight: bold">' + terIsiPrint + '</span>';
 
-                    if (item.jenis == 'ringkasan_rj') {
-                        li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
-                    } else {
-                        if (item.function == 'addMonitoringFisioterapi') {
-                            li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-television"></i>' + item.namaRm + '</a></li>'
-                        } else {
-                            if (item.keterangan == 'form') {
-                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
-                            } else if (item.keterangan == "surat") {
-                                li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
-                            }
-                        }
+                    if (item.keterangan == 'form') {
+                        li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\', \'gizi\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'+enter;
+                    } else if (item.keterangan == "surat") {
+                        li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'+enter;
                     }
                 });
                 $('#asesmen_rj').html(li);
             }
         });
+    }
+
+    function setSonde(id, isSonde){
+        if("C" == isSonde){
+            if($('#'+id).is(':checked')){
+                $('#status').attr('disabled', true);
+                $('#form_waktu').hide();
+                $('#val_sonde').val('Y');
+            }else{
+                $('#status').attr('disabled', false);
+                $('#form_waktu').show();
+                $('#val_sonde').val('N');
+            }
+        }else{
+            if("Y" == isSonde){
+                $('#is_sonde').prop('checked', true);
+                $('#status').attr('disabled', true);
+                $('#form_waktu').hide();
+                $('#val_sonde').val('Y');
+            }else{
+                $('#is_sonde').prop('checked', false);
+                $('#status').attr('disabled', false);
+                $('#form_waktu').show();
+                $('#val_sonde').val('N');
+            }
+        }
     }
 
 </script>

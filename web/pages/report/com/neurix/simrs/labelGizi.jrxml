@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="labelMakananLuar" language="groovy" pageWidth="56" pageHeight="155" orientation="Landscape" columnWidth="40" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" uuid="c8b1d6ef-d35b-49bd-aeda-6dc40c738ef5">
+	<property name="ireport.zoom" value="2.357947691000029"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="52"/>
+	<property name="ireport.callouts" value="##Tue Mar 03 19:41:31 ICT 2020"/>
+	<parameter name="reportParams.id" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.tgllahir" class="java.lang.String"/>
+	<parameter name="reportParams.ruang" class="java.lang.String"/>
+	<parameter name="divisi" class="java.lang.String"/>
+	<parameter name="idOrderGizi" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="139">
+			<textField isBlankWhenNull="true">
+				<reportElement x="27" y="39" width="11" height="100" uuid="3cceed46-9682-4fe6-b156-e5392170b079"/>
+				<textElement verticalAlignment="Middle" rotation="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="27" y="0" width="11" height="34" uuid="28256848-823b-4461-bfa8-824c0353d30b"/>
+				<textElement verticalAlignment="Middle" rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No RM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="27" y="34" width="11" height="10" uuid="283d5e72-d86f-4f57-9e7a-4ac78d421f15"/>
+				<textElement verticalAlignment="Middle" rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="37" y="73" width="11" height="66" uuid="7f653b8f-def6-415a-9157-0357e80eb63c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["[Gizi]"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="34" width="12" height="10" uuid="70a49ece-8e3b-400f-b1d5-a935222d6490"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="16" y="39" width="11" height="100" uuid="0044cd66-10a1-478e-8bb6-999cc81fd44f"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="34" width="11" height="10" uuid="b66fbe5d-bdd5-411b-a466-8ac13db76ef2"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="4" y="39" width="12" height="100" uuid="51b7cd60-4253-47e5-8c45-d48ed19ccce5"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tgllahir} == null ? "" : $P{reportParams.tgllahir}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="4" y="0" width="12" height="34" uuid="94fe02f9-af25-4a4f-ba3d-7b6643cea564"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tgl Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="16" y="0" width="11" height="34" uuid="2348837f-04db-40da-9276-5e9192992a66"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-8" y="0" width="12" height="34" uuid="cc182ff8-d24b-41bc-a391-7db19b5a1f08"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Ruangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="-8" y="34" width="12" height="10" uuid="3a5838a0-e946-4246-8801-0fc85297d852"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="-8" y="39" width="12" height="100" uuid="5aeefc3d-db06-49ca-9bb2-07f2e64997f2"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.ruang} == null ? "" : $P{reportParams.ruang}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement positionType="Float" x="37" y="-4" width="21" height="40" uuid="3869f44a-8c6b-4280-9dbc-f2fc4068398e"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" orientation="270" textPosition="none">
+					<jr:codeExpression><![CDATA[$P{idOrderGizi}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+		</band>
+	</detail>
+</jasperReport>

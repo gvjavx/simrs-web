@@ -12,4 +12,5 @@ public interface AsesmenRawatInapBo {
     public CrudResponse saveDelete(AsesmenRawatInap bean) throws GeneralBOException;
     public List<AsesmenRawatInap> getListRI(String id, String jenis) throws GeneralBOException;
     public CrudResponse saveEdit(AsesmenRawatInap bean) throws GeneralBOException;
+    public AsesmenRawatInap getPersetujuanTindakan(AsesmenRawatInap bean) throws GeneralBOException;
 }

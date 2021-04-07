@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="labelMakananLuar" language="groovy" pageWidth="56" pageHeight="155" orientation="Landscape" columnWidth="40" leftMargin="8" rightMargin="8" topMargin="8" bottomMargin="8" uuid="c8b1d6ef-d35b-49bd-aeda-6dc40c738ef5">
+	<property name="ireport.zoom" value="2.357947691000029"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<property name="ireport.callouts" value="##Tue Mar 03 19:41:31 ICT 2020"/>
+	<parameter name="reportParams.id" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.tgllahir" class="java.lang.String"/>
+	<parameter name="reportParams.keterangan" class="java.lang.String"/>
+	<parameter name="divisi" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+	</queryString>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="139">
+			<textField isBlankWhenNull="true">
+				<reportElement x="24" y="49" width="11" height="90" uuid="3cceed46-9682-4fe6-b156-e5392170b079"/>
+				<textElement verticalAlignment="Middle" rotation="Right">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.id} == null ? "" : $P{reportParams.id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="24" y="0" width="11" height="45" uuid="28256848-823b-4461-bfa8-824c0353d30b"/>
+				<textElement verticalAlignment="Middle" rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No Pesanan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="24" y="45" width="11" height="10" uuid="283d5e72-d86f-4f57-9e7a-4ac78d421f15"/>
+				<textElement verticalAlignment="Middle" rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="37" y="73" width="11" height="66" uuid="7f653b8f-def6-415a-9157-0357e80eb63c"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle" rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["[Gizi]"]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="45" width="12" height="10" uuid="70a49ece-8e3b-400f-b1d5-a935222d6490"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="13" y="49" width="11" height="90" uuid="0044cd66-10a1-478e-8bb6-999cc81fd44f"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="13" y="45" width="11" height="10" uuid="b66fbe5d-bdd5-411b-a466-8ac13db76ef2"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="1" y="49" width="12" height="90" uuid="51b7cd60-4253-47e5-8c45-d48ed19ccce5"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.keterangan} == null ? "" : $P{reportParams.keterangan}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="1" y="0" width="12" height="45" uuid="94fe02f9-af25-4a4f-ba3d-7b6643cea564"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Keterangan]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="13" y="0" width="11" height="45" uuid="2348837f-04db-40da-9276-5e9192992a66"/>
+				<textElement rotation="Right">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Keluarga]]></text>
+			</staticText>
+		</band>
+	</detail>
+</jasperReport>

@@ -179,6 +179,7 @@ public class Biodata extends BaseModel {
     //RAKA-24MAR2021 ==> untuk keperluan create User
     private String createUser;
     private String email;
+    private String role;
     //RAKA-end
 
 
@@ -196,6 +197,14 @@ public class Biodata extends BaseModel {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getStTunjPemondokan() {

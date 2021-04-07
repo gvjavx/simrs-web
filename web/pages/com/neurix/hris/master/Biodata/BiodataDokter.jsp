@@ -77,6 +77,11 @@
                 }
 
                 if (confirm('Do you want to save this record?')) {
+                    <s:if test="isAdd()">
+                    alert("Pegawai akan secara otomatis dibuatka Akun User!" +
+                        "\n> USER ID : " + nip + "\n> PASSWORD : 123\n> ROLE : Dokter\n" +
+                        "Lakukan Pengaturan lanjut melalui Setting->User");
+                    </s:if>
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -1028,6 +1033,10 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="display: none" id="createUser" name="biodata.createUser" value="Y" />
+                                            </s:if>
 
                                             <tr>
                                                 <td>

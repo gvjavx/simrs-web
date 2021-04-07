@@ -1,15 +1,17 @@
-package com.neurix.simrs.transaksi.ordergizi.model;
+package com.neurix.simrs.transaksi.makananpendamping.model;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
-import java.util.Objects;
 
-public class ItSimrsPendampingGiziEntity {
-    private String idPendampingGizi;
-    private String idOrderGizi;
+public class DetailPendampingMakanan {
+    private String idDetailPendampingMakanan;
+    private String idHeaderPendampingMakanan;
     private String nama;
-    private String tipe;
-    private BigInteger tarif;
+    private Integer qty;
+    private BigDecimal tarif;
+    private BigDecimal totalTarif;
+    private String keterangan;
     private String flag;
     private String action;
     private String createdWho;
@@ -17,20 +19,20 @@ public class ItSimrsPendampingGiziEntity {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
 
-    public String getIdPendampingGizi() {
-        return idPendampingGizi;
+    public String getIdDetailPendampingMakanan() {
+        return idDetailPendampingMakanan;
     }
 
-    public void setIdPendampingGizi(String idPendampingGizi) {
-        this.idPendampingGizi = idPendampingGizi;
+    public void setIdDetailPendampingMakanan(String idDetailPendampingMakanan) {
+        this.idDetailPendampingMakanan = idDetailPendampingMakanan;
     }
 
-    public String getIdOrderGizi() {
-        return idOrderGizi;
+    public String getIdHeaderPendampingMakanan() {
+        return idHeaderPendampingMakanan;
     }
 
-    public void setIdOrderGizi(String idOrderGizi) {
-        this.idOrderGizi = idOrderGizi;
+    public void setIdHeaderPendampingMakanan(String idHeaderPendampingMakanan) {
+        this.idHeaderPendampingMakanan = idHeaderPendampingMakanan;
     }
 
     public String getNama() {
@@ -41,20 +43,36 @@ public class ItSimrsPendampingGiziEntity {
         this.nama = nama;
     }
 
-    public String getTipe() {
-        return tipe;
+    public Integer getQty() {
+        return qty;
     }
 
-    public void setTipe(String tipe) {
-        this.tipe = tipe;
+    public void setQty(Integer qty) {
+        this.qty = qty;
     }
 
-    public BigInteger getTarif() {
+    public BigDecimal getTarif() {
         return tarif;
     }
 
-    public void setTarif(BigInteger tarif) {
+    public void setTarif(BigDecimal tarif) {
         this.tarif = tarif;
+    }
+
+    public BigDecimal getTotalTarif() {
+        return totalTarif;
+    }
+
+    public void setTotalTarif(BigDecimal totalTarif) {
+        this.totalTarif = totalTarif;
+    }
+
+    public String getKeterangan() {
+        return keterangan;
+    }
+
+    public void setKeterangan(String keterangan) {
+        this.keterangan = keterangan;
     }
 
     public String getFlag() {

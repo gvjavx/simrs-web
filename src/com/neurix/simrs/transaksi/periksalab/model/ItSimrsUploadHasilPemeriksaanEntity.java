@@ -14,6 +14,24 @@ public class ItSimrsUploadHasilPemeriksaanEntity {
     private Timestamp createdDate;
     private String createdWho;
     private String lastUpdateWho;
+    private String idPeriksaLabDetail;
+    private String namaDetailPeriksa;
+
+    public String getIdPeriksaLabDetail() {
+        return idPeriksaLabDetail;
+    }
+
+    public void setIdPeriksaLabDetail(String idPeriksaLabDetail) {
+        this.idPeriksaLabDetail = idPeriksaLabDetail;
+    }
+
+    public String getNamaDetailPeriksa() {
+        return namaDetailPeriksa;
+    }
+
+    public void setNamaDetailPeriksa(String namaDetailPeriksa) {
+        this.namaDetailPeriksa = namaDetailPeriksa;
+    }
 
     public String getIdUploadHasilPemeriksaan() {
         return idUploadHasilPemeriksaan;

@@ -612,14 +612,21 @@ function listCairan(idDetail){
                 "<td>"+cekNullAble(item.balanceCairan)+"</td>"+
                 "<td>"+cekNullAble(item.keterangan)+"</td>"+
                 "<td>"+cekNullAble(item.createdWho)+"</td>"+
-                "<td>"+'<i onclick="delCairan(\''+item.id+'\', \''+idDetail+'\')" class="fa fa-trash" style="color: red; cursor: pointer" class="hvr-grow"></i>'+"</td>"+
+                "<td>"+'<i onclick="conDelCairan(\''+item.id+'\', \''+idDetail+'\')" class="fa fa-trash" style="color: red; cursor: pointer" class="hvr-grow"></i>'+"</td>"+
                 "</tr>";
         });
         $("#body-list-cairan").html(str);
     });
 }
 
+function conDelCairan(id, idDetail){
+    $('#modal-confirm-rm').modal('show');
+    $('#tanya').text("Anda yakin untuk menghapus data ini?");
+    $('#save_con_rm').attr('onclick', 'delCairan(\''+id+'\', \''+idDetail+'\')');
+}
+
 function delCairan(id, idDetail){
+    $('#modal-confirm-rm').modal('hide');
     dwr.engine.setAsync(true);
     RawatInapAction.deleteMon(id, "cairan", function (res) {
         dwr.engine.setAsync(false);
@@ -648,7 +655,6 @@ function showModalPemberianObat(idDetail, kategori){
     $("#label_kat_pemberian").html(kategori);
     listPemberian(idDetail, kategori);
 }
-
 
 function addPemberianObat(){
     var kat = $("#kat_pemberian").val();

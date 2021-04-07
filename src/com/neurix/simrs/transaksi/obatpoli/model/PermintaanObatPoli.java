@@ -64,6 +64,24 @@ public class PermintaanObatPoli{
     private String flagReqPelayanan;
 
     private String jumlahObat;
+    private String jenisObat;
+    private String stJumlahRequest;
+
+    public String getStJumlahRequest() {
+        return stJumlahRequest;
+    }
+
+    public void setStJumlahRequest(String stJumlahRequest) {
+        this.stJumlahRequest = stJumlahRequest;
+    }
+
+    public String getJenisObat() {
+        return jenisObat;
+    }
+
+    public void setJenisObat(String jenisObat) {
+        this.jenisObat = jenisObat;
+    }
 
     public String getJumlahObat() {
         return jumlahObat;

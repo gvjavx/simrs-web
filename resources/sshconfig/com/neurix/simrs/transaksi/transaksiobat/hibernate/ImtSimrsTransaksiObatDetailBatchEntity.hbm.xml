@@ -8,7 +8,7 @@
            table="mt_simrs_transaksi_obat_detail_batch" select-before-update="true" schema="public">
 
         <id name="id">
-            <column name="id" sql-type="bigint" not-null="true" />
+            <column name="id" sql-type="varchar" not-null="true" length="100" />
         </id>
 
         <property name="idTransaksiObatDetail">

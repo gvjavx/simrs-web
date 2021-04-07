@@ -128,7 +128,7 @@ public class ShiftBoImpl implements ShiftBo {
                 shiftEntity = shiftDao.getById("shiftId", bean.getShiftId());
                 //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
             } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiBoImpl.saveEdit] Error, " + e.getMessage());
+                logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGaji by Kode PayrollSkalaGaji, please inform to your admin...," + e.getMessage());
             }
 
@@ -137,7 +137,7 @@ public class ShiftBoImpl implements ShiftBo {
                     // Generating ID, get from postgre sequence
                     id = shiftDao.getNextShiftHistoryId();
                 } catch (HibernateException e) {
-                    logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                 }
 

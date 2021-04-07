@@ -1,6 +1,4 @@
 function pilihTindakanMedis(val, id) {
-    console.log(val)
-    console.log(id)
     var namaTindakan = "";
     if (val != '') {
         $.each(kategoriTindakanMedis(''), function (idx, itemx) {
@@ -20,9 +18,9 @@ function pilihTindakanMedis(val, id) {
                 var info = item.informasi.split("|");
                 $.each(info, function (idx, itemx) {
                     if (itemx != '') {
-                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '" onchange="$(\'#info' + i + '\').val(\'' + itemx + ' ' + '\'+this.value)">';
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '" onchange="$(\'#info' +i+ idx + '\').val(\'' + itemx + ' ' + '\'+this.value);">';
                     } else {
-                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i + '" placeholder="' + itemx + '">';
+                        informasi += '<input class="form-control" name="informasi' + i + '" id="info' + i+idx + '" placeholder="' + itemx + '">';
                     }
                 });
             }
@@ -63,6 +61,15 @@ function pilihTindakanMedis(val, id) {
                 '<td>' + informasi + '</td>' +
                 '<td align="center" width="15%">' + cekList + '</td>' +
                 '</tr>';
+
+            if(informasi == "Biaya*"){
+                $('#h_is_biaya').val("Y");
+                $('#form_biaya').show();
+            }else{
+                $('#h_is_biaya').val("N");
+                $('#form_biaya').hide();
+            }
+
         });
 
         $('#body_' + id).html(body);
@@ -571,7 +578,7 @@ function tindakanMedis(id) {
         'id': '08',
         'parameter': 'Biaya*',
         'informasi': '',
-        'keterangan': 'i'
+        'keterangan': 'i',
     });
 
 

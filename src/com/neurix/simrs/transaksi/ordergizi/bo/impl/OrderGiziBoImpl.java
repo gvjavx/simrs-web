@@ -3,23 +3,14 @@ package com.neurix.simrs.transaksi.ordergizi.bo.impl;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.simrs.master.dietgizi.dao.DietGiziDao;
 import com.neurix.simrs.master.dietgizi.dao.JenisDietDao;
-import com.neurix.simrs.master.dietgizi.dao.MasterPendampingGiziDao;
 import com.neurix.simrs.master.dietgizi.model.ImSimrsDietGizi;
 import com.neurix.simrs.master.dietgizi.model.ImSimrsJenisDietEntity;
-import com.neurix.simrs.master.dietgizi.model.ImSimrsPendampingGiziEntity;
-import com.neurix.simrs.master.dietgizi.model.JenisDiet;
 import com.neurix.simrs.transaksi.checkup.model.CheckResponse;
-import com.neurix.simrs.transaksi.icu.model.HeaderIcu;
-import com.neurix.simrs.transaksi.obatinap.dao.ObatInapDao;
-import com.neurix.simrs.transaksi.obatinap.model.ItSimrsObatInapEntity;
-import com.neurix.simrs.transaksi.obatinap.model.ObatInap;
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.dao.OrderJenisDietDao;
-import com.neurix.simrs.transaksi.ordergizi.dao.PendampingGiziDao;
 import com.neurix.simrs.transaksi.ordergizi.model.*;
 import org.apache.log4j.Logger;
-import org.apache.poi.hssf.record.formula.functions.Or;
 import org.hibernate.HibernateException;
 
 import java.sql.Timestamp;
@@ -31,8 +22,6 @@ public class OrderGiziBoImpl implements OrderGiziBo {
     private OrderJenisDietDao orderJenisDietDao;
     private JenisDietDao jenisDietDao;
     private DietGiziDao dietGiziDao;
-    private PendampingGiziDao pendampingGiziDao;
-    private MasterPendampingGiziDao masterPendampingGiziDao;
 
     @Override
     public List<OrderGizi> getByCriteria(OrderGizi bean) throws GeneralBOException {
@@ -147,41 +136,6 @@ public class OrderGiziBoImpl implements OrderGiziBo {
                             logger.error("[OrderGiziBoImpl.saveAdd] Error when insert obat inap ", e);
                         }
                     }
-
-                    if(bean.getListMakananLuar().size() > 0){
-                        for (String makanLuar: bean.getListMakananLuar()){
-                            ItSimrsPendampingGiziEntity entity = new ItSimrsPendampingGiziEntity();
-                            entity.setIdPendampingGizi(pendampingGiziDao.getNextId());
-                            entity.setNama(makanLuar);
-                            entity.setIdOrderGizi(orderGiziEntity.getIdOrderGizi());
-                            entity.setTipe("makanan_luar");
-                            entity.setFlag("Y");
-                            entity.setAction("C");
-                            entity.setCreatedWho(bean.getCreatedWho());
-                            entity.setCreatedDate(bean.getCreatedDate());
-                            entity.setLastUpdate(bean.getLastUpdate());
-                            entity.setLastUpdateWho(bean.getLastUpdateWho());
-                            insertPendampingGizi(entity);
-                        }
-                    }
-
-                    if(bean.getListSnack().size() > 0){
-                        for (String snack: bean.getListSnack()){
-                            ItSimrsPendampingGiziEntity entity = new ItSimrsPendampingGiziEntity();
-                            ImSimrsPendampingGiziEntity pendampingGiziEntity = masterPendampingGiziDao.getById("idPendampingGizi", snack);
-                            entity.setIdPendampingGizi(pendampingGiziDao.getNextId());
-                            entity.setNama(pendampingGiziEntity.getNama());
-                            entity.setIdOrderGizi(orderGiziEntity.getIdOrderGizi());
-                            entity.setTipe(pendampingGiziEntity.getTipe());
-                            entity.setFlag("Y");
-                            entity.setAction("C");
-                            entity.setCreatedWho(bean.getCreatedWho());
-                            entity.setCreatedDate(bean.getCreatedDate());
-                            entity.setLastUpdate(bean.getLastUpdate());
-                            entity.setLastUpdateWho(bean.getLastUpdateWho());
-                            insertPendampingGizi(entity);
-                        }
-                    }
                 }
             }
 
@@ -276,16 +230,6 @@ public class OrderGiziBoImpl implements OrderGiziBo {
         }
         logger.info("[OrderGiziBoImpl.saveAdd] End <<<<<<");
         return response;
-    }
-
-    private void insertPendampingGizi(ItSimrsPendampingGiziEntity entity){
-        if(entity != null){
-            try {
-                pendampingGiziDao.addAndSave(entity);
-            }catch (HibernateException e){
-                logger.error(e.getMessage());
-            }
-        }
     }
 
     @Override
@@ -655,14 +599,6 @@ public class OrderGiziBoImpl implements OrderGiziBo {
 
     public void setDietGiziDao(DietGiziDao dietGiziDao) {
         this.dietGiziDao = dietGiziDao;
-    }
-
-    public void setPendampingGiziDao(PendampingGiziDao pendampingGiziDao) {
-        this.pendampingGiziDao = pendampingGiziDao;
-    }
-
-    public void setMasterPendampingGiziDao(MasterPendampingGiziDao masterPendampingGiziDao) {
-        this.masterPendampingGiziDao = masterPendampingGiziDao;
     }
 }
 

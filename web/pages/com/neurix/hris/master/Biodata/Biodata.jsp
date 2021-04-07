@@ -88,7 +88,8 @@
                 if (confirm('Do you want to save this record?')) {
                     <s:if test="isAdd()">
                         alert("Pegawai akan secara otomatis dibuatka Akun User!" +
-                            "\n> USER ID : " + nip + "\n> PASSWORD: 123");
+                            "\n> USER ID : " + nip + "\n> PASSWORD : 123\n> ROLE : Karyawan\n" +
+                            "Lakukan Pengaturan lanjut melalui Setting->User");
                     </s:if>
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');

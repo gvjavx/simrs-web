@@ -12,7 +12,16 @@ public class AlertPasien
     private String stTglKeluar;
     private String diagnosa;
     private String stTglMasuk;
+    private String idDiagnosa;
     private List<String> listOfAlergi;
+
+    public String getIdDiagnosa() {
+        return idDiagnosa;
+    }
+
+    public void setIdDiagnosa(String idDiagnosa) {
+        this.idDiagnosa = idDiagnosa;
+    }
 
     public String getStTglMasuk() {
         return stTglMasuk;

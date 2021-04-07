@@ -165,6 +165,7 @@
                                 <td>ID Permintaan</td>
                                 <td>Tanggal</td>
                                 <td>Nama Pelayanan</td>
+                                <td>Jenis Obat</td>
                                 <td align="center">Jumlah Obat</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
@@ -176,6 +177,7 @@
                                     <td><s:property value="idPermintaanObatPoli"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="jenisObat"/></td>
                                     <td align="center"><span style="padding: 6px; background-color: #fbec88; color: black; border-radius: 20px"><s:property value="jumlahObat"/></span></td>
                                     <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>

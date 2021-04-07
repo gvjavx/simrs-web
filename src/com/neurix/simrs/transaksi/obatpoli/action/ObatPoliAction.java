@@ -219,6 +219,9 @@ public class ObatPoliAction extends BaseMasterAction {
                         obatDetail.setIdObat(obj.getString("id_obat"));
                         obatDetail.setQty(new BigInteger(obj.getString("qty")));
                         obatDetail.setJenisSatuan(obj.getString("jenis_satuan"));
+
+                        if (obj.has("jenis_obat"))
+                            obatDetail.setFlagBpjs("bpjs".equalsIgnoreCase(obj.getString("jenis_obat")) ? "Y" : "N");
                         obatDetailList.add(obatDetail);
                     }
                 }
@@ -538,7 +541,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public List<ObatPoli> getStokObatPoli(String idObat) {
+    public List<ObatPoli> getStokObatPoli(String idObat , String jenisObat) {
 
         logger.info("[ObatPoliAction.getStokObat] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
@@ -548,6 +551,7 @@ public class ObatPoliAction extends BaseMasterAction {
         obatpoli.setIdObat(idObat);
         obatpoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatpoli.setBranchId(branchId);
+        obatpoli.setFlagBpjs("bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
@@ -766,7 +770,7 @@ public class ObatPoliAction extends BaseMasterAction {
         return "print_reture_permintaan_obat";
     }
 
-    public String updateDiterimaFlagBatch(BigInteger idBatch, String flag){
+    public String updateDiterimaFlagBatch(String idBatch, String flag){
 
         logger.info("[ObatPoliAction.updateDiterimaFlagBatch] START process >>>");
 

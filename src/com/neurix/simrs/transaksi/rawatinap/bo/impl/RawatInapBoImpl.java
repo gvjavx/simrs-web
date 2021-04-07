@@ -4,6 +4,8 @@ import com.neurix.common.exception.GeneralBOException;
 
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.obat.model.Obat;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.rekananops.dao.RekananOpsDao;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.ruangan.dao.RuanganDao;
@@ -85,6 +87,7 @@ public class RawatInapBoImpl implements RawatInapBo {
     private RekananOpsDao rekananOpsDao;
     private TempatTidurDao tempatTidurDao;
     private UangMukaDao uangMukaDao;
+    private PasienDao pasienDao;
 
     public List<ItSimrsRawatInapEntity> getListEntityByCriteria(RawatInap bean) throws GeneralBOException {
         logger.info("[RawatInapBoImpl.getListEntityByCriteria] Start >>>>>>>");
@@ -1053,6 +1056,25 @@ public class RawatInapBoImpl implements RawatInapBo {
                 if ("success".equalsIgnoreCase(response.getStatus())) {
                     response = updateRawatInap(bean);
                 }
+                //sodiq, update flag meninggal, minggu malem 23.35 2021,03,28
+                if("Y".equalsIgnoreCase(bean.getIsMeninggal())){
+                    ItSimrsHeaderChekupEntity chekupEntity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+                    if(chekupEntity != null){
+                        ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", chekupEntity.getIdPasien());
+                        if(pasienEntity != null){
+                            pasienEntity.setLastUpdate(bean.getLastUpdate());
+                            pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                            pasienEntity.setAction("U");
+                            pasienEntity.setFlagMeninggal("Y");
+                            pasienEntity.setTanggalMeninggal(bean.getLastUpdate());
+                            try {
+                                pasienDao.updateAndSave(pasienEntity);
+                            }catch (HibernateException e){
+                                logger.error(e.getMessage());
+                            }
+                        }
+                    }
+                }
             }
         }
         if (bean.getIdRuangLama() != null && !"".equalsIgnoreCase(bean.getIdRuangLama())) {
@@ -1492,5 +1514,9 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     public void setUangMukaDao(UangMukaDao uangMukaDao) {
         this.uangMukaDao = uangMukaDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
     }
 }

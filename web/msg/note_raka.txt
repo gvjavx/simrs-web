@@ -12,6 +12,7 @@
     ADD COLUMN tunj_supervisi numeric(15,2),
     ADD COLUMN tunj_lokasi numeric(15,2),
     ADD COLUMN tunj_siaga numeric(15,2);
+    ADD COLUMN flag_tunj_pemondokan varchar(2)
 
 ------ 2021-03-17 ===> Master Dokter KSO
 -- Menambahkan Length Kodering dari 11 ke 20

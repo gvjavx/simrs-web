@@ -20,11 +20,11 @@
                 <div class="box-body">
                     <table class="table" id="tabel_ina_data_laporan">
                         <tbody>
-                        <tr id="row_ina_tindakan_ina">
+                        <tr id="row_ina_add_tindakan_ina">
                             <td>Persetujuan Tindakan Medis</td>
                             <td width="20%" align="center">
-                                <img id="btn_ina_tindakan_ina" class="hvr-grow"
-                                     onclick="detailAsesmenRawatInap('tindakan_ina')"
+                                <img id="btn_ina_add_tindakan_ina" class="hvr-grow"
+                                     onclick="detailAsesmenRawatInap('add_tindakan_ina')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                             </td>
                         </tr>
@@ -154,9 +154,10 @@
                         </div>
                     </div>
                     <hr class="garis">
-                    <div class="row jarak">
+                    <input type="hidden" id="h_is_biaya">
+                    <div class="row jarak" style="display: none" id="form_biaya">
                         <div class="form-group">
-                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien erdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
+                            <label class="col-md-12" style="text-align: justify">Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan</label>
                         </div>
                     </div>
                     <div class="row jarak">

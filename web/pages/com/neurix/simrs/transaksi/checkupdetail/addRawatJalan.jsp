@@ -669,8 +669,8 @@
                                 <table class="table table-bordered table-striped" id="tabel_alergi">
                                     <thead>
                                     <tr bgcolor="#90ee90">
-                                        <td>Alergi</td>
                                         <td>Jenis</td>
+                                        <td>Alergi</td>
                                         <td align="center" width="20%">Action</td>
                                     </tr>
                                     </thead>
@@ -946,34 +946,34 @@
                         </table>
                     </div>
 
-                    <div class="box-header with-border" id="pos_diet">
-                    </div>
-                    <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>
-                    </div>
-                    <div class="box-body">
-                        <button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"
-                                onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi
-                        </button>
-                        <button class="btn btn-primary" style="margin-bottom: 10px;"
-                                onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh
-                        </button>
-                        <table class="table table-bordered table-striped">
-                            <thead>
-                            <tr bgcolor="#90ee90" style="height: 20px">
-                                <td >Tanggal</td>
-                                <td >Jenis Diet</td>
-                                <td >Bentuk Diet</td>
-                                <td >Keterangan</td>
-                                <td align="center">Status</td>
-                                <td align="center"width="18%">Action</td>
-                            </tr>
-                            </thead>
-                            <tbody id="body_diet">
+                    <%--<div class="box-header with-border" id="pos_diet">--%>
+                    <%--</div>--%>
+                    <%--<div class="box-header with-border">--%>
+                        <%--<h3 class="box-title"><i class="fa fa-stethoscope"></i> Order Gizi</h3>--%>
+                    <%--</div>--%>
+                    <%--<div class="box-body">--%>
+                        <%--<button class="btn btn-success btn-outline hvr-icon-spin" style="margin-bottom: 10px; width: 150px"--%>
+                                <%--onclick="showModal(5)"><i class="fa fa-plus hvr-icon"></i> Order Gizi--%>
+                        <%--</button>--%>
+                        <%--<button class="btn btn-primary" style="margin-bottom: 10px;"--%>
+                                <%--onclick="refreshTable('gizi_ref', 'gizi')"><i class="fa fa-refresh" id="gizi_ref"></i> Refresh--%>
+                        <%--</button>--%>
+                        <%--<table class="table table-bordered table-striped">--%>
+                            <%--<thead>--%>
+                            <%--<tr bgcolor="#90ee90" style="height: 20px">--%>
+                                <%--<td >Tanggal</td>--%>
+                                <%--<td >Jenis Diet</td>--%>
+                                <%--<td >Bentuk Diet</td>--%>
+                                <%--<td >Keterangan</td>--%>
+                                <%--<td align="center">Status</td>--%>
+                                <%--<td align="center"width="18%">Action</td>--%>
+                            <%--</tr>--%>
+                            <%--</thead>--%>
+                            <%--<tbody id="body_diet">--%>
 
-                            </tbody>
-                        </table>
-                    </div>
+                            <%--</tbody>--%>
+                        <%--</table>--%>
+                    <%--</div>--%>
 
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-navicon"></i> Keterangan (Jika sudah pulang / selesai pemeriksaan)</h3>
@@ -1012,7 +1012,7 @@
                                             <s:action id="initComboKet" namespace="/checkupdetail"
                                                       name="getListComboKeteranganKeluar_checkupdetail"/>
                                             <s:select list="#initComboKet.listOfKeterangan" id="ket_selesai"
-                                                      listKey="keterangan"
+                                                      listKey="idKeterangan"
                                                       listValue="keterangan" cssStyle="width: 100%"
                                                       onchange="var warn =$('#war_kolom-2').is(':visible'); if (warn){$('#col_kolom-2').show().fadeOut(3000);$('#war_kolom-2').hide()}; showFormCekup(this.value);"
                                                       headerKey="" headerValue="[Select one]"
@@ -1279,10 +1279,18 @@
                 </div>
                 <div class="row jarak">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Alergi</label>
+                        <label class="col-md-3" style="margin-top: 7px">
+                            Alergi
+                            <i class="fa fa-question-circle box-rm" style="font-size: 18px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Pisahkan dengan coma jika alergi lebih dari 1 pada 1 jenis alergi
+                                    </span>
+                        </i>
+                        </label>
                         <div class="col-md-7">
-                            <input class="form-control" id="alergi" autocomplete="off"
-                                   oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}">
+                            <textarea class="form-control" id="alergi" autocomplete="off" rows="5"
+                                   oninput="var warn =$('#war_alergi').is(':visible'); if (warn){$('#cor_alergi').show().fadeOut(3000);$('#war_alergi').hide()}"
+                            ></textarea>
                         </div>
                         <div class="col-md-2">
                             <p style="color: red; margin-top: 12px; display: none; margin-left: -20px" id="war_alergi">
@@ -1742,6 +1750,15 @@
                         </div>
                     </div>
                 </div>
+                <hr class="garis">
+                <div class="row" id="form_ttd">
+                    <div class="col-md-offset-3 col-md-6">
+                        <canvas style="cursor: pointer" onmouseover="paintTtd('ttd_dokter_pengirim')" class="paint-canvas" id="ttd_dokter_pengirim" width="250" height="200"></canvas>
+                        <select onchange="onChangePengirim(this.value)" class="form-control" id="select_pengirim"></select>
+                        <input style="margin-top: 5px" class="form-control" id="sip_pengirim">
+                        <buton onclick="removePaint('ttd_dokter_pengirim')" class="btn btn-danger"><i class="fa fa-trash"></i> Clear</buton>
+                    </div>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -2118,13 +2135,13 @@
                     <div class="col-md-3">
                         <label style="margin-bottom: -7px">Waktu</label>
                         <select class="form-control select2" style="width: 100%" id="waktu_param">
-                            <option value="">[Select One]</option>
+                            <option value=""> - </option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label style="margin-bottom: -7px">Parameter Keterangan</label>
                         <select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">
-                            <option value="">[Select One]</option>
+                            <option value=""> - </option>
                         </select>
                     </div>
                     <div class="col-md-4">
