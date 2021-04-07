@@ -19,7 +19,9 @@ public class LogTransaction {
     private String status;
     private String message;
     private Timestamp sentDate;
+    private String stSentDate;
     private Timestamp receivedDate;
+    private String stReceivedDate;
     private Timestamp createdDate;
     private String createdWho;
     private Timestamp lastUpdate;
@@ -64,6 +66,22 @@ public class LogTransaction {
 
     public void setStDateEnd(String stDateEnd) {
         this.stDateEnd = stDateEnd;
+    }
+
+    public String getStSentDate() {
+        return stSentDate;
+    }
+
+    public void setStSentDate(String stSentDate) {
+        this.stSentDate = stSentDate;
+    }
+
+    public String getStReceivedDate() {
+        return stReceivedDate;
+    }
+
+    public void setStReceivedDate(String stReceivedDate) {
+        this.stReceivedDate = stReceivedDate;
     }
 
     public BigInteger getPgLogTrxId() {

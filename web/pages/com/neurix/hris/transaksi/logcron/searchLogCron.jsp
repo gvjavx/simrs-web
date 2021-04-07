@@ -86,7 +86,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <s:textfield id="cronDateStr" name="logCron.stCronDateStr" cssClass="form-control pull-right"
-                                                     required="false" size="7"  cssStyle=""/>
+                                                     required="false" size="7"  cssStyle="" onchange="validateRange()"/>
                                         <div class="input-group-addon">
                                             s/d
                                         </div>
@@ -94,7 +94,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <s:textfield id="cronDateEnd" name="logCron.stCronDateEnd" cssClass="form-control pull-right"
-                                                     required="false" size="7"  cssStyle=""/>
+                                                     required="false" size="7"  cssStyle="" onchange="validateRange()"/>
                                     </div>
                                 </td>
                             </tr>
@@ -229,4 +229,21 @@
             dateFormat: 'dd-mm-yy'
         });
     })
+
+    function validateRange() {
+        var start = $('#dateStr').val().split('-');
+        var end   = $('#dateEnd').val().split('-');
+
+        var dateStr = new Date(start[2],start[1]-1,start[0]);
+        var dateEnd = new Date(end[2],end[1]-1,end[0]);
+
+        console.log
+
+        if(start!='' && end!='') {
+            if (dateStr > dateEnd) {
+                alert("Range of Date is Wrong!");
+                $('#dateEnd').val('');
+            }
+        }
+    }
 </script>

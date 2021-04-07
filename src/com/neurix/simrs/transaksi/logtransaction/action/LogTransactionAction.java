@@ -48,7 +48,7 @@ public class LogTransactionAction extends BaseMasterAction {
         if(id != null){
             if(listOfResult != null){
                 for (LogTransaction logTrx : listOfResult) {
-                    if(id == logTrx.getPgLogTrxId() && flag.equalsIgnoreCase(logTrx.getFlag())){
+                    if(id.equals(logTrx.getPgLogTrxId()) == true && flag.equalsIgnoreCase(logTrx.getFlag())){
                         setLogTransaction(logTrx);
                         break;
                     }
@@ -130,6 +130,12 @@ public class LogTransactionAction extends BaseMasterAction {
             }
 
             if (deleteLogTrx != null) {
+                if(deleteLogTrx.getReceivedDate() != null) {
+                    deleteLogTrx.setStReceivedDate(CommonUtil.convertTimestampToStringLengkap(deleteLogTrx.getReceivedDate()));
+                }
+                if(deleteLogTrx.getSentDate() != null) {
+                    deleteLogTrx.setStSentDate(CommonUtil.convertTimestampToStringLengkap(deleteLogTrx.getSentDate()));
+                }
                 setLogTransaction(deleteLogTrx);
             } else {
                 deleteLogTrx.setPgLogTrxId(itemId);

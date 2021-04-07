@@ -123,7 +123,7 @@
                                 <td>
                                     <table>
                                         <s:select list="#{'in':'In', 'out':'Out'}" id="statusTrx" name="logTransaction.status"
-                                                  headerKey="" headerValue="[all status]" cssClass="form-control" onchange="dateRange()"/>
+                                                  headerKey="" headerValue="[all status]" cssClass="form-control"/>
                                     </table>
                                 </td>
                             </tr>
@@ -138,7 +138,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <s:textfield id="dateStr" name="logTransaction.stDateStr" cssClass="form-control pull-right"
-                                                     required="false" size="7"  cssStyle=""/>
+                                                     required="false" size="7"  cssStyle="" onchange="validateRange()"/>
                                         <div class="input-group-addon">
                                             s/d
                                         </div>
@@ -146,7 +146,7 @@
                                             <i class="fa fa-calendar"></i>
                                         </div>
                                         <s:textfield id="dateEnd" name="logTransaction.stDateEnd" cssClass="form-control pull-right"
-                                                     required="false" size="7"  cssStyle=""/>
+                                                     required="false" size="7"  cssStyle="" onchange="validateRange()"/>
                                     </div>
                                 </td>
                             </tr>
@@ -204,7 +204,7 @@
                                                        requestURI="paging_displaytag_logtransaction.action" export="true" id="row" pagesize="14" style="font-size:10">
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/logcron" action="delete_logtransaction" escapeAmp="false">
+                                                <s:url var="urlViewDelete" namespace="/logtransaction" action="delete_logtransaction" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.pgLogTrxId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
@@ -261,3 +261,29 @@
 
 </body>
 </html>
+
+<script>
+    $(document).ready(function() {
+        $('#dateStr').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+        $('#dateEnd').datepicker({
+            dateFormat: 'dd-mm-yy'
+        });
+    })
+
+    function validateRange() {
+        var start = $('#dateStr').val().split('-');
+        var end   = $('#dateEnd').val().split('-');
+
+        var dateStr = new Date(start[2],start[1]-1,start[0]);
+        var dateEnd = new Date(end[2],end[1]-1,end[0]);
+
+        if(start!='' && end!='') {
+            if (dateStr > dateEnd) {
+                alert("Range of Date is Wrong!");
+                $('#dateEnd').val('');
+            }
+        }
+    }
+</script>

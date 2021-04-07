@@ -999,6 +999,7 @@
                 <value>sshconfig/com/neurix/simrs/transaksi/makananpendamping/hibernate/ItSimrsDetailPendampingMakananEntity.hbm.xml</value>
 
                 <value>sshconfig/com/neurix/hris/transaksi/logcron/hibernate/ItLogCronEntity.hbm.xml</value>
+                <value>sshconfig/com/neurix/simrs/transaksi/logtransaction/hibernate/ItPgLogTransactionEntity.hbm.xml</value>
 
             </list>
 

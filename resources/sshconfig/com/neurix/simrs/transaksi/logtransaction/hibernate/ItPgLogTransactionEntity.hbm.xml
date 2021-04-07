@@ -1,73 +1,73 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
-        version="2.0">
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
-    <entity class="com.neurix.simrs.transaksi.logtransaction.model.ItPgLogTransactionEntity">
-        <table name="it_pg_log_transaction" schema="public" catalog="gomedsys_nmu_prod_mig"/>
-        <attributes>
+<hibernate-mapping>
+    <class name="com.neurix.simrs.transaksi.logtransaction.model.ItPgLogTransactionEntity" dynamic-update="true"
+        table="it_pg_log_transaction" select-before-update="true" schema="public">
             <id name="pgLogTrxId">
                 <column name="pg_log_trx_id"/>
             </id>
-            <basic name="trxId">
+            <property name="trxId">
                 <column name="trx_id"/>
-            </basic>
-            <basic name="tipeTrx">
+            </property>
+            <property name="tipeTrx">
                 <column name="tipe_trx"/>
-            </basic>
-            <basic name="bankName">
+            </property>
+            <property name="bankName">
                 <column name="bank_name"/>
-            </basic>
-            <basic name="noVirtualAccount">
+            </property>
+            <property name="noVirtualAccount">
                 <column name="no_virtual_account"/>
-            </basic>
-            <basic name="noRekamMedik">
+            </property>
+            <property name="noRekamMedik">
                 <column name="no_rekam_medik"/>
-            </basic>
-            <basic name="trxAmount">
+            </property>
+            <property name="trxAmount">
                 <column name="trx_amount"/>
-            </basic>
-            <basic name="namePerson">
+            </property>
+            <property name="namePerson">
                 <column name="name_person"/>
-            </basic>
-            <basic name="addressPerson">
+            </property>
+            <property name="addressPerson">
                 <column name="address_person"/>
-            </basic>
-            <basic name="phonePerson">
+            </property>
+            <property name="phonePerson">
                 <column name="phone_person"/>
-            </basic>
-            <basic name="emailPerson">
+            </property>
+            <property name="emailPerson">
                 <column name="email_person"/>
-            </basic>
-            <basic name="status">
+            </property>
+            <property name="status">
                 <column name="status"/>
-            </basic>
-            <basic name="message">
+            </property>
+            <property name="message">
                 <column name="message"/>
-            </basic>
-            <basic name="sentDate">
+            </property>
+            <property name="sentDate">
                 <column name="sent_date"/>
-            </basic>
-            <basic name="receivedDate">
+            </property>
+            <property name="receivedDate">
                 <column name="received_date"/>
-            </basic>
-            <basic name="createdDate">
+            </property>
+            <property name="createdDate">
                 <column name="created_date"/>
-            </basic>
-            <basic name="createdWho">
+            </property>
+            <property name="createdWho">
                 <column name="created_who"/>
-            </basic>
-            <basic name="lastUpdate">
+            </property>
+            <property name="lastUpdate">
                 <column name="last_update"/>
-            </basic>
-            <basic name="lastUpdateWho">
+            </property>
+            <property name="lastUpdateWho">
                 <column name="last_update_who"/>
-            </basic>
-            <basic name="action">
+            </property>
+            <property name="action">
                 <column name="action"/>
-            </basic>
-            <basic name="flag">
+            </property>
+            <property name="flag">
                 <column name="flag"/>
-            </basic>
-        </attributes>
-    </entity>
-</entity-mappings>
+            </property>
+    </class>
+</hibernate-mapping>

@@ -86,7 +86,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delTrxId" name="logTransaction.trxId" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delTrxId" readonly="true" name="logTransaction.trxId" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -96,7 +96,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delTipeTrx" name="logTransaction.tipeTrx" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delTipeTrx" readonly="true" name="logTransaction.tipeTrx" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -107,7 +107,7 @@
                         <td>
                             <table>
                                 <s:select list="#{'BNI':'BNI', 'BSI':'BSI'}" id="delBankName" name="logTransaction.bankName"
-                                          headerKey="" headerValue="[all bank]" cssClass="form-control" />
+                                          readonly="true" headerKey="" headerValue="[all bank]" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
@@ -117,7 +117,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delNoVA" name="logTransaction.noVirtualAccount" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delNoVA" readonly="true" name="logTransaction.noVirtualAccount" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -127,7 +127,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delNoRekamMedik" name="logTransaction.noRekamMedik" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delNoRekamMedik" readonly="true" name="logTransaction.noRekamMedik" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -137,7 +137,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delTrxAmount" name="logTransaction.trxAmount" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delTrxAmount" readonly="true" name="logTransaction.trxAmount" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -147,7 +147,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delNamePerson" name="logTransaction.namePerson" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delNamePerson" readonly="true" name="logTransaction.namePerson" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -157,7 +157,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delAddress" name="logTransaction.addressPerson" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delAddress" readonly="true" name="logTransaction.addressPerson" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -167,7 +167,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delPhone" name="logTransaction.phonePerson" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delPhone" readonly="true" name="logTransaction.phonePerson" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -177,7 +177,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="delEmail" name="logTransaction.emailPerson" required="true" cssClass="form-control"/>
+                                <s:textfield  id="delEmail" readonly="true" name="logTransaction.emailPerson" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -190,7 +190,7 @@
                         <td>
                             <table>
                                 <s:select list="#{'in':'In', 'out':'Out'}" id="delStatusTrx" name="logTransaction.status"
-                                          headerKey="" headerValue="[all status]" cssClass="form-control" onchange="dateRange()"/>
+                                          readonly="true" headerKey="" headerValue="[all status]" cssClass="form-control" onchange="dateRange()"/>
                             </table>
                         </td>
                     </tr>
@@ -200,7 +200,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textarea id="delMessage" name="logTransaction.message" required="true" cssClass="form-control"/>
+                                <s:textarea id="delMessage" readonly="true" name="logTransaction.message" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -242,7 +242,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formTrxDelete" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formLogTrxDelete" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-trash"></i>
