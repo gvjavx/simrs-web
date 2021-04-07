@@ -479,6 +479,8 @@ public class DokterController implements ModelDriven<Object> {
                     dokterMobile.setJenisDpjp(item.getJenisDpjp());
                     dokterMobile.setIdDokterTeam(item.getIdTeamDokter());
                     dokterMobile.setNamaPelayanan(item.getNamaPelayanan());
+                    dokterMobile.setTipePelayanan(item.getTipePelayanan());
+                    dokterMobile.setCreatedDate(CommonUtil.convertTimestampToString(item.getCreatedDate()));
 
                     dokterMobile.setIdPasien(detailPasien.getIdPasien());
                     dokterMobile.setNamaPasien(detailPasien.getNama());

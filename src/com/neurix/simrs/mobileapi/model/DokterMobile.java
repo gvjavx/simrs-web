@@ -49,6 +49,25 @@ public class DokterMobile {
     private String kelasRuangan;
     private String noRuangan;
 
+    private String tipePelayanan;
+    private String createdDate;
+
+    public String getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(String createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
     public String getKelasRuangan() {
         return kelasRuangan;
     }
