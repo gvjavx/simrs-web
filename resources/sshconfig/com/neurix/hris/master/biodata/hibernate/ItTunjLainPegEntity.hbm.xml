@@ -70,5 +70,18 @@
             <column name="tunj_peralihan_tunjangan" sql-type="numeric" length="15" precision="2"/>
         </property>
 
+        <property name="tunjSiaga">
+            <column name="tunj_siaga" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjSupervisi">
+            <column name="tunj_supervisi" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjLokasi">
+            <column name="tunj_lokasi" sql-type="numeric" length="15" precision="2"/>
+        </property>
+        <property name="tunjPemondokan">
+            <column name="tunj_pemondokan" sql-type="numeric" length="15" precision="2"/>
+        </property>
+
     </class>
 </hibernate-mapping>

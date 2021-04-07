@@ -1,6 +1,7 @@
 package com.neurix.simrs.master.rekananops.dao;
 
 import com.neurix.common.dao.GenericDao;
+import com.neurix.simrs.master.rekananops.model.DetailRekananOps;
 import com.neurix.simrs.master.rekananops.model.ImSimrsDetailRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
@@ -132,10 +133,11 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
                     "b.is_bpjs,\n" +
                     "ROUND((((100 - b.diskon) / 100)), 2) as sisa_persen\n" +
                     "FROM im_simrs_rekanan_ops a\n" +
-                    "INNER JOIN im_simrs_detail_rekanan_ops b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
+                    "INNER JOIN (SELECT * FROM im_simrs_detail_rekanan_ops WHERE flag_parent = 'Y') b ON a.id_rekanan_ops = b.id_rekanan_ops\n" +
                     "INNER JOIN it_simrs_header_detail_checkup c ON a.id_rekanan_ops = c.id_asuransi\n" +
                     "WHERE c.id_detail_checkup = :id \n"+
-                    "AND b.branch_id = :branchId \n";
+                    "AND b.branch_id = :branchId \n" +
+                    "AND b.flag_parent = 'Y' \n";
 
             List<Object[]> result = new ArrayList<>();
             result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
@@ -153,6 +155,39 @@ public class RekananOpsDao extends GenericDao<ImSimrsRekananOpsEntity, String> {
             }
         }
         return ops;
+    }
+
+    public DetailRekananOps getTarifRekananByIdRekanan(String idRekananOps, String branchId, String idTindakan){
+
+        String SQL = "SELECT \n" +
+                "diskon_non_bpjs,\n" +
+                "diskon_bpjs,\n" +
+                "tarif,\n" +
+                "tarif_bpjs\n" +
+                "FROM im_simrs_detail_rekanan_ops\n" +
+                "WHERE id_item = '"+idTindakan+"'\n" +
+                "AND branch_id = '"+branchId+"'\n" +
+                "AND id_rekanan_ops = '"+idRekananOps+"'\n";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (results.size() > 0){
+            Object[] obj = results.get(0);
+            DetailRekananOps detail = new DetailRekananOps();
+            detail.setDiskonNonBpjs(objToBigDecimal(obj[0]));
+            detail.setDiskonBpjs(objToBigDecimal(obj[1]));
+            detail.setTarif(objToBigDecimal(obj[2]));
+            detail.setTarifBpjs(objToBigDecimal(obj[3]));
+            return detail;
+        }
+        return null;
+    }
+
+    public BigDecimal objToBigDecimal(Object obj){
+        if (obj == null){
+            return new BigDecimal(0);
+        } else {
+            return new BigDecimal(obj.toString());
+        }
     }
 
     public String getNextId() {

@@ -215,11 +215,13 @@
                                 <s:textfield  id="cutiId1" size="20" name="absensiPegawai.stBiayaLembur" required="false" readonly="true" cssClass="form-control"/>
                             </table>
                         </td>
-                        <td>
-                            <a href="javascript:void(0)">
-                                <img sizes="30" id="btnViewLembur" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
-                            </a>
-                        </td>
+                        <s:if test='absensiPegawai.lembur == "Y"'>
+                            <td>
+                                <a href="javascript:void(0)">
+                                    <img sizes="30" id="btnViewLembur" border="0" src="<s:url value="/pages/images/view.png"/>" name="icon_trash">
+                                </a>
+                            </td>
+                        </s:if>
                     </tr>
                 </table>
 

@@ -62,7 +62,11 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 criteria.add(Restrictions.eq("kategori", (String) mapCriteria.get("kategori")));
             }
             if (mapCriteria.get("flag_cost_unit")!=null) {
-                criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("flag_cost_unit")));
+                if(!"all".equalsIgnoreCase((String) mapCriteria.get("flag_cost_unit"))) {
+                    criteria.add(Restrictions.eq("flagCostUnit", (String) mapCriteria.get("flag_cost_unit")));
+                }
+            }else{
+                criteria.add(Restrictions.or(Restrictions.ne("flagCostUnit", "Y"),Restrictions.isNull("flagCostUnit")));
             }
         }
 
@@ -145,7 +149,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
     public String getNextPosition() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_position')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String output =  "PS" + iter.next() + "";
+        String sId = String.format("%03d", iter.next());
+        String output =  "PS" + sId + "";
         return output;
     }
 
@@ -204,13 +209,14 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<ImPosition> listOfResult = new ArrayList<ImPosition>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select\n" +
                 "\tposition_id,\n" +
                 "\tposition_name,\n" +
                 "\tkodering\n" +
                 "from\n" +
                 "\tim_position\n" +
                 "where\n" + bagian + " and flag='Y'\n" +
+                "\tand (flag_cost_unit IS NULL or flag_cost_unit != 'Y')\n" +
                 "\torder by kodering";
 
         results = this.sessionFactory.getCurrentSession()
@@ -237,7 +243,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
 
         List<Position> listOfResult = new ArrayList<Position>();
         List<Object[]> results = new ArrayList<Object[]>();
-        String query = "select DISTINCT \n" +
+        String query = "select \n" +
                 "\tdepartment_id,\n" +
                 "\tdepartment_name,\n" +
                 "\tkodering\n" +
@@ -278,6 +284,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
+                "\tAND (flag_cost_unit = 'N' OR flag_cost_unit IS NULL) \n" +
                 "order by\n" +
                 "\tkodering";
 
@@ -313,6 +320,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "\tim_position\n" +
                 "where\n" +
                 "\tposition_id is not null\n" + bagian + "\n" +
+                "\tAND flag_cost_unit = 'N' OR flag_cost_unit IS NULL \n" +
                 "order by\n" +
                 "\tkodering";
 

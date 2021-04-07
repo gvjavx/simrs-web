@@ -73,7 +73,12 @@ public class PositionAction extends BaseMasterAction {
         Position initPosition = new Position();
         if (id != null && !"".equalsIgnoreCase(id)) {
             String lId = id;
-            initPosition = positionBoProxy.getPositionById(lId, flag);
+            try {
+                initPosition = positionBoProxy.getPositionById(lId, flag);
+            }catch (GeneralBOException e){
+                logger.error("[PositionAction.init] error, " + e.getMessage());
+                addActionError("Error, Found problem when get position, please inform to your admin" );
+            }
         }
 
         logger.info("[PositionAction.init] end process <<<");
@@ -588,9 +593,9 @@ public class PositionAction extends BaseMasterAction {
         logger.info("[PositionAction.searchDivisi] start process >>>");
 
         Position searchPosition = new Position();
-        if (!"0".equalsIgnoreCase(branchId)){
+//        if (!"0".equalsIgnoreCase(branchId)){
             searchPosition.setBranchId(branchId);
-        }
+//        }
         List<Position> listOfSearchPosition = new ArrayList();
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();

@@ -1,3 +1,19 @@
+------ 2021-03-21 ===> Memindahkan nilai Tunjangan ke Transaksi Tunjangan Lain
+-- Menambahkan field Tunjangan
+
+    ALTER TABLE it_hris_tunj_lain_pegawai
+    ADD COLUMN flag_tunj_peralihan_gapok varchar(2),
+    ADD COLUMN flag_tunj_peralihan_sankhus varchar(2),
+    ADD COLUMN flag_tunj_peralihan_tunjangan varchar(2),
+    ADD COLUMN tunj_peralihan_gapok numeric(15,2),
+    ADD COLUMN tunj_peralihan_sankhus numeric(15,2),
+    ADD COLUMN tunj_peralihan_tunjangan numeric(15,2);
+    ADD COLUMN tunj_pemondokan numeric(15,2),
+    ADD COLUMN tunj_supervisi numeric(15,2),
+    ADD COLUMN tunj_lokasi numeric(15,2),
+    ADD COLUMN tunj_siaga numeric(15,2);
+    ADD COLUMN flag_tunj_pemondokan varchar(2)
+
 ------ 2021-03-17 ===> Master Dokter KSO
 -- Menambahkan Length Kodering dari 11 ke 20
     ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
@@ -8,27 +24,17 @@
 
 ------ 2021-03-15 ===> Master Branch Nilai Beberapa Tunjnagan
 -- Menambahkan field nilai tunjangan
-    ALTER TABLE im_branches
+    --ALTER TABLE im_branches
     --ADD COLUMN tunj_pemondokan numeric(15,2),
-    ADD COLUMN tunj_supervisi numeric(15,2),
-    ADD COLUMN tunj_lokasi numeric(15,2),
-    ADD COLUMN tunj_siaga numeric(15,2);
+    --ADD COLUMN tunj_supervisi numeric(15,2),
+    --ADD COLUMN tunj_lokasi numeric(15,2),
+    --ADD COLUMN tunj_siaga numeric(15,2);
 
 ------ 2021-03-01 ===> Master Kelompok Position & Transaksi Tunjangan Lain
 -- Menambahkan field Tunj. Telekomunikasi
 
     ALTER TABLE im_hris_kelompok_position
     ADD COLUMN tunj_telekomunikasi numeric(15,2);
-
--- Menambahkan field Tunjangan
-
-    ALTER TABLE it_hris_tunj_lain_pegawai
-    ADD COLUMN flag_tunj_peralihan_gapok varchar(2),
-    ADD COLUMN flag_tunj_peralihan_sankhus varchar(2),
-    ADD COLUMN flag_tunj_peralihan_tunjangan varchar(2),
-    ADD COLUMN tunj_peralihan_gapok numeric(15,2),
-    ADD COLUMN tunj_peralihan_sankhus numeric(15,2),
-    ADD COLUMN tunj_peralihan_tunjangan numeric(15,2);
 
 -- Menambahkan field Tunjangan Pemondokan
 

@@ -86,13 +86,13 @@
                     event.originalEvent.options.submit = false;
                     var msg = "";
                     if (nip == '') {
-                        msg += 'Field <strong>Nip </strong> is required.' + '<br/>';
+                        msg += 'Field <strong>ID Dokter </strong> is required.' + '<br/>';
                     }
                     if (branchId == '') {
                         msg += 'Field <strong>Unit </strong> is required.' + '<br/>';
                     }
                     if (masterId == '') {
-                        msg += 'Field <strong>Master ID </strong> is required.' + '<br/>';
+                        msg += 'Field <strong>Jenis Pasien </strong> is required.' + '<br/>';
                     }
                     if (jenisKso == '') {
                         msg += 'Field <strong>Jenis KSO </strong> is required.' + '<br/>';
@@ -167,7 +167,7 @@
                                         <table >
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>NIP Dokter :</small></label>
+                                                    <label class="control-label"><small>ID Dokter :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -213,7 +213,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Nama Dokter:</small></label>
+                                                    <label class="control-label"><small>Nama Dokter :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -223,7 +223,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Master Id :</small></label>
+                                                    <label class="control-label"><small>Jenis Pasien :</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -259,7 +259,8 @@
                                                     </table>
                                                 </td>
                                             </tr>
-                                            <tr>
+                                            <%--RAKA-31MAR2021--%>
+                                            <tr style="display: none">
                                                 <td>
                                                     <label class="control-label"><small>Divisi :</small></label>
                                                 </td>
@@ -271,6 +272,7 @@
                                                     </table>
                                                 </td>
                                             </tr>
+                                            <%--RAKA-end--%>
                                             <tr>
                                                 <td>
                                                     <label class="control-label"><small>Jenis KSO:</small></label>
@@ -286,7 +288,7 @@
 
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Persen KSO:</small></label>
+                                                    <label class="control-label"><small>Persen KSO (%):</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -296,7 +298,7 @@
                                             </tr>
                                             <tr>
                                                 <td>
-                                                    <label class="control-label"><small>Persen KS:</small></label>
+                                                    <label class="control-label"><small>Persen KS (%):</small></label>
                                                 </td>
                                                 <td>
                                                     <table>
@@ -441,20 +443,20 @@
                 <form class="form-horizontal" id="myForm">
                     <div class="form-group">
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-2 col-sm-3">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Pelayanan</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <select id="modPelayanan" style="width: 100%" class="form-control select2" onchange="listTindakan()">
                                     <option value="">[Select One]</option>
                                 </select>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-offset-2 col-sm-3">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Tindakan</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <select id="modTindakan" style="width: 100%" class="form-control select2">
                                     <option value="">[Select One]</option>
                                 </select>
@@ -492,10 +494,10 @@
                             </div>
                         </div>
                         <div class="row" style="margin-top: 7px">
-                            <div class="col-sm-offset-2 col-sm-3">
+                            <div class="col-sm-offset-2 col-sm-2">
                                 <label class="control-label">Persen KSO Tindakan</label>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-6">
                                 <s:textfield type="number" id="modPersenKsoTindakan" cssClass="form-control" />
                             </div>
                         </div>
@@ -634,7 +636,7 @@
         DokterKsoAction.initComboTindakanDokter(idPelayanan, idDokter, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    option += "<option value='" + item.idTindakan + "'>" + item.tindakan + "</option>";
+                    option += "<option value='" + item.idTindakan + "'>" + item.idTindakan + " | " + item.tindakan + "</option>";
                 });
                 $('#modTindakan').html(option);
             } else {

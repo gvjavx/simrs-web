@@ -592,13 +592,13 @@
                         if (confirm("Sudah ada jadwal sebelumnya apakah anda ingin menambahkan shift gantung ?")) {
                             JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
                                 resultPerson();
-                                listPerson();
+                                // listPerson();
                             });
                         }
                     }else if (data.jumlahJadwal===0){
                         JadwalShiftKerjaAction.savePegawaiShift(nip,nama,posisi,grup,grupId,shift,shiftId,onCall,function() {
                             resultPerson();
-                            listPerson();
+                            // listPerson();
                         });
                     }else if (data.jumlahJadwal>3) {
                         alert("Hanya bisa menambahkan maksimal 2 jadwal");

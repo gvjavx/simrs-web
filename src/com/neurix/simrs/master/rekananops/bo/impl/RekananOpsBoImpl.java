@@ -382,6 +382,23 @@ public class RekananOpsBoImpl implements RekananOpsBo {
         return rekananOpsDao.getById("idRekananOps", id);
     }
 
+    @Override
+    public DetailRekananOps getTarifRekanan(String idRekananOps, String branchId, String idTindakn) throws GeneralBOException {
+        logger.info("[RekanaOpsBoImpl.getTarifRekanan] START >>>");
+
+        DetailRekananOps detailRekananOps = new DetailRekananOps();
+
+        try {
+            detailRekananOps = rekananOpsDao.getTarifRekananByIdRekanan(idRekananOps, branchId, idTindakn);
+        }catch (HibernateException e){
+            logger.error("Error when search detail rekanan ops,"+e.getMessage());
+            throw new GeneralBOException("[RekanaOpsBoImpl.getTarifRekanan] Error, "+e.getMessage());
+        }
+
+        logger.info("[RekanaOpsBoImpl.getTarifRekanan] END <<<");
+        return detailRekananOps;
+    }
+
     private String getNextDetailRekanan(){
         String id = "";
 

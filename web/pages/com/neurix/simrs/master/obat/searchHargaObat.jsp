@@ -173,14 +173,11 @@
                             <tr bgcolor="#90ee90">
                                 <td>ID Obat</td>
                                 <td>Nama Obat</td>
-                                <td>Merk</td>
                                 <td>Standar Margin</td>
-                                <td>Margin Umum</td>
-                                <td>Margin Khusus</td>
-                                <td>Harga Beli (Bijian)</td>
-                                <td>Harga Rata-rata (Bijian)</td>
-                                <td>Harga Jual (Umum)</td>
-                                <td>Harga Jual (Khusus)</td>
+                                <td>Harga Jual Non BPJS(Normal)</td>
+                                <td>Harga Jual Non BPJS(Khusus)</td>
+                                <td>Harga Jual BPJS(Normal)</td>
+                                <td>Harga Jual BPJS(Khusus)</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
@@ -197,14 +194,11 @@
                                 </s:else>
                                     <td><s:property value="idObat"/></td>
                                     <td><s:property value="namaObat"/></td>
-                                    <td><s:property value="merk"/></td>
                                     <td><s:property value="standarMargin"/></td>
-                                    <td><s:property value="marginUmum"/></td>
-                                    <td><s:property value="margin"/></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaBeli"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="averageHargaBiji"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmum"/>'))</script></td>
-                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJual"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmumNonBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualKhususNonBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualUmumBpjs"/>'))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah('<s:property value="hargaJualKhususBpjs"/>'))</script></td>
                                     <td align="center">
                                         <img onclick="editObat('<s:property value="idObat"/>','<s:property value="idBarang"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-create-25.png"/>" style="cursor: pointer;">
                                     </td>
@@ -306,7 +300,7 @@
                                 <label class="col-md-5" style="margin-top: 7px">Margin</label>
                                 <div class="col-md-7">
                                     <div class="input-group">
-                                        <input type="number" id="mod-margin-umum" onchange="hitungHargaJual('umum')" class="form-control">
+                                        <input type="number" id="mod-margin-umum" onchange="hitungHargaJual('umum', 'nonbpjs')" class="form-control">
                                         <div class="input-group-addon">
                                             %
                                         </div>
@@ -319,28 +313,28 @@
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Harga</label>
                                 <div class="col-md-7">
-                                    <input type="number" id="mod-harga-net-umum" onchange="hitungMargin('umum')" class="form-control">
+                                    <input type="number" id="mod-harga-net-umum" onchange="hitungMargin('umum', 'nonbpjs')" class="form-control">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Diskon</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-diskon-umum" onchange="hitungDiskon('umum')" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Diskon</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-diskon-umum" onchange="hitungDiskon('umum')" class="form-control">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-harga-jual-umum" class="form-control" readonly>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Harga Jual</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-harga-jual-umum" class="form-control" readonly>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
 
                     <%--SIDE HARGA OBAT KHUSUS--%>
@@ -359,7 +353,7 @@
                                 <label class="col-md-5" style="margin-top: 7px">Margin</label>
                                 <div class="col-md-7">
                                     <div class="input-group">
-                                        <input type="number" id="mod-margin" onchange="hitungHargaJual('khusus')" class="form-control">
+                                        <input type="number" id="mod-margin" onchange="hitungHargaJual('khusus', 'nonbpjs')" class="form-control">
                                         <div class="input-group-addon">
                                             %
                                         </div>
@@ -372,28 +366,28 @@
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Harga</label>
                                 <div class="col-md-7">
-                                    <input type="number" id="mod-harga-net" onchange="hitungMargin('khusus')" class="form-control">
+                                    <input type="number" id="mod-harga-net" onchange="hitungMargin('khusus', 'nonbpjs')" class="form-control">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Diskon</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-diskon" onchange="hitungDiskon('khusus')" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Diskon</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-diskon" onchange="hitungDiskon('khusus')" class="form-control">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-harga-jual" class="form-control" readonly>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Harga Jual</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-harga-jual" class="form-control" readonly>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
 
@@ -416,7 +410,7 @@
                                 <label class="col-md-5" style="margin-top: 7px">Margin</label>
                                 <div class="col-md-7">
                                     <div class="input-group">
-                                        <input type="number" id="mod-margin-umum-bpjs" onchange="hitungHargaJual('umum')" class="form-control">
+                                        <input type="number" id="mod-margin-umum-bpjs" onchange="hitungHargaJual('umum', 'bpjs')" class="form-control">
                                         <div class="input-group-addon">
                                             %
                                         </div>
@@ -429,28 +423,28 @@
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Harga</label>
                                 <div class="col-md-7">
-                                    <input type="number" id="mod-harga-net-umum-bpjs" onchange="hitungMargin('umum')" class="form-control">
+                                    <input type="number" id="mod-harga-net-umum-bpjs" onchange="hitungMargin('umum', 'bpjs')" class="form-control">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Diskon</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-diskon-umum-bpjs" onchange="hitungDiskon('umum')" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Diskon</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-diskon-umum-bpjs" onchange="hitungDiskon('umum')" class="form-control">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-harga-jual-umum-bpjs" class="form-control" readonly>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Harga Jual</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-harga-jual-umum-bpjs" class="form-control" readonly>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
 
                     <%--SIDE HARGA OBAT KHUSUS--%>
@@ -469,7 +463,7 @@
                                 <label class="col-md-5" style="margin-top: 7px">Margin</label>
                                 <div class="col-md-7">
                                     <div class="input-group">
-                                        <input type="number" id="mod-margin-bpjs" onchange="hitungHargaJual('khusus')" class="form-control">
+                                        <input type="number" id="mod-margin-bpjs" onchange="hitungHargaJual('khusus', 'bpjs')" class="form-control">
                                         <div class="input-group-addon">
                                             %
                                         </div>
@@ -482,28 +476,28 @@
                             <div class="form-group">
                                 <label class="col-md-5" style="margin-top: 7px">Harga</label>
                                 <div class="col-md-7">
-                                    <input type="number" id="mod-harga-net-bpjs" onchange="hitungMargin('khusus')" class="form-control">
+                                    <input type="number" id="mod-harga-net-bpjs" onchange="hitungMargin('khusus', 'bpjs')" class="form-control">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Diskon</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-diskon-bpjs" onchange="hitungDiskon('khusus')" class="form-control">
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Diskon</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-diskon-bpjs" onchange="hitungDiskon('khusus')" class="form-control">--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
 
-                        <div class="row" style="margin-top: 7px">
-                            <div class="form-group">
-                                <label class="col-md-5" style="margin-top: 7px">Harga Jual</label>
-                                <div class="col-md-7">
-                                    <input type="number" id="mod-harga-jual-bpjs" class="form-control" readonly>
-                                </div>
-                            </div>
-                        </div>
+                        <%--<div class="row" style="margin-top: 7px">--%>
+                            <%--<div class="form-group">--%>
+                                <%--<label class="col-md-5" style="margin-top: 7px">Harga Jual</label>--%>
+                                <%--<div class="col-md-7">--%>
+                                    <%--<input type="number" id="mod-harga-jual-bpjs" class="form-control" readonly>--%>
+                                <%--</div>--%>
+                            <%--</div>--%>
+                        <%--</div>--%>
                     </div>
                 </div>
             </div>
@@ -540,38 +534,35 @@
 
     function saveObat(id, idBarang){
 
-        alert("klik");
-
         if (checkMargin())
             return false;
 
+        // khusus not bpjs
         var net     = $("#mod-harga-net").val();
-        var diskon  = $("#mod-diskon").val();
-        var jual    = $("#mod-harga-jual").val();
         var margin  = $("#mod-margin").val();
 
+        // umum not bpjs
         var netUmum = $("#mod-harga-net-umum").val();
-        var diskonUmum = $("#mod-diskon-umum").val();
-        var jualUmum = $("#mod-harga-jual-umum").val();
         var marginUmum = $("#mod-margin-umum").val();
 
-        var netKhususBpjs = $("#mod-harga-net-bpjs").val() == '' ? 0 : $("#mod-harga-net-bpjs").val();
-        var diskonKhususBpjs = $("#mod-diskon-bpjs").val() == '' ? 0 : $("#mod-diskon-bpjs").val();
-        var jualKhususBpjs = $("#mod-harga-jual-bpjs").val() == '' ? 0 : $("#mod-harga-jual-bpjs").val();
-        var marginKhususBpjs = $("#mod-margin-bpjs").val() == '' ? 0 : $("#mod-margin-bpjs").val();
+        // khusus bpjs
+        var netKhususBpjs = $("#mod-harga-net-bpjs").val() == '' ? "0" : $("#mod-harga-net-bpjs").val();
+        var marginKhususBpjs = $("#mod-margin-bpjs").val() == '' ? "0" : $("#mod-margin-bpjs").val();
 
-        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val() == '' ? 0 : $("#mod-harga-net-umum-bpjs").val();
-        var diskonUmumBpjs = $("#mod-diskon-umum-bpjs").val() == '' ? 0 : $("#mod-diskon-umum-bpjs").val();
-        var jualUmumBpjs = $("#mod-harga-jual-umum-bpjs").val() == '' ? 0 : $("#mod-harga-jual-umum-bpjs").val();
-        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val() == '' ? 0 : $("#mod-harga-jual-umum-bpjs").val();
+        // umum bpjs
+        var netUmumBpjs = $("#mod-harga-net-umum-bpjs").val() == '' ? "0" : $("#mod-harga-net-umum-bpjs").val();
+        var marginUmumBpjs = $("#mod-margin-umum-bpjs").val() == '' ? "0" : $("#mod-margin-umum-bpjs").val();
 
         var arJson = [];
-        arJson.push({"harga_net":net, "diskon":diskon, "harga_jual":jual, "margin" : margin,
-            "harga_net_umum" : netUmum, "diskon_umum" : diskonUmum, "harga_jual_umum" : jualUmum, "margin_umum" : marginUmum,
-            "net_khusus_bpjs" : netKhususBpjs, "diskon_khusus_bpjs" : diskonKhususBpjs, "jual_khusus_bpjs" : jualKhususBpjs, "margin_khusus_bpjs" : marginKhususBpjs,
-            "net_umum_bpjs" : netUmumBpjs, "diskon_umum_bpjs" : diskonUmumBpjs, "jual_umum_bpjs" : jualUmumBpjs, "margin_umum_bpjs" : marginUmumBpjs
+        arJson.push({
+            "harga_net":net, "margin" : margin,
+            "harga_net_umum" : netUmum, "margin_umum" : marginUmum,
+            "net_khusus_bpjs" : netKhususBpjs, "margin_khusus_bpjs" : marginKhususBpjs,
+            "net_umum_bpjs" : netUmumBpjs, "margin_umum_bpjs" : marginUmumBpjs
         });
         var stJson = JSON.stringify(arJson);
+        console.log(arJson);
+        console.log(stJson);
         ObatAction.saveHargaObat(id, idBarang, stJson, function (response) {
            if (response.status == "success"){
                $("#success_obat").show();
@@ -599,85 +590,158 @@
                    $('#mod-id-obat').val(item.idObat);
                    $('#mod-id-harga-obat').val(item.idHargaObat);
                    $("#mod-nama-obat").val(item.namaObat);
-                   $("#mod-merk").val(item.merk);
-
-                   $("#mod-harga-rata").val(item.averageHargaBiji);
-                   $("#mod-harga-net").val(item.hargaNet);
-                   $("#mod-diskon").val(item.diskon);
-                   $("#mod-harga-jual").val(item.hargaJual);
-                   $("#mod-margin").val(item.margin);
-
                    $("#mod-standar-margin").val(item.standarMargin);
+//                   $("#mod-merk").val(item.merk);
 
-                   $("#mod-harga-beli").val(item.hargaBeli);
-                   $("#mod-harga-net-umum").val(item.hargaNetUmum);
-                   $("#mod-diskon-umum").val(item.diskonUmum);
-                   $("#mod-harga-jual-umum").val(item.hargaJualUmum);
-                   $("#mod-margin-umum").val(item.marginUmum);
+                   $("#mod-harga-rata").val(item.hargaTerakhirKhususNonBpjs);
+                   $("#mod-harga-net").val(item.hargaJualKhususNonBpjs);
+                   $("#mod-margin").val(item.marginKhususNonBpjs);
+
+                   $("#mod-harga-beli").val(item.hargaTerakhirUmumNonBpjs);
+                   $("#mod-harga-net-umum").val(item.hargaJualUmumNonBpjs);
+                   $("#mod-margin-umum").val(item.marginUmumNonBpjs);
+
+                   $("#mod-harga-rata-bpjs").val(item.hargaTerakhirKhususBpjs);
+                   $("#mod-harga-net-bpjs").val(item.hargaJualKhususBpjs);
+                   $("#mod-margin-bpjs").val(item.marginKhususBpjs);
+
+                   $("#mod-harga-beli-bpjs").val(item.hargaTerakhirUmumBpjs);
+                   $("#mod-harga-net-umum-bpjs").val(item.hargaJualUmumBpjs);
+                   $("#mod-margin-umum-bpjs").val(item.marginUmumBpjs);
                });
                $('#save_obat').attr('onclick', 'saveObat(\'' + id + '\',\''+idBarang+'\')');
            }
         });
     }
 
-    function hitungMargin(tipe) {
+    function hitungMargin(tipe, jenis) {
 
         var harga       = "";
         var hargarata   = "";
-        if (tipe == "khusus"){
-            harga       = $("#mod-harga-net").val();
-            hargarata   = $("#mod-harga-rata").val();
+
+        if (jenis == "bpjs"){
+            if (tipe == "khusus"){
+                harga       = $("#mod-harga-net-bpjs").val();
+                hargarata   = $("#mod-harga-rata-bpjs").val();
+            } else {
+                harga       = $("#mod-harga-net-umum-bpjs").val();
+                hargarata   = $("#mod-harga-beli-bpjs").val();
+            }
         } else {
-            harga       = $("#mod-harga-net-umum").val();
-            hargarata   = $("#mod-harga-beli").val();
+            if (tipe == "khusus"){
+                harga       = $("#mod-harga-net").val();
+                hargarata   = $("#mod-harga-rata").val();
+            } else {
+                harga       = $("#mod-harga-net-umum").val();
+                hargarata   = $("#mod-harga-beli").val();
+            }
         }
 
-        var selisih     = parseFloat(harga) - parseFloat(hargarata);
-        var margin      = parseFloat(selisih) / parseFloat(hargarata) * 100;
+        if (parseInt(hargarata) > 0){
+            var selisih     = parseFloat(harga) - parseFloat(hargarata);
+            var margin      = parseFloat(selisih) / parseFloat(hargarata) * 100;
 
-        if (tipe == "khusus"){
-            $("#mod-margin").val(parseInt(margin));
-            $("#mod-harga-jual").val(harga);
-        } else {
-            $("#mod-margin-umum").val(parseInt(margin));
-            $("#mod-harga-jual-umum").val(harga);
+            if (jenis == "bpjs"){
+                if (tipe == "khusus"){
+                    $("#mod-margin-bpjs").val(parseInt(margin));
+                    $("#mod-harga-net-bpjs").val(harga);
+                } else {
+                    $("#mod-margin-umum-bpjs").val(parseInt(margin));
+                    $("#mod-harga-net-umum-bpjs").val(harga);
+                }
+            } else {
+                if (tipe == "khusus"){
+                    $("#mod-margin").val(parseInt(margin));
+                    $("#mod-harga-net").val(harga);
+                } else {
+                    $("#mod-margin-umum").val(parseInt(margin));
+                    $("#mod-harga-net-umum").val(harga);
+                }
+            }
         }
 
         checkMargin();
     }
 
-    function hitungHargaJual(tipe) {
+    function hitungHargaJual(tipe, jenis) {
         var margin      = "";
         var hargarata   = "";
 
-        if (tipe == "khusus"){
-            margin      = $("#mod-margin").val();
-            hargarata   = $("#mod-harga-rata").val();
+        if (jenis == "bpjs"){
+            if (tipe == "khusus"){
+                margin      = $("#mod-margin-bpjs").val();
+                hargarata   = $("#mod-harga-rata-bpjs").val();
+            } else {
+                //umum
+                margin      = $("#mod-margin-umum-bpjs").val();
+                hargarata   = $("#mod-harga-beli-bpjs").val();
+            }
         } else {
-            //umum
-            margin      = $("#mod-margin-umum").val();
-            hargarata   = $("#mod-harga-beli").val();
+            if (tipe == "khusus"){
+                margin      = $("#mod-margin").val();
+                hargarata   = $("#mod-harga-rata").val();
+            } else {
+                //umum
+                margin      = $("#mod-margin-umum").val();
+                hargarata   = $("#mod-harga-beli").val();
+            }
         }
 
-        var selisih = parseFloat(hargarata) * parseFloat(margin) / 100;
-        var harga   = parseFloat(hargarata) + selisih;
+        if (parseInt(hargarata) > 0){
+            var selisih = parseFloat(hargarata) * parseFloat(margin) / 100;
+            var harga   = parseFloat(hargarata) + selisih;
 
-        if (tipe == "khusus"){
-            $("#mod-harga-net").val(parseInt(harga));
-            $("#mod-harga-jual").val(parseInt(harga));
-        } else {
-            //umum
-            $("#mod-harga-net-umum").val(parseInt(harga));
-            $("#mod-harga-jual-umum").val(parseInt(harga));
+            if (jenis == "bpjs"){
+                if (tipe == "khusus"){
+                    //khusus
+                    $("#mod-harga-net-bpjs").val(parseInt(harga));
+                } else {
+                    //umum
+                    $("#mod-harga-net-umum-bpjs").val(parseInt(harga));
+                }
+            } else {
+                if (tipe == "khusus"){
+                    //khusus
+                    $("#mod-harga-net").val(parseInt(harga));
+                } else {
+                    //umum
+                    $("#mod-harga-net-umum").val(parseInt(harga));
+                }
+            }
         }
 
         checkMargin();
     }
 
     function checkMargin() {
-        var margin = $("#mod-margin").val();
+
+        var hargaBeliUmum       = $("#mod-harga-beli").val();
+        var hargaRataKhusus     = $("#mod-harga-rata").val();
+        var hargaBeliUmumBpjs   = $("#mod-harga-beli-bpjs").val();
+        var hargaRataKhususBpjs = $("#mod-harga-rata-bpjs").val();
+
+        var marginKhusus        = $("#mod-margin").val();
+        var marginUmum          = $("#mod-margin-umum").val();
+        var marginKhususBpjs    = $("#mod-margin-bpjs").val();
+        var marginUmumBpjs      = $("#mod-margin-umum-bpjs").val();
+
+
         var standar = $("#mod-standar-margin").val() == null ? 0 : $("#mod-standar-margin").val();
-        if (parseInt(margin) < parseInt(standar)){
+        var isVerifikasi = true;
+
+        if (parseInt(hargaBeliUmum) > 0 && parseInt(marginUmum) >= parseInt(standar)){
+            isVerifikasi = false;
+        }
+        if (parseInt(hargaRataKhusus) > 0 && parseInt(marginKhusus) >= parseInt(standar)){
+            isVerifikasi = false;
+        }
+        if (parseInt(hargaBeliUmumBpjs) > 0 && parseInt(marginUmumBpjs) >= parseInt(standar)){
+            isVerifikasi = false;
+        }
+        if (parseInt(hargaRataKhususBpjs) > 0 && parseInt(marginKhususBpjs) >= parseInt(standar)){
+            isVerifikasi = false;
+        }
+        if (isVerifikasi == true){
             $("#alert-margin").show().fadeOut(7000);
             return true;
         }

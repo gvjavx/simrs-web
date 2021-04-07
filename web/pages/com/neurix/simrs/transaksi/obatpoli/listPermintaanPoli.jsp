@@ -67,6 +67,13 @@
                                             <table><s:label name="permintaanObatPoli.stCreatedDate"></s:label></table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>Jenis</b></td>
+                                        <td>
+                                            <table><s:label name="permintaanObatPoli.jenisObat"></s:label></table>
+                                            <s:hidden name="permintaanObatPoli.jenisObat" id="jenis-obat"></s:hidden>
+                                        </td>
+                                    </tr>
                                 </table>
                     </div>
                     <div class="box-header with-border"></div>
@@ -345,6 +352,9 @@
 
     function confirmObat(idObat, idObatVal, nama, qtyReq, satuan, idTransaksi) {
 
+        var jenisObat = $("#jenis-obat").val();
+        jenisObat = jenisObat.toLowerCase();
+
         $('#load_app').hide();
         $('#save_app').show();
         $('#body_approve').html('');
@@ -361,7 +371,7 @@
         today = mm + '-' + dd + '-' + yyyy;
 
         if (idObatVal != "") {
-            PermintaanObatPoliAction.listObatEntity(idObatVal, function (response) {
+            PermintaanObatPoliAction.listObatEntity(idObatVal, jenisObat, function (response) {
                 if (response.length > 0 && idObat == idObatVal) {
                     $.each(response, function (i, item) {
                         $('#modal-approve').modal({show: true, backdrop: 'static'});
@@ -377,14 +387,16 @@
                         var qtyBiji = "";
 
                         if (item.qtyBox != null) {
-                            qtyBox = item.qtyBox;
+                            qtyBox = item.qtyBox * item.lembarPerBox * item.bijiPerLembar;
                         }
                         if (item.qtyLembar != null) {
-                            qtyLembar = item.qtyLembar;
+                            qtyLembar = item.qtyLembar * item.bijiPerLembar;
                         }
                         if (item.qtyBiji != null) {
                             qtyBiji = item.qtyBiji;
                         }
+
+                        qtyBiji = qtyBiji + qtyLembar + qtyBox;
 
                         var dateFormat = $.datepicker.formatDate('dd-mm-yy', new Date(item.expiredDate));
 

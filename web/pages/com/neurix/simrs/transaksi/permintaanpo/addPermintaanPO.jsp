@@ -269,7 +269,7 @@
                                 <div class="col-md-8">
                                 <s:select list="#{'bpjs':'BPJS','umum':'UMUM'}"
                                 cssStyle="margin-top: 7px; width: 100%"
-                                onchange="var warn =$('#war_po_tipe').is(':visible'); if (warn){$('#cor_po_tipe').show().fadeOut(3000);$('#war_po_tipe').hide()};"
+                                onchange="var warn =$('#war_po_tipe').is(':visible'); if (warn){$('#cor_po_tipe').show().fadeOut(3000);$('#war_po_tipe').hide()};setTipeObat()"
                                 id="tipe_obat"
                                 headerKey="" headerValue="[Select one]"
                                 cssClass="form-control select2"/>
@@ -278,6 +278,7 @@
                                 <span style="color: green; display: none;"
                                 id="cor_po_tipe"><i class="fa fa-check"></i> correct</span>
                                 </div>
+                                    <input type="hidden" id="h_tipe_obat"/>
                                 </div>
                                 <%--<div class="form-group">--%>
                                     <%--<label class="col-md-4" style="margin-top: 7px">Jml Lembar/Box</label>--%>
@@ -701,6 +702,11 @@
         }
     }
 
+    function setTipeObat() {
+        var tipe = $("#tipe_obat option:selected").val();
+        $("#h_tipe_obat").val(tipe);
+    }
+
     function updateStatusForDelete(id) {
         //Find index of specific object using findIndex method.
         var objIndex = status_n[id];
@@ -723,19 +729,20 @@
         $('#confirm_dialog').dialog('close');
         var result = [];
 
+        var tipe = $("#h_tipe_obat").val();
+        var tipeObat = "";
+        if (tipe == "bpjs"){
+            tipeObat = "Y";
+        } else {
+            tipeObat = "N";
+        }
+
         var list_aktif = [];
         $.each(status_n, function (i, item) {
 
             var statusobj = status_n[i];
             if (statusobj.status != "delete"){
 
-                var tipe = $("#tipe-"+i).val();
-                var tipeObat = "";
-                if (tipe == "bpjs"){
-                    tipeObat = "Y";
-                } else {
-                    tipeObat = "N";
-                }
                 var hargaRaw = $("#harga-"+i).val();
                 var harga = replaceTitik(hargaRaw);
                 var totalHarga = replaceTitik($("#harga-total-"+i).val());

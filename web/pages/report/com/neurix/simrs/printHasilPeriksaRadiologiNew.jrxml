@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaRadiollogiNew" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="0.9090909090909163"/>
+	<property name="ireport.zoom" value="1.7715610000000162"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="85"/>
+	<property name="ireport.y" value="724"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -92,7 +92,7 @@ AND b.flag = 'Y']]>
 	<detail>
 		<band height="555" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="202" width="381" height="246" isPrintWhenDetailOverflows="true" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="200" width="381" height="239" isPrintWhenDetailOverflows="true" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
 				<box leftPadding="0"/>
 				<textElement textAlignment="Justified" verticalAlignment="Top" markup="html">
 					<font size="8"/>
@@ -347,10 +347,10 @@ AND b.flag = 'Y']]>
 				<text><![CDATA[Diagnosa]]></text>
 			</staticText>
 			<line>
-				<reportElement x="284" y="539" width="87" height="1" uuid="c1ad4a7e-d7fe-4b69-aae7-00f7bea8e582"/>
+				<reportElement x="284" y="520" width="87" height="1" uuid="c1ad4a7e-d7fe-4b69-aae7-00f7bea8e582"/>
 			</line>
 			<textField>
-				<reportElement x="266" y="524" width="115" height="15" uuid="d2813557-9183-47f2-b301-1ad223e6c63a"/>
+				<reportElement x="266" y="505" width="115" height="15" uuid="d2813557-9183-47f2-b301-1ad223e6c63a"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -358,18 +358,18 @@ AND b.flag = 'Y']]>
 				<textFieldExpression><![CDATA[$P{namaPetugas} == null ? "" : $P{namaPetugas}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="277" y="474" width="94" height="50" uuid="02dc6ddb-e3e2-40e9-acfc-cb4329c1673d"/>
+				<reportElement x="277" y="455" width="94" height="50" uuid="02dc6ddb-e3e2-40e9-acfc-cb4329c1673d"/>
 				<imageExpression><![CDATA[$P{reportParams.ttdPetugas}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="266" y="460" width="115" height="14" uuid="f39c5816-6fd3-4063-bf89-91d6df0d55e8"/>
+				<reportElement x="266" y="441" width="115" height="14" uuid="f39c5816-6fd3-4063-bf89-91d6df0d55e8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[Pemeriksa]]></text>
+				<text><![CDATA[Hormat Kami]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="266" y="540" width="115" height="15" uuid="45c7b2ea-8aaa-474f-8afa-e09ad817f163"/>
+				<reportElement x="266" y="521" width="115" height="15" uuid="45c7b2ea-8aaa-474f-8afa-e09ad817f163"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -434,6 +434,13 @@ AND b.flag = 'Y']]>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{last_update} == null ? "" : $F{last_update}]]></textFieldExpression>
 			</textField>
+			<staticText>
+				<reportElement x="265" y="537" width="115" height="14" uuid="f4c90d0b-eab4-4f88-b6bd-fd32d59247e2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="7"/>
+				</textElement>
+				<text><![CDATA[Dokter Spesialis Radiologi]]></text>
+			</staticText>
 		</band>
 	</detail>
 </jasperReport>

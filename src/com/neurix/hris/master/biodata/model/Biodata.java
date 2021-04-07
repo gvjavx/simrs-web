@@ -166,6 +166,110 @@ public class Biodata extends BaseModel {
     private String stTunjPeralihanSankhus;
     private String stTunjPeralihanTunjangan;
     private String flagTunjPemondokan;
+    //RAKA-22MAR2021 ==> tambah ke tunj-Lain
+    private String stTunjPemondokan;
+    private String stTunjSupervisi;
+    private String stTunjLokasi;
+    private String stTunjSiaga;
+    private BigDecimal tunjPemondokan;
+    private BigDecimal tunjSupervisi;
+    private BigDecimal tunjLokasi;
+    private BigDecimal tunjSiaga;
+    //RAKA-end
+    //RAKA-24MAR2021 ==> untuk keperluan create User
+    private String createUser;
+    private String email;
+    private String role;
+    //RAKA-end
+
+
+    public String getCreateUser() {
+        return createUser;
+    }
+
+    public void setCreateUser(String createUser) {
+        this.createUser = createUser;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public String getStTunjPemondokan() {
+        return stTunjPemondokan;
+    }
+
+    public void setStTunjPemondokan(String stTunjPemondokan) {
+        this.stTunjPemondokan = stTunjPemondokan;
+    }
+
+    public String getStTunjSupervisi() {
+        return stTunjSupervisi;
+    }
+
+    public void setStTunjSupervisi(String stTunjSupervisi) {
+        this.stTunjSupervisi = stTunjSupervisi;
+    }
+
+    public String getStTunjLokasi() {
+        return stTunjLokasi;
+    }
+
+    public void setStTunjLokasi(String stTunjLokasi) {
+        this.stTunjLokasi = stTunjLokasi;
+    }
+
+    public String getStTunjSiaga() {
+        return stTunjSiaga;
+    }
+
+    public void setStTunjSiaga(String stTunjSiaga) {
+        this.stTunjSiaga = stTunjSiaga;
+    }
+
+    public BigDecimal getTunjPemondokan() {
+        return tunjPemondokan;
+    }
+
+    public void setTunjPemondokan(BigDecimal tunjPemondokan) {
+        this.tunjPemondokan = tunjPemondokan;
+    }
+
+    public BigDecimal getTunjSupervisi() {
+        return tunjSupervisi;
+    }
+
+    public void setTunjSupervisi(BigDecimal tunjSupervisi) {
+        this.tunjSupervisi = tunjSupervisi;
+    }
+
+    public BigDecimal getTunjLokasi() {
+        return tunjLokasi;
+    }
+
+    public void setTunjLokasi(BigDecimal tunjLokasi) {
+        this.tunjLokasi = tunjLokasi;
+    }
+
+    public BigDecimal getTunjSiaga() {
+        return tunjSiaga;
+    }
+
+    public void setTunjSiaga(BigDecimal tunjSiaga) {
+        this.tunjSiaga = tunjSiaga;
+    }
 
     public String getFlagTunjPemondokan() {
         return flagTunjPemondokan;

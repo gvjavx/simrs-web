@@ -9,6 +9,7 @@ import com.neurix.hris.master.positionBagian.dao.PositionBagianDao;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianEntity;
 import com.neurix.hris.master.positionBagian.model.ImPositionBagianHistoryEntity;
 import com.neurix.hris.master.positionBagian.model.PositionBagian;
+import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 

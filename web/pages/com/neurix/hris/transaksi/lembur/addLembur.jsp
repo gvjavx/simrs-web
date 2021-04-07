@@ -185,19 +185,23 @@
                                 //RAKA-09MAR2021 ==> Validasi Baru, Pengajuan
                                 var canLembur = false;
 
-                                if (selectedObj.tipePegawai=="TP03"){
-                                    ProfesiAction.getTipeProfesi(selectedObj.profesiPegawai, function(tipeProfesi){
-                                        console.log(selectedObj.profesiPegawai + " - " + tipeProfesi);
-                                        if(tipeProfesi != "apoteker" && tipeProfesi != "dokter") canLembur = true;
-                                    })
-                                }
+                                // if (selectedObj.tipePegawai=="TP04"){
+                                //     ProfesiAction.getTipeProfesi(selectedObj.profesiPegawai, function(tipeProfesi){
+                                //         console.log(selectedObj.profesiPegawai + " - " + tipeProfesi);
+                                //         if(tipeProfesi != "apoteker" && tipeProfesi != "dokter") canLembur = true;
+                                //     })
+                                // }
+                                //
+                                // if (selectedObj.tipePegawai=="TP03"){
+                                //     LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
+                                //         canLembur = hakLembur;
+                                //         console.log(canLembur + " - " + hakLembur);
+                                //     })
+                                // }
 
-                                if (selectedObj.tipePegawai=="TP01"){
-                                    LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
-                                        canLembur = hakLembur;
-                                        console.log(canLembur + " - " + hakLembur);
-                                    })
-                                }
+                                LemburAction.cekHakLembur(selectedObj.id, function (hakLembur) {
+                                    canLembur = hakLembur;
+                                })
 
                                 if (canLembur){
                                     $('#divisiId').val(selectedObj.divisi).change();
@@ -209,7 +213,7 @@
                                     $('#golonganIdPkwt').val(selectedObj.golongan).change();
                                     $('#golonganId1').val(selectedObj.golongan).change();
                                     $('#tipePegawai').val(selectedObj.tipePegawai).change();
-                                    if ("TP03"==selectedObj.tipePegawai){
+                                    if ("TP04"==selectedObj.tipePegawai){
                                         $('#golonganId').hide();
                                         $('#golonganIdPkwt').show();
                                     }else{
@@ -224,7 +228,7 @@
                                 }
                                 //RAKA-end
 
-                                // if (selectedObj.tipePegawai=="TP03" && selectedObj.statusPegawai=="KNS"){
+                                // if (selectedObj.tipePegawai=="TP04" && selectedObj.statusPegawai=="KNS"){
                                 //     $('#divisiId').val(selectedObj.divisi).change();
                                 //     $('#divisiId1').val(selectedObj.divisi).change();
                                 //     $('#namaAddId').val(selectedObj.nama).change();
@@ -234,7 +238,7 @@
                                 //     $('#golonganIdPkwt').val(selectedObj.golongan).change();
                                 //     $('#golonganId1').val(selectedObj.golongan).change();
                                 //     $('#tipePegawai').val(selectedObj.tipePegawai).change();
-                                //     if ("TP03"==selectedObj.tipePegawai){
+                                //     if ("TP04"==selectedObj.tipePegawai){
                                 //         $('#golonganId').hide();
                                 //         $('#golonganIdPkwt').show();
                                 //     }else{
@@ -244,7 +248,7 @@
                                 //     $('#tipePegawai1').val(selectedObj.tipePegawai).change();
                                 //     return selectedObj.id;
                                 // } else {
-                                //     if(selectedObj.tipePegawai!="TP03"){
+                                //     if(selectedObj.tipePegawai!="TP04"){
                                 //         alert("Hanya PKWT yang bisa mengambil Lembur");
                                 //     } else {
                                 //         alert("Pimpinan tidak bisa mengambil Lembur");
@@ -296,7 +300,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:if test='lembur.tipePegawaiId=="TP03"'>
+                                <s:if test='lembur.tipePegawaiId=="TP04"'>
                                     <s:action id="initComboTipePkwt" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
                                     <s:select list="#initComboTipePkwt.listComboGolonganPkwt" id="golonganIdPkwt" name="lembur.golonganId" disabled="true"
                                               listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -556,12 +560,13 @@
                 $('.I').css("display", "none");
             }
         }
+
         if ($('#check').val()=="Y"){
             $('#branchId').attr('readonly','true');
             $('#branchId').attr('disabled','true');
             $('#nipId').attr('readonly','true');
 
-            if ($('#berhakLembur').val()==false){
+            if ($('#berhakLembur').val()!="true"){
                 $('#save').text("Anda Tidak Berhak Mengajukan Lembur");
                 $('#save').removeClass("btn-primary");
                 $('#save').addClass("btn-danger");

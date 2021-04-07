@@ -68,13 +68,20 @@
             var shift               = document.getElementById("shift").value;
             var tglMasuk            = document.getElementById("tanggalMasuk").value;
             var tglAkhir            = document.getElementById("tanggalAkhirKontrak").value;
+            var profesi             = $("#profesi1").val();
+            var posisi              = $("#positionId1").val();
 
-            if ( nip != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
+            if ( nip != '' && posisi != '' && profesi != '' && namaPegawai != '' && noKtp != '' && tempatLahir != '' && tanggalLahir != '' && branch != '' && tglMasuk !='' && tglAkhir) {
                 if(flag == 'N'){
                     alert("Non Aktifkan User");
                 }
 
                 if (confirm('Do you want to save this record?')) {
+                    <s:if test="isAdd()">
+                    alert("Pegawai akan secara otomatis dibuatka Akun User!" +
+                        "\n> USER ID : " + nip + "\n> PASSWORD : 123\n> ROLE : Dokter\n" +
+                        "Lakukan Pengaturan lanjut melalui Setting->User");
+                    </s:if>
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
                 } else {
@@ -105,6 +112,12 @@
                 }
                 if (branch == '') {
                     msg += 'Field <strong>Unit</strong> is required.' + '<br/>';
+                }
+                if (profesi == '') {
+                    msg += 'Field <strong>Profesi</strong> is required.' + '<br/>';
+                }
+                if (posisi == '') {
+                    msg += 'Field <strong>Jabatan</strong> is required.' + '<br/>';
                 }
                 if (tglMasuk == '') {
                     msg += 'Field <strong>Tanggal Masuk</strong> is required.' + '<br/>';
@@ -536,7 +549,7 @@
                                             <s:if test="isDelete()">
                                                 <tr>
                                                     <td>
-                                                        <label><small>Profesi :</small></label>
+                                                        <label><small>Profesi <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -556,7 +569,7 @@
                                             <s:else>
                                                 <tr>
                                                     <td>
-                                                        <label><small>Profesi :</small></label>
+                                                        <label><small>Profesi <span style="color:red;">*</span> :</small></label>
                                                     </td>
                                                     <td>
                                                         <table>
@@ -967,8 +980,13 @@
                                                         <s:if test="isAdd()">
                                                             <s:textfield cssStyle="text-align: left;" readonly="true" value="Y" cssClass="form-control" id="shift" name="biodata.shift" />
                                                         </s:if>
-                                                        <s:else>
+                                                        <s:elseif test="isDelete()">
                                                             <s:textfield cssStyle="text-align: left;" readonly="true" cssClass="form-control" id="shift" name="biodata.shift" />
+                                                        </s:elseif>
+                                                            <%--RAKA-30MAR2021 ==> //membuka akses edit shift (handle salah inject)--%>
+                                                        <s:else>
+                                                            <s:select list="#{'Y':'Y'}" id="shift" name="biodata.shift"
+                                                                      headerKey="N" headerValue="N" cssClass="form-control" />
                                                         </s:else>
 
                                                     </table>
@@ -1015,6 +1033,10 @@
                                                     </table>
                                                 </td>
                                             </tr>
+
+                                            <s:if test="isAdd()">
+                                                <s:textfield cssStyle="display: none" id="createUser" name="biodata.createUser" value="Y" />
+                                            </s:if>
 
                                             <tr>
                                                 <td>
@@ -1613,7 +1635,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Profesi : </label>
+                        <label class="control-label col-sm-4" >Profesi <span style="color:red;">*</span> : </label>
                         <div class="col-sm-8">
                             <s:action id="comboProfesi" namespace="/profesi" name="searchProfesi_profesi"/>
                             <s:select list="#comboProfesi.listComboProfesi" id="profesi3" name="biodata.profesiId"
@@ -2490,7 +2512,7 @@
     }
 
     window.changePegawai = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golongan3').val("");
@@ -2501,7 +2523,7 @@
         }
     }
     window.changePegawaiHistory = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golonganHistory1Group').show();
             $('#golonganHistory2Group').hide();
         } else {
@@ -2512,7 +2534,7 @@
 
     function loadStatusPegawai(){
         var statusPegawai = $('#tipePegawai1').val();
-        if (statusPegawai=="TP03"){
+        if (statusPegawai=="TP04"){
             $('.label-prapensiun').html("<small>Tgl Pra Kontak Berakhir</small>");
             $('.label-pensiun').html("<small>Tgl Kontrak Berakhir</small>");
             $('.label-tanggal-masuk').html("<small>Tanggal Kontrak</small>");
@@ -3653,10 +3675,10 @@
             var tanggal = document.getElementById("pengalamanTanggalMasuk").value;
             var tanggalKeluar = document.getElementById("pengalamanTanggalKeluar").value;
             var tipePegawaiId = document.getElementById("pengalamanTipePegawaiId").value;
-            if(tipePegawaiId=="TP01"){
+            if(tipePegawaiId=="TP03"){
                 var golonganId = document.getElementById("pengalamanGolonganId1").value;
             }
-            if(tipePegawaiId=="TP03"){
+            if(tipePegawaiId=="TP04"){
                 var golonganId = document.getElementById("golonganHistory3").value;
             }
             var pjsFlag = document.getElementById("pjsFlag1").value;
@@ -4492,12 +4514,12 @@
                 $('#pengalamanTanggalMasuk').val(listdata.tanggalMasuk);
                 $('#pengalamanTanggalKeluar').val(listdata.tanggalKeluar);
                 $('#pengalamanTipePegawaiId').val(listdata.tipePegawaiId).change();
-                if(listdata.tipePegawaiId == "TP01"){
+                if(listdata.tipePegawaiId == "TP03"){
                     $('#pengalamanGolonganId1').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').show();
                     $('#golonganHistory2Group').hide();
                 }
-                if(listdata.tipePegawaiId == "TP03"){
+                if(listdata.tipePegawaiId == "TP04"){
                     $('#golonganHistory3').val(listdata.golonganId).change();
                     $('#golonganHistory1Group').hide();
                     $('#golonganHistory2Group').show();

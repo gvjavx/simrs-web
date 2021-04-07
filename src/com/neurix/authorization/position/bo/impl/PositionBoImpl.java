@@ -197,6 +197,11 @@ public class PositionBoImpl implements PositionBo {
             if (searchPosition.getFlagCostUnit() != null && !"".equalsIgnoreCase(searchPosition.getFlagCostUnit())) {
                 hsCriteria.put("flag_cost_unit", searchPosition.getFlagCostUnit());
             }
+            //RAKA-29MAR2021 ==> alternatif menampilkan semua (sementara)
+            else{
+                hsCriteria.put("flag_cost_unit", "all");
+            }
+            //RAKA-end
 
             if (searchPosition.getFlag() != null && !"".equalsIgnoreCase(searchPosition.getFlag())) {
                 if ("N".equalsIgnoreCase(searchPosition.getFlag())) {
@@ -632,6 +637,7 @@ public class PositionBoImpl implements PositionBo {
             resultPosition.setDepartmentId(imPosition.getDepartmentId());
             resultPosition.setDepartmentName(imPosition.getImDepartmentEntity().getDepartmentName());
             resultPosition.setFlag(imPosition.getFlag());
+            resultPosition.setFlagCostUnit(imPosition.getFlagCostUnit());
         }
 
         /*if (imPosition != null) {
