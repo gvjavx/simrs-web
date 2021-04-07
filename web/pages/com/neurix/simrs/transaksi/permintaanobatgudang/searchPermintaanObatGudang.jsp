@@ -1314,7 +1314,7 @@
 
     function getListObat() {
 
-        var option      = "";
+        var option      = "<option value=''> - </option>";
         var idPelayanan = $("#req_gudang_obat option:selected").val();
         var jenisObat   = $("#id-jenis-obat").val() == '' ? $("#req_jenis_obat option:selected").val() : $("#id-jenis-obat").val();
 
@@ -1328,6 +1328,10 @@
             }else{
                 $('#req_nama_obat').html('');
             }
+
+
+            $('#req_stok_biji').val(0);
+            $('#req_stok_biji_sendiri').val(0);
         });
     }
 
