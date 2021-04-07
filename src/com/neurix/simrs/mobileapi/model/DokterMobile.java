@@ -42,6 +42,53 @@ public class DokterMobile {
 
     private String message;
 
+    private String namaPasien;
+    private String idPasien;
+    private String tglLahir;
+
+    private String kelasRuangan;
+    private String noRuangan;
+
+    public String getKelasRuangan() {
+        return kelasRuangan;
+    }
+
+    public void setKelasRuangan(String kelasRuangan) {
+        this.kelasRuangan = kelasRuangan;
+    }
+
+    public String getNoRuangan() {
+        return noRuangan;
+    }
+
+    public void setNoRuangan(String noRuangan) {
+        this.noRuangan = noRuangan;
+    }
+
+    public String getNamaPasien() {
+        return namaPasien;
+    }
+
+    public void setNamaPasien(String namaPasien) {
+        this.namaPasien = namaPasien;
+    }
+
+    public String getIdPasien() {
+        return idPasien;
+    }
+
+    public void setIdPasien(String idPasien) {
+        this.idPasien = idPasien;
+    }
+
+    public String getTglLahir() {
+        return tglLahir;
+    }
+
+    public void setTglLahir(String tglLahir) {
+        this.tglLahir = tglLahir;
+    }
+
     public String getMessage() {
         return message;
     }
