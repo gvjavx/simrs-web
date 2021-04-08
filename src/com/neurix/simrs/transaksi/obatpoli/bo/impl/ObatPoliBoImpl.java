@@ -3334,6 +3334,23 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         return obatPoliList;
     }
 
+    @Override
+    public List<PermintaanObatPoli> getListDetailPermintaanByIdApproval(String idApproval) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.getListDetailPermintaanByIdApproval] START >>>");
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        try {
+            permintaanObatPolis = permintaanObatPoliDao.getListDetailPermintaan(idApproval);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListDetailPermintaanByIdApproval] ERROR when get search detail obat poli. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListDetailPermintaanByIdApproval] ERROR when get search detail obat poli. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListDetailPermintaanByIdApproval] END <<<");
+        return permintaanObatPolis;
+    }
+
     // list method seq
 
     private String getNextPermintaanObatId() throws GeneralBOException {

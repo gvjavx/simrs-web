@@ -59,6 +59,7 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Toshiba on 27/12/2019.
@@ -259,6 +260,16 @@ public class PermintaanVendorBoImpl implements PermintaanVendorBo {
         }
 
         logger.info("[PermintaanVendorBoImpl.getByCriteria] END <<<");
+        if (bean.getStatus() != null && !"".equalsIgnoreCase(bean.getStatus())){
+            boolean statusTrans = "dikonfirmasi".equalsIgnoreCase(bean.getStatus());
+
+            List<PermintaanVendor> filtered = permintaanVendorList.stream().filter(
+                    p->p.getEnableApprove().equals(statusTrans)
+            ).collect(Collectors.toList());
+
+            return filtered;
+        }
+
         return permintaanVendorList;
     }
 

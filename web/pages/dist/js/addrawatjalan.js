@@ -2734,17 +2734,17 @@ function setStokObatApotek(select, tipe) {
                 if (res != null) {
                     getComboParameterObat(res.idSubJenis);
                     if (res.flagIsFormularium == "Y") {
-                        $('#set_formula').text("Ya");
+                        $('#set_formula').text("Formularium");
                     } else {
-                        $('#set_formula').text("Tidak");
+                        $('#set_formula').text("Non Formularium");
                     }
 
                     if (res.flagParenteral == "Y") {
-                        $('#set_teral').text("Ya");
-                        $('#set_noretal').text("Tidak");
+                        $('#set_teral').text("Parenteral");
+                        // $('#set_noretal').text("Tidak");
                     } else {
-                        $('#set_teral').text("Tidak");
-                        $('#set_noretal').text("Ya");
+                        $('#set_teral').text("Non Parenteral");
+                        // $('#set_noretal').text("Ya");
                     }
                 }
             });

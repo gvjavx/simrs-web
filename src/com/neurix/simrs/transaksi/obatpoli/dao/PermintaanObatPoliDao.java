@@ -725,6 +725,38 @@ public class PermintaanObatPoliDao extends GenericDao<MtSimrsPermintaanObatPoliE
         return obatDetails;
     }
 
+    public List<PermintaanObatPoli> getListDetailPermintaan(String idInvoice){
+
+        String SQL = "SELECT\n" +
+                "a.id_obat,\n" +
+                "b.nama_obat,\n" +
+                "a.qty,\n" +
+                "a.jenis_satuan\n" +
+                "FROM \n" +
+                "mt_simrs_transaksi_obat_detail a\n" +
+                "INNER JOIN im_simrs_header_obat b ON b.id_obat = a.id_obat\n" +
+                "WHERE a.id_approval_obat = '"+idInvoice+"'\n" +
+                "ORDER BY b.nama_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        if (results.size() > 0){
+            for (Object[] obj : results){
+
+                PermintaanObatPoli permintaanObatPoli = new PermintaanObatPoli();
+                permintaanObatPoli.setIdObat(obj[0].toString());
+                permintaanObatPoli.setNamaObat(obj[1].toString());
+                permintaanObatPoli.setQty((BigInteger) obj[2]);
+                permintaanObatPoli.setJenisSatuan(obj[3].toString());
+                permintaanObatPolis.add(permintaanObatPoli);
+            }
+        }
+
+        return permintaanObatPolis;
+    }
+
     public String getNextId() {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_permintaan_detail_poli')");
         Iterator<BigInteger> iter = query.list().iterator();
