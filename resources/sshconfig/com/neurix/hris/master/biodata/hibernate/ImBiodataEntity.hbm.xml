@@ -93,25 +93,43 @@
         <property name="gender">
             <column name="jenis_kelamin" sql-type="integer" not-null="false" />
         </property>
-        <property name="statusGiling">
-            <column name="status_giling" sql-type="varchar" length="10" not-null="false" />
-        </property>
-
         <property name="noSkAktif">
             <column name="no_sk_aktif" sql-type="integer" not-null="false" />
         </property>
-        <property name="flagTunjanganSupervisi">
-            <column name="flag_tunjangan_supervisi" sql-type="varchar" length="1" />
-        </property>
-        <property name="flagTunjanganLokasi">
-            <column name="flag_tunjangan_lokasi" sql-type="varchar" length="1" />
-        </property>
-        <property name="flagTunjanganSiaga">
-            <column name="flag_tunjangan_siaga" sql-type="varchar" length="1" />
-        </property>
-        <property name="flagTunjanganProfesional">
-            <column name="flag_tunjangan_profesional" sql-type="varchar" length="1" />
-        </property>
+
+        <!--RAKA-25MAR2021 ==> REMOVE -->
+        <!--<property name="statusGiling">-->
+            <!--<column name="status_giling" sql-type="varchar" length="10" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="flagTunjanganSupervisi">-->
+            <!--<column name="flag_tunjangan_supervisi" sql-type="varchar" length="1" />-->
+        <!--</property>-->
+        <!--<property name="flagTunjanganLokasi">-->
+            <!--<column name="flag_tunjangan_lokasi" sql-type="varchar" length="1" />-->
+        <!--</property>-->
+        <!--<property name="flagTunjanganSiaga">-->
+            <!--<column name="flag_tunjangan_siaga" sql-type="varchar" length="1" />-->
+        <!--</property>-->
+        <!--<property name="flagTunjanganProfesional">-->
+            <!--<column name="flag_tunjangan_profesional" sql-type="varchar" length="1" />-->
+        <!--</property>-->
+        <!--<property name="strukturGaji">-->
+            <!--<column name="struktur_gaji" sql-type="varchar" length="1" />-->
+        <!--</property>-->
+        <!--<property name="gaji">-->
+            <!--<column name="gaji" sql-type="numeric" length="10" precision="2"/>-->
+        <!--</property>-->
+        <!--<property name="mt">-->
+            <!--<column name="mt" sql-type="varchar" length="10" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="golonganDapenNusindo">-->
+            <!--<column name="golongan_dapen_nusindo" sql-type="varchar" not-null="false" />-->
+        <!--</property>-->
+        <!--<property name="jenisPegawai">-->
+            <!--<column name="jenis_pegawai"/>-->
+        <!--</property>-->
+        <!--RAKA-end-->
+
         <property name="flag">
             <column name="flag" sql-type="varchar" length="1" not-null="false" />
         </property>
@@ -133,45 +151,23 @@
         <property name="tanggalPensiun">
             <column name="tanggal_pensiun" sql-type="timestamp" not-null="false" />
         </property>
-        <!--<property name="danaPensiun">-->
-            <!--<column name="dana_pensiun" sql-type="numeric" length="5" precision="2"/>-->
-        <!--</property>-->
+
         <property name="danaPensiun">
             <column name="dana_pensiun" sql-type="varchar" length="100" />
         </property>
-        <property name="strukturGaji">
-            <column name="struktur_gaji" sql-type="varchar" length="1" />
-        </property>
-        <property name="gaji">
-            <column name="gaji" sql-type="numeric" length="10" precision="2"/>
-        </property>
-        <property name="poinLebih">
-            <column name="poin_lebih" sql-type="integer" not-null="false" />
-        </property>
-        <!--<property name="agama">-->
-            <!--<column name="agama" sql-type="integer" not-null="false" />-->
+        <!--<property name="poinLebih">-->
+            <!--<column name="poin_lebih" sql-type="integer" not-null="false" />-->
         <!--</property>-->
         <property name="agama">
             <column name="agama" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <!--<property name="tanggalMenikah">-->
-            <!--<column name="tanggal_menikah" sql-type="integer" not-null="false" />-->
-        <!--</property>-->
         <property name="tanggalMenikah">
             <column name="tanggal_menikah" sql-type="date" not-null="false" />
         </property>
-        <!--<property name="npwp">-->
-            <!--<column name="npwp" sql-type="integer" not-null="false" />-->
-        <!--</property>-->
         <property name="npwp">
             <column name="npwp" sql-type="varchar" length="100" not-null="false" />
         </property>
-        <!--<property name="mt">-->
-            <!--<column name="mt" sql-type="integer" not-null="false" />-->
-        <!--</property>-->
-        <property name="mt">
-            <column name="mt" sql-type="varchar" length="10" not-null="false" />
-        </property>
+
         <property name="noAnggotaDapen">
             <column name="no_anggota_dapen" sql-type="varchar" length="30" />
         </property>
@@ -189,9 +185,6 @@
         </property>
         <property name="golonganDapen">
             <column name="golongan_dapen" sql-type="varchar" not-null="false" />
-        </property>
-        <property name="golonganDapenNusindo">
-            <column name="golongan_dapen_nusindo" sql-type="varchar" not-null="false" />
         </property>
         <property name="namaBank">
             <column name="nama_bank" sql-type="varchar" not-null="false" />
@@ -266,15 +259,21 @@
         <property name="flagDokterKso">
             <column name="flag_dokter_kso" sql-type="varchar" length="1" />
         </property>
-        <property name="jenisPegawai">
-            <column name="jenis_pegawai"/>
-        </property>
         <property name="nipLama">
             <column name="nip_lama" sql-type="varchar" length="15" />
         </property>
 
         <property name="tanggalKeluar">
             <column name="tanggal_keluar" sql-type="date"/>
+        </property>
+        <property name="flagPegawaiCutiDiluarTanggungan">
+            <column name="flag_pegawai_cuti_diluar_tanggungan" sql-type="varchar" length="1"/>
+        </property>
+        <property name="tanggalCutiDiluarAwal">
+            <column name="tanggal_cuti_diluar_awal" sql-type="date"/>
+        </property>
+        <property name="tanggalCutiDiluarAkhir">
+            <column name="tanggal_cuti_diluar_akhir" sql-type="date"/>
         </property>
 
         <many-to-one name="imProvinsiEntity" class="com.neurix.hris.master.provinsi.model.ImProvinsiEntity"

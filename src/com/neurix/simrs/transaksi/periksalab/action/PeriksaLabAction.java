@@ -17,14 +17,11 @@ import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
 import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
 import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
-import com.neurix.simrs.transaksi.transaksiobat.model.MtSimrsRiwayatPembelianObat;
-import com.neurix.simrs.transaksi.transaksiobat.model.RiwayatTransaksiObat;
-import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
@@ -38,10 +35,8 @@ import sun.misc.BASE64Decoder;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.sql.Array;
+import java.io.*;
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -177,7 +172,7 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setJenisPeriksaPasien(checkup.getStatusPeriksaName());
                 periksaLab.setIdPeriksaLab(lab);
                 periksaLab.setKeterangan(keterangan);
-                periksaLab.setDiagnosa(checkup.getDiagnosa()+"-"+checkup.getNamaDiagnosa());
+                periksaLab.setDiagnosa(checkup.getDiagnosa() + "-" + checkup.getNamaDiagnosa());
                 periksaLab.setMetodePembayaran(checkup.getMetodePembayaran());
 
                 PeriksaLab periksalb = new PeriksaLab();
@@ -190,6 +185,8 @@ public class PeriksaLabAction extends BaseMasterAction {
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
                     periksaLab.setIdLab(periksalb.getIdLab());
                     periksaLab.setLabName(periksalb.getLabName());
+                    periksaLab.setIsLuar(periksalb.getIsLuar());
+                    periksaLab.setNamaLabLuar(periksalb.getNamaLabLuar());
                 }
 
                 setPeriksaLab(periksaLab);
@@ -289,7 +286,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         return null;
     }
 
-    public CrudResponse saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter, String ttd, String idDokter, String idKategori, String waktuPending) {
+    public CrudResponse saveOrderLab(String idDetailCheckup, String idLab, List<String> idParameter, String isLuar, String idDokter, String idKategori, String waktuPending, String ttdPengirim) {
         logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
         CrudResponse response = new CrudResponse();
         try {
@@ -300,11 +297,16 @@ public class PeriksaLabAction extends BaseMasterAction {
 
             PeriksaLab periksaLab = new PeriksaLab();
             periksaLab.setIdDetailCheckup(idDetailCheckup);
-            periksaLab.setIdLab(idLab);
             periksaLab.setAction("C");
             periksaLab.setFlag("Y");
             periksaLab.setIdDokterPengirim(idDokter);
             periksaLab.setIdKategoriLab(idKategori);
+            periksaLab.setIsLuar(isLuar);
+            if ("Y".equalsIgnoreCase(isLuar)) {
+                periksaLab.setNamaLabLuar(idLab);
+            } else {
+                periksaLab.setIdLab(idLab);
+            }
             if (waktuPending != null && !"".equalsIgnoreCase(waktuPending)) {
                 periksaLab.setIsPending("Y");
                 periksaLab.setLastUpdate(Timestamp.valueOf(waktuPending));
@@ -317,33 +319,31 @@ public class PeriksaLabAction extends BaseMasterAction {
                 periksaLab.setCreatedDate(updateTime);
                 periksaLab.setLastUpdateWho(userLogin);
             }
-            if (!"".equalsIgnoreCase(ttd) && ttd != null) {
-                try {
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(ttd);
-                    String fileName = idDetailCheckup + "-dokter_pengirim.png";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                        response.setStatus("error");
-                        response.setMsg("Buffered Image is null");
-                    } else {
-                        File f = new File(uploadFile);
-                        ImageIO.write(image, "png", f);
-                        periksaLab.setTtdPengirim(fileName);
-                    }
-                } catch (IOException e) {
+            if (ttdPengirim != null && !"".equalsIgnoreCase(ttdPengirim)) {
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(ttdPengirim);
+                String wkt = updateTime.toString();
+                String patten = wkt.replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                String fileName = idDokter + "-" + patten + ".png";
+                String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                if (image == null) {
+                    logger.error("Buffered Image is null");
                     response.setStatus("error");
-                    response.setMsg("Found Error, " + e.getMessage());
+                    response.setMsg("Buffered Image is null");
+                    return response;
+                } else {
+                    File f = new File(uploadFile);
+                    ImageIO.write(image, "png", f);
+                    periksaLab.setTtdPengirim(fileName);
                 }
             }
 
             response = periksaLabBo.saveAddWithParameter(periksaLab, idParameter);
             insertProfilRJ(idDetailCheckup);
 
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             response.setMsg(e.getMessage());
             logger.error("[PeriksaLabAction.saveOrderLab] Error when adding item ,Found problem when saving add data, please inform to your admin." + e.getMessage());
         }
@@ -449,7 +449,6 @@ public class PeriksaLabAction extends BaseMasterAction {
         CrudResponse response = new CrudResponse();
         try {
             String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             PeriksaLabDetail periksaLabDetail = new PeriksaLabDetail();
 
@@ -540,7 +539,7 @@ public class PeriksaLabAction extends BaseMasterAction {
         return result;
     }
 
-    public CrudResponse editOrderLab(String idPeriksaLab, String idLab, List<String> idParameter) {
+    public CrudResponse editOrderLab(String idPeriksaLab, String idLab, List<String> idParameter, String isKeluar) {
         logger.info("[PeriksaLabAction.editOrderLab] start process >>>");
         CrudResponse response = new CrudResponse();
         try {
@@ -548,12 +547,17 @@ public class PeriksaLabAction extends BaseMasterAction {
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             PeriksaLab periksaLab = new PeriksaLab();
             periksaLab.setIdPeriksaLab(idPeriksaLab);
-            periksaLab.setIdLab(idLab);
+            if ("Y".equalsIgnoreCase(isKeluar)) {
+                periksaLab.setNamaLabLuar(idLab);
+            } else {
+                periksaLab.setIdLab(idLab);
+            }
             periksaLab.setCreatedDate(updateTime);
             periksaLab.setCreatedWho(userLogin);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("U");
+            periksaLab.setIsLuar(isKeluar);
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
             response = periksaLabBo.saveEdit(periksaLab, idParameter);
@@ -566,136 +570,171 @@ public class PeriksaLabAction extends BaseMasterAction {
         return response;
     }
 
-    public CheckResponse saveEditDokterLab(String idPeriksaLab, String idDokter, String urlImg, String keterangan, String data, String ttdDokter, String ttdPetugas, String jsonParams) {
+    public CheckResponse saveEditDokterLab(String data) {
         logger.info("[PeriksaLabAction.saveEditDokterLab] start process >>>");
         CheckResponse response = new CheckResponse();
         try {
             String userLogin = CommonUtil.userLogin();
-            String userArea = CommonUtil.userBranchLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
 
-            PeriksaLab periksaLab = new PeriksaLab();
-            periksaLab.setIdPeriksaLab(idPeriksaLab);
-            periksaLab.setIdDokter(idDokter);
-            periksaLab.setLastUpdate(updateTime);
-            periksaLab.setLastUpdateWho(userLogin);
-            periksaLab.setAction("U");
-            periksaLab.setIdPemeriksa(CommonUtil.userIdLogin());
+            if (data != null && !"".equalsIgnoreCase(data)) {
+                JSONObject obj = new JSONObject(data);
+                if (obj != null) {
+                    List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasilPemeriksaanEntityList = new ArrayList<>();
+                    String idPeriksaLab = obj.getString("id_periksa_lab");
+                    String keterangan = obj.getString("keterangan");
+                    String namaPetugas = null;
+                    String nipPetugas = null;
+                    String namaValidator = null;
+                    String nipValidator = null;
+                    String ttdPetugas = null;
+                    String ttdValidator = null;
 
-            if (urlImg != null && !"".equalsIgnoreCase(urlImg)) {
-                try {
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(urlImg);
-                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                    String fileName = idPeriksaLab + "-" + patten + ".png";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_IMG_RM + fileName;
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                        response.setStatus("error");
-                        response.setMessage("Buffered Image is null");
-                    } else {
-                        File f = new File(uploadFile);
-                        ImageIO.write(image, "png", f);
-                        periksaLab.setUrlImg(fileName);
+                    if(obj.has("nama_petugas")){
+                        namaPetugas = obj.getString("nama_petugas");
                     }
-                } catch (IOException e) {
-                    response.setStatus("error");
-                    response.setMessage("IO Error" + e.getMessage());
-                    return response;
-                }
-            }
-
-            if (ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)) {
-                try {
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
-                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                    String fileName = idPeriksaLab + "-ttd_dokter-" + patten + ".png";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                        response.setStatus("error");
-                        response.setMessage("Buffered Image is null");
-                    } else {
-                        File f = new File(uploadFile);
-                        ImageIO.write(image, "png", f);
-                        periksaLab.setTtdDokter(fileName);
+                    if(obj.has("nip_petugas")){
+                        nipPetugas = obj.getString("nip_petugas");
                     }
-                } catch (IOException e) {
-                    response.setStatus("error");
-                    response.setMessage("IO Error" + e.getMessage());
-                    return response;
-                }
-            }
-            if (ttdPetugas != null && !"".equalsIgnoreCase(ttdPetugas)) {
-                try {
-                    BASE64Decoder decoder = new BASE64Decoder();
-                    byte[] decodedBytes = decoder.decodeBuffer(ttdPetugas);
-                    String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                    String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
-                    String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
-                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
-
-                    if (image == null) {
-                        logger.error("Buffered Image is null");
-                        response.setStatus("error");
-                        response.setMessage("Buffered Image is null");
-                    } else {
-                        File f = new File(uploadFile);
-                        ImageIO.write(image, "png", f);
-                        periksaLab.setTtdPetugas(fileName);
+                    if(obj.has("nama_validator")){
+                        namaValidator = obj.getString("nama_validator");
                     }
-                } catch (IOException e) {
-                    response.setStatus("error");
-                    response.setMessage("IO Error" + e.getMessage());
-                    return response;
-                }
-            }
-            List<PeriksaLabDetail> detailList = new ArrayList<>();
-            if(jsonParams != null && !"".equalsIgnoreCase(jsonParams)){
-                try {
-                    JSONArray json = new JSONArray(jsonParams);
-                    if(json != null){
-                        for (int i = 0; i < json.length(); i++) {
-                            JSONObject obj = json.getJSONObject(i);
-                            PeriksaLabDetail detail = new PeriksaLabDetail();
-                            detail.setIdPeriksaLabDetail(obj.getString("id_periksa_lab"));
-                            detail.setHasil(obj.getString("hasil"));
-                            detail.setKeteranganPeriksa(obj.getString("kesan"));
-                            detailList.add(detail);
+                    if(obj.has("nip_validator")){
+                        nipValidator = obj.getString("nip_validator");
+                    }
+                    if(obj.has("ttd_petugas")){
+                        ttdPetugas = obj.getString("ttd_petugas");
+                    }
+                    if(obj.has("ttd_validator")){
+                        ttdValidator = obj.getString("ttd_validator");
+                    }
+
+                    String jsonParams = "";
+                    if(obj.has("hasil_pemeriksaan")){
+                        jsonParams = obj.getString("hasil_pemeriksaan");
+                    }
+                    String dataJustLab = obj.getString("data");
+                    BigDecimal totalTarif = null;
+                    if (obj.has("total_tarif")) {
+                        if (obj.getString("total_tarif") != null && !"".equalsIgnoreCase(obj.getString("total_tarif"))) {
+                            totalTarif = new BigDecimal(String.valueOf(obj.getString("total_tarif")));
                         }
                     }
-                } catch (JSONException e) {
-                    response.setStatus("error");
-                    response.setMessage("Error" + e.getMessage());
-                }
-            }
-            response = periksaLabBo.saveDokterLab(periksaLab, detailList);
-            if ("just_lab".equalsIgnoreCase(keterangan)) {
-                if ("success".equalsIgnoreCase(response.getStatus())) {
-                    CheckupDetailAction detailAction = new CheckupDetailAction();
-                    CrudResponse res = new CrudResponse();
-                    res = detailAction.closeTraksaksiPasien(data);
-                    if ("success".equalsIgnoreCase(res.getStatus())) {
-                        response.setStatus("success");
-                        response.setMessage("Berhasil");
-                    } else {
-                        response.setStatus("error");
-                        response.setMessage("Error" + res.getMsg());
+
+                    PeriksaLab periksaLab = new PeriksaLab();
+                    periksaLab.setIdPeriksaLab(idPeriksaLab);
+                    periksaLab.setNamaPetugas(namaPetugas);
+                    periksaLab.setIdPetugas(nipPetugas);
+                    periksaLab.setNamaValidator(namaValidator);
+                    periksaLab.setIdValidator(nipValidator);
+                    periksaLab.setLastUpdate(updateTime);
+                    periksaLab.setLastUpdateWho(userLogin);
+                    periksaLab.setAction("U");
+                    if (obj.has("keterangan_hasil")) {
+                        if (obj.getString("keterangan_hasil") != null && !"".equalsIgnoreCase(obj.getString("keterangan_hasil"))) {
+                            periksaLab.setCatatan(obj.getString("keterangan_hasil"));
+                        }
                     }
+
+                    if (ttdValidator != null && !"".equalsIgnoreCase(ttdValidator)) {
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(ttdValidator);
+                            String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = idPeriksaLab + "-ttd_validator-" + patten + ".png";
+                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMessage("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                periksaLab.setTtdValidator(fileName);
+                            }
+                        } catch (IOException e) {
+                            response.setStatus("error");
+                            response.setMessage("IO Error" + e.getMessage());
+                            return response;
+                        }
+                    }
+                    if (ttdPetugas != null && !"".equalsIgnoreCase(ttdPetugas)) {
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(ttdPetugas);
+                            String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
+                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMessage("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                periksaLab.setTtdPetugas(fileName);
+                            }
+                        } catch (IOException e) {
+                            response.setStatus("error");
+                            response.setMessage("IO Error" + e.getMessage());
+                            return response;
+                        }
+                    }
+                    List<PeriksaLabDetail> detailList = new ArrayList<>();
+                    if (jsonParams != null && !"".equalsIgnoreCase(jsonParams)) {
+                        try {
+                            JSONArray json = new JSONArray(jsonParams);
+                            if (json != null) {
+                                for (int i = 0; i < json.length(); i++) {
+                                    JSONObject object = json.getJSONObject(i);
+                                    PeriksaLabDetail detail = new PeriksaLabDetail();
+                                    detail.setIdPeriksaLabDetail(object.getString("id_periksa_lab"));
+                                    detail.setHasil(object.getString("hasil"));
+                                    detail.setKeteranganPeriksa(object.getString("kesan"));
+                                    detailList.add(detail);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            response.setStatus("error");
+                            response.setMessage("Error" + e.getMessage());
+                        }
+                    }
+
+                    periksaLab.setUploadHasil(uploadHasilPemeriksaanEntityList);
+                    periksaLab.setTarifLabLuar(totalTarif);
+                    response = periksaLabBo.saveDokterLab(periksaLab, detailList);
+                    if ("just_lab".equalsIgnoreCase(keterangan)) {
+                        if ("success".equalsIgnoreCase(response.getStatus())) {
+                            CheckupDetailAction detailAction = new CheckupDetailAction();
+                            CrudResponse res = new CrudResponse();
+                            res = detailAction.closeTraksaksiPasien(dataJustLab);
+                            if ("success".equalsIgnoreCase(res.getStatus())) {
+                                response.setStatus("success");
+                                response.setMessage("Berhasil");
+                            } else {
+                                response.setStatus("error");
+                                response.setMessage("Error" + res.getMsg());
+                            }
+                        }
+                    }
+                } else {
+                    response.setStatus("error");
+                    response.setMessage("Error, Data yang dikirim tidak lengkap...!");
                 }
+            } else {
+                response.setStatus("error");
+                response.setMessage("Error, Data yang dikirim tidak lengkap...!");
             }
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMessage("Error" + e.getMessage());
         }
-
         logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
         return response;
     }
@@ -799,7 +838,14 @@ public class PeriksaLabAction extends BaseMasterAction {
             }
 
             if (periksalb.getIdPeriksaLab() != null) {
-                reportParams.put("title", "Hasil Periksa Lab " + periksalb.getLabName());
+                String namaLab = "";
+                if ("Y".equalsIgnoreCase(periksalb.getIsLuar())) {
+                    namaLab = periksalb.getNamaLabLuar();
+                } else {
+                    namaLab = periksalb.getLabName();
+                }
+                reportParams.put("title", "Hasil Pemeriksaan Lab");
+                reportParams.put("jenisPemeriksaan", namaLab);
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -810,11 +856,13 @@ public class PeriksaLabAction extends BaseMasterAction {
             reportParams.put("logo", logo);
             reportParams.put("nik", checkup.getNoKtp());
             reportParams.put("nama", checkup.getNama());
-            if(checkup.getTglLahir() != null){
+            if (checkup.getTglLahir() != null) {
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                reportParams.put("tgllahir", formatDate);
+                reportParams.put("divisi", "Laboratorium");
             }
-            if(periksalb.getCreatedDate() != null){
+            if (periksalb.getCreatedDate() != null) {
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());
                 reportParams.put("tglFoto", formatDate);
             }
@@ -832,10 +880,15 @@ public class PeriksaLabAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
-            reportParams.put("petugas", periksalb.getNamaPetugas());
-            reportParams.put("dokter", periksalb.getNamaDokter());
-            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+
+            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
+            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
+            reportParams.put("idPetugas", periksalb.getIdPetugas());
+            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
+            reportParams.put("idValidator", periksalb.getIdValidator());
+            reportParams.put("namaValidator", periksalb.getNamaValidator());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
+            reportParams.put("ttdValidator", periksalb.getTtdValidator());
 
             try {
                 preDownload();
@@ -846,9 +899,9 @@ public class PeriksaLabAction extends BaseMasterAction {
             }
         }
 
-        if("label".equalsIgnoreCase(getKet())){
+        if ("label".equalsIgnoreCase(getKet())) {
             return "print_label";
-        }else{
+        } else {
             return "print_lab";
         }
     }
@@ -918,6 +971,218 @@ public class PeriksaLabAction extends BaseMasterAction {
         }
         logger.info("[PeriksaLabAction.getListLab] end process >>>");
         return periksaLabList;
+    }
+
+    public List<PeriksaLab> getListHistoryLabRadiologi(String idPasien) {
+        logger.info("[PeriksaLabAction.getListHistoryLabRadiologi] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+        if (!"".equalsIgnoreCase(idPasien) && idPasien != null) {
+            try {
+                periksaLabList = periksaLabBo.getHistoryLabRadiologi(idPasien);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getListLab] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getListHistoryLabRadiologi] end process >>>");
+        return periksaLabList;
+    }
+
+    public CrudResponse saveEditRadiologi(String data) {
+        logger.info("[PeriksaLabAction.saveEditRadiologi] start process >>>");
+        CrudResponse response = new CrudResponse();
+        try {
+            String userLogin = CommonUtil.userLogin();
+            Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+
+            if (data != null && !"".equalsIgnoreCase(data)) {
+                JSONObject obj = new JSONObject(data);
+                if (obj != null) {
+                    List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasilPemeriksaanEntityList = new ArrayList<>();
+                    String idPeriksaLab = obj.getString("id_periksa_lab");
+                    String idPeriksaDetail = obj.getString("id_periksa_detail");
+                    String namaPeriksaDetail = obj.getString("nama_periksa_detail");
+                    String namaDokter = obj.getString("nama_dokter");
+                    String sipDokter = obj.getString("sip_dokter");
+                    String ttdDokter = obj.getString("ttd_dokter");
+                    String keteranganHasil = obj.getString("keterangan");
+
+                    PeriksaLab periksaLab = new PeriksaLab();
+                    periksaLab.setIdPeriksaLab(idPeriksaLab);
+                    periksaLab.setIdPeriksaLabDetail(idPeriksaDetail);
+                    periksaLab.setNamaPetugas(namaDokter);
+                    periksaLab.setIdPetugas(sipDokter);
+                    periksaLab.setTtdPetugas(ttdDokter);
+                    periksaLab.setLastUpdate(updateTime);
+                    periksaLab.setLastUpdateWho(userLogin);
+                    periksaLab.setAction("U");
+                    periksaLab.setHasil(keteranganHasil);
+
+                    if (ttdDokter != null && !"".equalsIgnoreCase(ttdDokter)) {
+                        try {
+                            BASE64Decoder decoder = new BASE64Decoder();
+                            byte[] decodedBytes = decoder.decodeBuffer(ttdDokter);
+                            String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
+                            String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
+                            String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
+                            BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+
+                            if (image == null) {
+                                logger.error("Buffered Image is null");
+                                response.setStatus("error");
+                                response.setMsg("Buffered Image is null");
+                            } else {
+                                File f = new File(uploadFile);
+                                ImageIO.write(image, "png", f);
+                                periksaLab.setTtdPetugas(fileName);
+                            }
+                        } catch (IOException e) {
+                            response.setStatus("error");
+                            response.setMsg("IO Error" + e.getMessage());
+                            return response;
+                        }
+                    }
+                    periksaLab.setUploadHasil(uploadHasilPemeriksaanEntityList);
+                    periksaLabBo.saveEditRadiologi(periksaLab);
+                    response.setStatus("success");
+                    response.setMsg("OK");
+                } else {
+                    response.setStatus("error");
+                    response.setMsg("Error, Data yang dikirim tidak lengkap...!");
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Error, Data yang dikirim tidak lengkap...!");
+            }
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setMsg("Error" + e.getMessage());
+        }
+        logger.info("[PeriksaLabAction.saveEditRadiologi] End process >>>");
+        return response;
+    }
+
+    public CrudResponse saveSelesaiRadiologi(String id) {
+        logger.info("[PeriksaLabAction.saveSelesaiRadiologi] start process >>>");
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        try {
+            PeriksaLab periksaLab = new PeriksaLab();
+            periksaLab.setIdPeriksaLab(id);
+            periksaLab.setLastUpdate(updateTime);
+            periksaLab.setLastUpdateWho(userLogin);
+            periksaLab.setStatusPeriksa("3");
+            periksaLab.setApproveFlag("Y");
+            periksaLabBo.saveSelesaiRadiologi(periksaLab);
+            response.setStatus("success");
+            response.setMsg("OK");
+        } catch (Exception e) {
+            response.setStatus("error");
+            response.setMsg("Error" + e.getMessage());
+        }
+        logger.info("[PeriksaLabAction.saveSelesaiRadiologi] end process >>>");
+        return response;
+    }
+
+    public CrudResponse uploadFilePemeriksaan(String data) {
+        logger.info("[PeriksaLabAction.uploadFilePemeriksaan] start process >>>");
+        CrudResponse response = new CrudResponse();
+        String userLogin = CommonUtil.userLogin();
+        Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        if (data != null && !"".equalsIgnoreCase(data)) {
+            try {
+                JSONObject obj = new JSONObject(data);
+                String idPeriksaLab = obj.getString("id_periksa_lab");
+                String stringByte = obj.getString("byte");
+                String idPeriksaDetail = obj.getString("id_periksa_detail");
+                String namaPeriksaDetail = obj.getString("nama_periksa");
+                String tipe = obj.getString("tipe");
+                String eks = obj.getString("eks");
+                String name = obj.getString("file_name");
+                String fileName = "";
+
+                BASE64Decoder decoder = new BASE64Decoder();
+                byte[] decodedBytes = decoder.decodeBuffer(stringByte);
+                String cekPath = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PEMERIKSAAN;
+                File theDir = new File(cekPath);
+                if (!theDir.exists()) {
+                    theDir.mkdirs();
+                }
+
+                if("pdf".equalsIgnoreCase(eks)){
+                    fileName = idPeriksaLab+"-"+name+".pdf";
+                    File file = new File(cekPath + fileName);
+                    FileOutputStream fop = new FileOutputStream(file);
+                    fop.write(decodedBytes);
+                    fop.flush();
+                    fop.close();
+                }else{
+                    fileName = idPeriksaLab+"-"+name+".jpg";
+                    String uploadFile = cekPath+fileName;
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
+                    if (image == null) {
+                        logger.error("Buffered Image is null");
+                    } else {
+                        response = CommonUtil.compressImage(image, "png", uploadFile);
+                    }
+                }
+
+                ItSimrsUploadHasilPemeriksaanEntity entity = new ItSimrsUploadHasilPemeriksaanEntity();
+                entity.setUrlImg(fileName);
+                entity.setTipe(tipe);
+                entity.setIdPeriksaLab(idPeriksaLab);
+                entity.setIdPeriksaLabDetail(idPeriksaDetail);
+                entity.setNamaDetailPeriksa(namaPeriksaDetail);
+                entity.setFlag("Y");
+                entity.setAction("C");
+                entity.setCreatedWho(userLogin);
+                entity.setCreatedDate(updateTime);
+                entity.setLastUpdate(updateTime);
+                entity.setLastUpdateWho(userLogin);
+
+                response = periksaLabBo.saveUpload(entity);
+                response.setStatus("success");
+            } catch (Exception e) {
+                logger.error("[PeriksaLabAction.uploadFilePemeriksaan] Error, "+e.getMessage());
+                response.setStatus("error");
+                response.setMsg("ERROR, "+e.getMessage());
+            }
+        } else {
+            response.setStatus("error");
+            response.setMsg("Data yang dikirim tidak lengkap");
+        }
+        logger.info("[PeriksaLabAction.uploadFilePemeriksaan] end process >>>");
+        return response;
+    }
+
+    public CrudResponse deleteUploadFilePemeriksaan(String id) {
+        logger.info("[PeriksaLabAction.uploadFilePemeriksaan] start process >>>");
+        CrudResponse response = new CrudResponse();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        if(id != null && !"".equalsIgnoreCase(id)){
+            try {
+                periksaLabBo.deleteUpload(id);
+                response.setStatus("success");
+                response.setMsg("OK");
+            }catch (Exception e){
+                logger.error(e.getMessage());
+                response.setStatus("error");
+                response.setMsg("[PeriksaLabAction.uploadFilePemeriksaan] ERROR, "+e.getMessage());
+            }
+        }
+        logger.info("[PeriksaLabAction.uploadFilePemeriksaan] end process >>>");
+        return response;
     }
 
 }

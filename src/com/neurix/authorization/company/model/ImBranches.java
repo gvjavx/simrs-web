@@ -45,15 +45,6 @@ public class ImBranches implements Serializable {
     private String lon;
     private String warna;
 
-    private BigDecimal tunjPemondokan;
-
-    public BigDecimal getTunjPemondokan() {
-        return tunjPemondokan;
-    }
-
-    public void setTunjPemondokan(BigDecimal tunjPemondokan) {
-        this.tunjPemondokan = tunjPemondokan;
-    }
 
     public String getWarna() {
         return warna;

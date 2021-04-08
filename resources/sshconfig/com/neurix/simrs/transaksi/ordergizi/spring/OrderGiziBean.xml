@@ -11,7 +11,6 @@
     <bean id="rawatInapController" class="com.neurix.simrs.mobileapi.RawatInapController"
           p:orderGiziBoProxy-ref="orderGiziBoProxy"/>
 
-
     <bean id="orderGiziBo" class="com.neurix.simrs.transaksi.ordergizi.bo.impl.OrderGiziBoImpl"
           p:orderGiziDao-ref="orderGiziDao"
           p:orderJenisDietDao-ref="orderJenisDietDao"

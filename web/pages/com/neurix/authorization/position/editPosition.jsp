@@ -128,21 +128,18 @@
                     </tr>
                     <tr>
                         <td>
-                            <label class="control-label"><small>Posisi :</small></label>
+                            <label class="control-label"><small>Kodering :</small></label>
                         </td>
-                        <td>
+                        <td >
                             <table>
-                                <s:textfield id="positionName2" name="position.positionName" required="false" cssClass="form-control" />
+                                <s:textfield id="kodering2" name="position.kodering" required="false" readonly="true" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>
                     <tr>
-                        <td>
-                            <label class="control-label"><small>Kodering :</small></label>
-                        </td>
-                        <td>
+                        <td colspan="2">
                             <table>
-                                <s:textfield id="kodering2" name="position.kodering" required="false" readonly="true" cssClass="form-control" />
+                                <hr/>
                             </table>
                         </td>
                     </tr>
@@ -194,6 +191,17 @@
                                 <s:action id="comboKelompok" namespace="/kelompokPosition" name="searchKelompok_kelompokPosition"/>
                                 <s:select list="#comboKelompok.comboListOfKelompokPosition" id="kelompokId2" name="position.kelompokId"
                                           listKey="kelompokId" listValue="kelompokName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>Posisi :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield id="positionName2" name="position.positionName" required="false" cssClass="form-control" />
                             </table>
                         </td>
                     </tr>

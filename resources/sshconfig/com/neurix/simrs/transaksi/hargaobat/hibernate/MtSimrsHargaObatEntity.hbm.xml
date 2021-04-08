@@ -74,5 +74,31 @@
         <property name="hargaNetUmum">
             <column name="harga_net_umum" sql-type="numeric" not-null="false"/>
         </property>
+
+        <property name="diskonKhususBpjs">
+            <column name="diskon_khusus_bpjs" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="marginKhususBpjs">
+            <column name="margin_khusus_bpjs" sql-type="int" not-null="false"/>
+        </property>
+        <property name="hargaNetKhususBpjs">
+            <column name="harga_net_khusus_bpjs" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="hargaJualKhususBpjs">
+            <column name="harga_jual_khusus_bpjs" sql-type="numeric" not-null="false"/>
+        </property>
+
+        <property name="diskonUmumBpjs">
+            <column name="diskon_umum_bpjs" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="marginUmumBpjs">
+            <column name="margin_umum_bpjs" sql-type="int" not-null="false"/>
+        </property>
+        <property name="hargaNetUmumBpjs">
+            <column name="harga_net_umum_bpjs" sql-type="numeric" not-null="false"/>
+        </property>
+        <property name="hargaJualUmumBpjs">
+            <column name="harga_jual_umum_bpjs" sql-type="numeric" not-null="false"/>
+        </property>
     </class>
 </hibernate-mapping>

@@ -5,6 +5,7 @@ import com.neurix.authorization.user.bo.UserBo;
 import com.neurix.authorization.user.model.ImUsers;
 import com.neurix.authorization.user.model.User;
 import com.neurix.common.constant.CommonConstant;
+import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.mobileapi.model.FingerPrintResponse;
 import com.neurix.hris.mobileapi.model.simrs.Poli;
@@ -528,7 +529,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("metode_bayar", "tunai");
 
         try {
-            billingSystemBoProxy.createJurnal("01",data,"KP","TEST 1 : pembayaran piutang pasien bpjs atas NO FPK","Y");
+            billingSystemBoProxy.createJurnal("01",data,CommonConstant.BRANCH_KP,"TEST 1 : pembayaran piutang pasien bpjs atas NO FPK","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
@@ -559,7 +560,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("metode_bayar","tunai" );
 
         try {
-            billingSystemBoProxy.createJurnal("03",data,"KP","TEST 2 : pembayaran piutang rekanan","Y");
+            billingSystemBoProxy.createJurnal("03",data,CommonConstant.BRANCH_KP,"TEST 2 : pembayaran piutang rekanan","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
@@ -583,7 +584,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("piutang_pasien_bpjs", piutangPasienNonBpjs);
 
         try {
-            billingSystemBoProxy.createJurnal("06",data,"KP","TEST 3 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
+            billingSystemBoProxy.createJurnal("06",data,CommonConstant.BRANCH_KP,"TEST 3 : Closing Pasien Rawat Jalan BPJS tanpa Obat","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
@@ -611,7 +612,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("piutang_pasien_non_bpjs", piutangPasienNonBpjs);
 
         try {
-            billingSystemBoProxy.createJurnal("02",data,"KP","TEST 4 : pembayaran piutang pasien non bpjs","Y");
+            billingSystemBoProxy.createJurnal("02",data,CommonConstant.BRANCH_KP,"TEST 4 : pembayaran piutang pasien non bpjs","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase1] Error : " + "[" + e + "]");
         }
@@ -651,7 +652,7 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
         data.put("ppn_masukan",ppnMasukan);
 
         try {
-            billingSystemBoProxy.createJurnal("27",data,"KP","TEST 5 : Pengiriman Barang Gudang ke Apotik","Y");
+            billingSystemBoProxy.createJurnal("27",data,CommonConstant.BRANCH_KP,"TEST 5 : Pengiriman Barang Gudang ke Apotik","Y");
         }catch (Exception e){
             logger.error("[BpjsController.createJurnalBillingCase3] Error : " + "[" + e + "]");
         }
@@ -701,12 +702,14 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
 
         if ("all".equalsIgnoreCase(metode)){
             try {
-                String status = absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
-                statusMesin = "{status:" +status+ "}";
+                statusMesin = absensiBoProxy.getAllDataFromMesin(mesinAbsensi);
+//                statusMesin = "{status:" +status+ "}";
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
-//                statusMesin = "{status:0;}";
+                String status =  e.getMessage();
+                String stJson = status.substring(status.indexOf("{")+1,status.indexOf("}"));
+                statusMesin = "{"+stJson+"}";
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
@@ -731,6 +734,8 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             }catch (Exception e){
                 String error = "ERROR WHEN GET MESIN: " + "[" + e + "]";
                 absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
+                String[] getStatus =  e.getMessage().split("-");
+                statusMesin = getStatus[0];
 
                 //Kirim Notif
                 List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
@@ -858,10 +863,33 @@ public class BpjsController extends BpjsService implements ModelDriven<Object> {
             if (listOfResultOnCall==null){
                 listOfResultOnCall = new ArrayList<>();
             }
-            absensiBoProxy.saveAddAbsensi(absensiPegawaiList,listOfResultOnCall,search);
+            try {
+                absensiBoProxy.saveAddAbsensi(absensiPegawaiList, listOfResultOnCall, search);
+            }catch (GeneralBOException e){
+                String error = "ERROR WHEN SAVE ABSENSI PEGAWAI : " + "[" + e + "]";
+                statusInquiry = "{status:3;}";
+                absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
+
+                //Kirim Notif
+                List<User> usersList = userBoProxy.getUserByRoleAndBranch(CommonConstant.ROLE_ID_ADMIN,branchId);
+                for (User user : usersList){
+                    Notifikasi notif = new Notifikasi();
+                    notif.setNip(user.getUserId());
+                    notif.setNoRequest("");
+                    notif.setTipeNotifId("umum");
+                    notif.setTipeNotifName(("Pemberitahuan"));
+                    notif.setNote("Data absensi pada tanggal "+CommonUtil.convertDateToString(tanggalSekarang)+" tidak bisa disimpan secara otomatis lakukan pemeriksaan data dan menyimpanan secara manual.");
+                    notif.setCreatedWho("Cron");
+                    notif.setTo("self");
+
+                    notifikasiBoProxy.sendNotif(notif);
+                }
+
+                logger.error(error);
+            }
         }catch (Exception e){
             String error = "ERROR WHEN GET ABSENSI PEGAWAI : " + "[" + e + "]";
-            statusInquiry = "{status:0;}";
+            statusInquiry = "{status:2;}";
             absensiBoProxy.saveErrorMessage(error,"BpjsController.cronJobAbsensiPegawai");
 
             //Kirim Notif

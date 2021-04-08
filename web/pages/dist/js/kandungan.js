@@ -36,6 +36,10 @@ function showModalRB(jenis, idRM, isSetIdRM) {
     if ("bayi_baru_lahir" == jenis) {
         setForm('temp_' + jenis, 'bayi_baru_lahir');
     }
+    if ("tindakan_rb" == jenis) {
+        selectOptionTM('rb', jenis);
+        $('#form-'+jenis).hide();
+    }
     $('#modal-rb-' + jenis).modal({show: true, backdrop: 'static'});
     setDataPasien();
 }
@@ -438,7 +442,7 @@ function saveRB(jenis, ket) {
             });
             data.push({
                 'parameter': 'Siklus menstruasi',
-                'jawaban': va21 + ', Siklus menstruasi ' + va22,
+                'jawaban': va21 + ', Lamanya ' + va22 +' hari',
                 'keterangan': jenis,
                 'jenis': ket,
                 'id_detail_checkup': idDetailCheckup
@@ -1231,19 +1235,19 @@ function saveRB(jenis, ket) {
     }
 
     if ("add_tindakan_rb" == jenis) {
-        var va1 = $('#rb1').val();
-        var va2 = $('#rb2').val();
-        var va3 = $('#rb3').val();
-        var va4 = $('#rb4').val();
-        var va5 = $('#rb5').val();
-        var va6 = $('#rb6').val();
-        var va7 = $('#rb7').val();
-        var va8 = $('#rb8').val();
-        var va9 = $('#rb9').val();
-        var va10 = $('#rb10').val();
-        var va11 = $('#rb11').val();
+        var va1 = $('#op1').val();
+        var va2 = $('#op2').val();
+        var va3 = $('#op3').val();
+        var va4 = $('#op4').val();
+        var va5 = $('#op5').val();
+        var va6 = $('#op6').val();
+        var va7 = $('#op7').val();
+        var va8 = $('#op8').val();
+        var va9 = $('#op9').val();
+        var va10 = $('#op10').val();
+        var va11 = $('#op11').val();
 
-        var tindakan = $('#tindakan_rb').val();
+        var persetujuan = $('#nama_tindakan_medis').val();
         var parameter = $('[name=parameter]');
         var tanda = $('[name=tanda]');
 
@@ -1253,57 +1257,65 @@ function saveRB(jenis, ket) {
         var ttd4 = document.getElementById("ttd4");
         var ttd5 = document.getElementById("ttd5");
 
+        var nama1 = $('#nama_terang_ttd1').val();
+        var sip1 = $('#sip_ttd1').val();
+        var nama2 = $('#nama_terang_ttd2').val();
+        var nama3 = $('#nama_terang_ttd3').val();
+        var sip3 = $('#sip_ttd3').val();
+        var nama4 = $('#nama_terang_ttd4').val();
+        var nama5 = $('#nama_terang_ttd5').val();
+
         var cekTtd1 = isCanvasBlank(ttd1);
         var cekTtd2 = isCanvasBlank(ttd2);
         var cekTtd3 = isCanvasBlank(ttd3);
         var cekTtd4 = isCanvasBlank(ttd4);
         var cekTtd5 = isCanvasBlank(ttd5);
 
-        if (va1 && va2 && va3 && va4 && tindakan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
+        if (nama1 && nama2 && nama3 && nama4 && nama5 && sip1 && sip3 && va1 && va2 && va3 && va4 && persetujuan != '' && !cekTtd1 && !cekTtd2 && !cekTtd3 && !cekTtd4 && !cekTtd5) {
 
             data.push({
                 'parameter': 'pernyataan',
-                'jawaban': 'Pemberian Informasi dan Persetujuan Tindakan Kedokteran ' + tindakan,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban': 'Pemberian Informasi dan Persetujuan ' + persetujuan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Tanggal',
                 'jawaban': va1,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Dokter Penanggung Jawab',
+                'parameter': 'Dokter Penanggung Jawab Anestesi',
                 'jawaban': va2,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Pemberi Informasi',
                 'jawaban': va3,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Penerima Informasi',
                 'jawaban': va4,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'id_detail_checkup': idDetailCheckup
             });
 
             data.push({
                 'parameter': 'Jenis Informasi',
-                'informasi': 'Isi Informasi',
-                'jawaban': 'Check Informasi',
-                'keterangan': ket,
-                'jenis': tindakan,
+                'jawaban': 'Isi Informasi',
+                'informasi': 'Check Informasi',
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'bold',
                 'id_detail_checkup': idDetailCheckup
             });
@@ -1312,7 +1324,6 @@ function saveRB(jenis, ket) {
                 var informasi = $('[name=informasi' + i + ']');
                 var info = "";
                 $.each(informasi, function (idx, itemx) {
-                    console.log(itemx.type);
                     if (itemx.type == 'checkbox') {
                         if (itemx.checked) {
                             if (info != '') {
@@ -1358,10 +1369,10 @@ function saveRB(jenis, ket) {
 
                 data.push({
                     'parameter': item.value,
-                    'informasi': info,
-                    'jawaban': tdn,
-                    'keterangan': ket,
-                    'jenis': tindakan,
+                    'informasi': tdn,
+                    'jawaban': info,
+                    'keterangan': jenis,
+                    'jenis': persetujuan,
                     'tipe': 'info',
                     'id_detail_checkup': idDetailCheckup
                 });
@@ -1380,65 +1391,82 @@ function saveRB(jenis, ket) {
                 canv5 = canv5.replace(/^data:image\/(png|jpg);base64,/, "");
 
             data.push({
-                'parameter': 'Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi',
+                'parameter': 'Dengan ini menyatakan bahwa saya telah menerangkan hal-hal di atas secara benar dan jelas dengan memberikan kesempatakan bertanya dan atau diskusi kepada pasien dan/atau keluarganya sedemikian rupa sehingga telah memahaminya',
                 'jawaban': canv1,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama1,
+                'sip':sip1,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Dengan ini menyatakan bahwa saya telah menerima informasi sebagaimana di atas dan telah memahaminya',
                 'jawaban': canv2,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama2,
                 'id_detail_checkup': idDetailCheckup
             });
+            if($('#h_is_biaya').val() == "Y"){
+                data.push({
+                    'parameter': 'pernyataan',
+                    'jawaban': 'Biaya adalah perkiraan biaya yang harus dibayarkan oleh pihak pasien berdasarkan perkiraan dalam kasus-kasus sewajarnya dan tidak mengikat kedua belah pihak apabila ada perluasan',
+                    'keterangan': jenis,
+                    'jenis': persetujuan,
+                    'tipe': 'colspan',
+                    'id_detail_checkup': idDetailCheckup
+                });
+            }
             data.push({
                 'parameter': 'pernyataan',
                 'jawaban': 'Persetujuan Tindakan Medis',
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'penyataan',
+                'parameter': 'pernyataan',
                 'jawaban': 'Yang bertanda tangan dibawah ini, Saya ' + va5 + ' ' +
-                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + va8 + ' ' +
+                    'tanggal lahir ' + va6 + ', ' + va7 + ' dengan ini menyatakan persetujuan untuk dilakukan tindakan ' + persetujuan + ' ' +
                     'terhadap pasien Bernama ' + va9 + ' tanggal lahir ' + va10 + ', Alamat ' + va11 + '.' +
                     'Saya memahami perlunya dan manfaat tindakan tersebut sebagaimana telah dijelaskan seperti diatas ' +
                     'kepada saya termasuk resiko dan komplikasi yang timbul ' +
                     'Saya juga menyadari bahwa oleh karena itu ilmu kedokteran bukan ilmu pasti, maka keberhasilan tindakan ' +
-                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date()),
-                'keterangan': ket,
-                'jenis': tindakan,
+                    'kedokteran bukan keniscayaan, tetapi tergantung kepada izin Tuhan Yang maha Esa. Tanggal ' + converterDate(new Date) + ', Jam ' + converterTime(new Date())+' WIB',
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'colspan',
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'TTD yang menyatakan',
                 'jawaban': canv3,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama3,
+                'sip':sip3,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Saksi I',
                 'jawaban': canv4,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama4,
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
                 'parameter': 'Saksi II',
                 'jawaban': canv5,
-                'keterangan': ket,
-                'jenis': tindakan,
+                'keterangan': jenis,
+                'jenis': persetujuan,
                 'tipe': 'ttd',
+                'nama_terang':nama5,
                 'id_detail_checkup': idDetailCheckup
             });
             cek = true;
@@ -1628,7 +1656,7 @@ function saveRB(jenis, ket) {
                 'id_detail_checkup': idDetailCheckup
             });
             data.push({
-                'parameter': 'Obat yang tidak tahan',
+                'parameter': 'Riwayat alergi obat',
                 'jawaban': va29,
                 'keterangan': jenis,
                 'jenis': ket,
@@ -2137,7 +2165,7 @@ function saveRB(jenis, ket) {
                 'tetes': va8,
                 'obat_cairan': va9,
                 'nadi': va10,
-                'tensi': va11,
+                'tensi': replaceUnderLine(va11),
                 'suhu': va12,
                 'rr': va13
             }
@@ -2307,6 +2335,8 @@ function saveRB(jenis, ket) {
                             $('#warning_rb_' + ket).show().fadeOut(5000);
                             $('#msg_rb_' + ket).text("Berhasil menambahkan data...");
                             $('#modal-rb-' + jenis).scrollTop(0);
+                            delRowRB(jenis);
+                            detailRB(jenis);
                         } else {
                             $('#save_rb_' + jenis).show();
                             $('#load_rb_' + jenis).hide();
@@ -2484,32 +2514,40 @@ function detailRB(jenis) {
                                         '<td>' + jwb + '</td>' +
                                         '</tr>';
                                 }
-                            } else if ("tindakan_rb" == jenis) {
+                            } else if ("add_tindakan_rb" == jenis) {
+                                var del = '';
+                                if("Tanggal" == item.parameter){
+                                    del = '<span style="margin-right: 60px" onclick="conRB(\'' + jenis + '\',\'tindakan_rb\', \'\', \'\', \'' + converterDateTimeComplex(item.createdDate) + '\')" class="pull-right"><i id="delete_' + item.idAsesmenKeperawatanRawatInap + '" class="fa fa-trash hvr-grow" style="color: red"></i></span>' +
+                                        '<a target="_blank" href="'+contextPath+'/rekammedik/printSuratPernyataan_rekammedik?id='+idDetailCheckup+'&tipe=RB&keterangan='+item.keterangan+'&createdDate='+converterDateTimeComplex(item.createdDate)+'" class="pull-right"><i class="fa fa-print hvr-grow" style="color: deepskyblue"></i></a>';
+                                }
                                 if ("colspan" == item.tipe) {
                                     body += '<tr>' +
-                                        '<td colspan="3">' + jwb + '</td>' +
+                                        '<td colspan="3">' + cekNull(jwb) + '</td>' +
                                         '</tr>';
                                 } else if ("info" == item.tipe) {
                                     body += '<tr>' +
-                                        '<td width="25%">' + item.parameter + '</td>' +
-                                        '<td >' + item.informasi + '</td>' +
-                                        '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                        '<td width="30%">' + cekNull(item.parameter) + '</td>' +
+                                        '<td >' + cekNull(jwb) + '</td>' +
+                                        '<td width="20%" align="center">' + cekIconsIsNotNull(item.informasi) + '</td>' +
                                         '</tr>';
                                 } else if ("ttd" == item.tipe) {
                                     body += '<tr>' +
                                         '<td colspan="2">' + item.parameter + '</td>' +
-                                        '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' + '</td>' +
+                                        '<td>' + '<img src="' + item.jawaban + '" style="height: 80px">' +
+                                        '<p style="margin-top: -3px">'+cekItemIsNull(item.namaTerang)+'</p>' +
+                                        '<p style="margin-top: -10px">'+cekItemIsNull(item.sip)+'</p>' +
+                                        '</td>' +
                                         '</tr>';
                                 } else if ("bold" == item.tipe) {
                                     body += '<tr style="font-weight: bold">' +
                                         '<td width="25%">' + item.parameter + '</td>' +
-                                        '<td >' + item.informasi + '</td>' +
-                                        '<td width="20%" align="center">' + cekIcons(jwb) + '</td>' +
+                                        '<td >' + cekNull(jwb) + '</td>' +
+                                        '<td width="20%" align="center">' + cekNull(item.informasi) + '</td>' +
                                         '</tr>';
                                 } else {
                                     body += '<tr>' +
                                         '<td width="30%">' + item.parameter + '</td>' +
-                                        '<td colspan="2">' + jwb + '</td>' +
+                                        '<td colspan="2">' + jwb + del + '</td>' +
                                         '</tr>';
                                 }
                             } else {
@@ -3411,14 +3449,15 @@ function showChart(jenis, tanggal) {
                     if ("ibu" == jenis) {
                         data.push({
                             y: item.waktu,
-                            a: item.tensi,
-                            b: item.nadi,
-                            c: item.suhu,
-                            d: item.rr
+                            a: item.tensi.split("/")[0],
+                            b: item.tensi.split("/")[1],
+                            c: item.nadi,
+                            d: item.suhu,
+                            e: item.rr
                         });
-                        xKey = ['a', 'b', 'c', 'd'];
-                        label = ['Tensi', 'Nadi', 'Suhu', 'RR'];
-                        warna = ['#ff0000', '#0000ff', '#00cc00', '#ff9933'];
+                        xKey = ['a', 'b', 'c', 'd', 'e'];
+                        label = ['Sistol', 'Diastol', 'Nadi', 'Suhu', 'RR'];
+                        warna = ['#ff0000', '#D3FD01', '#0000ff', '#00cc00', '#ff9933'];
                         table.push({
                             'jam': item.waktu,
                             'oksitosin': item.oksitosin,
@@ -3486,13 +3525,13 @@ function showChart(jenis, tanggal) {
     });
 }
 
-function conRB(jenis, ket, idAsesmen, isKala) {
+function conRB(jenis, ket, idAsesmen, isKala, date) {
     $('#tanya').text("Yakin mengahapus data ini ?");
     $('#modal-confirm-rm').modal({show: true, backdrop: 'static'});
     if (idAsesmen != undefined && idAsesmen != '') {
         $('#save_con_rm').attr('onclick', 'delRBC(\'' + jenis + '\', \'' + ket + '\', \'' + idAsesmen + '\', \'' + isKala + '\')');
     } else {
-        $('#save_con_rm').attr('onclick', 'delRB(\'' + jenis + '\', \'' + ket + '\')');
+        $('#save_con_rm').attr('onclick', 'delRB(\'' + jenis + '\', \'' + ket + '\', \''+date+'\')');
     }
 }
 
@@ -3526,7 +3565,7 @@ function delRBC(jenis, ket, idAsesmen, isKala) {
     }
 }
 
-function delRB(jenis, ket) {
+function delRB(jenis, ket, date) {
     $('#modal-confirm-rm').modal('hide');
     if(!cekSession()){
         var dataPasien = {
@@ -3535,10 +3574,15 @@ function delRB(jenis, ket) {
             'id_pasien': idPasien,
             'id_rm': tempidRm
         }
+        var createdDate = null;
+        if(date != '' && date != null && date != undefined){
+            createdDate = date;
+        }
         var result = JSON.stringify(dataPasien);
         startSpin('delete_' + jenis);
+        delRowRB(jenis);
         dwr.engine.setAsync(true);
-        KandunganAction.saveDelete(idDetailCheckup, jenis, result, {
+        KandunganAction.saveDelete(idDetailCheckup, jenis, result, createdDate, {
             callback: function (res) {
                 if (res.status == "success") {
                     stopSpin('delete_' + jenis);
@@ -3551,6 +3595,7 @@ function delRB(jenis, ket) {
                     $('#warn_' + ket).show().fadeOut(5000);
                     $('#msg_' + ket).text(res.msg);
                 }
+                detailRB(jenis);
             }
         });
     }

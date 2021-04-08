@@ -1,0 +1,364 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printPersetujuanMedisIna" language="groovy" pageWidth="595" pageHeight="842" whenNoDataType="AllSectionsNoDetail" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
+	<property name="ireport.zoom" value="0.8689931392100639"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="103"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="reportParams.idDetailCheckup" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.tglLahir" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.alamat" class="java.lang.String"/>
+	<parameter name="reportParams.jenisKelamin" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.nik" class="java.lang.String"/>
+	<parameter name="reportParams.agama" class="java.lang.String"/>
+	<parameter name="reportParams.desa" class="java.lang.String"/>
+	<parameter name="reportParams.kecamatan" class="java.lang.String"/>
+	<parameter name="reportParams.provinsi" class="java.lang.String"/>
+	<parameter name="reportParams.kabupaten" class="java.lang.String"/>
+	<parameter name="reportParams.status" class="java.lang.String"/>
+	<parameter name="reportParams.tamatan" class="java.lang.String"/>
+	<parameter name="reportParams.jalan" class="java.lang.String"/>
+	<parameter name="reportParams.waktuMeninggal" class="java.lang.String"/>
+	<parameter name="reportParams.umur" class="java.lang.String"/>
+	<parameter name="reportParams.tempatMeninggal" class="java.lang.String"/>
+	<parameter name="reportParams.unitKota" class="java.lang.String"/>
+	<parameter name="keterangan" class="java.lang.String"/>
+	<parameter name="createdDate" class="java.sql.Timestamp"/>
+	<parameter name="ttdYangMenyatakan" class="java.lang.String"/>
+	<parameter name="pihak1" class="java.lang.String"/>
+	<parameter name="pihak2" class="java.lang.String"/>
+	<parameter name="ttdPihak1" class="java.lang.String"/>
+	<parameter name="ttdPihak2" class="java.lang.String"/>
+	<parameter name="namaMenyatakan" class="java.lang.String"/>
+	<parameter name="sipMenyatakan" class="java.lang.String"/>
+	<parameter name="pernyataan1" class="java.lang.String"/>
+	<parameter name="pernyataan2" class="java.lang.String"/>
+	<parameter name="pernyataan3" class="java.lang.String"/>
+	<parameter name="namaPernyataan1" class="java.lang.String"/>
+	<parameter name="namaPernyataan2" class="java.lang.String"/>
+	<parameter name="sipPernyataan1" class="java.lang.String"/>
+	<parameter name="ttdPernyataan1" class="java.lang.String"/>
+	<parameter name="ttdPernyataan2" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="parameter" class="java.lang.String"/>
+	<field name="jawaban" class="java.lang.String"/>
+	<field name="informasi" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="103" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="60" width="555" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="31" width="173" height="20" uuid="7c5f8646-c682-47f4-96ff-a3c3cc2dd1d9"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="435" y="0" width="120" height="32" uuid="6a2de382-dadd-4d81-bb84-315f70cece67"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.idDetailCheckup}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<staticText>
+				<reportElement x="421" y="30" width="59" height="19" uuid="711bd471-61c7-4e26-a5f7-23f47f6c6eb4"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="143" y="8" width="268" height="20" uuid="89ca5627-7e73-4cd1-918e-9a81c49ef79d"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Persetujuan Tindakan Medis ]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="480" y="30" width="75" height="19" uuid="c74fa1f1-4199-4fb4-8162-4173796d277f"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="aaabcd6f-4375-4904-9a2a-32f836da7868"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="0" y="43" width="173" height="20" uuid="6f411b53-a957-4ce8-9bf4-3f379b53b1d2"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="2" y="63" width="111" height="20" uuid="90cf4202-39e0-44b6-9942-5d92b0efa643"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No RM]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="2" y="83" width="111" height="20" uuid="7468c42d-6c6b-4e3c-ad34-8c0b0d1a9f17"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="293" y="63" width="107" height="20" uuid="9e3773e8-0058-4b57-aea8-08c3f9d71976"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tanggal Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="113" y="63" width="5" height="20" uuid="12eeb4d9-97ef-4065-ad9b-0ff1fc2b0e80"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="113" y="83" width="5" height="20" uuid="5eb27efc-5d6d-4768-9e79-c7480716244e"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="400" y="63" width="5" height="20" uuid="52b982cd-df80-4fe2-874b-b480c8546eac"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="118" y="63" width="151" height="20" uuid="8698e75f-8abc-4b32-8e85-cae2a4f1cb4d"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="83" width="151" height="20" uuid="54b246ca-158b-432d-a3e4-1fc4daa3b3d8"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Top">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="404" y="63" width="151" height="20" uuid="d105ad0e-0683-41a1-b48a-94be40b49642"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="99" width="555" height="1" uuid="901eb047-a75a-48c4-a93d-5e1f72af7f2f"/>
+			</line>
+		</band>
+	</title>
+	<detail>
+		<band height="20" splitType="Prevent">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="0" width="239" height="20" isPrintWhenDetailOverflows="true" uuid="8719773a-20be-4010-9da1-1cae5b956608"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{parameter} == null ? "" : $F{parameter}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="239" y="0" width="241" height="20" isPrintWhenDetailOverflows="true" uuid="cd29c3f0-d57f-44d5-bf76-4ec92ebbef66"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jawaban} == null ? "" : $F{jawaban}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="480" y="0" width="75" height="20" uuid="ec292662-f17e-4795-8dcd-67bdd7a387ba"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{informasi} == null ? "" : $F{informasi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="227">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="17" width="442" height="20" isPrintWhenDetailOverflows="true" uuid="0af3bf53-8f4a-4d07-8130-1fd9fdacdd33"/>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pernyataan1} == null ? "" : $P{pernyataan1}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="442" y="2" width="113" height="35" uuid="b540a974-ba0c-445a-9877-1fd6b8cb9b0d"/>
+				<imageExpression><![CDATA[$P{ttdPernyataan1}]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="442" y="37" width="113" height="15" uuid="e6625e02-15d5-44f1-b96f-e684944e9f83"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{namaPernyataan1} == null ? "" : $P{namaPernyataan1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="442" y="53" width="113" height="15" uuid="850d310b-01bf-458e-9221-4935fbf01700"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sipPernyataan1} == null ? "" : $P{sipPernyataan1}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="442" y="52" width="113" height="1" uuid="f010ec64-9eaf-47ee-a5b5-837724612c19"/>
+			</line>
+			<textField>
+				<reportElement x="442" y="106" width="113" height="15" uuid="594839f4-867e-496f-b869-2004d6b43c62"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{namaPernyataan2} == null ? "" : $P{namaPernyataan2}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="74" width="442" height="20" isPrintWhenDetailOverflows="true" uuid="ac6a4228-5df0-4366-a31a-4fd34e94dc4a"/>
+				<textElement textAlignment="Justified">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pernyataan2} == null ? "" : $P{pernyataan2}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="442" y="71" width="113" height="35" uuid="1fc16b4d-5dd4-41ea-ad15-4d31c88e0276"/>
+				<imageExpression><![CDATA[$P{ttdPernyataan2}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="442" y="105" width="113" height="1" uuid="d73be8ee-07f4-4064-b380-f526213fa787"/>
+			</line>
+			<textField>
+				<reportElement x="0" y="135" width="555" height="66" uuid="62378df1-eccc-4e09-86eb-be2398efc93d"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pernyataan3} == null ? "" : $P{pernyataan3} ]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="115" width="270" height="20" uuid="2b55f441-7209-4251-9983-53be72b4e6e6"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<text><![CDATA[Persetujuan Tindakan Medis ]]></text>
+			</staticText>
+		</band>
+	</columnFooter>
+	<lastPageFooter>
+		<band height="147">
+			<image onErrorType="Blank">
+				<reportElement x="25" y="66" width="94" height="50" uuid="79a93203-4ba8-4609-a1fa-a381574a7882"/>
+				<imageExpression><![CDATA[$P{ttdPihak1}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="14" y="52" width="115" height="14" uuid="eee88fe4-d7dd-440a-aaa1-f9e4605c22b2"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pihak I]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="424" y="116" width="116" height="15" uuid="65458a95-4822-4534-8900-22466714b292"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pihak2} == null ? "" : $P{pihak2}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="435" y="66" width="94" height="50" uuid="6407654a-b1db-4b72-b358-e227ed213b5b"/>
+				<imageExpression><![CDATA[$P{ttdPihak2}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="424" y="52" width="116" height="14" uuid="ab011a80-dbf5-49e0-a5d5-1300eb08b2c6"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Pihak II]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="14" y="116" width="113" height="15" uuid="7b102409-1097-459a-9d4c-20bbad25cc1a"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{pihak1} == null ? "" : $P{pihak1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="228" y="82" width="113" height="15" uuid="91d9e9ef-12c3-4e03-aadb-31328dd1ad75"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{sipMenyatakan} == null ? "" : $P{sipMenyatakan}]]></textFieldExpression>
+			</textField>
+			<image onErrorType="Blank">
+				<reportElement x="239" y="16" width="94" height="50" uuid="fb778594-2601-4fd3-a0e2-bfc1aeda4827"/>
+				<imageExpression><![CDATA[$P{ttdYangMenyatakan}]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="228" y="2" width="115" height="14" uuid="cb8c306e-22fa-49e0-9c08-580559a00bed"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[TTD yang menyatakan]]></text>
+			</staticText>
+			<line>
+				<reportElement x="243" y="81" width="87" height="1" uuid="32eec6e6-860f-4324-a217-32959e8e1cb0"/>
+			</line>
+			<textField>
+				<reportElement x="228" y="66" width="113" height="15" uuid="ad49efc1-ec77-4358-9208-e8a90689fa78"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{namaMenyatakan} == null ? "" : $P{namaMenyatakan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</lastPageFooter>
+</jasperReport>

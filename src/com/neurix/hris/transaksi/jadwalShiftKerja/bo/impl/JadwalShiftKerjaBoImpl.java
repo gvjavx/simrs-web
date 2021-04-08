@@ -416,7 +416,7 @@ public class JadwalShiftKerjaBoImpl implements JadwalShiftKerjaBo {
 
                 if (jadwalShiftKerja.getJadwalShiftKerjaId().equals(jadwalKerjaId)){
                     jadwalShiftKerja.setJadwalShiftKerjaId("");
-                    jadwalShiftKerja.setTanggal(null);
+//                    jadwalShiftKerja.setTanggal(null);
                     jadwalShiftKerja.setStTanggal("");
                     jadwalShiftKerja.setBranchId("");
                     jadwalShiftKerja.setBranchName("");

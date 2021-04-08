@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Created by thinkpad on 19/03/2018.
@@ -67,6 +68,10 @@ public class ShiftAction extends BaseMasterAction {
             if(listOfResult != null){
                 for (Shift shift: listOfResult) {
                     if(kode.equalsIgnoreCase(shift.getShiftId()) && flag.equalsIgnoreCase(shift.getFlag())){
+                        String[] shiftname = shift.getShiftName().split(Pattern.quote(" | "));
+                        if(shiftname.length>1){
+                            shift.setShiftName(shiftname[0]);
+                        }
                         setShift(shift);
                         break;
                     }

@@ -359,7 +359,7 @@ public class PayrollAction extends BaseMasterAction{
         Payroll data = new Payroll();
         if (branchId!=null) {
             data.setBranchId(branchId);
-            if (("KP").equalsIgnoreCase(branchId)){
+            if ((CommonConstant.BRANCH_KP).equalsIgnoreCase(branchId)){
                 data.setKantorPusat(true);
             }
         }else{
@@ -10855,7 +10855,7 @@ public class PayrollAction extends BaseMasterAction{
         Payroll data = new Payroll();
         if (branchId!=null) {
             data.setBranchId(branchId);
-            if (("KP").equalsIgnoreCase(branchId)){
+            if ((CommonConstant.BRANCH_KP).equalsIgnoreCase(branchId)){
                 data.setKantorPusat(true);
             }
         }else{

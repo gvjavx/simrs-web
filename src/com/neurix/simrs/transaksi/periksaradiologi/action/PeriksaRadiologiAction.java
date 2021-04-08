@@ -206,6 +206,9 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 if (periksalb.getIdPeriksaLab() != null) {
                     periksaLab.setKategoriLabName(periksalb.getKategoriLabName());
                     periksaLab.setIdLab(periksalb.getIdLab());
+                    periksaLab.setLabName(periksalb.getLabName());
+                    periksaLab.setIsLuar(periksalb.getIsLuar());
+                    periksaLab.setNamaLabLuar(periksalb.getNamaLabLuar());
                 }
 
                 setPeriksaLab(periksaLab);
@@ -268,6 +271,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             logger.error("[PeriksaRadiologiAction.search] Error when searching periksa radilogi by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
         }
+
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
         session.setAttribute("listOfResult", listPeriksaLabList);
@@ -469,7 +473,14 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             }
 
             if (periksalb.getIdPeriksaLab() != null) {
-                reportParams.put("title", "Hasil Periksa Radiologi " + periksalb.getLabName());
+                String namaLab = "";
+                if("Y".equalsIgnoreCase(periksalb.getIsLuar())){
+                    namaLab = periksalb.getNamaLabLuar();
+                }else{
+                    namaLab = periksalb.getLabName();
+                }
+                reportParams.put("title", "Hasil Pemeriksaan Radiologi");
+                reportParams.put("jenisPemeriksaan", namaLab);
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -483,6 +494,8 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             if(checkup.getTglLahir() != null){
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
                 reportParams.put("tglLahir", checkup.getTempatLahir() + ", " + formatDate);
+                reportParams.put("tgllahir", formatDate);
+                reportParams.put("divisi", "Radiologi");
             }
             if(periksalb.getCreatedDate() != null){
                 String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(periksalb.getCreatedDate());
@@ -502,10 +515,14 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             reportParams.put("kecamatan", checkup.getNamaKecamatan());
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
-            reportParams.put("petugas", periksalb.getNamaPetugas());
-            reportParams.put("dokter", periksalb.getNamaDokter());
-            reportParams.put("ttdDokter", periksalb.getTtdDokter());
+            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
+            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
+            reportParams.put("idPetugas", periksalb.getIdPetugas());
+            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
+            reportParams.put("idValidator", periksalb.getIdValidator());
+            reportParams.put("namaValidator", periksalb.getNamaValidator());
             reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
+            reportParams.put("ttdValidator", periksalb.getTtdValidator());
             reportParams.put("umur", calculateAge(checkup.getTglLahir(), false));
 
             try {

@@ -9,7 +9,7 @@ import com.neurix.common.model.BaseModel;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class positionBagian extends BaseModel {
+public class PositionBagian extends BaseModel {
     private String bagianId;
     private String bagianName;
     private String flag;

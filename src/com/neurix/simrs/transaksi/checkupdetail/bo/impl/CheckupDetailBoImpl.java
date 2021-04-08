@@ -5,6 +5,8 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.dao.DokterDao;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
+import com.neurix.simrs.master.pasien.dao.PasienDao;
+import com.neurix.simrs.master.pasien.model.ImSimrsPasienEntity;
 import com.neurix.simrs.master.pelayanan.dao.PelayananDao;
 import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
@@ -92,6 +94,7 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     private PaketPasienDao paketPasienDao;
     private TempatTidurDao tempatTidurDao;
     private PelayananDao pelayananDao;
+    private PasienDao pasienDao;
 
     @Override
     public List<HeaderDetailCheckup> getByCriteria(HeaderDetailCheckup bean) throws GeneralBOException {
@@ -670,6 +673,26 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                     }
                 }
             }
+
+            //sodiq, update flag meninggal, minggu malem 23.35 2021,03,28
+            if("Y".equalsIgnoreCase(bean.getIsMeninggal())){
+                ItSimrsHeaderChekupEntity chekupEntity = headerCheckupDao.getById("noCheckup", entity.getNoCheckup());
+                if(chekupEntity != null){
+                    ImSimrsPasienEntity pasienEntity = pasienDao.getById("idPasien", chekupEntity.getIdPasien());
+                    if(pasienEntity != null){
+                        pasienEntity.setLastUpdate(bean.getLastUpdate());
+                        pasienEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                        pasienEntity.setAction("U");
+                        pasienEntity.setFlagMeninggal("Y");
+                        pasienEntity.setTanggalMeninggal(bean.getLastUpdate());
+                        try {
+                            pasienDao.updateAndSave(pasienEntity);
+                        }catch (HibernateException e){
+                            logger.error(e.getMessage());
+                        }
+                    }
+                }
+            }
         }
 
         RawatInap rawatInap = new RawatInap();
@@ -766,7 +789,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setIdDetailCheckup("DCM" + id);
         detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
         detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
-        detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         detailCheckupEntity.setFlag("Y");
         detailCheckupEntity.setAction("C");
         detailCheckupEntity.setCreatedDate(bean.getCreatedDate());
@@ -807,30 +829,37 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         }
 
         if("pindah_poli".equalsIgnoreCase(bean.getTypeTransaction())){
-            if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-                String noAntrian = "";
-                HeaderCheckup lastAntrian = new HeaderCheckup();
-                String idDokter = null;
-                if(bean.getDokterTeamList().size() > 0){
-                    idDokter = bean.getDokterTeamList().get(0).getIdDokter();
-                }
-                try {
-                    lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
-                }catch (HibernateException e){
-                    logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
-                    throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
-                }
-                if(lastAntrian.getStNoAntrian() != null){
-                    int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
-                    noAntrian = String.valueOf(jumlah);
-                }else{
-                    noAntrian = "1";
-                }
+            if("igd".equalsIgnoreCase(bean.getTipePelayanan())){
+                detailCheckupEntity.setStatusPeriksa("1");
+            }else {
+                if(!"paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    String noAntrian = "";
+                    HeaderCheckup lastAntrian = new HeaderCheckup();
+                    String idDokter = null;
+                    if(bean.getDokterTeamList().size() > 0){
+                        idDokter = bean.getDokterTeamList().get(0).getIdDokter();
+                    }
+                    try {
+                        lastAntrian = headerCheckupDao.lastAntrian(bean.getBranchId(), bean.getIdPelayanan(), idDokter);
+                    }catch (HibernateException e){
+                        logger.error("[CheckupBoImpl.saveAdd] Error When search no antrian" + e.getMessage());
+                        throw new GeneralBOException("[CheckupBoImpl.saveAdd] Error When search no antrian");
+                    }
+                    if(lastAntrian.getStNoAntrian() != null){
+                        int jumlah = Integer.valueOf(lastAntrian.getStNoAntrian()) + 1;
+                        noAntrian = String.valueOf(jumlah);
+                    }else{
+                        noAntrian = "1";
+                    }
 
-                if(!"".equalsIgnoreCase(noAntrian)){
-                    detailCheckupEntity.setNoAntrian(noAntrian);
+                    if(!"".equalsIgnoreCase(noAntrian)){
+                        detailCheckupEntity.setNoAntrian(noAntrian);
+                    }
                 }
+                detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
             }
+        }else{
+            detailCheckupEntity.setStatusPeriksa(bean.getStatusPeriksa());
         }
 
         try {
@@ -1743,5 +1772,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
     @Override
     public void setPelayananDao(PelayananDao pelayananDao) {
         this.pelayananDao = pelayananDao;
+    }
+
+    public void setPasienDao(PasienDao pasienDao) {
+        this.pasienDao = pasienDao;
     }
 }

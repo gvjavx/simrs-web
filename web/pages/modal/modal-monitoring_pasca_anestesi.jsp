@@ -18,14 +18,22 @@
                         <h4><i class="icon fa fa-warning"></i> Warning!</h4>
                         <p id="msg_monitoring_pasca_anestesi"></p>
                     </div>
-                    <button type="button" onclick="showModalOperasi('data_pasca_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Data Pasca Anestesi
-                    </button>
                     <button type="button" onclick="showModalOperasi('mon_pasca_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Monitoring Pasca Anestesi
+                    </button>
+                    <button type="button" onclick="showModalOperasi('data_pasca_anestesi')" class="btn btn-success"><i class="fa fa-plus"></i> Data Pasca Anestesi
                     </button>
                 </div>
                 <div class="box-body">
                     <table class="table" id="tabel_op_monitoring_pasca_anestesi">
                         <tbody>
+                        <tr id="row_op_mon_pasca_anestesi">
+                            <td>Monitoring Pasca Anestesi</td>
+                            <td width="20%" align="center">
+                                <img id="btn_op_mon_pasca_anestesi" class="hvr-grow"
+                                     onclick="detailMonAnestesi('mon_pasca_anestesi')"
+                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
+                            </td>
+                        </tr>
                         <tr id="row_op_data_pasca_anestesi">
                             <td>Data Anestesi</td>
                             <td width="20%" align="center">
@@ -33,14 +41,6 @@
                                      onclick="detailOperasi('data_pasca_anestesi')"
                                      src="<%= request.getContextPath() %>/pages/images/icons8-plus-25.png">
                                 <img id="delete_data_pasca_anestesi" class="hvr-grow btn-hide" onclick="conOP('data_pasca_anestesi', 'monitoring_pasca_anestesi')" src="<%= request.getContextPath() %>/pages/images/cancel-flat-new.png">
-                            </td>
-                        </tr>
-                        <tr id="row_op_mon_pasca_anestesi">
-                            <td>Monitoring Pasca Anestesi</td>
-                            <td width="20%" align="center">
-                                <img id="btn_op_mon_pasca_anestesi" class="hvr-grow"
-                                     onclick="detailMonAnestesi('mon_pasca_anestesi')"
-                                     src="<%= request.getContextPath() %>/pages/images/icons8-add-list-25.png">
                             </td>
                         </tr>
                         </tbody>
@@ -211,15 +211,15 @@
                     <div class="row jarak">
                         <div class="col-md-3">
                             <span>Tensi</span> <small><b>(mmHg)</b></small>
-                            <input class="form-control tensi-pasien" id="in9">
+                            <input class="form-control tensi_mon" id="in9">
                         </div>
                         <div class="col-md-3">
                             <span>Nadi</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control nadi-pasien" id="in10" type="number">
+                            <input class="form-control nadi_mon" id="in10" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>RR</span> <small><b>(x/menit)</b></small>
-                            <input class="form-control rr-pasien" id="in11" type="number">
+                            <input class="form-control rr_mon" id="in11" type="number">
                         </div>
                         <div class="col-md-3">
                             <span>Suhu</span> <small><b>(C)</b></small>

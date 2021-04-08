@@ -12,6 +12,10 @@
           p:branchDao-ref="branchDao"
           p:positionDao-ref="positionDao"
           p:dokterKsoTindakanDao-ref="dokterKsoTindakanDao"
+          p:dokterPelayananDao-ref="dokterPelayananDao"
+          p:pelayananDao-ref="pelayananDao"
+          p:tindakanDao-ref="tindakanDao"
+          p:personilPositionDao-ref="personilPositionDao"
     />
 
     <!--<bean id="pelayananController" class="com.neurix.simrs.mobileapi.PelayananController"-->
@@ -50,6 +54,15 @@
     <bean id="positionDao" class="com.neurix.authorization.position.dao.PositionDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="dokterKsoTindakanDao" class="com.neurix.hris.master.dokterKsoTindakan.dao.DokterKsoTindakanDao"
+          p:sessionFactory-ref="sessionFactory" />
+
+    <bean id="dokterPelayananDao" class="com.neurix.simrs.master.dokter.dao.DokterPelayananDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="pelayananDao" class="com.neurix.simrs.master.pelayanan.dao.PelayananDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="tindakanDao" class="com.neurix.simrs.master.tindakan.dao.TindakanDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="personilPositionDao" class="com.neurix.hris.transaksi.personilPosition.dao.PersonilPositionDao"
           p:sessionFactory-ref="sessionFactory" />
 
 </beans>

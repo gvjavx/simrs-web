@@ -458,7 +458,6 @@ function showGrafVitalSign(idDetail){
     var suhu = [], nadi = [], nafas = [], label = [];
     dwr.engine.setAsync(true);
     RawatInapAction.getListGraf(idDetailCheckup, "", function(response){
-        console.log(response)
         $.each(response, function(i, item){
             suhu.push([i,item.suhu]);
             nadi.push([i,item.nadi]);
@@ -518,15 +517,12 @@ function saveVitalSign(noCheckup, idDetail){
     });
 
     var jsonstr = JSON.stringify(jsonrq);
-    console.log(jsonstr);
     dwr.engine.setAsync(true);
     RawatInapAction.saveMonVitalSign(noCheckup, idDetail, jsonstr, function(response){
         if (response.status == "success") {
             alert("success");
             $("#modal-add-vital-sign").modal("hide");
-
             RawatInapAction.getListMonVitalSign("", idDetail, "", function(response){
-                console.log(response);
                 var str = "";
                 $.each(response, function(i, item) {
                     str += "<tr>"+
@@ -552,33 +548,8 @@ function saveVitalSign(noCheckup, idDetail){
 }
 
 function showModalCairan(idDetail){
-
-    $("#modal-cairan").modal("show");
-
-    dwr.engine.setAsync(true);
-    RawatInapAction.getListMonCairan("", idDetail, "", function(response){
-        // console.log(response);
-        var str = "";
-        $.each(response, function(i, item) {
-            str += "<tr>"+
-                "<td>"+formateDate(item.stDate)+"</td>"+
-                "<td>"+item.macamCairan+"</td>"+
-                "<td>"+item.melalui+"</td>"+
-                "<td>"+item.jumlah+"</td>"+
-                "<td>"+item.jamMulai+"</td>"+
-                "<td>"+item.jamSelesai+"</td>"+
-                "<td>"+item.cekTambahanObat+"</td>"+
-                "<td>"+item.sisa+"</td>"+
-                "<td>"+item.jamUkurBuang+"</td>"+
-                "<td>"+item.dari+"</td>"+
-                "<td>"+item.balanceCairan+"</td>"+
-                "<td>"+item.keterangan+"</td>"+
-                "<td>"+item.createdWho+"</td>"+
-                "</tr>";
-        });
-
-        $("#body-list-cairan").html(str);
-    });
+    $("#modal-cairan").modal({show: true, backdrop: 'static'});
+    listCairan(idDetail);
 }
 
 function addObCairan(){
@@ -600,114 +571,93 @@ function saveObCairan(noCheckup, idDetail){
         'balance': $("#mcr_balance").val(),
         'ket': $("#mcr_ket").val(),
     });
-
     var jsonstr = JSON.stringify(jsonrq);
+    $('#save_add_cairan').hide();
+    $('#load_add_cairan').show();
     dwr.engine.setAsync(true);
     RawatInapAction.saveMonCairan(noCheckup, idDetail, jsonstr, function(response){
         if (response.status == "success") {
-            alert("success");
+            dwr.engine.setAsync(false);
             $("#modal-add-cairan").modal("hide");
-
-            RawatInapAction.getListMonCairan("", idDetail, "", function(response){
-                // console.log(response);
-                var str = "";
-                $.each(response, function(i, item) {
-                    str += "<tr>"+
-                        "<td>"+formateDate(item.stDate)+"</td>"+
-                        "<td>"+item.macamCairan+"</td>"+
-                        "<td>"+item.melalui+"</td>"+
-                        "<td>"+item.jumlah+"</td>"+
-                        "<td>"+item.jamMulai+"</td>"+
-                        "<td>"+item.jamSelesai+"</td>"+
-                        "<td>"+item.cekTambahanObat+"</td>"+
-                        "<td>"+item.sisa+"</td>"+
-                        "<td>"+item.jamUkurBuang+"</td>"+
-                        "<td>"+item.dari+"</td>"+
-                        "<td>"+item.balanceCairan+"</td>"+
-                        "<td>"+item.keterangan+"</td>"+
-                        "<td>"+item.createdWho+"</td>"+
-                        "</tr>";
-                });
-
-                $("#body-list-cairan").html("");
-                $("#body-list-cairan").html(str);
-            });
+            $('#success_cairan').show().fadeOut(5000);
+            $('#msg_suc_cairan').text("Data berhasil disimpan...!");
+            $('#save_add_cairan').show();
+            $('#load_add_cairan').hide();
+            listCairan(idDetail);
         } else {
-            alert(response.msg);
+            $('#save_add_cairan').show();
+            $('#load_add_cairan').hide();
+            $('#warning_add_cairan').show().fadeOut(5000);
+            $('#msg_add_cairan').text(response.msg);
         }
     });
+}
+
+function listCairan(idDetail){
+    $("#body-list-cairan").html("");
+    RawatInapAction.getListMonCairan("", idDetail, "", function(response){
+        var str = "";
+        $.each(response, function(i, item) {
+            str += "<tr>"+
+                "<td>"+formateDate(item.stDate)+"</td>"+
+                "<td>"+cekNullAble(item.macamCairan)+"</td>"+
+                "<td>"+cekNullAble(item.melalui)+"</td>"+
+                "<td>"+cekNullAble(item.jumlah)+"</td>"+
+                "<td>"+cekNullAble(item.jamMulai)+"</td>"+
+                "<td>"+cekNullAble(item.jamSelesai)+"</td>"+
+                "<td>"+cekNullAble(item.cekTambahanObat)+"</td>"+
+                "<td>"+cekNullAble(item.sisa)+"</td>"+
+                "<td>"+cekNullAble(item.jamUkurBuang)+"</td>"+
+                "<td>"+cekNullAble(item.dari)+"</td>"+
+                "<td>"+cekNullAble(item.balanceCairan)+"</td>"+
+                "<td>"+cekNullAble(item.keterangan)+"</td>"+
+                "<td>"+cekNullAble(item.createdWho)+"</td>"+
+                "<td>"+'<i onclick="conDelCairan(\''+item.id+'\', \''+idDetail+'\')" class="fa fa-trash" style="color: red; cursor: pointer" class="hvr-grow"></i>'+"</td>"+
+                "</tr>";
+        });
+        $("#body-list-cairan").html(str);
+    });
+}
+
+function conDelCairan(id, idDetail){
+    $('#modal-confirm-rm').modal('show');
+    $('#tanya').text("Anda yakin untuk menghapus data ini?");
+    $('#save_con_rm').attr('onclick', 'delCairan(\''+id+'\', \''+idDetail+'\')');
+}
+
+function delCairan(id, idDetail){
+    $('#modal-confirm-rm').modal('hide');
+    dwr.engine.setAsync(true);
+    RawatInapAction.deleteMon(id, "cairan", function (res) {
+        dwr.engine.setAsync(false);
+        if(res.status == "success"){
+            $('#success_cairan').show().fadeOut(5000);
+            $('#msg_suc_cairan').text("Data berhasil dihapus...!");
+        }else{
+            $('#warning_cairan').show().fadeOut(5000);
+            $('#msg_war_cairan').text(res.msg);
+        }
+        listCairan(idDetail);
+    });
+}
+
+function cekNullAble(item){
+    var res = "";
+    if(item != null && item != ''){
+        res = item;
+    }
+    return res;
 }
 
 function showModalPemberianObat(idDetail, kategori){
-
-    // alert(kategori);
-
     $("#modal-pemberian").modal("show");
     $("#kat_pemberian").val(kategori);
     $("#label_kat_pemberian").html(kategori);
-    dwr.engine.setAsync(true);
-    RawatInapAction.getListMonPemberianObat("", idDetail, kategori, "",  function(response){
-        // console.log(response);
-        var strhead = "";
-        var str = "";
-        if (kategori == "parenteral") {
-
-            $.each(response, function(i, item){
-                str += "<tr>"+
-                    "<td>"+item.namaObat+"</td>"+
-                    "<td>"+item.caraPemberian+"</td>"+
-                    "<td>"+item.dosis+"</td>"+
-                    "<td>"+item.skinTes+"</td>"+
-                    "<td>"+item.waktu+"</td>"+
-                    "<td>"+item.keterangan+"</td>"+
-                    "<td>"+item.createdWho+"</td>"+
-                    "<td>"+formateDate(item.stDate)+"</td>"+
-                    "</tr>";
-            });
-
-            strhead = "<tr>"+
-                "<td>Nama Obat</td>"+
-                "<td>Cara Pemberian</td>"+
-                "<td>Dosis</td>"+
-                "<td>Skin Tes</td>"+
-                "<td>Waktu</td>"+
-                "<td>Keterangan</td>"+
-                "<td>Created Who</td>"+
-                "<td>Created Date</td>"+
-                "</tr>";
-        } else {
-
-            $.each(response, function(i, item) {
-                str += "<tr>"+
-                    "<td>"+item.namaObat+"</td>"+
-                    "<td>"+item.dosis+"</td>"+
-                    "<td>"+item.waktu+"</td>"+
-                    "<td>"+item.keterangan+"</td>"+
-                    "<td>"+item.createdWho+"</td>"+
-                    "<td>"+formateDate(item.stDate)+"</td>"+
-                    "</tr>";
-            });
-
-            strhead = "<tr>"+
-                "<td>Nama Obat</td>"+
-                "<td>Dosis</td>"+
-                "<td>Waktu</td>"+
-                "<td>Keterangan</td>"+
-                "<td>Created Who</td>"+
-                "<td>Created Date</td>"+
-                "</tr>";;
-        }
-
-        $("#thead_pemberian").html(strhead);
-        $("#body-list-pemberian").html("");
-        $("#body-list-pemberian").html(str);
-    });
+    listPemberian(idDetail, kategori);
 }
-
 
 function addPemberianObat(){
     var kat = $("#kat_pemberian").val();
-
     var str="";
     dwr.engine.setAsync(true);
     if (kat == "parenteral") {
@@ -731,9 +681,9 @@ function addPemberianObat(){
 
 function savePemberianObat(noCheckup, idDetail){
     var kat = $("#kat_pemberian").val();
-
     var jsonrq = [];
     var ispar = false;
+    var cekObat = false;
     if (kat == "parenteral") {
         ispar = true;
         jsonrq.push({
@@ -745,6 +695,9 @@ function savePemberianObat(noCheckup, idDetail){
             'ket': $("#par_keterangan").val(),
             'kat': kat
         });
+        if($("#select_obat_par").val() != ''){
+            cekObat = true;
+        }
     } else {
         jsonrq.push({
             'name': $("#select_obat_nonpar").val(),
@@ -755,52 +708,136 @@ function savePemberianObat(noCheckup, idDetail){
             'ket': $("#nonpar_keterangan").val(),
             'kat': kat
         });
-    }
-    var jsonstr = JSON.stringify(jsonrq);
-    dwr.engine.setAsync(true);
-    RawatInapAction.saveMonPemberianObat(noCheckup, idDetail, jsonstr, function(response){
-        if (response.status == "success") {
-            alert(response.status);
-            dwr.engine.setAsync(true);
-            RawatInapAction.getListMonPemberianObat("", idDetail, kat, "",  function(response){
-                var strhead = "";
-                var str = "";
-                if (ispar) {
-                    $("#modal-add-pemberian-parenteral").modal("hide");
-                    $.each(response, function(i, item){
-                        str += "<tr>"+
-                            "<td>"+item.namaObat+"</td>"+
-                            "<td>"+item.caraPemberian+"</td>"+
-                            "<td>"+item.dosis+"</td>"+
-                            "<td>"+item.skinTes+"</td>"+
-                            "<td>"+item.waktu+"</td>"+
-                            "<td>"+item.keterangan+"</td>"+
-                            "<td>"+item.createdWho+"</td>"+
-                            "<td>"+formateDate(item.stDate)+"</td>"+
-                            "</tr>";
-                    });
-                } else {
-                    $("#modal-add-pemberian-non-parenteral").modal("hide");
-                    $.each(response, function(i, item) {
-                        str += "<tr>"+
-                            "<td>"+item.namaObat+"</td>"+
-                            "<td>"+item.dosis+"</td>"+
-                            "<td>"+item.waktu+"</td>"+
-                            "<td>"+item.keterangan+"</td>"+
-                            "<td>"+item.createdWho+"</td>"+
-                            "<td>"+formateDate(item.stDate)+"</td>"+
-                            "</tr>";
-                    });
-                }
-                $("#body-list-pemberian").html("");
-                $("#body-list-pemberian").html(str);
-            });
-        } else {
-            alert(response.msg);
+        if($("#select_obat_nonpar").val() != ''){
+            cekObat = true;
         }
-    });
-};
+    }
+    if(cekObat){
+        var jsonstr = JSON.stringify(jsonrq);
+        if(kat == "parenteral"){
+            $('#save_parenteral').hide();
+            $('#load_parenteral').show();
+        }else{
+            $('#save_non-parenteral').hide();
+            $('#load_non-parenteral').show();
+        }
+        dwr.engine.setAsync(true);
+        RawatInapAction.saveMonPemberianObat(noCheckup, idDetail, jsonstr, function(response){
+            if (response.status == "success") {
+                dwr.engine.setAsync(false);
+                if(kat == "parenteral"){
+                    $('#save_parenteral').show();
+                    $('#load_parenteral').hide();
+                    $("#modal-add-pemberian-parenteral").modal("hide");
+                }else{
+                    $('#save_non-parenteral').show();
+                    $('#load_non-parenteral').hide();
+                    $("#modal-add-pemberian-non-parenteral").modal("hide");
+                }
+                $('#success_pemberian').show().fadeOut(5000);
+                $('#msg_suc_pemberian').text("Data berhasil disimpan...!");
+                listPemberian(idDetail, kat);
+            } else {
+                if(kat == "parenteral"){
+                    $('#save_parenteral').show();
+                    $('#load_parenteral').hide();
+                    $('#warning_parenteral').show().fadeOut(5000);
+                    $('#msg_parenteral').text(response.msg);
+                }else{
+                    $('#save_non-parenteral').show();
+                    $('#load_non-parenteral').hide();
+                    $('#warning_non-parenteral').show().fadeOut(5000);
+                    $('#msg_non-parenteral').text(response.msg);
+                }
+            }
+        });
+    }else{
+        if(kat == "parenteral"){
+            $('#save_parenteral').show();
+            $('#load_parenteral').hide();
+            $('#warning_parenteral').show().fadeOut(5000);
+            $('#msg_parenteral').text("Silahkan pilih nama obat, jika obat belum tersedia, maka lakukan order resep dahulu");
+        }else{
+            $('#save_non-parenteral').show();
+            $('#load_non-parenteral').hide();
+            $('#warning_non-parenteral').show().fadeOut(5000);
+            $('#msg_non-parenteral').text("Silahkan pilih nama obat, jika obat belum tersedia, maka lakukan order resep dahulu");
+        }
+    }
+}
 
+function listPemberian(idDetail, kat){
+    $("#thead_pemberian").html('');
+    $("#body-list-pemberian").html('');
+    RawatInapAction.getListMonPemberianObat("", idDetail, kat, "",  function(response){
+        var strhead = "";
+        var str = "";
+        if (kat == "parenteral") {
+            $.each(response, function(i, item){
+                str += "<tr>"+
+                    "<td>"+cekNullAble(item.namaObat)+"</td>"+
+                    "<td>"+cekNullAble(item.caraPemberian)+"</td>"+
+                    "<td>"+cekNullAble(item.dosis)+"</td>"+
+                    "<td>"+cekNullAble(item.skinTes)+"</td>"+
+                    "<td>"+cekNullAble(item.waktu)+"</td>"+
+                    "<td>"+cekNullAble(item.keterangan)+"</td>"+
+                    "<td>"+cekNullAble(item.createdWho)+"</td>"+
+                    "<td>"+formateDate(item.stDate)+"</td>"+
+                    "<td>"+'<i onclick="delPemberian(\''+item.id+'\', \''+idDetail+'\', \''+kat+'\')" class="fa fa-trash" style="color: red; cursor: pointer" class="hvr-grow"></i>'+"</td>"+
+                    "</tr>";
+            });
+            strhead = "<tr>"+
+                "<td>Nama Obat</td>"+
+                "<td>Cara Pemberian</td>"+
+                "<td>Dosis</td>"+
+                "<td>Skin Tes</td>"+
+                "<td>Waktu</td>"+
+                "<td>Keterangan</td>"+
+                "<td>Created Who</td>"+
+                "<td>Created Date</td>"+
+                "<td>Action</td>"+
+                "</tr>";
+        } else {
+            $.each(response, function(i, item) {
+                str += "<tr>"+
+                    "<td>"+cekNullAble(item.namaObat)+"</td>"+
+                    "<td>"+cekNullAble(item.dosis)+"</td>"+
+                    "<td>"+cekNullAble(item.waktu)+"</td>"+
+                    "<td>"+cekNullAble(item.keterangan)+"</td>"+
+                    "<td>"+cekNullAble(item.createdWho)+"</td>"+
+                    "<td>"+formateDate(item.stDate)+"</td>"+
+                    "<td>"+'<i onclick="delPemberian(\''+item.id+'\', \''+idDetail+'\', \''+kat+'\')" class="fa fa-trash" style="color: red; cursor: pointer" class="hvr-grow"></i>'+"</td>"+
+                    "</tr>";
+            });
+            strhead = "<tr>"+
+                "<td>Nama Obat</td>"+
+                "<td>Dosis</td>"+
+                "<td>Waktu</td>"+
+                "<td>Keterangan</td>"+
+                "<td>Created Who</td>"+
+                "<td>Created Date</td>"+
+                "<td>Action</td>"+
+                "</tr>";
+        }
+        $("#thead_pemberian").html(strhead);
+        $("#body-list-pemberian").html(str);
+    });
+}
+
+function delPemberian(id, idDetail, kat){
+    dwr.engine.setAsync(true);
+    RawatInapAction.deleteMon(id, "pemberian", function (res) {
+        dwr.engine.setAsync(false);
+        if(res.status == "success"){
+            $('#success_pemberian').show().fadeOut(5000);
+            $('#msg_suc_pemberian').text("Data berhasil dihapus...!");
+        }else{
+            $('#warning_pemberian').show().fadeOut(5000);
+            $('#msg_war_pemberian').text(res.msg);
+        }
+        listPemberian(idDetail, kat);
+    });
+}
 
 function showFormEdukasi(){
     $("#modal-edukasi").modal("show");
@@ -886,9 +923,6 @@ function addFormEdukasi(kategori){
                         }
                     }
 
-
-                    // console.log(skors);
-
                     var down_select = "</select>";
                     var downline = "<input type='hidden' id='id_rsk_"+i+"' value='"+item.idParameter+"'>"+
                         "<input type='hidden' id='name_rsk_"+i+"' value='"+item.namaParameter+"'>"+
@@ -969,7 +1003,6 @@ function saveFormEdukasi(kategori){
 
                     $("#modal-add-edukasi").modal("hide");
                 }
-                // console.log(response);
             });
 
         } else {

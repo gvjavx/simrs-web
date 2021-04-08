@@ -198,13 +198,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
-                                <td>Jenis Pasien</td>
+                                <td>Tanggal Masuk</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td>Tindak Lanjut</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -215,7 +216,12 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="jenisPeriksaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
+                                    <td align="center">
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksa"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
+                                    </td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagTppri == "Y"'>
@@ -226,8 +232,11 @@
                                         </s:if>
                                         <s:else>
                                             <img id="t_<s:property value="idDetailCheckup"/>"
-                                                 onclick="detail('<s:property value="noCheckup"/>','<s:property
-                                                         value="idDetailCheckup"/>','<s:property value="tindakLanjut"/>','<s:property value="keteranganSelesai"/>')" class="hvr-grow"
+                                                 onclick="detail('<s:property value="noCheckup"/>',
+                                                         '<s:property value="idDetailCheckup"/>',
+                                                         '<s:property value="idPasien"/>',
+                                                         '<s:property value="tindakLanjut"/>',
+                                                         '<s:property value="keteranganSelesai"/>')" class="hvr-grow"
                                                  src="<s:url value="/pages/images/icons8-test-passed-25-2.png"/>"
                                                  style="cursor: pointer;">
                                         </s:else>
@@ -892,6 +901,7 @@
     var diagnosa = "";
     var idPasien = "";
     var tglLahir = "";
+    var tanggalMasuk = "";
 
     function printGelangPasien(noCheckup) {
         window.open('printGelangPasien_rawatinap.action?id=' + noCheckup, '_blank');
@@ -901,12 +911,13 @@
         $('#' + id).val(formatRupiahAtas2(val));
     }
 
-    function detail(noCheckup, idDCP, tindakLanjut, keteranganSelesai) {
+    function detail(noCKP, idDCP, idPsn, tindakLanjut, keteranganSelesai) {
         idDetailCheckup = idDCP;
+        noCheckup = noCKP;
+        idPasien = idPsn;
         startSpinner('t_', idDCP);
         dwr.engine.setAsync(true);
-        CheckupAction.listDataPasien(idDCP,
-            {
+        CheckupAction.listDataPasien(idDCP, {
                 callback: function (res) {
                     if (res.idPasien != null) {
                         stopSpinner('t_', idDCP);
@@ -979,7 +990,7 @@
                         }
 
                         $('#no_rm').html(res.idPasien);
-                        $('#no_detail_checkup').html(noCheckup);
+                        $('#no_detail_checkup').html(noCKP);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);
                         $('#jenis_kelamin').html(jk);
@@ -1382,7 +1393,7 @@
                         li += '<li><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '"><i class="fa fa-file-o"></i>' + item.namaRm + '</a></li>'
                     } else {
                         if (item.keterangan == 'form') {
-                            li += '<li ' + tol + ' onmouseover="loadModalRM(\'' + item.jenis + '\')"><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.parameter + '\', \'' + item.idRekamMedisPasien + '\', \'Y\')' + '">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
+                            li += '<li ' + tol + '><a style="cursor: pointer" onclick="loadModalRM(\'' + item.jenis + '\', \''+item.function +'\', \''+item.parameter+'\', \''+item.idRekamMedisPasien+'\', \'Y\')">' + icons + item.namaRm + ' ' + labelTerisi + tolText + '</a></li>'
                         } else if (item.keterangan == "surat") {
                             li += '<li ' + tol + '><a style="cursor: pointer" onclick="' + item.function + '(\'' + item.jenis + '\', \'' + item.idRekamMedisPasien + '\', \'Y\',\'' + item.namaRm + '\')' + '">' + icons2 + item.namaRm + ' ' + labelPrint + tolText + '</a></li>'
                         }
@@ -1393,23 +1404,27 @@
         });
     }
 
-    function loadModalRM(jenis) {
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
         var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
-            context = contextPath + '/pages/modal/modal-' + jenis + '.jsp';
+            context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
         $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 
     function cekUangMuka(id) {
         var cek = $('#' + id).is(':checked');
         if (cek) {
-            $('#form-metode_pembayaran').show();
             $('#form-uang_muka').show();
+            $('#metode_bayar').val('tunai');
         } else {
-            $('#form-metode_pembayaran').hide();
             $('#form-uang_muka').hide();
+            $('#metode_bayar').val('');
         }
     }
 

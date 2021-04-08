@@ -865,6 +865,9 @@
 
     function confirmObat(idObatVal, idObat, namaObat, qtyReq, jenisSatuan, idTransaksi) {
 
+        var jenisObat = '<s:property value="permintaanResep.idJenisPeriksa"/>';
+        jenisObat = jenisObat.toLowerCase();
+
         $('#load_app').hide();
         $('#save_app').show();
         $('#body_approve').html('');
@@ -880,7 +883,7 @@
         var lembarPerBox = "";
         var bijiPerLembar = "";
         if (idObatVal != "") {
-            TransaksiObatAction.listObatPoliEntity(idObatVal, {
+            TransaksiObatAction.listObatPoliEntity(idObatVal, jenisObat, {
                 callback: function (response) {
                     if (response.length > 0 && idObat == idObatVal) {
 
@@ -902,14 +905,20 @@
                             const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
 
                             if (item.qtyBox != null) {
-                                qtyBox = item.qtyBox;
+                                qtyBox = item.qtyBox * item.lembarPerBox * item.bijiPerLembar;
                             }
                             if (item.qtyLembar != null) {
-                                qtyLembar = item.qtyLembar;
+                                qtyLembar = item.qtyLembar * item.bijiPerLembar;
                             }
                             if (item.qtyBiji != null) {
                                 qtyBiji = item.qtyBiji;
                             }
+
+//                            qtyBiji = qtyBiji + qtyLembar + qtyBox;
+                            console.log(qtyBiji + qtyLembar + qtyBox);
+                            console.log(qtyBiji);
+                            console.log(qtyLembar);
+                            console.log(qtyBox);
 
                             var warna = "";
                             var color = "";

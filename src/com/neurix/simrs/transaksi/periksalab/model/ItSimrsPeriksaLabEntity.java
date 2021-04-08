@@ -27,10 +27,91 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String urlImg;
     private String ttdPengirim;
     private String idKategoriLab;
-    private String ttdDokter;
     private String ttdPetugas;
     private String isPending;
     private String isReading;
+
+    private String idPetugas;
+    private String namaPetugas;
+    private String idValidator;
+    private String namaValidator;
+    private String ttdValidator;
+    private String isPeriksaLuar;
+    private String namaLabLuar;
+    private BigDecimal tarifLabLuar;
+    private String catatan;
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public BigDecimal getTarifLabLuar() {
+        return tarifLabLuar;
+    }
+
+    public void setTarifLabLuar(BigDecimal tarifLabLuar) {
+        this.tarifLabLuar = tarifLabLuar;
+    }
+
+    public String getNamaLabLuar() {
+        return namaLabLuar;
+    }
+
+    public void setNamaLabLuar(String namaLabLuar) {
+        this.namaLabLuar = namaLabLuar;
+    }
+
+    public String getIsPeriksaLuar() {
+        return isPeriksaLuar;
+    }
+
+    public void setIsPeriksaLuar(String isPeriksaLuar) {
+        this.isPeriksaLuar = isPeriksaLuar;
+    }
+
+    public String getTtdValidator() {
+        return ttdValidator;
+    }
+
+    public void setTtdValidator(String ttdValidator) {
+        this.ttdValidator = ttdValidator;
+    }
+
+    public String getIdPetugas() {
+        return idPetugas;
+    }
+
+    public void setIdPetugas(String idPetugas) {
+        this.idPetugas = idPetugas;
+    }
+
+    public String getNamaPetugas() {
+        return namaPetugas;
+    }
+
+    public void setNamaPetugas(String namaPetugas) {
+        this.namaPetugas = namaPetugas;
+    }
+
+    public String getIdValidator() {
+        return idValidator;
+    }
+
+    public void setIdValidator(String idValidator) {
+        this.idValidator = idValidator;
+    }
+
+    public String getNamaValidator() {
+        return namaValidator;
+    }
+
+    public void setNamaValidator(String namaValidator) {
+        this.namaValidator = namaValidator;
+    }
 
     public String getIsReading() {
         return isReading;
@@ -46,14 +127,6 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
 
     public void setIsPending(String isPending) {
         this.isPending = isPending;
-    }
-
-    public String getTtdDokter() {
-        return ttdDokter;
-    }
-
-    public void setTtdDokter(String ttdDokter) {
-        this.ttdDokter = ttdDokter;
     }
 
     public String getTtdPetugas() {

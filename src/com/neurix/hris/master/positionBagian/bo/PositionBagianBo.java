@@ -3,7 +3,7 @@ package com.neurix.hris.master.positionBagian.bo;
 import com.neurix.common.bo.BaseMasterBo;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.hris.master.department.model.Department;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 
 import java.util.List;
 
@@ -14,24 +14,25 @@ import java.util.List;
  * Time: 13:55
  * To change this template use File | Settings | File Templates.
  */
-public interface PositionBagianBo extends BaseMasterBo<positionBagian> {
-    public void saveDelete(positionBagian bean) throws GeneralBOException;
+public interface PositionBagianBo extends BaseMasterBo<PositionBagian> {
+    public void saveDelete(PositionBagian bean) throws GeneralBOException;
 
-    public List<positionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException;
+    public List<PositionBagian> getComboKelompokWithCriteria(String query) throws GeneralBOException;
 
-    List<positionBagian> getBagian(positionBagian bean);
+    List<PositionBagian> getBagian(PositionBagian bean);
 
-    positionBagian getBagianById(String id, String flag);
+    PositionBagian getBagianById(String id, String flag);
 
-    public List<positionBagian> searchPositionBagian(String divisiId) throws GeneralBOException;
+    public List<PositionBagian> searchPositionBagian(String divisiId) throws GeneralBOException;
 
-    public List<positionBagian> getDataDevisiId(positionBagian bean) throws GeneralBOException;
-
-    public List<Department> getHead(positionBagian positionBagian) throws GeneralBOException;
+    public List<PositionBagian> getDataDevisiId(PositionBagian bean) throws GeneralBOException;
 
     public String cekStatus(String bagianName);
 
     public String cekStatusEdit(String bagianName);
 
+    public List<Department> getHead(PositionBagian positionBagian) throws GeneralBOException;
+
+    public PositionBagian getPositionBagianById(String id) throws GeneralBOException;
 }
 

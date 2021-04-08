@@ -519,7 +519,7 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         return SUCCESS;
     }
 
-    public List<Obat> listObatEntity(String idObat) {
+    public List<Obat> listObatEntity(String idObat, String jenisObat) {
         logger.info("[PermintaanObatPoliAction.listObatEntity] START process >>>");
         List<Obat> obatList = new ArrayList<>();
 
@@ -527,6 +527,10 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         obat.setIdObat(idObat);
         obat.setBranchId(CommonUtil.userBranchLogin());
         obat.setFlag("Y");
+
+        if ("bpjs".equalsIgnoreCase(jenisObat) || "bpjs_rekanan".equalsIgnoreCase(jenisObat)){
+            obat.setFlagBpjs("Y");
+        }
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatBo obatBo = (ObatBo) ctx.getBean("obatBoProxy");
@@ -766,6 +770,26 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         }
 
         return "print_permintaan_obat";
+    }
+
+    public List<PermintaanObatPoli> getDetailPermintaanObat(String idApproval){
+        logger.info("[PermintaanObatPoliAction.getDetailPermintaanObat] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        try {
+            permintaanObatPolis = obatPoliBo.getListDetailPermintaanByIdApproval(idApproval);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanObatPoliAction.getDetailPermintaanObat] ERROR when get data detail list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.getDetailPermintaanObat] ERROR when get data detail list obat, " + e.getMessage());
+        }
+
+
+        logger.info("[PermintaanObatPoliAction.getDetailPermintaanObat] END <<<");
+        return permintaanObatPolis;
     }
 
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {

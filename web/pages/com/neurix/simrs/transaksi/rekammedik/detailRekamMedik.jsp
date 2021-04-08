@@ -152,7 +152,7 @@
                                     <s:hidden id="h_alamat_lengkap" name="detailCheckup.alamatLengkap"/>
                                     <s:hidden id="h_no_bpjs" name="detailCheckup.noBpjs"/>
                                     <s:hidden id="h_jenis_kelamin" name="detailCheckup.jenisKelamin"/>
-                                    <s:hidden id="h_tipe_pelayanan" name="detailCheckup.kategoriPelayanan"/>
+                                    <s:hidden id="h_tipe_pelayanan" name="detailCheckup.tipePelayanan"/>
                                     <s:hidden id="h_kategori_pelayanan" name="detailCheckup.kategoriPelayanan"/>
 
                                     <tr>
@@ -986,7 +986,7 @@
     var jenisKelamin = $('#h_jenis_kelamin').val();
     var noCheckup = $('#no_checkup').val();
     var tipePelayanan = $('#h_tipe_pelayanan').val();
-    var kategoriPelayanan = $('#h_kategori_pelayanan').val();
+    var kategoriPelayanan =$('#h_kategori_pelayanan').val();;
     var tempTensi = "";
     var tempSuhu = "";
     var tempNadi = "";
@@ -999,17 +999,20 @@
     var flagVaksin = "";
     var tanggalMasuk = new Date();
 
-    function loadModalRM(jenis) {
-        var context = "";
+    function loadModalRM(jenis, method, parameter, idRM, flag) {
+        var context = contextPath + '/pages/modal/modal-default.jsp';
         if (jenis != "") {
             context = contextPath + '/pages/modal/modal-'+jenis+'.jsp';
         }
-        $('#modal-temp').load(context, function (res) {
+        $('#modal-temp').load(context, function (res, status, xhr) {
+            if(status == "success"){
+                var func = new Function(method+'(\''+parameter+'\', \''+idRM+'\', \''+flag+'\')');
+                func();
+            }
         });
     }
 
     $(document).ready(function () {
-
         $('#tableRM').DataTable({
             "order": [[0, "desc"]],
             "pageLength": 5
@@ -1025,10 +1028,6 @@
             '<option value="100">100</option>';
 
         $('[name=tableRM_length]').html(option);
-        // if (idDetailCheckup != null && idDetailCheckup != '') {
-        //     $('[type=search]').val(idDetailCheckup).trigger('input');
-        //     $('#btn-vidio-rm').show();
-        // }
         $('.dropup').on('show.bs.dropdown', function(e){
             $(this).find('.dropdown-menu').first().stop(true, true).slideDown(350);
         });
@@ -1057,6 +1056,13 @@
             }
 
         });
+
+        $('.carousel').carousel({
+            interval: false,
+            ride: false,
+            pause: false
+        });
+
     });
 
     function printPernyataan(kode, idRm, flag, namaRm) {

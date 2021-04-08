@@ -159,7 +159,7 @@ public class AsesmenIcuAction {
         return list;
     }
 
-    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien) {
+    public CrudResponse saveDelete(String idDetailCheckup, String keterangan, String dataPasien, String date) {
         CrudResponse response = new CrudResponse();
         String userLogin = CommonUtil.userLogin();
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -172,6 +172,9 @@ public class AsesmenIcuAction {
                 asesmenIcu.setKeterangan(keterangan);
                 asesmenIcu.setLastUpdate(time);
                 asesmenIcu.setLastUpdateWho(userLogin);
+                if(date != null && !"".equalsIgnoreCase(date)){
+                    asesmenIcu.setCreatedDate(Timestamp.valueOf(date));
+                }
                 response = asesmenIcuBo.saveDelete(asesmenIcu);
                 if("success".equalsIgnoreCase(response.getStatus())){
                     try {

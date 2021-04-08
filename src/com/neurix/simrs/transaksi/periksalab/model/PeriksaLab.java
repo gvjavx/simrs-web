@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PeriksaLab extends BaseModel implements Serializable{
 
@@ -88,7 +90,127 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String statusBayar;
     private String diagnosa;
 
+    private String idPetugas;
+    private String idValidator;
+    private String namaValidator;
+    private String ttdValidator;
+    private String isLuar;
+    private String namaLabLuar;
+    private BigDecimal tarifLabLuar;
+
+    private String idPeriksaLabDetail;
+    private String hasil;
+    private String catatan;
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
+    }
+
+    public String getHasil() {
+        return hasil;
+    }
+
+    public void setHasil(String hasil) {
+        this.hasil = hasil;
+    }
+
+    public String getIdPeriksaLabDetail() {
+        return idPeriksaLabDetail;
+    }
+
+    public void setIdPeriksaLabDetail(String idPeriksaLabDetail) {
+        this.idPeriksaLabDetail = idPeriksaLabDetail;
+    }
+
+    public BigDecimal getTarifLabLuar() {
+        return tarifLabLuar;
+    }
+
+    public void setTarifLabLuar(BigDecimal tarifLabLuar) {
+        this.tarifLabLuar = tarifLabLuar;
+    }
+
+    public String getNamaLabLuar() {
+        return namaLabLuar;
+    }
+
+    public void setNamaLabLuar(String namaLabLuar) {
+        this.namaLabLuar = namaLabLuar;
+    }
+
+    public String getIsLuar() {
+        return isLuar;
+    }
+
+    public void setIsLuar(String isLuar) {
+        this.isLuar = isLuar;
+    }
+
+    private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
+    private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
+
+    public List<UploadHasilPemeriksaan> getUploadDalam() {
+        return uploadDalam;
+    }
+
+    public void setUploadDalam(List<UploadHasilPemeriksaan> uploadDalam) {
+        this.uploadDalam = uploadDalam;
+    }
+
+    public List<UploadHasilPemeriksaan> getUploadLuar() {
+        return uploadLuar;
+    }
+
+    public void setUploadLuar(List<UploadHasilPemeriksaan> uploadLuar) {
+        this.uploadLuar = uploadLuar;
+    }
+
+    public String getIdPetugas() {
+        return idPetugas;
+    }
+
+    public void setIdPetugas(String idPetugas) {
+        this.idPetugas = idPetugas;
+    }
+
+    public String getIdValidator() {
+        return idValidator;
+    }
+
+    public void setIdValidator(String idValidator) {
+        this.idValidator = idValidator;
+    }
+
+    public String getNamaValidator() {
+        return namaValidator;
+    }
+
+    public void setNamaValidator(String namaValidator) {
+        this.namaValidator = namaValidator;
+    }
+
+    public String getTtdValidator() {
+        return ttdValidator;
+    }
+
+    public void setTtdValidator(String ttdValidator) {
+        this.ttdValidator = ttdValidator;
+    }
+
     private String isRead;
+    private List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasil = new ArrayList<>();
+
+    public List<ItSimrsUploadHasilPemeriksaanEntity> getUploadHasil() {
+        return uploadHasil;
+    }
+
+    public void setUploadHasil(List<ItSimrsUploadHasilPemeriksaanEntity> uploadHasil) {
+        this.uploadHasil = uploadHasil;
+    }
 
     public String getIsRead() {
         return isRead;

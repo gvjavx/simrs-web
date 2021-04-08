@@ -306,7 +306,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setAgama(headerList.getAgama());
             headerCheckup.setProfesi(headerList.getProfesi());
             headerCheckup.setNoTelp(headerList.getNoTelp());
-//            headerCheckup.setIdJenisPeriksaPasien(headerList.getIdJenisPeriksaPasien());
             headerCheckup.setKeteranganKeluar(headerList.getKeteranganKeluar());
             headerCheckup.setTinggi(headerList.getTinggi());
             headerCheckup.setBerat(headerList.getBerat());
@@ -319,21 +318,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             logger.info("[CheckupBoImpl.getByCriteria] URL KTP : " + headerCheckup.getUrlKtp());
             headerCheckup.setBranchId(headerList.getBranchId());
             headerCheckup.setFlag(headerList.getFlag());
-            headerCheckup.setCreatedDate(headerList.getCreatedDate());
+            if(headerList.getCreatedDate() != null){
+                headerCheckup.setCreatedDate(headerList.getCreatedDate());
+                String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm").format(headerList.getCreatedDate());
+                headerCheckup.setFormatTglMasuk(formatDate);
+            }
             headerCheckup.setLastUpdate(headerList.getLastUpdate());
             headerCheckup.setCreatedWho(headerList.getCreatedWho());
             headerCheckup.setLastUpdateWho(headerList.getLastUpdateWho());
             headerCheckup.setNamaPenanggung(headerList.getNamaPenanggung());
             headerCheckup.setHubunganKeluarga(headerList.getHubunganKeluarga());
-//            headerCheckup.setRujuk(headerList.getRujuk());
             headerCheckup.setJenisKunjungan(headerList.getJenisKunjungan());
-//            headerCheckup.setDiagnosa(headerList.getKodeDiagnosa());
-//            headerCheckup.setJenisTransaksi(headerList.getJenisTransaksi());
-//            headerCheckup.setNoRujukan(headerList.getNoRujukan());
-//            headerCheckup.setNoPpkRujukan(headerList.getNoPpkRujukan());
-//            headerCheckup.setTglRujukan(headerList.getNoRujukan());
-//            headerCheckup.setKelasPasien(headerList.getKelasPasien());
-//            headerCheckup.setIdPelayananBpjs(headerList.getIdPelayananBpjs());
 
             HeaderDetailCheckup headerDetailCheckup = new HeaderDetailCheckup();
 
@@ -3325,6 +3320,48 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
         }catch (Exception e){
             throw new GeneralBOException("Errro"+e.getMessage());
         }
+    }
+
+    @Override
+    public String fisrtCheckup(String noCheckup) throws GeneralBOException {
+        String res = "";
+        try{
+            res = headerCheckupDao.firstCheckup(noCheckup);
+        }catch (Exception e){
+            logger.error(e.getMessage());
+        }
+        return res;
+    }
+
+    @Override
+    public void updateVitalSign(HeaderCheckup bean) throws GeneralBOException {
+        logger.info("[CheckupBoImpl.updateVitalSign] Start <<<<<<<");
+        if(bean.getNoCheckup() != null && !"".equalsIgnoreCase(bean.getNoCheckup())){
+            try {
+                ItSimrsHeaderChekupEntity entity = headerCheckupDao.getById("noCheckup", bean.getNoCheckup());
+                if(entity != null){
+                    entity.setLastUpdate(bean.getLastUpdate());
+                    entity.setLastUpdateWho(bean.getLastUpdateWho());
+                    entity.setAction("U");
+                    if(bean.getTensi() != null && !"".equalsIgnoreCase(bean.getTensi())){
+                        entity.setTensi(bean.getTensi());
+                    }
+                    if(bean.getNadi() != null && !"".equalsIgnoreCase(bean.getNadi())){
+                        entity.setNadi(bean.getNadi());
+                    }
+                    if(bean.getPernafasan() != null && !"".equalsIgnoreCase(bean.getPernafasan())){
+                        entity.setRr(bean.getPernafasan());
+                    }
+                    if(bean.getSuhu() != null && !"".equalsIgnoreCase(bean.getSuhu())){
+                        entity.setSuhu(bean.getSuhu());
+                    }
+                    headerCheckupDao.updateAndSave(entity);
+                }
+            }catch (Exception e){
+                logger.error("[CheckupBoImpl.updateVitalSign] Error, "+e.getMessage());
+            }
+        }
+        logger.info("[CheckupBoImpl.updateVitalSign] End <<<<<<<");
     }
 
     private CrudResponse saveRawatInap(RawatInap bean) {

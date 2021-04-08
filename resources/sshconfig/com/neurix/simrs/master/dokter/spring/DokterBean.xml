@@ -20,6 +20,7 @@
           p:positionDao-ref="positionDao"
           p:branchDao-ref="branchDao"
           p:dokterPelayananDao-ref="dokterPelayananDao"
+          p:biodataDao-ref="biodataDao"
     />
 
     <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
@@ -65,6 +66,9 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="dokterPelayananDao" class="com.neurix.simrs.master.dokter.dao.DokterPelayananDao"
           p:sessionFactory-ref="sessionFactory" />
+    <bean id="biodataDao" class="com.neurix.hris.master.biodata.dao.BiodataDao"
+          p:sessionFactory-ref="sessionFactory" />
+
 
 
 </beans>

@@ -35,6 +35,45 @@ public class ItTunjLainPegawaiEntity implements Serializable {
     private BigDecimal tunjPeralihanSankhus;
     private BigDecimal tunjPeralihanTunjangan;
 
+    //RAKA-22MAR2021
+    private BigDecimal tunjPemondokan;
+    private BigDecimal tunjSupervisi;
+    private BigDecimal tunjLokasi;
+    private BigDecimal tunjSiaga;
+    //RAKA-end
+
+
+    public BigDecimal getTunjPemondokan() {
+        return tunjPemondokan;
+    }
+
+    public void setTunjPemondokan(BigDecimal tunjPemondokan) {
+        this.tunjPemondokan = tunjPemondokan;
+    }
+
+    public BigDecimal getTunjSupervisi() {
+        return tunjSupervisi;
+    }
+
+    public void setTunjSupervisi(BigDecimal tunjSupervisi) {
+        this.tunjSupervisi = tunjSupervisi;
+    }
+
+    public BigDecimal getTunjLokasi() {
+        return tunjLokasi;
+    }
+
+    public void setTunjLokasi(BigDecimal tunjLokasi) {
+        this.tunjLokasi = tunjLokasi;
+    }
+
+    public BigDecimal getTunjSiaga() {
+        return tunjSiaga;
+    }
+
+    public void setTunjSiaga(BigDecimal tunjSiaga) {
+        this.tunjSiaga = tunjSiaga;
+    }
 
     public String getAction() {
         return action;

@@ -278,7 +278,13 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             branchId = "%";
         }
 
-        String SQL = "SELECT ps.nama, diag.keterangan_diagnosa, ck.last_update, ck.no_checkup FROM it_simrs_header_checkup ck\n" +
+        String SQL = "SELECT " +
+                "ps.nama, " +
+                "diag.keterangan_diagnosa, \n" +
+                "ck.last_update, \n" +
+                "ck.no_checkup, \n" +
+                "diag.id_diagnosa \n" +
+                "FROM it_simrs_header_checkup ck\n" +
                 "INNER JOIN im_simrs_pasien ps ON ps.id_pasien = ck.id_pasien\n" +
                 "INNER JOIN (SELECT * FROM it_simrs_header_detail_checkup WHERE status_periksa = '3') hdc ON hdc.no_checkup = ck.no_checkup\n" +
                 "INNER JOIN (\n" +
@@ -306,6 +312,7 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             alertPasien.setNamaPasien(obj[0] == null ? "" : obj[0].toString());
             alertPasien.setDiagnosa(obj[1] == null ? "" : obj[1].toString());
             alertPasien.setNoCheckup(obj[3] == null ? "" : obj[3].toString());
+            alertPasien.setIdDiagnosa(obj[4] == null ? "" : obj[4].toString());
 
             if (obj[2] != null) {
                 Timestamp lastUpdate = (Timestamp) obj[2];
@@ -2462,6 +2469,27 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             }
         }
         return response;
+    }
+
+    public String firstCheckup(String noCheckup){
+        String res = "";
+        String SQL = "SELECT\n" +
+                "a.no_checkup,\n" +
+                "b.id_detail_checkup,\n" +
+                "d.nama_pelayanan\n" +
+                "FROM it_simrs_header_checkup a\n" +
+                "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
+                "INNER JOIN im_simrs_pelayanan c ON b.id_pelayanan = c.id_pelayanan\n" +
+                "INNER JOIN im_simrs_header_pelayanan d ON c.id_header_pelayanan = d.id_header_pelayanan\n" +
+                "WHERE a.no_checkup = '"+noCheckup+"'\n" +
+                "AND d.tipe_pelayanan IN ('rawat_jalan', 'igd')\n" +
+                "ORDER BY b.created_date ASC LIMIT 1;";
+        List<Object[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if(result.size() > 0){
+            Object[] obj = result.get(0);
+            res = obj[2].toString();
+        }
+        return res;
     }
 
     public String getNextSeq() {

@@ -279,7 +279,6 @@ public class GroupMemberBoImpl implements GroupMemberBo {
                             for (ImBiodataEntity imBiodataEntity:imBiodataEntities){
                                 returnData.setNama(imBiodataEntity.getNamaPegawai());
                                 returnData.setGolonganName("Golongan "+imBiodataEntity.getGolongan().substring(1));
-                                returnData.setStatusGilingName(imBiodataEntity.getMasaGiling());
                             }
                         }
                     }

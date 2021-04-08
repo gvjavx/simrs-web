@@ -229,8 +229,8 @@
 
                 $.each(data, function(i,item){
                     data2.push({_id : item.strukturJabatanId, level : item.level,  nama : item.positionName, parent : item.parentId, branchId : item.branchId,
-                        branchName : item.branchName, status : 'Y', jabatan : item.positionName, nip  : item.nip, namaPegawai : item.name,
-                        positionId : item.positionId, jenisPegawai : item.jenisPegawai, flagDefault : item.flagDefault});
+                        branchName : item.branchName, status : 'Y', jabatan : item.positionName, nip  : item.nip, namaPegawai : item.name, positionId : item.positionId,
+                        jenisPegawai : item.jenisPegawai, flagDefault : item.flagDefault, kodering : item.kodering, unitCost : item.unitCostName});
                 });
 
 
@@ -278,6 +278,8 @@
                         "<th style='text-align: center; background-color:  #30d196'>Struktur Id</th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Nama Jabatan</th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Level</th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Kodering</th>"+
+                        "<th style='text-align: center; background-color:  #30d196''>Unit Cost</th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Nip </th>"+
                         "<th style='text-align: center; background-color:  #30d196''>Nama </th>"+
                         "<th style='text-align: center; background-color:  #30d196'>Edit</th>"+
@@ -290,6 +292,8 @@
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level+ '</td>' +
+                                '<td align="center">' + data2[i].kodering+ '</td>' +
+                                '<td >' + data2[i].unitCost+ '</td>' +
                                 '<td align="center">' + data2[i].nip + '</td>' +
                                 '<td align="center">' + data2[i].namaPegawai;
 
@@ -315,6 +319,8 @@
                                 '<td >' + data2[i]._id + '</td>' +
                                 '<td >' + data2[i].nama + '</td>' +
                                 '<td align="center">' + data2[i].level + '</td>' +
+                                '<td align="center">' + data2[i].kodering + '</td>' +
+                                '<td >' + data2[i].unitCost+ '</td>' +
                                 '<td align="center">' + data2[i].nip + '</td>' +
                                 '<td align="center">' + data2[i].namaPegawai;
 
@@ -401,7 +407,7 @@
                                 </td>
                                 <td>
                                     <table>
-                                        <s:if test='strukturJabatan.branchId == "KP"'>
+                                        <s:if test='strukturJabatan.branchId == "01"'>
                                             <s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>
                                             <s:select list="#initComboBranch.listOfComboBranch" id="branchId" name="strukturJabatan.branchId"
                                                       listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

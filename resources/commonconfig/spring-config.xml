@@ -324,4 +324,12 @@
     <import resource="sshconfig/com/neurix/simrs/transaksi/laporan/spring/LaporanOpsBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/transaksi/notifikasi/spring/MonitoringMesinAbsensiBean.xml"/>
 
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmengizi/spring/AsesmenGiziBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmengizi/spring/AsesmenAsuhanGiziBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/asesmengizi/spring/AsesmenMonitoringBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/konsultasigizi/spring/KonsultasiGiziBean.xml"/>
+
+    <import resource="sshconfig/com/neurix/simrs/transaksi/makananpendamping/spring/HeaderPendampingMakananBean.xml"/>
+    <import resource="sshconfig/com/neurix/simrs/transaksi/makananpendamping/spring/DetailPendampingMakananBean.xml"/>
+
 </beans>

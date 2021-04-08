@@ -494,7 +494,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         return pabrikObatList;
     }
 
-    public TransaksiObatDetail getDataFisikObatMasukBatch(BigInteger idBatch){
+    public TransaksiObatDetail getDataFisikObatMasukBatch(String idBatch){
 
         String SQL = "SELECT\n" +
                 "a.id_transaksi_obat_detail,\n" +
@@ -508,7 +508,7 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
                 "a.mrek \n"+
                 "FROM mt_simrs_transaksi_obat_detail a\n" +
                 "INNER JOIN mt_simrs_transaksi_obat_detail_batch b on b.id_transaksi_obat_detail = a.id_transaksi_obat_detail\n" +
-                "WHERE b.id = "+idBatch+"\n" +
+                "WHERE b.id = '"+idBatch+"' \n" +
                 "GROUP BY \n" +
                 "a.id_transaksi_obat_detail,\n" +
                 "a.lembar_per_box, \n" +
@@ -594,5 +594,45 @@ public class PermintaanVendorDao extends GenericDao<MtSimrsPermintaanVendorEntit
         }
 
         return obat;
+    }
+
+    public String getJenisPo(String idPermintaanVendor){
+
+        String SQL = "SELECT  \n" +
+                "od.flag_obat_bpjs \n" +
+                "FROM (SELECT id_transaksi_obat_detail, id_approval_obat, flag_obat_bpjs FROM mt_simrs_transaksi_obat_detail) od\n" +
+                "INNER JOIN (SELECT id_approval_obat FROM mt_simrs_approval_transaksi_obat) ato ON ato.id_approval_obat = od.id_approval_obat\n" +
+                "INNER JOIN (SELECT id_approval_obat, id_permintaan_obat_vendor FROM mt_simrs_permintaan_obat_vendor) ov ON ov.id_approval_obat = ato.id_approval_obat\n" +
+                "WHERE ov.id_permintaan_obat_vendor = '"+idPermintaanVendor+"' \n" +
+                "LIMIT 1";
+
+        List<Object> objs = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (objs.size() > 0){
+            boolean flagBpjs = "Y".equalsIgnoreCase(objs.get(0).toString());
+            if (flagBpjs){
+                return "BPJS";
+            }
+            return "UMUM";
+        }
+        return "";
+    }
+
+    public String countJumlahItemPo(String idPermintaanVendor){
+
+        String SQL = "SELECT  \n" +
+                "COUNT(id_transaksi_obat_detail) as jumlah \n" +
+                "FROM (SELECT id_transaksi_obat_detail, id_approval_obat, flag_obat_bpjs FROM mt_simrs_transaksi_obat_detail) od\n" +
+                "INNER JOIN (SELECT id_approval_obat FROM mt_simrs_approval_transaksi_obat) ato ON ato.id_approval_obat = od.id_approval_obat\n" +
+                "INNER JOIN (SELECT id_approval_obat, id_permintaan_obat_vendor FROM mt_simrs_permintaan_obat_vendor) ov ON ov.id_approval_obat = ato.id_approval_obat\n" +
+                "WHERE ov.id_permintaan_obat_vendor = '"+idPermintaanVendor+"' ";
+
+        List<Object> objs = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (objs.size() > 0){
+            BigInteger jumlah = (BigInteger) objs.get(0);
+            return jumlah.toString();
+        }
+        return "";
     }
 }

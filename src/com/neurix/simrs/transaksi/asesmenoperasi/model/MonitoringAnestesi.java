@@ -23,6 +23,15 @@ public class MonitoringAnestesi {
     private Timestamp createdDate;
     private Timestamp lastUpdate;
     private String lastUpdateWho;
+    private String isDesc;
+
+    public String getIsDesc() {
+        return isDesc;
+    }
+
+    public void setIsDesc(String isDesc) {
+        this.isDesc = isDesc;
+    }
 
     public String getSistole() {
         return sistole;

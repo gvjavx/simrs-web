@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printSuratAturanMakananDariLuar" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
+	<property name="ireport.zoom" value="1.7715610000000064"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<style name="table">
+		<box>
+			<pen lineWidth="1.0" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TH" mode="Opaque" backcolor="#F0F8FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_CH" mode="Opaque" backcolor="#BFE1FF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
+		<box>
+			<pen lineWidth="0.5" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="reportParams.rawatInapId" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.nik" class="java.lang.String"/>
+	<parameter name="reportParams.nama" class="java.lang.String"/>
+	<parameter name="reportParams.tglLahir" class="java.lang.String"/>
+	<parameter name="reportParams.jenisKelamin" class="java.lang.String"/>
+	<parameter name="reportParams.jenisPasien" class="java.lang.String"/>
+	<parameter name="reportParams.umur" class="java.lang.String"/>
+	<parameter name="reportParams.provinsi" class="java.lang.String"/>
+	<parameter name="reportParams.kabupaten" class="java.lang.String"/>
+	<parameter name="reportParams.kecamatan" class="java.lang.String"/>
+	<parameter name="reportParams.desa" class="java.lang.String"/>
+	<parameter name="reportParams.penanggungJawab" class="java.lang.String"/>
+	<parameter name="reportParams.unitKota" class="java.lang.String"/>
+	<parameter name="reportParams.hakKelas" class="java.lang.String"/>
+	<parameter name="reportParams.ruang" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.idPasien" class="java.lang.String"/>
+	<parameter name="reportParams.diagnosaPrimer" class="java.lang.String"/>
+	<parameter name="reportParams.bagian" class="java.lang.String"/>
+	<parameter name="reportParams.pekerjaan" class="java.lang.String"/>
+	<parameter name="reportParams.tglDibawah" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
+	</queryString>
+	<field name="id_pasien" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String">
+		<fieldDescription><![CDATA[Nama Master]]></fieldDescription>
+	</field>
+	<field name="jenis_kelamin" class="java.lang.String"/>
+	<field name="no_ktp" class="java.lang.String"/>
+	<field name="no_bpjs" class="java.lang.String"/>
+	<field name="tempat_lahir" class="java.lang.String"/>
+	<field name="tgl_lahir" class="java.sql.Date"/>
+	<field name="desa_id" class="java.lang.Long"/>
+	<field name="jalan" class="java.lang.String"/>
+	<field name="suku" class="java.lang.String"/>
+	<field name="agama" class="java.lang.String"/>
+	<field name="profesi" class="java.lang.String"/>
+	<field name="no_telp" class="java.lang.String"/>
+	<field name="url_ktp" class="java.lang.String"/>
+	<field name="flag" class="java.lang.String"/>
+	<field name="action" class="java.lang.String"/>
+	<field name="created_date" class="java.sql.Timestamp"/>
+	<field name="created_who" class="java.lang.String"/>
+	<field name="last_update" class="java.sql.Timestamp"/>
+	<field name="last_update_who" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="password" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="368" splitType="Stretch">
+			<staticText>
+				<reportElement x="103" y="0" width="197" height="37" uuid="bc81f7c9-c28f-4030-861c-305cac8d2b33"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Formulir Menu dan Aturan Mengonsumsi Makanan dari luar Rumah Sakit]]></text>
+			</staticText>
+			<image>
+				<reportElement x="0" y="0" width="94" height="39" uuid="7919286e-e855-436b-98b4-eaeedb81ef26"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<line>
+				<reportElement x="0" y="60" width="381" height="1" uuid="2c08112b-c50d-4893-862a-474998eb7574"/>
+			</line>
+			<staticText>
+				<reportElement x="248" y="37" width="59" height="19" uuid="775c4ba5-7eaf-4d16-ba92-9a6e019af517"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<componentElement>
+				<reportElement x="307" y="6" width="74" height="32" uuid="ce8fd79f-0e9e-48ba-a31d-1b3ede905f08"/>
+				<jr:Code128 xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" textPosition="bottom">
+					<jr:codeExpression><![CDATA[$P{reportParams.idPasien}]]></jr:codeExpression>
+				</jr:Code128>
+			</componentElement>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="306" y="37" width="75" height="19" uuid="3dcaf516-69b2-419b-b28a-4d0b689b93eb"/>
+				<textElement>
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="35" width="159" height="15" uuid="d8e0e6fd-3e4a-4a32-aabd-89a2dc40d361"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="45" width="159" height="15" uuid="ee5e7aed-c2f0-49e0-b8f5-0476a3356484"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="89" y="91" width="5" height="15" uuid="879c709f-fc38-490b-8505-f86dc140b98f"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="106" width="287" height="15" uuid="6ebc9968-10b9-4eed-8b94-14166c1c0cce"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.tglLahir} == null ? "" : $P{reportParams.tglLahir}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="94" y="61" width="287" height="15" uuid="4426dc1b-20c8-4880-9916-78cef3fca545"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="91" width="90" height="15" uuid="56e13786-b0d0-436d-9f1c-6c83fda8c3d0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Umur]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="61" width="90" height="15" uuid="188f0e1f-1920-461a-8d20-2a84b475b946"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[No. Rekam Medis]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="61" width="5" height="15" uuid="03788217-66c4-44c3-a4fc-6670a7c8c4f2"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="91" width="287" height="15" uuid="528b66b7-194e-477d-b3e3-85caec0ba83f"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.umur} == null ? "" : $P{reportParams.umur}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="106" width="90" height="15" uuid="8ddcc7d3-cbce-4b86-9bc3-19c8c489d91e"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Tanggal Lahir]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="89" y="106" width="5" height="15" uuid="f7530842-f5a1-47ab-af08-41aab1195686"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="76" width="90" height="15" uuid="f2c54358-39ef-4e2a-a8d1-92fc40c7314d"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="94" y="76" width="287" height="15" uuid="42edddc9-25d9-4783-98ae-396ce23b15d7"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.nama} == null ? "" : $P{reportParams.nama} + " / " + $P{reportParams.jenisKelamin}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="89" y="76" width="5" height="15" uuid="f2ce4ecb-acf9-42e5-b1a7-8103e4a337f3"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<text><![CDATA[:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="127" width="381" height="12" uuid="9e02905d-f177-4b1b-a69b-2f85847cb219"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>MEDIS</b> : berdasarkan diagnose medis "+$P{reportParams.diagnosaPrimer}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="139" width="381" height="12" uuid="bd7fc016-fc3e-469f-a0a8-c0e0977d603d"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Anda memerlukan diet: ................................................................."]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="154" width="381" height="12" uuid="9ec0b565-cac8-4857-8e2f-a9cca333bc46"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["<b>NON MEDIS</b> : "]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="166" width="381" height="21" uuid="d8135800-d582-4248-970d-46a5bad64897"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Apabila anda menginginkan pilihan makanan, komunikasikan dengan DIETISIEN/AHLI GIZI. ISI dan LINGKARI keterangan dibawah ini :"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="189" width="112" height="12" uuid="4dd3e0a5-7f82-40fc-9c6f-f7b2ee66a19f"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["CARA PEMBERIAN"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="189" width="5" height="12" uuid="a4427aff-b042-4b26-a8ee-49772b4a7904"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="201" width="112" height="12" uuid="58425b91-56ac-4559-83de-c32302bc22c1"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PILIHAN MENU MAKANAN"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="112" y="201" width="5" height="12" uuid="ceba30c7-955a-4632-8a35-4fc5be50a60a"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="189" width="264" height="12" uuid="ebf8764c-5c36-4617-aeaf-86b7d5fe5023"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ORAL( Lewat Mulut) / Lewat Pipa"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="201" width="264" height="32" uuid="9baef19d-8e3e-4bba-ad0b-fb272c6a2583"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Biasa (Nasi) / Lunak (Tim) / Lunak (BK) / Lunak (BH) / Cair / Lauk Cincang / Alergi / Vegetarian / Kentang / Roti Tawar. Lain-lain …………………………………………"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="242" width="381" height="12" uuid="9795c779-8a96-4bf2-bf48-339adb648257"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["ATURAN  MENGONSUMSI MAKANAN DARI LUAR RUMAH SAKIT :"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="241" width="381" height="1" uuid="d0a3c7f1-300b-4fa4-889a-d90693aff1be"/>
+			</line>
+			<textField>
+				<reportElement x="14" y="257" width="367" height="12" uuid="220d4c6c-9834-4a65-b7b0-d446d8767e10"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PASIEN HANYA BOLEH MENGONSUMSI MAKANAN DARI RUMAH SAKIT"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="269" width="367" height="22" uuid="98f55b4d-74d6-49c0-a035-d0a777a8c404"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["DEMI KEAMANAN PASIEN SEBAIKNYA MAKANAN DIKONSUMSI PALING LAMA 2 JAM SETELAH DISAJIKAN"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="257" width="14" height="12" uuid="1edcafc0-2040-4caf-9b04-8c8b29dc7aa5"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["1"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="269" width="14" height="12" uuid="c5d9a8b4-b92a-4a39-8963-bbd83bb77b79"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["2"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="291" width="367" height="12" uuid="90feca50-6261-440c-98cc-870fbf9ecfea"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["PASTIKAN SELALU MENYIMPAN MAKANAN DALAM WADAH TERTUTUP"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="291" width="14" height="12" uuid="8fa104af-84e5-4b64-8952-ccf6a34be7e0"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["3"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="303" width="14" height="12" uuid="919d649a-a8cb-4a9e-a3f3-d65120839b20"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["4"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="14" y="303" width="367" height="31" uuid="5c33c0ff-8041-424d-a21e-afa69a146dce"/>
+				<box leftPadding="1"/>
+				<textElement verticalAlignment="Middle" markup="html">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["APABILA ANDA MENGINGINKAN MAKANAN DARI LUAR RUMAH SAKIT, MOHON BERITAHUKAN KEPADA DIETISIEN/AHLI GIZI UNTUK DINILAI KESESUAIAN DENGAN DIET ANDA DAN HIGIENIS MAKANAN"]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<lastPageFooter>
+		<band height="93">
+			<line>
+				<reportElement x="237" y="89" width="144" height="1" uuid="8b9d08bc-a15f-45be-be18-f9d84766d5e2"/>
+			</line>
+			<textField>
+				<reportElement x="237" y="28" width="144" height="15" uuid="e6f2fb33-78d9-4d8f-a9fc-45251d7bb6e2"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pasien/Keluarga"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="28" width="144" height="15" uuid="24e68ca4-8575-47a2-a452-40b67a175851"/>
+				<box leftPadding="1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Dietisien"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="89" width="144" height="1" uuid="77dcddc5-9f35-4dbd-88ba-22601ad4928a"/>
+			</line>
+		</band>
+	</lastPageFooter>
+</jasperReport>

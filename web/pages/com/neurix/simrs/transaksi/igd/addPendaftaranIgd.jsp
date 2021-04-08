@@ -28,7 +28,7 @@
             var namaPasien = $('#nama_pasien').val();
             var jenisKelamin = $('#jenis_kelamin').val();
             var tempatLahir = $('#tempat_lahir').val();
-            var tglLahir = $('#tanggal_lahir').val();
+            var tglLahir = $('#tgl_lahir').val();
             var jalan = $('#jalan').val();
             var suku = $('#suku').val();
             var profesi = $('#profesi').val();
@@ -74,53 +74,133 @@
                 && tglLahir != '' && agama != '' && poli != '' && dokter != '' && penjamin != ''
                 && provinsi != '' && kota != '' && kecamatan != '' && desa != '' && tipe != '') {
 
-
-                if (tipe == "umum") {
-                    if($('#is_uang_muka').is(':checked')){
-                        if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
-                            if(ambulance != ''){
-                                if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                    $('#confirm_dialog').dialog('open');
-                                }else{
+                PasienAction.getDataPasien(idPasien, function (res) {
+                    if (res.idPasien != '' && res.idPasien != null) {
+                        if (tipe == "umum") {
+                            if($('#is_uang_muka').is(':checked')){
+                                if (pembayaran != '' && uangMuka != '' && parseInt(uangMuka) > 0) {
+                                    if(ambulance != ''){
+                                        if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                            $('#confirm_dialog').dialog('open');
+                                        }else{
+                                            $("html, body").animate({scrollTop: 0}, 600);
+                                            $('#warning_pasien').show().fadeOut(10000);
+                                            $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                        }
+                                    }else{
+                                        $('#confirm_dialog').dialog('open');
+                                    }
+                                } else {
                                     $("html, body").animate({scrollTop: 0}, 600);
                                     $('#warning_pasien').show().fadeOut(10000);
-                                    $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                    $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
+                                    if (pembayaran == '') {
+                                        $('#war_pembayaran').show();
+                                    }
+                                    if (uangMuka == '' || parseInt(uangMuka) == 0) {
+                                        $('#war_uang_muka').show();
+                                    }
                                 }
                             }else{
-                                $('#confirm_dialog').dialog('open');
-                            }
-                        } else {
-                            $("html, body").animate({scrollTop: 0}, 600);
-                            $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan cek kembali data pembayaran...!");
-                            if (pembayaran == '') {
-                                $('#war_pembayaran').show();
-                            }
-                            if (uangMuka == '' || parseInt(uangMuka) == 0) {
-                                $('#war_uang_muka').show();
+                                if(ambulance != ''){
+                                    if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                        $('#confirm_dialog').dialog('open');
+                                    }else{
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                    }
+                                }else{
+                                    $('#confirm_dialog').dialog('open');
+                                }
                             }
                         }
-                    }else{
-                        if(ambulance != ''){
-                            if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                $('#confirm_dialog').dialog('open');
-                            }else{
+
+                        if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
+                            if (diagnosaBpjs != '') {
+                                if (statusBpjs != '') {
+                                    if (statusBpjs == "aktif") {
+                                        if(tipe == "bpjs_rekanan"){
+                                            if (noKartuPtpn != '' && unitPtpn != '') {
+                                                if(ambulance != ''){
+                                                    if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                                        $('#confirm_dialog').dialog('open');
+                                                    }else{
+                                                        $("html, body").animate({scrollTop: 0}, 600);
+                                                        $('#warning_pasien').show().fadeOut(10000);
+                                                        $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                                    }
+                                                }else{
+                                                    $('#confirm_dialog').dialog('open');
+                                                }
+                                            } else {
+                                                $("html, body").animate({scrollTop: 0}, 600);
+                                                $('#warning_pasien').show().fadeOut(10000);
+                                                $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                                if (noKartuPtpn == '') {
+                                                    $('#war_no_kartu_ptpn').show();
+                                                }
+                                                if (unitPtpn == '') {
+                                                    $('#war_ptpn').show();
+                                                }
+                                            }
+                                        }else{
+                                            if(ambulance != ''){
+                                                if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                                    $('#confirm_dialog').dialog('open');
+                                                }else{
+                                                    $("html, body").animate({scrollTop: 0}, 600);
+                                                    $('#warning_pasien').show().fadeOut(10000);
+                                                    $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                                }
+                                            }else{
+                                                $('#confirm_dialog').dialog('open');
+                                            }
+                                        }
+                                    } else {
+                                        var msg1 = "";
+                                        var msg2 = "";
+                                        $("html, body").animate({scrollTop: 0}, 600);
+                                        $('#warning_pasien').show().fadeOut(10000);
+                                        if (statusBpjs != "aktif") {
+                                            msg1 = "No BPJS Tidak Aktif";
+                                        }
+                                        if (statusRujukan != "aktif") {
+                                            msg2 = "No Rujukan Tidak Aktif";
+                                        }
+                                        $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan " + msg1 + ". " + msg2 + "...!");
+                                    }
+                                } else {
+                                    $("html, body").animate({scrollTop: 0}, 600);
+                                    $('#warning_pasien').show().fadeOut(10000);
+                                    $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
+                                }
+                            } else {
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
+                                if (diagnosaBpjs == '') {
+                                    $('#diagnosa_awal').css('border', 'solid 1px red');
+                                }
                             }
-                        }else{
-                            $('#confirm_dialog').dialog('open');
                         }
-                    }
-                }
 
-                if (tipe == "bpjs" || tipe == "bpjs_rekanan") {
-                    if (diagnosaBpjs != '') {
-                        if (statusBpjs != '') {
-                            if (statusBpjs == "aktif") {
-                                if(tipe == "bpjs_rekanan"){
-                                    if (noKartuPtpn != '' && unitPtpn != '') {
+                        if (tipe == "asuransi") {
+                            if (asuransi != '') {
+                                if (isLaka == "Y") {
+                                    if(ambulance != ''){
+                                        if(jumlahKm != '' && parseInt(jumlahKm) > 0){
+                                            $('#confirm_dialog').dialog('open');
+                                        }else{
+                                            $("html, body").animate({scrollTop: 0}, 600);
+                                            $('#warning_pasien').show().fadeOut(10000);
+                                            $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
+                                        }
+                                    }else{
+                                        $('#confirm_dialog').dialog('open');
+                                    }
+                                } else {
+                                    if (noKartu != '') {
                                         if(ambulance != ''){
                                             if(jumlahKm != '' && parseInt(jumlahKm) > 0){
                                                 $('#confirm_dialog').dialog('open');
@@ -135,71 +215,30 @@
                                     } else {
                                         $("html, body").animate({scrollTop: 0}, 600);
                                         $('#warning_pasien').show().fadeOut(10000);
-                                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
-                                        if (noKartuPtpn == '') {
-                                            $('#war_no_kartu_ptpn').show();
+                                        $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
+                                        if (noKartu == '') {
+                                            $('#war_no_asuransi').show();
                                         }
-                                        if (unitPtpn == '') {
-                                            $('#war_ptpn').show();
-                                        }
-                                    }
-                                }else{
-                                    if(ambulance != ''){
-                                        if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                            $('#confirm_dialog').dialog('open');
-                                        }else{
-                                            $("html, body").animate({scrollTop: 0}, 600);
-                                            $('#warning_pasien').show().fadeOut(10000);
-                                            $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                        }
-                                    }else{
-                                        $('#confirm_dialog').dialog('open');
                                     }
                                 }
                             } else {
-                                var msg1 = "";
-                                var msg2 = "";
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
-                                if (statusBpjs != "aktif") {
-                                    msg1 = "No BPJS Tidak Aktif";
+                                $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
+                                if (asuransi == '') {
+                                    $('#war_asuransi').show();
                                 }
-                                if (statusRujukan != "aktif") {
-                                    msg2 = "No Rujukan Tidak Aktif";
+                                if (noKartu == '') {
+                                    $('#war_no_asuransi').show();
                                 }
-                                $('#msg_pasien').text("Mohon maaf transaksi gagal, dikarenakan " + msg1 + ". " + msg2 + "...!");
+                                if (coverBiaya == '') {
+                                    $('#war_jml_cover').show();
+                                }
                             }
-                        } else {
-                            $("html, body").animate({scrollTop: 0}, 600);
-                            $('#warning_pasien').show().fadeOut(10000);
-                            $('#msg_pasien').text("Silahkan klik tombol check untuk melakukan validasi No BPJS dan No Rujukan...!");
                         }
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data diagnosa awal dan data rujukan...!");
-                        if (diagnosaBpjs == '') {
-                            $('#diagnosa_awal').css('border', 'solid 1px red');
-                        }
-                    }
-                }
 
-                if (tipe == "asuransi") {
-                    if (asuransi != '') {
-                        if (isLaka == "Y") {
-                            if(ambulance != ''){
-                                if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                    $('#confirm_dialog').dialog('open');
-                                }else{
-                                    $("html, body").animate({scrollTop: 0}, 600);
-                                    $('#warning_pasien').show().fadeOut(10000);
-                                    $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                                }
-                            }else{
-                                $('#confirm_dialog').dialog('open');
-                            }
-                        } else {
-                            if (noKartu != '') {
+                        if (tipe == "rekanan") {
+                            if (noKartuPtpn != '' && unitPtpn != '') {
                                 if(ambulance != ''){
                                     if(jumlahKm != '' && parseInt(jumlahKm) > 0){
                                         $('#confirm_dialog').dialog('open');
@@ -214,57 +253,27 @@
                             } else {
                                 $("html, body").animate({scrollTop: 0}, 600);
                                 $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
-                                if (noKartu == '') {
-                                    $('#war_no_asuransi').show();
+                                $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
+                                if (noKartuPtpn == '') {
+                                    $('#war_no_kartu_ptpn').show();
+                                }
+                                if (unitPtpn == '') {
+                                    $('#war_ptpn').show();
                                 }
                             }
                         }
-                    } else {
-                        $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali data asuransi...!");
-                        if (asuransi == '') {
-                            $('#war_asuransi').show();
-                        }
-                        if (noKartu == '') {
-                            $('#war_no_asuransi').show();
-                        }
-                        if (coverBiaya == '') {
-                            $('#war_jml_cover').show();
-                        }
-                    }
-                }
 
-                if (tipe == "rekanan") {
-                    if (noKartuPtpn != '' && unitPtpn != '') {
-                        if(ambulance != ''){
-                            if(jumlahKm != '' && parseInt(jumlahKm) > 0){
-                                $('#confirm_dialog').dialog('open');
-                            }else{
-                                $("html, body").animate({scrollTop: 0}, 600);
-                                $('#warning_pasien').show().fadeOut(10000);
-                                $('#msg_pasien').text("Silahkan masukkan jumlah kilometer ambulance...!");
-                            }
-                        }else{
+                        if (tipe == "paket_perusahaan" || tipe == "paket_individu") {
                             $('#confirm_dialog').dialog('open');
                         }
-                    } else {
+                    }else{
                         $("html, body").animate({scrollTop: 0}, 600);
-                        $('#warning_pasien').show().fadeOut(10000);
-                        $('#msg_pasien').text("Silahkan cek kembali Data Rekanan...!");
-                        if (noKartuPtpn == '') {
-                            $('#war_no_kartu_ptpn').show();
-                        }
-                        if (unitPtpn == '') {
-                            $('#war_ptpn').show();
-                        }
+                        $('#warning_pasien').show().fadeOut(15000);
+                        $('#msg_pasien').text("Data pasien atas Nama "+namaPasien+" belum terdaftar sebagai pasien. Mohon didaftarkan terlabih dahulu dengan menekan tombol Pasien Baru");
+                        $('#btn_new').removeClass("btn btn-success pull-right");
+                        $('#btn_new').addClass("btn btn-success pull-right blink_me_atas");
                     }
-                }
-
-                if (tipe == "paket_perusahaan" || tipe == "paket_individu") {
-                    $('#confirm_dialog').dialog('open');
-                }
+                });
 
             } else {
 
@@ -367,7 +376,7 @@
                 $('#cek_is_bpjs').val(null);
                 $('#nama_dokter').val(null);
                 $('#asuransi').val(null);
-                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
+                $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tgl_lahir, #jalan, #suku, #profesi, #agama, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
                 var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
                 $('#img-upload').attr('src', img);
                 $('#imgInp').attr('value', null);
@@ -474,7 +483,7 @@
             $('#cek_is_bpjs').val(null);
             $('#nama_dokter').val(null);
             $('#asuransi').val(null);
-            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tanggal_lahir, #jalan, #suku, #profesi, #agama, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
+            $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #tgl_lahir, #jalan, #suku, #profesi, #agama, #dokter, #penjamin, #provinsi11, #kabupaten11, #kecamatan11, #desa11, #provinsi, #kabupaten, #kecamatan, #desa, #nama_penanggung, #no_telp, #hubungan').val(null);
             var img = '<s:url value="/pages/images/ktp-default.jpg"/>';
             $('#img-upload').attr('src', img);
             $('#imgInp').attr('value', null);
@@ -633,7 +642,7 @@
                             <input type="hidden" id="status_bpjs">
                             <div class="box-header with-border">
                                 <h3 class="box-title"><i class="fa fa-user"></i> Data Pasien</h3>
-                                <a onclick="showPasienBaru()" class="btn btn-success pull-right"><i
+                                <a id="btn_new" onclick="showPasienBaru()" class="btn btn-success pull-right"><i
                                         class="fa fa-plus"></i> Pasien Baru
                                 </a>
                                 <a style="display: none" id="btn-finger" onclick="setFingerPrint()"
@@ -787,8 +796,8 @@
                                                         <div class="input-group-addon">
                                                             <i class="fa fa-calendar"></i>
                                                         </div>
-                                                        <s:textfield id="tanggal_lahir" name="headerCheckup.stTglLahir"
-                                                                     cssClass="form-control datemask" cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
+                                                        <s:textfield id="tgl_lahir" name="headerCheckup.stTglLahir"
+                                                                     cssClass="form-control tgl_lahir_validasi datemask" cssStyle="cursor: pointer" placeholder="yyyy-mm-dd"
                                                                      onchange="$('#st_tgl_lahir').css('border','')" readonly="true"/>
                                                     </div>
                                                 </div>
@@ -1041,6 +1050,69 @@
                                                     <s:textfield oninput="$('#hub_keluarga').val(this.value)"
                                                                  cssClass="form-control" cssStyle="margin-top: 7px"
                                                                  placeholder="Keterangan Hubungan"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="form-rekanan" style="display: none">
+                                <div class="box-header with-border"></div>
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
+                                </div>
+                                <div class="box-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">Nama
+                                                        Rekanan</label>
+
+                                                    <div class="col-md-8">
+                                                        <select id="unit_ptpn" class="form-control select2"
+                                                                style="width: 100%"
+                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
+                                                        </select>
+                                                        <span style="color: red; display: none" id="war_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group" id="form_pg" style="display: none">
+                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
+                                                    <div class="col-md-8">
+                                                        <input class="form-control" id="unit_pg"
+                                                               style="margin-top: 7px">
+                                                        <span style="color: red; display: none" id="war_pg"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pg"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
+                                                        Rekanan</label>
+                                                    <div class="col-md-8">
+                                                        <s:textfield id="no_kartu_ptpn"
+                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
+                                                                     oninput="$('#h_no_kartu').val(this.value)"
+                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
+                                                        <span style="color: red; display: none"
+                                                              id="war_no_kartu_ptpn"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none"
+                                                              id="con_no_kartu_ptpn"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -1391,69 +1463,6 @@
                                 </div>
                             </div>
 
-                            <div id="form-rekanan" style="display: none">
-                                <div class="box-header with-border"></div>
-                                <div class="box-header with-border">
-                                    <h3 class="box-title"><i class="fa fa-user"></i> Data Rekanan</h3>
-                                </div>
-                                <div class="box-body">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">Nama
-                                                        Rekanan</label>
-
-                                                    <div class="col-md-8">
-                                                        <select id="unit_ptpn" class="form-control select2"
-                                                                style="width: 100%"
-                                                                onchange="var warn =$('#war_ptpn').is(':visible'); if (warn){$('#con_ptpn').show().fadeOut(3000);$('#war_ptpn').hide()}; cekPtpn(this.value);">
-                                                        </select>
-                                                        <span style="color: red; display: none" id="war_ptpn"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="row">
-                                                <div class="form-group" id="form_pg" style="display: none">
-                                                    <label class="col-md-4" style="margin-top: 10px">PG Unit</label>
-                                                    <div class="col-md-8">
-                                                        <input class="form-control" id="unit_pg"
-                                                               style="margin-top: 7px">
-                                                        <span style="color: red; display: none" id="war_pg"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_pg"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px">No Kartu
-                                                        Rekanan</label>
-                                                    <div class="col-md-8">
-                                                        <s:textfield id="no_kartu_ptpn"
-                                                                     cssStyle="margin-top: 7px" cssClass="form-control"
-                                                                     oninput="$('#h_no_kartu').val(this.value)"
-                                                                     onkeypress="var warn =$('#war_no_kartu_ptpn').is(':visible'); if (warn){$('#con_no_kartu_ptpn').show().fadeOut(3000);$('#war_no_kartu_ptpn').hide()}"></s:textfield>
-                                                        <span style="color: red; display: none"
-                                                              id="war_no_kartu_ptpn"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none"
-                                                              id="con_no_kartu_ptpn"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                             <s:hidden name="headerCheckup.kelasPasien" id="kelas_pasien"></s:hidden>
                             <s:hidden name="headerCheckup.noMr" id="no_mr"></s:hidden>
                             <s:hidden name="headerCheckup.idPelayananBpjs" id="idPelayananBpjs"></s:hidden>
@@ -1544,27 +1553,6 @@
                                         <div class="col-md-6">
                                             <div class="row">
                                                 <div class="form-group">
-                                                    <label class="col-md-4" style="margin-top: 10px"> Metode Pembayaran</label>
-                                                    <div class="col-md-8">
-                                                        <s:select
-                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
-                                                                cssStyle="margin-top: 7px"
-                                                                id="pembayaran"
-                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
-                                                                name="headerCheckup.metodePembayaran"
-                                                                headerKey="" headerValue="[Select one]"
-                                                                cssClass="form-control"/>
-                                                        <span style="color: red; display: none" id="war_pembayaran"><i
-                                                                class="fa fa-times"></i> required</span>
-                                                        <span style="color: green; display: none" id="con_pembayaran"><i
-                                                                class="fa fa-check"></i> correct</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="row">
-                                                <div class="form-group">
                                                     <label class="col-md-4" style="margin-top: 10px">Uang Muka</label>
                                                     <div class="col-md-8">
                                                         <div class="input-group" style="margin-top: 7px">
@@ -1579,6 +1567,27 @@
                                                         <span style="color: red; display: none" id="war_uang_muka"><i
                                                                 class="fa fa-times"></i> required</span>
                                                         <span style="color: green; display: none" id="con_uang_muka"><i
+                                                                class="fa fa-check"></i> correct</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="row" style="display: none">
+                                                <div class="form-group">
+                                                    <label class="col-md-4" style="margin-top: 10px"> Metode Pembayaran</label>
+                                                    <div class="col-md-8">
+                                                        <s:select
+                                                                list="#{'tunai':'Tunai','non_tunai':'Non Tunai'}"
+                                                                cssStyle="margin-top: 7px"
+                                                                id="pembayaran"
+                                                                onchange="var warn =$('#war_pembayaran').is(':visible'); if (warn){$('#con_pembayaran').show().fadeOut(3000);$('#war_pembayaran').hide()}"
+                                                                name="headerCheckup.metodePembayaran"
+                                                                headerKey="" headerValue="[Select one]"
+                                                                cssClass="form-control"/>
+                                                        <span style="color: red; display: none" id="war_pembayaran"><i
+                                                                class="fa fa-times"></i> required</span>
+                                                        <span style="color: green; display: none" id="con_pembayaran"><i
                                                                 class="fa fa-check"></i> correct</span>
                                                     </div>
                                                 </div>
@@ -1900,7 +1909,7 @@
                                     <div class="input-group-addon">
                                         <i class="fa fa-calendar"></i>
                                     </div>
-                                    <input class="form-control datepicker datemask" id="add_tanggal_lahir"
+                                    <input class="form-control tgl_lahir_validasi datemask" id="add_tanggal_lahir"
                                            onchange="$(this).css('border','')" oninput="$(this).css('border','')">
                                 </div>
                             </div>
@@ -2366,9 +2375,9 @@
         });
     }
 
-    function listSelectRekanan() {
+    function listSelectRekanan(isBpjs) {
         var option = "<option value=''>[Select One]</option>";
-        CheckupAction.getListRekananOps(function (response) {
+        CheckupAction.getListRekananOps(isBpjs, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
                     option += "<option value='" + item.idRekananOps + '|' + item.isBpjs + '|' + item.tipe + "'>" + item.namaRekanan + "</option>";
@@ -2943,7 +2952,7 @@
                         $('#no_ktp').val(res.noKtp);
                         $('#jenis_kelamin').val(res.jenisKelamin);
                         $('#tempat_lahir').val(res.tempatLahir);
-                        $('#tanggal_lahir').val(res.tglLahir);
+                        $('#tgl_lahir').val(res.tglLahir);
                         $('#agama').val(res.agama);
                         $('#profesi').val(res.profesi).trigger('change');
                         $('#jalan').val(res.jalan);
@@ -3059,7 +3068,7 @@
                             $('#no_ktp').val(res.noKtp);
                             $('#jenis_kelamin').val(res.jenisKelamin);
                             $('#tempat_lahir').val(res.tempatLahir);
-                            $('#tanggal_lahir').val(res.tglLahir);
+                            $('#tgl_lahir').val(res.tglLahir);
                             $('#agama').val(res.agama);
                             $('#profesi').val(res.profesi).trigger('change');
                             $('#jalan').val(res.jalan);
@@ -3278,6 +3287,8 @@
     }
 
     function showPasienBaru() {
+        $('#btn_new').removeClass("btn btn-success pull-right blink_me_atas");
+        $('#btn_new').addClass("btn btn-success pull-right");
         $('#add_no_bpjs').val('');
         $('#add_nik').val('');
         $('#add_nama').val('');
@@ -3445,7 +3456,7 @@
                         $('#nama_pasien').val(response.nama);
                         $('#jenis_kelamin').val(response.jenisKelamin);
                         $('#tempat_lahir').val(response.tempatLahir);
-                        $('#tanggal_lahir').val(response.tglLahir);
+                        $('#tgl_lahir').val(response.tglLahir);
                         $('#agama').val(response.agama);
                         $('#profesi').val(response.profesi).trigger('change');
                         $('#jalan').val(response.jalan);
@@ -3527,7 +3538,7 @@
                                 $('#nama_pasien').val(response.nama);
                                 $('#jenis_kelamin').val(response.jenisKelamin);
                                 $('#tempat_lahir').val(response.tempatLahir);
-                                $('#tanggal_lahir').val(response.tglLahir);
+                                $('#tgl_lahir').val(response.tglLahir);
                                 $('#agama').val(response.agama);
                                 $('#profesi').val(response.profesi);
                                 $('#jalan').val(response.jalan);
@@ -3585,7 +3596,7 @@
                         $('#nama_pasien').val(null);
                         $('#jenis_kelamin').val(null);
                         $('#tempat_lahir').val(null);
-                        $('#tanggal_lahir').val(null);
+                        $('#tgl_lahir').val(null);
                         $('#agama').val(null);
                         $('#profesi').val(null);
                         $('#jalan').val(null);
@@ -3620,7 +3631,7 @@
             $('#nama_pasien').val(null);
             $('#jenis_kelamin').val(null);
             $('#tempat_lahir').val(null);
-            $('#tanggal_lahir').val(null);
+            $('#tgl_lahir').val(null);
             $('#agama').val(null);
             $('#profesi').val(null);
             $('#jalan').val(null);
@@ -3727,7 +3738,7 @@
                         $('#nama_pasien').val(item.nama);
                         $('#jenis_kelamin').val(item.jenisKelamin);
                         $('#tempat_lahir').val(item.tempatLahir);
-                        $('#tanggal_lahir').val(item.tglLahir);
+                        $('#tgl_lahir').val(item.tglLahir);
                         $('#agama').val(item.agama);
                         $('#profesi').val(item.profesi).trigger('change');
                         $('#jalan').val(item.jalan);
@@ -3802,8 +3813,10 @@
     function isUangMuka(id){
         if($('#'+id).is(':checked')){
             $('#form-uang-muka').show();
+            $('#pembayaran').val('tunai');
         }else{
             $('#form-uang-muka').hide();
+            $('#pembayaran').val('');
         }
     }
 

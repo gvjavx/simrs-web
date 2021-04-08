@@ -10,17 +10,15 @@ import com.neurix.hris.master.jamkerja.model.JamKerja;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
-import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
-import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.transaksi.absensi.bo.AbsensiBo;
-import com.neurix.hris.transaksi.absensi.model.AbsensiPegawai;
 import com.neurix.hris.transaksi.lembur.bo.LemburBo;
 import com.neurix.hris.transaksi.lembur.model.Lembur;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.HibernateException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
@@ -121,18 +119,20 @@ public class LemburAction extends BaseMasterAction {
         List<Lembur> listOfsearchBiodata = new ArrayList();
         HttpSession session = ServletActionContext.getRequest().getSession();
 
-        if (("ADMIN").equalsIgnoreCase(role)||("Admin Bagian").equalsIgnoreCase(role)){
-
-        }else{
+        if (!("ADMIN").equalsIgnoreCase(role) && !("Admin Bagian").equalsIgnoreCase(role)){
             Biodata searchBiodata = new Biodata();
             String user = CommonUtil.userIdLogin();
             addLembur.setNip(user);
             searchBiodata.setNip(user);
-            listOfsearchBiodata = lemburBoProxy.getBiodatawithCriteria(user);
-
+            try {
+                listOfsearchBiodata = lemburBoProxy.getBiodatawithCriteria(user);
+            }catch (GeneralBOException e){
+                logger.error("[LemburAction.add] Error, " + e.getMessage());
+            }
             session.removeAttribute("listOfResultLemburPersonil");
             session.setAttribute("listOfResultLemburPersonil", listOfsearchBiodata);
-            List<Lembur> listOfResultLemburPersonil = (List<Lembur>) session.getAttribute("listOfResultLemburPersonil");
+//            List<Lembur> listOfResultLemburPersonil = (List<Lembur>) session.getAttribute("listOfResultLemburPersonil");
+            List<Lembur> listOfResultLemburPersonil = listOfsearchBiodata;
 
             if(listOfResultLemburPersonil != null){
                 for (Lembur lembur: listOfResultLemburPersonil) {
@@ -146,6 +146,7 @@ public class LemburAction extends BaseMasterAction {
                     addLembur.setBranchId(lembur.getBranchId());
                     addLembur.setStatusGiling(lembur.getStatusGiling());
                     addLembur.setSelf("Y");
+                    addLembur.setHakLembur(lembur.isHakLembur());
                     break;
                 }
             } else {
@@ -285,10 +286,10 @@ public class LemburAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 List<Lembur> lemburList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
@@ -770,6 +771,18 @@ public class LemburAction extends BaseMasterAction {
             hasil = hasil+lembur.getLamaJam();
         }
         return hasil;
+    }
+
+    public Boolean cekHakLembur (String nip){
+        Boolean hakLembur = false;
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        LemburBo lemburBo = (LemburBo) ctx.getBean("lemburBoProxy");
+        try{
+            hakLembur = lemburBo.cekHakLembur(nip);
+        }catch (GeneralBOException e){
+            logger.error("[LemburAction.cekHakLembur] Error, " + e.getMessage());
+        }
+        return hakLembur;
     }
 
 }

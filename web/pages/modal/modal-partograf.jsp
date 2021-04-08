@@ -247,22 +247,23 @@
                         <div class="form-group">
                             <label class="col-md-2">DJJ</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji2">
-                                    <option value="">[Select One]</option>
-                                    <option value="80">80</option>
-                                    <option value="90">90</option>
-                                    <option value="100">100</option>
-                                    <option value="110">110</option>
-                                    <option value="120">120</option>
-                                    <option value="130">130</option>
-                                    <option value="140">140</option>
-                                    <option value="150">150</option>
-                                    <option value="160">160</option>
-                                    <option value="170">170</option>
-                                    <option value="180">180</option>
-                                    <option value="190">190</option>
-                                    <option value="120">120</option>
-                                </select>
+                                <input class="form-control" id="ji2" type="number">
+                                <%--<select class="form-control" id="">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="90">90</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="110">110</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="130">130</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="150">150</option>--%>
+                                    <%--<option value="160">160</option>--%>
+                                    <%--<option value="170">170</option>--%>
+                                    <%--<option value="180">180</option>--%>
+                                    <%--<option value="190">190</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                <%--</select>--%>
                             </div>
                             <label class="col-md-2">Air Ketuban</label>
                             <div class="col-md-4">
@@ -375,20 +376,21 @@
                             </div>
                             <label class="col-md-2">Tensi</label>
                             <div class="col-md-4">
-                                <select class="form-control" id="ji11">
-                                    <option value="">[Select One]</option>
-                                    <option value="80">80</option>
-                                    <option value="90">90</option>
-                                    <option value="100">100</option>
-                                    <option value="110">110</option>
-                                    <option value="120">120</option>
-                                    <option value="130">130</option>
-                                    <option value="140">140</option>
-                                    <option value="150">150</option>
-                                    <option value="160">160</option>
-                                    <option value="170">170</option>
-                                    <option value="180">180</option>
-                                </select>
+                                <input class="form-control" id="ji11" data-inputmask="'mask': ['999/999']" data-mask="">
+                                <%--<select class="form-control" id="ji11">--%>
+                                    <%--<option value="">[Select One]</option>--%>
+                                    <%--<option value="80">80</option>--%>
+                                    <%--<option value="90">90</option>--%>
+                                    <%--<option value="100">100</option>--%>
+                                    <%--<option value="110">110</option>--%>
+                                    <%--<option value="120">120</option>--%>
+                                    <%--<option value="130">130</option>--%>
+                                    <%--<option value="140">140</option>--%>
+                                    <%--<option value="150">150</option>--%>
+                                    <%--<option value="160">160</option>--%>
+                                    <%--<option value="170">170</option>--%>
+                                    <%--<option value="180">180</option>--%>
+                                <%--</select>--%>
                             </div>
                         </div>
                     </div>
@@ -740,7 +742,7 @@
                         <div class="form-group">
                             <label class="col-md-3">Tensi</label>
                             <div class="col-md-3">
-                                <input class="form-control" id="pk3" >
+                                <input class="form-control" id="pk3" data-inputmask="'mask': ['999/999']" data-mask="">
                             </div>
                             <label class="col-md-3">Nadi</label>
                             <div class="col-md-3">

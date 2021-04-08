@@ -608,13 +608,12 @@ public class GolonganAction extends BaseMasterAction{
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[GolonganAction.saveAdd] start process >>>");
 
         try {
             Golongan golongan = getGolongan();
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
-
 
             golongan.setCreatedWho(userLogin);
             golongan.setLastUpdate(updateTime);
@@ -632,7 +631,7 @@ public class GolonganAction extends BaseMasterAction{
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResult");
 
-        logger.info("[liburAction.saveAdd] end process >>>");
+        logger.info("[GolonganAction.saveAdd] end process >>>");
         return "success_save_add";
     }
     public String saveAddPkwt(){

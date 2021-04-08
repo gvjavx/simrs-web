@@ -38,6 +38,34 @@
             <basic name="lastUpdateWho">
                 <column name="last_update_who"/>
             </basic>
+            <basic name="idItem">
+                <column name="id_item"/>
+            </basic>
+            <basic name="parentId">
+                <column name="parent_id"/>
+            </basic>
+            <basic name="flagParent">
+                <column name="flag_parent"/>
+            </basic>
+            <basic name="jenisItem">
+                <column name="jenis_item"/>
+            </basic>
+            <basic name="tarif">
+                <column name="tarif"/>
+            </basic>
+
+            <!--Sigit Tambahan table per 2021-03-16 -->
+            <basic name="tarifBpjs">
+                <column name="tarif_bpjs"/>
+            </basic>
+            <basic name="diskonNonBpjs">
+                <column name="diskon_non_bpjs"/>
+            </basic>
+            <basic name="diskonBpjs">
+                <column name="diskon_bpjs"/>
+            </basic>
+
+
         </attributes>
     </entity>
 </entity-mappings>

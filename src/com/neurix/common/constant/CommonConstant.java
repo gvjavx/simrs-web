@@ -53,6 +53,7 @@ public class CommonConstant {
     public final static String RESOURCE_PATH_PHOTO_PROFILE = "/upload/profile/";
     public static final String RESOURCE_PATH_FOTO_KIRIM = "/upload/foto_kirim/";
     public static final String RESOURCE_PATH_APK_ZEBRA = "/upload/apk_zebra";
+    public static final String RESOURCE_PATH_PEMERIKSAAN = "/upload/pemeriksaan/";
 
 //    public final static String RESOURCE_PATH_USER_UPLOAD = CommonUtil.getPropertyParams("resource.dir")+"/profile/";
     public final static String RESOURCE_PATH_USER_UPLOAD = "/pages/upload/image/profile/";
@@ -142,10 +143,13 @@ public class CommonConstant {
 
     public final static String IMAGE_CARD = "/pages/images/card.png";
 
-    public final static String BRANCH_RS01 = "RS01";
-    public final static String BRANCH_RS02 = "RS02";
-    public final static String BRANCH_RS03 = "RS03";
-    public final static String BRANCH_KP = "KP";
+    public final static String BRANCH_RS01 = "02"; //CommonUtil.getPropertyParams("branch.gatoel");
+    public final static String BRANCH_RS02 = "03"; //CommonUtil.getPropertyParams("branch.toeloengredjo");
+    public final static String BRANCH_RS03 = "04"; //CommonUtil.getPropertyParams("branch.perkebunan");
+    public final static String BRANCH_KP = "01"; //CommonUtil.getPropertyParams("branch.kp");
+    public final static String BRANCH_RS04 = "05"; //RS medika Utama
+    public final static String BRANCH_RS05 = "98"; // Estetika Meditama
+    public final static String BRANCH_RS06 = "99"; // Unit Rawat Jalan
 
     public static final String RESOURCE_IMAGE_TTD = CommonUtil.getPropertyParams("upload.folder");
     //    public static final String RESOURCE_IMAGE_TTD = "C:/Users/pc001/Pictures/";
@@ -180,7 +184,7 @@ public class CommonConstant {
     public final static String ROLE_ID_KA_KEU = CommonUtil.getPropertyParams("role.id.ka.keu");
     public final static String ROLE_ID_ADMIN_DIVISI = CommonUtil.getPropertyParams("role.id.admin.divisi");
     public final static String ROLE_ID_ADMIN = CommonUtil.getPropertyParams("role.id.admin");
-    public final static String ID_KANPUS = "KP";
+    public final static String ID_KANPUS = "01";
     public final static String MASTER_PAJAK_OBAT = "03.00";
 
 
@@ -258,6 +262,9 @@ public class CommonConstant {
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENGIRIM ="88";
     public final static String TRANSAKSI_ID_RK_PERSEDIAAN_PENERIMA ="89";
     public final static String ID_BG_KATEGORI_BIAYA_RUTIN = "KTB000005";
+
+    public final static String PEGAWAI_TETAP = "TP03";
+    public final static String PEGAWAI_PKWT = "TP04";
 
     //EMAIL
     public final static String EMAIL_USERNAME = CommonUtil.getPropertyParams("email.username");

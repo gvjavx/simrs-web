@@ -10,39 +10,29 @@ import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.biodata.model.Biodata;
 
-import com.neurix.hris.master.cuti.model.Cuti;
-
-import com.neurix.hris.master.cuti.bo.CutiBo;
-
 import com.neurix.hris.master.cutiPanjang.model.CutiPanjang;
 import com.neurix.hris.master.libur.bo.LiburBo;
 import com.neurix.hris.master.libur.model.Libur;
 import com.neurix.hris.master.positionBagian.bo.PositionBagianBo;
-import com.neurix.hris.master.positionBagian.model.positionBagian;
+import com.neurix.hris.master.positionBagian.model.PositionBagian;
 import com.neurix.hris.master.strukturJabatan.bo.StrukturJabatanBo;
 import com.neurix.hris.master.strukturJabatan.model.StrukturJabatan;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
 import com.neurix.hris.transaksi.cutiPegawai.model.CutiPegawai;
-import com.neurix.hris.transaksi.cutiPegawai.model.ItCutiPegawaiEntity;
 import com.neurix.hris.transaksi.notifikasi.bo.NotifikasiBo;
 import com.neurix.hris.transaksi.notifikasi.model.Notifikasi;
-import com.neurix.hris.transaksi.payroll.bo.PayrollBo;
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.hibernate.HibernateException;
-import org.joda.time.LocalDate;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.sql.*;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.*;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.Date;
 
@@ -458,7 +448,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setFlag("Y");
 
 //            Edit sisa cuti jika cancel
-            if ("normal".equalsIgnoreCase(cancelCutiPegawai.getJenisCuti()))
+            if (!"CT007".equalsIgnoreCase(cancelCutiPegawai.getCutiId()) && cancelCutiPegawai.getCutiId() != null)
                 cutiPegawaiBoProxy.editSisaCuti(cancelCutiPegawai);
 
                 List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.saveCancel(cancelCutiPegawai);
@@ -486,7 +476,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
     }
 
     public String pengajuanBatal(){
-        logger.info("[AlatAction.saveEdit] start process >>>");
+        logger.info("[CutiPegawaiAction.pengajuanBatal] start process >>>");
         try {
             CutiPegawai cancelCutiPegawai = getCutiPegawai();
             String userLogin = CommonUtil.userLogin();
@@ -494,8 +484,16 @@ public class CutiPegawaiAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
 
-            java.sql.Date dateStart = CommonUtil.convertToDate(cutiPegawai.getStTanggalDari());
-            java.sql.Date dateEnd = CommonUtil.convertToDate(cutiPegawai.getStTanggalSelesai());
+            String tglAwal, tglAkhir;
+            try{
+                tglAwal = cutiPegawai.getStTanggalDari();
+                tglAkhir = cutiPegawai.getStTanggalSelesai();
+            }catch(HibernateException e){
+                logger.error("[CutiPegawaiAction.pengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Tanggal Awal / Akhir Cuti Pegawai, " + e.getMessage());
+            }
+            java.sql.Date dateStart = CommonUtil.convertToDate(tglAwal);
+            java.sql.Date dateEnd = CommonUtil.convertToDate(tglAkhir);
             cancelCutiPegawai.setTanggalDari(dateStart);
             cancelCutiPegawai.setTanggalSelesai(dateEnd);
             cancelCutiPegawai.setFlagPengajuanBatal("Y");
@@ -506,7 +504,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
             cancelCutiPegawai.setAction("U");
             cancelCutiPegawai.setFlag("Y");
 
-            List<Notifikasi> notifikasiList = cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+            List<Notifikasi> notifikasiList = new ArrayList<>();
+            try{
+                notifikasiList = cutiPegawaiBoProxy.savePengajuanBatal(cancelCutiPegawai);
+            }catch(HibernateException e){
+                logger.error("[CutiPegawaiAction.pengajuanBatal] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when saving Pengajuan Batal, " + e.getMessage());
+            }
 
 
             for (Notifikasi notifikasi : notifikasiList){
@@ -517,15 +521,15 @@ public class CutiPegawaiAction extends BaseMasterAction {
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "AlatBO.saveEdit");
             } catch (GeneralBOException e1) {
-                logger.error("[CutiPegawaiAction.saveEdit] Error when saving error,", e1);
+                logger.error("[CutiPegawaiAction.pengajuanBatal] Error when saving error,", e1);
                 return ERROR;
             }
-            logger.error("[CutiPegawaiAction.saveEdit] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
+            logger.error("[CutiPegawaiAction.pengajuanBatal] Error when editing item alat," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving edit data, please inform to your admin.\n" + e.getMessage());
             return ERROR;
         }
 
-        logger.info("[CutiPegawaiAction.saveEdit] end process <<<");
+        logger.info("[CutiPegawaiAction.pengajuanBatal] end process <<<");
 
         return "success_batal";
     }
@@ -594,13 +598,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
             return ERROR;
         }
 
-        logger.info("[AlatAction.saveDelete] end process <<<");
+        logger.info("[CutiPegawaiAction.saveDelete] end process <<<");
 
         return "success_save_delete";
     }
 
     public String saveAdd(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[CutiPegawaiAction.saveAdd] start process >>>");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         NotifikasiBo notifikasiBo = (NotifikasiBo) ctx.getBean("notifikasiBoProxy");
@@ -657,7 +661,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfResultCutiPegawai");
 
-        logger.info("[cutiPegawaiAction.saveAdd] end process >>>");
+        logger.info("[CutiPegawaiAction.saveAdd] end process >>>");
         return "success_save_add";
     }
 
@@ -668,9 +672,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         List<CutiPegawai> listOfSearchCutiPegawai = new ArrayList();
         String role = CommonUtil.roleAsLogin();
         searchAlat.setRoleId(CommonUtil.roleIdAsLogin());
-        if ("ADMIN".equalsIgnoreCase(role)||"Admin bagian".equalsIgnoreCase(role)){
-        }
-        else{
+        if (!"ADMIN".equalsIgnoreCase(role)&&!"Admin bagian".equalsIgnoreCase(role)) {
             searchAlat.setNip(CommonUtil.userIdLogin());
         }
 
@@ -680,10 +682,10 @@ public class CutiPegawaiAction extends BaseMasterAction {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             BiodataBo biodataBo = (BiodataBo) ctx.getBean("biodataBoProxy");
 
-            positionBagian searchBagian = new positionBagian();
+            PositionBagian searchBagian = new PositionBagian();
             searchBagian.setBagianName(CommonUtil.userLogin());
-            List<positionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
-            for (positionBagian bagian : positionBagianList){
+            List<PositionBagian> positionBagianList = positionBagianBoProxy.getByCriteria(searchBagian);
+            for (PositionBagian bagian : positionBagianList){
                 List<CutiPegawai> cutiPegawaiList ;
                 List<Biodata> biodataList = biodataBo.getBiodataByBagian(null,null,bagian.getBagianId(),null);
                 for (Biodata biodata : biodataList){
@@ -742,13 +744,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public List initComboSisaCutiPegawaiId(String query,String cutiId,String branchId) {
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] start process >>>");
 
-        List<CutiPegawai> listOfAlat = new ArrayList();
+        List<CutiPegawai> listOfCombo = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfAlat = cutiPegawaiBo.getComboSisaCutiPegawaiWithCriteria(query,cutiId,branchId);
+            listOfCombo = cutiPegawaiBo.getComboSisaCutiPegawaiWithCriteria(query,cutiId,branchId);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -761,7 +763,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         logger.info("[cutiPegawaiAction.initComboSisaCutiPegawaiId] end process <<<");
 
-        return listOfAlat;
+        return listOfCombo;
     }
 
     public String cekTahunCuti(String tglAwal, String tglAkhir, String nip){
@@ -1286,13 +1288,13 @@ public class CutiPegawaiAction extends BaseMasterAction {
     public List initComboCutiPegawaiId(String query) {
         logger.info("[CutiPegawaiAction.initComboCutiPegawaiId] start process >>>");
 
-        List<CutiPegawai> listOfAlat = new ArrayList();
+        List<CutiPegawai> listOfCuti = new ArrayList();
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         CutiPegawaiBo cutiPegawaiBo = (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfAlat = cutiPegawaiBo.getComboCutiPegawaiWithCriteria(query);
+            listOfCuti = cutiPegawaiBo.getComboCutiPegawaiWithCriteria(query);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -1305,7 +1307,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 
         logger.info("[PermohonanLahanAction.initComboLokasiKebun] end process <<<");
 
-        return listOfAlat;
+        return listOfCuti;
     }
 
     public List initComboAlat(String query) {
@@ -2019,7 +2021,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
 //        return listOfCuti;
 //    }
 
-    public List initComboSetCuti(String nip, String jenisCuti) {
+    public List initComboSetCuti(String nip, String cutiId) {
         logger.info("[CutiPegawaiAction.initComboSetCuti] start process >>>");
 
         List<CutiPegawai> listOfCuti= new ArrayList();
@@ -2028,7 +2030,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         CutiPegawaiBo cutiPegawaiBo= (CutiPegawaiBo) ctx.getBean("cutiPegawaiBoProxy");
 
         try {
-            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, jenisCuti);
+            listOfCuti = cutiPegawaiBo.getListSetCuti2(nip, cutiId);
         } catch (GeneralBOException e) {
             Long logId = null;
             try {
@@ -2056,7 +2058,7 @@ public class CutiPegawaiAction extends BaseMasterAction {
         PositionBagianBo positionBagianBo= (PositionBagianBo) ctx.getBean("positionBagianBoProxy");
         StrukturJabatanBo strukturJabatanBo= (StrukturJabatanBo) ctx.getBean("strukturJabatanBoProxy");
         Branch branch = new Branch();
-        positionBagian positionBagian = new positionBagian();
+        PositionBagian positionBagian = new PositionBagian();
         biodataList = biodataBo.getBiodataforAbsensi(getBranchId(),"",getBagian(),getNip());
 
         for (Biodata biodata : biodataList){

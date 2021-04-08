@@ -696,6 +696,10 @@ public class UserBoImpl implements UserBo {
                             menuNameString = "<li id=\"version\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }else if (menuName.equalsIgnoreCase("Laporan")) {
                             menuNameString = "<li id=\"laporan_ops\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
+                        } else if (menuName.equalsIgnoreCase("Konsultasi Gizi")) {
+                            menuNameString = "<li id=\"konsultasi_gizi\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
+                        } else if (menuName.equalsIgnoreCase("Makanan Pendamping")) {
+                            menuNameString = "<li id=\"makanan_pendamping\"><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         } else {
                             menuNameString = "<li><a href=\"" + itemMenu.get(1) + "\"><i class=\"fa fa-th-large\"></i><span> " + menuName + "</span></a></li>";
                         }
@@ -1868,6 +1872,7 @@ public class UserBoImpl implements UserBo {
         return listOfResultUsers;
     }
 
+    @Override
     public void saveAdd(User addUsers) throws GeneralBOException {
 
         logger.info("[UserBoImpl.saveAdd] start process >>>");

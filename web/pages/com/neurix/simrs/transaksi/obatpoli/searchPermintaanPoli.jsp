@@ -52,6 +52,14 @@
                             <s:form id="permintaanForm" method="post" namespace="/permintaangudang" action="search_permintaangudang.action"
                                     theme="simple" cssClass="form-horizontal">
                                 <div class="form-group">
+                                    <label class="control-label col-sm-4">ID Permintaan</label>
+                                    <div class="col-sm-4">
+                                        <s:textfield id="id_obat" cssStyle="margin-top: 7px"
+                                                     name="permintaanObatPoli.idPermintaanObatPoli" required="false"
+                                                     readonly="false" cssClass="form-control"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label col-sm-4">Tipe Permintaan</label>
                                     <div class="col-sm-4">
                                         <s:select list="#{'003':'Reture'}"
@@ -70,8 +78,18 @@
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'umum':'UMUM','bpjs':'BPJS'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="jenisObat" name="permintaanObatPoli.jenisObat"
+                                                  headerKey="" headerValue=" - "
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -165,16 +183,20 @@
                                 <td>ID Permintaan</td>
                                 <td>Tanggal</td>
                                 <td>Nama Pelayanan</td>
+                                <td>Jenis Obat</td>
+                                <td align="center">Jumlah Item</td>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="font-size: 13px">
                             <s:iterator value="#session.listOfResult" var="row">
                                 <tr>
                                     <td><s:property value="idPermintaanObatPoli"/></td>
                                     <td><s:property value="stCreatedDate"/></td>
                                     <td><s:property value="namaPelayanan"/></td>
+                                    <td><s:property value="jenisObat"/></td>
+                                    <td align="center"><span style="padding: 6px; background-color: #fbec88; color: black; border-radius: 20px"><s:property value="jumlahObat"/></span></td>
                                     <td><s:if test='#row.keterangan == "Menunggu Konfirmasi"'>
                                         <label class="label label-warning"><s:property value="keterangan"/></label>
                                     </s:if><s:else>

@@ -574,6 +574,7 @@ public class PurchaseOrderController implements ModelDriven<Object> {
                         purchaseOrderMobile.setKeterangan(item.getKeterangan());
                         purchaseOrderMobile.setApprovalFlag(item.getApprovalFlag());
                         purchaseOrderMobile.setNotFlagR(item.getNotFlagR());
+                        purchaseOrderMobile.setJumlahObat(String.valueOf(item.getJumlahObat()));
 
                         listOfPurchaseOrder.add(purchaseOrderMobile);
                     }

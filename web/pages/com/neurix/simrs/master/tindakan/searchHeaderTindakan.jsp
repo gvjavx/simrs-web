@@ -319,22 +319,17 @@
                 <div class="row jarak_atas">
                     <div class="form-group">
                         <label class="col-md-3">Ambulance</label>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <div class="form-check" style="margin-top: 5px">
                                 <input onclick="setAmbulance(this.id)" type="checkbox" id="is_ambulance" value="Y">
                                 <label for="is_ambulance"></label>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row jarak_atas">
-                    <div class="form-group">
-                        <label class="col-md-3">Mobil Jenzah</label>
-                        <div class="col-md-7">
-                            <div class="form-check" style="margin-top: 5px">
-                                <input onclick="setMobilJenazah(this.id)" type="checkbox" id="is_mobil_jenazah" value="Y">
-                                <label for="is_mobil_jenazah"></label>
-                            </div>
+                        <div class="col-md-1">
+                            <i class="fa fa-question-circle box-rm" style="font-size: 18px; margin-top: 7px; margin-left: -15px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Silahkan dicentang jika tindakan berupa ambulance, dan dipilih apakah ambulance datang atau pulang
+                                    </span></i>
                         </div>
                     </div>
                 </div>
@@ -357,6 +352,40 @@
                                 <i class="fa fa-times"></i> required</p>
                             <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
                                id="cor_set_jenis_ambulance"><i class="fa fa-check"></i> correct</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Mobil Jenazah</label>
+                        <div class="col-md-1">
+                            <div class="form-check" style="margin-top: 5px">
+                                <input onclick="setMobilJenazah(this.id)" type="checkbox" id="is_mobil_jenazah" value="Y">
+                                <label for="is_mobil_jenazah"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <i class="fa fa-question-circle box-rm" style="font-size: 18px; margin-top: 7px; margin-left: -15px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Silahkan dicentang jika tindakan berupa mobil jenazah. ambulance dan mobil jenazah hanya dicentang salah satu
+                                    </span></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row jarak_atas">
+                    <div class="form-group">
+                        <label class="col-md-3">Konsultasi Gizi</label>
+                        <div class="col-md-1">
+                            <div class="form-check" style="margin-top: 5px">
+                                <input type="checkbox" id="is_konsultasi_gizi" value="Y">
+                                <label for="is_konsultasi_gizi"></label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <i class="fa fa-question-circle box-rm" style="font-size: 18px; margin-top: 7px; margin-left: -15px">
+                                    <span class="box-rmtext" style="font-size: 12px; font-family: Calibri">
+                                        Silahkan dicentang jika tindakan merupakan konsultasi gizi
+                                    </span></i>
                         </div>
                     </div>
                 </div>
@@ -474,6 +503,8 @@
     function showModal(tipe, id) {
         if ('add' == tipe) {
             getKategoriIna();
+            $('#form_jenis_ambulance').hide();
+            $('#is_konsultasi_gizi, #is_ambulance, #is_mobil_jenazah').prop('checked', false);
             $('#set_nama_tindakan, #h_tarif, #set_tarif').val('');
             $('#set_kategori_ina_bpjs').val('').trigger('change');
             $('#flagKonsulTele, #set_vaksin').val('N').trigger('change');
@@ -509,6 +540,7 @@
             var flagVaksin = $('#set_vaksin').val();
             var isAmbulance = $('#is_ambulance').is(':checked');
             var isJenazah = $('#is_mobil_jenazah').is(':checked');
+            var isKonsulGizi = $('#is_konsultasi_gizi').is(':checked');
             var jenisAmbulance = $('#set_jenis_ambulance').val();
             var jenis = $('#set_jenis_ambulance').val();
             if(isJenazah){
@@ -519,6 +551,11 @@
                 }else{
                     jenis = "";
                 }
+            }
+
+            var tempGizi = "N";
+            if(isKonsulGizi){
+                tempGizi = "Y";
             }
             if (nama != '' && idKategori != '' && tarif != '' && flagTele && flagVaksin != '') {
                 $('#save_add').hide();
@@ -531,7 +568,8 @@
                         'tarif': tarif,
                         'flag_tele': flagTele,
                         'flag_vaksin': flagVaksin,
-                        'kategori': jenis
+                        'kategori': jenis,
+                        'flag_gizi': tempGizi
                     };
                     var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
@@ -559,7 +597,8 @@
                         'tarif': tarif,
                         'flag_tele': flagTele,
                         'flag_vaksin': flagVaksin,
-                        'kategori': jenis
+                        'kategori': jenis,
+                        'flag_gizi': tempGizi
                     };
                     var dataString = JSON.stringify(data);
                     dwr.engine.setAsync(true);
@@ -645,6 +684,12 @@
                     $('#form_jenis_ambulance').hide();
                     $('#is_ambulance').attr('checked', false);
                     $('#set_jenis_ambulance').val('').trigger('change');
+                }
+
+                if("Y" == res.flagKonsulGizi){
+                    $('#is_konsultasi_gizi').prop('checked', true);
+                }else{
+                    $('#is_konsultasi_gizi').prop('checked', false);
                 }
             }
         });

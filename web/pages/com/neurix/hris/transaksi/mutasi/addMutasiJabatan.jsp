@@ -367,7 +367,8 @@
                                         $.each(data, function (i, item) {
                                             var labelItem = item.namaPegawai +" - "+ item.positionName;
                                             mapped[labelItem] = {pegawai:item.namaPegawai, id: item.nip, label: labelItem, nama : item.namaPegawai, branchId : item.branch,
-                                                divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan, profesiId:item.profesiId, tipePegawai:item.tipePegawai };
+                                                divisiId: item.divisi, positionId : item.positionId, pjs : item.pjs, golongan:item.golongan, profesiId:item.profesiId, tipePegawai:item.tipePegawai,
+                                                jenisPegawai:item.jenisPegawai};
                                             functions.push(labelItem);
                                         });
                                         process(functions);
@@ -391,6 +392,7 @@
                                     $('#divisiLamaId1').val(selectedObj.divisiId).change();
                                     $('#positionLamaId1').val(selectedObj.positionId).change();
                                     $('#profesiLamaId1').val(selectedObj.profesiId).change();
+                                    $('#jenisPegawaiLamaId').val(selectedObj.jenisPegawai).change();
                                     $('#divisiBaruId2').val(selectedObj.divisiId);
                                     $('#positionBaruId1').val(selectedObj.positionId);
                                     $('#profesiBaruId1').val(selectedObj.profesiId);
@@ -437,6 +439,15 @@
                                 <s:select list="#comboProfesi.listComboProfesi" id="profesiLamaId1" name="mutasi.profesiLamaId" disabled="true"
                                           listKey="profesiId" listValue="profesiName" headerKey="" headerValue="" cssClass="form-control form-add" />
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-4" > Jenis Jabatan Lama : </label>
+                        <div class="col-sm-8">
+                            <s:action id="comboJenisPegawai" namespace="/jenisPegawai" name="initComboJenisPegawai_jenisPegawai"/>
+                            <s:select list="#comboJenisPegawai.listOfComboJenisPegawai" id="jenisPegawaiLamaId" name="" disabled="true"
+                                      listKey="jenisPegawaiId" listValue="jenisPegawaiName" headerKey="" headerValue="" cssClass="form-control"/>
                         </div>
                     </div>
 
@@ -561,7 +572,7 @@
 
 <script>
     window.changePegawai = function (id) {
-        if (id == "TP01") {
+        if (id == "TP03") {
             $('#golongan1Group').show();
             $('#golongan2Group').hide();
             $('#golonganBaru1Group').show();
@@ -698,7 +709,7 @@
                 $('#divisiLamaId1').val(item.divisiLamaId).change();
 
                 console.log(item.tipePegawai);
-                if (item.tipePegawai == 'TP01'){
+                if (item.tipePegawai == "TP03"){
                     $('#golonganLamaId1').val(item.levelLama).change();
                 }else {
                     $('#golonganLamaId2').val(item.levelLama).change();
@@ -946,6 +957,7 @@
         var noSk            = $("#no_sk").val();
         var tanggalKeluar   = $("#tanggalKeluar").val();
         var url             = $('#myForm').attr('action');
+        var jenisJabLama    = $("#jenisPegawaiLamaId option:selected").val();
 
         if (url == "addPerson"){
             MutasiAction.checkIsAvailInSession(nip, function(res){
@@ -979,10 +991,16 @@
                         }
 
                     } else if (status == "M" || status == "R"){
-                        if (noSk == null || noSk == ""){
-                            alert("No.SK harus diisi");
-                        } else {
-                            save();
+                        if(jenisJabLama == "JP01" && jenisJabatan != "JP01"){
+                            alert("Jabatan yang hendak diganti adalah Jabatan Utama (Normal), maka Jenis Jabatan Baru harus Normal.\nAgar Pegawai yang bersangkutan tetap memiliki Jabatan Utama.")
+                        }else if(jenisJabLama != "JP01" && jenisJabatan == "JP01"){
+                            alert("Anda tidak dapat mengganti Jabatan Rangkap (PJS/PLT) dengan Jenis Jabatan Utama (normal) untuk menghindari pegawai memiliki Jabatan Utama Ganda.")
+                        }else{
+                            if (noSk == null || noSk == ""){
+                                alert("No.SK harus diisi");
+                            } else {
+                                save();
+                            }
                         }
                     } else if (status == "RS"){
                         console.log("tanggal keluar didalam if : " + tanggalKeluar);
@@ -1011,6 +1029,7 @@
                     }
                 }
             });
+
         } else {
             save();
         }
