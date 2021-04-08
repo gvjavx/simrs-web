@@ -38,6 +38,10 @@
           p:checkupBoProxy-ref="checkupBoProxy"
     />
 
+    <bean id="dokterController" class="com.neurix.simrs.mobileapi.DokterController"
+          p:checkupBoProxy-ref="checkupBoProxy"
+    />
+
 
 
 

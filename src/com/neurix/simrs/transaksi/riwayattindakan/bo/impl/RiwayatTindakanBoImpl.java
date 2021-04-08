@@ -250,7 +250,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
 
     @Override
     public List<RiwayatTindakan> typeaheadRiwayatTindakan(String riwayatTindakanName) throws GeneralBOException {
-        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] start process >>>");
+        logger.info("[RiwayatTindakanBoImpl.typeaheadRiwayatTindakan] start process >>>");
 
         // Mapping with collection and put
         List<RiwayatTindakan> listOfResult = new ArrayList();
@@ -258,7 +258,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
         try {
             itSimrsRiwayatTindakanEntities = riwayatTindakanDao.getRiwayatTindakanListByLike(riwayatTindakanName);
         } catch (HibernateException e) {
-            logger.error("[KodeRekeningBoImpl.typeaheadKodeRekening] Error, " + e.getMessage());
+            logger.error("[RiwayatTindakanBoImpl.typeaheadRiwayatTindakan] Error, " + e.getMessage());
             throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
         }
 
@@ -272,8 +272,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                 listOfResult.add(riwayatTindakan);
             }
         }
-        logger.info("[KodeRekeningBoImpl.typeaheadKodeRekening] end process <<<");
-
+        logger.info("[RiwayatTindakanBoImpl.typeaheadRiwayatTindakan] end process <<<");
         return listOfResult;
     }
 

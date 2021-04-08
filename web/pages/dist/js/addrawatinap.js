@@ -2497,7 +2497,7 @@ function addObatToList() {
         hariKronis = $("#hari-kronis").val();
     }
 
-    if (obat && qty && apotek && jenisSatuan && jenisObat != '' && isRacik && tableKeterangan.length > 0) {
+    if (obat && qty && apotek && jenisSatuan && isRacik && tableKeterangan.length > 0) {
 
         var idPelayanan = apotek.split('|')[0];
         var namaPelayanan = apotek.split('|')[1];
@@ -4046,6 +4046,21 @@ function setDiskonHarga(id) {
                 }
                 if (jenisPeriksaPasien == "bpjs") {
                     $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarifBpjs));
+                } else if (jenisPeriksaPasien == "bpjs_rekanan" || jenisPeriksaPasien == "rekanan"){
+
+                    TindakanRawatAction.getTarifDetailRekanaOps(idDetailCheckup, id, function (res2) {
+
+                        if (jenisPeriksaPasien == "bpjs_rekanan"){
+                            disk = res2.diskonBpjs;
+                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarifBpjs));
+                        }
+
+                        if (jenisPeriksaPasien == "rekanan"){
+                            disk = res2.diskonNonBpjs;
+                            $('#h_harga').val("Rp. " + formatRupiahAtas(res2.tarif));
+                        }
+                    });
+
                 } else {
                     $('#h_harga').val("Rp. " + formatRupiahAtas(res.tarif));
                 }
@@ -4081,7 +4096,7 @@ function addKeterangan() {
     var param = $('#param_ket').val();
     var ket = $('#ket_param').val();
     var cek = false;
-    if(namaWaktu && param != '' && ket != null){
+    if(namaWaktu || param != '' || ket != null){
         var disKet = "";
         $.each(ket, function (i, item) {
             var id = item.split('|')[0];
@@ -4135,7 +4150,7 @@ function addKeterangan() {
 
 function getComboParameterObat(idJenis){
     ObatAction.getComboParameterObat(idJenis, function (res) {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         if(res.length > 0){
             $.each(res, function (i, item) {
                 option += '<option value="'+item.id+'">'+item.nama+'</option>';
@@ -4148,7 +4163,7 @@ function getComboParameterObat(idJenis){
 
 function getComboWaktuObat(idJenis){
     ObatAction.getComboParameterWaktuObat(idJenis, function (res) {
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         if(res.length > 0){
             $.each(res, function (i, item) {
                 option += '<option value="'+item.id+'">'+item.keterangan+'</option>';

@@ -130,9 +130,17 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
                         MtSimrsHargaObatEntity hargaObatEntity = hargaObatEntities.get(0);
                         BigDecimal tempHarga = new BigDecimal(0);
                         if(isKhusus){
-                            tempHarga = hargaObatEntity.getHargaJual() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJual();
+                            if ("bpjs".equalsIgnoreCase(bean.getJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
+                                tempHarga = hargaObatEntity.getHargaJualKhususBpjs() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualKhususBpjs();
+                            } else {
+                                tempHarga = hargaObatEntity.getHargaJual() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJual();
+                            }
                         }else{
-                            tempHarga = hargaObatEntity.getHargaJualUmum() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmum();
+                            if ("bpjs".equalsIgnoreCase(bean.getJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
+                                tempHarga = hargaObatEntity.getHargaJualUmumBpjs() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmumBpjs();
+                            } else {
+                                tempHarga = hargaObatEntity.getHargaJualUmum() == null ? new BigDecimal(0) : hargaObatEntity.getHargaJualUmum();
+                            }
                         }
 
                         if ("box".equalsIgnoreCase(transaksiObatDetail.getJenisSatuan())) {
@@ -473,7 +481,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
 
             if ("lembar".equalsIgnoreCase(bean.getJenisSatuan())) {
                 // jika stock lebih besar dari permintaan reture
-                if (qtyLembar.compareTo(bean.getQtyApprove()) == 1) {
+                if (qtyLembar.compareTo(bean.getQtyApprove()) == 1 || qtyLembar.compareTo(bean.getQtyApprove()) == 0) {
                     obatPoliEntity.setQtyLembar(qtyLembar.subtract(bean.getQtyApprove()));
                 } else {
 
@@ -504,7 +512,7 @@ public class TransaksiObatBoImpl implements TransaksiObatBo {
             }
 
             if ("biji".equalsIgnoreCase(bean.getJenisSatuan())) {
-                if (qtyBiji.compareTo(bean.getQtyApprove()) == 1) {
+                if (qtyBiji.compareTo(bean.getQtyApprove()) == 1 || qtyBiji.compareTo(bean.getQtyApprove()) == 0) {
                     obatPoliEntity.setQtyBiji(qtyBiji.subtract(bean.getQtyApprove()));
                 } else {
                     if (obatEntity.getBijiPerLembar().compareTo(bean.getQtyApprove()) == 1 && obatPoliEntity.getQtyLembar().compareTo(new BigInteger(String.valueOf(0))) == 1) {

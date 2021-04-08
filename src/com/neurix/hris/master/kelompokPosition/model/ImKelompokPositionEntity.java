@@ -1,6 +1,7 @@
 package com.neurix.hris.master.kelompokPosition.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -21,6 +22,7 @@ public class ImKelompokPositionEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
     private String flagIsMultiplePerson;
+    private BigDecimal tunjTelekomunikasi;
 
     public String getKelompokId() {
         return kelompokId;
@@ -92,5 +94,13 @@ public class ImKelompokPositionEntity implements Serializable {
 
     public void setFlagIsMultiplePerson(String flagIsMultiplePerson) {
         this.flagIsMultiplePerson = flagIsMultiplePerson;
+    }
+
+    public BigDecimal getTunjTelekomunikasi() {
+        return tunjTelekomunikasi;
+    }
+
+    public void setTunjTelekomunikasi(BigDecimal tunjTelekomunikasi) {
+        this.tunjTelekomunikasi = tunjTelekomunikasi;
     }
 }

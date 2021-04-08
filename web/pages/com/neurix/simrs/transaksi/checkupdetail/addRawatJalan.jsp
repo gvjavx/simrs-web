@@ -2004,7 +2004,6 @@
                               id="war_rep_obat"><i class="fa fa-times"></i> required</span>
                         <span style="color: green; margin-top: 12px; display: none;"
                               id="cor_rep_obat"><i class="fa fa-check"></i> correct</span>
-                        <span style="margin-top: 17px; display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
                         <button class="btn btn-sm btn-primary" style="display: none;" id="btn-reset-combo-obat" onclick="resetComboObat()"><i class="fa fa-edit"></i></button>
                         <input type="hidden" id="val-kronis"/>
                     </div>
@@ -2014,18 +2013,20 @@
                     <div class="col-md-9">
                         <table class="table" style="font-size: 12px; border: solid 1px #ddd">
                             <tr>
-                                <td width="30%">- Formularium</td>
-                                <td align="left"><span id="set_formula"></span></td>
+                                <td width="30%">- <span id="set_formula"></span></td>
+                                <td align="left"></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Parenteral</td>
-                                <td align="left"><span id="set_teral"></span></td>
+                                <td width="30%">- <span id="set_teral"></span></td>
+                                <td align="left"></td>
                             </tr>
                             <tr>
-                                <td width="30%">- Jenis Satuan</td>
+                                <td width="30%">- Jenis Satuan : </td>
                                 <td align="left"><span id="set_js"></span></td>
                                 <td width="20%"></td>
-                                <td width="30%">- Non Parenteral</td>
-                                <td align="left"><span id="set_noretal"></span></td>
+                                <td width="30%">
+                                    <span style="display: none;" id="label-kronis"><label class="label label-warning" >Obat Kronis</label></span>
+                                </td>
+                                <td align="left"></td>
                             </tr>
                         </table>
                     </div>
@@ -2163,13 +2164,13 @@
                     <div class="col-md-3">
                         <label style="margin-bottom: -7px">Waktu</label>
                         <select class="form-control select2" style="width: 100%" id="waktu_param">
-                            <option value="">[Select One]</option>
+                            <option value=""> - </option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label style="margin-bottom: -7px">Parameter Keterangan</label>
                         <select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">
-                            <option value="">[Select One]</option>
+                            <option value=""> - </option>
                         </select>
                     </div>
                     <div class="col-md-4">

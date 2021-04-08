@@ -2477,13 +2477,13 @@
                     <div class="col-md-3">
                         <label style="margin-bottom: -7px">Waktu</label>
                         <select class="form-control select2" style="width: 100%" id="waktu_param">
-                            <option value="">[Select One]</option>
+                            <option value=""> - </option>
                         </select>
                     </div>
                     <div class="col-md-4">
                         <label style="margin-bottom: -7px">Parameter Keterangan</label>
                         <select onchange="getComboKeteranganObat(this.value)" class="form-control select2" style="width: 100%" id="param_ket">
-                            <option value="">[Select One]</option>
+                            <option value=""> - </option>
                         </select>
                     </div>
                     <div class="col-md-4">

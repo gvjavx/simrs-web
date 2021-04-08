@@ -448,20 +448,23 @@
                                id="cor_app_no_produksi"><i class="fa fa-check"></i> correct</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Mrek</label>
-                        <div class="col-md-7">
-                            <s:textfield cssClass="form-control"
-                                         cssStyle="margin-top: 7px" id="app_merek"
-                                         onkeypress="var warn =$('#war_app_merek').is(':visible'); if (warn){$('#cor_app_merek').show().fadeOut(3000);$('#war_app_merek').hide()}"></s:textfield>
-                        </div>
-                        <div class="col-md-2">
-                            <p style="color: red; margin-top: 12px; display: none; margin-left: -20px"
-                               id="war_app_merek"><i class="fa fa-times"></i> required</p>
-                            <p style="color: green; margin-top: 12px; display: none; margin-left: -20px"
-                               id="cor_app_merek"><i class="fa fa-check"></i> correct</p>
-                        </div>
-                    </div>
+                    <%--<div class="form-group">--%>
+                        <%--<label class="col-md-3" style="margin-top: 7px">Mrek</label>--%>
+                        <%--<div class="col-md-7">--%>
+                            <%--<s:textfield cssClass="form-control"--%>
+                                         <%--cssStyle="margin-top: 7px" id="app_merek"--%>
+                                         <%--onkeypress="var warn =$('#war_app_merek').is(':visible'); if (warn){$('#cor_app_merek').show().fadeOut(3000);$('#war_app_merek').hide()}"></s:textfield>--%>
+                        <%--</div>--%>
+                        <%--<div class="col-md-2">--%>
+                            <%--<p style="color: red; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="war_app_merek"><i class="fa fa-times"></i> required</p>--%>
+                            <%--<p style="color: green; margin-top: 12px; display: none; margin-left: -20px"--%>
+                               <%--id="cor_app_merek"><i class="fa fa-check"></i> correct</p>--%>
+                        <%--</div>--%>
+                    <%--</div>--%>
+
+                    <input type="hidden" id="app_merek"/>
+
                     <div class="form-group">
                         <label class="col-md-3" style="margin-top: 7px">Pabrik</label>
                         <div class="col-md-7">
@@ -966,9 +969,9 @@
             if(pabrik == '' || pabrik == null){
                 $('#war_combo_pabrik').show();
             }
-            if(mrek == ''){
-                $('#war_app_merek').show();
-            }
+//            if(mrek == ''){
+//                $('#war_app_merek').show();
+//            }
             if(noProduksi == ''){
                 $('#war_app_no_produksi').show();
             }

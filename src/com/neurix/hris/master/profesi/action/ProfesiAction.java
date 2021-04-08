@@ -8,6 +8,8 @@ import com.neurix.hris.master.profesi.bo.ProfesiBo;
 import com.neurix.hris.master.profesi.model.Profesi;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.ContextLoader;
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -425,6 +427,20 @@ public class ProfesiAction extends BaseMasterAction{
         logger.info("[ProfesiAction.search] end process <<<");
 
         return "";
+    }
+
+    public String getTipeProfesi(String profesiId){
+        logger.info("[ProfesiAction.getTipeProfesi] start >>>>>>");
+        String tipeProfesi = "";
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ProfesiBo profesiBo = (ProfesiBo) ctx.getBean("profesiBoProxy");
+        try{
+            tipeProfesi = profesiBo.getTipeProfesi(profesiId);
+        }catch (GeneralBOException e){
+            logger.error("[ProfesiAction.getTipeProfesi] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when retrieving Tipe Profesi, " + e.getMessage());
+        }
+        return tipeProfesi;
     }
 
     public String paging(){

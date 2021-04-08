@@ -683,7 +683,7 @@ public class MutasiAction extends BaseMasterAction{
                 mutasi.setPositionLamaId(obj.getString("positionlamaid"));
                 mutasi.setPositionLamaName(obj.getString("positionlamaname"));
                 mutasi.setProfesiLamaId(obj.getString("profesilamaid"));
-                mutasi.setProfesiLamaName(obj.getString("profesibaruid"));
+                mutasi.setProfesiLamaName(obj.getString("profesilamaname"));
 
                 mutasi.setBranchBaruId(obj.getString("branchbaruid"));
                 mutasi.setBranchBaruName(obj.getString("branchbaruname"));

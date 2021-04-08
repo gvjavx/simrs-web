@@ -55,5 +55,9 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
 
+        <property name="positionId">
+            <column name="position_id" sql-type="varchar" length="10" />
+        </property>
+
     </class>
 </hibernate-mapping>

@@ -1978,7 +1978,20 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 
                     //update 31-05-2020
                     //persentase dari gaji
-                    String tipeGaji =biodataEntity.getJenisPegawai();
+                    List<ItPersonilPositionEntity> personilPositionEntityList = new ArrayList<>();
+                    try{
+                        Map criteria = new HashMap();
+                        criteria.put("nip", biodataEntity.getNip());
+                        personilPositionEntityList = personilPositionDao.getByCriteria(criteria);
+                    }catch (HibernateException e){
+                        logger.error("[PayrollBoImpl.dataAddPayroll] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Personil Position using Criteria, " +  e.getMessage());
+                    }
+
+                    String tipeGaji = "";
+                    for(ItPersonilPositionEntity position : personilPositionEntityList){
+                        tipeGaji = position.getJenisPegawai();
+                    }
 
                     if (!"".equalsIgnoreCase(tipeGaji)){
                         List<ImHrisMappingPersenGaji> mappingPersenGajiList = mappingPersenGajiDao.getListMappingPersenGaji(tipeGaji);
@@ -9326,8 +9339,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payrollUpahHarian.setHari(CommonUtil.convertDateToDay(absensiPegawaiEntity.getTanggal()));
                 payrollUpahHarian.setAbsenMasuk(absensiPegawaiEntity.getJamMasuk());
                 payrollUpahHarian.setAbsenKeluar(absensiPegawaiEntity.getJamKeluar());
-                payrollUpahHarian.setGaji(CommonUtil.numbericFormat(imBiodataEntity.getGaji(), "###,###"));
-                payrollUpahHarian.setGajiNilai(imBiodataEntity.getGaji());
+//                payrollUpahHarian.setGaji(CommonUtil.numbericFormat(imBiodataEntity.getGaji(), "###,###"));
+//                payrollUpahHarian.setGajiNilai(imBiodataEntity.getGaji());
 
                 payrollUpahHarian.setStatus("N");
                 if(upahHarianList != null){
@@ -9441,8 +9454,8 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                 payrollUpahHarian.setHari(CommonUtil.convertDateToDay(absensiPegawaiEntity.getTanggal()));
                 payrollUpahHarian.setAbsenMasuk(absensiPegawaiEntity.getJamMasuk());
                 payrollUpahHarian.setAbsenKeluar(absensiPegawaiEntity.getJamKeluar());
-                payrollUpahHarian.setGaji(CommonUtil.numbericFormat(imBiodataEntity.getGaji(), "###,###"));
-                payrollUpahHarian.setGajiNilai(imBiodataEntity.getGaji());
+//                payrollUpahHarian.setGaji(CommonUtil.numbericFormat(imBiodataEntity.getGaji(), "###,###"));
+//                payrollUpahHarian.setGajiNilai(imBiodataEntity.getGaji());
 
                 payrollUpahHarian.setChecked("N");
                 payrollUpahHarian.setStatus("N");

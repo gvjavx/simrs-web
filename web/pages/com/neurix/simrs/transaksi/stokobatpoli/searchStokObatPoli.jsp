@@ -34,6 +34,20 @@
             return today;
         }
 
+        function formatRupiah(angka) {
+            if(angka != null && angka != ''){
+                var reverse = angka.toString().split('').reverse().join(''),
+                    ribuan = reverse.match(/\d{1,3}/g);
+                ribuan = ribuan.join('.').split('').reverse().join('');
+                if (angka < 0){
+                    return "-"+ribuan;
+                } else {
+                    return ribuan;
+                }
+            }else{
+                return 0;
+            }
+        }
     </script>
 
     <script type='text/javascript' src='<s:url value="/dwr/interface/CheckupDetailAction.js"/>'></script>
@@ -103,6 +117,17 @@
                                                       <%--cssClass="form-control select2"/>--%>
                                     </div>
                                 </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis Obat</label>
+                                    <div class="col-sm-4">
+                                        <%--<s:textfield id="flag_bpjs" name="obatPoli.flagBpjs"--%>
+                                                     <%--required="false" readonly="false"--%>
+                                                     <%--cssClass="form-control" cssStyle="margin-top: 7px"/>--%>
+                                        <s:select cssStyle="border-radius: 4px; width: 100%; margin-top: 7px;" list="#{'N':'UMUM','Y':'BPJS'}" id="flag_bpjs"
+                                            name="obatPoli.flagBpjs" headerKey="" headerValue=" - " cssClass="form-control"
+                                        />
+                                    </div>
+                                </div>
                                 <br>
                                 <div class="form-group">
                                     <label class="control-label col-sm-4"></label>
@@ -115,7 +140,7 @@
                                             Search
                                         </sj:submit>
                                         <%--<button class="btn btn-primary"><i class="fa fa-plus"></i> Tambah Obat</button>--%>
-                                        <a type="button" class="btn btn-danger" href="initForm_rawatinap.action">
+                                        <a type="button" class="btn btn-danger" href="initForm_stokobat.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
                                     </div>
@@ -184,14 +209,13 @@
                                 <td>ID Barang</td>
                                 <td>Nama Obat</td>
                                 <td>Expired Date</td>
-                                <%--<td align="center">Qty Lembar</td>--%>
-                                <%--<td align="center">Qty Biji</td>--%>
+                                <td>Jenis</td>
                                 <td align="center">Jml Lembar/Box</td>
                                 <td align="center">Jml Biji/Lembar</td>
                                 <td align="center">Stok Biji</td>
                             </tr>
                             </thead>
-                            <tbody>
+                            <tbody style="font-size: 13px">
                             <s:iterator value="#session.listOfResult" status="listOfRawatInap">
                                 <tr>
                                     <td><s:property value="idObat"/></td>
@@ -203,11 +227,23 @@
                                             document.write(converterDate(new Date(tgl)));
                                         </script>
                                     </td>
-                                    <%--<td align="center"><s:property value="qtyBox"/></td>--%>
+                                    <td align="center">
+                                        <script>
+                                            var str = "";
+                                            var flagBpjs = '<s:property value="flagBpjs"/>';
+                                            if (flagBpjs == 'Y'){
+                                                str = "BPJS";
+                                            } else {
+                                                str = "UMUM";
+                                            }
+                                            document.write(str);
+                                        </script>
+                                    </td>
                                     <%--<td align="center"><s:property value="qtyLembar"/></td>--%>
-                                    <td align="center"><s:property value="lembarPerBox"/></td>
-                                    <td align="center"><s:property value="bijiPerLembar"/></td>
-                                    <td align="center"><s:property value="qtyBiji"/></td>
+                                    <td align="right"><script>document.write(formatRupiah(<s:property value="lembarPerBox"/>))</script></td>
+                                    <td align="right"><script>document.write(formatRupiah(<s:property value="bijiPerLembar"/>))</script></td>
+                                    <%--<td align="center"><s:property value="qtyBiji"/></td>--%>
+                                    <td align="right"><script>document.write(formatRupiah(<s:property value="totalQty"/>))</script></td>
                                 </tr>
                             </s:iterator>
                             </tbody>

@@ -1330,6 +1330,18 @@ public class RawatInapAction extends BaseMasterAction {
                     if ("dpjp_1".equalsIgnoreCase(obj.getString("prioritas"))) {
                         idDokterDpjp = obj.getString("id_dpjp");
                         dokterTeam.setFlagApprove("Y");
+
+                        List<NotifikasiFcm> resultNotif = new ArrayList<>();
+                        NotifikasiFcm beanNotif = new NotifikasiFcm();
+                        beanNotif.setUserId(dokterTeam.getIdDokter());
+
+                        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+                        NotifikasiFcmBo notifikasiFcmBo = (NotifikasiFcmBo) ctx.getBean("notifikasiFcmBoProxy");
+
+                        resultNotif = notifikasiFcmBo.getByCriteria(beanNotif);
+                        if (resultNotif.size() > 0) {
+                            FirebasePushNotif.sendNotificationFirebase(resultNotif.get(0).getTokenFcm(), "Rawat Inap", "Anda telah ditunjuk menjadi DPJP 1. Buka aplikasi untuk melihat detail pasien", "SK", resultNotif.get(0).getOs(), null);
+                        }
                     }
                     if ("konsultasi".equalsIgnoreCase(obj.getString("prioritas"))) {
                         //PUSH NOTIF

@@ -130,7 +130,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "\tbagian_id, nama_bagian\n" +
+                "\tbagian_id, nama_bagian,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_hris_position_bagian\n" +
                 "\torder by kodering asc";
@@ -155,7 +156,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         String query = "select\n" +
                 "\tbagian.bagian_id,\n" +
                 "\tbagian.nama_bagian,\n" +
-                "\tsmk.nip\n" +
+                "\tsmk.nip,\n" +
+                "\tbagian.kodering\n" +
                 "from\n" +
                 "\tit_hris_smk_evaluasi_pegawai smk\n" +
                 "\tleft join im_hris_position_bagian bagian on bagian.bagian_id = smk.bagian_id\n" +
@@ -163,7 +165,7 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tsmk.flag = 'Y'\n" +
                 "\tand periode = '" + periode + "'\n" +
                 "order by \n" +
-                "\tbagian.bagian_id";
+                "\tbagian.kodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -231,7 +233,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         List<ImPositionBagianEntity> listOfResult = new ArrayList<ImPositionBagianEntity>();
         List<Object[]> results = new ArrayList<Object[]>();
         String query = "select\n" +
-                "\tbagian_id, nama_bagian\n" +
+                "\tbagian_id, nama_bagian,\n" +
+                "\tkodering\n" +
                 "from\n" +
                 "\tim_hris_position_bagian\n" +
                 "\torder by kodering asc\n" +
@@ -377,7 +380,8 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "\tposisi.position_name,\n" +
                 "\thistory.nip,\n" +
                 "\tpegawai.nama_pegawai,\n" +
-                "\thistory.branch_id\n" +
+                "\thistory.branch_id,\n" +
+                "\tposisi.kodering\n" +
                 "from\n" +
                 "\timt_hris_history_smk_golongan history\n" +
                 "\tleft join im_hris_pegawai pegawai on pegawai.nip = history.nip\n" +
@@ -572,13 +576,14 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
         String query = "select\n" +
                 " \n" +
                 "                bagian_id, \n" +
-                "                nama_bagian \n" +
+                "                nama_bagian, \n" +
+                "                kodering\n" +
                 "                from \n" +
                 "                im_hris_position_bagian \n" +
                 "                where \n" +
                 "                bagian_id is not null and divisi_id = '" + divisiId + "'  \n" +
                 "                order by \n" +
-                "                \tnama_bagian";
+                "                \tkodering";
 
         results = this.sessionFactory.getCurrentSession()
                 .createSQLQuery(query)
@@ -605,7 +610,9 @@ public class PositionBagianDao extends GenericDao<ImPositionBagianEntity, String
                 "im_hris_position_bagian.bagian_id ,\n" +//0
                 "im_hris_position_bagian.nama_bagian,\n" +//1
                 "im_hris_department.department_id,  \n" +//2
-                "im_hris_department.department_name\n" +//3
+                "im_hris_department.department_name,\n" +//3
+                "im_hris_position_bagian.kodering,\n" +
+                "im_hris_department.kodering\n" +
                 "FROM \n" +
                 "im_hris_department \n" +
                 "INNER JOIN im_hris_position_bagian ON im_hris_department.department_id = im_hris_position_bagian.divisi_id \n" +

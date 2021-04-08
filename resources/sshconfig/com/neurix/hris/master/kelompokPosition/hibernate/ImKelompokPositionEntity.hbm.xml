@@ -35,6 +35,9 @@
         <property name="flagIsMultiplePerson">
             <column name="flag_is_multiple_person" sql-type="varchar" not-null="false" />
         </property>
+        <property name="tunjTelekomunikasi">
+            <column name="tunj_telekomunikasi" sql-type="numeric" length="15" precision="2" />
+        </property>
 
     </class>
 </hibernate-mapping>

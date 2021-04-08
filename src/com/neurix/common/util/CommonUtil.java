@@ -693,7 +693,7 @@ public class  CommonUtil {
 
     public static String convertTimestampToStringLengkap(Timestamp date){
         String tanggal = "";
-        String DATE_FORMAT = "dd-MM-yyyy hh:mm:ss";
+        String DATE_FORMAT = "dd-MM-yyyy HH:mm:ss";
         SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
         java.util.Date tanggalApp = date;
         tanggal = sdf.format(tanggalApp);
@@ -1010,6 +1010,9 @@ public class  CommonUtil {
                 break;
             case "16":
                 status="On Call";
+                break;
+            case "17":
+                status="Stand By On Call";
                 break;
         }
         return status;

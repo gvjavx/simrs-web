@@ -274,7 +274,6 @@ public class CutiBoImpl implements CutiBo {
 
             List<ImCutiEntity> imCutiEntity = null;
             try {
-
                 imCutiEntity = cutiDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
                 logger.error("[CutiBoImpl.getSearchCutiByCriteria] Error, " + e.getMessage());

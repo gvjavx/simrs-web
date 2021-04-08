@@ -1,3 +1,113 @@
+------ 2021-04-06 ===> Create Table Log Transaction
+-- Membuat Table
+    CREATE TABLE public.it_pg_log_transaction
+    (
+      pg_log_trx_id bigint NOT NULL,
+      trx_id character varying(10),
+      tipe_trx character varying(10),
+      bank_name character varying(100),
+      no_virtual_account character varying(100),
+      no_rekam_medik character varying(30),
+      trx_amount numeric(15, 2),
+      name_person character varying(100),
+      address_person character varying(100),
+      phone_person character varying(100),
+      email_person character varying(100),
+      status character varying(5),
+      message character varying(1000),
+      sent_date timestamp without time zone,
+      received_date timestamp without time zone,
+      created_date timestamp without time zone,
+      created_who character varying(100),
+      last_update timestamp without time zone,
+      last_update_who character varying(100),
+      action character varying(1),
+      flag character varying(1),
+      CONSTRAINT pk_pg_log_trx_id PRIMARY KEY (pg_log_trx_id)
+    )
+    WITH (
+    OIDS=FALSE
+    );
+    ALTER TABLE public.it_pg_log_transaction
+      OWNER TO postgres;
+
+------ 2021-04-05 ===> Create Table Log Cron
+-- Membuat table
+    CREATE TABLE public.it_log_cron
+    (
+        log_cron_id VARCHAR(10) NOT NULL primary key,
+        cron_name VARCHAR(50),
+        cron_date TIMESTAMP,
+        status VARCHAR(20),
+        note VARCHAR(1000),
+
+        flag VARCHAR(1),
+        action VARCHAR(1),
+        created_date timestamp without time zone NOT NULL,
+        created_who VARCHAR(100),
+        last_update timestamp without time zone NOT NULL,
+        last_update_who VARCHAR(100)
+    );
+
+-- Membuat Sequence
+    CREATE SEQUENCE public.seq_log_cron
+        INCREMENT 1
+        START 1
+        MINVALUE 1
+        MAXVALUE 9223372036854775807
+        CACHE 1;
+
+----------------------------------------
+----------------------------------------
+----------  SAMPAI SINI SAJA  ----------
+----------------------------------------
+----------------------------------------
+
+------ 2021-03-21 ===> Memindahkan nilai Tunjangan ke Transaksi Tunjangan Lain
+-- Menambahkan field Tunjangan
+
+    ALTER TABLE it_hris_tunj_lain_pegawai
+    ADD COLUMN flag_tunj_peralihan_gapok varchar(2),
+    ADD COLUMN flag_tunj_peralihan_sankhus varchar(2),
+    ADD COLUMN flag_tunj_peralihan_tunjangan varchar(2),
+    ADD COLUMN tunj_peralihan_gapok numeric(15,2),
+    ADD COLUMN tunj_peralihan_sankhus numeric(15,2),
+    ADD COLUMN tunj_peralihan_tunjangan numeric(15,2);
+    ADD COLUMN tunj_pemondokan numeric(15,2),
+    ADD COLUMN tunj_supervisi numeric(15,2),
+    ADD COLUMN tunj_lokasi numeric(15,2),
+    ADD COLUMN tunj_siaga numeric(15,2);
+    ADD COLUMN flag_tunj_pemondokan varchar(2)
+
+------ 2021-03-17 ===> Master Dokter KSO
+-- Menambahkan Length Kodering dari 11 ke 20
+    ALTER TABLE im_simrs_dokter_kso ALTER COLUMN kodering TYPE VARCHAR(20);
+-- Menambahkan column Position ID
+    ALTER TABLE im_simrs_dokter_kso
+    ADD COLUMN position_id VARCHAR(10);
+
+
+------ 2021-03-15 ===> Master Branch Nilai Beberapa Tunjnagan
+-- Menambahkan field nilai tunjangan
+    --ALTER TABLE im_branches
+    --ADD COLUMN tunj_pemondokan numeric(15,2),
+    --ADD COLUMN tunj_supervisi numeric(15,2),
+    --ADD COLUMN tunj_lokasi numeric(15,2),
+    --ADD COLUMN tunj_siaga numeric(15,2);
+
+------ 2021-03-01 ===> Master Kelompok Position & Transaksi Tunjangan Lain
+-- Menambahkan field Tunj. Telekomunikasi
+
+    ALTER TABLE im_hris_kelompok_position
+    ADD COLUMN tunj_telekomunikasi numeric(15,2);
+
+-- Menambahkan field Tunjangan Pemondokan
+
+    ALTER TABLE it_hris_tunj_lain_pegawai
+    ADD COLUMN flag_tunj_pemondokan varchar(2);
+    ALTER TABLE im_branches
+    ADD COLUMN tunj_pemondokan numeric(15,2);
+
 ------ 2021-02-20 ===> Master Kelompok Position
 -- Memberi Flag Multiple Person untuk beberapa kelompok jabatan
 
@@ -11,13 +121,6 @@
     SET persen_gaji = '75' WHERE jenis_pegawai_id = 'JP02';
     UPDATE im_hris_jenis_pegawai
     SET persen_gaji = '80' WHERE jenis_pegawai_id = 'JP03' OR jenis_pegawai_id = 'JP04';
-
-----------------------------------------
-----------------------------------------
-----------  SAMPAI SINI SAJA  ----------
-----------------------------------------
-----------------------------------------
-
 
 ------ 2021-02-17 ===> Master Profesi
 -- Menambahkan column tipe_profesi

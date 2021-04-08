@@ -145,7 +145,7 @@
     <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/MesinAbsensiDetailAction.xml"/>
     <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/AbsensiAction.xml"/>
     <include file="sshconfig/com/neurix/hris/transaksi/absensi/struts/MesinAbsensiAction.xml"/>
-
+    <include file="sshconfig/com/neurix/hris/transaksi/logcron/struts/LogCronAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollMasaKerjaPensiun/struts/MasaKerjaPensiunAction.xml"/>
 
     <!--Dashboard-->
@@ -236,6 +236,8 @@
     <include file="sshconfig/com/neurix/simrs/transaksi/permintaanvendor/struts/PermintaanPoVendorAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/PermintaanUnitAction.xml"/>
     <include file="sshconfig/com/neurix/simrs/transaksi/obatpoli/struts/ApprovePermintaanUnitAction.xml"/>
+
+    <include file="sshconfig/com/neurix/simrs/transaksi/logtransaction/struts/LogTransactionAction.xml"/>
 
     <!--AKUNTANSI-->
     <!--MASTER -->
