@@ -50,7 +50,7 @@
                     <div class="box-body">
                         <table class="table table-striped">
                             <tr>
-                                <td width="17%"><b>No. PO</b></td>
+                                <td width="17%"><b>ID. PO</b></td>
                                 <td>
                                     <table>
                                         <label id="no_po"></label>
@@ -58,7 +58,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td width="17%"><b>ID Vendor</b></td>
+                                <td width="17%"><b>ID PBF</b></td>
                                 <td>
                                     <table>
                                         <s:label name="vendor.idVendor"></s:label>
@@ -69,7 +69,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td><b>Nama Vendor</b></td>
+                                <td><b>Nama PBF</b></td>
                                 <td>
                                     <table><s:label name="vendor.namaVendor"></s:label></table>
                                 </td>

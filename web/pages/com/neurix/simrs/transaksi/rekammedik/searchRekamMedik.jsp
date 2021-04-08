@@ -68,7 +68,7 @@
                                     <div class="col-sm-4">
                                         <s:select list="#{'L':'Laki-Laki','P':'Perempuan'}" cssStyle="margin-top: 7px"
                                                   id="status" name="detailCheckup.jenisKelamin"
-                                                  headerKey="" headerValue="[Select One]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
                                     </div>
                                 </div>

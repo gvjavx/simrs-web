@@ -79,7 +79,7 @@
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                         <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
                                                   <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
@@ -98,7 +98,7 @@
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                     </div>
                                 </div>
@@ -244,7 +244,7 @@
 <script type='text/javascript'>
 
     function getKelasKamar(){
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
             if(res.length > 0){
@@ -263,7 +263,7 @@
     }
 
     function listSelectRuangan(id){
-        var option  = "<option value=''>[Select One]</option>";;
+        var option  = "<option value=''> - </option>";;
         var flag    = false;
         $('#load_ruang').show();
         setTimeout(function () {

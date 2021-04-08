@@ -103,23 +103,24 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>No Ruangan :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="no_ruangan1"
-                                             name="ruangan.noRuangan" required="false" readonly="false" cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
                             <label class="control-label"><small>Nama Ruangan :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:textfield   id="nama_ruangan1"
                                              name="ruangan.namaRuangan" required="false" readonly="false" cssClass="form-control" cssStyle="margin-top: 5px"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <label class="control-label"><small>No Ruangan :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield  id="no_ruangan1"
+                                              name="ruangan.noRuangan" required="false" readonly="false" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
