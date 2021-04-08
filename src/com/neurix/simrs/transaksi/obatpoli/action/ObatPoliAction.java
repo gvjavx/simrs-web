@@ -541,7 +541,7 @@ public class ObatPoliAction extends BaseMasterAction {
 
     }
 
-    public List<ObatPoli> getStokObatPoli(String idObat) {
+    public List<ObatPoli> getStokObatPoli(String idObat , String jenisObat) {
 
         logger.info("[ObatPoliAction.getStokObat] start process >>>");
         List<ObatPoli> obatPoliList = new ArrayList<>();
@@ -551,12 +551,13 @@ public class ObatPoliAction extends BaseMasterAction {
         obatpoli.setIdObat(idObat);
         obatpoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
         obatpoli.setBranchId(branchId);
+        obatpoli.setFlagBpjs("bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N");
 
         ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
         ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
 
         try {
-            obatPoliList = obatPoliBo.getObatPoliByCriteria(obatpoli);
+            obatPoliList = obatPoliBo.getStokObatPoli(obatpoli);
         } catch (GeneralBOException e) {
             logger.error("[ObatPoliAction.getStokObat] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
             addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
@@ -565,6 +566,33 @@ public class ObatPoliAction extends BaseMasterAction {
         logger.info("[ObatPoliAction.getStokObat] end process >>>");
         return obatPoliList;
 
+    }
+
+    public ObatPoli getStokSendiri(String idObat, String jenisObat){
+        logger.info("[ObatPoliAction.getStokSendiri] start process >>>");
+
+        String branchId = CommonUtil.userBranchLogin();
+        ObatPoli obatpoli = new ObatPoli();
+        obatpoli.setIdObat(idObat);
+        obatpoli.setIdPelayanan(CommonUtil.userPelayananIdLogin());
+        obatpoli.setBranchId(branchId);
+        obatpoli.setFlagBpjs("bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        ObatPoli obatPoli = new ObatPoli();
+
+        try {
+
+        } catch (GeneralBOException e) {
+            logger.error("[ObatPoliAction.getStokSendiri] Error when get data obat poli ," + "Found problem when searching data, please inform to your admin.", e);
+            addActionError("Error Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+        }
+
+
+        logger.info("[ObatPoliAction.getStokSendiri] end process <<<");
+        return obatPoli;
     }
 
     public List<ObatPoli> getSelectOptionObatByPoli(String idPelayanan, String flagBpjs, String jenis, String idDetailCheckup) {

@@ -186,13 +186,14 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 //            }
         }
 
-        List<ObatPoli> filteredList = obatPoliList.stream().filter(
-                p->p.getFlagBpjs().equalsIgnoreCase(bean.getFlagBpjs())
-        ).collect(Collectors.toList());
-
         logger.info("[ObatPoliBoImpl.getObatPoliByCriteria] END <<<<<<<<<<");
-        //return obatPoliList;
-        return filteredList;
+        if (bean.getFlagBpjs() != null && !"".equalsIgnoreCase(bean.getFlagBpjs())){
+            List<ObatPoli> filteredList = obatPoliList.stream().filter(
+                    p->p.getFlagBpjs().equalsIgnoreCase(bean.getFlagBpjs())
+            ).collect(Collectors.toList());
+            return filteredList;
+        }
+        return obatPoliList;
     }
 
     @Override
@@ -3205,7 +3206,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                 Obat obat = new Obat();
                 try {
-                    obat = obatDao.getLastIdSeqObat(idObat);
+                    obat = obatDao.getLastIdSeqObat(idObat, null);
                 } catch (HibernateException e){
                     logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
                     throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
@@ -3331,6 +3332,23 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             throw new GeneralBOException("[PermintaanResepBoImpl.getStokObatPoli] ERROR when get search obat poli. ", e);
         }
         return obatPoliList;
+    }
+
+    @Override
+    public List<PermintaanObatPoli> getListDetailPermintaanByIdApproval(String idApproval) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.getListDetailPermintaanByIdApproval] START >>>");
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        try {
+            permintaanObatPolis = permintaanObatPoliDao.getListDetailPermintaan(idApproval);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListDetailPermintaanByIdApproval] ERROR when get search detail obat poli. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListDetailPermintaanByIdApproval] ERROR when get search detail obat poli. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListDetailPermintaanByIdApproval] END <<<");
+        return permintaanObatPolis;
     }
 
     // list method seq

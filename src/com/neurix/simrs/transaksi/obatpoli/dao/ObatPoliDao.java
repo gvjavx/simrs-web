@@ -631,4 +631,57 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
         else
             return new BigInteger(obj.toString());
     }
+
+    public ObatPoli getStokObatPoliById(String idObat, String flagBpjs, String idPelayanan){
+
+        String SQL = "SELECT \n" +
+                "ab.id_obat,\n" +
+                "ab.flag_bpjs,\n" +
+                "SUM(ab.qty_box) + SUM(ab.qty_lembar) + SUM(ab.qty_biji) as total_bijian\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\taa.id_obat,\n" +
+                "\taa.id_barang,\n" +
+                "\taa.flag_bpjs,\n" +
+                "\tSUM(aa.qty_box) as qty_box,\n" +
+                "\tSUM(aa.qty_lembar) as qty_lembar,\n" +
+                "\tSUM(aa.qty_biji) as qty_biji\n" +
+                "\tFROM (\n" +
+                "\t\tSELECT\n" +
+                "\t\ta.id_obat, \n" +
+                "\t\ta.id_barang,\n" +
+                "\t\tb.flag_bpjs,\n" +
+                "\t\ta.qty_box * b.lembar_per_box * b.biji_per_lembar as qty_box,\n" +
+                "\t\ta.qty_lembar * b.biji_per_lembar as qty_lembar,\n" +
+                "\t\ta.qty_biji \n" +
+                "\t\tFROM mt_simrs_obat_poli a\n" +
+                "\t\tINNER JOIN im_simrs_obat b ON b.id_barang = a.id_barang\n" +
+                "\t\tWHERE a.id_pelayanan = '"+idPelayanan+"'\n" +
+                "\t) aa\n" +
+                "\tGROUP BY\n" +
+                "\taa.id_obat,\n" +
+                "\taa.id_barang,\n" +
+                "\taa.flag_bpjs\n" +
+                ")ab\n" +
+                "WHERE ab.id_obat = '"+idObat+"'\n" +
+                "AND ab.flag_bpjs = '"+flagBpjs+"'\n" +
+                "GROUP BY \n" +
+                "ab.id_obat,\n" +
+                "ab.flag_bpjs\n" +
+                "ORDER BY ab.id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            Object[] obj = results.get(0);
+
+            ObatPoli obatPoli = new ObatPoli();
+            obatPoli.setIdObat(obj[0].toString());
+            obatPoli.setFlagBpjs(obj[1].toString());
+            obatPoli.setTotalQty(objToBigInteger(obj[2]));
+            return obatPoli;
+        }
+        return null;
+    }
 }

@@ -772,6 +772,26 @@ public class PermintaanObatPoliAction extends BaseTransactionAction {
         return "print_permintaan_obat";
     }
 
+    public List<PermintaanObatPoli> getDetailPermintaanObat(String idApproval){
+        logger.info("[PermintaanObatPoliAction.getDetailPermintaanObat] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ObatPoliBo obatPoliBo = (ObatPoliBo) ctx.getBean("obatPoliBoProxy");
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        try {
+            permintaanObatPolis = obatPoliBo.getListDetailPermintaanByIdApproval(idApproval);
+        } catch (GeneralBOException e){
+            logger.error("[PermintaanObatPoliAction.getDetailPermintaanObat] ERROR when get data detail list obat, ", e);
+            addActionError("[PermintaanObatPoliAction.getDetailPermintaanObat] ERROR when get data detail list obat, " + e.getMessage());
+        }
+
+
+        logger.info("[PermintaanObatPoliAction.getDetailPermintaanObat] END <<<");
+        return permintaanObatPolis;
+    }
+
     public void setObatPoliBoProxy(ObatPoliBo obatPoliBoProxy) {
         this.obatPoliBoProxy = obatPoliBoProxy;
     }
