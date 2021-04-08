@@ -182,7 +182,7 @@
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
-                                                   height="500" width="550" autoOpen="false"
+                                                   height="750" width="600" autoOpen="false"
                                                    title="Log Transaction">
                                             <center><img border="0" src="<s:url value="/pages/images/loading11.gif"/>" alt="Loading..."/></center>
                                         </sj:dialog>
