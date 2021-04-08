@@ -232,7 +232,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Dokter Pengirim</b></td>
+                                        <td width="40%"><b>Dokter Pengirim</b></td>
                                         <td>
                                             <table>
                                                 <s:label name="periksaLab.namaDokterPengirim"></s:label>

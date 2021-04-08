@@ -43,7 +43,22 @@
             <div class="col-md-12">
                 <div class="box box-primary">
                     <div class="box-header with-border">
-                        <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Periksa Lab Pasien</h3>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h3 class="box-title"><i class="fa fa-filter"></i> Pencarian Periksa Lab Pasien</h3>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pull-right" style="margin-top: 7px; color: red" id="warning_text"></div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="input-group pull-right">
+                                    <input onchange="cekHasil()" class="form-control" placeholder="Scan No Order Lab" id="id_order" oninput="$(this).css('border','');">
+                                    <div class="input-group-btn" onclick="cekHasil()">
+                                        <button class="btn btn-success"><i class="fa fa-search"></i> Search</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="box-body">
                         <div class="form-group">
@@ -186,7 +201,7 @@
                                     <%--</td>--%>
                                     <td align="center">
                                         <s:if test='#row.statusPeriksa == "3"'>
-                                            <a target="_blank" href="printLab_periksalab.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idPeriksaLab"/>">
+                                            <a target="_blank" href="printLab_periksalab.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idHeaderPemeriksaan"/>">
                                                 <img border="0" class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
                                             </a>
                                         </s:if>
@@ -218,8 +233,8 @@
                                             </s:else>
                                         </s:else>
                                         <img onclick="detail('<s:property value="idHeaderPemeriksaan"/>', '<s:property value="namaPasien"/>', '<s:property value="idPasien"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
-                                        <a href="printLab_periksalab.action?id='<s:property value="idDetailCheckup"/>'&lab='<s:property value="idHeaderPemeriksaan"/>'&ket=label" target="_blank">
-                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
+                                        <a href="printLab_periksalab.action?id=<s:property value="idDetailCheckup"/>&lab=<s:property value="idHeaderPemeriksaan"/>&ket=label" target="_blank">
+                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>" style="cursor: pointer; ">
                                         </a>
                                     </td>
                                 </tr>
@@ -323,6 +338,30 @@
             }
         }
         $('#modal-detail_lab').modal({show:true, backdrop:'static'});
+    }
+
+    function cekHasil(){
+        var id = $('#id_order').val();
+        if(id != ''){
+            PeriksaLabAction.getEntityHeaderpemeriksaan(id, function (res) {
+                if(res != null){
+                    if(res.idHeaderPemeriksaan != '' && res.idHeaderPemeriksaan != null){
+                        if("3" != res.statusPeriksa){
+                            window.location.href = 'add_periksalab.action?id='+res.idDetailCheckup+'&lab='+res.idHeaderPemeriksaan+'&ket=';
+                        }else{
+                            $('#id_order').css('border','red solid 1px');
+                            $('#warning_text').html('<i class="fa fa-warning blink_me_atas"></i> Pasien sudah selesai...!');
+                        }
+                    }
+                }else{
+                    $('#id_order').css('border','red solid 1px');
+                    $('#warning_text').html('<i class="fa fa-warning blink_me_atas"></i> Data tidak ada...!');
+                }
+            });
+        }else{
+            $('#id_order').css('border','red solid 1px');
+            $('#id_order').focus();
+        }
     }
 </script>
 

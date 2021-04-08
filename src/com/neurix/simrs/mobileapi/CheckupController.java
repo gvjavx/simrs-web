@@ -1731,6 +1731,7 @@ public class CheckupController implements ModelDriven<Object> {
             RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
             HeaderPendampingMakananBo headerPendampingMakananBo = (HeaderPendampingMakananBo) ctx.getBean("headerPendampingMakananBoProxy");
             DetailPendampingMakananBo detailPendampingMakananBo = (DetailPendampingMakananBo) ctx.getBean("detailPendampingMakananBoProxy");
+            TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
             String userBranch = CommonUtil.userBranchLogin();
 
             RekananOps ops = new RekananOps();
@@ -1816,6 +1817,22 @@ public class CheckupController implements ModelDriven<Object> {
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
                         riwayatTindakan.setIdRuangan(entity.getIdRuangan());
 
+                        List<Tindakan> tindakanList = new ArrayList<>();
+                        Tindakan tin = new Tindakan();
+                        tin.setIdTindakan(entity.getIdTindakan());
+
+                        try {
+                            tindakanList = tindakanBo.getDataTindakan(tin);
+                        } catch (GeneralBOException e) {
+                            logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                            throw new GeneralBOException("Error when new tindakan", e);
+                        }
+
+                        if(tindakanList.size() > 0){
+                            tin = tindakanList.get(0);
+                            riwayatTindakan.setIdRuangan(tin.getKategoriInaBpjs());
+                        }
+
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);
                         } catch (GeneralBOException e) {
@@ -1851,8 +1868,8 @@ public class CheckupController implements ModelDriven<Object> {
 
                     if (riwayatTindakanList.isEmpty()) {
 
-                        BigDecimal totaltarif = null;
-                        String namaLab = entity.getLabName();
+                        BigDecimal totaltarif = new BigDecimal(0);
+                        String namaLab = "";
 
                         List<PeriksaLab> periksaLabs = new ArrayList<>();
                         PeriksaLab periksa = new PeriksaLab();
@@ -1866,7 +1883,7 @@ public class CheckupController implements ModelDriven<Object> {
                         if(periksaLabs.size() > 0){
                             for (PeriksaLab pb: periksaLabs){
                                 if("".equalsIgnoreCase(namaLab)){
-                                    namaLab = pb.getNamaPemeriksaan();
+                                    namaLab = " "+pb.getNamaPemeriksaan();
                                 }else{
                                     namaLab = namaLab+", "+pb.getNamaPemeriksaan();
                                 }
@@ -1874,13 +1891,13 @@ public class CheckupController implements ModelDriven<Object> {
                         }
 
                         try {
-                            totaltarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
+                            totaltarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdHeaderPemeriksaan());
                         } catch (HibernateException e) {
                             logger.error("Found Error " + e.getMessage());
                         }
 
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                        riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
+                        riwayatTindakan.setIdTindakan(entity.getIdHeaderPemeriksaan());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
 
                         // paket lab
@@ -1901,7 +1918,6 @@ public class CheckupController implements ModelDriven<Object> {
 
                             if("Y".equalsIgnoreCase(entity.getIsPeriksaLuar())){
                                 totaltarif = entity.getTarifLabLuar();
-                                namaLab = entity.getNamaLabLuar();
                             }
 
                             // jika bukan paket maka pakai tarif asli
@@ -1916,7 +1932,7 @@ public class CheckupController implements ModelDriven<Object> {
                             }
                         }
 
-                        riwayatTindakan.setNamaTindakan("Pemeriksaan " + entity.getKategoriLabName() + " " + namaLab);
+                        riwayatTindakan.setNamaTindakan("Pemeriksaan " + entity.getKategoriLabName()+namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");

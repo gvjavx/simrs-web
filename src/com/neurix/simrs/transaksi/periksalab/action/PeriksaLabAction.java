@@ -17,9 +17,7 @@ import com.neurix.simrs.transaksi.checkupdetail.action.CheckupDetailAction;
 import com.neurix.simrs.transaksi.checkupdetail.bo.CheckupDetailBo;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.periksalab.bo.PeriksaLabBo;
-import com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
+import com.neurix.simrs.transaksi.periksalab.model.*;
 import com.neurix.simrs.transaksi.profilrekammedisrj.bo.RekamMedisRawatJalanBo;
 import com.neurix.simrs.transaksi.profilrekammedisrj.model.RekamMedisRawatJalan;
 import org.apache.log4j.Logger;
@@ -663,7 +661,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(ttdValidator);
                             String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            String fileName = idPeriksaLab + "-ttd_validator-" + patten + ".png";
+                            String fileName = idHeaderPemeriksaan + "-ttd_validator-" + patten + ".png";
                             String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -687,7 +685,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                             BASE64Decoder decoder = new BASE64Decoder();
                             byte[] decodedBytes = decoder.decodeBuffer(ttdPetugas);
                             String patten = updateTime.toString().replace("-", "").replace(":", "").replace(" ", "").replace(".", "");
-                            String fileName = idPeriksaLab + "-ttd_petugas-" + patten + ".png";
+                            String fileName = idHeaderPemeriksaan + "-ttd_petugas-" + patten + ".png";
                             String uploadFile = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_TTD_DOKTER + fileName;
                             BufferedImage image = ImageIO.read(new ByteArrayInputStream(decodedBytes));
 
@@ -908,6 +906,28 @@ public class PeriksaLabAction extends BaseTransactionAction {
             reportParams.put("ttdPetugas", labData.getTtdPetugas());
             reportParams.put("ttdValidator", labData.getTtdValidator());
             reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true));
+
+            String namaLab = "";
+            List<PeriksaLab> periksaLabs = new ArrayList<>();
+            PeriksaLab periksa = new PeriksaLab();
+            periksa.setIdHeaderPemeriksaan(lab);
+            try {
+                periksaLabs = periksaLabBoProxy.getByCriteria(periksa);
+            } catch (HibernateException e) {
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+            }
+
+            if(periksaLabs.size() > 0){
+                for (PeriksaLab pb: periksaLabs){
+                    if("".equalsIgnoreCase(namaLab)){
+                        namaLab = pb.getNamaPemeriksaan();
+                    }else{
+                        namaLab = namaLab+", "+pb.getNamaPemeriksaan();
+                    }
+                }
+            }
+            reportParams.put("pemeriksaan", namaLab);
+
 
             try {
                 preDownload();
@@ -1225,6 +1245,22 @@ public class PeriksaLabAction extends BaseTransactionAction {
             }
         }
         logger.info("[PeriksaLabAction.uploadFilePemeriksaan] end process >>>");
+        return response;
+    }
+
+    public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) {
+        logger.info("[PeriksaLabAction.getEntityHeaderpemeriksaan] start process >>>");
+        ItSimrsHeaderPemeriksaanEntity response = new ItSimrsHeaderPemeriksaanEntity();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        if (id != null && !"".equalsIgnoreCase(id)) {
+            try {
+                response = periksaLabBo.getEntityHeaderpemeriksaan(id);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }
+        logger.info("[PeriksaLabAction.getEntityHeaderpemeriksaan] end process >>>");
         return response;
     }
 

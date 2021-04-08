@@ -286,6 +286,14 @@
                                             </table>
                                         </td>
                                     </tr>
+                                    <tr>
+                                        <td><b>No Telp. Penanggung Jawab</b></td>
+                                        <td>
+                                            <table>
+                                                <s:label name="headerDetailCheckup.noTelp"></s:label>
+                                            </table>
+                                        </td>
+                                    </tr>
                                     <%--<s:if test='headerDetailCheckup.metodePembayaran != null && headerDetailCheckup.metodePembayaran != ""'>--%>
                                         <%--<tr>--%>
                                             <%--<td><b>Metode Pembayaran</b></td>--%>
@@ -900,7 +908,7 @@
                                 <td>Tanggal Order</td>
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
-                                <td>Jenis Lab</td>
+                                <%--<td>Jenis Lab</td>--%>
                                 <td align="center" width="10%">Action</td>
                             </tr>
                             </thead>

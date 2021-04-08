@@ -357,18 +357,18 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         String SQL = "SELECT \n" +
                 "a.no_checkup,\n" +
                 "b.id_detail_checkup,\n" +
-                "c.id_periksa_lab,\n" +
+                "c.id_header_pemeriksaan,\n" +
                 "c.is_read,\n" +
                 "d.kategori,\n" +
                 "a.nama\n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "INNER JOIN it_simrs_periksa_lab c ON b.id_detail_checkup = c.id_detail_checkup\n" +
+                "INNER JOIN it_simrs_header_pemeriksaan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                 "INNER JOIN im_simrs_kategori_lab d ON c.id_kategori_lab = d.id_kategori_lab\n" +
-                "WHERE a.branch_id = :branchId\n" +
+                "WHERE a.branch_id = :branchId \n" +
                 "AND c.is_read IS NULL\n" +
                 "AND c.status_periksa = '0'\n" +
-                "AND d.kategori = :kategori\n" +
+                "AND d.kategori = :kategori \n" +
                 "AND CAST(c.created_date AS DATE) = CURRENT_DATE \n" +
                 "ORDER BY c.created_date ASC";
 
@@ -382,7 +382,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 PeriksaLab lab = new PeriksaLab();
                 lab.setNoCheckup(obj[0] == null ? "" : obj[0].toString());
                 lab.setIdDetailCheckup(obj[1] == null ? "" : obj[1].toString());
-                lab.setIdPeriksaLab(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdHeaderPemeriksaan(obj[2] == null ? "" : obj[2].toString());
                 lab.setIsRead(obj[3] == null ? "" : obj[3].toString());
                 lab.setKategori(obj[4] == null ? "" : obj[4].toString());
                 lab.setNamaPasien(obj[5] == null ? "" : obj[5].toString());

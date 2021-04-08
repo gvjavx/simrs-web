@@ -105,6 +105,7 @@ public class RiwayatTindakanBoImpl implements RiwayatTindakanBo {
                 entity.setIsKamar(bean.getIsKamar());
             }
             entity.setIdRuangan(bean.getIdRuangan());
+            entity.setKategoriTindakanBpjs(bean.getKategoriTindakanBpjs());
 
             try {
                 riwayatTindakanDao.addAndSave(entity);

@@ -516,6 +516,27 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             reportParams.put("ttdValidator", labData.getTtdValidator());
             reportParams.put("umur", calculateAge(checkup.getTglLahir(), true));
 
+            String namaLab = "";
+            List<PeriksaLab> periksaLabs = new ArrayList<>();
+            PeriksaLab periksa = new PeriksaLab();
+            periksa.setIdHeaderPemeriksaan(lab);
+            try {
+                periksaLabs = periksaLabBoProxy.getByCriteria(periksa);
+            } catch (HibernateException e) {
+                logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+            }
+
+            if(periksaLabs.size() > 0){
+                for (PeriksaLab pb: periksaLabs){
+                    if("".equalsIgnoreCase(namaLab)){
+                        namaLab = pb.getNamaPemeriksaan();
+                    }else{
+                        namaLab = namaLab+", "+pb.getNamaPemeriksaan();
+                    }
+                }
+            }
+            reportParams.put("pemeriksaan", namaLab);
+
             try {
                 preDownload();
             } catch (SQLException e) {

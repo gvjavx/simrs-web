@@ -71,6 +71,8 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     PeriksaLab periksaLab = new PeriksaLab();
                     periksaLab.setIdPeriksaLab(periksaLabEntity.getIdPeriksaLab());
                     periksaLab.setIdHeaderPemeriksaan(periksaLabEntity.getIdHeaderPemeriksaan());
+                    periksaLab.setIdPemeriksaan(periksaLabEntity.getIdPemeriksaan());
+                    periksaLab.setNamaPemeriksaan(periksaLabEntity.getNamaPemeriksaan());
                     periksaLab.setFlag(periksaLabEntity.getFlag());
                     periksaLab.setAction(periksaLabEntity.getAction());
                     periksaLab.setCreatedDate(periksaLabEntity.getCreatedDate());
@@ -1131,6 +1133,17 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             }
         }
         return periksaLabList;
+    }
+
+    @Override
+    public ItSimrsHeaderPemeriksaanEntity getEntityHeaderpemeriksaan(String id) throws GeneralBOException {
+        ItSimrsHeaderPemeriksaanEntity entity = new ItSimrsHeaderPemeriksaanEntity();
+        try {
+            entity = headerPemeriksaanDao.getById("idHeaderPemeriksaan", id);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return entity;
     }
 
     public void setUploadHasilPeriksaDao(UploadHasilPeriksaDao uploadHasilPeriksaDao) {

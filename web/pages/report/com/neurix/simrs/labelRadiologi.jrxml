@@ -17,6 +17,7 @@
 	<parameter name="desa" class="java.lang.String"/>
 	<parameter name="dokterPengirim" class="java.lang.String"/>
 	<parameter name="tglFoto" class="java.lang.String"/>
+	<parameter name="pemeriksaan" class="java.lang.String"/>
 	<queryString>
 		<![CDATA[SELECT * FROM im_simrs_pasien LIMIT 1]]>
 	</queryString>
@@ -109,7 +110,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{reportParams.idPasien} == null ? "" : $P{reportParams.idPasien}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="77" y="69" width="147" height="15" uuid="515c4d7f-af21-46b5-8199-5cf664f1e81e"/>
@@ -151,7 +152,7 @@
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{desa} == null ? "" : $P{desa} ]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{umur} == null ? "" : $P{umur}]]></textFieldExpression>
 			</textField>
 			<staticText>
 				<reportElement x="73" y="84" width="4" height="15" uuid="d755e95a-0066-4b16-a863-ad2e021fa04c"/>
@@ -234,12 +235,12 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$P{dokterPengirim} == null ? "" : $P{dokterPengirim}]]></textFieldExpression>
 			</textField>
-			<textField isBlankWhenNull="true">
-				<reportElement x="77" y="129" width="147" height="15" uuid="f83c32c0-58ad-4237-b739-2264737271f7"/>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="77" y="129" width="147" height="15" isPrintWhenDetailOverflows="true" uuid="f83c32c0-58ad-4237-b739-2264737271f7"/>
 				<textElement verticalAlignment="Middle">
 					<font size="8" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{dokterPengirim} == null ? "" :$P{dokterPengirim}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{pemeriksaan} == null ? "" :$P{pemeriksaan}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement x="77" y="144" width="147" height="15" uuid="9e70a3fa-e997-41e9-9bc4-af8903fc086f"/>
