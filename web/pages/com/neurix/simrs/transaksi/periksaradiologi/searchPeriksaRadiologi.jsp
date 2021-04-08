@@ -350,7 +350,7 @@
                 if(res != null){
                     if(res.idHeaderPemeriksaan != '' && res.idHeaderPemeriksaan != null){
                         if("3" != res.statusPeriksa){
-                            window.location.href = 'add_periksalab.action?id='+res.idDetailCheckup+'&lab='+res.idHeaderPemeriksaan+'&ket=';
+                            window.location.href = 'add_radiologi.action?id='+res.idDetailCheckup+'&lab='+res.idHeaderPemeriksaan+'&ket=';
                         }else{
                             $('#id_order').css('border','red solid 1px');
                             $('#warning_text').html('<i class="fa fa-warning blink_me_atas"></i> Pasien sudah selesai...!');

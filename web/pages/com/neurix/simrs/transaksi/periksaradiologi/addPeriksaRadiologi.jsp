@@ -1072,12 +1072,14 @@
             if (!cek) {
                 var dokter = document.getElementById("ttd_dokter");
                 var cekDokter = isCanvasBlank(dokter);
-                if(!cekDokter){
+                var nama = $('#nama_dokter').val();
+                var sip = $('#sip_dokter').val();
+                if(!cekDokter && nama && sip != ''){
                     $('#modal-confirm-dialog').modal('show');
                     $('#save_con').attr('onclick', 'savePeriksaLab()');
                 }else{
                     $('#warning_rad').show().fadeOut(5000);
-                    $('#msg_rad').text("Silahkan ttd terlebih dahulu...!");
+                    $('#msg_rad').text("Silahkan ttd terlebih dahulu dan masukkan nama dan sip...!");
                     $(window).scrollTop($("#pos_lab").offset().top);
                 }
             } else {
