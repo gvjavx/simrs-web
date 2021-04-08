@@ -232,26 +232,11 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td><b>Laboratorium</b></td>
+                                        <td><b>Dokter Pengirim</b></td>
                                         <td>
                                             <table>
-                                                <s:if test='periksaLab.isLuar == "Y"'>
-                                                    <s:property value="periksaLab.namaLabLuar"></s:property>
-                                                    <label class="span-warning">Luar</label>
-                                                </s:if>
-                                                <s:else>
-                                                    <s:property value="periksaLab.labName"></s:property>
-                                                </s:else>
+                                                <s:label name="periksaLab.namaDokterPengirim"></s:label>
                                             </table>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td></td>
-                                        <td>
-                                            <button type="button" onclick="viewHistory()"
-                                                    class="btn btn-info hvr-icon-spin"><i
-                                                    class="fa fa-history hvr-icon"></i> All History Laboratorium
-                                            </button>
                                         </td>
                                     </tr>
                                 </table>
@@ -305,6 +290,10 @@
                                 </button>
                                 <button class="btn btn-primary" onclick="printPeriksaLab()"
                                         style="margin-bottom: -20px;"><i class="fa fa-print"></i> Print Label
+                                </button>
+                                <button type="button" onclick="viewHistory()" style="margin-bottom: -20px;"
+                                        class="btn btn-info hvr-icon-spin"><i
+                                        class="fa fa-history hvr-icon"></i> All History Laboratorium
                                 </button>
                             </div>
                         </div>

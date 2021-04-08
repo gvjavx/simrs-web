@@ -18,6 +18,7 @@
         });
 
     </script>
+    <script type='text/javascript' src='<s:url value="/dwr/interface/PeriksaLabAction.js"/>'></script>
 </head>
 
 <body class="hold-transition skin-blue fixed sidebar-mini">
@@ -216,6 +217,10 @@
                                                 </s:a>
                                             </s:else>
                                         </s:else>
+                                        <img onclick="detail('<s:property value="idHeaderPemeriksaan"/>', '<s:property value="namaPasien"/>', '<s:property value="idPasien"/>')" class="hvr-grow" src="<s:url value="/pages/images/icons8-search-25.png"/>" style="cursor: pointer; ">
+                                        <a href="printLab_periksalab.action?id='<s:property value="idDetailCheckup"/>'&lab='<s:property value="idHeaderPemeriksaan"/>'&ket=label" target="_blank">
+                                            <img class="hvr-grow" src="<s:url value="/pages/images/icons8-print-25.png"/>" style="cursor: pointer; ">
+                                        </a>
                                     </td>
                                 </tr>
                             </s:iterator>
@@ -226,10 +231,99 @@
             </div>
         </div>
     </section>
-    <!-- /.content -->
 </div>
+
+<div class="modal fade" id="modal-detail_lab">
+    <div class="modal-dialog modal-flat">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Detail Pemeriksaan Lab <span id="nama_text"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <table class="table table-striped table-bordered" style="font-size: 13px">
+                        <thead>
+                        <td>Jenis Pemeriksaan</td>
+                        <td>Parameter</td>
+                        <tbody id="body_detail_lab">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- /.content-wrapper -->
 <script type='text/javascript'>
+    function detail(id, nama, idPasien){
+        $('#nama_text').text(nama);
+        var tempPemeriksaan = "";
+        var tempPemeriksa = "";
+        var tempDetail = "";
+        var tempIdPemeriksa = "";
+        var tempIdDetail = "";
+        PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
+            if (response.length > 0) {
+                $.each(response, function (i, item) {
+                    if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                        tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
+                        if(tempPemeriksa != ''){
+                            tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
+                            tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                        }else{
+                            tempPemeriksa = item.namaPemeriksaan;
+                            tempIdPemeriksa = item.idPemeriksaan;
+                        }
+                    }
+
+                    if(i == 0){
+                        tempDetail = item.namaDetailPemeriksaan;
+                        tempIdDetail = item.idDetailPemeriksaan;
+                    }else{
+                        if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
+                            tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
+                            tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                        }else{
+                            tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
+                            tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                        }
+                    }
+                });
+            }else{
+                $('#body_detail_lab').html('');
+            }
+        });
+
+        if(tempPemeriksa != '' && tempDetail != '') {
+            var templ = tempPemeriksa.split("=");
+            var temp2 = tempDetail.split("=");
+            var temp3 = tempIdPemeriksa.split("=");
+            var temp4 = tempIdDetail.split("=");
+            var row = "";
+            $.each(templ, function (i, item) {
+                var tempParameter = temp2[i].split("#");
+                var tempParameterLi = "";
+                $.each(tempParameter, function (i, item) {
+                    tempParameterLi += '<li>' + item + '</li>';
+                });
+                row += '<tr id="row_' + i + '">' +
+                    '<td>' + item + '</td>' +
+                    '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
+                    '</tr>';
+            });
+            if (row != '') {
+                $('#body_detail_lab').html(row);
+            }
+        }
+        $('#modal-detail_lab').modal({show:true, backdrop:'static'});
+    }
 </script>
 
 <%@ include file="/pages/common/footer.jsp" %>

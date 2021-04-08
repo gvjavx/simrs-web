@@ -193,12 +193,14 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         BigDecimal res = null;
         if(idPeriksa != null && !"".equalsIgnoreCase(idPeriksa)){
             String SQL = "SELECT\n" +
-                    "id_periksa_lab,\n" +
-                    "SUM(tarif) as total\n" +
-                    "FROM it_simrs_periksa_lab_detail\n" +
-                    "WHERE id_periksa_lab = :id \n" +
-                    "AND flag = 'Y' \n" +
-                    "GROUP BY id_periksa_lab";
+                    "a.id_header_pemeriksaan,\n" +
+                    "SUM(c.tarif) as total\n" +
+                    "FROM it_simrs_header_pemeriksaan a\n" +
+                    "INNER JOIN it_simrs_periksa_lab b ON a.id_header_pemeriksaan = b.id_header_pemeriksaan\n" +
+                    "INNER JOIN it_simrs_periksa_lab_detail c ON b.id_periksa_lab = c.id_periksa_lab\n" +
+                    "WHERE a.id_header_pemeriksaan = :id\n" +
+                    "AND a.flag = 'Y'\n" +
+                    "GROUP BY a.id_header_pemeriksaan";
             List<Object[]> results = new ArrayList<>();
             results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("id", idPeriksa)

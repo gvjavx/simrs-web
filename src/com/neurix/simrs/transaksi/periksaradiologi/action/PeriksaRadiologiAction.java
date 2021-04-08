@@ -514,7 +514,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
             reportParams.put("namaValidator", labData.getNamaValidator());
             reportParams.put("ttdPetugas", labData.getTtdPetugas());
             reportParams.put("ttdValidator", labData.getTtdValidator());
-            reportParams.put("umur", calculateAge(checkup.getTglLahir(), false));
+            reportParams.put("umur", calculateAge(checkup.getTglLahir(), true));
 
             try {
                 preDownload();
@@ -526,7 +526,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
         }
 
         if("label".equalsIgnoreCase(getKet())){
-            return "print_label_radiologi";
+            return "print_label";
         }else{
             return "print_radiologi";
         }

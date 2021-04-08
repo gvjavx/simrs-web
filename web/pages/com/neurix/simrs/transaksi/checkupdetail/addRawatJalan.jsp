@@ -680,9 +680,9 @@
                             </div>
                             <div class="col-md-6">
                                 <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
-                                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                            onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                                    </button>
+                                    <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
+                                            <%--onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter--%>
+                                    <%--</button>--%>
                                 </s:if>
                                 <table class="table table-bordered table-striped" id="tabel_dokter">
                                     <thead>
@@ -690,7 +690,7 @@
                                         <td>ID Dokter</td>
                                         <td>Nama</td>
                                         <%--<td>Spesialis</td>--%>
-                                        <td align="center">Action</td>
+                                        <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body_dokter">

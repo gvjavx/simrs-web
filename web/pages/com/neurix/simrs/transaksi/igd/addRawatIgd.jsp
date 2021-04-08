@@ -665,9 +665,9 @@
                             </div>
                             <div class="col-md-6">
                                 <s:if test='headerDetailCheckup.idJenisPeriksaPasien != "paket_individu" && headerDetailCheckup.idJenisPeriksaPasien != "paket_perusahaan"'>
-                                    <button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"
-                                            onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter
-                                    </button>
+                                    <%--<button class="btn btn-success btn-outline" style="margin-bottom: 10px; width: 150px"--%>
+                                            <%--onclick="showModal(1)"><i class="fa fa-plus"></i> Tambah Dokter--%>
+                                    <%--</button>--%>
                                 </s:if>
                                 <table class="table table-bordered table-striped" id="tabel_dokter">
                                     <thead>
@@ -675,7 +675,7 @@
                                         <td>ID Dokter</td>
                                         <td>Nama</td>
                                         <%--<td>Spesialis</td>--%>
-                                        <td align="center">Action</td>
+                                        <%--<td align="center">Action</td>--%>
                                     </tr>
                                     </thead>
                                     <tbody id="body_dokter">
@@ -1517,14 +1517,14 @@
 </div>
 
 <div class="modal fade" id="modal-lab">
-    <div class="modal-dialog modal-flat">
+    <div class="modal-dialog modal-md">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #00a65a">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
                 <h4 class="modal-title" style="color: white"><i class="fa fa-hospital-o"></i> Penunjang Medis</h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="temp_lab">
                 <div class="alert alert-danger alert-dismissible" style="display: none" id="warning_lab">
                     <h4><i class="icon fa fa-ban"></i> Warning!</h4>
                     <p id="msg_lab"></p>
@@ -1554,7 +1554,7 @@
                 <div class="row" id="form_is_luar">
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
-                            <div class="form-check jarak">
+                            <div class="form-check jarak" id="cek_luar">
                                 <input onclick="isLuar(this.id)" type="checkbox" id="is_luar" value="yes">
                                 <label for="is_luar"></label>
                                 Centang Jika Pemeriksaan Luar
@@ -1646,7 +1646,7 @@
                 <div class="row" id="form_is_pending">
                     <div class="form-group">
                         <div class="col-md-offset-3 col-md-9">
-                            <div class="form-check jarak">
+                            <div class="form-check jarak" id="cek_pending">
                                 <input onclick="isPemeriksaan(this.id, 'form_pending')" type="checkbox" id="is_pending_lab" value="yes">
                                 <label for="is_pending_lab"></label> Input hasil untuk waktu yg ditentukan <i class="fa fa-question-circle box-rm" style="font-size: 18px"><span class="box-rmtext" style="font-size: 12px; font-family: Calibri">Centang pilihan tersebut jika penginputan nilai hasil pemeriksaan lab atau radiologi,  tidak bisa langsung. yang berarti pasien bisa menyelesaikan adminstrasi dahulu</span></i>
                             </div>
@@ -1688,7 +1688,32 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-offset-3 col-md-9">
+                            <button onclick="addListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                            <button onclick="resetPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
+                        </div>
+                    </div>
+                </div>
                 <hr class="garis">
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <table class="table table-bordered" style="font-size: 13px" id="tabel_pemeriksaan">
+                                <thead>
+                                <tr>
+                                    <td>Jenis Pemeriksaan</td>
+                                    <td>Parameter</td>
+                                    <td>Action</td>
+                                </tr>
+                                </thead>
+                                <tbody id="body_pemeriksaan">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
                 <div class="row" id="form_ttd">
                     <div class="col-md-offset-3 col-md-6">
                         <canvas style="cursor: pointer" onmouseover="paintTtd('ttd_dokter_pengirim')" class="paint-canvas" id="ttd_dokter_pengirim" width="250" height="200"></canvas>
@@ -1699,6 +1724,9 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
+                <span onclick="cekScrol('fa_lab', 'temp_lab')" class="pull-left hvr-grow" style="color: black; margin-top: 11px; cursor: pointer">
+                    <i id="fa_lab" class="fa fa-unlock"></i>
+                </span>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" class="btn btn-success" id="save_lab"><i class="fa fa-check"></i> Save
@@ -2280,10 +2308,11 @@
             </div>
             <div class="modal-body">
                 <div class="box-body">
-                    <table class="table table-striped table-bordered">
+                    <table class="table table-striped table-bordered" style="font-size: 13px">
                         <thead>
-                        <td>Pemeriksaan</td>
                         <td>Jenis Penunjang</td>
+                        <td>Jenis Pemeriksaan</td>
+                        <td>Parameter</td>
                         <tbody id="body_detail_lab">
                         </tbody>
                     </table>

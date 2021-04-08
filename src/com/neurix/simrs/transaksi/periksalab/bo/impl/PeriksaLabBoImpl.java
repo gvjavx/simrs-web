@@ -1012,6 +1012,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             if(bean.getIdDetailCheckup() != null && !"".equalsIgnoreCase(bean.getIdDetailCheckup())){
                 hsCriteria.put("id_detail_checkup", bean.getIdDetailCheckup());
             }
+            if(bean.getApproveFlag() != null && !"".equalsIgnoreCase(bean.getApproveFlag())){
+                hsCriteria.put("approve_flag", bean.getApproveFlag());
+            }
             try {
                 pemeriksaanEntityList = headerPemeriksaanDao.getByCriteria(hsCriteria);
             }catch (HibernateException e){

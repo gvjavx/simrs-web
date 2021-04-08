@@ -408,7 +408,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 10px">
+                    <div class="row" style="margin-top: 10px; display: none" id="form_ttd_pemeriksa">
                         <div class="col-md-offset-4 col-md-4 text-center">
                             <span>TTD Pemeriksa</span>
                             <canvas style="margin-left: -7px; cursor: pointer" class="ttd-paint-canvas" id="ttd_dokter"
@@ -799,14 +799,14 @@
         var isLuar = '<s:property value="periksaLab.isPeriksaLuar"/>';
         if ("Y" == isLuar) {
             getlistParams();
-            $('#form_hasil_lab_title').hide();
+            $('#form_hasil_lab_title, #form_ttd_pemeriksa').hide();
             $('#form_lab_luar_title').show();
             $('#form_hasil_lab_isi').hide();
             $('#tabel_radiologi').hide();
             $('#form_params').show();
         } else {
             listRadiologi();
-            $('#form_hasil_lab_title').show();
+            $('#form_hasil_lab_title, #form_ttd_pemeriksa').show();
             $('#form_lab_luar_title').hide();
             $('#form_hasil_lab_isi').show();
             $('#tabel_radiologi').show();
@@ -1163,7 +1163,7 @@
     }
 
     function printPeriksaLab() {
-        window.open('printRadiologi_radiologi.action?id=' + idDetailCheckup + '&lab=' + idPeriksaLab + '&ket=label', "_blank");
+        window.open('printRadiologi_radiologi.action?id=' + idDetailCheckup + '&lab=' + idHeaderPemeriksaan + '&ket=label', "_blank");
     }
 
     function addUpload(jen, idset, idDetail, namaDetail, tipe) {
@@ -1223,11 +1223,11 @@
     }
 
     function getlistParams() {
-        PeriksaLabAction.listParameterPemeriksaan(idPeriksaLab, function (response) {
+        PeriksaLabAction.listParameterPemeriksaan(idHeaderPemeriksaan, function (response) {
             if (response.length > 0) {
                 var set = "";
                 $.each(response, function (i, item) {
-                    set += '<li>' + item.namaDetailPeriksa + '</li>';
+                    set += '<li>' + item.namaDetailPemeriksaan + '</li>';
                 });
                 $('#params').html(set);
             }

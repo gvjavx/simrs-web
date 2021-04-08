@@ -1095,7 +1095,7 @@ function listDokter() {
                 table += "<tr>" +
                     "<td>" + item.idDokter + "</td>" +
                     "<td>" + item.namaDokter + "</td>" +
-                    "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer; ">' + "</td>" +
+                    // "<td align='center'>" + '<img border="0" class="hvr-grow" onclick="editDokter(\'' + item.idTeamDokter + '\',\'' + item.idDokter + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer; ">' + "</td>" +
                     "</tr>";
                 dokter = item.idDokter;
             });
@@ -1473,7 +1473,7 @@ function saveLab(id) {
     var tglPending = $('#tgl_pending').val();
     var jamPending = $('#jam_pending').val();
     var idDokter = $('#sip_pengirim').val();
-    var namaDokter = $('#select_pengirim').val();
+    var namaDokter = $('#select_pengirim option:selected').text();
 
     var namaPemeriksaan = $('.nama_jenis_pemeriksaan');
     var idPemeriksaan = $('.id_jenis_pemeriksaan');
@@ -1970,7 +1970,6 @@ function editDiagnosa(id, idDiagnosa, jenis, ket) {
 }
 
 function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal) {
-    console.log(isLuar);
     $('#form_ttd').hide();
     $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
     $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printHasilPeriksaRadiollogiNew" language="groovy" pageWidth="421" pageHeight="595" whenNoDataType="AllSectionsNoDetail" columnWidth="381" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="aaec498f-fae1-43c2-9c14-600632d26443">
-	<property name="ireport.zoom" value="1.3310000000000126"/>
+	<property name="ireport.zoom" value="0.8264462809917441"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="127"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -81,11 +81,14 @@ ORDER BY b.id_pemeriksaan, id_lab_detail ASC]]>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
+	<pageHeader>
+		<band/>
+	</pageHeader>
 	<columnHeader>
 		<band/>
 	</columnHeader>
 	<detail>
-		<band height="422" splitType="Stretch">
+		<band height="555" splitType="Stretch">
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="0" y="202" width="381" height="28" isPrintWhenDetailOverflows="true" uuid="685eaf89-a89d-41b7-aad3-8914812411dd"/>
 				<box leftPadding="0"/>
@@ -342,10 +345,10 @@ ORDER BY b.id_pemeriksaan, id_lab_detail ASC]]>
 				<text><![CDATA[Diagnosa]]></text>
 			</staticText>
 			<line>
-				<reportElement x="266" y="406" width="87" height="1" uuid="c1ad4a7e-d7fe-4b69-aae7-00f7bea8e582"/>
+				<reportElement x="276" y="539" width="94" height="1" uuid="c1ad4a7e-d7fe-4b69-aae7-00f7bea8e582"/>
 			</line>
 			<textField>
-				<reportElement x="248" y="391" width="115" height="15" uuid="d2813557-9183-47f2-b301-1ad223e6c63a"/>
+				<reportElement x="266" y="525" width="115" height="15" uuid="d2813557-9183-47f2-b301-1ad223e6c63a"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
@@ -353,18 +356,18 @@ ORDER BY b.id_pemeriksaan, id_lab_detail ASC]]>
 				<textFieldExpression><![CDATA[$P{namaPetugas} == null ? "" : $P{namaPetugas}]]></textFieldExpression>
 			</textField>
 			<image onErrorType="Blank">
-				<reportElement x="259" y="341" width="94" height="50" uuid="02dc6ddb-e3e2-40e9-acfc-cb4329c1673d"/>
+				<reportElement x="276" y="475" width="94" height="50" uuid="02dc6ddb-e3e2-40e9-acfc-cb4329c1673d"/>
 				<imageExpression><![CDATA[$P{reportParams.ttdPetugas}]]></imageExpression>
 			</image>
 			<staticText>
-				<reportElement x="248" y="327" width="115" height="14" uuid="f39c5816-6fd3-4063-bf89-91d6df0d55e8"/>
+				<reportElement x="266" y="461" width="115" height="14" uuid="f39c5816-6fd3-4063-bf89-91d6df0d55e8"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[Pemeriksa]]></text>
 			</staticText>
 			<textField>
-				<reportElement x="248" y="407" width="115" height="15" uuid="45c7b2ea-8aaa-474f-8afa-e09ad817f163"/>
+				<reportElement x="266" y="540" width="115" height="15" uuid="45c7b2ea-8aaa-474f-8afa-e09ad817f163"/>
 				<box leftPadding="1"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="8"/>
