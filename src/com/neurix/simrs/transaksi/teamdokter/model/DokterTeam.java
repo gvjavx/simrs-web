@@ -27,6 +27,16 @@ public class DokterTeam extends BaseModel {
     private String flagApprove;
     private String keterangan;
 
+    private String tipePelayanan;
+
+    public String getTipePelayanan() {
+        return tipePelayanan;
+    }
+
+    public void setTipePelayanan(String tipePelayanan) {
+        this.tipePelayanan = tipePelayanan;
+    }
+
     public String getFlagApprove() {
         return flagApprove;
     }
