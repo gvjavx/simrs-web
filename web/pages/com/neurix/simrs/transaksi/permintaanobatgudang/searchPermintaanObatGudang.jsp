@@ -81,7 +81,7 @@
                                                   cssStyle="margin-top: 7px"
                                                   id="tipePermintaan" name="permintaanObatPoli.tipePermintaan"
                                                   headerKey="002" headerValue="Request"
-                                                  cssClass="form-control select2"/>
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -93,8 +93,18 @@
                                                   list="#initApotek.listOfApotek" id="poli"
                                                   name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2" disabled="true"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'umum':'UMUM','bpjs':'BPJS'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="jenisObat" name="permintaanObatPoli.jenisObat"
+                                                  headerKey="" headerValue=" - "
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">

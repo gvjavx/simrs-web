@@ -78,8 +78,18 @@
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="permintaanObatPoli.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label col-sm-4">Jenis</label>
+                                    <div class="col-sm-4">
+                                        <s:select list="#{'umum':'UMUM','bpjs':'BPJS'}"
+                                                  cssStyle="margin-top: 7px"
+                                                  id="jenisObat" name="permintaanObatPoli.jenisObat"
+                                                  headerKey="" headerValue=" - "
+                                                  cssClass="form-control"/>
                                     </div>
                                 </div>
                                 <div class="form-group">
