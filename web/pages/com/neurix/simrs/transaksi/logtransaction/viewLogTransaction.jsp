@@ -68,9 +68,9 @@
                         </td>
                     </tr>
                 </table>
-                <div id="panelView">
-                    <div class="row">
-                        <div class="col-md-6">
+                <%--<div id="panelView">--%>
+                    <%--<div class="row">--%>
+                        <%--<div class="col-md-6">--%>
                             <table>
                                 <tr>
                                     <td>
@@ -292,9 +292,9 @@
                                 </tr>
 
                             </table>
-                        </div>
-                    </div>
-                </div>
+                        <%--</div>--%>
+                    <%--</div>--%>
+                <%--</div>--%>
 
 
                 <br>
