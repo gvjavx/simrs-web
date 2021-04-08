@@ -524,4 +524,11 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
         }
         return labList;
     }
+
+    public String getNextIdKategoriPemeriksaan() {
+        Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_kategori_pemeriksaan')");
+        Iterator<BigInteger> iter = query.list().iterator();
+        String sId = String.format("%08d", iter.next());
+        return "KPE"+sId;
+    }
 }

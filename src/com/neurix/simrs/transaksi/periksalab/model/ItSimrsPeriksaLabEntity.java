@@ -40,6 +40,15 @@ public class ItSimrsPeriksaLabEntity implements Serializable {
     private String namaLabLuar;
     private BigDecimal tarifLabLuar;
     private String catatan;
+    private String idKategoriPemeriksaan;
+
+    public String getIdKategoriPemeriksaan() {
+        return idKategoriPemeriksaan;
+    }
+
+    public void setIdKategoriPemeriksaan(String idKategoriPemeriksaan) {
+        this.idKategoriPemeriksaan = idKategoriPemeriksaan;
+    }
 
     public String getCatatan() {
         return catatan;
