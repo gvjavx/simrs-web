@@ -116,12 +116,12 @@
                             <table>
                                 <s:action id="comboPeriode" namespace="/rekruitmen" name="initComboPeriodeTahunKeatas5_rekruitmen"/>
                                 <s:select list="#comboPeriode.listOfComboPeriode" id="liburTahun1" name="libur.liburTahun"
-                                          headerKey="" headerValue="[Select one]" cssClass="form-control"/>
+                                          headerKey="" headerValue="[Select one]" cssClass="form-control" onchange="setDate()"/>
                             </table>
                         </td>
                     </tr>
 
-                    <tr>
+                    <tr id="tglRow">
                         <td>
                             <label class="control-label"><small>Tanggal :</small></label>
                         </td>
@@ -246,8 +246,24 @@
 </body>
 </html>
 <script>
-    $('#tgl1').datepicker({
-        dateFormat: 'dd-mm-yy'
-    });
+    $(document).ready(function () {
+        $('#tglRow').hide();
+    })
+
+    function setDate(tanggal) {
+        var minTgl = $('#liburTahun1 option:selected').val()+"-01-01";
+        var maxTgl = $('#liburTahun1 option:selected').val()+"-12-31";
+        console.log(minTgl+ " - " + maxTgl)
+        if($('#liburTahun1 option:selected').val()!='') {
+            $('#tglRow').show();
+        }else{
+            $('#tglRow').hide();
+        }
+        $('#tgl1').datepicker({
+            dateFormat: 'dd-mm-yy',
+            minDate: new Date(minTgl),
+            maxDate: new Date(maxTgl)
+        });
+    }
 </script>
 
