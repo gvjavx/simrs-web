@@ -2454,6 +2454,9 @@ CREATE TABLE public.it_simrs_periksa_lab
 ALTER TABLE it_simrs_upload_hasil_pemeriksaan
 RENAME id_periksa_lab TO id_header_pemeriksaan;
 
+ALTER TABLE it_simrs_riwayat_tindakan
+ALTER COLUMN nama_tindakan TYPE TEXT;
+
 
 
 
