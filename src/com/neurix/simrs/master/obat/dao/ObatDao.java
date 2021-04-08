@@ -16,6 +16,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -651,22 +652,39 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.flag_generic,\n" +
                     "a.flag_is_formularium,\n" +
                     "a.flag_bpjs,\n" +
-                    "a.flag_parenteral,\n"+
+                    "a.flag_parenteral,\n" +
                     "a.min_stok,\n" +
                     "b.sum_biji,\n" +
                     "c.standar_margin,\n" +
                     "a.lembar_per_box,\n" +
-                    "a.biji_per_lembar\n" +
+                    "a.biji_per_lembar,\n" +
+                    "d.bentuk\n" +
                     "FROM im_simrs_header_obat a\n" +
                     "INNER JOIN (\n" +
-                    "SELECT\n" +
-                    "id_obat,\n" +
-                    "SUM(qty_biji) as sum_biji\n" +
-                    "FROM im_simrs_obat\n" + branch +
-                    "GROUP BY id_obat\n" +
+                    "\tSELECT \n" +
+                    "\tab.id_obat, \n" +
+                    "\tSUM(ab.qty_biji) as sum_biji\n" +
+                    "\tFROM \n" +
+                    "\t(\n" +
+                    "\t\tSELECT\n" +
+                    "\t\ta.id_obat,\n" +
+                    "\t\ta.id_barang,\n" +
+                    "\t\ta.sum_box + a.sum_lembar + a.qty_biji as qty_biji\n" +
+                    "\t\tFROM (\n" +
+                    "\t\t\tSELECT\n" +
+                    "\t\t\tid_obat,\n" +
+                    "\t\t\tid_barang,\n" +
+                    "\t\t\tqty_box * lembar_per_box * biji_per_lembar as sum_box,\n" +
+                    "\t\t\tqty_lembar * biji_per_lembar as sum_lembar,\n" +
+                    "\t\t\tqty_biji\n" +
+                    "\t\t\tFROM im_simrs_obat\n" + branch +
+                    "\t\t) a\n" +
+                    "\t) ab\n" +
+                    "\tGROUP BY ab.id_obat\n" +
                     ") b ON a.id_obat = b.id_obat\n" +
                     "LEFT JOIN im_simrs_margin_obat c ON a.id_obat = c.id_obat\n" +
-                    "WHERE a.flag = :flag \n" +condition;
+                    "LEFT JOIN im_simrs_bentuk_barang d ON d.id_bentuk = a.id_bentuk\n" +
+                    "WHERE a.flag = :flag \n" + condition;
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("flag", flag)
@@ -691,6 +709,7 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setMargin(obj[13] == null ? 0 : (Integer) obj[13]);
                     obat.setLembarPerBox(obj[14] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[14].toString()));
                     obat.setBijiPerLembar(obj[15] == null ? new BigInteger(String.valueOf(0)) : new BigInteger(obj[15].toString()));
+                    obat.setBentuk(obj[16] == null ? "" : obj[16].toString());
                     obat.setJenisObat(getObatGejalaByIdObat(obj[0].toString()));
                     if (obat.getQtyBiji() != null && obat.getMinStok() != null) {
                         if (obat.getQtyBiji().intValue() >= obat.getMinStok().intValue()) {
@@ -764,7 +783,12 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     "a.merk,\n" +
                     "a.id_pabrik_obat,\n" +
                     "b.nama,\n" +
-                    "a.nomor_produksi\n" +
+                    "a.nomor_produksi,\n" +
+                    "a.flag_bpjs,\n" +
+                    "a.lembar_per_box,\n" +
+                    "a.biji_per_lembar,\n" +
+                    "a.qty_box,\n" +
+                    "a.qty_lembar\n" +
                     "FROM im_simrs_obat a\n" +
                     "LEFT JOIN im_simrs_pabrik_obat b ON a.id_pabrik_obat = b.id\n" +
                     "WHERE a.id_obat LIKE :idObat\n" +
@@ -792,11 +816,41 @@ public class ObatDao extends GenericDao<ImSimrsObatEntity, String> {
                     obat.setIdPabrikObat(obj[6] == null ? "" : obj[6].toString());
                     obat.setNamaPabrikObat(obj[7] == null ? "" : obj[7].toString());
                     obat.setNomorProduksi(obj[8] == null ? "" : obj[8].toString());
+
+                    // Sigit 2021-04-08, START
+                    // mencari jenis obat berdasarkan flag bpjs
+                    boolean isBpjs = obj[9] != null && "Y".equalsIgnoreCase(obj[9].toString());
+                    obat.setJenisObat(isBpjs ? "BPJS" : "UMUM");
+
+                    // mencari range hari dari hari ini hingga hari exp date
+                    Date today = new Date(System.currentTimeMillis());
+                    long numOfDaysBetween = ChronoUnit.DAYS.between(today.toLocalDate(), obat.getExpiredDate().toLocalDate());
+                    obat.setStLamaHari(String.valueOf(numOfDaysBetween));
+                    // END
+
+                    obat.setLembarPerBox(objToBigInteger(obj[10]));
+                    obat.setBijiPerLembar(objToBigInteger(obj[11]));
+                    obat.setQtyBox(objToBigInteger(obj[12]));
+                    obat.setQtyLembar(objToBigInteger(obj[13]));
+
+                    BigInteger qtyBox       = obat.getQtyBox().multiply(obat.getLembarPerBox().multiply(obat.getBijiPerLembar()));
+                    BigInteger qtyLembar    = obat.getQtyLembar().multiply(obat.getBijiPerLembar());
+                    BigInteger jumlahQty    = obat.getQtyBiji().add(qtyLembar).add(qtyBox);
+
+                    obat.setQtyAllBiji(jumlahQty);
                     list.add(obat);
                 }
             }
         }
         return list;
+    }
+
+    private BigInteger objToBigInteger(Object obj){
+        if (obj == null){
+            return new BigInteger(String.valueOf(0));
+        } else {
+            return new BigInteger(String.valueOf(obj));
+        }
     }
 
     public List<Obat> getSearchObat(String query, String branch) {
