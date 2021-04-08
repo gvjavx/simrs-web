@@ -1053,6 +1053,10 @@
             'just_lab': "Y"
         }
 
+        var tempHasil = "";
+        if(jsonData.length > 0){
+            tempHasil = JSON.stringify(jsonData);
+        }
         var tempDataFinal = {
             'id_periksa_lab': idPeriksaLab,
             'keterangan': keterangan,
@@ -1064,6 +1068,7 @@
             'ttd_petugas': finalPetugas,
             'ttd_validator': finalDokter,
             'total_tarif': totalTarif,
+            'hasil_pemeriksaan': tempHasil,
             'keterangan_hasil': keteranganHasil
         }
 

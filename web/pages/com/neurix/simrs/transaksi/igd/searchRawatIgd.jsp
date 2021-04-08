@@ -137,30 +137,6 @@
                                             Search
                                         </sj:submit>
                                         <a href="addRawatIgd_igd.action" type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</a>
-                                        <%--<div class="btn-group">--%>
-                                            <%--<button type="button" class="btn btn-primary"><i class="fa fa-plus"></i> Pendaftaran</button>--%>
-                                            <%--<button type="button" class="btn btn-primary dropdown-toggle"--%>
-                                                    <%--data-toggle="dropdown" style="height: 34px">--%>
-                                                <%--<span class="caret"></span>--%>
-                                                <%--<span class="sr-only">Toggle Dropdown</span>--%>
-                                            <%--</button>--%>
-                                            <%--<ul class="dropdown-menu" role="menu">--%>
-                                                <%--<li><a href="addRawatIgd_igd.action?tipe=umum">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Umum</a></li>--%>
-                                                <%--<li><a href="addRawatIgd_igd.action?tipe=bpjs">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien BPJS</a></li>--%>
-                                                <%--<li><a href="addRawatIgd_igd.action?tipe=paket_perusahaan">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Medical Checkup</a></li>--%>
-                                                <%--<li><a href="addRawatIgd_igd.action?tipe=paket_individu">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Promo</a></li>--%>
-                                                <%--<li><a href="addRawatIgd_igd.action?tipe=asuransi">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Asuransi</a></li>--%>
-                                                <%--<li><a href="addRawatIgd_igd.action?tipe=ptpn">--%>
-                                                    <%--<i class="fa fa-user-plus"></i>Pasien Rekanan</a></li>--%>
-                                            <%--</ul>--%>
-                                        <%--</div>--%>
-                                        <%--<a type="button" class="btn btn-warning" id="btnFingerPrint"><i--%>
-                                                <%--class="fa fa-plus"></i> With Finger Print</a>--%>
                                         <a type="button" class="btn btn-danger" href="initForm_igd.action">
                                             <i class="fa fa-refresh"></i> Reset
                                         </a>
@@ -202,12 +178,13 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat IGD Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -220,6 +197,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">

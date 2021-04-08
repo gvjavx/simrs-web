@@ -479,7 +479,7 @@ public class PeriksaRadiologiAction extends BaseMasterAction {
                 }else{
                     namaLab = periksalb.getLabName();
                 }
-                reportParams.put("title", "Hasil Periksa Radiologi");
+                reportParams.put("title", "Hasil Pemeriksaan Radiologi");
                 reportParams.put("jenisPemeriksaan", namaLab);
             }
 

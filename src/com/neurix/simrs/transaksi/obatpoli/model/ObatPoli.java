@@ -39,6 +39,15 @@ public class ObatPoli {
     private String namaPabrikObat;
     private String merk;
     private String flagBpjs;
+    private BigInteger totalQty;
+
+    public BigInteger getTotalQty() {
+        return totalQty;
+    }
+
+    public void setTotalQty(BigInteger totalQty) {
+        this.totalQty = totalQty;
+    }
 
     public String getFlagBpjs() {
         return flagBpjs;

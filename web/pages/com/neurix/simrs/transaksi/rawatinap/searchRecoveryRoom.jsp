@@ -154,12 +154,13 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Inap Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
                                 <td align="center">Action</td>
@@ -171,6 +172,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
                                         <script>

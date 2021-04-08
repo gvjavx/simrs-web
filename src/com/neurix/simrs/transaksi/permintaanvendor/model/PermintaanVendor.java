@@ -64,6 +64,15 @@ public class PermintaanVendor{
     private Date tglInvoice;
     private String stJumlahItem;
     private String jenisPo;
+    private String status;
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     public String getStJumlahItem() {
         return stJumlahItem;

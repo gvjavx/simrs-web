@@ -2965,68 +2965,68 @@ public class BillingSystemBoImpl extends TutupPeriodBoImpl implements BillingSys
     private void generateAndSaveCurrentSaldoPersediaanToNextMonth(String branchId, String idObat, Integer bulan, Integer tahun, String idPelayanan, String userLogin, Timestamp times, String idBarang){
 
 
-        List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(idPelayanan, tahun, bulan, idObat);
-        if (saldoBulanLaluList.size() > 0){
-            // ambil data yang terakhir untuk saldo bulan lalu
-            TransaksiStok saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
-            if (saldoBulanLalu != null){
-
-                ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
-                transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
-                transaksiStokEntity.setIdObat(idObat);
-                transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
-                transaksiStokEntity.setTipe("D");
-                transaksiStokEntity.setBranchId(branchId);
-                transaksiStokEntity.setQty(new BigInteger(String.valueOf(0)));
-                transaksiStokEntity.setTotal(new BigDecimal(0));
-                transaksiStokEntity.setSubTotal(new BigDecimal(0));
-                transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
-                transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
-                transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
-                transaksiStokEntity.setCreatedDate(times);
-                transaksiStokEntity.setCreatedWho(userLogin);
-                transaksiStokEntity.setLastUpdate(times);
-                transaksiStokEntity.setLastUpdateWho(userLogin);
-                transaksiStokEntity.setIdBarang(idBarang);
-                transaksiStokEntity.setIdPelayanan(idPelayanan);
-                transaksiStokEntity.setRegisteredDate(getStDateNextMonth(tahun, bulan));
-
-                try {
-                    transaksiStokDao.addAndSave(transaksiStokEntity);
-                } catch (HibernateException e){
-                    logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
-                    throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
-                }
-            }
-        }
-        if (saldoBulanLaluList.size() == 0) {
-            ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
-            transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
-            transaksiStokEntity.setIdObat(idObat);
-            transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
-            transaksiStokEntity.setTipe("D");
-            transaksiStokEntity.setBranchId(branchId);
-            transaksiStokEntity.setQty(new BigInteger(String.valueOf(0)));
-            transaksiStokEntity.setTotal(new BigDecimal(0));
-            transaksiStokEntity.setSubTotal(new BigDecimal(0));
-            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
-            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
-            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
-            transaksiStokEntity.setCreatedDate(times);
-            transaksiStokEntity.setCreatedWho(userLogin);
-            transaksiStokEntity.setLastUpdate(times);
-            transaksiStokEntity.setLastUpdateWho(userLogin);
-            transaksiStokEntity.setIdBarang(idBarang);
-            transaksiStokEntity.setIdPelayanan(idPelayanan);
-            transaksiStokEntity.setRegisteredDate(getStDateNextMonth(tahun, bulan));
-
-            try {
-                transaksiStokDao.addAndSave(transaksiStokEntity);
-            } catch (HibernateException e){
-                logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
-                throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
-            }
-        }
+//        List<TransaksiStok> saldoBulanLaluList = getListTransaksiObat(idPelayanan, tahun, bulan, idObat);
+//        if (saldoBulanLaluList.size() > 0){
+//            // ambil data yang terakhir untuk saldo bulan lalu
+//            TransaksiStok saldoBulanLalu = saldoBulanLaluList.get(saldoBulanLaluList.size() -1);
+//            if (saldoBulanLalu != null){
+//
+//                ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+//                transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
+//                transaksiStokEntity.setIdObat(idObat);
+//                transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
+//                transaksiStokEntity.setTipe("D");
+//                transaksiStokEntity.setBranchId(branchId);
+//                transaksiStokEntity.setQty(new BigInteger(String.valueOf(0)));
+//                transaksiStokEntity.setTotal(new BigDecimal(0));
+//                transaksiStokEntity.setSubTotal(new BigDecimal(0));
+//                transaksiStokEntity.setQtyLalu(saldoBulanLalu.getQtySaldo());
+//                transaksiStokEntity.setTotalLalu(saldoBulanLalu.getTotalSaldo());
+//                transaksiStokEntity.setSubTotalLalu(saldoBulanLalu.getSubTotalSaldo());
+//                transaksiStokEntity.setCreatedDate(times);
+//                transaksiStokEntity.setCreatedWho(userLogin);
+//                transaksiStokEntity.setLastUpdate(times);
+//                transaksiStokEntity.setLastUpdateWho(userLogin);
+//                transaksiStokEntity.setIdBarang(idBarang);
+//                transaksiStokEntity.setIdPelayanan(idPelayanan);
+//                transaksiStokEntity.setRegisteredDate(getStDateNextMonth(tahun, bulan));
+//
+//                try {
+//                    transaksiStokDao.addAndSave(transaksiStokEntity);
+//                } catch (HibernateException e){
+//                    logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+//                    throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+//                }
+//            }
+//        }
+//        if (saldoBulanLaluList.size() == 0) {
+//            ItSimrsTransaksiStokEntity transaksiStokEntity = new ItSimrsTransaksiStokEntity();
+//            transaksiStokEntity.setIdTransaksi(generateNextIdTransaksiStock(branchId));
+//            transaksiStokEntity.setIdObat(idObat);
+//            transaksiStokEntity.setKeterangan("Saldo Bulan Lalu "+idObat);
+//            transaksiStokEntity.setTipe("D");
+//            transaksiStokEntity.setBranchId(branchId);
+//            transaksiStokEntity.setQty(new BigInteger(String.valueOf(0)));
+//            transaksiStokEntity.setTotal(new BigDecimal(0));
+//            transaksiStokEntity.setSubTotal(new BigDecimal(0));
+//            transaksiStokEntity.setQtyLalu(new BigInteger(String.valueOf(0)));
+//            transaksiStokEntity.setTotalLalu(new BigDecimal(0));
+//            transaksiStokEntity.setSubTotalLalu(new BigDecimal(0));
+//            transaksiStokEntity.setCreatedDate(times);
+//            transaksiStokEntity.setCreatedWho(userLogin);
+//            transaksiStokEntity.setLastUpdate(times);
+//            transaksiStokEntity.setLastUpdateWho(userLogin);
+//            transaksiStokEntity.setIdBarang(idBarang);
+//            transaksiStokEntity.setIdPelayanan(idPelayanan);
+//            transaksiStokEntity.setRegisteredDate(getStDateNextMonth(tahun, bulan));
+//
+//            try {
+//                transaksiStokDao.addAndSave(transaksiStokEntity);
+//            } catch (HibernateException e){
+//                logger.error("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+//                throw new GeneralBOException("[BillingSystemBoImpl.generateAndSaveSaldoCurrentToNextMonth] ERROR .", e);
+//            }
+//        }
     }
 
     private java.sql.Date getStDateNextMonth(Integer tahun, Integer bulan){

@@ -116,6 +116,15 @@ public class Obat extends BaseModel {
     private Integer marginKhususNonBpjs;
     private Integer marginUmumBpjs;
     private Integer marginKhususBpjs;
+    private String stLamaHari;
+
+    public String getStLamaHari() {
+        return stLamaHari;
+    }
+
+    public void setStLamaHari(String stLamaHari) {
+        this.stLamaHari = stLamaHari;
+    }
 
     public Integer getMarginUmumNonBpjs() {
         return marginUmumNonBpjs;

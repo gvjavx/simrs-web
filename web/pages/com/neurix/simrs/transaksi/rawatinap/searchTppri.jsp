@@ -198,13 +198,14 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>No Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
-                                <td>Jenis Pasien</td>
+                                <td>Tanggal Masuk</td>
+                                <td align="center">Jenis Pasien</td>
                                 <td>Tindak Lanjut</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -215,7 +216,12 @@
                                     <td><s:property value="noCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
-                                    <td><s:property value="jenisPeriksaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
+                                    <td align="center">
+                                        <script>
+                                            document.write(changeJenisPasien('<s:property value="idJenisPeriksa"/>', '<s:property value="jenisPeriksaPasien"/>'));
+                                        </script>
+                                    </td>
                                     <td><s:property value="keteranganSelesai"/></td>
                                     <td align="center">
                                         <s:if test='#row.flagTppri == "Y"'>

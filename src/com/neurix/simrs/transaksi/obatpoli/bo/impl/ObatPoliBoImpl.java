@@ -46,6 +46,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 /**
  * Created by Toshiba on 11/12/2019.
@@ -73,62 +75,124 @@ public class ObatPoliBoImpl implements ObatPoliBo {
         List<ObatPoli> obatPoliList = new ArrayList<>();
         if (bean != null) {
             List<MtSimrsObatPoliEntity> obatPoliEntities = getListEntityObatPoli(bean);
-            if (!obatPoliEntities.isEmpty() && obatPoliEntities.size() > 0) {
-                for (MtSimrsObatPoliEntity obatPoliEntity : obatPoliEntities) {
 
-                    if(obatPoliEntity.getPrimaryKey().getIdBarang() != null && !"".equalsIgnoreCase(obatPoliEntity.getPrimaryKey().getIdBarang())){
-                        Integer box = Integer.valueOf(obatPoliEntity.getQtyBox().toString());
-                        Integer lembar = Integer.valueOf(obatPoliEntity.getQtyLembar().toString());
-                        Integer biji = Integer.valueOf(obatPoliEntity.getQtyBiji().toString());
+            List<MtSimrsObatPoliEntity> filterObatPoliEntities = obatPoliEntities.stream().filter(
+                    p->p.getPrimaryKey().getIdBarang() != null &&
+                            !"".equalsIgnoreCase(p.getPrimaryKey().getIdBarang())
+            ).collect(Collectors.toList());
 
-                        if(box > 0 || lembar > 0 || biji > 0){
-                            ObatPoli obatPoli = new ObatPoli();
-                            obatPoli.setIdObat(obatPoliEntity.getIdObat());
-                            obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
-                            obatPoli.setFlag(obatPoliEntity.getFlag());
-                            obatPoli.setQtyBox(obatPoliEntity.getQtyBox());
-                            obatPoli.setQtyLembar(obatPoliEntity.getQtyLembar());
-                            obatPoli.setQtyBiji(obatPoliEntity.getQtyBiji());
-                            obatPoli.setQty(obatPoliEntity.getQty());
-                            obatPoli.setAction(obatPoliEntity.getAction());
-                            obatPoli.setCreatedDate(obatPoliEntity.getCreatedDate());
-                            obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
-                            obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
-                            obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
-                            obatPoli.setBranchId(obatPoliEntity.getBranchId());
-                            obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
-                            obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
-                            obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
+            if (obatPoliEntities.size() > 0){
+                for (MtSimrsObatPoliEntity obatPoliEntity : filterObatPoliEntities){
+                    Integer box = Integer.valueOf(obatPoliEntity.getQtyBox().toString());
+                    Integer lembar = Integer.valueOf(obatPoliEntity.getQtyLembar().toString());
+                    Integer biji = Integer.valueOf(obatPoliEntity.getQtyBiji().toString());
 
-                            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId(), obatPoliEntity.getPrimaryKey().getIdBarang());
-                            if (obatEntity != null) {
-                                obatPoli.setNamaObat(obatEntity.getNamaObat());
-                                obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
-                                obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
-                                obatPoli.setMerk(obatEntity.getMerk());
-                                if(obatEntity.getIdPabrikObat() != null && !"".equalsIgnoreCase(obatEntity.getIdPabrikObat())){
-                                    ImSimrsPabrikObatEntity pabrikObatEntity = pabrikDao.getById("id", obatEntity.getIdPabrikObat());
-                                    if(pabrikObatEntity != null){
-                                        if(pabrikObatEntity.getNama() != null){
-                                            obatPoli.setNamaPabrikObat(pabrikObatEntity.getNama());
-                                        }else{
-                                            obatPoli.setNamaPabrikObat("");
-                                        }
-                                    }else{
-                                        obatPoli.setNamaPabrikObat("");
+                    if(box > 0 || lembar > 0 || biji > 0){
+                        ObatPoli obatPoli = new ObatPoli();
+                        obatPoli.setIdObat(obatPoliEntity.getIdObat());
+                        obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
+                        obatPoli.setFlag(obatPoliEntity.getFlag());
+                        obatPoli.setQtyBox(obatPoliEntity.getQtyBox());
+                        obatPoli.setQtyLembar(obatPoliEntity.getQtyLembar());
+                        obatPoli.setQtyBiji(obatPoliEntity.getQtyBiji());
+                        obatPoli.setQty(obatPoliEntity.getQty());
+                        obatPoli.setAction(obatPoliEntity.getAction());
+                        obatPoli.setCreatedDate(obatPoliEntity.getCreatedDate());
+                        obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
+                        obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
+                        obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
+                        obatPoli.setBranchId(obatPoliEntity.getBranchId());
+                        obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
+                        obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
+                        obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
+
+                        ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId(), obatPoliEntity.getPrimaryKey().getIdBarang());
+                        if (obatEntity != null) {
+
+                            obatPoli.setNamaObat(obatEntity.getNamaObat());
+                            obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
+                            obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+                            obatPoli.setMerk(obatEntity.getMerk());
+                            obatPoli.setFlagBpjs(!"Y".equalsIgnoreCase(obatEntity.getFlagBpjs()) ? "N" : obatEntity.getFlagBpjs());
+
+                            obatPoli.setNamaPabrikObat("");
+                            if(obatEntity.getIdPabrikObat() != null && !"".equalsIgnoreCase(obatEntity.getIdPabrikObat())) {
+                                ImSimrsPabrikObatEntity pabrikObatEntity = pabrikDao.getById("id", obatEntity.getIdPabrikObat());
+                                if (pabrikObatEntity != null) {
+                                    if (pabrikObatEntity.getNama() != null) {
+                                        obatPoli.setNamaPabrikObat(pabrikObatEntity.getNama());
                                     }
-                                }else{
-                                    obatPoli.setNamaPabrikObat("");
                                 }
                             }
-                            obatPoliList.add(obatPoli);
                         }
+                        obatPoliList.add(obatPoli);
                     }
                 }
             }
+
+
+//            if (!obatPoliEntities.isEmpty() && obatPoliEntities.size() > 0) {
+//                for (MtSimrsObatPoliEntity obatPoliEntity : obatPoliEntities) {
+//
+//                    if(obatPoliEntity.getPrimaryKey().getIdBarang() != null && !"".equalsIgnoreCase(obatPoliEntity.getPrimaryKey().getIdBarang())){
+//                        Integer box = Integer.valueOf(obatPoliEntity.getQtyBox().toString());
+//                        Integer lembar = Integer.valueOf(obatPoliEntity.getQtyLembar().toString());
+//                        Integer biji = Integer.valueOf(obatPoliEntity.getQtyBiji().toString());
+//
+//                        if(box > 0 || lembar > 0 || biji > 0){
+//                            ObatPoli obatPoli = new ObatPoli();
+//                            obatPoli.setIdObat(obatPoliEntity.getIdObat());
+//                            obatPoli.setIdPelayanan(obatPoliEntity.getPrimaryKey().getIdPelayanan());
+//                            obatPoli.setFlag(obatPoliEntity.getFlag());
+//                            obatPoli.setQtyBox(obatPoliEntity.getQtyBox());
+//                            obatPoli.setQtyLembar(obatPoliEntity.getQtyLembar());
+//                            obatPoli.setQtyBiji(obatPoliEntity.getQtyBiji());
+//                            obatPoli.setQty(obatPoliEntity.getQty());
+//                            obatPoli.setAction(obatPoliEntity.getAction());
+//                            obatPoli.setCreatedDate(obatPoliEntity.getCreatedDate());
+//                            obatPoli.setCreatedWho(obatPoliEntity.getCreatedWho());
+//                            obatPoli.setLastUpdate(obatPoliEntity.getLastUpdate());
+//                            obatPoli.setLastUpdateWho(obatPoliEntity.getLastUpdateWho());
+//                            obatPoli.setBranchId(obatPoliEntity.getBranchId());
+//                            obatPoli.setIdPabrik(obatPoliEntity.getIdPabrik());
+//                            obatPoli.setExpiredDate(obatPoliEntity.getExpiredDate());
+//                            obatPoli.setIdBarang(obatPoliEntity.getPrimaryKey().getIdBarang());
+//
+//                            ImSimrsObatEntity obatEntity = getObatById(obatPoliEntity.getIdObat(), obatPoliEntity.getBranchId(), obatPoliEntity.getPrimaryKey().getIdBarang());
+//                            if (obatEntity != null) {
+//                                obatPoli.setNamaObat(obatEntity.getNamaObat());
+//                                obatPoli.setLembarPerBox(obatEntity.getLembarPerBox());
+//                                obatPoli.setBijiPerLembar(obatEntity.getBijiPerLembar());
+//                                obatPoli.setMerk(obatEntity.getMerk());
+//                                if(obatEntity.getIdPabrikObat() != null && !"".equalsIgnoreCase(obatEntity.getIdPabrikObat())){
+//                                    ImSimrsPabrikObatEntity pabrikObatEntity = pabrikDao.getById("id", obatEntity.getIdPabrikObat());
+//                                    if(pabrikObatEntity != null){
+//                                        if(pabrikObatEntity.getNama() != null){
+//                                            obatPoli.setNamaPabrikObat(pabrikObatEntity.getNama());
+//                                        }else{
+//                                            obatPoli.setNamaPabrikObat("");
+//                                        }
+//                                    }else{
+//                                        obatPoli.setNamaPabrikObat("");
+//                                    }
+//                                }else{
+//                                    obatPoli.setNamaPabrikObat("");
+//                                }
+//                            }
+//                            obatPoliList.add(obatPoli);
+//                        }
+//                    }
+//                }
+//            }
         }
 
         logger.info("[ObatPoliBoImpl.getObatPoliByCriteria] END <<<<<<<<<<");
+        if (bean.getFlagBpjs() != null && !"".equalsIgnoreCase(bean.getFlagBpjs())){
+            List<ObatPoli> filteredList = obatPoliList.stream().filter(
+                    p->p.getFlagBpjs().equalsIgnoreCase(bean.getFlagBpjs())
+            ).collect(Collectors.toList());
+            return filteredList;
+        }
         return obatPoliList;
     }
 
@@ -145,84 +209,88 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             bean.setRequest(false);
         }
 
-        List<MtSimrsPermintaanObatPoliEntity> entities = null;
+//        List<MtSimrsPermintaanObatPoliEntity> entities = null;
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
 
         try {
-            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean, isPoli);
+//            entities = permintaanObatPoliDao.getListPermintaanObatPoliEntity(bean, isPoli);
+            permintaanObatPolis = permintaanObatPoliDao.getListPermintaanObatPoliGudang(bean, isPoli);
         } catch (HibernateException e) {
             logger.error("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
             throw new GeneralBOException("[PermintaanResepBoImpl.getSearchPermintaanObatPoli] ERROR when get permintaan obat poli entity by criteria. ", e);
         }
 
-        if (!entities.isEmpty() && entities.size() > 0) {
-            PermintaanObatPoli permintaanObatPoli;
-            for (MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity : entities) {
-                permintaanObatPoli = new PermintaanObatPoli();
-                permintaanObatPoli.setIdPermintaanObatPoli(permintaanObatPoliEntity.getIdPermintaanObatPoli());
-                permintaanObatPoli.setIdApprovalObat(permintaanObatPoliEntity.getIdApprovalObat());
-                permintaanObatPoli.setIdObat(permintaanObatPoliEntity.getIdObat());
-                permintaanObatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
-                permintaanObatPoli.setQty(permintaanObatPoliEntity.getQty());
-                permintaanObatPoli.setFlag(permintaanObatPoliEntity.getFlag());
-                permintaanObatPoli.setAction(permintaanObatPoliEntity.getAction());
-                permintaanObatPoli.setLastUpdate(permintaanObatPoliEntity.getLastUpdate());
-                permintaanObatPoli.setLastUpdateWho(permintaanObatPoliEntity.getLastUpdateWho());
-                permintaanObatPoli.setCreatedDate(permintaanObatPoliEntity.getCreatedDate());
-                permintaanObatPoli.setCreatedWho(permintaanObatPoliEntity.getCreatedWho());
-                permintaanObatPoli.setDiterimaFlag(permintaanObatPoli.getDiterimaFlag());
-                permintaanObatPoli.setRetureFlag(permintaanObatPoli.getRetureFlag());
-                permintaanObatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
-                permintaanObatPoli.setDiterimaFlag(permintaanObatPoliEntity.getDiterimaFlag());
-                permintaanObatPoli.setRetureFlag(permintaanObatPoliEntity.getRetureFlag());
-
-                ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat(), bean.getBranchId());
-                if (simrsObatEntity != null) {
-                    permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
-                    permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
-                }
-
-                Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getIdPelayanan());
-                if (pelayananEntity != null) {
-                    permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
-                }
-
-                Pelayanan tujuanPelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getTujuanPelayanan());
-                if (tujuanPelayananEntity != null) {
-                    permintaanObatPoli.setNamaTujuanPelayanan(tujuanPelayananEntity.getNamaPelayanan());
-                }
-
-                ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanObatPoli.getIdApprovalObat());
-                if (approvalEntity != null) {
-
-                    if (approvalEntity.getApprovalFlag() != null && !"".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
-                        permintaanObatPoli.setKeterangan("Telah Dikonfirmasi");
-                    } else {
-                        permintaanObatPoli.setKeterangan("Menunggu Konfirmasi");
-                    }
-
-                    permintaanObatPoli.setApprovalFlag(approvalEntity.getApprovalFlag());
-                    permintaanObatPoli.setApprovePerson(approvalEntity.getApprovePerson());
-                    permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
-                    permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
-                }
-
-                if(permintaanObatPoliEntity.getCreatedDate() != null){
-                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
-                    permintaanObatPoli.setStCreatedDate(formatDate);
-                }
-                permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
-                permintaanObatPoli.setRequest(bean.getRequest());
-
-                TransaksiObatDetail detail = new TransaksiObatDetail();
-                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
-                List<ImtSimrsTransaksiObatDetailEntity> entityList = getListEntityObatDetail(detail);
-                permintaanObatPoli.setJumlahObat(String.valueOf(entityList.size()));
-                permintaanObatPoliList.add(permintaanObatPoli);
-            }
-        }
-
         logger.info("[ObatPoliBoImpl.getSearchPermintaanObatPoli] END <<<<<<<<<<");
-        return permintaanObatPoliList;
+        return permintaanObatPolis;
+
+//        if (!entities.isEmpty() && entities.size() > 0) {
+//            PermintaanObatPoli permintaanObatPoli;
+//            for (MtSimrsPermintaanObatPoliEntity permintaanObatPoliEntity : entities) {
+//                permintaanObatPoli = new PermintaanObatPoli();
+//                permintaanObatPoli.setIdPermintaanObatPoli(permintaanObatPoliEntity.getIdPermintaanObatPoli());
+//                permintaanObatPoli.setIdApprovalObat(permintaanObatPoliEntity.getIdApprovalObat());
+//                permintaanObatPoli.setIdObat(permintaanObatPoliEntity.getIdObat());
+//                permintaanObatPoli.setIdPelayanan(permintaanObatPoliEntity.getIdPelayanan());
+//                permintaanObatPoli.setQty(permintaanObatPoliEntity.getQty());
+//                permintaanObatPoli.setFlag(permintaanObatPoliEntity.getFlag());
+//                permintaanObatPoli.setAction(permintaanObatPoliEntity.getAction());
+//                permintaanObatPoli.setLastUpdate(permintaanObatPoliEntity.getLastUpdate());
+//                permintaanObatPoli.setLastUpdateWho(permintaanObatPoliEntity.getLastUpdateWho());
+//                permintaanObatPoli.setCreatedDate(permintaanObatPoliEntity.getCreatedDate());
+//                permintaanObatPoli.setCreatedWho(permintaanObatPoliEntity.getCreatedWho());
+//                permintaanObatPoli.setDiterimaFlag(permintaanObatPoli.getDiterimaFlag());
+//                permintaanObatPoli.setRetureFlag(permintaanObatPoli.getRetureFlag());
+//                permintaanObatPoli.setTujuanPelayanan(permintaanObatPoliEntity.getTujuanPelayanan());
+//                permintaanObatPoli.setDiterimaFlag(permintaanObatPoliEntity.getDiterimaFlag());
+//                permintaanObatPoli.setRetureFlag(permintaanObatPoliEntity.getRetureFlag());
+//
+//                ImSimrsObatEntity simrsObatEntity = getObatById(permintaanObatPoli.getIdObat(), bean.getBranchId());
+//                if (simrsObatEntity != null) {
+//                    permintaanObatPoli.setNamaObat(simrsObatEntity.getNamaObat());
+//                    permintaanObatPoli.setQtyGudang(simrsObatEntity.getQty());
+//                }
+//
+//                Pelayanan pelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getIdPelayanan());
+//                if (pelayananEntity != null) {
+//                    permintaanObatPoli.setNamaPelayanan(pelayananEntity.getNamaPelayanan());
+//                }
+//
+//                Pelayanan tujuanPelayananEntity = pelayananDao.getPelayananById("idPelayanan",permintaanObatPoliEntity.getTujuanPelayanan());
+//                if (tujuanPelayananEntity != null) {
+//                    permintaanObatPoli.setNamaTujuanPelayanan(tujuanPelayananEntity.getNamaPelayanan());
+//                }
+//
+//                ImtSimrsApprovalTransaksiObatEntity approvalEntity = getApprovalTransaksiById(permintaanObatPoli.getIdApprovalObat());
+//                if (approvalEntity != null) {
+//
+//                    if (approvalEntity.getApprovalFlag() != null && !"".equalsIgnoreCase(approvalEntity.getApprovalFlag())) {
+//                        permintaanObatPoli.setKeterangan("Telah Dikonfirmasi");
+//                    } else {
+//                        permintaanObatPoli.setKeterangan("Menunggu Konfirmasi");
+//                    }
+//
+//                    permintaanObatPoli.setApprovalFlag(approvalEntity.getApprovalFlag());
+//                    permintaanObatPoli.setApprovePerson(approvalEntity.getApprovePerson());
+//                    permintaanObatPoli.setApprovalLastUpdate(approvalEntity.getLastUpdate());
+//                    permintaanObatPoli.setApprovalLastUpdateWho(approvalEntity.getLastUpdateWho());
+//                }
+//
+//                if(permintaanObatPoliEntity.getCreatedDate() != null){
+//                    String formatDate = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(permintaanObatPoliEntity.getCreatedDate());
+//                    permintaanObatPoli.setStCreatedDate(formatDate);
+//                }
+//                permintaanObatPoli.setTipePermintaan(bean.getTipePermintaan());
+//                permintaanObatPoli.setRequest(bean.getRequest());
+//
+//                TransaksiObatDetail detail = new TransaksiObatDetail();
+//                detail.setIdApprovalObat(approvalEntity.getIdApprovalObat());
+//                List<ImtSimrsTransaksiObatDetailEntity> entityList = getListEntityObatDetail(detail);
+//                permintaanObatPoli.setJumlahObat(String.valueOf(entityList.size()));
+//                permintaanObatPoliList.add(permintaanObatPoli);
+//            }
+//        }
+
+//        return permintaanObatPoliList;
     }
 
 //    @Override
@@ -353,6 +421,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
                 obatDetailEntity.setCreatedWho(bean.getCreatedWho());
                 obatDetailEntity.setLastUpdate(bean.getCreatedDate());
                 obatDetailEntity.setLastUpdateWho(bean.getCreatedWho());
+                obatDetailEntity.setFlagObatBpjs(obatListDetail.getFlagBpjs());
                 obatDetailEntity.setKeterangan("Request Obat");
 
                 try {
@@ -3137,7 +3206,7 @@ public class ObatPoliBoImpl implements ObatPoliBo {
 
                 Obat obat = new Obat();
                 try {
-                    obat = obatDao.getLastIdSeqObat(idObat);
+                    obat = obatDao.getLastIdSeqObat(idObat, null);
                 } catch (HibernateException e){
                     logger.error("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
                     throw new GeneralBOException("[PermintaanResepBoImpl.getListObatPoliGroup] ERROR when get by criteria. ", e);
@@ -3263,6 +3332,23 @@ public class ObatPoliBoImpl implements ObatPoliBo {
             throw new GeneralBOException("[PermintaanResepBoImpl.getStokObatPoli] ERROR when get search obat poli. ", e);
         }
         return obatPoliList;
+    }
+
+    @Override
+    public List<PermintaanObatPoli> getListDetailPermintaanByIdApproval(String idApproval) throws GeneralBOException {
+        logger.info("[ObatPoliBoImpl.getListDetailPermintaanByIdApproval] START >>>");
+
+        List<PermintaanObatPoli> permintaanObatPolis = new ArrayList<>();
+
+        try {
+            permintaanObatPolis = permintaanObatPoliDao.getListDetailPermintaan(idApproval);
+        } catch (HibernateException e){
+            logger.error("[PermintaanResepBoImpl.getListDetailPermintaanByIdApproval] ERROR when get search detail obat poli. ", e);
+            throw new GeneralBOException("[PermintaanResepBoImpl.getListDetailPermintaanByIdApproval] ERROR when get search detail obat poli. ", e);
+        }
+
+        logger.info("[ObatPoliBoImpl.getListDetailPermintaanByIdApproval] END <<<");
+        return permintaanObatPolis;
     }
 
     // list method seq

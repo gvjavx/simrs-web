@@ -129,7 +129,7 @@
                                                   name="headerCheckup.idPelayanan" listKey="idVendor"
                                                   listValue="namaVendor"
                                                   onchange="var warn =$('#war_po_vendor').is(':visible'); if (warn){$('#cor_po_vendor').show().fadeOut(3000);$('#war_po_vendor').hide()};"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2"/>
                                         <span style="color: red; display: none;"
                                            id="war_po_vendor"><i class="fa fa-times"></i> required</span>
@@ -267,12 +267,12 @@
                                 <div class="form-group">
                                 <label class="col-md-4" style="margin-top: 7px">Tipe Obat</label>
                                 <div class="col-md-8">
-                                <s:select list="#{'bpjs':'BPJS','umum':'UMUM'}"
+                                <s:select list="#{'bpjs':'BPJS'}"
                                 cssStyle="margin-top: 7px; width: 100%"
                                 onchange="var warn =$('#war_po_tipe').is(':visible'); if (warn){$('#cor_po_tipe').show().fadeOut(3000);$('#war_po_tipe').hide()};setTipeObat()"
                                 id="tipe_obat"
-                                headerKey="" headerValue="[Select one]"
-                                cssClass="form-control select2"/>
+                                headerKey="umum" headerValue="UMUM"
+                                cssClass="form-control"/>
                                 <span style="color: red; display: none;"
                                 id="war_po_tipe"><i class="fa fa-times"></i> required</span>
                                 <span style="color: green; display: none;"

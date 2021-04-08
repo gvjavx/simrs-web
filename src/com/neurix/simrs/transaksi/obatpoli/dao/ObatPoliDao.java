@@ -567,6 +567,11 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
             if(bean.getIdBarang() != null && !"".equalsIgnoreCase(bean.getIdBarang())){
                 condition += "AND a.id_barang LIKE '%"+bean.getIdBarang()+"%' \n";
             }
+            if(bean.getFlagBpjs() != null && "Y".equalsIgnoreCase(bean.getFlagBpjs())){
+                condition += "AND c.flag_bpjs = 'Y' \n";
+            } else if (bean.getFlagBpjs() != null && "N".equalsIgnoreCase(bean.getFlagBpjs())){
+                condition += "AND c.flag_bpjs != 'Y' \n";
+            }
 
             String SQL = "SELECT\n" +
                     "a.id_obat,\n" +
@@ -578,11 +583,14 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     "a.branch_id,\n" +
                     "c.lembar_per_box,\n" +
                     "c.biji_per_lembar,\n" +
-                    "c.flag_bpjs\n" +
+                    "c.flag_bpjs,\n" +
+                    "a.qty_lembar,\n" +
+                    "a.qty_box\n" +
                     "FROM mt_simrs_obat_poli a\n" +
                     "INNER JOIN im_simrs_header_obat b ON a.id_obat = b.id_obat\n" +
                     "INNER JOIN im_simrs_obat c ON a.id_barang = c.id_barang\n" +
-                    "WHERE a.flag = :flag\n" +condition;
+                    "WHERE a.flag = :flag \n" + condition +
+                    "AND (a.qty_biji, a.qty_lembar, a.qty_box) > ('0','0','0') ";
 
             List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("flag", flag)
@@ -601,10 +609,79 @@ public class ObatPoliDao extends GenericDao<MtSimrsObatPoliEntity,String> {
                     obatPoli.setLembarPerBox(obj[7] != null ? (BigInteger) obj[7] : new BigInteger(String.valueOf("0")));
                     obatPoli.setBijiPerLembar(obj[8] != null ? (BigInteger) obj[8] : new BigInteger(String.valueOf("0")));
                     obatPoli.setFlagBpjs(obj[9] != null ? obj[9].toString() : "");
+                    obatPoli.setQtyLembar(objToBigInteger(obj[10]));
+                    obatPoli.setQtyBox(objToBigInteger(obj[11]));
+
+                    BigInteger qtyBox       = obatPoli.getQtyBox().multiply(obatPoli.getLembarPerBox()).multiply(obatPoli.getBijiPerLembar());
+                    BigInteger qtyLembar    = obatPoli.getQtyLembar().multiply(obatPoli.getBijiPerLembar());
+                    BigInteger qtyBiji      = obatPoli.getQtyBiji();
+                    BigInteger totalQty     = qtyBiji.add(qtyLembar).add(qtyBox);
+
+                    obatPoli.setTotalQty(totalQty);
                     obatPoliList.add(obatPoli);
                 }
             }
         }
         return obatPoliList;
+    }
+
+    private BigInteger objToBigInteger(Object obj){
+        if (obj == null)
+            return new BigInteger(String.valueOf(0));
+        else
+            return new BigInteger(obj.toString());
+    }
+
+    public ObatPoli getStokObatPoliById(String idObat, String flagBpjs, String idPelayanan){
+
+        String SQL = "SELECT \n" +
+                "ab.id_obat,\n" +
+                "ab.flag_bpjs,\n" +
+                "SUM(ab.qty_box) + SUM(ab.qty_lembar) + SUM(ab.qty_biji) as total_bijian\n" +
+                "FROM \n" +
+                "(\n" +
+                "\tSELECT \n" +
+                "\taa.id_obat,\n" +
+                "\taa.id_barang,\n" +
+                "\taa.flag_bpjs,\n" +
+                "\tSUM(aa.qty_box) as qty_box,\n" +
+                "\tSUM(aa.qty_lembar) as qty_lembar,\n" +
+                "\tSUM(aa.qty_biji) as qty_biji\n" +
+                "\tFROM (\n" +
+                "\t\tSELECT\n" +
+                "\t\ta.id_obat, \n" +
+                "\t\ta.id_barang,\n" +
+                "\t\tb.flag_bpjs,\n" +
+                "\t\ta.qty_box * b.lembar_per_box * b.biji_per_lembar as qty_box,\n" +
+                "\t\ta.qty_lembar * b.biji_per_lembar as qty_lembar,\n" +
+                "\t\ta.qty_biji \n" +
+                "\t\tFROM mt_simrs_obat_poli a\n" +
+                "\t\tINNER JOIN im_simrs_obat b ON b.id_barang = a.id_barang\n" +
+                "\t\tWHERE a.id_pelayanan = '"+idPelayanan+"'\n" +
+                "\t) aa\n" +
+                "\tGROUP BY\n" +
+                "\taa.id_obat,\n" +
+                "\taa.id_barang,\n" +
+                "\taa.flag_bpjs\n" +
+                ")ab\n" +
+                "WHERE ab.id_obat = '"+idObat+"'\n" +
+                "AND ab.flag_bpjs = '"+flagBpjs+"'\n" +
+                "GROUP BY \n" +
+                "ab.id_obat,\n" +
+                "ab.flag_bpjs\n" +
+                "ORDER BY ab.id_obat";
+
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (results.size() > 0){
+            Object[] obj = results.get(0);
+
+            ObatPoli obatPoli = new ObatPoli();
+            obatPoli.setIdObat(obj[0].toString());
+            obatPoli.setFlagBpjs(obj[1].toString());
+            obatPoli.setTotalQty(objToBigInteger(obj[2]));
+            return obatPoli;
+        }
+        return null;
     }
 }

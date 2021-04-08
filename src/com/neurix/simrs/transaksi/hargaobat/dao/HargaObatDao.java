@@ -63,23 +63,31 @@ public class HargaObatDao extends GenericDao<MtSimrsHargaObatEntity, String> {
             }
 
             String SQL = "SELECT \n" +
-                    "ob.id_obat,\n" + //0
-                    "ob.nama_obat,\n" + //1
-                    "mg.standar_margin,\n" + //2
-                    "ht.harga_terakhir as harga_terakhir_umum_non_bpjs,\n" + // 3
-                    "ho.harga_jual_umum as harga_jual_umum_non_bpjs,\n" + // 4
-                    "ht.harga_rata_umum as harga_terakhir_khusus_non_bpjs,\n" + // 5
-                    "ho.harga_jual as harga_jual_khusus_non_bpjs,\n" + // 6
-                    "ht.harga_terakhir_bpjs as harga_terakhir_umum_bpjs,\n" + // 7
-                    "ho.harga_jual_umum_bpjs as harga_jual_umum_bpjs,\n" + // 8
-                    "ht.harga_rata_bpjs as harga_terakhir_khusus_bpjs,\n" + // 9
-                    "ho.harga_jual_khusus_bpjs as harga_jual_khusus_bpjs\n" + // 10
+                    "ob.id_obat,\n" +
+                    "ob.nama_obat,\n" +
+                    "mg.standar_margin,\n" +
+                    "ht.harga_terakhir as harga_terakhir_umum_non_bpjs,\n" +
+                    "ho.harga_jual_umum as harga_jual_umum_non_bpjs,\n" +
+                    "ht.harga_rata_umum as harga_terakhir_khusus_non_bpjs,\n" +
+                    "ho.harga_jual as harga_jual_khusus_non_bpjs,\n" +
+                    "ht.harga_terakhir_bpjs as harga_terakhir_umum_bpjs,\n" +
+                    "ho.harga_jual_umum_bpjs as harga_jual_umum_bpjs,\n" +
+                    "ht.harga_rata_bpjs as harga_terakhir_khusus_bpjs,\n" +
+                    "ho.harga_jual_khusus_bpjs as harga_jual_khusus_bpjs\n" +
                     "FROM im_simrs_header_obat ob\n" +
+                    "INNER JOIN \n" +
+                    "(\n" +
+                    "\tSELECT \n" +
+                    "\tid_obat,\n" +
+                    "\tbranch_id\n" +
+                    "\tFROM im_simrs_obat \n" +
+                    "\tWHERE flag = 'Y' \n" +
+                    "\tGROUP BY id_obat, branch_id\n" +
+                    ") obd ON obd.id_obat = ob.id_obat\n" +
                     "LEFT JOIN im_simrs_margin_obat mg ON mg.id_obat = ob.id_obat\n" +
-                    "LEFT JOIN mt_simrs_harga_terakhir ht ON ht.id_obat = ob.id_obat\n" +
-                    "LEFT JOIN mt_simrs_harga_obat ho ON ho.id_obat = ob.id_obat\n" +
-                    "WHERE ht.branch_id = :branch \n" +
-                    "AND ho.branch_id = :branch \n" + condition;
+                    "LEFT JOIN (SELECT * FROM mt_simrs_harga_terakhir WHERE branch_id = :branch) ht ON ht.id_obat = ob.id_obat  \n" +
+                    "LEFT JOIN (SELECT * FROM mt_simrs_harga_obat WHERE branch_id = :branch) ho ON ho.id_obat = ob.id_obat \n" +
+                    "WHERE obd.branch_id = :branch " + condition;
 
             List<Object[]> resuts = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                     .setParameter("branch", bean.getBranchId())

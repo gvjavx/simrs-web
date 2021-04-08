@@ -333,7 +333,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monVitalSign.setTb(entity.getTb());
                     monVitalSign.setBb(entity.getBb());
                     monVitalSigns.add(monVitalSign);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monVitalSign = new MonVitalSign();
                     monVitalSign.setId(entity.getId());
                     monVitalSign.setNoCheckup(entity.getNoCheckup());
@@ -529,7 +529,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
                     monCairans.add(monCairan);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monCairan = new MonCairan();
                     monCairan.setId(entity.getId());
                     monCairan.setNoCheckup(entity.getNoCheckup());
@@ -551,6 +551,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monCairan.setLastUpdate(entity.getLastUpdate());
                     monCairan.setLastUpdateWho(entity.getLastUpdateWho());
                     monCairan.setStDate(stringDate(entity.getCreatedDate()));
+                    monCairan.setSisa(entity.getSisa());
                     monCairans.add(monCairan);
                 }
             }
@@ -668,7 +669,7 @@ public class RawatInapBoImpl implements RawatInapBo {
                     monPemberianObat.setStDate(stringDate(entity.getCreatedDate()));
                     monPemberianObat.setKategori(entity.getKategori());
                     monPemberianObats.add(monPemberianObat);
-                } else if (bean.getIsMobile().equalsIgnoreCase("Y")) {
+                } else if ("Y".equalsIgnoreCase(bean.getIsMobile())) {
                     monPemberianObat = new MonPemberianObat();
                     monPemberianObat.setId(entity.getId());
                     monPemberianObat.setNoCheckup(entity.getNoCheckup());
@@ -756,7 +757,6 @@ public class RawatInapBoImpl implements RawatInapBo {
         List<MonVitalSign> monVitalSigns = monVitalSignDao.getListGraf(bean);
         if (monVitalSigns.size() > 0) {
             for (MonVitalSign monVitalSign : monVitalSigns) {
-//                SimpleDateFormat f = new SimpleDateFormat("yyyyMMdd");
                 SimpleDateFormat f = new SimpleDateFormat("MM/dd");
                 String stDate = f.format(monVitalSign.getCreatedDate());
                 monVitalSign.setStDate("tgl : " + stDate + ", jam : " + monVitalSign.getJam());
@@ -912,12 +912,24 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public List<Obat> getListObatParenteral(String idDetailCheckup) {
-        return monPemberianObatDao.getListObatParenteral(idDetailCheckup);
+        List<Obat> obatList = new ArrayList<>();
+        try {
+            obatList = monPemberianObatDao.getListObatParenteral(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListObatParenteral] ERROR ", e);
+        }
+        return obatList;
     }
 
     @Override
     public List<Obat> getListObatNonParenteral(String idDetailCheckup) {
-        return monPemberianObatDao.getListObatNonParenteral(idDetailCheckup);
+        List<Obat> obatList = new ArrayList<>();
+        try {
+            obatList = monPemberianObatDao.getListObatNonParenteral(idDetailCheckup);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListObatNonParenteral] ERROR ", e);
+        }
+        return obatList;
     }
 
     @Override
@@ -935,12 +947,24 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public RawatInap getLastUsedRoom(String id) throws GeneralBOException {
-        return rawatInapDao.getLastRuanganById(id);
+        RawatInap rawatInap = new RawatInap();
+        try {
+            rawatInap = rawatInapDao.getLastRuanganById(id);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getLastUsedRoom] ERROR "+e.getMessage());
+        }
+        return rawatInap;
     }
 
     @Override
     public List<RawatInap> getListTppri(RawatInap bean) throws GeneralBOException {
-        return rawatInapDao.getListTppri(bean);
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        try {
+            rawatInapList = rawatInapDao.getListTppri(bean);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getListTppri] ERROR "+e.getMessage());
+        }
+        return rawatInapList;
     }
 
     @Override
@@ -1102,7 +1126,13 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public List<RawatInap> getRuanganRawatInap(RawatInap bean) throws GeneralBOException {
-        return rawatInapDao.getRuanganRawatInap(bean);
+        List<RawatInap> rawatInapList = new ArrayList<>();
+        try {
+            rawatInapList = rawatInapDao.getRuanganRawatInap(bean);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getRuanganRawatInap] Error when get seq ", e);
+        }
+        return rawatInapList;
     }
 
     private CrudResponse updateCheckup(HeaderCheckup bean) {
@@ -1327,12 +1357,24 @@ public class RawatInapBoImpl implements RawatInapBo {
 
     @Override
     public List<UangMuka> getAllListUangMuka(UangMuka bean) throws GeneralBOException {
-        return rawatInapDao.getAllListUangMuka(bean);
+        List<UangMuka> uangMukaList = new ArrayList<>();
+        try {
+            uangMukaList = rawatInapDao.getAllListUangMuka(bean);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getAllListUangMuka] Error, "+e.getMessage());
+        }
+        return uangMukaList;
     }
 
     @Override
     public HeaderCheckup getDetailGelang(String noCheckup) throws GeneralBOException {
-        return rawatInapDao.getDetailGelang(noCheckup);
+        HeaderCheckup headerCheckup = new HeaderCheckup();
+        try {
+            headerCheckup = rawatInapDao.getDetailGelang(noCheckup);
+        }catch (HibernateException e){
+            logger.error("[RawatInapBoImpl.getDetailGelang] Error, "+e.getMessage());
+        }
+        return headerCheckup;
     }
 
     @Override

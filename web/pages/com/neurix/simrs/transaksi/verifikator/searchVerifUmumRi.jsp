@@ -233,6 +233,10 @@
                                     <td ><span id="no_rm"></span></td>
                                 </tr>
                                 <tr>
+                                    <td><b>No Checkup </b></td>
+                                    <td><span id="no_checkup"></span></td>
+                                </tr>
+                                <tr>
                                     <td><b>ID Detail Checkup </b></td>
                                     <td><span id="no_detail_checkup"></span></td>
                                 </tr>
@@ -338,6 +342,40 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-hospital-o"></i> Gizi</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_gizi" >
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td width="20%">Tanggal</td>
+                            <td>ID Resep</td>
+                            <td>Status</td>
+                            <td align="center">Detail</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_gizi">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="box-header with-border">
+                    <h3 class="box-title"><i class="fa fa-hospital-o"></i> Makanan Pendamping</h3>
+                </div>
+                <div class="box-body">
+                    <table class="table table-bordered table-striped" id="tabel_pendamping" >
+                        <thead>
+                        <tr bgcolor="#90ee90">
+                            <td width="20%">Tanggal</td>
+                            <td>ID Resep</td>
+                            <td>Status</td>
+                            <td align="center">Detail</td>
+                        </tr>
+                        </thead>
+                        <tbody id="body_pendamping">
+                        </tbody>
+                    </table>
+                </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -419,6 +457,7 @@
                         }
 
                         $('#no_rm').html(res.idPasien);
+                        $('#no_checkup').html(noCheckup);
                         $('#no_detail_checkup').html(idDetailCheckup);
                         $('#nik').html(res.noKtp);
                         $('#nama').html(res.nama);

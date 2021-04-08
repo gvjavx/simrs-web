@@ -572,7 +572,7 @@ public class ObatAction extends BaseMasterAction {
 
     }
 
-    public List<Obat> getListObat(String idPelayanan) {
+    public List<Obat> getListObat(String idPelayanan, String jenisObat) {
 
         logger.info("[ObatAction.getListObat] start process >>>");
 
@@ -591,6 +591,7 @@ public class ObatAction extends BaseMasterAction {
         Obat obat = new Obat();
         obat.setBranchId(branchId);
         obat.setFlag("Y");
+        obat.setFlagBpjs("bpjs".equalsIgnoreCase(jenisObat) ? "Y" : "N");
 
         if (obat.getBranchId() != null){
             try {

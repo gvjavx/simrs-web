@@ -79,7 +79,7 @@
                                     <label class="control-label col-sm-4">Kelas Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="kelas_kamar" name="rawatInap.idKelas" onchange="listSelectRuangan(this.value)">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                         <%--<s:action id="initComboKelas" namespace="/checkupdetail"--%>
                                                   <%--name="getListComboKelasRuangan_checkupdetail"/>--%>
@@ -98,7 +98,7 @@
                                     <label class="control-label col-sm-4">Ruangan</label>
                                     <div class="col-sm-4">
                                         <select style="margin-top: 7px" class="form-control select2" id="nama_ruangan" name="rawatInap.idRuang">
-                                            <option value=''>[Select One]</option>
+                                            <option value=''> - </option>
                                         </select>
                                     </div>
                                 </div>
@@ -173,12 +173,13 @@
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Rawat Inap Pasien</h3>
                     </div>
                     <div class="box-body">
-                        <table id="myTable" class="table table-bordered table-striped">
+                        <table id="myTable" class="table table-bordered table-striped" style="font-size: 13px">
                             <thead >
                             <tr bgcolor="#90ee90">
                                 <td>ID Detail Checkup</td>
                                 <td>No RM</td>
                                 <td>Nama</td>
+                                <td>Tanggal Masuk</td>
                                 <td>Desa</td>
                                 <td>Status</td>
                                 <td align="center">Jenis Pasien</td>
@@ -191,6 +192,7 @@
                                     <td><s:property value="idDetailCheckup"/></td>
                                     <td><s:property value="idPasien"/></td>
                                     <td><s:property value="namaPasien"/></td>
+                                    <td><s:property value="formatTglMasuk"/></td>
                                     <td><s:property value="desa"/></td>
                                     <td><s:property value="statusPeriksaName"/></td>
                                     <td align="center">
@@ -242,7 +244,7 @@
 <script type='text/javascript'>
 
     function getKelasKamar(){
-        var option = '<option value="">[Select One]</option>';
+        var option = '<option value=""> - </option>';
         dwr.engine.setAsync(true);
         CheckupDetailAction.getListKelasKamar('rawat_inap', function (res) {
             if(res.length > 0){
@@ -261,7 +263,7 @@
     }
 
     function listSelectRuangan(id){
-        var option  = "<option value=''>[Select One]</option>";;
+        var option  = "<option value=''> - </option>";;
         var flag    = false;
         $('#load_ruang').show();
         setTimeout(function () {

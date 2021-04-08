@@ -308,7 +308,8 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                     "b.tipe_pelayanan,\n" +
                     "b.kategori_pelayanan,\n" +
                     "b.divisi_id,\n" +
-                    "b.kode_vclaim\n" +
+                    "b.kode_vclaim,\n" +
+                    "a.branch_id\n" +
                     "FROM im_simrs_pelayanan a\n" +
                     "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                     "WHERE a.flag = 'Y'\n" + condition +
@@ -325,6 +326,7 @@ public class PelayananDao extends GenericDao<ImSimrsPelayananEntity, String> {
                 pelayanan.setKategoriPelayanan(obj[3] != null ? obj[3].toString() : "");
                 pelayanan.setDivisiId(obj[4] != null ? obj[4].toString() : "");
                 pelayanan.setKodePoliVclaim(obj[5] != null ? obj[5].toString() : "");
+                pelayanan.setBranchId(obj[6] != null ? obj[6].toString() : "");
             }
         }
         return pelayanan;

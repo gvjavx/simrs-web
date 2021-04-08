@@ -98,5 +98,8 @@
         <property name="catatan">
             <column name="catatan"/>
         </property>
+        <property name="idKategoriPemeriksaan">
+            <column name="id_kategori_pemeriksaan"/>
+        </property>
     </class>
 </hibernate-mapping>
