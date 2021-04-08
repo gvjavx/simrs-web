@@ -73,7 +73,7 @@
                                                   list="#initComboPoli.listOfPelayanan" id="poli"
                                                   name="headerDetailCheckup.idPelayanan" listKey="idPelayanan"
                                                   listValue="namaPelayanan"
-                                                  headerKey="" headerValue="[Select one]"
+                                                  headerKey="" headerValue=" - "
                                                   cssClass="form-control select2" theme="simple"/>
                                     </div>
                                 </div>

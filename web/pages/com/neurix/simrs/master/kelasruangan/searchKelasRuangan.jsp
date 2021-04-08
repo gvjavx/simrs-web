@@ -95,7 +95,7 @@ To change this template use File | Settings | File Templates.
 
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Nama Kelas Ruangan </small></label>
+                                                <label class="control-label"><small>Kelas Ruangan </small></label>
                                             </td>
                                             <td>
                                                 <table>
