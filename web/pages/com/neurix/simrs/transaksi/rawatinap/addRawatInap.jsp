@@ -696,7 +696,7 @@
                             <tr bgcolor="#90ee90">
                                 <td>Tanggal Order</td>
                                 <td>Jenis Penunjang</td>
-                                <td>Pemeriksaan</td>
+                                <%--<td>Pemeriksaan</td>--%>
                                 <td>Status</td>
                                 <td align="center">Action</td>
                             </tr>
@@ -3030,10 +3030,13 @@
                             <label style="margin-top: 7px">Cek tambahan obat</label>
                         </div>
                         <div class="col-md-4">
-                            <select style="margin-top: 7px" class="form-control" name="" id="mcr_cek">
+                            <select style="margin-top: 7px" class="form-control" name="" id="mcr_cek" onchange="cekObat(this.value)">
                                 <option value="Ya">Ya</option>
                                 <option value="Tidak">Tidak</option>
                             </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input style="margin-top: 7px" class="form-control" placeholder="Nama Obat" id="mcr_cek_obat">
                         </div>
                     </div>
                 </div>
@@ -3074,6 +3077,9 @@
                                 <option val='Air seni biasa'>Air seni biasa</option>
                                 <option val='Drainage'>Drainage</option>
                             </select>
+                        </div>
+                        <div class="col-md-4">
+                            <input style="margin-top: 7px" class="form-control" placeholder="" id="ket_mcr_dari">
                         </div>
                     </div>
                 </div>

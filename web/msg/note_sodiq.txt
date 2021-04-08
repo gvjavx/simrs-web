@@ -2457,6 +2457,12 @@ RENAME id_periksa_lab TO id_header_pemeriksaan;
 ALTER TABLE it_simrs_riwayat_tindakan
 ALTER COLUMN nama_tindakan TYPE TEXT;
 
+INSERT INTO im_functions VALUES
+(6917, 'print', '/ordergizi/printListGizi_ordergizi.action', 1716, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6917, 40, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 

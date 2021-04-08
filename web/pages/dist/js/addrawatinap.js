@@ -1589,17 +1589,68 @@ function listSelectObat(select) {
 }
 
 function detailLab(id, kategoriName) {
-    var idParameter = [];
-    var body = [];
+    var tempPemeriksaan = "";
+    var tempPemeriksa = "";
+    var tempDetail = "";
+    var tempIdPemeriksa = "";
+    var tempIdDetail = "";
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
-                body += '<tr>' +
-                    '<td>' + item.namaDetailPeriksa + '</td>' +
-                    '<td>' + kategoriName + '</td>' +
-                    '</tr>';
+                if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                    tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
+                    if(tempPemeriksa != ''){
+                        tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
+                        tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                    }else{
+                        tempPemeriksa = item.namaPemeriksaan;
+                        tempIdPemeriksa = item.idPemeriksaan;
+                    }
+                }
+
+                if(i == 0){
+                    tempDetail = item.namaDetailPemeriksaan;
+                    tempIdDetail = item.idDetailPemeriksaan;
+                }else{
+                    if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
+                        tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                    }else{
+                        tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                    }
+                }
             });
-            $('#body_detail_lab').html(body);
+
+            if(tempPemeriksa != '' && tempDetail != '') {
+                var templ = tempPemeriksa.split("=");
+                var temp2 = tempDetail.split("=");
+                var temp3 = tempIdPemeriksa.split("=");
+                var temp4 = tempIdDetail.split("=");
+                var row = "";
+                $.each(templ, function (i, item) {
+                    var tempParameter = temp2[i].split("#");
+                    var tempParameterLi = "";
+                    $.each(tempParameter, function (i, item) {
+                        tempParameterLi += '<li>' + item + '</li>';
+                    });
+
+                    var pj = "";
+                    if(i == 0){
+                        pj = kategoriName;
+                    }
+                    row += '<tr id="row_' + i + '">' +
+                        '<td>' + pj + '</td>' +
+                        '<td>' + item + '</td>' +
+                        '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
+                        '</tr>';
+                });
+                if (row != '') {
+                    $('#body_detail_lab').html(row);
+                }
+            }
+        }else{
+            $('#body_pemeriksaan').html('');
         }
     });
     $('#modal-detail_lab').modal({show: true, backdrop: 'static'});
@@ -2128,39 +2179,39 @@ function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal) {
                     }
                 }
             });
+
+            if(tempPemeriksa != '' && tempDetail != ''){
+                var templ = tempPemeriksa.split("=");
+                var temp2 = tempDetail.split("=");
+                var temp3 = tempIdPemeriksa.split("=");
+                var temp4 = tempIdDetail.split("=");
+                var row = "";
+                $.each(templ, function (i, item) {
+                    var tempParameter = temp2[i].split("#");
+                    var tempParameterLi = "";
+                    $.each(tempParameter, function (i, item) {
+                        tempParameterLi += '<li>'+item+'</li>';
+                    });
+                    row += '<tr id="row_'+i+'">' +
+                        '<td>' +
+                        item +
+                        '<input type="hidden" class="nama_jenis_pemeriksaan" value="'+item+'">'+
+                        '<input type="hidden" class="id_jenis_pemeriksaan" value="'+temp3[i]+'">'+
+                        '<input type="hidden" class="nama_parameter_pemeriksaan" value="'+temp2[i]+'">'+
+                        '<input type="hidden" class="id_parameter_pemeriksaan" value="'+temp4[i]+'">'+
+                        '</td>'+
+                        '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
+                        '<td align="center"><img onclick="delPemeriksaan(\'row_'+i+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
+                        '</tr>';
+                });
+                if(row != ''){
+                    $('#body_pemeriksaan').html(row);
+                }
+            }
         }else{
             $('#body_pemeriksaan').html('');
         }
     });
-
-    if(tempPemeriksa != '' && tempDetail != ''){
-        var templ = tempPemeriksa.split("=");
-        var temp2 = tempDetail.split("=");
-        var temp3 = tempIdPemeriksa.split("=");
-        var temp4 = tempIdDetail.split("=");
-        var row = "";
-        $.each(templ, function (i, item) {
-            var tempParameter = temp2[i].split("#");
-            var tempParameterLi = "";
-            $.each(tempParameter, function (i, item) {
-                tempParameterLi += '<li>'+item+'</li>';
-            });
-            row += '<tr id="row_'+i+'">' +
-                '<td>' +
-                item +
-                '<input type="hidden" class="nama_jenis_pemeriksaan" value="'+item+'">'+
-                '<input type="hidden" class="id_jenis_pemeriksaan" value="'+temp3[i]+'">'+
-                '<input type="hidden" class="nama_parameter_pemeriksaan" value="'+temp2[i]+'">'+
-                '<input type="hidden" class="id_parameter_pemeriksaan" value="'+temp4[i]+'">'+
-                '</td>'+
-                '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
-                '<td align="center"><img onclick="delPemeriksaan(\'row_'+i+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
-                '</tr>';
-        });
-        if(row != ''){
-            $('#body_pemeriksaan').html(row);
-        }
-    }
     $('#modal-lab').modal({show: true, backdrop: 'static'});
 }
 

@@ -82,6 +82,13 @@
                 <param name="reportParameters">reportParams</param>
             </result>
 
+            <result name="print_list_gizi" type="jasper">
+                <param name="location">/pages/report/com/neurix/simrs/printListGizi.jasper</param>
+                <param name="dataSource">myList</param>
+                <param name="format">PDF</param>
+                <param name="reportParameters">reportParams</param>
+            </result>
+
         </action>
     </package>
 </struts>

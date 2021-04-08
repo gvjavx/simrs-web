@@ -317,7 +317,7 @@
                             <td width="20%">Tanggal</td>
                             <td>Pemeriksaan</td>
                             <td>Status</td>
-                            <td>Jenis Lab</td>
+                            <%--<td>Jenis Lab</td>--%>
                             <td align="center">Detail</td>
                         </tr>
                         </thead>
@@ -342,40 +342,40 @@
                         </tbody>
                     </table>
                 </div>
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-hospital-o"></i> Gizi</h3>
-                </div>
-                <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_gizi" >
-                        <thead>
-                        <tr bgcolor="#90ee90">
-                            <td width="20%">Tanggal</td>
-                            <td>ID Resep</td>
-                            <td>Status</td>
-                            <td align="center">Detail</td>
-                        </tr>
-                        </thead>
-                        <tbody id="body_gizi">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="box-header with-border">
-                    <h3 class="box-title"><i class="fa fa-hospital-o"></i> Makanan Pendamping</h3>
-                </div>
-                <div class="box-body">
-                    <table class="table table-bordered table-striped" id="tabel_pendamping" >
-                        <thead>
-                        <tr bgcolor="#90ee90">
-                            <td width="20%">Tanggal</td>
-                            <td>ID Resep</td>
-                            <td>Status</td>
-                            <td align="center">Detail</td>
-                        </tr>
-                        </thead>
-                        <tbody id="body_pendamping">
-                        </tbody>
-                    </table>
-                </div>
+                <%--<div class="box-header with-border">--%>
+                    <%--<h3 class="box-title"><i class="fa fa-hospital-o"></i> Gizi</h3>--%>
+                <%--</div>--%>
+                <%--<div class="box-body">--%>
+                    <%--<table class="table table-bordered table-striped" id="tabel_gizi" >--%>
+                        <%--<thead>--%>
+                        <%--<tr bgcolor="#90ee90">--%>
+                            <%--<td width="20%">Tanggal</td>--%>
+                            <%--<td>ID Resep</td>--%>
+                            <%--<td>Status</td>--%>
+                            <%--<td align="center">Detail</td>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body_gizi">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                <%--</div>--%>
+                <%--<div class="box-header with-border">--%>
+                    <%--<h3 class="box-title"><i class="fa fa-hospital-o"></i> Makanan Pendamping</h3>--%>
+                <%--</div>--%>
+                <%--<div class="box-body">--%>
+                    <%--<table class="table table-bordered table-striped" id="tabel_pendamping" >--%>
+                        <%--<thead>--%>
+                        <%--<tr bgcolor="#90ee90">--%>
+                            <%--<td width="20%">Tanggal</td>--%>
+                            <%--<td>ID Resep</td>--%>
+                            <%--<td>Status</td>--%>
+                            <%--<td align="center">Detail</td>--%>
+                        <%--</tr>--%>
+                        <%--</thead>--%>
+                        <%--<tbody id="body_pendamping">--%>
+                        <%--</tbody>--%>
+                    <%--</table>--%>
+                <%--</div>--%>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
@@ -623,9 +623,9 @@
 
                         table += '<tr id="row_'+item.idPeriksaLab+'">' +
                             "<td>" + dateFormat + "</td>" +
-                            "<td>" + lab + "</td>" +
-                            "<td>" + status + "</td>" +
                             "<td>" + item.kategoriLabName + "</td>" +
+                            // "<td>" + lab + "</td>" +
+                            "<td>" + status + "</td>" +
                             "<td align='center' width='10%'>" +
                             '<img src="'+url+'" onclick="detailTindakan(\''+item.idPeriksaLab+'\', \''+tipe+'\')" class="hvr-grow" id="btn_'+item.idPeriksaLab+'" style="cursor: pointer">'
                             +"</td>" +

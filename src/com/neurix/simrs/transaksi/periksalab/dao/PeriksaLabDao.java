@@ -297,9 +297,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     public List<PeriksaLab> getListLab(String noCheckup, String jenis) {
         List<PeriksaLab> labList = new ArrayList<>();
         String SQL = "SELECT \n" +
-                "a.id_periksa_lab,\n" +
-                "a.id_lab,\n" +
-                "d.nama_lab,\n" +
+                "a.id_header_pemeriksaan,\n" +
                 "a.status_periksa,\n" +
                 "a.id_detail_checkup,\n" +
                 "e.id_kategori_lab,\n" +
@@ -308,10 +306,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "f.nama_pelayanan,\n" +
                 "a.created_date,\n" +
                 "e.kategori\n" +
-                "FROM it_simrs_periksa_lab a\n" +
+                "FROM it_simrs_header_pemeriksaan a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
-                "INNER JOIN im_simrs_lab d ON a.id_lab = d.id_lab\n" +
                 "INNER JOIN im_simrs_kategori_lab e ON a.id_kategori_lab = e.id_kategori_lab\n" +
                 "LEFT JOIN (SELECT\n" +
                 "a.id_pelayanan,\n" +
@@ -322,8 +319,10 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "b.divisi_id,\n" +
                 "b.kode_vclaim\n" +
                 "FROM im_simrs_pelayanan a\n" +
-                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) f ON b.id_pelayanan = f.id_pelayanan\n" +
-                "WHERE c.no_checkup = :id AND b.id_jenis_periksa_pasien = :jen \n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                ") f ON b.id_pelayanan = f.id_pelayanan\n" +
+                "WHERE c.no_checkup = :id \n" +
+                "AND b.id_jenis_periksa_pasien = :jen \n" +
                 "AND a.flag = 'Y'\n" +
                 "ORDER BY a.id_detail_checkup ASC";
 
@@ -336,16 +335,14 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             for (Object[] obj : result) {
                 PeriksaLab lab = new PeriksaLab();
                 lab.setIdPeriksaLab(obj[0] == null ? "" : obj[0].toString());
-                lab.setIdLab(obj[1] == null ? "" : obj[1].toString());
-                lab.setLabName(obj[2] == null ? "" : obj[2].toString());
-                lab.setStatusPeriksa(obj[3] == null ? "" : obj[3].toString());
-                lab.setIdDetailCheckup(obj[4] == null ? "" : obj[4].toString());
-                lab.setIdKategoriLab(obj[5] == null ? "" : obj[5].toString());
-                lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
-                lab.setIdPelayanan(obj[7] == null ? "" : obj[7].toString());
-                lab.setNamaPelayanan(obj[8] == null ? "" : obj[8].toString());
-                lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
-                lab.setKategori(obj[10] == null ? null : (String) obj[10]);
+                lab.setStatusPeriksa(obj[1] == null ? "" : obj[1].toString());
+                lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
+                lab.setIdKategoriLab(obj[3] == null ? "" : obj[3].toString());
+                lab.setKategoriLabName(obj[4] == null ? "" : obj[4].toString());
+                lab.setIdPelayanan(obj[5] == null ? "" : obj[5].toString());
+                lab.setNamaPelayanan(obj[6] == null ? "" : obj[6].toString());
+                lab.setCreatedDate(obj[7] == null ? null : (Timestamp) obj[7]);
+                lab.setKategori(obj[8] == null ? null : (String) obj[8]);
                 labList.add(lab);
             }
         }
@@ -395,30 +392,29 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
     public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) {
         List<PeriksaLab> labList = new ArrayList<>();
         String SQL = "SELECT\n" +
-                "c.tanggal_masuk_lab,\n" +
+                "c.tanggal_masuk_periksa,\n" +
                 "a.id_pasien,\n" +
                 "b.id_detail_checkup,\n" +
                 "b.id_pelayanan,\n" +
                 "e.nama_pelayanan,\n" +
-                "c.id_periksa_lab,\n" +
-                "d.nama_lab,\n" +
-                "c.url_img,\n" +
+                "c.id_header_pemeriksaan,\n" +
+                "f.nama_kategori,\n" +
                 "f.kategori,\n" +
-                "a.created_date \n"+
+                "a.created_date \n" +
                 "FROM it_simrs_header_checkup a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
-                "INNER JOIN it_simrs_periksa_lab c ON b.id_detail_checkup = c.id_detail_checkup\n" +
-                "INNER JOIN im_simrs_lab d ON c.id_lab = d.id_lab\n" +
+                "INNER JOIN it_simrs_header_pemeriksaan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
                 "INNER JOIN (\n" +
-                "\tSELECT\n" +
-                "\ta.id_pelayanan,\n" +
-                "\ta.nama_pelayanan\n" +
-                "\tFROM im_simrs_pelayanan a\n" +
-                "\tINNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                "SELECT\n" +
+                "a.id_pelayanan,\n" +
+                "a.nama_pelayanan\n" +
+                "FROM im_simrs_pelayanan a\n" +
+                "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
                 ") e ON b.id_pelayanan = e.id_pelayanan\n" +
                 "INNER JOIN im_simrs_kategori_lab f ON c.id_kategori_lab = f.id_kategori_lab\n" +
                 "WHERE a.id_pasien = '"+idPasien+"'\n" +
-                "ORDER BY c.tanggal_masuk_lab, b.id_pelayanan DESC";
+                "ORDER BY c.tanggal_masuk_periksa,\n" +
+                "b.id_pelayanan DESC";
 
         List<Objects[]> result = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .list();
@@ -429,20 +425,17 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 PeriksaLab lab = new PeriksaLab();
                 if(!namaPelayanan.equalsIgnoreCase(obj[4].toString())){
                     namaPelayanan = obj[4].toString();
-                    lab.setCreatedDate(obj[9] == null ? null : (Timestamp) obj[9]);
+                    lab.setCreatedDate(obj[8] == null ? null : (Timestamp) obj[8]);
                 }
+
                 lab.setTanggalMasukLab(obj[0] == null ? null : (Timestamp) obj[0]);
                 lab.setIdPasien(obj[1] == null ? "" : obj[1].toString());
                 lab.setIdDetailCheckup(obj[2] == null ? "" : obj[2].toString());
                 lab.setIdPelayanan(obj[3] == null ? "" : obj[3].toString());
                 lab.setNamaPelayanan(namaPelayanan);
                 lab.setIdPeriksaLab(obj[5] == null ? "" : obj[5].toString());
-                lab.setLabName(obj[6] == null ? "" : obj[6].toString());
-                if(obj[7] != null){
-                    lab.setUrlImg(obj[7] == null ? null : CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_IMG_RM+obj[7].toString());
-                }
-
-                lab.setKeterangan(obj[8] == null ? "" : obj[8].toString());
+                lab.setKategoriLabName(obj[6] == null ? "" : obj[6].toString());
+                lab.setKeterangan(obj[7] == null ? "" : obj[7].toString());
                 labList.add(lab);
             }
         }

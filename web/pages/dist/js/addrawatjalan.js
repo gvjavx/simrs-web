@@ -2107,38 +2107,39 @@ function detailLab(id, kategoriName) {
                     }
                 }
             });
+
+            if(tempPemeriksa != '' && tempDetail != '') {
+                var templ = tempPemeriksa.split("=");
+                var temp2 = tempDetail.split("=");
+                var temp3 = tempIdPemeriksa.split("=");
+                var temp4 = tempIdDetail.split("=");
+                var row = "";
+                $.each(templ, function (i, item) {
+                    var tempParameter = temp2[i].split("#");
+                    var tempParameterLi = "";
+                    $.each(tempParameter, function (i, item) {
+                        tempParameterLi += '<li>' + item + '</li>';
+                    });
+
+                    var pj = "";
+                    if(i == 0){
+                        pj = kategoriName;
+                    }
+                    row += '<tr id="row_' + i + '">' +
+                        '<td>' + pj + '</td>' +
+                        '<td>' + item + '</td>' +
+                        '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
+                        '</tr>';
+                });
+                if (row != '') {
+                    $('#body_detail_lab').html(row);
+                }
+            }
+
         }else{
             $('#body_pemeriksaan').html('');
         }
     });
-
-    if(tempPemeriksa != '' && tempDetail != '') {
-        var templ = tempPemeriksa.split("=");
-        var temp2 = tempDetail.split("=");
-        var temp3 = tempIdPemeriksa.split("=");
-        var temp4 = tempIdDetail.split("=");
-        var row = "";
-        $.each(templ, function (i, item) {
-            var tempParameter = temp2[i].split("#");
-            var tempParameterLi = "";
-            $.each(tempParameter, function (i, item) {
-                tempParameterLi += '<li>' + item + '</li>';
-            });
-
-            var pj = "";
-            if(i == 0){
-                pj = kategoriName;
-            }
-            row += '<tr id="row_' + i + '">' +
-                '<td>' + pj + '</td>' +
-                '<td>' + item + '</td>' +
-                '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
-                '</tr>';
-        });
-        if (row != '') {
-            $('#body_detail_lab').html(row);
-        }
-    }
     $('#modal-detail_lab').modal({show: true, backdrop: 'static'});
 }
 

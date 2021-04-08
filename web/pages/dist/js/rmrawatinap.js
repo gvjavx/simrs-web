@@ -554,20 +554,26 @@ function showModalCairan(idDetail){
 
 function addObCairan(){
     $("#modal-add-cairan").modal("show");
+    $('#mcr_cek').val("Ya").trigger('change');
 }
 
 function saveObCairan(noCheckup, idDetail){
     var jsonrq = [];
+
+    var cek = $("#mcr_cek").val();
+    if($("#mcr_cek").val() == "Ya"){
+        cek = $("#mcr_cek").val()+", "+$('#mcr_cek_obat').val();
+    }
     jsonrq.push({
         'macam': $("#mcr_macam").val(),
         'melalui': $("#mcr_melalui").val(),
         'jumlah': $("#mcr_jumlah").val(),
         'mulai': $("#mcr_mulai").val(),
         'selesai': $("#mcr_selesai").val(),
-        'cek': $("#mcr_cek").val(),
+        'cek': cek,
         'sisa': $("#mcr_sisa").val(),
         'jam_ukur_buang': $("#mcr_buang").val(),
-        'dari': $("#mcr_dari").val(),
+        'dari': $("#mcr_dari").val()+", "+$('#ket_mcr_dari').val(),
         'balance': $("#mcr_balance").val(),
         'ket': $("#mcr_ket").val(),
     });
@@ -1009,4 +1015,12 @@ function saveFormEdukasi(kategori){
             alert(response.msg);
         }
     });
+}
+
+function cekObat(val){
+    if(val == "Ya"){
+        $('#mcr_cek_obat').show();
+    }else{
+        $('#mcr_cek_obat').hide();
+    }
 }

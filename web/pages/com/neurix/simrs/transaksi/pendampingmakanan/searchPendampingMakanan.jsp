@@ -297,7 +297,7 @@
                                     <td><span id="det_no_pesanan"></span></td>
                                 </tr>
                                 <tr>
-                                    <td>Nama</td>
+                                    <td>Keluarga Pasien</td>
                                     <td><span id="det_nama"></span></td>
                                 </tr>
                                 <tr>
@@ -324,7 +324,7 @@
                 </div>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                <button id="btn_close" type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
                 <button type="button" onclick="cekSave()" class="btn btn-success" id="save_pendamping_makanan"><i class="fa fa-check"></i> Selesai
                 </button>
@@ -372,9 +372,17 @@
     }
 
     function detailMakananPendamping(id, nama, noRuangan, namaRuangan, status){
+        var ruangan = noRuangan+"-"+namaRuangan;
         $('#det_no_pesanan').text(id);
         $('#det_nama').text(nama);
-        $('#det_ruangan').text("["+noRuangan+"] "+namaRuangan);
+        $('#det_ruangan').text(ruangan);
+        if("0" == status){
+            $('#btn_close').hide();
+            $('#save_pendamping_makanan').show();
+        }else{
+            $('#btn_close').show();
+            $('#save_pendamping_makanan').hide();
+        }
         var table = "";
         PendampingMakananAction.listDetailPendampingMakanan(id, function (json) {
             $.each(json, function (i, item) {
@@ -402,7 +410,7 @@
                     '<td '+ling+'>' + input +
                     '<input type="hidden" class="val_tarif_makanan" id="tarif_val_'+item.idDetailPendampingMakanan+'">'+
                     '</td>' +
-                    '<td align="center">'+'<a target="_blank" href="printBarcodeMakanan_pendampingmakanan.action?id='+id+'&nama='+nama+'&keterangan='+item.nama+'"><img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>"></a>'+'</td>'+
+                    '<td align="center">'+'<a target="_blank" href="printBarcodeMakanan_pendampingmakanan.action?id='+id+'&nama='+nama+'&keterangan='+item.nama+'&ruangan='+ruangan+'"><img class="hvr-grow" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>"></a>'+'</td>'+
                     '</tr>';
             });
             $('#body_pendamping_makanan').html(table);

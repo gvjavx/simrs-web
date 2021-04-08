@@ -1586,7 +1586,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         periksaLab.setIdDetailCheckup(idDetailCheckup);
 
         try {
-            periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+            periksaLabList = periksaLabBo.getByCriteriaHeaderPemeriksaan(periksaLab);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
             response.setStatus("error");

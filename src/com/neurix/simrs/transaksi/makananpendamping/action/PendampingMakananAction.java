@@ -32,6 +32,7 @@ public class PendampingMakananAction extends BaseTransactionAction {
     private String id;
     private String nama;
     private String keterangan;
+    private String ruangan;
 
     public CrudResponse savePendampingMakanan(String data) {
         logger.info("[HeaderPendampingMakananAction.savePendampingMakanan] start process >>>");
@@ -244,6 +245,8 @@ public class PendampingMakananAction extends BaseTransactionAction {
         reportParams.put("id", getId());
         reportParams.put("nama",getNama());
         reportParams.put("keterangan",getKeterangan());
+        reportParams.put("ruangan",getRuangan());
+
         try {
             preDownload();
         } catch (SQLException e) {
@@ -291,5 +294,13 @@ public class PendampingMakananAction extends BaseTransactionAction {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getRuangan() {
+        return ruangan;
+    }
+
+    public void setRuangan(String ruangan) {
+        this.ruangan = ruangan;
     }
 }
