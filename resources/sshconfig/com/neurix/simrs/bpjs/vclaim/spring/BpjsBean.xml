@@ -9,6 +9,7 @@
           p:absensiBoProxy-ref="absensiBoProxy"
           p:notifikasiBoProxy-ref="notifikasiBoProxy"
           p:userBoProxy-ref="userBoProxy"
+          p:logCronBoProxy-ref="logCronBoProxy"
 
     />
 

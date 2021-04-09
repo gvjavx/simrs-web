@@ -15,6 +15,8 @@ import com.neurix.hris.master.shift.dao.ShiftDao;
 import com.neurix.hris.master.shift.model.ImHrisShiftEntity;
 import com.neurix.hris.master.shift.model.ImHrisShiftHistory;
 import com.neurix.hris.master.shift.model.Shift;
+import com.neurix.hris.transaksi.jadwalShiftKerja.dao.JadwalShiftKerjaDetailDao;
+import com.neurix.hris.transaksi.jadwalShiftKerja.model.ItJadwalShiftKerjaDetailEntity;
 import org.apache.log4j.Logger;
 import org.hibernate.HibernateException;
 
@@ -34,6 +36,11 @@ public class ShiftBoImpl implements ShiftBo {
     private KelompokPositionDao kelompokPositionDao;
     private ProfesiDao profesiDao;
     private PositionBagianDao positionBagianDao;
+    private JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao;
+
+    public void setJadwalShiftKerjaDetailDao(JadwalShiftKerjaDetailDao jadwalShiftKerjaDetailDao) {
+        this.jadwalShiftKerjaDetailDao = jadwalShiftKerjaDetailDao;
+    }
 
     public PositionBagianDao getPositionBagianDao() {
         return positionBagianDao;
@@ -85,7 +92,101 @@ public class ShiftBoImpl implements ShiftBo {
 
     @Override
     public void saveDelete(Shift bean) throws GeneralBOException {
+        logger.info("[ShiftBoImpl.saveDelete] start process >>>");
+        boolean saved = false;
+        if (bean!=null) {
+            List<ItJadwalShiftKerjaDetailEntity> jadwalShiftEntities = new ArrayList();
+            Map criteria = new HashMap();
+            criteria.put("shift_id", bean.getShiftId());
+            criteria.put("flag", "Y");
+            try {
+                jadwalShiftEntities = jadwalShiftKerjaDetailDao.getByCriteria(criteria);
+            } catch (HibernateException e) {
+                logger.error("[ShiftBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Jadwal Shift Kerja Detail, " + e.getMessage());
+            }
 
+            if (jadwalShiftEntities.size() == 0) {
+                ImHrisShiftEntity entityData = new ImHrisShiftEntity();
+
+                entityData.setShiftId(bean.getShiftId());
+                entityData.setShiftName(bean.getShiftName());
+                entityData.setJamAwal(bean.getJamAwal());
+                entityData.setJamAkhir(bean.getJamAkhir());
+                entityData.setFlag(bean.getFlag());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+                entityData.setIdBranch(bean.getIdBranch());
+                entityData.setProfesiId(bean.getProfesiId());
+                entityData.setTipeShiftKasir(bean.getTipeShiftKasir());
+
+                try {
+                    shiftDao.updateAndSave(entityData);
+                    saved = true;
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data, please info to your admin..." + e.getMessage());
+                }
+            }else{
+                logger.error("[ShiftBoImpl.saveDelete] Data sudah digunakan dalam Transaksi, data tidak bisa dihapus.");
+                throw new GeneralBOException("Data sudah digunakan pada transaksi, Data tidak bisa.");
+            }
+        }
+
+        if (saved){
+            String id;
+
+            ImHrisShiftEntity shiftEntity = null;
+            ImHrisShiftHistory entityData = new ImHrisShiftHistory();
+            try {
+                // Get data from database by ID
+                shiftEntity = shiftDao.getById("shiftId", bean.getShiftId());
+                //historyId = payrollSkalaGajiDao.getNextSkalaGaji();
+            } catch (HibernateException e) {
+                logger.error("[ShiftBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by ID, please inform to your admin...," + e.getMessage());
+            }
+
+            if (shiftEntity != null){
+                try {
+                    // Generating ID, get from postgre sequence
+                    id = shiftDao.getNextShiftHistoryId();
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence History Shift id, please info to your admin..." + e.getMessage());
+                }
+
+                entityData.setShiftId(shiftEntity.getShiftId());
+                entityData.setShiftName(shiftEntity.getShiftName());
+                if ("Y".equalsIgnoreCase(shiftEntity.getFlag())){
+                    entityData.setJamAwal(shiftEntity.getJamAwal());
+                    entityData.setJamAkhir(shiftEntity.getJamAkhir());
+                } else {
+                    entityData.setJamAwal(bean.getJamAwal());
+                    entityData.setJamAkhir(bean.getJamAkhir());
+                }
+                entityData.setFlag("Y");
+                entityData.setAction(shiftEntity.getAction());
+                entityData.setCreateDateWho(shiftEntity.getCreateDateWho());
+                entityData.setLastUpdateWho(shiftEntity.getLastUpdateWho());
+                entityData.setCreatedDate(shiftEntity.getCreatedDate());
+                entityData.setLastUpdate(shiftEntity.getLastUpdate());
+                entityData.setId(id);
+                entityData.setIdBranch(shiftEntity.getIdBranch());
+                entityData.setProfesiId(shiftEntity.getProfesiId());
+                try {
+                    shiftDao.addAndSaveHistory(entityData);
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data, please info to your admin..." + e.getMessage());
+                }
+            }
+        }
+
+        logger.info("[ShiftBoImpl.saveEdit] end process <<<");
     }
 
     @Override

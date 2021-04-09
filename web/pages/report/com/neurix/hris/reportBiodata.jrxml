@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report1" language="groovy" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="7" uuid="439178ee-4584-4e86-b765-559a2351e7e6">
 	<property name="ireport.zoom" value="1.4641000000000133"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="114"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -186,7 +186,6 @@ limit 1]]>
 	<field name="status_keluarga" class="java.lang.String"/>
 	<field name="jumlah_anak" class="java.lang.Long"/>
 	<field name="jenis_kelamin" class="java.lang.String"/>
-	<field name="status_giling" class="java.lang.String"/>
 	<field name="no_sk_aktif" class="java.lang.String"/>
 	<field name="pin" class="java.lang.String"/>
 	<field name="point" class="java.lang.Integer"/>
@@ -195,15 +194,11 @@ limit 1]]>
 	<field name="created_date" class="java.sql.Timestamp"/>
 	<field name="tanggal_pensiun" class="java.sql.Date"/>
 	<field name="dana_pensiun" class="java.lang.String"/>
-	<field name="struktur_gaji" class="java.lang.String"/>
-	<field name="gaji" class="java.math.BigDecimal"/>
-	<field name="poin_lebih" class="java.lang.Integer"/>
 	<field name="agama" class="java.lang.String"/>
 	<field name="tanggal_menikah" class="java.sql.Date"/>
 	<field name="npwp" class="java.lang.String">
 		<fieldDescription><![CDATA[Alamat Master]]></fieldDescription>
 	</field>
-	<field name="mt" class="java.lang.String"/>
 	<field name="tanggal_akhir_kontrak" class="java.sql.Date"/>
 	<field name="no_anggota_dapen" class="java.lang.String"/>
 	<field name="no_bpjs_ketenagakerjaan" class="java.lang.String"/>
@@ -211,7 +206,6 @@ limit 1]]>
 	<field name="no_bpjs_kesehatan" class="java.lang.String"/>
 	<field name="shift" class="java.lang.String"/>
 	<field name="golongan_dapen" class="java.lang.String"/>
-	<field name="golongan_dapen_nusindo" class="java.lang.String"/>
 	<field name="nama_bank" class="java.lang.String"/>
 	<field name="no_rek_bank" class="java.lang.String"/>
 	<field name="persentase_pph_komisaris" class="java.math.BigDecimal"/>
@@ -223,10 +217,6 @@ limit 1]]>
 	<field name="tgl_akhir_kontrak" class="java.sql.Date"/>
 	<field name="branch_id_terakhir" class="java.lang.String"/>
 	<field name="position_id_terakhir" class="java.lang.String"/>
-	<field name="flag_tunjangan_supervisi" class="java.lang.String"/>
-	<field name="flag_tunjangan_siaga" class="java.lang.String"/>
-	<field name="flag_tunjangan_profesional" class="java.lang.String"/>
-	<field name="flag_tunjangan_lokasi" class="java.lang.String"/>
 	<field name="tanggal_pra_pensiun" class="java.sql.Date"/>
 	<field name="flag_plt" class="java.lang.String"/>
 	<field name="flag_pjs" class="java.lang.String"/>
@@ -241,7 +231,10 @@ limit 1]]>
 	<field name="position_plt_id" class="java.lang.String"/>
 	<field name="nip_lama" class="java.lang.String"/>
 	<field name="flag_dokter_kso" class="java.lang.String"/>
-	<field name="jenis_pegawai" class="java.lang.String"/>
+	<field name="tanggal_keluar" class="java.sql.Date"/>
+	<field name="flag_pegawai_cuti_diluar_tanggungan" class="java.lang.String"/>
+	<field name="tanggal_cuti_diluar_awal" class="java.sql.Date"/>
+	<field name="tanggal_cuti_diluar_akhir" class="java.sql.Date"/>
 	<field name="cabang_bank2" class="java.lang.String"/>
 	<field name="gender" class="java.lang.String"/>
 	<field name="menikah" class="java.lang.String"/>
