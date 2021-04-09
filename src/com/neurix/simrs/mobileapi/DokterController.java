@@ -23,6 +23,8 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.rest.DefaultHttpHeaders;
 import org.apache.struts2.rest.HttpHeaders;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -65,6 +67,25 @@ public class DokterController implements ModelDriven<Object> {
     private String idTeamDokter;
     private String keterangan;
     private String flagApprove;
+
+    private String tglAwal;
+    private String tglAkhir;
+
+    public String getTglAwal() {
+        return tglAwal;
+    }
+
+    public void setTglAwal(String tglAwal) {
+        this.tglAwal = tglAwal;
+    }
+
+    public String getTglAkhir() {
+        return tglAkhir;
+    }
+
+    public void setTglAkhir(String tglAkhir) {
+        this.tglAkhir = tglAkhir;
+    }
 
     public void setCheckupBoProxy(CheckupBo checkupBoProxy) {
         this.checkupBoProxy = checkupBoProxy;
@@ -444,9 +465,19 @@ public class DokterController implements ModelDriven<Object> {
             DokterTeam dpjp1 = null;
             HeaderCheckup detailPasien = new HeaderCheckup();
 
+            Timestamp tsTglAwal = null;
+            Timestamp tsTglAkhir = null;
+            if (tglAwal != null && !"".equalsIgnoreCase(tglAwal)) {
+                Date dtTglAwal = CommonUtil.convertStringToDate(tglAwal);
+                tsTglAwal = new Timestamp(dtTglAwal.getTime());
+            } else if (tglAkhir != null && !"".equalsIgnoreCase(tglAkhir)) {
+                Date dtTglAkhir = CommonUtil.convertStringToDate(tglAkhir);
+                tsTglAkhir = new Timestamp(dtTglAkhir.getTime());
+            }
+
             //ambil request dpjp
             try {
-                listRequestDokter = teamDokterBoProxy.cekRequestDokterByIdDokter(idDokter, flagApprove);
+                listRequestDokter = teamDokterBoProxy.cekRequestDokterByIdDokter(idDokter, flagApprove, tsTglAwal, tsTglAkhir);
             } catch (GeneralBOException e){
                 logger.error("[DokterController.create] Error, " + e.getMessage());
             }
@@ -458,7 +489,7 @@ public class DokterController implements ModelDriven<Object> {
                     DokterMobile dokterMobile = new DokterMobile();
                     if (!"dpjp_1".equalsIgnoreCase(item.getJenisDpjp())) {
                         try {
-                            dpjp1 = teamDokterBoProxy.getNamaDokter(item.getIdDetailCheckup());
+                            dpjp1 = teamDokterBoProxy.getNamaDokter(item.getIdDetailCheckup(), true);
                         } catch (GeneralBOException e){
                             logger.error("[DokterController.create] Error, " + e.getMessage());
                         }
@@ -487,7 +518,10 @@ public class DokterController implements ModelDriven<Object> {
                     dokterMobile.setTglLahir(detailPasien.getStTglLahir());
                     dokterMobile.setNoRuangan(detailPasien.getNoRuangan());
                     dokterMobile.setKelasRuangan(detailPasien.getNamaRuangan());
-
+                    dokterMobile.setTglLahir(CommonUtil.convertDateToString(detailPasien.getTglLahir()));
+                    dokterMobile.setUmur(CommonUtil.calculateAge(detailPasien.getTglLahir(),true));
+                    dokterMobile.setJalan(detailPasien.getJalan());
+                    dokterMobile.setJenisKelamin(detailPasien.getJenisKelamin());
                     listOfDokter.add(dokterMobile);
                 }
             }
