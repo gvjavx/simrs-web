@@ -1660,12 +1660,9 @@ function listLab() {
                     hiddeLuar = JSON.stringify(item.uploadLuar);
                 }
 
-                if ("Y" == item.isLuar) {
-                    lab = item.namaLabLuar + ' <span class="span-warning">Luar</span>';
-                } else {
-                    if (item.labName != null) {
-                        lab = item.labName;
-                    }
+                var periksa = "";
+                if ("Y" == item.isPeriksaLuar) {
+                    periksa = '<span class="span-warning">Periksa Luar</span>';
                 }
 
                 if ("Pending" == item.statusPeriksaName) {
@@ -1679,7 +1676,7 @@ function listLab() {
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
-                        "<td>" + item.kategoriLabName + "</td>" +
+                        "<td>" + item.kategoriLabName + ' ' +periksa+ "</td>" +
                         // "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + btn + "</td>" +
@@ -1691,7 +1688,7 @@ function listLab() {
                         '<textarea style="display: none" id="dalam_' + item.idHeaderPemeriksaan + '">' + hiddeDalam + '</textarea>' +
                         '<textarea style="display: none" id="luar_' + item.idHeaderPemeriksaan + '">' + hiddeLuar + '</textarea>' +
                         "</td>" +
-                        "<td>" + item.kategoriLabName + "</td>" +
+                        "<td>" + item.kategoriLabName+ ' ' +periksa+ "</td>" +
                         // "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + btn + dalam + luar + crn + "</td>" +
@@ -2014,63 +2011,82 @@ function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal) {
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
-                if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                var namaPemeriksaan = "";
+                var idPemeriksaan = "";
+                var namaDetailPemeriksaan = "";
+                var idDetailPemeriksaan = "";
+
+                if(item.namaPemeriksaan != null){
+                    namaPemeriksaan = item.namaPemeriksaan;
+                }
+                if(item.idPemeriksaan != null){
+                    idPemeriksaan = item.idPemeriksaan;
+                }
+                if(item.namaDetailPemeriksaan != null){
+                    namaDetailPemeriksaan = item.namaDetailPemeriksaan;
+                }
+                if(item.idDetailPemeriksaan != null){
+                    idDetailPemeriksaan = item.idDetailPemeriksaan;
+                }
+
+                if(namaPemeriksaan.toLowerCase() != tempPemeriksaan){
                     tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
                     if(tempPemeriksa != ''){
-                        tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
-                        tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                        tempPemeriksa = tempPemeriksa+'='+namaPemeriksaan;
+                        tempIdPemeriksa = tempIdPemeriksa+'='+idPemeriksaan;
                     }else{
-                        tempPemeriksa = item.namaPemeriksaan;
-                        tempIdPemeriksa = item.idPemeriksaan;
+                        tempPemeriksa = namaPemeriksaan;
+                        tempIdPemeriksa = idPemeriksaan;
                     }
                 }
 
                 if(i == 0){
-                    tempDetail = item.namaDetailPemeriksaan;
-                    tempIdDetail = item.idDetailPemeriksaan;
+                    tempDetail = namaDetailPemeriksaan;
+                    tempIdDetail = idDetailPemeriksaan;
                 }else{
                     if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
-                        tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
-                        tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                        tempDetail = tempDetail+'#'+namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'#'+idDetailPemeriksaan;
                     }else{
-                        tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
-                        tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                        tempDetail = tempDetail+'='+namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'='+idDetailPemeriksaan;
                     }
                 }
             });
+
+            if(tempPemeriksa != '' && tempDetail != ''){
+                var templ = tempPemeriksa.split("=");
+                var temp2 = tempDetail.split("=");
+                var temp3 = tempIdPemeriksa.split("=");
+                var temp4 = tempIdDetail.split("=");
+                var row = "";
+                $.each(templ, function (i, item) {
+                    var tempParameter = temp2[i].split("#");
+                    var tempParameterLi = "";
+                    $.each(tempParameter, function (i, item) {
+                        tempParameterLi += '<li>'+item+'</li>';
+                    });
+                    row += '<tr id="row_'+i+'">' +
+                        '<td>' +
+                        item +
+                        '<input type="hidden" class="nama_jenis_pemeriksaan" value="'+item+'">'+
+                        '<input type="hidden" class="id_jenis_pemeriksaan" value="'+temp3[i]+'">'+
+                        '<input type="hidden" class="nama_parameter_pemeriksaan" value="'+temp2[i]+'">'+
+                        '<input type="hidden" class="id_parameter_pemeriksaan" value="'+temp4[i]+'">'+
+                        '</td>'+
+                        '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
+                        '<td align="center"><img onclick="delPemeriksaan(\'row_'+i+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
+                        '</tr>';
+                });
+                if(row != ''){
+                    $('#body_pemeriksaan').html(row);
+                }
+            }
+
         }else{
             $('#body_pemeriksaan').html('');
         }
     });
-
-    if(tempPemeriksa != '' && tempDetail != ''){
-        var templ = tempPemeriksa.split("=");
-        var temp2 = tempDetail.split("=");
-        var temp3 = tempIdPemeriksa.split("=");
-        var temp4 = tempIdDetail.split("=");
-        var row = "";
-        $.each(templ, function (i, item) {
-            var tempParameter = temp2[i].split("#");
-            var tempParameterLi = "";
-            $.each(tempParameter, function (i, item) {
-                tempParameterLi += '<li>'+item+'</li>';
-            });
-            row += '<tr id="row_'+i+'">' +
-                '<td>' +
-                item +
-                '<input type="hidden" class="nama_jenis_pemeriksaan" value="'+item+'">'+
-                '<input type="hidden" class="id_jenis_pemeriksaan" value="'+temp3[i]+'">'+
-                '<input type="hidden" class="nama_parameter_pemeriksaan" value="'+temp2[i]+'">'+
-                '<input type="hidden" class="id_parameter_pemeriksaan" value="'+temp4[i]+'">'+
-                '</td>'+
-                '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
-                '<td align="center"><img onclick="delPemeriksaan(\'row_'+i+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
-                '</tr>';
-        });
-        if(row != ''){
-            $('#body_pemeriksaan').html(row);
-        }
-    }
     $('#modal-lab').modal({show: true, backdrop: 'static'});
 }
 
@@ -2083,27 +2099,45 @@ function detailLab(id, kategoriName) {
     PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
         if (response.length > 0) {
             $.each(response, function (i, item) {
-                if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                var namaPemeriksaan = "";
+                var idPemeriksaan = "";
+                var namaDetailPemeriksaan = "";
+                var idDetailPemeriksaan = "";
+
+                if(item.namaPemeriksaan != null){
+                    namaPemeriksaan = item.namaPemeriksaan;
+                }
+                if(item.idPemeriksaan != null){
+                    idPemeriksaan = item.idPemeriksaan;
+                }
+                if(item.namaDetailPemeriksaan != null){
+                    namaDetailPemeriksaan = item.namaDetailPemeriksaan;
+                }
+                if(item.idDetailPemeriksaan != null){
+                    idDetailPemeriksaan = item.idDetailPemeriksaan;
+                }
+
+                if(namaPemeriksaan.toLowerCase() != tempPemeriksaan){
                     tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
                     if(tempPemeriksa != ''){
-                        tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
-                        tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                        tempPemeriksa = tempPemeriksa+'='+namaPemeriksaan;
+                        tempIdPemeriksa = tempIdPemeriksa+'='+idPemeriksaan;
                     }else{
-                        tempPemeriksa = item.namaPemeriksaan;
-                        tempIdPemeriksa = item.idPemeriksaan;
+                        tempPemeriksa = namaPemeriksaan;
+                        tempIdPemeriksa = idPemeriksaan;
                     }
                 }
 
                 if(i == 0){
-                    tempDetail = item.namaDetailPemeriksaan;
-                    tempIdDetail = item.idDetailPemeriksaan;
+                    tempDetail = namaDetailPemeriksaan;
+                    tempIdDetail = idDetailPemeriksaan;
                 }else{
                     if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
-                        tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
-                        tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                        tempDetail = tempDetail+'#'+namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'#'+idDetailPemeriksaan;
                     }else{
-                        tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
-                        tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                        tempDetail = tempDetail+'='+namaDetailPemeriksaan;
+                        tempIdDetail = tempIdDetail+'='+idDetailPemeriksaan;
                     }
                 }
             });

@@ -181,12 +181,6 @@
                                             </table>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td><b>Diagnosa</b></td>
-                                        <td>
-                                            <table><s:label name="periksaLab.diagnosa"></s:label></table>
-                                        </td>
-                                    </tr>
                                 </table>
                             </div>
                             <!-- /.col -->
@@ -237,6 +231,12 @@
                                             <table>
                                                 <s:label name="periksaLab.namaDokterPengirim"></s:label>
                                             </table>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Diagnosa</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.diagnosa"></s:label></table>
                                         </td>
                                     </tr>
                                 </table>
@@ -387,7 +387,7 @@
                         </div>
                     </div>
                     <div class="box-body">
-                        <div class="row">
+                        <div class="row" id="qa_note">
                             <div class="form-group">
                                 <div class="col-md-3">Ada Tambahan Keterangan Hasil ?</div>
                                 <div class="col-md-6">
@@ -1155,6 +1155,7 @@
         var table = "";
         var data = [];
         var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
+        var catatan = "N";
         PeriksaLabAction.listParameterPemeriksaan(idHeaderPemeriksaan, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
@@ -1219,9 +1220,41 @@
                         "<td width='5%' align='center' style='vertical-align: middle'>" + satuan + "</td>" +
                         '<td width="20%">' + '<textarea '+disabel+' oninput="$(this).css(\'border\',\'\')" rows="3" id="kesan_' + i + '" class="form-control">'+keterangan+'</textarea>' + '</td>' +
                         '<td align="center" style=\'vertical-align: middle\'>' + '<div id="btn_save_'+i+'">'+btn+'</div>' + '</td>' +
-                        "</tr>"
+                        "</tr>";
+
+                    if("Y" == item.isCatatan){
+                        catatan = "Y";
+                    }
                 });
                 $('#body_parameter').html(table);
+                if("Y" == catatan){
+                    $('#form_note').show();
+                    $('#is_note').prop("checked", true);
+                    var data = '<p><strong>Interpretasi Hasil /<em> Result Interpretation</em></strong></p>\n' +
+                        '\n' +
+                        '<ul>\n' +
+                        '\t<li>Hasil Positif atau Terdeteksi menunjukkan bahwa pada spesimen terdeteksi material genetik SARS-CoV-2. Jika terdapat hasil positif, mohon untuk menghubungi layanan konsultasi kami di bawah ini untuk mendapatkan penjelasan mengenai jenis/tempat isolasi dan penatalaksanaan yang sesuai klinis. Kecepatan penanganan sangat penting untuk keberhasilan pengobatan.<br />\n' +
+                        '\t<em>Positive or Detected results indicate that the SARS-CoV-2 genetic material was detected in the specimen. If there is a positive result, please contact our consultation service below for explanation about isolation and clinical management. Timing is very important for the success of treatment.</em></li>\n' +
+                        '\t<li>Hasil Negatif atau Tidak Terdeteksi menunjukkan bahwa material genetik SARS-CoV-2 yang dimaksud tidak ditemukan di dalam spesimen atau kadar spesimen belum dapat terdeteksi oleh alat<br />\n' +
+                        '\t<em>Negative or Undetectable Results indicate that the SARS-CoV-2 genetic material in question was not detected in the specimen or the specimen levels could not be detected by the instrument</em></li>\n' +
+                        '</ul>\n' +
+                        '\n' +
+                        '<p><strong>Edukasi / <em>Education</em></strong></p>\n' +
+                        '\n' +
+                        '<ul>\n' +
+                        '\t<li>Patuhi protokol kesehatan yang berlaku / <em>Always follow the health protocols</em></li>\n' +
+                        '\t<li>Tetap berperilaku bersih dan sehat / <em>Keep a clean and healthy attitude</em></li>\n' +
+                        '\t<li>Untuk info konsultasi medis lebih lanjut dapat menghubungi layanan telemedicine dengan no pendaftaran 081333452226 (hanya WhatsApp) untuk area Jember pada hari / jam kerja : <em>For further medical consultations, you can contact telemedicine facility at this number 081333452226 (no phone, WhatsApp Only) at this working hour :</em></li>\n' +
+                        '\t<li>- Senin - Jumat : 08:00 s/d 20:00 WIB</li>\n' +
+                        '\t<li>- Sabtu : 08:00 - 16:00 WIB</li>\n' +
+                        '</ul>';
+                    CKEDITOR.instances['keterangan_hasil_lab'].setData(data);
+                    $('#qa_note').hide();
+                }else{
+                    $('#form_note').hide();
+                    $('#qa_note').show();
+                    $('#is_note').prop("checked", false);
+                }
             }
         });
     }

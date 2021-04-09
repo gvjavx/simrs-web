@@ -120,6 +120,15 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String keteranganAcuanP;
     private String keteranganHasil;
     private String satuan;
+    private String isCatatan;
+
+    public String getIsCatatan() {
+        return isCatatan;
+    }
+
+    public void setIsCatatan(String isCatatan) {
+        this.isCatatan = isCatatan;
+    }
 
     public String getSatuan() {
         return satuan;

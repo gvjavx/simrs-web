@@ -2463,6 +2463,23 @@ INSERT INTO im_functions VALUES
 INSERT INTO im_func_roles VALUES
 (6917, 40, 'Y', now(), now(), 'admin', 'admin');
 
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_catatan VARCHAR(1),
+
+UPDATE im_simrs_lab
+SET is_catatan = 'N';
+
+ALTER TABLE im_simrs_lab DISABLE TRIGGER ALL;
+INSERT INTO im_simrs_lab VALUES
+('LAB00000028','SWAB','','','','Y','C',now(),'migrasi',now(),'migrasi','','Y');
+ALTER TABLE im_simrs_lab ENABLE TRIGGER ALL;
+
+INSERT INTO im_simrs_parameter_pemeriksaan VALUES
+('PRP00000284','KAL00000002','ANTI GEN','','','',140000,'Y','C',now(),'migrasi',now(),'migrasi');
+
+INSERT INTO im_simrs_lab_detail VALUES
+('LDB00000284','LAB00000028','Y',now(),'migrasi',now(),'migrasi','C',800000,'PRP00000284','02');
+
 
 
 
