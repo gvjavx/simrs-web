@@ -151,7 +151,7 @@
                         <br>
                         <br>
                         <center>
-                            <table id="showdata" width="80%">
+                            <table id="showdata" width="70%">
                                 <tr>
                                     <td align="center">
                                         <sj:dialog id="view_dialog_menu" openTopics="showDialogMenu" modal="true"
@@ -186,7 +186,7 @@
                                                     </sj:a>
                                                 </s:if>
                                             </display:column>
-                                            <display:column property="golonganPkwtId" sortable="true" title="GolonganPkwt ID" />
+                                            <display:column property="golonganPkwtId" sortable="true" title="Gol. Pkwt ID" />
                                             <display:column property="golonganPkwtName" sortable="true" title="Nama"  />
                                             <display:column property="flag" sortable="true" title="flag"  />
                                             <display:column property="action" sortable="true" title="action"  />
