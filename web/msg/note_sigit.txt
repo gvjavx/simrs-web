@@ -754,10 +754,6 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
 
     ALTER TABLE it_akun_nilai_parameter_budgeting
     ADD COLUMN periode VARCHAR(100);
-
-    ALTER TABLE it_akun_nilai_parameter_budgeting
-    ADD COLUMN periode VARCHAR(100);
-
 --
 
 -- 2020-08-27
