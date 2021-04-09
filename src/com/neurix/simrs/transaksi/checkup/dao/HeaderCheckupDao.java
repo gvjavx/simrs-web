@@ -12,6 +12,8 @@ import com.neurix.simrs.transaksi.checkup.model.HeaderCheckup;
 import com.neurix.simrs.transaksi.checkup.model.ItSimrsHeaderChekupEntity;
 import com.neurix.simrs.transaksi.checkupdetail.model.HeaderDetailCheckup;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity;
+import com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan;
 import com.neurix.simrs.transaksi.teamdokter.model.DokterTeam;
 import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.hibernate.Criteria;
@@ -1417,7 +1419,9 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.keterangan_selesai, \n" +
                     "b.video_rm,\n" +
                     "e.id_diagnosa,\n" +
-                    "e.keterangan_diagnosa\n" +
+                    "e.keterangan_diagnosa,\n" +
+                    "f.is_periksa_luar,\n" +
+                    "f.id_header_pemeriksaan\n" +
                     "FROM it_simrs_header_checkup  a\n" +
                     "INNER JOIN it_simrs_header_detail_checkup b ON a.no_checkup = b.no_checkup\n" +
                     "INNER JOIN it_simrs_riwayat_tindakan c ON b.id_detail_checkup = c.id_detail_checkup\n" +
@@ -1430,17 +1434,20 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                     "b.divisi_id,\n" +
                     "b.kode_vclaim\n" +
                     "FROM im_simrs_pelayanan a\n" +
-                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan) d ON b.id_pelayanan = d.id_pelayanan\n" +
+                    "INNER JOIN im_simrs_header_pelayanan b ON a.id_header_pelayanan = b.id_header_pelayanan\n" +
+                    ") d ON b.id_pelayanan = d.id_pelayanan\n" +
                     "LEFT JOIN (\n" +
                     "SELECT * FROM(\n" +
                     "SELECT *, \n" +
                     "rank() OVER (PARTITION BY id_detail_checkup ORDER BY created_date DESC)\n" +
                     "FROM it_simrs_diagnosa_rawat\n" +
-                    ")a WHERE rank = 1) e ON b.id_detail_checkup = e.id_detail_checkup\n" +
+                    ")a WHERE rank = 1\n" +
+                    ") e ON b.id_detail_checkup = e.id_detail_checkup\n" +
+                    "LEFT JOIN it_simrs_header_pemeriksaan f ON c.id_tindakan = f.id_header_pemeriksaan\n" +
                     "WHERE a.id_pasien = :id \n" +
                     "AND a.branch_id = :branchId \n" +
                     "AND b.status_periksa = '3'\n" +
-                    "ORDER BY b.id_detail_checkup DESC, \n" +
+                    "ORDER BY b.id_detail_checkup DESC,\n" +
                     "c.tanggal_tindakan ASC";
 
             List<Object[]> results = new ArrayList<>();
@@ -1476,7 +1483,14 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
                         checkup.setNamaTindakan(namaTindakan);
                     }
                     checkup.setKeterangan(obj[7] == null ? "" : obj[7].toString());
-                    checkup.setVideoRm(obj[9] == null ? null : CommonConstant.EXTERNAL_IMG_URI + obj[9].toString());
+                    if(obj[9] != null){
+                        checkup.setVideoRm(obj[9] == null ? null : CommonConstant.EXTERNAL_IMG_URI + obj[9].toString());
+                    }
+                    checkup.setIsPeriksaLuar(obj[12] == null ? "N" : obj[12].toString());
+                    checkup.setIdHeaderPemeriksaan(obj[13] == null ? null : obj[13].toString());
+                    if(checkup.getIdHeaderPemeriksaan() != null){
+                        checkup.setUploadHasil(getListUploadHasilPemeriksaan(checkup.getIdHeaderPemeriksaan()));
+                    }
                     checkupList.add(checkup);
                 }
             }
@@ -2487,6 +2501,22 @@ public class HeaderCheckupDao extends GenericDao<ItSimrsHeaderChekupEntity, Stri
             res = obj[2].toString();
         }
         return res;
+    }
+
+    public List<UploadHasilPemeriksaan> getListUploadHasilPemeriksaan(String id) {
+        List<UploadHasilPemeriksaan> list = new ArrayList<>();
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsUploadHasilPemeriksaanEntity.class);
+        criteria.add(Restrictions.eq("idHeaderPemeriksaan", id));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ItSimrsUploadHasilPemeriksaanEntity> listOfResult = criteria.list();
+        if(listOfResult.size() > 0){
+            for (ItSimrsUploadHasilPemeriksaanEntity entity: listOfResult){
+                UploadHasilPemeriksaan upload = new UploadHasilPemeriksaan();
+                upload.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_PEMERIKSAAN+entity.getUrlImg());
+                list.add(upload);
+            }
+        }
+        return list;
     }
 
     public String getNextSeq() {
