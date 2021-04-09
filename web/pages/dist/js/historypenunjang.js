@@ -25,13 +25,13 @@ function viewHistory() {
                     if ("resep" == keteranganTindakan || "laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                         if ("laboratorium" == keteranganTindakan || "radiologi" == keteranganTindakan) {
                             if ("Y" == item.isPeriksaLuar) {
-                                btn = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                btn = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                             } else {
                                 btn = '<img class="hvr-grow" id="btn_' + item.idRiwayatTindakan + '" \n' +
                                     'onclick="detailTindakan(\'' + item.idRiwayatTindakan + '\',\'' + item.idTindakan + '\',\'' + keteranganTindakan + '\')"\n' +
-                                    'src="' + contextPath + '/pages/images/icons8-plus-25.png">';
+                                    'src="' + contextPathHeader + '/pages/images/icons8-plus-25.png">';
                                 if(json != ''){
-                                    btn2 = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
+                                    btn2 = '<img onclick="showHasil(\'' + item.idRiwayatTindakan + '\', \'' + item.namaTindakan + '\')" border="0" class="hvr-grow" src="' + contextPathHeader + '/pages/images/icons8-pictures-folder-25.png" style="cursor: pointer;">';
                                 }
                             }
                         } else {
