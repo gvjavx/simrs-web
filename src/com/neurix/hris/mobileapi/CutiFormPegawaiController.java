@@ -4,6 +4,7 @@ import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
 import com.neurix.hris.master.cuti.bo.CutiBo;
+import com.neurix.hris.master.cuti.model.Cuti;
 import com.neurix.hris.mobileapi.model.PengajuanCuti;
 import com.neurix.hris.mobileapi.model.PengajuanLembur;
 import com.neurix.hris.transaksi.cutiPegawai.bo.CutiPegawaiBo;
@@ -135,7 +136,27 @@ public class CutiFormPegawaiController implements ModelDriven<Object> {
                 logger.error("[CutiFormPegawaiController.created] Error when search by criteria,",e);
             }
             model.setMessage(result);
-        }else {
+        }else if (action.equalsIgnoreCase("getJenisCuti")) {
+            listOfCutiPegawai = new ArrayList<>();
+            Cuti cuti = new Cuti();
+            cuti.setFlag("Y");
+
+            List<Cuti> result = new ArrayList<>();
+            try {
+               result = cutiBoProxy.getByCriteria(cuti);
+            } catch (GeneralBOException e) {
+                logger.error("[CutiFormPegawaiController.created] Error when search by criteria,",e);
+            }
+
+            for (Cuti item : result) {
+                PengajuanCuti pengajuanCuti = new PengajuanCuti();
+                pengajuanCuti.setCutiId(item.getCutiId());
+                pengajuanCuti.setCutiName(item.getCutiName());
+
+                listOfCutiPegawai.add(pengajuanCuti);
+            }
+
+        } else {
             com.neurix.hris.master.biodata.model.Biodata modelBiodata = null;
             try {
                 modelBiodata = biodataBoProxy.detailBiodataSys(nip);

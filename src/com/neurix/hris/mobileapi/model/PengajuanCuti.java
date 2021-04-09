@@ -43,6 +43,16 @@ public class PengajuanCuti implements Serializable {
 
     private String message;
 
+    private String cutiName;
+
+    public String getCutiName() {
+        return cutiName;
+    }
+
+    public void setCutiName(String cutiName) {
+        this.cutiName = cutiName;
+    }
+
     public String getCutiTanggunganId() {
         return cutiTanggunganId;
     }
