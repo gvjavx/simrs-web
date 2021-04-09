@@ -5143,7 +5143,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                 reportParams.put("lab", lab);
                 reportParams.put("radiologi", radiologi);
                 reportParams.put("keterangan", checkup.getCatatan());
-                DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup());
+                DokterTeam dokterTeam = teamDokterBoProxy.getNamaDokter(checkup.getIdDetailCheckup(), false);
                 reportParams.put("dokter", dokterTeam.getNamaDokter());
                 reportParams.put("sip", dokterTeam.getSip());
                 reportParams.put("diagnosaMasuk", diagnosaSekunder);

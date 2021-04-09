@@ -1055,6 +1055,7 @@ public class RawatInapController implements ModelDriven<Object> {
                     orderGiziMobile.setBentukDiet(item.getBentukDiet());
                     orderGiziMobile.setIdDietGizi(item.getIdDietGizi());
                     orderGiziMobile.setKeterangan(item.getKeterangan());
+                    orderGiziMobile.setWaktu(item.getWaktu());
 
                     if (item.getTglOrder() != null) {
                         orderGiziMobile.setTglOrder(CommonUtil.convertDateToString(item.getTglOrder()));
