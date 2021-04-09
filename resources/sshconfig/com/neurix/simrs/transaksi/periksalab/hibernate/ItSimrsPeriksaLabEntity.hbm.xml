@@ -1,105 +1,40 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-mapping PUBLIC
-        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
-        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
-<hibernate-mapping>
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+        version="2.0">
 
-    <class name="com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity" dynamic-update="true"
-           table="it_simrs_periksa_lab" select-before-update="true" schema="public">
-
-        <id name="idPeriksaLab">
-            <column name="id_periksa_lab" sql-type="varchar" length="30" not-null="true" />
-        </id>
-
-        <property name="idDetailCheckup">
-            <column name="id_detail_checkup" sql-type="varchar" length="30" not-null="true"/>
-        </property>
-        <property name="idLab">
-            <column name="id_lab" sql-type="varchar" length="30"/>
-        </property>
-        <property name="tanggalMasukLab">
-            <column name="tanggal_masuk_lab" sql-type="date" not-null="false"/>
-        </property>
-        <property name="tanggalSelesaiPeriksa">
-            <column name="tanggal_selesai_periksa" sql-type="timestamp" not-null="false"/>
-        </property>
-        <property name="idDokterPengirim">
-            <column name="id_dokter_pengirim" sql-type="varchar" length="30" not-null="false"/>
-        </property>
-        <property name="statusPeriksa">
-            <column name="status_periksa" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="flag">
-            <column name="flag" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="action">
-            <column name="action" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="createdDate">
-            <column name="created_date" sql-type="timestamp" not-null="false" />
-        </property>
-        <property name="createdWho">
-            <column name="created_who" sql-type="varchar" length="100" not-null="false" />
-        </property>
-        <property name="lastUpdate">
-            <column name="last_update" sql-type="timestamp" not-null="false" />
-        </property>
-        <property name="lastUpdateWho">
-            <column name="last_update_who" sql-type="varchar" length="100" not-null="false" />
-        </property>
-        <property name="approveFlag">
-            <column name="approve_flag" sql-type="varchar" length="1" not-null="false" />
-        </property>
-        <property name="keterangan">
-            <column name="keterangan" sql-type="varchar" length="100" not-null="false" />
-        </property>
-        <property name="urlImg">
-            <column name="url_img"/>
-        </property>
-        <property name="idKategoriLab">
-            <column name="id_kategori_lab"/>
-        </property>
-        <property name="ttdValidator">
-            <column name="ttd_validator"/>
-        </property>
-        <property name="ttdPetugas">
-            <column name="ttd_petugas"/>
-        </property>
-        <property name="isPending">
-            <column name="is_pending"/>
-        </property>
-        <property name="isReading">
-            <column name="is_read"/>
-        </property>
-        <property name="idValidator">
-            <column name="id_validator"/>
-        </property>
-        <property name="namaValidator">
-            <column name="nama_validator"/>
-        </property>
-        <property name="idPetugas">
-            <column name="id_petugas"/>
-        </property>
-        <property name="namaPetugas">
-            <column name="nama_petugas"/>
-        </property>
-        <property name="isPeriksaLuar">
-            <column name="is_periksa_luar"/>
-        </property>
-        <property name="namaLabLuar">
-            <column name="nama_lab_luar"/>
-        </property>
-        <property name="tarifLabLuar">
-            <column name="tarif_lab_luar"/>
-        </property>
-        <property name="ttdPengirim">
-            <column name="ttd_pengirim"/>
-        </property>
-        <property name="catatan">
-            <column name="catatan"/>
-        </property>
-        <property name="idKategoriPemeriksaan">
-            <column name="id_kategori_pemeriksaan"/>
-        </property>
-    </class>
-</hibernate-mapping>
+    <entity class="com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity">
+        <table name="it_simrs_periksa_lab" schema="public"/>
+        <attributes>
+            <id name="idPeriksaLab">
+                <column name="id_periksa_lab"/>
+            </id>
+            <basic name="idHeaderPemeriksaan">
+                <column name="id_header_pemeriksaan"/>
+            </basic>
+            <basic name="idPemeriksaan">
+                <column name="id_pemeriksaan"/>
+            </basic>
+            <basic name="namaPemeriksaan">
+                <column name="nama_pemeriksaan"/>
+            </basic>
+            <basic name="flag">
+                <column name="flag"/>
+            </basic>
+            <basic name="action">
+                <column name="action"/>
+            </basic>
+            <basic name="createdWho">
+                <column name="created_who"/>
+            </basic>
+            <basic name="createdDate">
+                <column name="created_date"/>
+            </basic>
+            <basic name="lastUpdateWho">
+                <column name="last_update_who"/>
+            </basic>
+            <basic name="lastUpdate">
+                <column name="last_update"/>
+            </basic>
+        </attributes>
+    </entity>
+</entity-mappings>

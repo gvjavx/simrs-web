@@ -2,15 +2,12 @@ package com.neurix.simrs.transaksi.periksalab.dao;
 
 import com.neurix.common.dao.GenericDao;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabDetailEntity;
-import com.neurix.simrs.transaksi.periksalab.model.PeriksaLabDetail;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.math.BigInteger;
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +21,6 @@ public class PeriksaLabDetailDao extends GenericDao<ItSimrsPeriksaLabDetailEntit
     @Override
     public List<ItSimrsPeriksaLabDetailEntity> getByCriteria(Map mapCriteria) {
         Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ItSimrsPeriksaLabDetailEntity.class);
-
-        // Get Collection and sorting
         if (mapCriteria!=null) {
             if (mapCriteria.get("id_periksa_lab_detail")!=null) {
                 criteria.add(Restrictions.eq("idPeriksaLabDetail", (String) mapCriteria.get("id_periksa_lab_detail")));
@@ -51,14 +46,14 @@ public class PeriksaLabDetailDao extends GenericDao<ItSimrsPeriksaLabDetailEntit
             if (mapCriteria.get("keterangan_periksa")!=null) {
                 criteria.add(Restrictions.eq("keteranganPeriksa", (String) mapCriteria.get("keterangan_periksa")));
             }
-
+            if(mapCriteria.get("flag")!=null){
+                criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
+            }else{
+                criteria.add(Restrictions.eq("flag", "Y"));
+            }
         }
 
-        criteria.add(Restrictions.eq("flag", mapCriteria.get("flag")));
-
-        // Order by
         criteria.addOrder(Order.asc("idPeriksaLabDetail"));
-
         List<ItSimrsPeriksaLabDetailEntity> results = criteria.list();
         return results;
     }
@@ -67,6 +62,6 @@ public class PeriksaLabDetailDao extends GenericDao<ItSimrsPeriksaLabDetailEntit
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_periksa_lab_detail')");
         Iterator<BigInteger> iter=query.list().iterator();
         String sId = String.format("%08d", iter.next());
-        return sId;
+        return "DPL"+sId;
     }
 }

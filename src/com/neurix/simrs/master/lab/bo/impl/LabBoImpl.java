@@ -249,7 +249,6 @@ public class LabBoImpl implements LabBo {
                     lab = new Lab();
                     lab.setIdLab(labEntity.getIdLab());
                     lab.setNamaLab(labEntity.getNamaLab());
-//                    lab.setIdOperatorLab(labEntity.getIdOperatorLab());
                     lab.setIdDokter(labEntity.getIdDokter());
                     lab.setIdKategoriLab(labEntity.getIdKategoriLab());
 
@@ -262,19 +261,6 @@ public class LabBoImpl implements LabBo {
                     lab.setLastUpdate(labEntity.getLastUpdate());
                     lab.setLastUpdateWho(labEntity.getLastUpdateWho());
 
-//                    if (labEntity.getIdOperatorLab() != null){
-//                        ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
-//                        OperatorLab operatorLab = new OperatorLab();
-//                        OperatorLabBo operatorLabBo = (OperatorLabBo) context.getBean("operatorLabBoProxy");
-//                        operatorLab.setIdOperatorLab(labEntity.getIdOperatorLab());
-//                        operatorLab.setFlag("Y");
-//                        List<OperatorLab> operatorLabs = operatorLabBo.getByCriteria(operatorLab);
-//                        String operatorLabName = operatorLabs.get(0).getNamaOperator();
-//                        lab.setNamaOperatorLab(operatorLabName);
-//                    }else {
-//                        lab.setNamaOperatorLab("-");
-//                    }
-
                     if (labEntity.getIdDokter() != null){
                         ApplicationContext context = ContextLoader.getCurrentWebApplicationContext();
                         Dokter dokter = new Dokter();
@@ -282,8 +268,10 @@ public class LabBoImpl implements LabBo {
                         dokter.setIdDokter(labEntity.getIdDokter());
                         dokter.setFlag("Y");
                         List<Dokter> dokters = dokterBo.getByCriteria(dokter);
-                        String dokterName = dokters.get(0).getNamaDokter();
-                        lab.setNamaDokter(dokterName);
+                        if(dokters.size() > 0){
+                            String dokterName = dokters.get(0).getNamaDokter();
+                            lab.setNamaDokter(dokterName);
+                        }
                     }else {
                         lab.setNamaDokter("-");
                     }
@@ -295,8 +283,10 @@ public class LabBoImpl implements LabBo {
                         kategoriLab.setIdKategoriLab(labEntity.getIdKategoriLab());
                         kategoriLab.setFlag("Y");
                         List<KategoriLab> kategoriLabs = kategoriLabBo.getByCriteria(kategoriLab);
-                        String kategoriLabName = kategoriLabs.get(0).getNamaKategori();
-                        lab.setNamaKategoriLab(kategoriLabName);
+                        if(kategoriLabs.size() > 0){
+                            String kategoriLabName = kategoriLabs.get(0).getNamaKategori();
+                            lab.setNamaKategoriLab(kategoriLabName);
+                        }
                     }else {
                         lab.setNamaKategoriLab("-");
                     }

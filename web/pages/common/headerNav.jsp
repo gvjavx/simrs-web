@@ -375,15 +375,15 @@
                 $.each(res, function (i, item) {
                     var href = "";
                     if(item.kategori == "lab"){
-                        href = '/periksalab/add_periksalab.action?id='+item.idDetailCheckup+'&lab='+item.idPeriksaLab+'&ket=';
+                        href = '/periksalab/add_periksalab.action?id='+item.idDetailCheckup+'&lab='+item.idHeaderPemeriksaan+'&ket=';
                     }
                     if(item.kategori == "radiologi"){
-                        href = '/radiologi/add_radiologi.action?id='+item.idDetailCheckup+'&lab='+item.idPeriksaLab+'&ket=';
+                        href = '/radiologi/add_radiologi.action?id='+item.idDetailCheckup+'&lab='+item.idHeaderPemeriksaan+'&ket=';
                     }
                     if(item.kategori != null && item.kategori != '') {
                         listLab += '<li>' +
                             '<a href="<%= request.getContextPath() %>'+href+'">' +
-                            '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idPeriksaLab +']'+' '+item.namaPasien+'</small><br>' +
+                            '<i class="fa fa-info-circle text-green"></i> <small style="margin-left: -8px">'+' ['+item.idHeaderPemeriksaan +']'+' '+item.namaPasien+'</small><br>' +
                             '</a>' +
                             '</li>';
                     }

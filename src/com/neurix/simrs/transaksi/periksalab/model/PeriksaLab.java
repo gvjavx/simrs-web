@@ -14,7 +14,7 @@ public class PeriksaLab extends BaseModel implements Serializable{
 
     private String idPeriksaLab;
     private String idDetailCheckup;
-    private Date tanggalMasukLab;
+    private Timestamp tanggalMasukLab;
     private Timestamp tanggalSelesaiPeriksa;
     private String idDokterPengirim;
     private String idDokter;
@@ -101,6 +101,164 @@ public class PeriksaLab extends BaseModel implements Serializable{
     private String idPeriksaLabDetail;
     private String hasil;
     private String catatan;
+    private String idKategoriPemeriksaan;
+
+    private List<PeriksaLab> listLab = new ArrayList<>();
+    private List<PeriksaLabDetail> detailLab = new ArrayList<>();
+
+    private String namaLab;
+    private String namaDokterPengirim;
+    private String namaPemeriksaan;
+    private String idHeaderPemeriksaan;
+    private String idPemeriksaan;
+    private String isJustLab;
+    private String isPeriksaLuar;
+    private String idDetailPemeriksaan;
+    private String namaDetailPemeriksaan;
+
+    private String keteranganAcuanL;
+    private String keteranganAcuanP;
+    private String keteranganHasil;
+    private String satuan;
+    private String isCatatan;
+    private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
+    private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
+
+    public String getIsCatatan() {
+        return isCatatan;
+    }
+
+    public void setIsCatatan(String isCatatan) {
+        this.isCatatan = isCatatan;
+    }
+
+    public String getSatuan() {
+        return satuan;
+    }
+
+    public void setSatuan(String satuan) {
+        this.satuan = satuan;
+    }
+
+    public String getKeteranganAcuanP() {
+        return keteranganAcuanP;
+    }
+
+    public void setKeteranganAcuanP(String keteranganAcuanP) {
+        this.keteranganAcuanP = keteranganAcuanP;
+    }
+
+    public String getKeteranganHasil() {
+        return keteranganHasil;
+    }
+
+    public void setKeteranganHasil(String keteranganHasil) {
+        this.keteranganHasil = keteranganHasil;
+    }
+
+    public String getKeteranganAcuanL() {
+        return keteranganAcuanL;
+    }
+
+    public void setKeteranganAcuanL(String keteranganAcuanL) {
+        this.keteranganAcuanL = keteranganAcuanL;
+    }
+
+    public String getIdDetailPemeriksaan() {
+        return idDetailPemeriksaan;
+    }
+
+    public void setIdDetailPemeriksaan(String idDetailPemeriksaan) {
+        this.idDetailPemeriksaan = idDetailPemeriksaan;
+    }
+
+    public String getNamaDetailPemeriksaan() {
+        return namaDetailPemeriksaan;
+    }
+
+    public void setNamaDetailPemeriksaan(String namaDetailPemeriksaan) {
+        this.namaDetailPemeriksaan = namaDetailPemeriksaan;
+    }
+
+    public String getIsPeriksaLuar() {
+        return isPeriksaLuar;
+    }
+
+    public void setIsPeriksaLuar(String isPeriksaLuar) {
+        this.isPeriksaLuar = isPeriksaLuar;
+    }
+
+    public String getIsJustLab() {
+        return isJustLab;
+    }
+
+    public void setIsJustLab(String isJustLab) {
+        this.isJustLab = isJustLab;
+    }
+
+    public String getIdHeaderPemeriksaan() {
+        return idHeaderPemeriksaan;
+    }
+
+    public void setIdHeaderPemeriksaan(String idHeaderPemeriksaan) {
+        this.idHeaderPemeriksaan = idHeaderPemeriksaan;
+    }
+
+    public String getIdPemeriksaan() {
+        return idPemeriksaan;
+    }
+
+    public void setIdPemeriksaan(String idPemeriksaan) {
+        this.idPemeriksaan = idPemeriksaan;
+    }
+
+    public String getNamaPemeriksaan() {
+        return namaPemeriksaan;
+    }
+
+    public void setNamaPemeriksaan(String namaPemeriksaan) {
+        this.namaPemeriksaan = namaPemeriksaan;
+    }
+
+    public String getNamaDokterPengirim() {
+        return namaDokterPengirim;
+    }
+
+    public void setNamaDokterPengirim(String namaDokterPengirim) {
+        this.namaDokterPengirim = namaDokterPengirim;
+    }
+
+    public String getNamaLab() {
+        return namaLab;
+    }
+
+    public void setNamaLab(String namaLab) {
+        this.namaLab = namaLab;
+    }
+
+    public List<PeriksaLab> getListLab() {
+        return listLab;
+    }
+
+    public void setListLab(List<PeriksaLab> listLab) {
+        this.listLab = listLab;
+    }
+
+    public List<PeriksaLabDetail> getDetailLab() {
+        return detailLab;
+    }
+
+    public void setDetailLab(List<PeriksaLabDetail> detailLab) {
+        this.detailLab = detailLab;
+    }
+
+    public String getIdKategoriPemeriksaan() {
+        return idKategoriPemeriksaan;
+    }
+
+    public void setIdKategoriPemeriksaan(String idKategoriPemeriksaan) {
+        this.idKategoriPemeriksaan = idKategoriPemeriksaan;
+    }
 
     public String getCatatan() {
         return catatan;
@@ -149,9 +307,6 @@ public class PeriksaLab extends BaseModel implements Serializable{
     public void setIsLuar(String isLuar) {
         this.isLuar = isLuar;
     }
-
-    private List<UploadHasilPemeriksaan> uploadDalam = new ArrayList<>();
-    private List<UploadHasilPemeriksaan> uploadLuar = new ArrayList<>();
 
     public List<UploadHasilPemeriksaan> getUploadDalam() {
         return uploadDalam;
@@ -638,11 +793,11 @@ public class PeriksaLab extends BaseModel implements Serializable{
         this.idDetailCheckup = idDetailCheckup;
     }
 
-    public Date getTanggalMasukLab() {
+    public Timestamp getTanggalMasukLab() {
         return tanggalMasukLab;
     }
 
-    public void setTanggalMasukLab(Date tanggalMasukLab) {
+    public void setTanggalMasukLab(Timestamp tanggalMasukLab) {
         this.tanggalMasukLab = tanggalMasukLab;
     }
 
