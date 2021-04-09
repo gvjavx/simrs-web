@@ -290,56 +290,73 @@
         PeriksaLabAction.listParameterPemeriksaan(id, function (response) {
             if (response.length > 0) {
                 $.each(response, function (i, item) {
-                    if(item.namaPemeriksaan.toLowerCase() != tempPemeriksaan){
+                    var namaPemeriksaan = "";
+                    var idPemeriksaan = "";
+                    var namaDetailPemeriksaan = "";
+                    var idDetailPemeriksaan = "";
+
+                    if(item.namaPemeriksaan != null){
+                        namaPemeriksaan = item.namaPemeriksaan;
+                    }
+                    if(item.idPemeriksaan != null){
+                        idPemeriksaan = item.idPemeriksaan;
+                    }
+                    if(item.namaDetailPemeriksaan != null){
+                        namaDetailPemeriksaan = item.namaDetailPemeriksaan;
+                    }
+                    if(item.idDetailPemeriksaan != null){
+                        idDetailPemeriksaan = item.idDetailPemeriksaan;
+                    }
+
+                    if(namaPemeriksaan.toLowerCase() != tempPemeriksaan){
                         tempPemeriksaan = item.namaPemeriksaan.toLowerCase();
                         if(tempPemeriksa != ''){
-                            tempPemeriksa = tempPemeriksa+'='+item.namaPemeriksaan;
-                            tempIdPemeriksa = tempIdPemeriksa+'='+item.idPemeriksaan;
+                            tempPemeriksa = tempPemeriksa+'='+namaPemeriksaan;
+                            tempIdPemeriksa = tempIdPemeriksa+'='+idPemeriksaan;
                         }else{
-                            tempPemeriksa = item.namaPemeriksaan;
-                            tempIdPemeriksa = item.idPemeriksaan;
+                            tempPemeriksa = namaPemeriksaan;
+                            tempIdPemeriksa = idPemeriksaan;
                         }
                     }
 
                     if(i == 0){
-                        tempDetail = item.namaDetailPemeriksaan;
-                        tempIdDetail = item.idDetailPemeriksaan;
+                        tempDetail = namaDetailPemeriksaan;
+                        tempIdDetail = idDetailPemeriksaan;
                     }else{
                         if(response[i - 1]["namaPemeriksaan"].toLowerCase() == tempPemeriksaan){
-                            tempDetail = tempDetail+'#'+item.namaDetailPemeriksaan;
-                            tempIdDetail = tempIdDetail+'#'+item.idDetailPemeriksaan;
+                            tempDetail = tempDetail+'#'+namaDetailPemeriksaan;
+                            tempIdDetail = tempIdDetail+'#'+idDetailPemeriksaan;
                         }else{
-                            tempDetail = tempDetail+'='+item.namaDetailPemeriksaan;
-                            tempIdDetail = tempIdDetail+'='+item.idDetailPemeriksaan;
+                            tempDetail = tempDetail+'='+namaDetailPemeriksaan;
+                            tempIdDetail = tempIdDetail+'='+idDetailPemeriksaan;
                         }
                     }
                 });
+                if(tempPemeriksa != '' && tempDetail != '') {
+                    var templ = tempPemeriksa.split("=");
+                    var temp2 = tempDetail.split("=");
+                    var temp3 = tempIdPemeriksa.split("=");
+                    var temp4 = tempIdDetail.split("=");
+                    var row = "";
+                    $.each(templ, function (i, item) {
+                        var tempParameter = temp2[i].split("#");
+                        var tempParameterLi = "";
+                        $.each(tempParameter, function (i, item) {
+                            tempParameterLi += '<li>' + item + '</li>';
+                        });
+                        row += '<tr id="row_' + i + '">' +
+                            '<td>' + item + '</td>' +
+                            '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
+                            '</tr>';
+                    });
+                    if (row != '') {
+                        $('#body_detail_lab').html(row);
+                    }
+                }
             }else{
                 $('#body_detail_lab').html('');
             }
         });
-
-        if(tempPemeriksa != '' && tempDetail != '') {
-            var templ = tempPemeriksa.split("=");
-            var temp2 = tempDetail.split("=");
-            var temp3 = tempIdPemeriksa.split("=");
-            var temp4 = tempIdDetail.split("=");
-            var row = "";
-            $.each(templ, function (i, item) {
-                var tempParameter = temp2[i].split("#");
-                var tempParameterLi = "";
-                $.each(tempParameter, function (i, item) {
-                    tempParameterLi += '<li>' + item + '</li>';
-                });
-                row += '<tr id="row_' + i + '">' +
-                    '<td>' + item + '</td>' +
-                    '<td><ul style="margin-left: 20px">' + tempParameterLi + '</ul></td>' +
-                    '</tr>';
-            });
-            if (row != '') {
-                $('#body_detail_lab').html(row);
-            }
-        }
         $('#modal-detail_lab').modal({show:true, backdrop:'static'});
     }
 
