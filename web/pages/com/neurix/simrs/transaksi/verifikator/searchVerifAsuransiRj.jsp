@@ -327,6 +327,7 @@
                                 <td width="20%">Tanggal</td>
                                 <td>Pemeriksaan</td>
                                 <td>Status</td>
+                                <td align="center">Tarif (Rp.)</td>
                                 <td align="center">Detail</td>
                             </tr>
                             </thead>
@@ -376,11 +377,50 @@
             <div class="modal-footer" style="background-color: #cacaca">
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
-                <button type="button" class="btn btn-success" id="save_fin" ><i class="fa fa-arrow-right"></i> Save
+                <button type="button" class="btn btn-success" id="save_fin" ><i class="fa fa-check"></i> Save
                 </button>
                 <button style="display: none; cursor: no-drop" type="button" class="btn btn-success"
                         id="load_fin"><i
                         class="fa fa-spinner fa-spin"></i> Sedang Menyimpan...
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modal-hasil_lab">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" style="color: white"><i class="fa fa-image"></i> <span
+                        id="title_hasil_lab"></span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="box-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="carousel-hasil_lab" class="carousel slide">
+                                <ol class="carousel-indicators" id="li_hasil_lab">
+
+                                </ol>
+                                <div class="carousel-inner" id="item_hasil_lab">
+
+                                </div>
+                                <a class="left carousel-control" href="#carousel-hasil_lab" data-slide="prev">
+                                    <span class="fa fa-angle-left"></span>
+                                </a>
+                                <a class="right carousel-control" href="#carousel-hasil_lab" data-slide="next">
+                                    <span class="fa fa-angle-right"></span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer" style="background-color: #cacaca">
+                <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
                 </button>
             </div>
         </div>
@@ -402,7 +442,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
                 </button>
-                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-arrow-right"></i> Yes            </button>
+                <button type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes            </button>
             </div>
         </div>
     </div>
@@ -590,11 +630,11 @@
         }
     }
 
-    function listLab(noCheckup, jenis) {
+    function listLab(idDetailCheckup, jenis) {
         if(!cekSession()){
             var table = "";
             var data = [];
-            PeriksaLabAction.getListLab(noCheckup, jenis, function (response) {
+            PeriksaLabAction.getListLab(idDetailCheckup, jenis, function (response) {
                 if (response.length > 0) {
                     $.each(response, function (i, item) {
                         var pemeriksaan = "-";
@@ -602,7 +642,6 @@
                         var lab = "-";
                         var tanggal = item.createdDate;
                         var dateFormat = converterDate(new Date(tanggal));
-                        var btn = '';
                         var tipe = "";
 
                         if (item.kategori == "radiologi") {
@@ -611,31 +650,43 @@
                             tipe = "laboratorium";
                         }
 
-                        if (item.idLab != null) {
-                            pemeriksaan = item.idLab;
-                        }
                         if (item.statusPeriksa != null) {
                             if(item.statusPeriksa == "0"){
                                 status = "Antrian";
                             }else if(item.statusPeriksa == "1"){
-                                status = "Proses";
+                                status = "Periksa";
                             }else{
                                 status = "Selesai";
                             }
                         }
-                        if (item.labName != null) {
-                            lab = item.labName;
+
+                        var periksa = "";
+                        var rad = "";
+                        var json = "";
+                        var tarif = formatRupiahAtas(item.tarif);
+                        var button = '<img src="'+contextPath + '/pages/images/icons8-plus-25.png" onclick="detailTindakan(\''+item.idPeriksaLab+'\', \''+tipe+'\')" class="hvr-grow" id="btn_'+item.idPeriksaLab+'" style="cursor: pointer">';
+
+                        if ("Y" == item.isPeriksaLuar) {
+                            periksa = '<span class="span-warning">Periksa Luar</span>';
+                            tarif = formatRupiahAtas(item.tarifLabLuar);
+                            button = '<img src="'+contextPath + '/pages/images/icons8-pictures-folder-25.png" onclick="showHasil(\''+item.idPeriksaLab+'\', \''+item.kategoriLabName+' Periksa Luar\')" class="hvr-grow" style="cursor: pointer">';
+                            json = JSON.stringify(item.uploadDalam);
+                        }else{
+                            if("radiologi" == item.kategori){
+                                if(item.uploadDalam.length > 0){
+                                    rad = '<img src="'+contextPath + '/pages/images/icons8-pictures-folder-25.png" onclick="showHasil(\''+item.idPeriksaLab+'\', \''+item.kategoriLabName+'\')" class="hvr-grow" style="cursor: pointer">';
+                                    json = JSON.stringify(item.uploadHasil);
+                                }
+                            }
                         }
 
-                        var url = contextPath + '/pages/images/icons8-plus-25.png';
-
                         table += '<tr id="row_'+item.idPeriksaLab+'">' +
-                            "<td>" + dateFormat + "</td>" +
-                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td>" + dateFormat +
+                            '<textarea style="display: none" id="file_'+item.idPeriksaLab+'">'+json+'</textarea>'+"</td>" +
+                            "<td>" + item.kategoriLabName +' '+periksa+ "</td>" +
                             "<td>" + status + "</td>" +
-                            "<td align='center' width='10%'>" +
-                            '<img src="'+url+'" onclick="detailTindakan(\''+item.idPeriksaLab+'\', \''+tipe+'\')" class="hvr-grow" id="btn_'+item.idPeriksaLab+'" style="cursor: pointer">'
-                            +"</td>" +
+                            "<td align='right'>" + tarif + "</td>" +
+                            "<td align='center' width='10%'>" + button + rad +"</td>" +
                             "</tr>";
 
                     });
@@ -653,16 +704,31 @@
                 CheckupAction.getListDetailHistoryPasien(idTindakan, keterangan, function (res) {
                     if (res.length > 0) {
                         $.each(res, function (i, item) {
+
+                            if(keterangan == "radiologi" || keterangan == "laboratorium"){
+                                var namaPemeriksaan = "";
+                                if(i == 0){
+                                    namaPemeriksaan = '<b>'+item.namaPemeriksaan+'</b>';
+                                }else{
+                                    if(res[i - 1]["namaPemeriksaan"].toLowerCase() == item.namaPemeriksaan.toLowerCase()){
+                                        namaPemeriksaan = "";
+                                    }else{
+                                        namaPemeriksaan = '<b>'+item.namaPemeriksaan+'</b>';
+                                    }
+                                }
+                            }
+
                             if(keterangan == "radiologi"){
                                 var acuan = cekDataNull(item.ketAcuanL);
                                 if(jenisKelamin == "P"){
                                     acuan = cekDataNull(item.ketAcuanP);
                                 }
+
                                 body += '<tr>' +
-                                    '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
-                                    '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                    '<td>'+cekDataNull(acuan)+'</td>' +
-                                    '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
+                                    '<td>'+namaPemeriksaan+'<br>'+
+                                    '<div style="margin-left: 10px">'+cekDataNull(item.namaDetailLab)+'</div>'+
+                                    '</td>' +
+                                    '<td>'+'<div style="margin-left: 15px">'+cekDataNull(item.kesimpulan)+'</div>'+'</td>' +
                                     '</tr>';
                             }
                             if(keterangan == "laboratorium"){
@@ -671,10 +737,12 @@
                                     acuan = cekDataNull(item.ketAcuanP);
                                 }
                                 body += '<tr>' +
-                                    '<td>'+cekDataNull(item.namaDetailLab)+'</td>' +
-                                    '<td>'+cekDataNull(item.satuan)+'</td>' +
-                                    '<td>'+cekDataNull(acuan)+'</td>' +
+                                    '<td>'+namaPemeriksaan+'<br>'+
+                                    '<div style="margin-left: 10px">'+cekDataNull(item.namaDetailLab)+'</div>'+
+                                    '</td>' +
                                     '<td>'+cekDataNull(item.kesimpulan)+'</td>' +
+                                    '<td>'+cekDataNull(acuan)+'</td>' +
+                                    '<td>'+cekDataNull(item.satuan)+'</td>' +
                                     '<td>'+cekDataNull(item.keterangan)+'</td>' +
                                     '</tr>';
                             }
@@ -690,18 +758,16 @@
 
                     if(keterangan == "radiologi"){
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
-                            '<td>Pemeriksaan</td>' +
-                            '<td>Satuan</td>' +
-                            '<td>Keterangan Acuan</td>' +
+                            '<td width="40%">Pemeriksaan</td>' +
                             '<td>Hasil</td>' +
                             '</tr>';
                     }
                     if(keterangan == "laboratorium"){
                         head = '<tr bgcolor="#ffebcd" style="font-weight: bold">' +
                             '<td>Pemeriksaan</td>' +
-                            '<td>Satuan</td>' +
-                            '<td>Keterangan Acuan</td>' +
                             '<td>Hasil</td>' +
+                            '<td>Nilai Normal</td>' +
+                            '<td>Satuan</td>' +
                             '<td>Keterangan</td>' +
                             '</tr>';
                     }

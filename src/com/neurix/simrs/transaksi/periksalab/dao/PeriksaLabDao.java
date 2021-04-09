@@ -5,7 +5,9 @@ import com.neurix.common.dao.GenericDao;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.transaksi.periksalab.model.ItSimrsPeriksaLabEntity;
+import com.neurix.simrs.transaksi.periksalab.model.ItSimrsUploadHasilPemeriksaanEntity;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
+import com.neurix.simrs.transaksi.periksalab.model.UploadHasilPemeriksaan;
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.criterion.Order;
@@ -349,6 +351,7 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setTarifLabLuar(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
                 if(obj[0] != null){
                     lab.setTarif(getTotalTarif(obj[0].toString()));
+                    lab.setUploadDalam(getListUploadHasilPemeriksaan(obj[0].toString()));
                 }
                 labList.add(lab);
             }
@@ -526,5 +529,21 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
             }
         }
         return res;
+    }
+
+    public List<UploadHasilPemeriksaan> getListUploadHasilPemeriksaan(String id) {
+        List<UploadHasilPemeriksaan> list = new ArrayList<>();
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ItSimrsUploadHasilPemeriksaanEntity.class);
+        criteria.add(Restrictions.eq("idHeaderPemeriksaan", id));
+        criteria.add(Restrictions.eq("flag", "Y"));
+        List<ItSimrsUploadHasilPemeriksaanEntity> listOfResult = criteria.list();
+        if(listOfResult.size() > 0){
+            for (ItSimrsUploadHasilPemeriksaanEntity entity: listOfResult){
+                UploadHasilPemeriksaan upload = new UploadHasilPemeriksaan();
+                upload.setUrlImg(CommonConstant.EXTERNAL_IMG_URI+CommonConstant.RESOURCE_PATH_PEMERIKSAAN+entity.getUrlImg());
+                list.add(upload);
+            }
+        }
+        return list;
     }
 }
