@@ -317,7 +317,7 @@
                             <td width="20%">Tanggal</td>
                             <td>Pemeriksaan</td>
                             <td>Status</td>
-                            <%--<td>Jenis Lab</td>--%>
+                            <td align="center">Tarif (Rp.)</td>
                             <td align="center">Detail</td>
                         </tr>
                         </thead>
@@ -619,13 +619,21 @@
                             lab = item.labName;
                         }
 
+                        var periksa = "";
+                        var tarif = formatRupiahAtas(item.tarif);
+                        if ("Y" == item.isPeriksaLuar) {
+                            periksa = '<span class="span-warning">Periksa Luar</span>';
+                            tarif = formatRupiahAtas(item.tarifLabLuar);
+                        }
+
                         var url = contextPath + '/pages/images/icons8-plus-25.png';
 
                         table += '<tr id="row_'+item.idPeriksaLab+'">' +
                             "<td>" + dateFormat + "</td>" +
-                            "<td>" + item.kategoriLabName + "</td>" +
+                            "<td>" + item.kategoriLabName +' '+periksa+ "</td>" +
                             // "<td>" + lab + "</td>" +
                             "<td>" + status + "</td>" +
+                            "<td align='right'>" + tarif + "</td>" +
                             "<td align='center' width='10%'>" +
                             '<img src="'+url+'" onclick="detailTindakan(\''+item.idPeriksaLab+'\', \''+tipe+'\')" class="hvr-grow" id="btn_'+item.idPeriksaLab+'" style="cursor: pointer">'
                             +"</td>" +
