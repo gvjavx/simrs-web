@@ -305,7 +305,9 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 "f.id_pelayanan,\n" +
                 "f.nama_pelayanan,\n" +
                 "a.created_date,\n" +
-                "e.kategori\n" +
+                "e.kategori,\n" +
+                "a.is_periksa_luar,\n" +
+                "a.tarif_lab_luar\n" +
                 "FROM it_simrs_header_pemeriksaan a\n" +
                 "INNER JOIN it_simrs_header_detail_checkup b ON a.id_detail_checkup = b.id_detail_checkup\n" +
                 "INNER JOIN it_simrs_header_checkup c ON b.no_checkup = c.no_checkup\n" +
@@ -343,6 +345,11 @@ public class PeriksaLabDao extends GenericDao<ItSimrsPeriksaLabEntity, String> {
                 lab.setNamaPelayanan(obj[6] == null ? "" : obj[6].toString());
                 lab.setCreatedDate(obj[7] == null ? null : (Timestamp) obj[7]);
                 lab.setKategori(obj[8] == null ? null : (String) obj[8]);
+                lab.setIsPeriksaLuar(obj[9] == null ? null : (String) obj[9]);
+                lab.setTarifLabLuar(obj[10] == null ? new BigDecimal(0) : (BigDecimal) obj[10]);
+                if(obj[0] != null){
+                    lab.setTarif(getTotalTarif(obj[0].toString()));
+                }
                 labList.add(lab);
             }
         }

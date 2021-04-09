@@ -603,11 +603,16 @@
                            lab = item.labName;
                        }
 
+                       var periksa = "";
+                       if ("Y" == item.isPeriksaLuar) {
+                           periksa = '<span class="span-warning">Periksa Luar</span>';
+                       }
+
                        var url = contextPath + '/pages/images/icons8-plus-25.png';
 
                        table += '<tr id="row_'+item.idPeriksaLab+'">' +
                            "<td>" + dateFormat + "</td>" +
-                           "<td>" + item.kategoriLabName + "</td>" +
+                           "<td>" + item.kategoriLabName +' '+periksa+ "</td>" +
                            // "<td>" + lab + "</td>" +
                            "<td>" + status + "</td>" +
                            "<td align='center' width='10%'>" +

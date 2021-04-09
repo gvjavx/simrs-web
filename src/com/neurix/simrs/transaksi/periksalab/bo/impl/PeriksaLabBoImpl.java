@@ -861,17 +861,35 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
 
     @Override
     public List<PeriksaLab> getListLab(String noChekcup, String jenis) throws GeneralBOException {
-        return periksaLabDao.getListLab(noChekcup, jenis);
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        try {
+            periksaLabList = periksaLabDao.getListLab(noChekcup, jenis);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return periksaLabList;
     }
 
     @Override
     public List<PeriksaLab> pushListLab(String kategori, String branchId) throws GeneralBOException {
-        return periksaLabDao.pushNotifLab(kategori, branchId);
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        try {
+            periksaLabList = periksaLabDao.pushNotifLab(kategori, branchId);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return periksaLabList;
     }
 
     @Override
     public List<PeriksaLab> getHistoryLabRadiologi(String idPasien) throws GeneralBOException {
-        return periksaLabDao.getHistoryLabRadiologi(idPasien);
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        try {
+            periksaLabList = periksaLabDao.getHistoryLabRadiologi(idPasien);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return periksaLabList;
     }
 
     @Override
