@@ -635,7 +635,7 @@ public class GolonganAction extends BaseMasterAction{
         return "success_save_add";
     }
     public String saveAddPkwt(){
-        logger.info("[AlatAction.saveAdd] start process >>>");
+        logger.info("[GolonganAction.saveAddPkwt] start process >>>");
 
         try {
             GolonganPkwt golongan = getGolonganPkwt();
