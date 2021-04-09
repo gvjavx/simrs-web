@@ -236,7 +236,7 @@
 
                                     $.each(data, function (i, item) {
                                         var labelItem = item.nip+" "+item.namaPegawai;
-                                        mapped[labelItem] = {id: item.nip,nama:item.namaPegawai, label: labelItem, divisi:item.divisi,golongan:item.golongan,position:item.positionId};
+                                        mapped[labelItem] = {id: item.nip,nama:item.namaPegawai, label: labelItem, divisi:item.divisi,golongan:item.golongan,position:item.positionId,tipePegawai:item.tipePegawai};
                                         functions.push(labelItem);
                                     });
 
@@ -256,7 +256,15 @@
                                 $('#namaAddId').val(selectedObj.nama).change();
                                 $('#positionId12').val(selectedObj.position).change();
                                 $('#positionId33').val(selectedObj.position).change();
+                                if(selectedObj.tipePegawai != "TP04"){
+                                    $('#golonganId124').show();
+                                    $('#golonganIdPkwt124').hide();
+                                }else{
+                                    $('#golonganId124').hide();
+                                    $('#golonganIdPkwt124').show();
+                                }
                                 $('#golonganId124').val(selectedObj.golongan).change();
+                                $('#golonganIdPkwt124').val(selectedObj.golongan).change();
                                 $('#golonganId33').val(selectedObj.golongan).change();
                                 var nip = selectedObj.id;
                                 $('#ijinId1').empty();
@@ -318,6 +326,11 @@
                         </td>
                         <td>
                             <table>
+                                <%--PKWT--%>
+                                <s:action id="comboGolonganPkwt" namespace="/golongan" name="initComboGolonganPkwt_golongan"/>
+                                <s:select list="#comboGolonganPkwt.listComboGolonganPkwt" id="golonganIdPkwt124" name="ijinKeluar.golonganId"
+                                          listKey="golonganPkwtId" listValue="golonganPkwtName" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
+                                <%--TETAP--%>
                                     <s:action id="comboGolongan" namespace="/golongan" name="initComboGolongan_golongan"/>
                                     <s:select list="#comboGolongan.listComboGolongan" id="golonganId124" name="ijinKeluar.golonganId"
                                               listKey="golonganId" listValue="stLevel" headerKey="" headerValue="[Select one]" cssClass="form-control" readonly="true" disabled="true" />
@@ -570,6 +583,8 @@
     }
 
     $(document).ready(function() {
+        $('#golonganIdPkwt124').hide();
+
         if ($('#check').val()=="Y"){
             $('#branchId').attr('readonly','true');
             $('#branchId').attr('disabled','true');
