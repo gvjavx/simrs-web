@@ -2402,11 +2402,83 @@ INSERT INTO im_simrs_laporan_ops VALUES
 ('kapitasi','Kapitasi','Y','C',now(),now(),'admin','admin'),
 ('unggulan','Layanan Unggulan','Y','C',now(),now(),'admin','admin');
 
---it_simrs_periksa_lab
-ALTER TABLE it_simrs_periksa_lab
-ADD COLUMN id_kategori_pemeriksaan VARCHAR(50);
+--create header for lab dan radiologi
+CREATE TABLE it_simrs_header_pemeriksaan(
+  id_header_pemeriksaan VARCHAR(100) NOT NULL PRIMARY KEY,
+  id_detail_checkup VARCHAR(50),
+  id_kategori_lab VARCHAR(50),
+  id_dokter_pengirim VARCHAR(50),
+  nama_dokter_pengirim VARCHAR(50),
+  ttd_dokter_pengirim VARCHAR(100),
+  id_petugas VARCHAR(50),
+  nama_petugas VARCHAR(100),
+  ttd_petugas VARCHAR(100),
+  id_validator VARCHAR(50),
+  nama_validator VARCHAR(100),
+  ttd_validator VARCHAR(100),
+  status_periksa VARCHAR(1),
+  catatan TEXT,
+  tarif_lab_luar NUMERIC,
+  approve_flag VARCHAR(1),
+  is_just_lab VARCHAR(1),
+  is_pending VARCHAR(1),
+  is_periksa_luar VARCHAR(1),
+  is_read VARCHAR(1),
+  tanggal_masuk_periksa TIMESTAMP WITHOUT TIME ZONE,
+  tanggal_selesai_periksa TIMESTAMP WITHOUT TIME ZONE,
+  flag VARCHAR(1),
+  action VARCHAR(1),
+  created_who VARCHAR(100),
+  created_date TIMESTAMP WITHOUT TIME ZONE,
+  last_update_who VARCHAR(100),
+  last_update TIMESTAMP WITHOUT TIME ZONE
+);
 
-CREATE SEQUENCE seq_kategori_pemeriksaan;
+CREATE SEQUENCE seq_header_pemeriksaan;
+
+DROP TABLE it_simrs_periksa_lab;
+CREATE TABLE public.it_simrs_periksa_lab
+(
+  id_periksa_lab VARCHAR(50) NOT NULL PRIMARY KEY,
+  id_header_pemeriksaan VARCHAR(50),
+  id_pemeriksaan VARCHAR(30),
+  nama_pemeriksaan VARCHAR(30),
+  flag VARCHAR(1),
+  action VARCHAR(1),
+  created_who VARCHAR(100),
+  created_date TIMESTAMP WITHOUT TIME ZONE,
+  last_update_who VARCHAR(100),
+  last_update TIMESTAMP WITHOUT TIME ZONE
+);
+
+ALTER TABLE it_simrs_upload_hasil_pemeriksaan
+RENAME id_periksa_lab TO id_header_pemeriksaan;
+
+ALTER TABLE it_simrs_riwayat_tindakan
+ALTER COLUMN nama_tindakan TYPE TEXT;
+
+INSERT INTO im_functions VALUES
+(6917, 'print', '/ordergizi/printListGizi_ordergizi.action', 1716, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6917, 40, 'Y', now(), now(), 'admin', 'admin');
+
+ALTER TABLE im_simrs_lab
+ADD COLUMN is_catatan VARCHAR(1),
+
+UPDATE im_simrs_lab
+SET is_catatan = 'N';
+
+ALTER TABLE im_simrs_lab DISABLE TRIGGER ALL;
+INSERT INTO im_simrs_lab VALUES
+('LAB00000028','SWAB','','','','Y','C',now(),'migrasi',now(),'migrasi','','Y');
+ALTER TABLE im_simrs_lab ENABLE TRIGGER ALL;
+
+INSERT INTO im_simrs_parameter_pemeriksaan VALUES
+('PRP00000284','KAL00000002','ANTI GEN','','','',140000,'Y','C',now(),'migrasi',now(),'migrasi');
+
+INSERT INTO im_simrs_lab_detail VALUES
+('LDB00000284','LAB00000028','Y',now(),'migrasi',now(),'migrasi','C',800000,'PRP00000284','02');
 
 
 

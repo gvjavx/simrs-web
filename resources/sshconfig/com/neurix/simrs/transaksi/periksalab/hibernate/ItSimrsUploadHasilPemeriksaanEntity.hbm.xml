@@ -8,8 +8,8 @@
             <id name="idUploadHasilPemeriksaan">
                 <column name="id_upload_hasil_pemeriksaan"/>
             </id>
-            <basic name="idPeriksaLab">
-                <column name="id_periksa_lab"/>
+            <basic name="idHeaderPemeriksaan">
+                <column name="id_header_pemeriksaan"/>
             </basic>
             <basic name="urlImg">
                 <column name="url_img"/>

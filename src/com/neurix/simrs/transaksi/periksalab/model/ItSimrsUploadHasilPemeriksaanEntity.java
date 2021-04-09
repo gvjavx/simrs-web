@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class ItSimrsUploadHasilPemeriksaanEntity {
     private String idUploadHasilPemeriksaan;
-    private String idPeriksaLab;
+    private String idHeaderPemeriksaan;
     private String urlImg;
     private String tipe;
     private String action;
@@ -41,12 +41,12 @@ public class ItSimrsUploadHasilPemeriksaanEntity {
         this.idUploadHasilPemeriksaan = idUploadHasilPemeriksaan;
     }
 
-    public String getIdPeriksaLab() {
-        return idPeriksaLab;
+    public String getIdHeaderPemeriksaan() {
+        return idHeaderPemeriksaan;
     }
 
-    public void setIdPeriksaLab(String idPeriksaLab) {
-        this.idPeriksaLab = idPeriksaLab;
+    public void setIdHeaderPemeriksaan(String idHeaderPemeriksaan) {
+        this.idHeaderPemeriksaan = idHeaderPemeriksaan;
     }
 
     public String getUrlImg() {

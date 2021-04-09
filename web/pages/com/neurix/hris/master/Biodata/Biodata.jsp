@@ -205,8 +205,12 @@
             var programStudy = document.getElementById("pendidikanProgramStudi").value;
             var tahunAwal = document.getElementById("studyTahunAwal").value;
             var tahunAkhir = document.getElementById("studyTahunAkhir").value;
+
+            var lenThnAwal = tahunAwal.length == 4;
+            var lenThnAkhir = tahunAkhir.length == 4;
+
             dwr.engine.setAsync(false);
-            if( studyName != ''|| programStudy != ''|| tahunAwal != ''|| tahunAkhir !=''){
+            if( studyName != ''&& programStudy != ''&& tahunAwal != ''&& tahunAkhir !='' && lenThnAwal==true && lenThnAkhir==true){
                 if (confirm('Do you want to save this record?')){
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');
@@ -239,6 +243,12 @@
                 }
                 if (tahunAkhir == '') {
                     msg += 'Field <strong>Tahun Akhir</strong> is required.' + '<br/>';
+                }
+                if (lenThnAwal != true) {
+                    msg += 'Field <strong>Tahun Awal</strong> must 4 digits.' + '<br/>';
+                }
+                if (lenThnAkhir != true) {
+                    msg += 'Field <strong>Tahun Akhir</strong> must 4 digits.' + '<br/>';
                 }
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
@@ -1025,11 +1035,11 @@
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden name="biodata.tipePegawai" />
                                                         </s:if>
-                                                        <s:elseif test='biodata.tipePegawai=="TP03"'>
-                                                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
-                                                                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                            <s:hidden name="biodata.tipePegawai" />
-                                                        </s:elseif>
+                                                        <%--<s:elseif test='biodata.tipePegawai=="TP03"'>--%>
+                                                            <%--<s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"--%>
+                                                                      <%--listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                            <%--<s:hidden name="biodata.tipePegawai" />--%>
+                                                        <%--</s:elseif>--%>
                                                         <s:else>
                                                             <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value),loadStatusPegawai(),getPensiun()"
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
@@ -2305,14 +2315,14 @@
                         <div class="form-group">
                             <label class="control-label col-sm-4" >Tahun Awal : </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
+                                <input type="number" class="form-control" id="studyTahunAwal" name="study.tahunAwal">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="control-label col-sm-4" >Tahun Lulus : </label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
+                                <input type="number" class="form-control" id="studyTahunAkhir" name="study.tahunAkhir">
                             </div>
                         </div>
                         <%--<div class="form-group">--%>
@@ -3212,14 +3222,14 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Awal : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAwalDelete" readonly name="txtStdudyName">
+                            <input type="number" class="form-control" id="studyTahunAwalDelete" readonly name="txtStdudyName">
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Tahun Lulus : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control" id="studyTahunAkhirDelete" readonly name="txtStdudyName">
+                            <input type="number" class="form-control" id="studyTahunAkhirDelete" readonly name="txtStdudyName">
                         </div>
                     </div>
                 </form>

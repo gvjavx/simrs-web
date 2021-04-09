@@ -84,7 +84,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="control-label col-sm-4">Paket</label>
+                                    <label class="control-label col-sm-4">Jenis Pemeriksaan</label>
                                     <div class="col-sm-4">
                                         <select class="form-control select2" id="paket" style="width: 100%" name="labDetail.idLab">
                                             <option value="">[Select One]</option>
@@ -205,7 +205,7 @@
                             <thead>
                             <tr bgcolor="#90ee90">
                                 <td>ID</td>
-                                <td>Paket</td>
+                                <td>Jenis Pemeriksaan</td>
                                 <td>Nama Pemeriksaan</td>
                                 <td>Ket Acuan L</td>
                                 <td>Ket Acuan P</td>
@@ -310,7 +310,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
                         <div class="col-md-7">
                             <select class="form-control select2" id="set_paket" style="width: 100%"
                                     onchange="var warn =$('#war_set_paket').is(':visible'); if (warn){$('#cor_set_paket').show().fadeOut(3000);$('#war_set_paket').hide()}; cekPaket(this.value)">
@@ -328,7 +328,7 @@
                 </div>
                 <div class="row jarak_atas" style="display: none" id="form_set_paket_baru">
                     <div class="form-group">
-                        <label class="col-md-3">Paket Baru</label>
+                        <label class="col-md-3">Jenis Pemeriksaan Baru</label>
                         <div class="col-md-7">
                             <input class="form-control" id="set_paket_baru"
                                    oninput="var warn =$('#war_set_paket_baru').is(':visible'); if (warn){$('#cor_set_paket_baru').show().fadeOut(3000);$('#war_set_paket_baru').hide()}">
@@ -424,7 +424,7 @@
                                     <td><span id="v_kategori"></span></td>
                                 </tr>
                                 <tr>
-                                    <td><b>Nama Paket</b></td>
+                                    <td><b>Jenis Pemeriksaan</b></td>
                                     <td><span id="v_paket"></span></td>
                                 </tr>
                                 <tr>
@@ -512,7 +512,7 @@
                 </div>
                 <div class="row">
                     <div class="form-group">
-                        <label class="col-md-3" style="margin-top: 7px">Paket</label>
+                        <label class="col-md-3" style="margin-top: 7px">Jenis Pemeriksaan</label>
                         <div class="col-md-7">
                             <input type="hidden" id="h_edit_paket">
                             <input class="form-control" id="edit_paket" style="margin-top: 7px"

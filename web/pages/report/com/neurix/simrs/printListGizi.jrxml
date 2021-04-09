@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="printListGizi" language="groovy" pageWidth="842" pageHeight="595" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="4a519167-419f-4da6-aa9e-cbfe1137f46d">
+	<property name="ireport.zoom" value="0.8467108950806692"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="reportParams.idApproval" class="java.lang.String"/>
+	<parameter name="reportParams.noPo" class="java.lang.String"/>
+	<parameter name="reportParams.namaVendor" class="java.lang.String"/>
+	<parameter name="reportParams.namaBranch" class="java.lang.String"/>
+	<parameter name="reportParams.area" class="java.lang.String"/>
+	<parameter name="reportParams.unit" class="java.lang.String"/>
+	<parameter name="reportParams.logo" class="java.lang.String"/>
+	<parameter name="reportParams.petugas" class="java.lang.String"/>
+	<parameter name="reportParams.idPermintaanVendor" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="namaPasien" class="java.lang.String"/>
+	<field name="noRuangan" class="java.lang.String"/>
+	<field name="namaDiagnosa" class="java.lang.String"/>
+	<field name="waktu" class="java.lang.String"/>
+	<field name="bentukGizi" class="java.lang.String"/>
+	<field name="alergi" class="java.lang.String"/>
+	<field name="namaRangan" class="java.lang.String"/>
+	<field name="jenisDiet" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="106" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="45" width="173" height="20" uuid="26bf2676-a24e-47ec-900a-837bfe5647bf"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.area} == null ? "" : $P{reportParams.area}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="64" width="173" height="19" uuid="327504d1-831b-4d72-b901-0a4739dda40a"/>
+				<box leftPadding="0"/>
+				<textElement verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportParams.unit} == null ? "" : $P{reportParams.unit}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="0" y="-1" width="103" height="46" uuid="6148f775-f809-4a66-a988-b49d7b4583e9"/>
+				<imageExpression><![CDATA[$P{reportParams.logo}]]></imageExpression>
+			</image>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="727" y="63" width="75" height="20" uuid="0d5645db-1425-4143-b3d6-9e2dc368ed1d"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="668" y="63" width="59" height="19" uuid="5d366270-028e-4670-897f-7fd9a57e7dc8"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="8"/>
+				</textElement>
+				<text><![CDATA[Printed date : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="103" y="10" width="592" height="28" uuid="b20bce69-6ee3-4aa8-baff-f485ef335998"/>
+				<box leftPadding="0"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="13" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Daftar Permintaan Gizi"]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="88" width="802" height="1" uuid="56b41b9d-0fd6-44f8-82d4-2cbb37963957"/>
+			</line>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="22" splitType="Stretch">
+			<staticText>
+				<reportElement mode="Opaque" x="0" y="0" width="26" height="22" backcolor="#FFFFFF" uuid="b9623538-19a6-4e4d-a305-97a8317587d0"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="202" y="0" width="84" height="22" backcolor="#FFFFFF" uuid="48c3f872-e04f-4d2f-b927-cd493541247d"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Waktu]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="428" y="0" width="160" height="22" backcolor="#FFFFFF" uuid="e2b555c6-b75c-4455-9e5f-c8c7612bd5ce"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Bentuk Diet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="26" y="0" width="176" height="22" backcolor="#FFFFFF" uuid="6ee61824-c30b-4b4e-9358-dbf7b0f391b3"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nama]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="285" y="0" width="143" height="22" backcolor="#FFFFFF" uuid="6a91ace9-f08b-4ee0-b0c1-3f9098b36939"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jenis Diet]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="588" y="0" width="117" height="22" backcolor="#FFFFFF" uuid="0f75bbe9-880c-4224-81df-c323a49b4801"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Alergi]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Opaque" x="705" y="0" width="97" height="22" backcolor="#FFFFFF" uuid="a52f11e7-08d8-4b9b-97b5-92bc898528d5"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<topPen lineWidth="0.25" lineStyle="Dashed"/>
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Ruangan]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="20" splitType="Stretch">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="26" y="0" width="176" height="20" isPrintWhenDetailOverflows="true" uuid="d6853d2b-79cb-4563-8ff7-b6501df24c59"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{namaPasien} == null ? "" : $F{namaPasien}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="428" y="0" width="160" height="20" isPrintWhenDetailOverflows="true" uuid="340a165a-2f5a-4694-9205-3c9122738170"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{bentukGizi} == null ? "" : $F{bentukGizi} ]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="202" y="0" width="84" height="20" isPrintWhenDetailOverflows="true" uuid="96e98e7f-cfe3-42a6-b2ea-e4d5313718c1"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{waktu}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="0" y="0" width="26" height="20" isPrintWhenDetailOverflows="true" uuid="3c979f93-f264-4a49-8428-b68533b8b7ad"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$V{COLUMN_COUNT}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="true">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="285" y="0" width="143" height="20" isPrintWhenDetailOverflows="true" uuid="24c9aa67-8116-4c1d-aacb-3aff6a4a3cf5"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{jenisDiet} == null ? "" : $F{jenisDiet}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="705" y="0" width="97" height="20" isPrintWhenDetailOverflows="true" uuid="8af30be1-2a55-4e3a-a756-9468ed7057cd"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{namaRangan} == null ? "" : $F{noRuangan}+"-"+$F{namaRangan}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" pattern="#,##0.00" isBlankWhenNull="false">
+				<reportElement positionType="Float" stretchType="RelativeToBandHeight" x="588" y="0" width="117" height="20" isPrintWhenDetailOverflows="true" uuid="1ad5ee90-7c78-4d94-95fb-bfac06d5e328"/>
+				<box topPadding="3" leftPadding="3" bottomPadding="3" rightPadding="3">
+					<bottomPen lineWidth="0.25" lineStyle="Dashed"/>
+				</box>
+				<textElement textAlignment="Justified" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{alergi} == null ? "" : $F{alergi}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<lastPageFooter>
+		<band height="97"/>
+	</lastPageFooter>
+	<summary>
+		<band height="42" splitType="Stretch"/>
+	</summary>
+</jasperReport>

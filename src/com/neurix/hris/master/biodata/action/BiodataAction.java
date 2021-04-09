@@ -2693,6 +2693,7 @@ public class BiodataAction extends BaseMasterAction {
 
         try {
             Sertifikat sertifikat = new Sertifikat();
+
             sertifikat.setNip(nip);
             sertifikat.setJenis(namaPelatihan);
             sertifikat.setNama(judulPelatihan);

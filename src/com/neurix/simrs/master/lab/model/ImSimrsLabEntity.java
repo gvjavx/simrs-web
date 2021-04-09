@@ -18,6 +18,15 @@ public class ImSimrsLabEntity implements Serializable {
     private Timestamp lastUpdate;
     private String lastUpdateWho;
     private String branchId;
+    private String isCatatan;
+
+    public String getIsCatatan() {
+        return isCatatan;
+    }
+
+    public void setIsCatatan(String isCatatan) {
+        this.isCatatan = isCatatan;
+    }
 
     public String getBranchId() {
         return branchId;

@@ -258,14 +258,14 @@ public class PeriksaRadiologiBoImpl implements PeriksaRadiologiBo {
                 ItSimrsPeriksaLabEntity periksaLabEntity = periksaLabDao.getById("idPeriksaLab", bean.getIdPeriksaLab());
 
                 if (periksaLabEntity != null) {
-                    periksaLabEntity.setApproveFlag("Y");
-                    periksaLabEntity.setIdDokter(bean.getIdDokterRadiologi());
-                    periksaLabEntity.setStatusPeriksa("3");
-                    periksaLabEntity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
-                    periksaLabEntity.setLastUpdate(bean.getLastUpdate());
-                    periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                    periksaLabEntity.setUrlImg(bean.getUrlImg());
-                    periksaLabEntity.setIdPemeriksa(bean.getIdPemeriksa());
+//                    periksaLabEntity.setApproveFlag("Y");
+//                    periksaLabEntity.setIdDokter(bean.getIdDokterRadiologi());
+//                    periksaLabEntity.setStatusPeriksa("3");
+//                    periksaLabEntity.setTanggalSelesaiPeriksa(bean.getLastUpdate());
+//                    periksaLabEntity.setLastUpdate(bean.getLastUpdate());
+//                    periksaLabEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//                    periksaLabEntity.setUrlImg(bean.getUrlImg());
+//                    periksaLabEntity.setIdPemeriksa(bean.getIdPemeriksa());
                     try {
                         periksaLabDao.updateAndSave(periksaLabEntity);
                         response.setStatus("success");

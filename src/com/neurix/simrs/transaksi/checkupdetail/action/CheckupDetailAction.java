@@ -8,7 +8,6 @@ import com.neurix.authorization.company.bo.BranchBo;
 import com.neurix.authorization.company.model.Branch;
 import com.neurix.authorization.position.bo.PositionBo;
 import com.neurix.authorization.position.model.ImPosition;
-import com.neurix.authorization.position.model.Position;
 import com.neurix.common.action.BaseMasterAction;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
@@ -27,7 +26,6 @@ import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.AsuransiBo;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
-import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImSimrsAsuransiEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
 import com.neurix.simrs.master.kategorilab.bo.KategoriLabBo;
@@ -39,30 +37,20 @@ import com.neurix.simrs.master.kelasruangan.model.ImSimrsKelasRuanganEntity;
 import com.neurix.simrs.master.kelasruangan.model.KelasRuangan;
 import com.neurix.simrs.master.keterangankeluar.bo.KeteranganKeluarBo;
 import com.neurix.simrs.master.keterangankeluar.model.KeteranganKeluar;
-import com.neurix.simrs.master.lab.bo.LabBo;
-import com.neurix.simrs.master.lab.model.Lab;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
 import com.neurix.simrs.master.pelayanan.bo.PelayananBo;
-import com.neurix.simrs.master.pelayanan.model.ImSimrsPelayananEntity;
 import com.neurix.simrs.master.pelayanan.model.Pelayanan;
-import com.neurix.simrs.master.rekammedis.bo.RekamMedisPasienBo;
-import com.neurix.simrs.master.rekammedis.model.RekamMedisPasien;
 import com.neurix.simrs.master.rekananops.bo.RekananOpsBo;
-import com.neurix.simrs.master.rekananops.model.ImSimrsRekananOpsEntity;
 import com.neurix.simrs.master.rekananops.model.RekananOps;
 import com.neurix.simrs.master.ruangan.bo.RuanganBo;
 import com.neurix.simrs.master.ruangan.bo.TempatTidurBo;
-import com.neurix.simrs.master.ruangan.model.MtSimrsRuanganEntity;
 import com.neurix.simrs.master.ruangan.model.Ruangan;
 import com.neurix.simrs.master.ruangan.model.TempatTidur;
 import com.neurix.simrs.master.tindakan.bo.TindakanBo;
 import com.neurix.simrs.master.tindakan.model.Tindakan;
-import com.neurix.simrs.mobileapi.antrian.model.Antrian;
 import com.neurix.simrs.transaksi.CrudResponse;
 import com.neurix.simrs.transaksi.JurnalResponse;
-import com.neurix.simrs.transaksi.antrianonline.bo.AntrianOnlineBo;
-import com.neurix.simrs.transaksi.antrianonline.model.AntianOnline;
 import com.neurix.simrs.transaksi.asesmenicu.bo.AsesmenIcuBo;
 import com.neurix.simrs.transaksi.asesmenicu.model.AsesmenIcu;
 import com.neurix.simrs.transaksi.asesmenoperasi.bo.AsesmenOperasiBo;
@@ -90,7 +78,6 @@ import com.neurix.simrs.transaksi.makananpendamping.model.HeaderPendampingMakana
 import com.neurix.simrs.transaksi.ordergizi.bo.OrderGiziBo;
 import com.neurix.simrs.transaksi.ordergizi.model.OrderGizi;
 import com.neurix.simrs.transaksi.paketperiksa.bo.PaketPeriksaBo;
-import com.neurix.simrs.transaksi.paketperiksa.dao.ItemPaketDao;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItSimrsPaketPasienEntity;
 import com.neurix.simrs.transaksi.paketperiksa.model.ItemPaket;
 import com.neurix.simrs.transaksi.paketperiksa.model.MtSimrsItemPaketEntity;
@@ -102,12 +89,10 @@ import com.neurix.simrs.transaksi.periksalab.model.OrderPeriksaLab;
 import com.neurix.simrs.transaksi.periksalab.model.PeriksaLab;
 import com.neurix.simrs.transaksi.periksaradiologi.bo.PeriksaRadiologiBo;
 import com.neurix.simrs.transaksi.periksaradiologi.model.ItSimrsPeriksaRadiologiEntity;
-import com.neurix.simrs.transaksi.periksaradiologi.model.PeriksaRadiologi;
 import com.neurix.simrs.transaksi.permintaanresep.bo.PermintaanResepBo;
 import com.neurix.simrs.transaksi.permintaanresep.model.ImSimrsPermintaanResepEntity;
 import com.neurix.simrs.transaksi.permintaanresep.model.PermintaanResep;
 import com.neurix.simrs.transaksi.rawatinap.bo.RawatInapBo;
-import com.neurix.simrs.transaksi.rawatinap.model.ItSimrsRawatInapEntity;
 import com.neurix.simrs.transaksi.rawatinap.model.RawatInap;
 import com.neurix.simrs.transaksi.rekammedik.bo.RekamMedikBo;
 import com.neurix.simrs.transaksi.rekammedik.model.StatusPengisianRekamMedis;
@@ -126,9 +111,7 @@ import com.neurix.simrs.transaksi.transaksiobat.model.TransaksiObatDetail;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
-import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
-import org.hibernate.annotations.Check;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -138,7 +121,6 @@ import sun.misc.BASE64Decoder;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpSession;
-import javax.swing.text.DateFormatter;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -148,7 +130,6 @@ import java.math.BigInteger;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -1605,7 +1586,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         periksaLab.setIdDetailCheckup(idDetailCheckup);
 
         try {
-            periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+            periksaLabList = periksaLabBo.getByCriteriaHeaderPemeriksaan(periksaLab);
         } catch (GeneralBOException e) {
             logger.error("Found Error, " + e.getMessage());
             response.setStatus("error");
@@ -4302,6 +4283,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             RekananOpsBo rekananOpsBo = (RekananOpsBo) ctx.getBean("rekananOpsBoProxy");
             HeaderPendampingMakananBo headerPendampingMakananBo = (HeaderPendampingMakananBo) ctx.getBean("headerPendampingMakananBoProxy");
             DetailPendampingMakananBo detailPendampingMakananBo = (DetailPendampingMakananBo) ctx.getBean("detailPendampingMakananBoProxy");
+            TindakanBo tindakanBo = (TindakanBo) ctx.getBean("tindakanBoProxy");
             String userBranch = CommonUtil.userBranchLogin();
 
             RekananOps ops = new RekananOps();
@@ -4387,6 +4369,23 @@ public class CheckupDetailAction extends BaseMasterAction {
                         riwayatTindakan.setTanggalTindakan(entity.getCreatedDate());
                         riwayatTindakan.setIdRuangan(entity.getIdRuangan());
 
+                        List<Tindakan> tindakanList = new ArrayList<>();
+                        Tindakan tin = new Tindakan();
+                        tin.setIdTindakan(entity.getIdTindakan());
+
+                        try {
+                            tindakanList = tindakanBo.getDataTindakan(tin);
+                        } catch (GeneralBOException e) {
+                            logger.error("[CheckupAction.saveAdd] Error when tindakan ," + "[" + e + "] Found problem when saving add data, please inform to your admin.");
+                            throw new GeneralBOException("Error when new tindakan", e);
+                        }
+
+                        if(tindakanList.size() > 0){
+                            tin = tindakanList.get(0);
+                            riwayatTindakan.setIdRuangan(tin.getKategoriInaBpjs());
+                        }
+
+
                         try {
                             riwayatTindakanBo.saveAdd(riwayatTindakan);
                         } catch (GeneralBOException e) {
@@ -4402,7 +4401,7 @@ public class CheckupDetailAction extends BaseMasterAction {
             periksaLab.setApproveFlag("Y");
 
             try {
-                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+                periksaLabList = periksaLabBo.getByCriteriaHeaderPemeriksaan(periksaLab);
             } catch (GeneralBOException e) {
                 logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when insert riwayat tindakan :" + e.getMessage());
             }
@@ -4412,7 +4411,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     List<RiwayatTindakan> riwayatTindakanList = new ArrayList<>();
                     RiwayatTindakan tindakan = new RiwayatTindakan();
-                    tindakan.setIdTindakan(entity.getIdPeriksaLab());
+                    tindakan.setIdTindakan(entity.getIdHeaderPemeriksaan());
 
                     try {
                         riwayatTindakanList = riwayatTindakanBo.getByCriteria(tindakan);
@@ -4422,17 +4421,36 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                     if (riwayatTindakanList.isEmpty()) {
 
-                        BigDecimal totaltarif = null;
-                        String namaLab = entity.getLabName();
+                        BigDecimal totaltarif = new BigDecimal(0);
+                        String namaLab = "";
+
+                        List<PeriksaLab> periksaLabs = new ArrayList<>();
+                        PeriksaLab periksa = new PeriksaLab();
+                        periksa.setIdHeaderPemeriksaan(entity.getIdHeaderPemeriksaan());
+                        try {
+                            periksaLabs = periksaLabBo.getByCriteria(periksa);
+                        } catch (HibernateException e) {
+                            logger.error("[CheckupDetailAction.saveAddToRiwayatTindakan] Found error when search riwayat tindakan :" + e.getMessage());
+                        }
+
+                        if(periksaLabs.size() > 0){
+                            for (PeriksaLab pb: periksaLabs){
+                                if("".equalsIgnoreCase(namaLab)){
+                                    namaLab = " "+pb.getNamaPemeriksaan();
+                                }else{
+                                    namaLab = namaLab+", "+pb.getNamaPemeriksaan();
+                                }
+                            }
+                        }
 
                         try {
-                            totaltarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdPeriksaLab());
+                            totaltarif = periksaLabBo.getTarifTotalPemeriksaan(entity.getIdHeaderPemeriksaan());
                         } catch (HibernateException e) {
                             logger.error("Found Error " + e.getMessage());
                         }
 
                         RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
-                        riwayatTindakan.setIdTindakan(entity.getIdPeriksaLab());
+                        riwayatTindakan.setIdTindakan(entity.getIdHeaderPemeriksaan());
                         riwayatTindakan.setIdDetailCheckup(entity.getIdDetailCheckup());
 
                         // paket lab
@@ -4451,9 +4469,8 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
                         } else {
 
-                            if("Y".equalsIgnoreCase(entity.getIsLuar())){
+                            if("Y".equalsIgnoreCase(entity.getIsPeriksaLuar())){
                                 totaltarif = entity.getTarifLabLuar();
-                                namaLab = entity.getNamaLabLuar();
                             }
 
                             // jika bukan paket maka pakai tarif asli
@@ -4468,7 +4485,7 @@ public class CheckupDetailAction extends BaseMasterAction {
                             }
                         }
 
-                        riwayatTindakan.setNamaTindakan("Periksa " + entity.getKategoriLabName() + " " + namaLab);
+                        riwayatTindakan.setNamaTindakan("Pemeriksaan " + entity.getKategoriLabName()+namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
                         riwayatTindakan.setJenisPasien(jenPasien);
                         riwayatTindakan.setAction("C");
@@ -5427,22 +5444,25 @@ public class CheckupDetailAction extends BaseMasterAction {
 
         if (checkup != null) {
 
-            PeriksaLab periksalb = new PeriksaLab();
+            List<PeriksaLab> periksaLabList = new ArrayList<>();
+            PeriksaLab labData = new PeriksaLab();
+            labData.setIdHeaderPemeriksaan(lab);
             try {
-                periksalb = periksaLabBoProxy.getNamaLab(lab);
+                periksaLabList = periksaLabBoProxy.getByCriteriaHeaderPemeriksaan(labData);
             } catch (HibernateException e) {
                 logger.error("Found Error " + e.getMessage());
             }
 
-            if (periksalb.getIdPeriksaLab() != null) {
-                if ("lab".equalsIgnoreCase(tipe)) {
-                    reportParams.put("title", "Hasil Pemeriksaan Lab");
-                    reportParams.put("divisi", "Laboratorium");
-                } else {
-                    reportParams.put("title", "Hasil Pemeriksaan Radiologi");
-                    reportParams.put("divisi", "Radiologi");
-                }
-                reportParams.put("jenisPemeriksaan", periksalb.getLabName());
+            if(periksaLabList.size() > 0) {
+                labData = periksaLabList.get(0);
+            }
+
+            if ("lab".equalsIgnoreCase(tipe)) {
+                reportParams.put("title", "Hasil Periksa Lab");
+                reportParams.put("divisi", "Laboratorium");
+            } else {
+                reportParams.put("title", "Hasil Periksa Radiologi");
+                reportParams.put("divisi", "Radiologi");
             }
 
             reportParams.put("area", CommonUtil.userAreaName());
@@ -5469,14 +5489,15 @@ public class CheckupDetailAction extends BaseMasterAction {
             reportParams.put("desa", checkup.getNamaDesa());
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
 
-            reportParams.put("idDokterPengirim", periksalb.getIdDokterPengirim());
-            reportParams.put("dokterPengirim", periksalb.getDokterPengirim());
-            reportParams.put("idPetugas", periksalb.getIdPetugas());
-            reportParams.put("namaPetugas", periksalb.getNamaPetugas());
-            reportParams.put("idValidator", periksalb.getIdValidator());
-            reportParams.put("namaValidator", periksalb.getNamaValidator());
-            reportParams.put("ttdPetugas", periksalb.getTtdPetugas());
-            reportParams.put("ttdValidator", periksalb.getTtdValidator());
+            reportParams.put("idDokterPengirim", labData.getIdDokterPengirim());
+            reportParams.put("dokterPengirim", labData.getNamaDokterPengirim());
+            reportParams.put("idPetugas", labData.getIdPetugas());
+            reportParams.put("namaPetugas", labData.getNamaPetugas());
+            reportParams.put("idValidator", labData.getIdValidator());
+            reportParams.put("namaValidator", labData.getNamaValidator());
+            reportParams.put("ttdPetugas", labData.getTtdPetugas());
+            reportParams.put("ttdValidator", labData.getTtdValidator());
+            reportParams.put("umur", CommonUtil.calculateAge(checkup.getTglLahir(), true));
 
             try {
                 preDownload();
@@ -5897,7 +5918,7 @@ public class CheckupDetailAction extends BaseMasterAction {
         if ("laboratorium".equalsIgnoreCase(keterangan)) {
             ItSimrsPeriksaLabEntity periksaLabEntity = periksaLabBo.getPeriksaLabEntityById(idTindakan);
             if (periksaLabEntity != null) {
-                idDokter = periksaLabEntity.getIdDokter();
+//                idDokter = periksaLabEntity.getIdDokter();
             }
         }
         if ("radiologi".equalsIgnoreCase(keterangan)) {

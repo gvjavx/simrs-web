@@ -644,16 +644,16 @@ public class BiodataBoImpl implements BiodataBo {
                                                     pengalamanLama.setTanggalKeluar(bean.getStTanggalAktif());
                                                     pengalamanLama.setJabatanFlag("N");
                                                     historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
-                                                } else {
-                                                    String status = "ERROR : history jabatan terakhir tidak ditemukan ";
-                                                    logger.error("[BiodataBoImpl.saveEdit] " + status);
-                                                    throw new GeneralBOException(status);
-                                                }
-                                            } else {
+                                                } //else {
+//                                                    String status = "ERROR : history jabatan terakhir tidak ditemukan ";
+//                                                    logger.error("[BiodataBoImpl.saveEdit] " + status);
+//                                                    throw new GeneralBOException(status);
+//                                                }
+                                            } /*else {
                                                 String status = "ERROR : history jabatan terakhir tidak ditemukan ";
                                                 logger.error("[BiodataBoImpl.saveEdit] " + status);
                                                 throw new GeneralBOException(status);
-                                            }
+                                            }*/
 
                                         } catch (HibernateException e) {
                                             logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
@@ -1258,16 +1258,16 @@ public class BiodataBoImpl implements BiodataBo {
                                                 logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
                                                 throw new GeneralBOException("Found problem when Update History Jabatan, please inform to your admin...," + e.getMessage());
                                             }
-                                        } else {
+                                        } /*else {
                                             String status = "ERROR : history jabatan terakhir tidak ditemukan ";
                                             logger.error("[BiodataBoImpl.saveEdit] " + status);
                                             throw new GeneralBOException(status);
-                                        }
-                                    } else {
+                                        }*/
+                                    } /*else {
                                         String status = "ERROR : history jabatan terakhir tidak ditemukan ";
                                         logger.error("[BiodataBoImpl.saveEdit] " + status);
                                         throw new GeneralBOException(status);
-                                    }
+                                    }*/
                                 }
 
                                 if (!kso2karyawan) {
@@ -3179,7 +3179,8 @@ public class BiodataBoImpl implements BiodataBo {
 //                        returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
 //                                + personalEntity.getFotoUpload());
 //                        returnBiodata.setPathFoto(CommonConstant.EXTERNAL_IMG_URI_PROFILE + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE + personalEntity.getFotoUpload());
-                        returnBiodata.setPathFoto(CommonConstant.EXTERNAL_IMG_URI_PROFILE + personalEntity.getFotoUpload());
+                        returnBiodata.setPathFoto(CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_EXTRERNAL_DIRECTORY + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE + personalEntity.getFotoUpload());
+//                        returnBiodata.setPathFoto(CommonConstant.EXTERNAL_IMG_URI_PROFILE + personalEntity.getFotoUpload());
                     } else {
                         if ("L".equalsIgnoreCase(personalEntity.getGender())) {
                             returnBiodata.setPathFoto(ServletActionContext.getRequest().getContextPath() + CommonConstant.RESOURCE_PATH_USER_UPLOAD
@@ -6708,6 +6709,10 @@ public class BiodataBoImpl implements BiodataBo {
 
         logger.info("[BiodataBoImpl.getPersonilPositionEntityById] END process <<<");
         return id;
+    }
+
+    private void createHistoryjabatan(){
+
     }
 
 //    @Override

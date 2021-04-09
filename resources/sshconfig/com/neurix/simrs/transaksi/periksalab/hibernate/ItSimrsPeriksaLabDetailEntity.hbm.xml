@@ -16,7 +16,7 @@
             <column name="id_periksa_lab" sql-type="varchar" length="30" not-null="true"/>
         </property>
         <property name="idLabDetail">
-            <column name="id_lab_detail" sql-type="varchar" length="30" not-null="true"/>
+            <column name="id_lab_detail" sql-type="varchar" length="30"/>
         </property>
         <property name="namaDetailPeriksa">
             <column name="nama_detail_periksa" sql-type="varchar" length="100" not-null="false"/>

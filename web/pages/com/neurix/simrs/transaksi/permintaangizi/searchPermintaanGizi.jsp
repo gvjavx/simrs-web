@@ -32,7 +32,7 @@
         $(document).ready(function () {
             $('#exampleGizi').dataTable({
                 "columnDefs": [
-                    {"orderable": false, "targets": 6}
+                    {"orderable": false, "targets": 9}
                 ]
             });
             $('#permintaan_gizi').addClass('active');
@@ -255,6 +255,9 @@
                     <div class="box-header with-border"></div>
                     <div class="box-header with-border">
                         <h3 class="box-title"><i class="fa fa-th-list"></i> Daftar Permintaan Gizi</h3>
+                        <a target="_blank" href="printListGizi_ordergizi.action">
+                            <button class="btn btn-primary pull-right"><i class="fa fa-print"></i> Print</button>
+                        </a>
                     </div>
                     <div class="box-body">
                         <table id="exampleGizi" class="table table-bordered table-striped" style="font-size: 12px">
@@ -335,6 +338,21 @@
                                         </s:if>
                                         <s:else>
                                             <s:if test='#row.approveFlag == "Y"'>
+                                                <img border="0" class="hvr-grow" id="v_<s:property value="noCheckup"/>"
+                                                     src="<s:url value="/pages/images/icons8-search-25.png"/>"
+                                                     style="cursor: pointer;"
+                                                     onclick="viewHistory('<s:property value="idPasien"/>',
+                                                             '<s:property value="namaPasien"/>',
+                                                             '<s:property value="jenisKelamin"/>',
+                                                             '<s:property value="umur"/>',
+                                                             '<s:property value="namaRangan"/>',
+                                                             '<s:property value="jenisDiet"/>',
+                                                             '<s:property value="bentukGizi"/>',
+                                                             '<s:property value="alergi"/>',
+                                                             '<s:property value="namaDiagnosa"/>',
+                                                             '<s:property value="idDetailCheckup"/>',
+                                                             '<s:property value="noCheckup"/>'
+                                                             )">
                                                 <img class="hvr-grow" onclick="printBarcodeGizi('<s:property value="noCheckup"/>', '<s:property value="idOrderGizi"/>')" src="<s:url value="/pages/images/icons8-barcode-scanner-25.png"/>">
                                             </s:if>
                                             <s:elseif test='#row.approveFlag == "N"'>
