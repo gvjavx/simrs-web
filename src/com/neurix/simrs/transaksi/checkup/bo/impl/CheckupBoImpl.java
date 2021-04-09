@@ -59,6 +59,7 @@ import com.neurix.simrs.transaksi.pemeriksaanfisik.dao.PemeriksaanFisikDao;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.ItSimrsPemeriksaanFisikEntity;
 import com.neurix.simrs.transaksi.pemeriksaanfisik.model.PemeriksaanFisik;
 import com.neurix.simrs.transaksi.pengkajian.model.RingkasanKeluarMasukRs;
+import com.neurix.simrs.transaksi.periksalab.dao.HeaderPemeriksaanDao;
 import com.neurix.simrs.transaksi.periksalab.dao.OrderPeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDao;
 import com.neurix.simrs.transaksi.periksalab.dao.PeriksaLabDetailDao;
@@ -172,6 +173,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     private TempatTidurDao tempatTidurDao;
     private RawatInapDao rawatInapDao;
     private PasienDao pasienDao;
+    private HeaderPemeriksaanDao headerPemeriksaanDao;
 
     @Override
     public List<HeaderCheckup> getByCriteria(HeaderCheckup bean) throws GeneralBOException {
@@ -766,7 +768,7 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     periksaLab.setLastUpdateWho(bean.getLastUpdateWho());
                     periksaLab.setLastUpdate(bean.getLastUpdate());
                     periksaLab.setIdKategoriLab(headerCheckupDao.getIdKategoriLab(bean.getIdLab()));
-                    periksaLab.setKeterangan("just_lab");
+                    periksaLab.setIsJustLab("Y");
                     saveOrderLab(periksaLab);
                 }
 
@@ -844,10 +846,8 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     private void saveOrderLab(PeriksaLab bean) {
         if (bean != null) {
-            ItSimrsPeriksaLabEntity entity = new ItSimrsPeriksaLabEntity();
-            String id = getNextPeriksaLabId();
-            entity.setIdPeriksaLab("PRL" + id);
-            entity.setIdLab(bean.getIdLab());
+            ItSimrsHeaderPemeriksaanEntity entity = new ItSimrsHeaderPemeriksaanEntity();
+            entity.setIdHeaderPemeriksaan(getNextPeriksaLabId());
             entity.setIdDetailCheckup(bean.getIdDetailCheckup());
             entity.setIdDokterPengirim(bean.getIdDokterPengirim());
             entity.setStatusPeriksa("0");
@@ -857,11 +857,11 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             entity.setCreatedWho(bean.getCreatedWho());
             entity.setLastUpdate(bean.getLastUpdate());
             entity.setLastUpdateWho(bean.getLastUpdateWho());
-            entity.setKeterangan(bean.getKeterangan());
+            entity.setIsJustLab(bean.getIsJustLab());
             entity.setIdKategoriLab(bean.getIdKategoriLab());
 
             try {
-                periksaLabDao.addAndSave(entity);
+                headerPemeriksaanDao.addAndSave(entity);
             } catch (HibernateException e) {
                 logger.error("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
                 throw new GeneralBOException("[PeriksaLabBoImpl.saveAddWithParameter] ERROR when saving data periksa lab " + e.getMessage());
@@ -893,17 +893,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                     String idKategoriLab = labDetailDao.kategoriLab(order.getIdLab(), CommonUtil.userBranchLogin());
                     String id = getNextPeriksaLabId();
                     entity.setIdPeriksaLab("PRL" + id);
-                    entity.setIdLab(order.getIdLab());
-                    entity.setIdDetailCheckup(idDetailCheckup);
-                    entity.setIdDokterPengirim(idDokter);
-                    entity.setStatusPeriksa("0");
+//                    entity.setIdLab(order.getIdLab());
+//                    entity.setIdDetailCheckup(idDetailCheckup);
+//                    entity.setIdDokterPengirim(idDokter);
+//                    entity.setStatusPeriksa("0");
                     entity.setFlag("Y");
                     entity.setAction("C");
                     entity.setCreatedDate(now);
                     entity.setCreatedWho(userLogin);
                     entity.setLastUpdate(now);
                     entity.setLastUpdateWho(userLogin);
-                    entity.setIdKategoriLab(idKategoriLab);
+//                    entity.setIdKategoriLab(idKategoriLab);
 
                     try {
                         periksaLabDao.addAndSave(entity);
@@ -1036,17 +1036,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                         kategoriLab = paketPeriksa.getIdKategoriItem();
                         String id = getNextPeriksaLabId();
                         entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-                        entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-                        entityPeriksaLab.setIdDetailCheckup(idDetailCheckup);
-                        entityPeriksaLab.setIdDokterPengirim(idDokter);
-                        entityPeriksaLab.setStatusPeriksa("0");
+//                        entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
+//                        entityPeriksaLab.setIdDetailCheckup(idDetailCheckup);
+//                        entityPeriksaLab.setIdDokterPengirim(idDokter);
+//                        entityPeriksaLab.setStatusPeriksa("0");
                         entityPeriksaLab.setFlag("Y");
                         entityPeriksaLab.setAction("C");
                         entityPeriksaLab.setCreatedDate(time);
                         entityPeriksaLab.setCreatedWho(userLogin);
                         entityPeriksaLab.setLastUpdate(time);
                         entityPeriksaLab.setLastUpdateWho(userLogin);
-                        entityPeriksaLab.setIdKategoriLab(idKategoriLab);
+//                        entityPeriksaLab.setIdKategoriLab(idKategoriLab);
 
                         try {
                             periksaLabDao.addAndSave(entityPeriksaLab);
@@ -2910,17 +2910,17 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                             kategoriLab = paketPeriksa.getIdKategoriItem();
                             String id = getNextPeriksaLabId();
                             entityPeriksaLab.setIdPeriksaLab("PRL" + id);
-                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
-                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
-                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
-                            entityPeriksaLab.setStatusPeriksa("0");
+//                            entityPeriksaLab.setIdLab(paketPeriksa.getIdKategoriItem());
+//                            entityPeriksaLab.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
+//                            entityPeriksaLab.setIdDokterPengirim(bean.getIdDokter());
+//                            entityPeriksaLab.setStatusPeriksa("0");
                             entityPeriksaLab.setFlag("Y");
                             entityPeriksaLab.setAction("C");
                             entityPeriksaLab.setCreatedDate(bean.getCreatedDate());
                             entityPeriksaLab.setCreatedWho(bean.getCreatedWho());
                             entityPeriksaLab.setLastUpdate(bean.getLastUpdate());
                             entityPeriksaLab.setLastUpdateWho(bean.getLastUpdateWho());
-                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
+//                            entityPeriksaLab.setIdKategoriLab(idKategoriLab);
 
                             try {
                                 periksaLabDao.addAndSave(entityPeriksaLab);
@@ -3819,5 +3819,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
 
     public void setPasienDao(PasienDao pasienDao) {
         this.pasienDao = pasienDao;
+    }
+
+    public void setHeaderPemeriksaanDao(HeaderPemeriksaanDao headerPemeriksaanDao) {
+        this.headerPemeriksaanDao = headerPemeriksaanDao;
     }
 }
