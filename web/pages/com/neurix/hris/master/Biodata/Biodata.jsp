@@ -1035,11 +1035,11 @@
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
                                                             <s:hidden name="biodata.tipePegawai" />
                                                         </s:if>
-                                                        <s:elseif test='biodata.tipePegawai=="TP03"'>
-                                                            <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"
-                                                                      listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>
-                                                            <s:hidden name="biodata.tipePegawai" />
-                                                        </s:elseif>
+                                                        <%--<s:elseif test='biodata.tipePegawai=="TP03"'>--%>
+                                                            <%--<s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" disabled="true"--%>
+                                                                      <%--listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>--%>
+                                                            <%--<s:hidden name="biodata.tipePegawai" />--%>
+                                                        <%--</s:elseif>--%>
                                                         <s:else>
                                                             <s:select list="#initComboTipe.listComboTipePegawai" id="tipePegawai1" name="biodata.tipePegawai" onchange="changePegawai(this.value),loadStatusPegawai(),getPensiun()"
                                                                       listKey="tipePegawaiId" listValue="tipePegawaiName" headerKey="" headerValue="[Select one]" cssClass="form-control"/>

@@ -644,16 +644,16 @@ public class BiodataBoImpl implements BiodataBo {
                                                     pengalamanLama.setTanggalKeluar(bean.getStTanggalAktif());
                                                     pengalamanLama.setJabatanFlag("N");
                                                     historyJabatanPegawaiDao.updateAndSave(pengalamanLama);
-                                                } else {
-                                                    String status = "ERROR : history jabatan terakhir tidak ditemukan ";
-                                                    logger.error("[BiodataBoImpl.saveEdit] " + status);
-                                                    throw new GeneralBOException(status);
-                                                }
-                                            } else {
+                                                } //else {
+//                                                    String status = "ERROR : history jabatan terakhir tidak ditemukan ";
+//                                                    logger.error("[BiodataBoImpl.saveEdit] " + status);
+//                                                    throw new GeneralBOException(status);
+//                                                }
+                                            } /*else {
                                                 String status = "ERROR : history jabatan terakhir tidak ditemukan ";
                                                 logger.error("[BiodataBoImpl.saveEdit] " + status);
                                                 throw new GeneralBOException(status);
-                                            }
+                                            }*/
 
                                         } catch (HibernateException e) {
                                             logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
@@ -1258,16 +1258,16 @@ public class BiodataBoImpl implements BiodataBo {
                                                 logger.error("[BiodataBoImpl.saveEdit] Error, " + e.getMessage());
                                                 throw new GeneralBOException("Found problem when Update History Jabatan, please inform to your admin...," + e.getMessage());
                                             }
-                                        } else {
+                                        } /*else {
                                             String status = "ERROR : history jabatan terakhir tidak ditemukan ";
                                             logger.error("[BiodataBoImpl.saveEdit] " + status);
                                             throw new GeneralBOException(status);
-                                        }
-                                    } else {
+                                        }*/
+                                    } /*else {
                                         String status = "ERROR : history jabatan terakhir tidak ditemukan ";
                                         logger.error("[BiodataBoImpl.saveEdit] " + status);
                                         throw new GeneralBOException(status);
-                                    }
+                                    }*/
                                 }
 
                                 if (!kso2karyawan) {
@@ -6709,6 +6709,10 @@ public class BiodataBoImpl implements BiodataBo {
 
         logger.info("[BiodataBoImpl.getPersonilPositionEntityById] END process <<<");
         return id;
+    }
+
+    private void createHistoryjabatan(){
+
     }
 
 //    @Override
