@@ -396,6 +396,8 @@ public class MutasiBoImpl implements MutasiBo {
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
 
+                    mutasi.setLastUpdate(bean.getLastUpdate());
+                    mutasi.setLastUpdateWho(bean.getLastUpdateWho());
                     ItMutasiEntity itMutasiEntity = new ItMutasiEntity();
                     ItMutasiDocEntity itDoc = new ItMutasiDocEntity();
                     String mutasiId;
@@ -534,7 +536,7 @@ public class MutasiBoImpl implements MutasiBo {
                                 // matikan posisi lama
                                 personilPositionEntity.setFlag("N");
                                 personilPositionEntity.setAction("U");
-                                personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                                personilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
                                 try {
                                     personilPositionDao.updateAndSave(personilPositionEntity);
@@ -574,7 +576,7 @@ public class MutasiBoImpl implements MutasiBo {
 
                                     personilPositionEntity.setFlagDigaji("Y");
                                     personilPositionEntity.setPositionId(mutasi.getUpdatePosisiId());
-                                    personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                                    personilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
                                     try {
                                         personilPositionDao.updateAndSave(personilPositionEntity);
@@ -610,7 +612,7 @@ public class MutasiBoImpl implements MutasiBo {
                         personilPositionEntity.setAction("C");
                         personilPositionEntity.setCreatedDate(mutasi.getLastUpdate());
                         personilPositionEntity.setCreatedWho(mutasi.getLastUpdateWho());
-                        personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                        personilPositionEntity.setLastUpdate(bean.getLastUpdate());
                         personilPositionEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
 
                         try {
