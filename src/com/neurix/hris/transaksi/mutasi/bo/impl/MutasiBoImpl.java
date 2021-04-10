@@ -24,6 +24,7 @@ import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.pelatihanJabatan.model.PelatihanJabatan;
 import com.neurix.hris.master.sertifikat.dao.SertifikatDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
+import com.neurix.hris.master.sertifikat.model.Sertifikat;
 import com.neurix.hris.master.statusMutasi.dao.StatusMutasiDao;
 import com.neurix.hris.master.statusMutasi.model.ImHrisStatusMutasiEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
@@ -1128,6 +1129,30 @@ public class MutasiBoImpl implements MutasiBo {
         return studyEntities;
     }
 
+    private List<ImSertifikatEntity> getListPelatihanEntity(Sertifikat bean){
+        logger.info("[MutasiBoImpl.getListPelatihanEntity] START >>>");
+
+        List<ImSertifikatEntity> pelatianEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getSertifikatId() != null && !"".equalsIgnoreCase(bean.getSertifikatId()))
+            hsCriteria.put("pelatihan_id", bean.getSertifikatId());
+        if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip()))
+            hsCriteria.put("nip", bean.getNip());
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
+            hsCriteria.put("flag", bean.getFlag());
+
+        try {
+            pelatianEntities = sertifikatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.getListPelatihanEntity] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get list study entity, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.getListPelatihanEntity] END <<<");
+        return pelatianEntities;
+    }
+
     private List<ItTunjLainPegawaiEntity> getListTunjanganEntity(TunjLainPegawai bean){
         logger.info("[MutasiBoImpl.getListTunjanganEntity] START >>>");
 
@@ -1253,6 +1278,31 @@ public class MutasiBoImpl implements MutasiBo {
                     } catch (HibernateException e){
                         logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when update data study, please inform to your admin...," + e.getMessage());
+                    }
+                }
+            }
+            // END
+
+            // Update flag N pada semua pelatihan berdasarkan nip
+            Sertifikat pelatihan = new Sertifikat();
+            pelatihan.setNip(mutasi.getNip());
+            pelatihan.setFlag("Y");
+
+            List<ImSertifikatEntity> pelatihanEntities = getListPelatihanEntity(pelatihan);
+
+            if (pelatihanEntities.size() > 0){
+                for (ImSertifikatEntity pelatihanEntity : pelatihanEntities){
+
+                    pelatihanEntity.setFlag("N");
+                    pelatihanEntity.setAction("U");
+                    pelatihanEntity.setLastUpdate(mutasi.getLastUpdate());
+                    pelatihanEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                    try {
+                        sertifikatDao.updateAndSave(pelatihanEntity);
+                    } catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when update data pelatihan, please inform to your admin...," + e.getMessage());
                     }
                 }
             }
