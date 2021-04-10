@@ -397,8 +397,13 @@ public class MutasiBoImpl implements MutasiBo {
 
                     ItMutasiEntity itMutasiEntity = new ItMutasiEntity();
                     ItMutasiDocEntity itDoc = new ItMutasiDocEntity();
-
-                    String mutasiId = mutasiDao.getNextMutasiId() ;
+                    String mutasiId;
+                    try {
+                        mutasiId = mutasiDao.getNextMutasiId();
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Next Mutasi Id, " + e.getMessage());
+                    }
                     itMutasiEntity.setMutasiId(mutasiId);
                     itMutasiEntity.setNip(mutasi.getNip());
                     itMutasiEntity.setBranchLamaId(mutasi.getBranchLamaId());
@@ -434,7 +439,14 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setLastUpdate(bean.getLastUpdate());
                     itMutasiEntity.setNoSk(mutasi.getNoSk());
 
-                    itDoc.setDocMutasiId(mutasiDocDao.getNextId());
+                    String mutDocId;
+                    try{
+                        mutDocId = mutasiDocDao.getNextId();
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Next Mutasi Doc ID, " + e.getMessage());
+                    }
+                    itDoc.setDocMutasiId(mutDocId);
                     itDoc.setMutasiId(mutasiId);
                     itDoc.setFlag(bean.getFlag());
                     itDoc.setAction(bean.getAction());
@@ -446,16 +458,26 @@ public class MutasiBoImpl implements MutasiBo {
                     String tgl[] = CommonUtil.convertTimestampToString(bean.getCreatedDate()).split("-");
                     bean.setStTahun(tgl[2]);
                     if (("M").equalsIgnoreCase(mutasi.getStatus())||("R").equalsIgnoreCase(mutasi.getStatus())){
-
                         // cek apakah update golongan sudah diiinsert
-                        List<ImtHistorySmkGolonganEntity> smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+                        List<ImtHistorySmkGolonganEntity> smkGolongan = new ArrayList<>();
+                        try{
+                            smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving History Jabatan");
+                        }
                         if(smkGolongan.size() > 0){
                             for(ImtHistorySmkGolonganEntity smkGolonganLoop: smkGolongan){
-                                ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
-                                smkGolonganEntity.setFlagMutasi("Y");
-                                smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
-                                historyGolonganDao.updateAndSave(smkGolonganEntity);
+                                try {
+                                    ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
+                                    smkGolonganEntity.setFlagMutasi("Y");
+                                    smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
+                                    historyGolonganDao.updateAndSave(smkGolonganEntity);
+                                }catch (HibernateException e){
+                                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Error when update History Golongan");
+                                }
                             }
                         }
 
@@ -1150,7 +1172,7 @@ public class MutasiBoImpl implements MutasiBo {
             biodataEntity.setAction("U");
             biodataEntity.setLastUpdate(mutasi.getLastUpdate());
             biodataEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
-            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
+//            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
 
             try {
                 biodataDao.updateAndSave(biodataEntity);

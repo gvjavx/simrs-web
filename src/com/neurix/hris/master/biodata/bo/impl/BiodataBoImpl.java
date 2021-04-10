@@ -3170,7 +3170,9 @@ public class BiodataBoImpl implements BiodataBo {
                     returnBiodata.setCreatedWho(personalEntity.getCreatedWho());
                     returnBiodata.setCreatedDate(personalEntity.getCreatedDate());
                     returnBiodata.setLastUpdate(personalEntity.getLastUpdate());
-                    returnBiodata.setStrLastUpdate(personalEntity.getLastUpdate().toString());
+                    if(personalEntity.getLastUpdate() != null) {
+                        returnBiodata.setStrLastUpdate(personalEntity.getLastUpdate().toString());
+                    }
                     returnBiodata.setLastUpdateWho(personalEntity.getLastUpdateWho());
                     returnBiodata.setAction(personalEntity.getAction());
                     returnBiodata.setFlag(personalEntity.getFlag());
