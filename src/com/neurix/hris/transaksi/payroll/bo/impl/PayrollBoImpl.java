@@ -2819,7 +2819,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                     //flag Pensiun
                     PayrollPensiun payrollPensiun = new PayrollPensiun();
                     if (bean.getFlagPensiun().equalsIgnoreCase("Y")){
-                        if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                        if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                             bulanBerjalan = 0;
                             String tglAktifPegawai = CommonUtil.convertDateToString(payrollEntity.getTanggalAktif());
                             String tglPensiunPegawai = CommonUtil.convertDateToString(payrollEntity.getTanggalPensiun());
@@ -3100,7 +3100,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                         listOfResultPph.add(payrollPph);
                     }else{
                         if (bean.getFlagJubileum().equalsIgnoreCase("Y")){
-                            if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                            if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                                 if (tahunJabatan>=20){
                                     if (payrollJubileum.getTotalJubileumNilai().compareTo(BigDecimal.valueOf(0)) > 0){
                                         //validasi jika tahun ini sudah pernah ada jubilium maka tidak ditampilkan lagi
@@ -3114,7 +3114,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
                             }
                         }
                         else if (bean.getFlagCutiPanjang().equalsIgnoreCase("Y") || bean.getFlagCutiTahunan().equalsIgnoreCase("Y")){
-                            if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP01")){
+                            if (payrollEntity.getTipePegawai().equalsIgnoreCase("TP03")){
                                 if (bean.getFlagCutiPanjang().equalsIgnoreCase("Y")){
                                     if (payrollCuti.getTotalCutiNilai().compareTo(BigDecimal.valueOf(0))>0){
                                         listOfResult.add(payroll);
