@@ -96,13 +96,20 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         return results;
     }
 
-    public List<ImPosition> getListPosition(String term) throws HibernateException {
+    public List<ImPosition> getListPosition(String term, String flagCostUnit) throws HibernateException {
 
-        List<ImPosition> results = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
+        Criteria criteria = this.sessionFactory.getCurrentSession().createCriteria(ImPosition.class)
                 .add(Restrictions.ilike("positionName",term))
                 .add(Restrictions.eq("flag", "Y"))
-                .addOrder(Order.asc("kodering"))
-                .list();
+                .addOrder(Order.asc("kodering"));
+        if("Y".equalsIgnoreCase(flagCostUnit)){
+            criteria.add(Restrictions.eq("flagCostUnit", "Y"));
+        }else{
+            criteria.add(Restrictions.or(Restrictions.eq("flagCostUnit", "N"),Restrictions.isNull("flagCostUnit")));
+        }
+
+
+        List<ImPosition> results = criteria.list();
 
         return results;
     }
