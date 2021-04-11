@@ -129,7 +129,7 @@
                                         </sj:submit>
                                     </td>
                                     <td>
-                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiDplkPegawai" action="add_payrollSkalaGajiPensiun" escapeAmp="false">
+                                        <s:url var="urlAdd" namespace="/payrollSkalaGajiDplkPegawai" action="add_payrollSkalaGajiDplkPegawai" escapeAmp="false">
                                         </s:url>
                                         <sj:a cssClass="btn btn-success" onClickTopics="showDialogMenu" href="%{urlAdd}">
                                             <i class="fa fa-plus"></i>
@@ -137,7 +137,7 @@
                                         </sj:a>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiPensiun"/>'">
+                                        <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="initForm_payrollSkalaGajiDplkPegawai"/>'">
                                             <i class="fa fa-refresh"></i> Reset
                                         </button>
                                     </td>
@@ -159,10 +159,10 @@
 
                                         <s:set name="listOfPayrollSkalaGaji" value="#session.listOfResult" scope="request" />
                                         <display:table name="listOfPayrollSkalaGaji" class="table table-condensed table-striped table-hover"
-                                                       requestURI="paging_displaytag_payrollSkalaGajiPensiun.action" export="true" id="row" pagesize="14" style="font-size:10">
+                                                       requestURI="paging_displaytag_payrollSkalaGajiDplkPegawai.action" export="true" id="row" pagesize="14" style="font-size:10">
                                             <display:column media="html" title="Edit">
                                                 <s:if test="#attr.row.flagYes">
-                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiDplkPegawai" action="edit_payrollSkalaGajiPensiun" escapeAmp="false">
+                                                    <s:url var="urlEdit" namespace="/payrollSkalaGajiDplkPegawai" action="edit_payrollSkalaGajiDplkPegawai" escapeAmp="false">
                                                         <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId"/></s:param>
                                                         <s:param name="flag"><s:property value="#attr.row.flag"/></s:param>
                                                     </s:url>
@@ -173,7 +173,7 @@
                                             </display:column>
 
                                             <display:column media="html" title="Delete" style="text-align:center;font-size:9">
-                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGajiDplkPegawai" action="delete_payrollSkalaGajiPensiun" escapeAmp="false">
+                                                <s:url var="urlViewDelete" namespace="/payrollSkalaGajiDplkPegawai" action="delete_payrollSkalaGajiDplkPegawai" escapeAmp="false">
                                                     <s:param name="id"><s:property value="#attr.row.skalaGajiPensiunId" /></s:param>
                                                     <s:param name="flag"><s:property value="#attr.row.flag" /></s:param>
                                                 </s:url>
