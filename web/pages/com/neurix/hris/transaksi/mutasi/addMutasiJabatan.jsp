@@ -476,7 +476,7 @@
                                 <s:action id="comboDivisi" namespace="/department"
                                           name="searchDepartment2_department"/>
                                 <s:select list="#comboDivisi.listComboDepartment" id="divisiBaruId2"
-                                          name="mutasi.divisiBaruId" onchange="listPosisi()"
+                                          name="mutasi.divisiBaruId" onchange="listPosisi(), checkPositionAktif()"
                                           listKey="departmentId" listValue="departmentName"
                                           headerKey="" headerValue=""
                                           cssClass="form-control form-add"/>
@@ -589,6 +589,7 @@
         var branch = document.getElementById("branchBaruId1").value;
 
         $('#divisiBaruId2').empty();
+        console.log(branch);
         PositionAction.searchDivisi2(branch, function(listdata){
             $.each(listdata, function (i, item) {
                 $('#divisiBaruId2').append($("<option></option>")
@@ -958,7 +959,7 @@
         var tanggalKeluar   = $("#tanggalKeluar").val();
         var url             = $('#myForm').attr('action');
         var jenisJabLama    = $("#jenisPegawaiLamaId option:selected").val();
-
+        checkPositionAktif();
         if (url == "addPerson"){
             MutasiAction.checkIsAvailInSession(nip, function(res){
                 if (res.status == "error"){
@@ -991,17 +992,17 @@
                         }
 
                     } else if (status == "M" || status == "R"){
-                        if(jenisJabLama == "JP01" && jenisJabatan != "JP01"){
-                            alert("Jabatan yang hendak diganti adalah Jabatan Utama (Normal), maka Jenis Jabatan Baru harus Normal.\nAgar Pegawai yang bersangkutan tetap memiliki Jabatan Utama.")
-                        }else if(jenisJabLama != "JP01" && jenisJabatan == "JP01"){
-                            alert("Anda tidak dapat mengganti Jabatan Rangkap (PJS/PLT) dengan Jenis Jabatan Utama (normal) untuk menghindari pegawai memiliki Jabatan Utama Ganda.")
-                        }else{
+                        // if(jenisJabLama == "JP01" && jenisJabatan != "JP01"){
+                        //     alert("Jabatan yang hendak diganti adalah Jabatan Utama (Normal), maka Jenis Jabatan Baru harus Normal.\nAgar Pegawai yang bersangkutan tetap memiliki Jabatan Utama.")
+                        // }else if(jenisJabLama != "JP01" && jenisJabatan == "JP01"){
+                        //     alert("Anda tidak dapat mengganti Jabatan Rangkap (PJS/PLT) dengan Jenis Jabatan Utama (normal) untuk menghindari pegawai memiliki Jabatan Utama Ganda.")
+                        // }else{
                             if (noSk == null || noSk == ""){
                                 alert("No.SK harus diisi");
                             } else {
                                 save();
                             }
-                        }
+                        // }
                     } else if (status == "RS"){
                         console.log("tanggal keluar didalam if : " + tanggalKeluar);
                         console.log("status didalam if : " + status);

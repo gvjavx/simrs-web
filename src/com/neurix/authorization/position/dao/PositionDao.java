@@ -240,7 +240,7 @@ public class PositionDao extends GenericDao<ImPosition,String> {
         String bagian = "";
 
         if(!branchId.equalsIgnoreCase("")){
-            unit = " and branch_id = '"+branchId+"'  ";
+            unit = "\t and branch_id = '"+branchId+"' \n";
         }
 
         List<Position> listOfResult = new ArrayList<Position>();
