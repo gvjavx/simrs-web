@@ -98,7 +98,7 @@
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPkwt/spring/PayrollSkalaGajiPkwtBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/spring/PayrollskalaGajiDplkPegawaiBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/spring/PayrollskalaGajiPensiunDplkBean.xml"/>
-    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/spring/PayrollskalaGajiPensiunRniBean.xml"/>
+    <import resource="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/spring/PayrollskalaGajiPensiunBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollBajuDinas/spring/PayrollBajuDinasBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollAirListrik/spring/PayrollAirListrikBean.xml"/>
     <import resource="sshconfig/com/neurix/hris/master/payrollTunjanganUmk/spring/PayrollTunjanganUmkBean.xml"/>

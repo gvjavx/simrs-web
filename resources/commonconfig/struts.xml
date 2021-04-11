@@ -123,7 +123,7 @@
     <include file="sshconfig/com/neurix/hris/master/payrollBpjs/struts/PayrollBpjsAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/struts/PayrollSkalaGajiDplkPegawaiAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunDplk/struts/PayrollSkalaGajiPensiunDplkAction.xml"/>
-    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiunRni/struts/PayrollSkalaGajiPensiunRniAction.xml"/>
+    <include file="sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/struts/PayrollSkalaGajiPensiunAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/branchTunjangan/struts/BranchTunjanganAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollBajuDinas/struts/PayrollBajuDinasAction.xml"/>
     <include file="sshconfig/com/neurix/hris/master/payrollAirListrik/struts/PayrollAirListrikAction.xml"/>

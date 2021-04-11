@@ -1,8 +1,7 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao;
+package com.neurix.hris.master.payrollSkalaGajiPensiun.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniEntity;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniHistoryEntity;
+import com.neurix.hris.master.payrollSkalaGajiPensiun.model.ImPayrollSkalaGajiPensiunHistoryEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,16 +20,16 @@ import java.util.Map;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class PayrollSkalaGajiPensiunRniHistoryDao extends GenericDao<ImPayrollSkalaGajiPensiunRniHistoryEntity, String> {
+public class PayrollSkalaGajiPensiunHistoryDao extends GenericDao<ImPayrollSkalaGajiPensiunHistoryEntity, String> {
 
     @Override
-    protected Class<ImPayrollSkalaGajiPensiunRniHistoryEntity> getEntityClass() {
-        return ImPayrollSkalaGajiPensiunRniHistoryEntity.class;
+    protected Class<ImPayrollSkalaGajiPensiunHistoryEntity> getEntityClass() {
+        return ImPayrollSkalaGajiPensiunHistoryEntity.class;
     }
 
     @Override
-    public List<ImPayrollSkalaGajiPensiunRniHistoryEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunRniHistoryEntity.class);
+    public List<ImPayrollSkalaGajiPensiunHistoryEntity> getByCriteria(Map mapCriteria) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunHistoryEntity.class);
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
@@ -46,7 +45,7 @@ public class PayrollSkalaGajiPensiunRniHistoryDao extends GenericDao<ImPayrollSk
         // Order by
         criteria.addOrder(Order.desc("skalaGajiPensiunId"));
 
-        List<ImPayrollSkalaGajiPensiunRniHistoryEntity> results = criteria.list();
+        List<ImPayrollSkalaGajiPensiunHistoryEntity> results = criteria.list();
 
         return results;
     }

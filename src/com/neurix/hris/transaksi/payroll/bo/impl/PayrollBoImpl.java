@@ -46,10 +46,10 @@ import com.neurix.hris.master.payrollSkalaGajiBod.dao.PayrollSkalaGajiBodDao;
 import com.neurix.hris.master.payrollSkalaGajiBod.model.ImPayrollSkalaGajiBodEntity;
 import com.neurix.hris.master.payrollSkalaGajiDplkPegawai.dao.PayrollSkalaGajiDplkPegawaiDao;
 import com.neurix.hris.master.payrollSkalaGajiDplkPegawai.model.ImPayrollSkalaGajiDplkPegawaiEntity;
+import com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao;
+import com.neurix.hris.master.payrollSkalaGajiPensiun.model.ImPayrollSkalaGajiPensiunEntity;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.dao.PayrollSkalaGajiPensiunDplkDao;
 import com.neurix.hris.master.payrollSkalaGajiPensiunDplk.model.ImPayrollSkalaGajiPensiunDplkEntity;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao;
-import com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniEntity;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.dao.PayrollSkalaGajiPkwtDao;
 import com.neurix.hris.master.payrollSkalaGajiPkwt.model.ImPayrollSkalaGajiPkwtEntity;
 import com.neurix.hris.master.payrollTunjanganPerumahan.dao.PayrollTunjanganPerumahanDao;
@@ -251,7 +251,7 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         this.payrollSkalaGajiPkwtDao = payrollSkalaGajiPkwtDao;
     }
 
-    private PayrollSkalaGajiPensiunRniDao payrollSkalaGajiPensiunRniDao;
+    private PayrollSkalaGajiPensiunDao payrollSkalaGajiPensiunDao;
     private PayrollSkalaGajiPensiunDplkDao payrollSkalaGajiPensiunDplkDao;
     private PayrollTunjanganUmkDao payrollTunjanganUmkDao;
     private PayrollTunjanganStrukturalDao payrollTunjanganStrukturalDao;
@@ -445,12 +445,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
         this.positionDao = positionDao;
     }
 
-    public PayrollSkalaGajiPensiunRniDao getPayrollSkalaGajiPensiunRniDao() {
-        return payrollSkalaGajiPensiunRniDao;
+    public PayrollSkalaGajiPensiunDao getPayrollSkalaGajiPensiunDao() {
+        return payrollSkalaGajiPensiunDao;
     }
 
-    public void setPayrollSkalaGajiPensiunRniDao(PayrollSkalaGajiPensiunRniDao payrollSkalaGajiPensiunRniDao) {
-        this.payrollSkalaGajiPensiunRniDao = payrollSkalaGajiPensiunRniDao;
+    public void setPayrollSkalaGajiPensiunDao(PayrollSkalaGajiPensiunDao payrollSkalaGajiPensiunDao) {
+        this.payrollSkalaGajiPensiunDao = payrollSkalaGajiPensiunDao;
     }
 
     public StrukturJabatanDao getStrukturJabatanDao() {
@@ -3755,12 +3755,12 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
     }
     private BigDecimal getGajiPensiunSimRs(String golonganId, int poin,String dapenId){
         BigDecimal hasilSkalaPensiun = new BigDecimal(0);
-        List<ImPayrollSkalaGajiPensiunRniEntity> imSkalaPensiun = null;
+        List<ImPayrollSkalaGajiPensiunEntity> imSkalaPensiun = null;
         try{
             //mengambil
-            imSkalaPensiun = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, poin,dapenId);
+            imSkalaPensiun = payrollSkalaGajiPensiunDao.getSkalaGajiPensiunRni(golonganId, poin,dapenId);
 
-            for (ImPayrollSkalaGajiPensiunRniEntity skalaGajiLoop: imSkalaPensiun){
+            for (ImPayrollSkalaGajiPensiunEntity skalaGajiLoop: imSkalaPensiun){
                 hasilSkalaPensiun = skalaGajiLoop.getNilai();
             }
         }catch(GeneralBOException e){
@@ -3809,11 +3809,11 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
 //            poin =  Integer.parseInt(golonganPoin[1]);
 //        }
 //
-//        List<ImPayrollSkalaGajiPensiunRniEntity> imSkalaPensiunRni = null;
-//        imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golongan, poin);
+//        List<ImPayrollSkalaGajiPensiunEntity> imSkalaPensiunRni = null;
+//        imSkalaPensiunRni = payrollSkalaGajiPensiunDao.getSkalaGajiPensiunRni(golongan, poin);
 //        BigDecimal hasilSkalaPensiun = new BigDecimal(0);
 //        if(imSkalaPensiunRni != null){
-//            for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
+//            for(ImPayrollSkalaGajiPensiunEntity imPensiun : imSkalaPensiunRni){
 //                hasilSkalaPensiun = imPensiun.getNilai();
 //            }
 //        }
@@ -3834,15 +3834,15 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             }
         }
 
-        List<ImPayrollSkalaGajiPensiunRniEntity> imSkalaPensiunRni = null;
+        List<ImPayrollSkalaGajiPensiunEntity> imSkalaPensiunRni = null;
         if(poin >= 20 && poinLebih > 0){
             BigDecimal selisih = new BigDecimal(0);
             BigDecimal a = new BigDecimal(0);
             BigDecimal b = new BigDecimal(0);
             for(int i = 20 ; i >= 19 ; i--){
-//                imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, i);
+//                imSkalaPensiunRni = payrollSkalaGajiPensiunDao.getSkalaGajiPensiunRni(golonganId, i);
                 if(imSkalaPensiunRni != null){
-                    for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
+                    for(ImPayrollSkalaGajiPensiunEntity imPensiun : imSkalaPensiunRni){
                         if(i == 20){
                             a = imPensiun.getNilai();
                         }else{
@@ -3854,17 +3854,17 @@ public class PayrollBoImpl extends ModulePayroll implements PayrollBo {
             selisih = a.subtract(b);
             selisih = selisih.multiply(BigDecimal.valueOf(poinLebih));
 
-//            imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, 20);
+//            imSkalaPensiunRni = payrollSkalaGajiPensiunDao.getSkalaGajiPensiunRni(golonganId, 20);
             if(imSkalaPensiunRni != null){
-                for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
+                for(ImPayrollSkalaGajiPensiunEntity imPensiun : imSkalaPensiunRni){
                     hasilSkalaPensiun = imPensiun.getNilai();
                 }
             }
             hasilSkalaPensiun = hasilSkalaPensiun.add(selisih);
         }else{
-//            imSkalaPensiunRni = payrollSkalaGajiPensiunRniDao.getSkalaGajiPensiunRni(golonganId, poin);
+//            imSkalaPensiunRni = payrollSkalaGajiPensiunDao.getSkalaGajiPensiunRni(golonganId, poin);
             if(imSkalaPensiunRni != null){
-                for(ImPayrollSkalaGajiPensiunRniEntity imPensiun : imSkalaPensiunRni){
+                for(ImPayrollSkalaGajiPensiunEntity imPensiun : imSkalaPensiunRni){
                     hasilSkalaPensiun = imPensiun.getNilai();
                 }
             }

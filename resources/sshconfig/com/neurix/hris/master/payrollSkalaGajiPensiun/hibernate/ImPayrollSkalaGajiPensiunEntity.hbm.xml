@@ -3,25 +3,28 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.master.payrollSkalaGajiPensiunRni.model.ImPayrollSkalaGajiPensiunRniHistoryEntity" dynamic-update="true"
-           table="im_hris_payroll_skala_gaji_dapenbun_history" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.payrollSkalaGajiPensiun.model.ImPayrollSkalaGajiPensiunEntity" dynamic-update="true"
+           table="im_hris_payroll_skala_gaji_pensiun" select-before-update="true" schema="public">
 
 
-        <id name="skalaGajiPensiunIdHistory">
-            <column name="skala_gaji_pensiun_rni_id_history" sql-type="varchar" length="15" not-null="true" />
+        <id name="skalaGajiPensiunId">
+            <column name="skala_gaji_pensiun_id" sql-type="varchar" length="3" not-null="true" />
         </id>
 
-        <property name="skalaGajiPensiunId">
-            <column name="skala_gaji_pensiun_rni_id" sql-type="varchar" length="15" not-null="true" />
-        </property>
         <property name="golonganId">
             <column name="golongan_id" sql-type="integer" not-null="true" />
         </property>
+        <property name="tipeDapenId">
+            <column name="tipe_dapen_id"/>
+        </property>
         <property name="poin">
-            <column name="point" sql-type="integer" not-null="true" />
+            <column name="poin" sql-type="integer" not-null="true" />
         </property>
         <property name="nilai">
             <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+        </property>
+        <property name="masaKerjaGol">
+            <column name="masa_kerja_gol" sql-type="integer" not-null="true" />
         </property>
 
         <property name="flag">
@@ -43,7 +46,7 @@
             <column name="last_update" sql-type="date" not-null="false" />
         </property>
 
-        <many-to-one name="imGolonganEntity" class="com.neurix.hris.master.golongan.model.ImGolonganEntity"
+        <many-to-one name="imGolonganDapenEntity" class="com.neurix.hris.master.golonganDapen.model.ImGolonganDapenEntity"
                      insert="false" update="false" fetch="select" cascade="all">
             <column name="golongan_id"/>
         </many-to-one>

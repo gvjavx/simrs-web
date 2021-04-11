@@ -5,17 +5,17 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
 
-    <bean id="payrollSkalaGajiPensiunRniAction" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.action.PayrollSkalaGajiPensiunRniAction"
-          p:payrollSkalaGajiPensiunRniBoProxy-ref="payrollSkalaGajiPensiunRniBoProxy" />
+    <bean id="payrollSkalaGajiPensiunAction" class="com.neurix.hris.master.payrollSkalaGajiPensiun.action.PayrollSkalaGajiPensiunAction"
+          p:payrollSkalaGajiPensiunBoProxy-ref="payrollSkalaGajiPensiunBoProxy" />
 
-    <bean id="payrollSkalaGajiPensiunRniBo" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.bo.impl.PayrollSkalaGajiPensiunRniBoImpl"
-          p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao"
-          p:payrollSkalaGajiPensiunRniHistoryDao-ref="payrollSkalaGajiPensiunRniHistoryDao"
+    <bean id="payrollSkalaGajiPensiunBo" class="com.neurix.hris.master.payrollSkalaGajiPensiun.bo.impl.PayrollSkalaGajiPensiunBoImpl"
+          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao"
+          p:payrollSkalaGajiPensiunHistoryDao-ref="payrollSkalaGajiPensiunHistoryDao"
           p:payrollDanaPensiunDao-ref="payrollDanaPensiunDao"
     />
 
-    <bean id="payrollSkalaGajiPensiunRniBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
-          p:target-ref="payrollSkalaGajiPensiunRniBo">
+    <bean id="payrollSkalaGajiPensiunBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
+          p:target-ref="payrollSkalaGajiPensiunBo">
         <property name="interceptorNames">
             <list>
                 <value>transactionUserInterceptor</value>
@@ -34,8 +34,8 @@
         </property>
     </bean>
 
-    <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
+    <bean id="payrollSkalaGajiPensiunDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunRniHistoryDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniHistoryDao"
+    <bean id="payrollSkalaGajiPensiunHistoryDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunHistoryDao"
           p:sessionFactory-ref="sessionFactory" />
 </beans>
