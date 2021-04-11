@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch() {
+        function callSearch2() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -16,49 +16,45 @@
         };
 
         $.subscribe('beforeProcessSave', function (event, data) {
-            var idDepartment = document.getElementById("skalaGajiId1").value;
+            var golonganId = document.getElementById("golonganId1").value;
+            var nilai = document.getElementById("nilai1").value;
 
-
-
-            if (idDepartment != '' ) {
-                if (confirm('Do you want to save this record?')) {
-                    event.originalEvent.options.submit = true;
-                    $.publish('showDialog');
-
-                } else {
-                    // Cancel Submit comes with 1.8.0
+            if (golonganId != '' && nilai != '' ) {
+                if(isNaN(nilai) == false){
+                    if (confirm('Do you want to save this record?')) {
+                        event.originalEvent.options.submit = true;
+                        $.publish('showDialog');
+                    } else {
+                        // Cancel Submit comes with 1.8.0
+                        event.originalEvent.options.submit = false;
+                    }
+                }else{
                     event.originalEvent.options.submit = false;
+                    var msg = "";
+                    if (isNaN(nilai)) {
+                        msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
+                    }
+
+                    document.getElementById('errorValidationMessage').innerHTML = msg;
+
+                    $.publish('showErrorValidationDialog');
+                }
+            } else {
+                event.originalEvent.options.submit = false;
+                var msg = "";
+                if (golonganId == '') {
+                    msg += 'Field <strong>Golongan </strong> is required.' + '<br/>';
                 }
 
-
-            } else {
-
-                event.originalEvent.options.submit = false;
-
-                var msg = "";
-
-                if (idDepartment == '') {
-                    msg += 'Field <strong>ID</strong> is required.' + '<br/>';
+                if (nilai == '') {
+                    msg += 'Field <strong>Nilai</strong> is required.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage').innerHTML = msg;
 
                 $.publish('showErrorValidationDialog');
-
             }
         });
-
-        $.subscribe('beforeProcessDelete', function (event, data) {
-            if (confirm('Do you want to delete this record ?')) {
-                event.originalEvent.options.submit = true;
-                $.publish('showDialog');
-
-            } else {
-                // Cancel Submit comes with 1.8.0
-                event.originalEvent.options.submit = false;
-            }
-        });
-
 
         $.subscribe('successDialog', function (event, data) {
             if (event.originalEvent.request.status == 200) {
@@ -88,14 +84,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveDelete_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
+            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiDplkPegawai" action="saveAdd_payrollSkalaGajiDplkPegawai" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Delete Payroll Iuran Pegawai DPLK</legend>
+                <legend align="left">Add Payroll Iuran Pegawai DPLK</legend>
 
 
                 <table>
@@ -109,21 +105,13 @@
                 <table >
                     <tr>
                         <td>
-                            <label class="control-label"><small>ID :</small></label>
+                            <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
-                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiPensiun.skalaGajiPensiunId" required="true"  cssClass="form-control"/>
-                            </table>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label class="control-label"><small>Ms. Kerja Gol. :</small></label>
-                        </td>
-                        <td>
-                            <table>
-                                <s:textfield  id="point1" name="payrollSkalaGajiPensiun.poin" required="true"  cssClass="form-control" readonly="true"/>
+                                <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiDplkPegawai.golonganId"
+                                          listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
                             </table>
                         </td>
                     </tr>
@@ -134,7 +122,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield readonly="true"  id="nilai1" name="payrollSkalaGajiPensiun.nilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiDplkPegawai.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -147,11 +135,11 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPayrollSkalaGajiForm" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                            <i class="fa fa-trash"></i>
-                            Delete
+                            <i class="fa fa-check"></i>
+                            Save
                         </sj:submit>
                         <button type="button" id="cancel" class="btn btn-danger" onclick="cancelBtn();">
                             <i class="fa fa-refresh"/> Cancel
@@ -183,7 +171,8 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch();
+                                                                      callSearch2();
+                                                                      link();
                                                                    }
                                                             }"
                                         >
@@ -230,3 +219,4 @@
 </table>
 </body>
 </html>
+

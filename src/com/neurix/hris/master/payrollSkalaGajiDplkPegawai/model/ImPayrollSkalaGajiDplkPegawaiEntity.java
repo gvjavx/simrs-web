@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiun.model;
+package com.neurix.hris.master.payrollSkalaGajiDplkPegawai.model;
 
 import com.neurix.hris.master.golongan.model.ImGolonganEntity;
 
@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * Time: 14:05
  * To change this template use File | Settings | File Templates.
  */
-public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
+public class ImPayrollSkalaGajiDplkPegawaiEntity implements Serializable {
     private String skalaGajiPensiunId;
     private String golonganId;
     private int poin;

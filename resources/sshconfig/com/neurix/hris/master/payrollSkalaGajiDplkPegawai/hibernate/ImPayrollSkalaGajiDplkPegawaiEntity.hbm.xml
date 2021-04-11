@@ -3,22 +3,22 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.neurix.hris.master.payrollSkalaGajiPensiun.model.ImPayrollSkalaGajiPensiunEntity" dynamic-update="true"
-           table="im_hris_payroll_skala_gaji_pensiun" select-before-update="true" schema="public">
+    <class name="com.neurix.hris.master.payrollSkalaGajiDplkPegawai.model.ImPayrollSkalaGajiDplkPegawaiEntity" dynamic-update="true"
+           table="im_hris_payroll_skala_gaji_dplk_pegawai" select-before-update="true" schema="public">
 
 
         <id name="skalaGajiPensiunId">
-            <column name="skala_gaji_pensiun_id" sql-type="varchar" length="10" not-null="true" />
+            <column name="skala_gaji_pensiun_dplk_pegawai_id" sql-type="varchar" length="20" not-null="true" />
         </id>
 
         <property name="golonganId">
-            <column name="golongan_id" sql-type="varchar" length="3" not-null="true" />
+            <column name="golongan_id" sql-type="varchar" length="20" not-null="true" />
         </property>
-        <property name="poin">
-            <column name="poin" sql-type="integer" not-null="true" />
-        </property>
+        <!--<property name="poin">-->
+            <!--<column name="poin" sql-type="integer" not-null="true" />-->
+        <!--</property>-->
         <property name="nilai">
-            <column name="nilai" sql-type="numeric" length="10" precision="2" not-null="true" />
+            <column name="nilai" sql-type="numeric" length="15" precision="2" not-null="true" />
         </property>
 
         <property name="flag">

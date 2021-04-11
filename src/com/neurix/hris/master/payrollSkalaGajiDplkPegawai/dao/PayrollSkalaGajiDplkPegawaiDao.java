@@ -1,8 +1,7 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiun.dao;
+package com.neurix.hris.master.payrollSkalaGajiDplkPegawai.dao;
 
 import com.neurix.common.dao.GenericDao;
-import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
-import com.neurix.hris.master.payrollSkalaGajiPensiun.model.ImPayrollSkalaGajiPensiunEntity;
+import com.neurix.hris.master.payrollSkalaGajiDplkPegawai.model.ImPayrollSkalaGajiDplkPegawaiEntity;
 import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
@@ -21,16 +20,16 @@ import java.util.Map;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class PayrollSkalaGajiPensiunDao extends GenericDao<ImPayrollSkalaGajiPensiunEntity, String> {
+public class PayrollSkalaGajiDplkPegawaiDao extends GenericDao<ImPayrollSkalaGajiDplkPegawaiEntity, String> {
 
     @Override
-    protected Class<ImPayrollSkalaGajiPensiunEntity> getEntityClass() {
-        return ImPayrollSkalaGajiPensiunEntity.class;
+    protected Class<ImPayrollSkalaGajiDplkPegawaiEntity> getEntityClass() {
+        return ImPayrollSkalaGajiDplkPegawaiEntity.class;
     }
 
     @Override
-    public List<ImPayrollSkalaGajiPensiunEntity> getByCriteria(Map mapCriteria) {
-        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunEntity.class);
+    public List<ImPayrollSkalaGajiDplkPegawaiEntity> getByCriteria(Map mapCriteria) {
+        Criteria criteria=this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiDplkPegawaiEntity.class);
 
         // Get Collection and sorting
         if (mapCriteria!=null) {
@@ -46,7 +45,7 @@ public class PayrollSkalaGajiPensiunDao extends GenericDao<ImPayrollSkalaGajiPen
         // Order by
         criteria.addOrder(Order.desc("skalaGajiPensiunId"));
 
-        List<ImPayrollSkalaGajiPensiunEntity> results = criteria.list();
+        List<ImPayrollSkalaGajiDplkPegawaiEntity> results = criteria.list();
 
         return results;
     }
@@ -58,8 +57,8 @@ public class PayrollSkalaGajiPensiunDao extends GenericDao<ImPayrollSkalaGajiPen
         return "SGP"+sId;
     }
 
-    public List<ImPayrollSkalaGajiPensiunEntity> getSkalaGajiPensiun(String golonganId, int poin) throws HibernateException {
-        List<ImPayrollSkalaGajiPensiunEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunEntity.class)
+    public List<ImPayrollSkalaGajiDplkPegawaiEntity> getSkalaGajiPensiun(String golonganId, int poin) throws HibernateException {
+        List<ImPayrollSkalaGajiDplkPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiDplkPegawaiEntity.class)
                 .add(Restrictions.eq("golonganId", golonganId))
                 .add(Restrictions.eq("poin", poin))
                 .add(Restrictions.eq("flag", "Y"))
@@ -68,8 +67,8 @@ public class PayrollSkalaGajiPensiunDao extends GenericDao<ImPayrollSkalaGajiPen
         return results;
     }
 
-    public List<ImPayrollSkalaGajiPensiunEntity> getSkalaGajiPensiunSimRs(String golonganId) throws HibernateException {
-        List<ImPayrollSkalaGajiPensiunEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiPensiunEntity.class)
+    public List<ImPayrollSkalaGajiDplkPegawaiEntity> getSkalaGajiPensiunSimRs(String golonganId) throws HibernateException {
+        List<ImPayrollSkalaGajiDplkPegawaiEntity> results = this.sessionFactory.getCurrentSession().createCriteria(ImPayrollSkalaGajiDplkPegawaiEntity.class)
                 .add(Restrictions.eq("golonganId", golonganId))
                 .add(Restrictions.eq("flag", "Y"))
                 .list();

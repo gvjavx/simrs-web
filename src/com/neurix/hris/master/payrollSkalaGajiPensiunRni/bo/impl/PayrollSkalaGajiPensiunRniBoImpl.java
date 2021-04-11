@@ -138,7 +138,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
 
     @Override
     public void saveEdit(payrollSkalaGajiPensiunRni bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiPensiunBoImpl.saveEdit] start process >>>");
+        logger.info("[PayrollSkalaGajiDplkPegawaiBoImpl.saveEdit] start process >>>");
 
         if (bean!=null) {
             //String historyId = "";
@@ -152,7 +152,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                 imPayrollSkalaGajiPensiunEntity = payrollSkalaGajiPensiunRniDao.getById("skalaGajiPensiunId", payrollSkalaGajiPensiunId);
                 //historyId = payrollSkalaGajiPensiunRniDao.getNextPayrollSkalaGajiPensiunHistoryId();
             } catch (HibernateException e) {
-                logger.error("[PayrollSkalaGajiPensiunBoImpl.saveEdit] Error, " + e.getMessage());
+                logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveEdit] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data PayrollSkalaGajiPensiun by Kode PayrollSkalaGajiPensiun, please inform to your admin...," + e.getMessage());
             }
 
@@ -199,21 +199,21 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                     //payrollSkalaGajiPensiunRniDao.addAndSaveHistory(imPayrollSkalaGajiPensiunHistoryEntity);
 //                    condition = "Data SuccessFully Updated";
                 } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiPensiunBoImpl.saveEdit] Error, " + e.getMessage());
+                    logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving update data PayrollSkalaGajiPensiun, please info to your admin..." + e.getMessage());
                 }
             } else {
-                logger.error("[PayrollSkalaGajiPensiunBoImpl.saveEdit] Error, not found data PayrollSkalaGajiPensiun with request id, please check again your data ...");
+                logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveEdit] Error, not found data PayrollSkalaGajiPensiun with request id, please check again your data ...");
                 throw new GeneralBOException("Error, not found data PayrollSkalaGajiPensiun with request id, please check again your data ...");
 //                condition = "Error, not found data PayrollSkalaGajiPensiun with request id, please check again your data ...";
             }
         }
-        logger.info("[PayrollSkalaGajiPensiunBoImpl.saveEdit] end process <<<");
+        logger.info("[PayrollSkalaGajiDplkPegawaiBoImpl.saveEdit] end process <<<");
     }
 
     @Override
     public payrollSkalaGajiPensiunRni saveAdd(payrollSkalaGajiPensiunRni bean) throws GeneralBOException {
-        logger.info("[PayrollSkalaGajiPensiunBoImpl.saveAdd] start process >>>");
+        logger.info("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
             String status = cekStatus(bean.getGolonganId(),bean.getPoin(),bean.getTipeDapenId());
@@ -223,7 +223,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                     // Generating ID, get from postgre sequence
                     payrollSkalaGajiPensiunId = payrollSkalaGajiPensiunRniDao.getNextSkalaGajiPensiun();
                 } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiPensiunBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence payrollSkalaGajiPensiunId id, please info to your admin..." + e.getMessage());
                 }
 
@@ -246,7 +246,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
                     // insert into database
                     payrollSkalaGajiPensiunRniDao.addAndSave(imPayrollSkalaGajiPensiunEntity);
                 } catch (HibernateException e) {
-                    logger.error("[PayrollSkalaGajiPensiunBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data PayrollSkalaGajiPensiun, please info to your admin..." + e.getMessage());
                 }
             }else{
@@ -254,7 +254,7 @@ public class PayrollSkalaGajiPensiunRniBoImpl implements PayrollSkalaGajiPensiun
             }
         }
 
-        logger.info("[PayrollSkalaGajiPensiunBoImpl.saveAdd] end process <<<");
+        logger.info("[PayrollSkalaGajiDplkPegawaiBoImpl.saveAdd] end process <<<");
         return null;
     }
 

@@ -1,4 +1,4 @@
-package com.neurix.hris.master.payrollSkalaGajiPensiun.model;
+package com.neurix.hris.master.payrollSkalaGajiDplkPegawai.model;
 
 import com.neurix.common.model.BaseModel;
 
@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * Time: 13:58
  * To change this template use File | Settings | File Templates.
  */
-public class payrollSkalaGajiPensiun extends BaseModel {
+public class payrollSkalaGajiDplkPegawai extends BaseModel {
     private String skalaGajiPensiunId;
     private String golonganId;
     private String golonganName;

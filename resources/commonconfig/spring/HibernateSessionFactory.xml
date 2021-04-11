@@ -348,7 +348,7 @@
                 <value>sshconfig/com/neurix/hris/transaksi/payroll/hibernate/ItPayrollMinimumPromosiEntity.hbm.xml
                 </value>
                 <value>
-                    sshconfig/com/neurix/hris/master/payrollSkalaGajiPensiun/hibernate/ImPayrollSkalaGajiPensiunEntity.hbm.xml
+                    sshconfig/com/neurix/hris/master/payrollSkalaGajiDplkPegawai/hibernate/ImPayrollSkalaGajiDplkPegawaiEntity.hbm.xml
                 </value>
 
                 <!-- For Rekruitmen -->

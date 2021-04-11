@@ -8,7 +8,7 @@
 <head>
     <script type="text/javascript">
 
-        function callSearch2() {
+        function callSearch() {
             //$('#waiting_dialog').dialog('close');
             $('#view_dialog_menu').dialog('close');
             $('#info_dialog').dialog('close');
@@ -20,7 +20,7 @@
             var nilai = document.getElementById("nilai1").value;
 
             if (golonganId != '' && nilai != '' ) {
-                if(isNaN(nilai) == false){
+                if( isNaN(nilai) == false){
                     if (confirm('Do you want to save this record?')) {
                         event.originalEvent.options.submit = true;
                         $.publish('showDialog');
@@ -31,6 +31,7 @@
                 }else{
                     event.originalEvent.options.submit = false;
                     var msg = "";
+
                     if (isNaN(nilai)) {
                         msg += 'Field <strong>nilai</strong> Harus angka tanpa koma.' + '<br/>';
                     }
@@ -84,14 +85,14 @@
 <table width="100%" align="center">
     <tr>
         <td align="center">
-            <s:form id="addPayrollSkalaGajiForm" method="post" theme="simple" namespace="/payrollSkalaGajiPensiun" action="saveAdd_payrollSkalaGajiPensiun" cssClass="well form-horizontal">
+            <s:form id="formEdit" method="post" theme="simple" namespace="/payrollSkalaGajiDplkPegawai" action="saveEdit_payrollSkalaGajiDplkPegawai" cssClass="well form-horizontal">
 
                 <s:hidden name="addOrEdit"/>
                 <s:hidden name="delete"/>
 
 
 
-                <legend align="left">Add Payroll Iuran Pegawai DPLK</legend>
+                <legend align="left">Edit Payroll Iuran Pegawai DPLK</legend>
 
 
                 <table>
@@ -105,13 +106,25 @@
                 <table >
                     <tr>
                         <td>
+                            <label class="control-label"><small>ID :</small></label>
+                        </td>
+                        <td>
+                            <table>
+                                <s:textfield  id="skalaGajiId1" readonly="true" name="payrollSkalaGajiDplkPegawai.skalaGajiPensiunId" required="true"  cssClass="form-control"/>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
                             <label class="control-label"><small>Golongan :</small></label>
                         </td>
                         <td>
                             <table>
                                 <s:action id="comboGolongan" namespace="/golongan" name="initComboGolonganDapen_golongan"/>
-                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiPensiun.golonganId"
+                                <s:select cssClass="form-control" list="#comboGolongan.listComboGolonganDapen" id="golonganId1" name="payrollSkalaGajiDplkPegawai.golonganId" disabled="true"
                                           listKey="golonganDapenId" listValue="golonganDapenName" headerKey="" headerValue="" />
+                                <s:hidden name="payrollSkalaGajiDplkPegawai.golonganId" />
                             </table>
                         </td>
                     </tr>
@@ -122,7 +135,7 @@
                         </td>
                         <td>
                             <table>
-                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiPensiun.nilai" required="true" cssClass="form-control"/>
+                                <s:textfield type="number" min="0" id="nilai1" name="payrollSkalaGajiDplkPegawai.nilai" required="true" cssClass="form-control"/>
                             </table>
                         </td>
                     </tr>
@@ -135,7 +148,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
                             <%--<button type="submit" class="btn btn-default">Submit</button>--%>
-                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="addPayrollSkalaGajiForm" id="save" name="save"
+                        <sj:submit targets="crud" type="button" cssClass="btn btn-primary" formIds="formEdit" id="save" name="save"
                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                             <i class="fa fa-check"></i>
@@ -171,8 +184,7 @@
                                                    buttons="{
                                                               'OK':function() {
                                                                     //$(this).dialog('close');
-                                                                      callSearch2();
-                                                                      link();
+                                                                      callSearch();
                                                                    }
                                                             }"
                                         >
@@ -219,4 +231,3 @@
 </table>
 </body>
 </html>
-
