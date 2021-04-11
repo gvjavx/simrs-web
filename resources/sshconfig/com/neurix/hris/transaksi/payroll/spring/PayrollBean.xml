@@ -54,9 +54,9 @@
           p:smkHistoryEvaluasiPegawaiDao-ref="smkHistoryEvaluasiPegawaiDao"
           p:payrollMinimumPromosiDao-ref="payrollMinimumPromosiDao"
           p:masaTanamDao-ref="masaTanamDao"
-          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao"
+          p:payrollSkalaGajiDplkPegawaiDao-ref="payrollSkalaGajiDplkPegawaiDao"
           p:personilPositionDao-ref="personilPositionDao"
-          p:payrollSkalaGajiPensiunRniDao-ref="payrollSkalaGajiPensiunRniDao"
+          p:payrollSkalaGajiPensiunDao-ref="payrollSkalaGajiPensiunDao"
           p:positionDao-ref="positionDao4"
           p:payrollInsentifDao-ref="payrollInsentifDao"
           p:payrollInsentifNilaiSmkDao-ref="payrollInsentifNilaiSmkDao"
@@ -113,7 +113,7 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="skalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunRniDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunRni.dao.PayrollSkalaGajiPensiunRniDao"
+    <bean id="payrollSkalaGajiPensiunDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="payrollSkalaGajiPensiunDplkDao" class="com.neurix.hris.master.payrollSkalaGajiPensiunDplk.dao.PayrollSkalaGajiPensiunDplkDao"
           p:sessionFactory-ref="sessionFactory" />
@@ -159,7 +159,7 @@
           p:sessionFactory-ref="sessionFactory" />
     <bean id="masaTanamDao" class="com.neurix.hris.master.masaTanam.dao.MasaTanamDao"
           p:sessionFactory-ref="sessionFactory" />
-    <bean id="payrollSkalaGajiPensiunDao" class="com.neurix.hris.master.payrollSkalaGajiPensiun.dao.PayrollSkalaGajiPensiunDao"
+    <bean id="payrollSkalaGajiDplkPegawaiDao" class="com.neurix.hris.master.payrollSkalaGajiDplkPegawai.dao.PayrollSkalaGajiDplkPegawaiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="positionDao4" class="com.neurix.authorization.position.dao.PositionDao"
           p:sessionFactory-ref="sessionFactory" />

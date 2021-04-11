@@ -899,9 +899,7 @@ public class MutasiAction extends BaseMasterAction{
         if(nip != null && !"".equalsIgnoreCase(nip)){
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
-                    if(nip.equalsIgnoreCase(mutasi.getNip())){
-
-                    }else{
+                    if(!nip.equalsIgnoreCase(mutasi.getNip())){
                         listHasil.add(mutasi);
                     }
                 }

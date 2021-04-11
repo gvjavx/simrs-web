@@ -24,6 +24,7 @@ import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.pelatihanJabatan.model.PelatihanJabatan;
 import com.neurix.hris.master.sertifikat.dao.SertifikatDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
+import com.neurix.hris.master.sertifikat.model.Sertifikat;
 import com.neurix.hris.master.statusMutasi.dao.StatusMutasiDao;
 import com.neurix.hris.master.statusMutasi.model.ImHrisStatusMutasiEntity;
 import com.neurix.hris.master.strukturJabatan.dao.StrukturJabatanDao;
@@ -395,10 +396,17 @@ public class MutasiBoImpl implements MutasiBo {
             if(mutasiList != null){
                 for (Mutasi mutasi: mutasiList) {
 
+                    mutasi.setLastUpdate(bean.getLastUpdate());
+                    mutasi.setLastUpdateWho(bean.getLastUpdateWho());
                     ItMutasiEntity itMutasiEntity = new ItMutasiEntity();
                     ItMutasiDocEntity itDoc = new ItMutasiDocEntity();
-
-                    String mutasiId = mutasiDao.getNextMutasiId() ;
+                    String mutasiId;
+                    try {
+                        mutasiId = mutasiDao.getNextMutasiId();
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Next Mutasi Id, " + e.getMessage());
+                    }
                     itMutasiEntity.setMutasiId(mutasiId);
                     itMutasiEntity.setNip(mutasi.getNip());
                     itMutasiEntity.setBranchLamaId(mutasi.getBranchLamaId());
@@ -434,7 +442,14 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setLastUpdate(bean.getLastUpdate());
                     itMutasiEntity.setNoSk(mutasi.getNoSk());
 
-                    itDoc.setDocMutasiId(mutasiDocDao.getNextId());
+                    String mutDocId;
+                    try{
+                        mutDocId = mutasiDocDao.getNextId();
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Next Mutasi Doc ID, " + e.getMessage());
+                    }
+                    itDoc.setDocMutasiId(mutDocId);
                     itDoc.setMutasiId(mutasiId);
                     itDoc.setFlag(bean.getFlag());
                     itDoc.setAction(bean.getAction());
@@ -446,16 +461,26 @@ public class MutasiBoImpl implements MutasiBo {
                     String tgl[] = CommonUtil.convertTimestampToString(bean.getCreatedDate()).split("-");
                     bean.setStTahun(tgl[2]);
                     if (("M").equalsIgnoreCase(mutasi.getStatus())||("R").equalsIgnoreCase(mutasi.getStatus())){
-
                         // cek apakah update golongan sudah diiinsert
-                        List<ImtHistorySmkGolonganEntity> smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+                        List<ImtHistorySmkGolonganEntity> smkGolongan = new ArrayList<>();
+                        try{
+                            smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving History Jabatan");
+                        }
                         if(smkGolongan.size() > 0){
                             for(ImtHistorySmkGolonganEntity smkGolonganLoop: smkGolongan){
-                                ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
-                                smkGolonganEntity.setFlagMutasi("Y");
-                                smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
-                                historyGolonganDao.updateAndSave(smkGolonganEntity);
+                                try {
+                                    ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
+                                    smkGolonganEntity.setFlagMutasi("Y");
+                                    smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+                                    smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
+                                    historyGolonganDao.updateAndSave(smkGolonganEntity);
+                                }catch (HibernateException e){
+                                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                                    throw new GeneralBOException("Error when update History Golongan");
+                                }
                             }
                         }
 
@@ -511,7 +536,7 @@ public class MutasiBoImpl implements MutasiBo {
                                 // matikan posisi lama
                                 personilPositionEntity.setFlag("N");
                                 personilPositionEntity.setAction("U");
-                                personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                                personilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
                                 try {
                                     personilPositionDao.updateAndSave(personilPositionEntity);
@@ -551,7 +576,7 @@ public class MutasiBoImpl implements MutasiBo {
 
                                     personilPositionEntity.setFlagDigaji("Y");
                                     personilPositionEntity.setPositionId(mutasi.getUpdatePosisiId());
-                                    personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                                    personilPositionEntity.setLastUpdate(bean.getLastUpdate());
 
                                     try {
                                         personilPositionDao.updateAndSave(personilPositionEntity);
@@ -587,7 +612,7 @@ public class MutasiBoImpl implements MutasiBo {
                         personilPositionEntity.setAction("C");
                         personilPositionEntity.setCreatedDate(mutasi.getLastUpdate());
                         personilPositionEntity.setCreatedWho(mutasi.getLastUpdateWho());
-                        personilPositionEntity.setLastUpdate(mutasi.getLastUpdate());
+                        personilPositionEntity.setLastUpdate(bean.getLastUpdate());
                         personilPositionEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
 
                         try {
@@ -1106,6 +1131,30 @@ public class MutasiBoImpl implements MutasiBo {
         return studyEntities;
     }
 
+    private List<ImSertifikatEntity> getListPelatihanEntity(Sertifikat bean){
+        logger.info("[MutasiBoImpl.getListPelatihanEntity] START >>>");
+
+        List<ImSertifikatEntity> pelatianEntities = new ArrayList<>();
+
+        Map hsCriteria = new HashMap();
+        if (bean.getSertifikatId() != null && !"".equalsIgnoreCase(bean.getSertifikatId()))
+            hsCriteria.put("pelatihan_id", bean.getSertifikatId());
+        if (bean.getNip() != null && !"".equalsIgnoreCase(bean.getNip()))
+            hsCriteria.put("nip", bean.getNip());
+        if (bean.getFlag() != null && !"".equalsIgnoreCase(bean.getFlag()))
+            hsCriteria.put("flag", bean.getFlag());
+
+        try {
+            pelatianEntities = sertifikatDao.getByCriteria(hsCriteria);
+        } catch (HibernateException e){
+            logger.error("[MutasiBoImpl.getListPelatihanEntity] Error, " + e.getMessage());
+            throw new GeneralBOException("Found problem when get list study entity, please info to your admin..." + e.getMessage());
+        }
+
+        logger.info("[MutasiBoImpl.getListPelatihanEntity] END <<<");
+        return pelatianEntities;
+    }
+
     private List<ItTunjLainPegawaiEntity> getListTunjanganEntity(TunjLainPegawai bean){
         logger.info("[MutasiBoImpl.getListTunjanganEntity] START >>>");
 
@@ -1150,7 +1199,7 @@ public class MutasiBoImpl implements MutasiBo {
             biodataEntity.setAction("U");
             biodataEntity.setLastUpdate(mutasi.getLastUpdate());
             biodataEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
-            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
+//            biodataEntity.setKeterangan("Telah nonaktif pada tanggal " + biodataEntity.getTanggalKeluar());
 
             try {
                 biodataDao.updateAndSave(biodataEntity);
@@ -1231,6 +1280,31 @@ public class MutasiBoImpl implements MutasiBo {
                     } catch (HibernateException e){
                         logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
                         throw new GeneralBOException("Found problem when update data study, please inform to your admin...," + e.getMessage());
+                    }
+                }
+            }
+            // END
+
+            // Update flag N pada semua pelatihan berdasarkan nip
+            Sertifikat pelatihan = new Sertifikat();
+            pelatihan.setNip(mutasi.getNip());
+            pelatihan.setFlag("Y");
+
+            List<ImSertifikatEntity> pelatihanEntities = getListPelatihanEntity(pelatihan);
+
+            if (pelatihanEntities.size() > 0){
+                for (ImSertifikatEntity pelatihanEntity : pelatihanEntities){
+
+                    pelatihanEntity.setFlag("N");
+                    pelatihanEntity.setAction("U");
+                    pelatihanEntity.setLastUpdate(mutasi.getLastUpdate());
+                    pelatihanEntity.setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                    try {
+                        sertifikatDao.updateAndSave(pelatihanEntity);
+                    } catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when update data pelatihan, please inform to your admin...," + e.getMessage());
                     }
                 }
             }

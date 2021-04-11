@@ -291,7 +291,7 @@
     UPDATE im_functions
         SET url = REPLACE(url, 'IuranDplk', 'DplkPegawai');
    UPDATE im_functions
-        SET url = REPLACE (url, 'searchPayrollSkalaGajiPensiun', 'searchPayrollSkalaGajiDplkPegawai');
+        SET url = REPLACE (url, 'searchPayrollSkalaGajiDplkPegawai', 'searchPayrollSkalaGajiDplkPegawai');
     UPDATE im_functions
         SET func_name = 'S.G.P Dplk Pegawai' WHERE func_id = 1182;
 

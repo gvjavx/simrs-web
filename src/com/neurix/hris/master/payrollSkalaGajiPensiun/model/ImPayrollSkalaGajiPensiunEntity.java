@@ -1,6 +1,6 @@
 package com.neurix.hris.master.payrollSkalaGajiPensiun.model;
 
-import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+import com.neurix.hris.master.golonganDapen.model.ImGolonganDapenEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,8 +16,10 @@ import java.sql.Timestamp;
 public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
     private String skalaGajiPensiunId;
     private String golonganId;
+    private String tipeDapenId;
     private int poin;
     private BigDecimal nilai;
+    private int masaKerjaGol;
 
     private String flag;
     private String action;
@@ -26,14 +28,30 @@ public class ImPayrollSkalaGajiPensiunEntity implements Serializable {
     private String createdWho;
     private String lastUpdateWho;
 
-    private ImGolonganEntity imGolonganEntity;
+    private ImGolonganDapenEntity imGolonganDapenEntity;
 
-    public ImGolonganEntity getImGolonganEntity() {
-        return imGolonganEntity;
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
     }
 
-    public void setImGolonganEntity(ImGolonganEntity imGolonganEntity) {
-        this.imGolonganEntity = imGolonganEntity;
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
+    }
+
+    public String getTipeDapenId() {
+        return tipeDapenId;
+    }
+
+    public void setTipeDapenId(String tipeDapenId) {
+        this.tipeDapenId = tipeDapenId;
+    }
+
+    public ImGolonganDapenEntity getImGolonganDapenEntity() {
+        return imGolonganDapenEntity;
+    }
+
+    public void setImGolonganDapenEntity(ImGolonganDapenEntity imGolonganDapenEntity) {
+        this.imGolonganDapenEntity = imGolonganDapenEntity;
     }
 
     public String getAction() {

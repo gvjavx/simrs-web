@@ -15,9 +15,36 @@ public class payrollSkalaGajiPensiun extends BaseModel {
     private String skalaGajiPensiunId;
     private String golonganId;
     private String golonganName;
+    private String tipeDapenId;
+    private String tipeDapenName;
     private int poin;
     private BigDecimal nilai;
+    private String stNilai;
+    private int masaKerjaGol;
 
+    public int getMasaKerjaGol() {
+        return masaKerjaGol;
+    }
+
+    public void setMasaKerjaGol(int masaKerjaGol) {
+        this.masaKerjaGol = masaKerjaGol;
+    }
+
+    public String getTipeDapenName() {
+        return tipeDapenName;
+    }
+
+    public void setTipeDapenName(String tipeDapenName) {
+        this.tipeDapenName = tipeDapenName;
+    }
+
+    public String getTipeDapenId() {
+        return tipeDapenId;
+    }
+
+    public void setTipeDapenId(String tipeDapenId) {
+        this.tipeDapenId = tipeDapenId;
+    }
 
     public String getGolonganName() {
         return golonganName;
@@ -57,5 +84,13 @@ public class payrollSkalaGajiPensiun extends BaseModel {
 
     public void setSkalaGajiPensiunId(String skalaGajiPensiunId) {
         this.skalaGajiPensiunId = skalaGajiPensiunId;
+    }
+
+    public String getStNilai() {
+        return stNilai;
+    }
+
+    public void setStNilai(String stNilai) {
+        this.stNilai = stNilai;
     }
 }
