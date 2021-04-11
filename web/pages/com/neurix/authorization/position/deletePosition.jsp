@@ -112,7 +112,7 @@
 
 
 
-                <legend align="left">Delete Golongan</legend>
+                <legend align="left">Delete Position</legend>
 
 
                 <table>

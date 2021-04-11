@@ -23,7 +23,8 @@ function loadPositionJabatan(stAction) {
                 '<td align="center">';
 
             if (item.flag != 'N'){
-                if(stAction === 'addOrEdit') {
+                // if(stAction === 'addOrEdit') {
+                if(stAction === 'add') {
                     str += '<button class="btn btn-primary btn-sm" onclick="initEditJabatan(\'' + item.nip + '\',\'' + item.positionId + '\')"><i class="fa fa-edit"></i></button>' +
                         '<button class="btn btn-danger btn-sm" onclick="initDeleteJabatan(\'' + item.nip + '\',\'' + item.positionId + '\')"><i class="fa fa-trash"></i></button>';
                 }

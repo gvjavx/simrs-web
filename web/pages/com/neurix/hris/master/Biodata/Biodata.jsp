@@ -3523,8 +3523,11 @@
 
     $(document).ready(function() {
         loadStatusPegawai();
-        <s:if test="isAddOrEdit()">
-            loadPositionJabatan("addOrEdit");
+        <%--<s:if test="isAddOrEdit()">--%>
+            <%--loadPositionJabatan("addOrEdit");--%>
+        <%--</s:if>--%>
+        <s:if test="isAdd()">
+            loadPositionJabatan("add");
         </s:if>
         <s:else>
             loadPositionJabatan("viewOrDelete");
@@ -5423,6 +5426,8 @@
             if (url == 'addKeluarga') {
                 if (keluargaName == '') {
                     alert('Name Must be Entry')
+                } else if(tanggalLahir == ''){
+                    alert('Tanggal Lahir Must be Entry')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);

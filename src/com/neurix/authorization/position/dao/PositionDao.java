@@ -574,7 +574,8 @@ public class PositionDao extends GenericDao<ImPosition,String> {
                 "kodering \n" +
                 "FROM im_position\n" +
                 "WHERE bagian_id LIKE '"+id+"'\n" +
-                "AND flag_cost_unit = 'Y'";
+                "AND flag_cost_unit = 'Y'\n" +
+                "AND flag = 'Y'";
 
         List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
         List<Position> positionList = new ArrayList<>();
