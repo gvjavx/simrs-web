@@ -25,9 +25,9 @@
             var kodering        = $("#kodering-position-final").val();
             var flagCostUnit    = $("#jenis option:selected").val();
 
-            var lastKode        = $("#kodering").length;
+            console.log(lastKode);
 
-            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '' && lastKode == 2) {
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
 
                 if (flagCostUnit == "Y"){
                     PositionAction.getOnePositionByKodering(kodering, function (res) {
@@ -72,9 +72,6 @@
                 }
                 if (kodering == '') {
                     msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
-                }
-                if (lastKode != 2) {
-                    msg += '<strong>Last Kodering</strong> length must be 2 digits.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage5').innerHTML = msg;
