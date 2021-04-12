@@ -1881,7 +1881,7 @@
                                                 </td>
                                             </tr>
 
-                                            <tr>
+                                            <tr style="display: none;">
                                                 <td>
                                                     <label><small>Mess :</small></label>
                                                 </td>

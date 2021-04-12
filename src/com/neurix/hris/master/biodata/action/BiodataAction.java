@@ -761,6 +761,10 @@ public class BiodataAction extends BaseMasterAction {
                         String fileName = editBiodata.getNip() + ".jpg";
                         File fileToCreate = new File(filePath, fileName);
 
+                        if(fileToCreate.exists()){
+                            fileToCreate.delete();
+                        }
+
                         //create file to save to folder '/upload'
                         byte[] contentFile = null;
                         try {
