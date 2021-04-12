@@ -75,48 +75,44 @@
                                     <table >
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Jenis Budgeting :</small></label>
+                                                <label class="control-label"><small>Jenis Budgeting </small></label>
                                             </td>
                                             <td>
                                                 <table>
                                                     <select id="sel_search_jenis" class="form-control" onchange="listKetegoriByJenis('sel_search_kategori', this.value)">
-
                                                     </select>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Kategori Item :</small></label>
+                                                <label class="control-label"><small>Kategori Item</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <select id="sel_search_kategori" class="form-control">
-
+                                                    <select id="sel_search_kategori" class="form-control" style="margin-top: 7px;">
                                                     </select>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Master :</small></label>
+                                                <label class="control-label"><small>Master</small></label>
                                             </td>
                                             <td>
                                                 <table>
-                                                    <select id="sel_search_master" class="form-control select2" style="width: 100%">
-
+                                                    <select id="sel_search_master" class="form-control select2" style="width: 100%;margin-top: 7px;">
                                                     </select>
                                                 </table>
                                             </td>
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Divisi :</small></label>
+                                                <label class="control-label"><small>Divisi</small></label>
                                             </td>
                                             <td>
                                                 <table>
                                                     <select id="sel_search_divisi" class="form-control select2" style="width: 100%">
-
                                                     </select>
                                                 </table>
 
@@ -124,12 +120,11 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <label class="control-label"><small>Item Rekening :</small></label>
+                                                <label class="control-label"><small>Item Rekening</small></label>
                                             </td>
                                             <td>
                                                 <table>
                                                     <select id="sel_search_item_rekening" class="form-control select2" style="width: 100%">
-
                                                     </select>
                                                 </table>
 
@@ -224,7 +219,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_edit_kategori" class="form-control">
+                                <select id="sel_edit_kategori" class="form-control" style="margin-top: 7px;">
 
                                 </select>
                             </table>
@@ -271,9 +266,9 @@
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveEdit()"><i class="fa fa-check"></i> Save
-                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveEdit()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -310,7 +305,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_delete_kategori" class="form-control" disabled>
+                                <select id="sel_delete_kategori" class="form-control" style="margin-top: 7px" disabled>
 
                                 </select>
                             </table>
@@ -394,7 +389,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_add_kategori" class="form-control">
+                                <select id="sel_add_kategori" class="form-control" style="margin-top: 7px">
 
                                 </select>
                             </table>
@@ -441,9 +436,9 @@
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-success" onclick="saveAdd()"><i class="fa fa-check"></i> Save
-                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-success" onclick="saveAdd()"><i class="fa fa-check"></i> Save
                 </button>
             </div>
         </div>
@@ -545,7 +540,7 @@
 
     function listJenisBudgeting(elid) {
         ParameterBudgetingAction.getAllJenisBudgeting(function (res) {
-            var str = "";
+            var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
                 str += '<option value="'+item.id+'">'+item.namaJenis+'</option>';
             });
