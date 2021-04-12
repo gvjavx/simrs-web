@@ -31,73 +31,73 @@
     </style>
     <script type='text/javascript'>
 
-        $.subscribe('successDialog', function (event, data) {
-            if (event.originalEvent.request.status == 200) {
-                jQuery(".ui-dialog-titlebar-close").hide();
-                $.publish('showInfoDialog');
-            }
-        });
-        $.subscribe('errorDialog', function (event, data) {
-            document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
-            $.publish('showErrorDialog');
-        });
+        // $.subscribe('successDialog', function (event, data) {
+        //     if (event.originalEvent.request.status == 200) {
+        //         jQuery(".ui-dialog-titlebar-close").hide();
+        //         $.publish('showInfoDialog');
+        //     }
+        // });
+        // $.subscribe('errorDialog', function (event, data) {
+        //     document.getElementById('errorMessage').innerHTML = "Status = " + event.originalEvent.request.status + ", \n\n" + event.originalEvent.request.getResponseHeader('message');
+        //     $.publish('showErrorDialog');
+        // });
 
-        $(document).ready(function() {
-            window.clos = function() {
-                //$('#waiting_dialog').dialog('close');
-                $('#view_dialog_menu').dialog('close');
-                $('#info_dialog').dialog('close');
-                window.location.href="<s:url action='initForm_mutasi.action'/>";
-            };
+        <%--$(document).ready(function() {--%>
+            <%--window.clos = function() {--%>
+                <%--//$('#waiting_dialog').dialog('close');--%>
+                <%--$('#view_dialog_menu').dialog('close');--%>
+                <%--$('#info_dialog').dialog('close');--%>
+                <%--window.location.href="<s:url action='initForm_mutasi.action'/>";--%>
+            <%--};--%>
 
-            $.subscribe('beforeProcessSave', function (event, data) {
+            <%--$.subscribe('beforeProcessSave', function (event, data) {--%>
 
-                var tanggalEfektif= document.getElementById("tanggalEfektif").value;
-                var q = new Date();
-                var m = q.getMonth()+1;
-                var d = q.getDay();
-                var y = q.getFullYear();
-                var date = new Date(y,m,d);
+                <%--var tanggalEfektif= document.getElementById("tanggalEfektif").value;--%>
+                <%--var q = new Date();--%>
+                <%--var m = q.getMonth()+1;--%>
+                <%--var d = q.getDay();--%>
+                <%--var y = q.getFullYear();--%>
+                <%--var date = new Date(y,m,d);--%>
 
-                var tgl = tanggalEfektif.split("-");
-                var mydate = new Date(tgl[2], tgl[1], parseInt(tgl[0])+1);
+                <%--var tgl = tanggalEfektif.split("-");--%>
+                <%--var mydate = new Date(tgl[2], tgl[1], parseInt(tgl[0])+1);--%>
 
-                if (tanggalEfektif != '') {
-                    if (isNaN(mydate) == false) {
-                        var rowCount = $('.sppdPersonTable tr').length;
-                        if (rowCount>1){
-                            if (confirm('Do you want to save this record?')) {
-                                event.originalEvent.options.submit = true;
-                                $.publish('showDialog');
-                            } else {
-                                event.originalEvent.options.submit = false;
-                            }
-                        } else{
-                            event.originalEvent.options.submit = false;
-                            var msg = "";
-                            msg += '<strong>Daftar pegawai yang akan di mutasi / nonaktifkan masih kosong</strong>.' + '<br/>';
-                            document.getElementById('errorValidationMessage').innerHTML = msg;
-                            $.publish('showErrorValidationDialog');
-                        }
-                    }else{
-                        event.originalEvent.options.submit = false;
-                        var msg = "";
-                        msg += '<strong>Format Tanggal salah, format menggunakan (dd-mm-yyyy)</strong>.' + '<br/>';
-                        document.getElementById('errorValidationMessage').innerHTML = msg;
-                        $.publish('showErrorValidationDialog');
-                    }
+                <%--if (tanggalEfektif != '') {--%>
+                    <%--if (isNaN(mydate) == false) {--%>
+                        <%--var rowCount = $('.sppdPersonTable tr').length;--%>
+                        <%--if (rowCount>1){--%>
+                            <%--if (confirm('Do you want to save this record?')) {--%>
+                                <%--event.originalEvent.options.submit = true;--%>
+                                <%--$.publish('showDialog');--%>
+                            <%--} else {--%>
+                                <%--event.originalEvent.options.submit = false;--%>
+                            <%--}--%>
+                        <%--} else{--%>
+                            <%--event.originalEvent.options.submit = false;--%>
+                            <%--var msg = "";--%>
+                            <%--msg += '<strong>Daftar pegawai yang akan di mutasi / nonaktifkan masih kosong</strong>.' + '<br/>';--%>
+                            <%--document.getElementById('errorValidationMessage').innerHTML = msg;--%>
+                            <%--$.publish('showErrorValidationDialog');--%>
+                        <%--}--%>
+                    <%--}else{--%>
+                        <%--event.originalEvent.options.submit = false;--%>
+                        <%--var msg = "";--%>
+                        <%--msg += '<strong>Format Tanggal salah, format menggunakan (dd-mm-yyyy)</strong>.' + '<br/>';--%>
+                        <%--document.getElementById('errorValidationMessage').innerHTML = msg;--%>
+                        <%--$.publish('showErrorValidationDialog');--%>
+                    <%--}--%>
 
-                } else {
-                    event.originalEvent.options.submit = false;
-                    var msg = "";
-                    if (tanggalEfektif == '') {
-                        msg += 'Field <strong>Tanggal Efektif</strong> is required.' + '<br/>';
-                    }
-                    document.getElementById('errorValidationMessage').innerHTML = msg;
-                    $.publish('showErrorValidationDialog');
-                }
-            });
-        });
+                <%--} else {--%>
+                    <%--event.originalEvent.options.submit = false;--%>
+                    <%--var msg = "";--%>
+                    <%--if (tanggalEfektif == '') {--%>
+                        <%--msg += 'Field <strong>Tanggal Efektif</strong> is required.' + '<br/>';--%>
+                    <%--}--%>
+                    <%--document.getElementById('errorValidationMessage').innerHTML = msg;--%>
+                    <%--$.publish('showErrorValidationDialog');--%>
+                <%--}--%>
+            <%--});--%>
+        <%--});--%>
 
 
     </script>
@@ -152,7 +152,7 @@
                                         </center>
                                     </div>
 
-                                    <s:form id="mutasiForm" method="post"  theme="simple" namespace="/mutasi" action="saveMutasi_mutasi.action" cssClass="form-horizontal">
+                                    <%--<form method="post"  theme="simple" action="#" cssClass="form-horizontal">--%>
                                     <s:hidden name="addOrEdit"/>
                                     <s:hidden name="delete"/>
                                     <table>
@@ -171,9 +171,9 @@
                                             <td>
                                                 <table>
                                                     <div class="input-group date">
-                                                        <div class="input-group-addon">
-                                                            <i class="fa fa-calendar"></i>
-                                                        </div>
+                                                        <%--<div class="input-group-addon">--%>
+                                                            <%--<i class="fa fa-calendar"></i>--%>
+                                                        <%--</div>--%>
                                                         <s:textfield id="tanggalEfektif" name="mutasi.stTanggalEfektif" cssClass="form-control pull-right"
                                                                      required="false"  cssStyle=""/>
                                                     </div>
@@ -206,12 +206,13 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit targets="crsud" type="button" cssClass="btn btn-primary" formIds="mutasiForm_" id="saveAllMutasi" name="save"
-                                                                   onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
-                                                                   onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
-                                                            <i class="fa fa-check"></i>
-                                                            Save
-                                                        </sj:submit>
+                                                        <%--<sj:submit targets="crsud" type="button" cssClass="btn btn-primary" formIds="mutasiForm_" id="saveAllMutasi" name="save"--%>
+                                                                   <%--onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"--%>
+                                                                   <%--onSuccessTopics="successDialog" onErrorTopics="errorDialog" >--%>
+                                                            <%--<i class="fa fa-check"></i>--%>
+                                                            <%--Save--%>
+                                                        <%--</sj:submit>--%>
+                                                        <button class="btn btn-primary" onclick="confirmSaveAll()"><i class="fa fa-save"></i> Save</button>
                                                     </td>
                                                     <td>
                                                         <button type="button" class="btn btn-danger" onclick="window.location.href='<s:url action="add_mutasi.action"/>'">
@@ -299,7 +300,7 @@
                                                 </tr>
                                             </table>
                                         </div>
-                                    </s:form>
+                                    <%--</form>--%>
                                 </td>
                             </tr>
                         </table>
@@ -568,6 +569,28 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="modal-confirm-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Confirmation
+                </h4>
+            </div>
+            <div class="modal-body">
+                <h4 class="text-center">Do you want save this record?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No
+                </button>
+                <button onclick="saveAll()" type="button" class="btn btn-sm btn-default" id="save_con"><i class="fa fa-check"></i> Yes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </html>
 
 <script>
@@ -1208,22 +1231,55 @@
             return "0" + str;
     }
 
-    $('#saveAllMutasi').click(function(){
+    // $('#saveAllMutasi').click(function(){
+    //     var tglEfektif  = $("#tanggalEfektif").val();
+    //
+    //     if (tglEfektif != ''){
+    //         MutasiAction.saveMutasi(tglEfektif, function (res) {
+    //
+    //         })
+    //     } else {
+    //         var msg = "";
+    //         if (tanggalEfektif == '') {
+    //             msg += 'Field <strong>Tanggal Efektif</strong> is required.' + '<br/>';
+    //         }
+    //         document.getElementById('errorValidationMessage').innerHTML = msg;
+    //         $.publish('showErrorValidationDialog');
+    //     }
+    // });
+
+    function confirmSaveAll(){
         var tglEfektif  = $("#tanggalEfektif").val();
-
-        if (tglEfektif != ''){
-            MutasiAction.saveMutasi(tglEfektif, function (res) {
-
-            })
-        } else {
-            var msg = "";
-            if (tanggalEfektif == '') {
-                msg += 'Field <strong>Tanggal Efektif</strong> is required.' + '<br/>';
+        if(tglEfektif != ''){
+            var rowCount = $('.sppdPersonTable tr').length;
+            if (rowCount>1) {
+                $('#modal-confirm-dialog').modal('show');
+            } else {
+                var msg = 'List <strong>Data Mutasi</strong> masih kosong' + '<br/>';
+                document.getElementById('errorValidationMessage').innerHTML = msg;
+                // $.publish('showErrorValidationDialog');
+                $('#error_validation_dialog').dialog('open');
             }
-            document.getElementById('errorValidationMessage').innerHTML = msg;
-            $.publish('showErrorValidationDialog');
+        }else{
+            alert("Tanggal Efektif Harus Diisi.");
         }
-    })
+    }
+
+    function saveAll(){
+        var tglEfektif  = $("#tanggalEfektif").val();
+        dwr.engine.setAsync(true);
+        MutasiAction.saveMutasi(tglEfektif, {
+            callback: function (res) {
+                console.log(res);
+                if(res.status == "success"){
+                    $('#info_dialog').dialog('open');
+                    window.location.href = "initForm_mutasi.action";
+                }else{
+                    $('#error_dialog').dialog('open');
+                }
+            }
+        })
+    }
 </script>
 
 
