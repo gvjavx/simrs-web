@@ -146,7 +146,7 @@
                                 </script>
                                 <table class="table table-striped">
                                     <tr>
-                                        <td><b>Pelayanan</b></td>
+                                        <td width="35%"><b>Pelayanan</b></td>
                                         <td>
                                             <table><s:label name="periksaLab.namaPelayanan"></s:label></table>
                                         </td>
@@ -766,6 +766,7 @@
     var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
     var keterangan = '<s:property value="periksaLab.keterangan"/>';
     var tipeLab = 'radiologi';
+    var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
 
     $(document).ready(function () {
         $('#penunjang_active, #periksa_radiologi').addClass('active');

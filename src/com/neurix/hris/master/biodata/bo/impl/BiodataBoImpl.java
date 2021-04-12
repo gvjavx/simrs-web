@@ -606,7 +606,7 @@ public class BiodataBoImpl implements BiodataBo {
                 //RAKA-end
 
 
-                if ("true".equalsIgnoreCase(cekJabatanAktif)) {
+//                if ("true".equalsIgnoreCase(cekJabatanAktif)) {
                     if ("K".equalsIgnoreCase(bean.getStatusKeluarga())) {
                         String cekStatus = cekStatusKeluarga(bean.getNip());
                         if (cekStatus.equalsIgnoreCase("Exist")) {
@@ -1753,9 +1753,9 @@ public class BiodataBoImpl implements BiodataBo {
                             throw new GeneralBOException("Error, not found data Biodata with request id, please check again your data ...");
                         }
                     }
-                } else {
-                    throw new GeneralBOException("Peringatan!!!, Harus ada jabatan aktif (normal) minimal 1");
-                }
+//                } else {
+//                    throw new GeneralBOException("Peringatan!!!, Harus ada jabatan aktif (normal) minimal 1");
+//                }
             } else {
                 throw new GeneralBOException("Peringatan!!!, Tipe Karyawan tetap tidak boleh diganti dengan Tipe Karyawan PKWT");
             }

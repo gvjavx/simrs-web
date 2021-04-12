@@ -317,7 +317,13 @@ public class PermintaanResepBoImpl implements PermintaanResepBo {
 
     @Override
     public List<PermintaanResep> getListResepPasien(String noCheckup, String jenis) throws GeneralBOException {
-        return permintaanResepDao.getListResepPasien(noCheckup, jenis);
+        List<PermintaanResep> permintaanResepList = new ArrayList<>();
+        try{
+            permintaanResepList = permintaanResepDao.getListResepPasien(noCheckup, jenis);
+        }catch (HibernateException e){
+            logger.error(e.getMessage());
+        }
+        return permintaanResepList;
     }
 
     private String getNextPermintaanResepId() throws GeneralBOException {

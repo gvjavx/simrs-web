@@ -866,6 +866,7 @@
     var metodePembayaran = '<s:property value="periksaLab.metodePembayaran"/>';
     var keterangan = '<s:property value="periksaLab.keterangan"/>';
     var tipeLab = 'laboratorium';
+    var jenisKelamin = '<s:property value="periksaLab.jenisKelamin"/>';
 
     $(document).ready(function () {
         $('#penunjang_active, #periksa_lab').addClass('active');
