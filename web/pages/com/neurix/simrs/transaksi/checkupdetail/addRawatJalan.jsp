@@ -1125,29 +1125,47 @@
                                             <s:action id="comboLab2" namespace="/kategorilab"
                                                       name="getListKategoriLab_kategorilab"/>
                                             <s:select cssStyle="margin-top: 7px; width: 100%"
-                                                      onchange="listSelectLab(this.value)"
+                                                      onchange="listSelectLab(this.value); inputWarning('war_ckp_kategori', 'cor_ckp_kategori')"
                                                       list="#comboLab2.listOfKategoriLab" id="ckp_kategori"
                                                       listKey="idKategoriLab"
                                                       listValue="namaKategori"
                                                       headerKey="" headerValue="[Select one]"
                                                       cssClass="form-control select2"/>
+                                            <span style="color: red; display: none;" id="war_ckp_kategori"><i
+                                                    class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none;" id="cor_ckp_kategori">
+                                                <i class="fa fa-check"></i> correct</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label class="col-md-4" style="margin-top: 7px">Paket</label>
+                                        <label class="col-md-4" style="margin-top: 7px">Jenis Pemeriksaan</label>
                                         <div class="col-md-8">
                                             <select class="form-control select2" style="margin-top: 7px; width: 100%" id="ckp_unit"
-                                                    onchange="listSelectParameter(this.value);">
+                                                    onchange="listSelectParameter(this.value); inputWarning('war_ckp_unit', 'cor_ckp_unit');">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                            <span style="color: red; display: none;" id="war_ckp_unit"><i
+                                                    class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none;" id="cor_ckp_unit">
+                                                <i class="fa fa-check"></i> correct</span>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-md-4" style="margin-top: 7px">Parameter</label>
                                         <div class="col-md-8">
-                                            <select class="form-control select2" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
+                                            <select class="form-control select2" onchange="inputWarning('war_ckp_parameter', 'cor_ckp_parameter')" multiple style="margin-top: 7px; width: 100%" id="ckp_parameter">
                                                 <option value=''>[Select One]</option>
                                             </select>
+                                            <span style="color: red; display: none;" id="war_ckp_parameter"><i
+                                                    class="fa fa-times"></i> required</span>
+                                            <span style="color: green; display: none;" id="cor_ckp_parameter">
+                                                <i class="fa fa-check"></i> correct</span>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-8">
+                                            <button onclick="addOrderListPemeriksaan()" class="btn btn-success"><i class="fa fa-plus"></i> Tambah</button>
+                                            <button onclick="resetOrderPemeriksaan()" class="btn btn-danger"><i class="fa fa-refresh"></i> Reset</button>
                                         </div>
                                     </div>
                                 </div>
@@ -1212,6 +1230,24 @@
                                                 <input type="checkbox" id="is_vaksin" value="yes">
                                                 <label for="is_vaksin"></label>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 30px; display: none" id="form_order_pemeriksaan">
+                                    <div class="form-group">
+                                        <div class="col-md-12">
+                                            <span>Daftar Order Pemeriksaan</span>
+                                            <table class="table table-bordered" style="font-size: 13px" id="tabel_order_pemeriksaan">
+                                                <thead>
+                                                <tr>
+                                                    <td>Jenis Pemeriksaan</td>
+                                                    <td>Parameter</td>
+                                                    <td align="10%">Action</td>
+                                                </tr>
+                                                </thead>
+                                                <tbody id="body_order_pemeriksaan">
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

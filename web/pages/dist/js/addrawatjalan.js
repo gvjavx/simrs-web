@@ -285,6 +285,8 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
             $('#form_eksekutif').hide();
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
 
         } else if (idKtg == "pindah_poli") {
             $('#poli_lain').attr('disabled', false);
@@ -303,6 +305,8 @@ function selectKeterangan(idKtg) {
             $('#form-tgl-kontrol').hide();
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
 
         } else if (idKtg == "rawat_inap") {
             $('#form-ket-rawat_inap').show();
@@ -317,6 +321,8 @@ function selectKeterangan(idKtg) {
             $('#form_eksekutif').hide();
             $('#title_asesmen').html(keteranganPindah);
             $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
 
         } else if (idKtg == "rujuk_rs_lain") {
             $('#form-rs-rujukan').show();
@@ -330,6 +336,8 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
             $('#form_eksekutif').hide();
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
 
         } else if (idKtg == "kontrol_ulang") {
             $('#form-tgl-kontrol').show();
@@ -343,6 +351,7 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
             $('#form_eksekutif').hide();
+            $('#form_order_pemeriksaan').hide();
 
         } else if (idKtg == "lanjut_paket") {
             var idpel = $('#h_id_pelayanan_paket_pilih').val();
@@ -359,6 +368,8 @@ function selectKeterangan(idKtg) {
             $('#form-asesmen').hide();
             $('#form-rujuk_internal').hide();
             $('#form_eksekutif').hide();
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
 
         } else {
             $('#form-selesai').hide();
@@ -386,6 +397,8 @@ function selectKeterangan(idKtg) {
                     $('#btn_pindah').attr('onclick', 'setRekamMedisPindah(\'pindah_ri\',\'asesmen_pindah\')');
                 }
             }
+            $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
         }
     } else {
         $('#form-selesai').hide();
@@ -398,6 +411,8 @@ function selectKeterangan(idKtg) {
         $('#form-asesmen').hide();
         $('#form-rujuk_internal').hide();
         $('#form_eksekutif').hide();
+        $('#form_order_pemeriksaan').hide();
+        $('#body_order_pemeriksaan').html('');
     }
 }
 
@@ -3360,10 +3375,20 @@ function getDokterDpjp() {
 
 function isPemeriksaan(id, idTujuan) {
     var cek = $('#' + id).is(':checked');
-    if (cek) {
-        $('#' + idTujuan).show();
-    } else {
-        $('#' + idTujuan).hide();
+    if('pemeriksaan_lab' == id){
+        if (cek) {
+            $('#' + idTujuan).show();
+            $('#form_order_pemeriksaan').show();
+        } else {
+            $('#' + idTujuan).hide();
+            $('#form_order_pemeriksaan').hide();
+        }
+    }else{
+        if (cek) {
+            $('#' + idTujuan).show();
+        } else {
+            $('#' + idTujuan).hide();
+        }
     }
 }
 
@@ -3549,7 +3574,37 @@ function savePemeriksaanPasien() {
         } else if (tindakLanjut == "kontrol_ulang") {
             if (tglKontrol != '') {
                 if (isPemeriksaan) {
-                    if (kategoriLab && unitLab && parameterLab != '') {
+                    var tabelOrderPemeriksaan = $('#tabel_order_pemeriksaan').tableToJSON();
+                    var namaPemeriksaan = $('.nama_order_jenis_pemeriksaan');
+                    var idPemeriksaan = $('.id_order_jenis_pemeriksaan');
+                    var parameterPemeriksaan = $('.nama_order_parameter_pemeriksaan');
+                    var idParameter = $('.id_order_parameter_pemeriksaan');
+
+                    var pemeriksan = [];
+                    $.each(namaPemeriksaan, function (i, item) {
+                        if(item.value){
+                            var tempItem = [];
+                            var tmep = parameterPemeriksaan[i].value;
+                            var imep = idParameter[i].value;
+                            if(tmep != '' && imep != ''){
+                                var pp = tmep.split("#");
+                                var mp = imep.split("#");
+                                $.each(pp, function (i, item) {
+                                    tempItem.push({
+                                        'id_parameter': mp[i],
+                                        'nama_parameter': item
+                                    })
+                                });
+                            }
+                            pemeriksan.push({
+                                'id_pemeriksaan': idPemeriksaan[i].value,
+                                'nama_pemeriksaan': item.value,
+                                'list_parameter': JSON.stringify(tempItem)
+                            });
+                        }
+                    });
+
+                    if (tabelOrderPemeriksaan.length > 0) {
                         data = {
                             'no_checkup': noCheckup,
                             'id_detail_checkup': idDetailCheckup,
@@ -3558,9 +3613,8 @@ function savePemeriksaanPasien() {
                             'catatan': catatan,
                             'jenis_pasien': jenisPeriksaPasien,
                             'tgl_kontrol': tglKontrol,
-                            'kategori_lab': kategoriLab,
-                            'unit_lab': unitLab,
-                            'parameter': parameterLab,
+                            'list_pemeriksaan': JSON.stringify(pemeriksan),
+                            'id_kategori_lab': kategoriLab,
                             'is_order_lab': 'Y'
                         }
                         cek = true;
@@ -4762,4 +4816,102 @@ function resetPemeriksaan(){
     });
     $('#cek_luar').css('cursor', 'pointer');
     $('#cek_pending').css('cursor', 'pointer');
+}
+
+function addOrderListPemeriksaan(){
+    var count = $('#tabel_order_pemeriksaan').tableToJSON().length;
+    var idKategori = $('#ckp_kategori').val();
+    var namaPemeriksaan = $('#ckp_unit option:selected').text();
+    var idPemeriksaan = $('#ckp_unit').val();
+
+    var namaParameter = $('#ckp_parameter option:selected');
+    var idParameter = $('#ckp_parameter').val();
+
+    var tempPemeriksaan = "";
+    var tempIdPemeriksan= "";
+
+    var tempParameter = "";
+    var tempIdParameter = "";
+    var tempParameterLi = "";
+
+    if(idPemeriksaan != ''){
+        tempPemeriksaan = namaPemeriksaan;
+        tempIdPemeriksan = idPemeriksaan;
+    }
+    if(idParameter != '' && idParameter != null){
+        $.each(namaParameter, function (i, item) {
+            if(tempIdParameter != ''){
+                tempIdParameter = tempIdParameter+'#'+item.value;
+            }else{
+                tempIdParameter = item.value;
+            }
+
+            if(tempParameter != ''){
+                tempParameter = tempParameter+'#'+item.innerHTML;
+            }else{
+                tempParameter = item.innerHTML;
+            }
+            tempParameterLi += '<li>'+item.innerHTML+'</li>';
+        });
+    }
+
+    if(tempPemeriksaan && tempParameter != ''){
+        var cek = false;
+        $.each($('.nama_order_jenis_pemeriksaan'), function (i, item) {
+            if(item.value != ''){
+                if(item.value.toLowerCase() == tempPemeriksaan.toLowerCase()){
+                    cek = true;
+                }
+            }
+        });
+        if(!cek){
+            var row =
+                '<tr id="row_'+count+'">' +
+                '<td>'+
+                tempPemeriksaan +
+                '<input type="hidden" class="nama_order_jenis_pemeriksaan" value="'+tempPemeriksaan+'">'+
+                '<input type="hidden" class="id_order_jenis_pemeriksaan" value="'+tempIdPemeriksan+'">'+
+                '<input type="hidden" class="nama_order_parameter_pemeriksaan" value="'+tempParameter+'">'+
+                '<input type="hidden" class="id_order_parameter_pemeriksaan" value="'+tempIdParameter+'">'+
+                '</td>'+
+                '<td><ul style="margin-left: 20px">'+tempParameterLi+'</ul></td>'+
+                '<td align="center"><img onclick="delOrderPemeriksaan(\'row_'+count+'\')" style="cursor: pointer" src="'+contextPath+'/pages/images/cancel-flat-new.png" class="hvr-row"></td>'+
+                '</tr>';
+            $('#body_order_pemeriksaan').append(row);
+            $('#ckp_kategori').attr('disabled', true);
+            $('#ckp_unit').val(null).trigger('change');
+            $('#ckp_parameter').val(null).trigger('change');
+        }else{
+            $('#warning_ket').show().fadeOut(5000);
+            $('#warning_msg').text("Pemeriksaan "+tempPemeriksaan+" sudah ada dalam ist");
+        }
+    }else{
+        $('#warning_ket').show().fadeOut(5000);
+        $('#warning_msg').text("Silahkan cek kembali inputan berikut...!");
+        if (idKategori == '') {
+            $('#war_ckp_kategori').show();
+        }
+        if (idPemeriksaan == '') {
+            $('#war_ckp_unit').show();
+        }
+        if (idParameter == '' || idParameter == null) {
+            $('#war_ckp_parameter').show();
+        }
+    }
+}
+
+function delOrderPemeriksaan(id){
+    $('#'+id).remove();
+    var table = $('#tabel_order_pemeriksaan').tableToJSON().length;
+    if(table == 0){
+        $('#ckp_kategori').attr('disabled', false);
+    }
+}
+
+function resetOrderPemeriksaan(){
+    $('#body_order_pemeriksaan').html('');
+    $('#ckp_kategori').attr('disabled', false);
+    $('#ckp_kategori').val(null).trigger('change');
+    $('#ckp_unit').val(null).trigger('change');
+    $('#ckp_parameter').val(null).trigger('change');
 }

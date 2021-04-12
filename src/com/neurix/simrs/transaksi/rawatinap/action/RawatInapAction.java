@@ -2068,7 +2068,7 @@ public class RawatInapAction extends BaseMasterAction {
                             String value = jsonParameter.getString(i);
                             OrderPeriksaLab order = new OrderPeriksaLab();
                             order.setIdDetailCheckup(idDetailCheckup);
-                            order.setIdLab(unitLab);
+                            order.setIdPemeriksaan(unitLab);
                             order.setIdLabDetail(value);
                             order.setIsPemeriksaan("N");
                             order.setAction("C");

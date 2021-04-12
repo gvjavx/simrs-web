@@ -202,6 +202,15 @@ public class HeaderCheckup {
     private String isPeriksaLuar;
     private String idHeaderPemeriksaan;
     private List<UploadHasilPemeriksaan> uploadHasil = new ArrayList<>();
+    private List<String> listPemeriksaan = new ArrayList<>();
+
+    public List<String> getListPemeriksaan() {
+        return listPemeriksaan;
+    }
+
+    public void setListPemeriksaan(List<String> listPemeriksaan) {
+        this.listPemeriksaan = listPemeriksaan;
+    }
 
     public List<UploadHasilPemeriksaan> getUploadHasil() {
         return uploadHasil;

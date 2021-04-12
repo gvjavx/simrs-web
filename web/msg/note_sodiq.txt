@@ -2360,7 +2360,7 @@ INSERT INTO im_func_roles VALUES
                                             ------  |
                                             ---------
 
---BELUM DI PROD
+--SUDAH DI PROD
 UPDATE im_func_roles
 SET flag = 'N'
 WHERE func_id = 2
@@ -2479,6 +2479,52 @@ INSERT INTO im_simrs_parameter_pemeriksaan VALUES
 
 INSERT INTO im_simrs_lab_detail VALUES
 ('LDB00000284','LAB00000028','Y',now(),'migrasi',now(),'migrasi','C',800000,'PRP00000284','02');
+
+
+---------- SUDAH DI PROD -----------
+====================================
+
+            /\   /\   /\
+           |__| |__| |__|
+            ||   ||   ||
+            ||   ||   ||
+            ||   ||   ||                    ---------   |
+----------- ||   ||   || -----------        |  ------   |  |
+---------- SUDAH DI PROD -----------        | |         |  |
+----------- +++++++++++ ------------        |  ------   |  |
+                                            ------  |   |  |
+                                                  | |   |  |
+                                            ------  |   |   ----------
+                                            ---------   |_ _ _ _ _ _ _|
+
+--SENIN, SELASA BESOK PUASA
+DROP TABLE it_simrs_order_periksa_lab;
+
+CREATE TABLE public.it_simrs_order_periksa_lab
+(
+  id_order_periksa character varying(30) NOT NULL,
+  id_detail_checkup character varying(30),
+  id_pemeriksaan character varying(30),
+  nama_pemeriksaan character varying(100),
+  id_lab_detail character varying(30),
+  nama_detail_pemeriksaan character varying(100),
+  id_kategori_lab character varying(30),
+  keterangan character varying(100),
+  is_pemeriksaan character varying(1),
+  flag character varying(1),
+  action character varying(1),
+  created_date timestamp without time zone,
+  created_who character varying(100),
+  last_update timestamp without time zone,
+  last_update_who character varying(100),
+  CONSTRAINT pk_id_order_periksa PRIMARY KEY (id_order_periksa)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE public.it_simrs_order_periksa_lab
+  OWNER TO postgres;
+
 
 
 
