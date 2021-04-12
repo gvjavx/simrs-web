@@ -330,10 +330,14 @@ public class MutasiAction extends BaseMasterAction{
         return hasil;
     }
 
-    public String saveMutasi(){
+    public String saveMutasi(String tglMutasi){
         logger.info("[MutasiAction.saveMutasi] start process >>>");
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        MutasiBo mutasiBo = (MutasiBo) ctx.getBean("mutasiBoProxy");
         try {
-            Mutasi mutasi = getMutasi();
+//            Mutasi mutasi = getMutasi();
+            Mutasi mutasi = new Mutasi();
+            mutasi.setStTanggalEfektif(tglMutasi);
             HttpSession session = ServletActionContext.getRequest().getSession();
             List<Mutasi> mutasiList = (List<Mutasi>) session.getAttribute("listOfMutasi");
 
@@ -351,16 +355,17 @@ public class MutasiAction extends BaseMasterAction{
             mutasi.setAction("C");
             mutasi.setFlag("Y");
 
-            mutasiBoProxy.saveMutasi(mutasi,mutasiList);
+            mutasiBo.saveMutasi(mutasi,mutasiList);
         }catch (GeneralBOException e) {
-            Long logId = null;
-            try {
-                logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
-            } catch (GeneralBOException e1) {
-                logger.error("[mutasiAction.saveMutasi] Error when saving error,", e1);
-                throw new GeneralBOException(e1.getMessage());
-            }
-            logger.error("[mutasiAction.saveMutasi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+//            Long logId = null;
+//            try {
+//                logId = mutasiBoProxy.saveErrorMessage(e.getMessage(), "liburBO.saveAdd");
+//            } catch (GeneralBOException e1) {
+//                logger.error("[mutasiAction.saveMutasi] Error when saving error,", e1);
+//                throw new GeneralBOException(e1.getMessage());
+//            }
+//            logger.error("[mutasiAction.saveMutasi] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
+            logger.error("[mutasiAction.saveMutasi] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
             addActionMessage("Error, mohon periksa inputan anda kembali");
             throw new GeneralBOException(e.getMessage());
         }

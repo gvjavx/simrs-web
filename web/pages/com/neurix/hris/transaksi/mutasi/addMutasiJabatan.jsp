@@ -206,7 +206,7 @@
                                             <table align="center">
                                                 <tr>
                                                     <td>
-                                                        <sj:submit targets="crsud" type="button" cssClass="btn btn-primary" formIds="mutasiForm" id="save" name="save"
+                                                        <sj:submit targets="crsud" type="button" cssClass="btn btn-primary" formIds="mutasiForm_" id="saveAllMutasi" name="save"
                                                                    onBeforeTopics="beforeProcessSave" onCompleteTopics="closeDialog,successDialog"
                                                                    onSuccessTopics="successDialog" onErrorTopics="errorDialog" >
                                                             <i class="fa fa-check"></i>
@@ -1042,6 +1042,9 @@
         var divisi = document.getElementById("divisiBaruId2").value;
 
         $('#positionBaruId1').empty();
+        $('#positionBaruId1').append($("<option></option>")
+            .attr("value", '')
+            .text(' - '));
         PositionAction.searchPositionMutasi(branch, divisi, function(listdata){
             $.each(listdata, function (i, item) {
                 $('#positionBaruId1').append($("<option></option>")
@@ -1204,6 +1207,23 @@
         else
             return "0" + str;
     }
+
+    $('#saveAllMutasi').click(function(){
+        var tglEfektif  = $("#tanggalEfektif").val();
+
+        if (tglEfektif != ''){
+            MutasiAction.saveMutasi(tglEfektif, function (res) {
+
+            })
+        } else {
+            var msg = "";
+            if (tanggalEfektif == '') {
+                msg += 'Field <strong>Tanggal Efektif</strong> is required.' + '<br/>';
+            }
+            document.getElementById('errorValidationMessage').innerHTML = msg;
+            $.publish('showErrorValidationDialog');
+        }
+    })
 </script>
 
 

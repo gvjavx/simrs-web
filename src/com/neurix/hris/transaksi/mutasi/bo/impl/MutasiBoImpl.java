@@ -462,27 +462,27 @@ public class MutasiBoImpl implements MutasiBo {
                     bean.setStTahun(tgl[2]);
                     if (("M").equalsIgnoreCase(mutasi.getStatus())||("R").equalsIgnoreCase(mutasi.getStatus())){
                         // cek apakah update golongan sudah diiinsert
-                        List<ImtHistorySmkGolonganEntity> smkGolongan = new ArrayList<>();
-                        try{
-                            smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
-                        }catch (HibernateException e){
-                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                            throw new GeneralBOException("Error when retrieving History Jabatan");
-                        }
-                        if(smkGolongan.size() > 0){
-                            for(ImtHistorySmkGolonganEntity smkGolonganLoop: smkGolongan){
-                                try {
-                                    ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
-                                    smkGolonganEntity.setFlagMutasi("Y");
-                                    smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
-                                    smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
-                                    historyGolonganDao.updateAndSave(smkGolonganEntity);
-                                }catch (HibernateException e){
-                                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                                    throw new GeneralBOException("Error when update History Golongan");
-                                }
-                            }
-                        }
+//                        List<ImtHistorySmkGolonganEntity> smkGolongan = new ArrayList<>();
+//                        try{
+//                            smkGolongan = historyGolonganDao.getHistoryJabatan(mutasi.getNip(), tgl[2]);
+//                        }catch (HibernateException e){
+//                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Error when retrieving History Jabatan");
+//                        }
+//                        if(smkGolongan.size() > 0){
+//                            for(ImtHistorySmkGolonganEntity smkGolonganLoop: smkGolongan){
+//                                try {
+//                                    ImtHistorySmkGolonganEntity smkGolonganEntity = historyGolonganDao.getById("idHistorySmkGolongan", smkGolonganLoop.getIdHistorySmkGolongan());
+//                                    smkGolonganEntity.setFlagMutasi("Y");
+//                                    smkGolonganEntity.setLastUpdateWho(bean.getLastUpdateWho());
+//                                    smkGolonganEntity.setLastUpdate(bean.getLastUpdate());
+//                                    historyGolonganDao.updateAndSave(smkGolonganEntity);
+//                                }catch (HibernateException e){
+//                                    logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+//                                    throw new GeneralBOException("Error when update History Golongan");
+//                                }
+//                            }
+//                        }
 
                         List<ItPersonilPositionEntity> itPersonil = null;
                         itPersonil = personilPositionDao.getPosisi(mutasi.getNip(), mutasi.getPositionLamaId());
