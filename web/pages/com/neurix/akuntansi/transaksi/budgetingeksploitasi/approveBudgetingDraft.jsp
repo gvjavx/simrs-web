@@ -46,6 +46,7 @@
 //            $('#bayar_rawat_jalan, #pembayaran_active').addClass('active');
 //            $('#pembayaran_open').addClass('menu-open');
 //            changeAction('');
+            getSelectTahun('sel-tahun')
         });
 
     </script>
@@ -85,80 +86,10 @@
                                             <label class="control-label col-sm-2">Tahun</label>
                                             <div class="col-sm-2">
                                                 <select class="form-control" id="sel-tahun">
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
-                                                    <option value="2023">2023</option>
-                                                    <option value="2024">2024</option>
-                                                    <option value="2025">2025</option>
-                                                    <option value="2026">2026</option>
-                                                    <option value="2027">2027</option>
-                                                    <option value="2028">2028</option>
-                                                    <option value="2029">2029</option>
-                                                    <option value="2030">2030</option>
                                                 </select>
                                             </div>
                                         </div>
-                                        <%--<div class="row">--%>
-                                            <%--<label class="control-label col-sm-2">Unit</label>--%>
-                                            <%--<div class="col-sm-2">--%>
-                                                <%--<s:action id="initComboBranch" namespace="/admin/branch" name="initComboBranch_branch"/>--%>
-                                                <%--<s:select list="#initComboBranch.listOfComboBranch" id="sel-unit" name="budgeting.branchId"--%>
-                                                          <%--listKey="branchId" listValue="branchName" headerKey="" headerValue="[Select Value]" cssClass="form-control" onchange="changeAction(this.value)"/>--%>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-                                        <%--<div class="row">--%>
-                                            <%--<label class="control-label col-sm-2">Status</label>--%>
-                                            <%--<div class="col-sm-2">--%>
-                                                <%--<select class="form-control" id="sel-status">--%>
-                                                    <%--<option value="#">[Select One]</option>--%>
-                                                    <%--<option value="DRAFT">DRAFT</option>--%>
-                                                    <%--<option value="FINAL">FINAL</option>--%>
-                                                    <%--<option value="REVISI">REVISI</option>--%>
-                                                <%--</select>--%>  <%--<div class="row">--%>
-                                        <%--<label class="control-label col-sm-2">Coa</label>--%>
-                                        <%--<div class="col-sm-2">--%>
-                                        <%--<input type="text" class="form-control" id="coa">--%>
-                                        <%--<script>--%>
-                                        <%--$(document).ready(function() {--%>
-                                        <%--var functions, mapped;--%>
-                                        <%--$('#coa').typeahead({--%>
-                                        <%--minLength: 1,--%>
-                                        <%--source: function (query, process) {--%>
-                                        <%--functions = [];--%>
-                                        <%--mapped = {};--%>
-                                        <%--var data = [];--%>
-                                        <%--dwr.engine.setAsync(false);--%>
-                                        <%--KodeRekeningAction.initTypeaheadKodeRekening(query,function (listdata) {--%>
-                                        <%--data = listdata;--%>
-                                        <%--});--%>
-                                        <%--$.each(data, function (i, item) {--%>
-                                        <%--var labelItem = item.kodeRekening + " | " + item.namaKodeRekening;--%>
-                                        <%--mapped[labelItem] = {--%>
-                                        <%--id: item.rekeningId,--%>
-                                        <%--nama: item.namaKodeRekening,--%>
-                                        <%--kode : item.kodeRekening,--%>
-                                        <%--parent :item.parentId--%>
-                                        <%--};--%>
-                                        <%--functions.push(labelItem);--%>
-                                        <%--});--%>
-                                        <%--process(functions);--%>
-                                        <%--},--%>
-                                        <%--updater: function (item) {--%>
-                                        <%--var selectedObj = mapped[item];--%>
-                                        <%--$('#rekeningid').val(selectedObj.id);--%>
-                                        <%--return selectedObj.kode;--%>
-                                        <%--}--%>
-                                        <%--});--%>
-                                        <%--});--%>
-                                        <%--</script>--%>
-                                        <%--</div>--%>
-                                        <%--</div>
-                                            <%--</div>--%>
-                                        <%--</div>--%>
-
                                         <input type="hidden" id="rekeningid">
-
                                     </div>
                                 </div>
 
@@ -1229,6 +1160,20 @@ function showDialog(tipe) {
         $("#modal-loading-dialog").modal('hide');
         $("#modal-success-dialog").modal('show');
     }
+}
+
+function getSelectTahun(idelement) {
+
+    //var str = "<option value=''> - </option>";
+    var str = "";
+    TutuPeriodAction.getListTahunKedepan('5', function (res) {
+
+        $.each(res, function (i, item) {
+            str += "<option value='"+item+"'>" + item + "</option>";
+        });
+
+        $("#"+idelement).html(str);
+    });
 }
 
 

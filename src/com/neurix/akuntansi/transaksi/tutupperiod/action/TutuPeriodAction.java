@@ -999,4 +999,19 @@ public class TutuPeriodAction extends BaseTransactionAction {
         return tutupPeriodBo.getLastBulanBerjalanSaldoAkhir(tahun, branch);
     }
 
+    public List getListTahunKedepan(String jumlah){
+        int year = Calendar.getInstance().get(Calendar.YEAR);
+        // default = 10
+        int batas = 10;
+        if (jumlah != null && !"".equalsIgnoreCase(jumlah))
+            batas = Integer.valueOf(jumlah);
+
+        List listOfPeriode = new ArrayList();
+        for (int i = 0; i < batas; i++){
+            listOfPeriode.add(year + i);
+        }
+
+        return listOfPeriode;
+    }
+
 }
