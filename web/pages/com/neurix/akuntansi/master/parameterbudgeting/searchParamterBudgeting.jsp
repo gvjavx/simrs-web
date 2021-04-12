@@ -91,6 +91,7 @@
                                             <td>
                                                 <table>
                                                     <select id="sel_search_kategori" class="form-control" style="margin-top: 7px;">
+                                                        <option value=""> - </option>
                                                     </select>
                                                 </table>
                                             </td>
@@ -124,8 +125,9 @@
                                             </td>
                                             <td>
                                                 <table>
-                                                    <select id="sel_search_item_rekening" class="form-control select2" style="width: 100%">
-                                                    </select>
+                                                    <input type="text" class="form-control" id="sel_search_item_rekening" style="margin-top:7px;"/>
+                                                    <%--<select id="sel_search_item_rekening" class="form-control select2" style="width: 100%">--%>
+                                                    <%--</select>--%>
                                                 </table>
 
                                             </td>
@@ -220,7 +222,7 @@
                         <td>
                             <table>
                                 <select id="sel_edit_kategori" class="form-control" style="margin-top: 7px;">
-
+                                    <option value=""> - </option>
                                 </select>
                             </table>
                         </td>
@@ -256,9 +258,9 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_edit_item_rekening" class="form-control select2" style="width: 100%">
-
-                                </select>
+                                <input type="text" class="form-control" id="sel_edit_item_rekening" style="margin-top:7px;"/>
+                                <%--<select id="sel_edit_item_rekening" class="form-control select2" style="width: 100%">--%>
+                                <%--</select>--%>
                             </table>
 
                         </td>
@@ -306,7 +308,7 @@
                         <td>
                             <table>
                                 <select id="sel_delete_kategori" class="form-control" style="margin-top: 7px" disabled>
-
+                                    <option value=""> - </option>
                                 </select>
                             </table>
                         </td>
@@ -342,9 +344,9 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_delete_item_rekening" class="form-control select2" style="width: 100%" disabled>
-
-                                </select>
+                                <input type="text" class="form-control" id="sel_delete_item_rekening" style="margin-top:7px;"/>
+                                <%--<select id="sel_delete_item_rekening" class="form-control select2" style="width: 100%" disabled>--%>
+                                <%--</select>--%>
                             </table>
 
                         </td>
@@ -390,7 +392,7 @@
                         <td>
                             <table>
                                 <select id="sel_add_kategori" class="form-control" style="margin-top: 7px">
-
+                                    <option value=""> - </option>
                                 </select>
                             </table>
                         </td>
@@ -426,9 +428,9 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_add_item_rekening" class="form-control select2" style="width: 100%">
-
-                                </select>
+                                <input type="text" class="form-control" id="sel_add_item_rekening" style="margin-top:7px;"/>
+                                <%--<select id="sel_add_item_rekening" class="form-control select2" style="width: 100%">--%>
+                                <%--</select>--%>
                             </table>
 
                         </td>
