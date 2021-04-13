@@ -1888,7 +1888,8 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "WHERE a.branch_id ILIKE :unit \n" +
                 "AND b.nama_pegawai ILIKE :nama \n" +
                 "AND a.flag = 'Y' \n" +
-                "AND b.flag = 'Y' ";
+                "AND b.flag = 'Y' \n" +
+                "LIMIT 8";
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
                 .setParameter("unit", branchId)

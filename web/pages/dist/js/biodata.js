@@ -1,9 +1,9 @@
 
 function loadPositionJabatan(stAction) {
+    console.log("stAction is " + stAction);
     $("#inputKodeDokter").css('display','block');
     var nip = $("#nip1").val();
     BiodataAction.listPersonilPosition(nip, function (res) {
-
         var str = "";
         $.each(res, function (i, item) {
 
@@ -191,7 +191,7 @@ function saveEditJabatan() {
         } else {
             alert("Data Berhasil Di Update")
             cleanAllFormPositionJabatan();
-            loadPositionJabatan();
+            loadPositionJabatan("add");
             $("#modal-edit-jabatan").modal('hide');
         }
     });
@@ -242,7 +242,7 @@ function saveAddJabatan() {
         } else {
             alert("Data Berhasil Di Tambahkan")
             cleanAllFormPositionJabatan();
-            loadPositionJabatan();
+            loadPositionJabatan('add');
             $("#modal-edit-jabatan").modal('hide');
         }
     });

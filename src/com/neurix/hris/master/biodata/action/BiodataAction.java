@@ -3664,13 +3664,13 @@ public class BiodataAction extends BaseMasterAction {
             if (!isJenisPegawaiDefault) {
                 // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
                 if (filteredForJenisPegawaiDefaultAktif == null || filteredForJenisPegawaiDefaultAktif.size() == 0) {
-                    response.setMsg("Tidak Ada Jabatan Utama Aktif Pada List. Tambahkan / Edit Terlebih Dahulu.");
+                    response.setMsg("Tidak Ada Jabatan Utama Aktif (Normal) Pada List. Tambahkan / Edit Terlebih Dahulu.");
                     return response;
                 } //END
             } else {
                 // jika bukan jenis pegawai default yang dipilih. maka check jika tidak ada posisi utama.
                 if (filteredForJenisPegawaiDefaultAktif != null && filteredForJenisPegawaiDefaultAktif.size() > 0) {
-                    response.setMsg("Sudah Ada Jabatan Utama Aktif.");
+                    response.setMsg("Sudah Ada Jabatan Utama Aktif (Normal).");
                     return response;
                 } //END
             }

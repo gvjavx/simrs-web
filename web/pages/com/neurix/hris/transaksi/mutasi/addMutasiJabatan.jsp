@@ -354,7 +354,7 @@
                         <script type='text/javascript'>
                             var functions, mapped;
                             $('#nip2').typeahead({
-                                minLength: 1,
+                                minLength: 3,
                                 source: function (query, process) {
                                     $('#nip1').val("");
                                     functions = [];
