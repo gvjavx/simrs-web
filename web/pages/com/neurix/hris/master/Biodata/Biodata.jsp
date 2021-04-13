@@ -5441,14 +5441,18 @@
                     }
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga,function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-editKeluarga').modal('hide');
-                        $('#myFormKeluarga')[0].reset();
-                        loadSessionKeluarga();
-                    });
+                if(tanggalLahir == ''){
+                    alert('Tanggal Lahir Must be Entry')
+                } else {
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        KeluargaAction.initEdit(keluargaId, keluargaName, statusKeluarga, statusKeluargaName, tanggalLahir, genderKeluarga, function (listdata) {
+                            alert('Data Successfully Updated');
+                            $('#modal-editKeluarga').modal('hide');
+                            $('#myFormKeluarga')[0].reset();
+                            loadSessionKeluarga();
+                        });
+                    }
                 }
             }
             </s:if>
@@ -5456,6 +5460,8 @@
             if (url == 'addKeluarga') {
                 if (keluargaName == '') {
                     alert('Name Must be Entry')
+                }else if (tanggalLahir == ''){
+                    alert('Tanggal Lahir Must be Entry')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5468,14 +5474,18 @@
                     }
                 }
             } else {
-                if (confirm('Are you sure you want to save this Record?')) {
-                    dwr.engine.setAsync(false);
-                    KeluargaAction.saveEdit(keluargaId, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, function (listdata) {
-                        alert('Data Successfully Updated');
-                        $('#modal-editKeluarga').modal('hide');
-                        $('#myFormKeluarga')[0].reset();
-                        loadKeluarga(nip);
-                    });
+                if (tanggalLahir == ''){
+                    alert('Tanggal Lahir Must be Entry')
+                } else {
+                    if (confirm('Are you sure you want to save this Record?')) {
+                        dwr.engine.setAsync(false);
+                        KeluargaAction.saveEdit(keluargaId, keluargaName, statusKeluarga, genderKeluarga, tanggalLahir, function (listdata) {
+                            alert('Data Successfully Updated');
+                            $('#modal-editKeluarga').modal('hide');
+                            $('#myFormKeluarga')[0].reset();
+                            loadKeluarga(nip);
+                        });
+                    }
                 }
             }
             </s:else>

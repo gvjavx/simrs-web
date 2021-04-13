@@ -30,6 +30,8 @@
           p:pelatihanJabatanUserDao-ref="pelatihanJabatanUserDao"
           p:studyJurusanDao-ref="studyJurusanDao"
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
+          p:profesiDao-ref="profesiDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
