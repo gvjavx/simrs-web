@@ -489,7 +489,7 @@ public class MutasiAction extends BaseMasterAction{
             reportParams.put("unitLama", searchMutasi.getBranchLamaName());
             reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
             reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
-            reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
+//            reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
             reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
             stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("date", stTanggal);

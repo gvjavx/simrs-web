@@ -972,9 +972,10 @@ public class MutasiBoImpl implements MutasiBo {
                 resultMutasi.setBranchLamaName(mutasi.getBranchLamaName());
                 resultMutasi.setBranchBaruName(mutasi.getBranchBaruName());
                 resultMutasi.setPositionBaruName(mutasi.getPositionBaruName());
-                resultMutasi.setLevelBaruName(mutasi.getLevelBaruName());
-                resultMutasi.setLevelBaru(mutasi.getLevelBaru());
+//                resultMutasi.setLevelBaruName(mutasi.getLevelBaruName());
+//                resultMutasi.setLevelBaru(mutasi.getLevelBaru());
                 resultMutasi.setStTanggalEfektif(mutasi.getStTanggalEfektif());
+                resultMutasi.setNoSk(mutasi.getNoSk());
             }
         }
 
