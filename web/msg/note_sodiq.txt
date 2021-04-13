@@ -2525,6 +2525,12 @@ WITH (
 ALTER TABLE public.it_simrs_order_periksa_lab
   OWNER TO postgres;
 
+--PERTAMA PUASA 13-04-2021
+ALTER TABLE it_simrs_header_pemeriksaan
+ADD COLUMN jenis_pasien VARCHAR(100);
+
+
+
 
 
 
