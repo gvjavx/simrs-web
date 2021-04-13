@@ -25,9 +25,10 @@
             var kodering        = $("#kodering-position-final").val();
             var flagCostUnit    = $("#jenis option:selected").val();
 
-            console.log(lastKode);
+            var lastKode        = $("#kodering").val();
 
-            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '') {
+
+            if (namePosition != '' && department!='' && bagian!='' && kelompok!='' && kodering != '' && (lastKode.length == 2)) {
 
                 if (flagCostUnit == "Y"){
                     PositionAction.getOnePositionByKodering(kodering, function (res) {
@@ -72,6 +73,9 @@
                 }
                 if (kodering == '') {
                     msg += 'Field <strong>Kodering</strong> is required.' + '<br/>';
+                }
+                if (lastKode.length != 2) {
+                    msg += 'Last <strong>Kodering</strong> must be <strong>two</strong> digits.' + '<br/>';
                 }
 
                 document.getElementById('errorValidationMessage5').innerHTML = msg;
@@ -397,7 +401,11 @@
         var kodering        = $("#kodering").val();
         var koderingsubbid  = $("#kodering-sub-bidang").text();
         $("#kodering-position-final").val(koderingsubbid+kodering);
-        //alert($("#kodering-position-final").val());
+
+        var lastKode        = $("#kodering").val().length;
+        console.log("Last Kodering : " + lastKode + " length : " + (lastKode == 2));
+
+        // alert($("#kodering-position-final").val());
     }
 
     function setKoderingFromUnitCost() {
