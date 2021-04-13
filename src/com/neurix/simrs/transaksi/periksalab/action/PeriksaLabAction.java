@@ -945,33 +945,68 @@ public class PeriksaLabAction extends BaseTransactionAction {
         }
     }
 
-    public CrudResponse saveUpdatePemeriksaan(String idLabPeriksa, List<String> idParameter, String ket) {
+    public CrudResponse saveUpdatePemeriksaan(String idHeaderPemeriksaan, String listPemeriksaan) {
         CrudResponse response = new CrudResponse();
-        logger.info("[PeriksaLabAction.saveOrderLab] start process >>>");
+        logger.info("[PeriksaLabAction.saveUpdatePemeriksaan] start process >>>");
         try {
             String userLogin = CommonUtil.userLogin();
             Timestamp updateTime = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            List<PeriksaLab> periksaLabList = new ArrayList<>();
+
+            if (listPemeriksaan != null) {
+                JSONArray json = new JSONArray(listPemeriksaan);
+                for (int i = 0; i < json.length(); i++) {
+                    JSONObject ob = json.getJSONObject(i);
+                    PeriksaLab periksa = new PeriksaLab();
+                    List<PeriksaLabDetail> detailList = new ArrayList<>();
+                    periksa.setIdLab(ob.getString("id_pemeriksaan"));
+                    periksa.setNamaLab(ob.getString("nama_pemeriksaan"));
+                    String listParameter = ob.getString("list_parameter");
+                    if (listParameter != null) {
+                        JSONArray jsn = new JSONArray(listParameter);
+                        for (int j = 0; j < jsn.length(); j++) {
+                            JSONObject oc = jsn.getJSONObject(j);
+                            PeriksaLabDetail detail = new PeriksaLabDetail();
+                            detail.setIdLabDetail(oc.getString("id_parameter"));
+                            detail.setNamaDetailPeriksa(oc.getString("nama_parameter"));
+                            detailList.add(detail);
+                        }
+                    } else {
+                        response.setStatus("error");
+                        response.setMsg("Data order jenis parameter pemeriksaan tidak ditemukan");
+                        return response;
+                    }
+                    periksa.setDetailLab(detailList);
+                    periksaLabList.add(periksa);
+                }
+            } else {
+                response.setStatus("error");
+                response.setMsg("Data order jenis pemeriksaan tidak ditemukan");
+                return response;
+            }
+
             PeriksaLab periksaLab = new PeriksaLab();
-            periksaLab.setIdPeriksaLab(idLabPeriksa);
+            periksaLab.setIdHeaderPemeriksaan(idHeaderPemeriksaan);
             periksaLab.setCreatedWho(userLogin);
             periksaLab.setLastUpdate(updateTime);
             periksaLab.setCreatedDate(updateTime);
             periksaLab.setLastUpdateWho(userLogin);
             periksaLab.setAction("C");
             periksaLab.setFlag("Y");
-            periksaLab.setKeterangan(ket);
+            periksaLab.setListLab(periksaLabList);
 
-            ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
-            PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+            periksaLabBo.saveUpdateParameter(periksaLab);
+            response.setStatus("success");
+            response.setMsg("OK");
 
-            response = periksaLabBo.saveUpdateParameter(periksaLab, idParameter);
-
-        } catch (GeneralBOException e) {
+        } catch (Exception e) {
             response.setStatus("error");
             response.setMsg("Found error");
         }
 
-        logger.info("[PeriksaLabAction.saveOrderLab] End process >>>");
+        logger.info("[PeriksaLabAction.saveUpdatePemeriksaan] End process >>>");
         return response;
     }
 
@@ -1262,6 +1297,25 @@ public class PeriksaLabAction extends BaseTransactionAction {
         }
         logger.info("[PeriksaLabAction.getEntityHeaderpemeriksaan] end process >>>");
         return response;
+    }
+
+    public List<PeriksaLab> getPemeriksaanById(String idHeader) {
+        logger.info("[PeriksaLabAction.getPemeriksaanById] start process >>>");
+        List<PeriksaLab> periksaLabList = new ArrayList<>();
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        PeriksaLabBo periksaLabBo = (PeriksaLabBo) ctx.getBean("periksaLabBoProxy");
+        PeriksaLab periksaLab = new PeriksaLab();
+        periksaLab.setIdHeaderPemeriksaan(idHeader);
+        if (!"".equalsIgnoreCase(idHeader) && idHeader != null) {
+            try {
+                periksaLabList = periksaLabBo.getByCriteria(periksaLab);
+            } catch (GeneralBOException e) {
+                logger.error("[PeriksaLabAction.getPemeriksaanById] Error when adding item ," + "Found problem when saving add data, please inform to your admin.", e);
+            }
+
+        }
+        logger.info("[PeriksaLabAction.getPemeriksaanById] end process >>>");
+        return periksaLabList;
     }
 
     public String getKet() {

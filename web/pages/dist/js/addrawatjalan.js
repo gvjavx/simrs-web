@@ -1680,10 +1680,13 @@ function listLab() {
                     periksa = '<span class="span-warning">Periksa Luar</span>';
                 }
 
+                var print = "";
+
                 if ("Pending" == item.statusPeriksaName) {
                     btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
                 } else if ("Selesai" == item.statusPeriksaName) {
                     btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
+                    print = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
                 } else if ("Antrian" == item.statusPeriksaName) {
                     btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idHeaderPemeriksaan + '\', \'' + item.idKategoriLab + '\', \'' + item.isPeriksaLuar + '\', \'' + item.statusPeriksaName + '\', \'' + tanggal + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 }
@@ -1692,9 +1695,8 @@ function listLab() {
                     table += "<tr>" +
                         "<td>" + dateFormat + "</td>" +
                         "<td>" + item.kategoriLabName + ' ' +periksa+ "</td>" +
-                        // "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
-                        "<td align='center'>" + btn + "</td>" +
+                        "<td align='center'>" + print + crn + "</td>" +
                         "</tr>";
                 } else {
                     table += "<tr>" +
@@ -1704,7 +1706,6 @@ function listLab() {
                         '<textarea style="display: none" id="luar_' + item.idHeaderPemeriksaan + '">' + hiddeLuar + '</textarea>' +
                         "</td>" +
                         "<td>" + item.kategoriLabName+ ' ' +periksa+ "</td>" +
-                        // "<td>" + lab + "</td>" +
                         "<td>" + status + "</td>" +
                         "<td align='center'>" + btn + dalam + luar + crn + "</td>" +
                         "</tr>";

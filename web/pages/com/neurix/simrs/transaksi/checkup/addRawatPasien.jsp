@@ -339,7 +339,8 @@
                 var idPasien = $('#id_pasien').val();
                 var idPelayanan = $('#h_id_pelayanan').val();
                 var jenisPasien = $('#jenis_pasien').val();
-                if(jenisPasien != 'paket_perusahaan' && input != 1){
+                var isDaftarPJ = $('#is_daftar_pj').val();
+                if(jenisPasien != 'paket_perusahaan' && input != 1 && "N" == isDaftarPJ){
                     window.open('printNoAntrian_checkup.action?id='+idPasien+'&tipe='+idPelayanan, '_blank');
                 }
                 $('#no_bpjs, #id_pasien, #no_ktp, #nama_pasien, #jenis_kelamin, #tempat_lahir, #st_tgl_lahir, #jalan, #suku, #profesi, #agama, #poli, #dokter, #penjamin, #img_file, #provinsi, #kabupaten, #kecamatan, #desa').css('border', '');
@@ -1280,8 +1281,8 @@
                                                 <label class="col-md-4" style="margin-top: 10px">Jenis Pemeriksaan</label>
                                                 <div class="col-md-8">
                                                     <select id="id_lab" class="form-control select2"
-                                                            style="margin-top: 7px; width: 100%" multiple
-                                                            onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()}; setOrderLab(this.value)">
+                                                            style="margin-top: 7px; width: 100%" multiple name="headerCheckup.listPemeriksaan"
+                                                            onchange="var warn =$('#war_lab').is(':visible'); if (warn){$('#con_lab').show().fadeOut(3000);$('#war_lab').hide()};">
                                                         <option value=''>[Select One]</option>
                                                     </select>
                                                     <span style="color: red; display: none" id="war_lab"><i
@@ -1503,7 +1504,7 @@
                             <s:hidden id="is_laka"></s:hidden>
                             <s:hidden name="headerCheckup.idPelayanan" id="h_id_pelayanan"></s:hidden>
                             <s:hidden name="headerCheckup.idJenisPeriksaPasien" id="h_id_jenis_pasien"></s:hidden>
-                            <s:hidden name="headerCheckup.listPemeriksaan" id="h_id_order_lab"></s:hidden>
+                            <s:hidden id="h_id_order_lab"></s:hidden>
                             <s:hidden id="cek_poli_eksekutif" name="headerCheckup.isEksekutif"></s:hidden>
                             <s:hidden id="cek_is_vaksin" name="headerCheckup.isVaksin"></s:hidden>
                             <s:hidden id="is_daftar_pj"></s:hidden>
@@ -2534,6 +2535,7 @@
                         $('#uang_muka, #uang_muka_val').val('');
                         $('#cek_is_uang_muka').prop('checked', false);
                         $('#pembayaran').val('tunai');
+                        $('#id_lab').val(null).trigger('change');
                     } else {
                         if("umum" == jenisPasien){
                             $('#form-nominal_uang_muka').show();
@@ -2551,6 +2553,7 @@
                         $('#cek_cek').hide();
                         $('#uang_muka, #uang_muka_val').val('');
                         $('#cek_is_uang_muka').prop('checked', false);
+                        $('#id_lab').val(null).trigger('change');
                     }
 
                     if(res.isVaksin == "Y"){
@@ -3321,6 +3324,7 @@
             $('#poli').attr('disabled', true);
             $('#form_eksekutif').hide();
             $('#pembayaran').val('');
+            resetAllField();
         } else if (jenis == "paket_individu") {
             listSelectPaket();
             $('#form-paket').show();
