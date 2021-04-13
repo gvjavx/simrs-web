@@ -68,7 +68,7 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
     public String getNextMesinAbsensiId() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_mesin_absensi')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
+        String sId = String.format("%03d", iter.next());
 
         return "MA" + sId;
     }
@@ -76,7 +76,7 @@ public class MesinDao extends GenericDao<ImMesinAbsensiEntity, String> {
     public String getNextMesinAbsensiIdHistory() throws HibernateException {
         Query query = this.sessionFactory.getCurrentSession().createSQLQuery("select nextval ('seq_master_mesin_absensi_history')");
         Iterator<BigInteger> iter=query.list().iterator();
-        String sId = String.format("%02d", iter.next());
+        String sId = String.format("%03d", iter.next());
 
         return "MH" + sId;
     }

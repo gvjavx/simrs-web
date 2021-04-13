@@ -901,6 +901,7 @@ public class BiodataAction extends BaseMasterAction {
                 biodata.setListOfPersonilPosition(listOfResultPersonil);
                 try {
                     biodataBoProxy.saveAdd(biodata);
+
                     //RAKA-31MAR2021 ==> create User
                     if("Y".equalsIgnoreCase(biodata.getCreateUser())) {
                         if(!"Y".equalsIgnoreCase(biodata.getFlagDokterKso())) {
@@ -911,6 +912,7 @@ public class BiodataAction extends BaseMasterAction {
                             createUser(biodata);
                         } catch (Exception e) {
                             logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when Create User, " + e.getMessage());
                         }
                     }
                     //RAKA-end
