@@ -6144,7 +6144,7 @@ public class BiodataBoImpl implements BiodataBo {
             study.setTypeStudy(imStudyEntity.getTypeStudy());
             study.setStudyName(imStudyEntity.getStudyName());
 
-            if (imStudyEntity.getFakultasId() != null) {
+            if (imStudyEntity.getStudyJurusanId() != null) {
                 study.setFakultasName(imStudyEntity.getImStudyJurusanEntity().getJurusanName());
             } else {
                 study.setFakultasName("-");

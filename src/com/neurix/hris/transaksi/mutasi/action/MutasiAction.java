@@ -465,7 +465,7 @@ public class MutasiAction extends BaseMasterAction{
                 logger.error("[mutasiAction.printReportMutasi] Error when get data report mutasi. please inform to your admin.", e);
             }
 
-            String tahun            = "";
+            String tahun            = "2020";
             BigDecimal gajiPegawai  = mutasiBo.getGajiPokok(searchMutasi.getLevelBaru(),tahun);
             String stGajiPegawai    = CommonUtil.numbericFormat(gajiPegawai,"###,###");
             String noSurat          = searchMutasi.getNoSk();
@@ -489,7 +489,6 @@ public class MutasiAction extends BaseMasterAction{
             reportParams.put("unitLama", searchMutasi.getBranchLamaName());
             reportParams.put("jabatanBaru", searchMutasi.getPositionBaruName());
             reportParams.put("unitBaru", searchMutasi.getBranchBaruName());
-//            reportParams.put("levelBaru", searchMutasi.getLevelBaruName());
             reportParams.put("gajiBaru","Rp. "+ stGajiPegawai);
             stTanggal = CommonUtil.convertDateToString( new java.util.Date());
             reportParams.put("date", stTanggal);

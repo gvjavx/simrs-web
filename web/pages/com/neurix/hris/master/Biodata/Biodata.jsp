@@ -399,7 +399,7 @@
                                                 <td>
                                                     <table>
                                                         <s:if test="isDelete()">
-                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" readonly="false" disabled="false" cssClass="form-control"/>
+                                                            <s:textfield id="namaPegawai1" name="biodata.namaPegawai" readonly="true" disabled="false" cssClass="form-control"/>
                                                         </s:if>
                                                         <s:else>
                                                             <s:textfield id="namaPegawai1" name="biodata.namaPegawai" disabled="false" cssClass="form-control"/>

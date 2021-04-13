@@ -3231,9 +3231,10 @@ public class BiodataAction extends BaseMasterAction {
             JRBeanCollectionDataSource itemRiwayatPekerjaan = new JRBeanCollectionDataSource(listRiwayatPekerjaan);
             JRBeanCollectionDataSource itemPendidikan = new JRBeanCollectionDataSource(listPendidikan);
 
-            String foto = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() +
-                    CommonConstant.RESOURCE_PATH_USER_UPLOAD + getId() + ".jpg";
+//            String foto = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() +
+//                    CommonConstant.RESOURCE_PATH_USER_UPLOAD + getId() + ".jpg";
 
+            String foto = CommonConstant.EXTERNAL_IMG_URI_PROFILE + CommonConstant.RESOURCE_PATH_PHOTO_PROFILE + getId() + ".jpg";
 
             if (!new File(foto).exists()) {
                 foto = CommonConstant.RESOURCE_PATH_SAVED_UPLOAD_DIRECTORY + ServletActionContext.getRequest().getContextPath() +

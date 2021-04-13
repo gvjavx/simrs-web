@@ -303,7 +303,7 @@ To change this template use File | Settings | File Templates.
                     <div class="form-group">
                         <label class="control-label col-sm-4" >No. Sk Mutasi : </label>
                         <div class="col-sm-8">
-                            <input type="text" class="form-control nip" id="noSurat" name="nip">
+                            <input readonly type="text" class="form-control nip" id="noSurat" name="nip">
                         </div>
                     </div>
                 </form>
@@ -326,8 +326,13 @@ To change this template use File | Settings | File Templates.
         });
         $('#tableMutasi').on('click', '.item-print', function(){
             var id = $(this).attr('id');
-            $('#idMutasi').val(id);
-            $('#modal-edit').modal('show');
+
+            if (confirm('Print Surat Keterangan Mutasi ? ')) {
+                var addr = "printReportMutasi_mutasi.action?idMutasi="+id;
+                window.open(addr,'_blank');
+            }
+            // $('#idMutasi').val(id);
+            // $('#modal-edit').modal('show');
         });
 
         $('#btnSave').click(function(){
