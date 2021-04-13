@@ -19,7 +19,7 @@
             var nameGolonganPkwt    = document.getElementById("golonganPkwtName1").value;
             // var idGolonganPkwt    = document.getElementById("golonganPkwtId1").value;
 
-            if (nameGolonganPkwt != '' && idGolonganPkwt !='') {
+            if (nameGolonganPkwt != '') {
                 if (confirm('Do you want to save this record?')) {
                     event.originalEvent.options.submit = true;
                     $.publish('showDialog');

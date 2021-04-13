@@ -3,6 +3,7 @@ package com.neurix.hris.transaksi.mutasi.bo.impl;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
 import com.neurix.hris.master.biodata.bo.BiodataBo;
@@ -10,6 +11,10 @@ import com.neurix.hris.master.biodata.dao.BiodataDao;
 import com.neurix.hris.master.biodata.dao.PelatihanJabatanUserDao;
 import com.neurix.hris.master.biodata.dao.TunjLainPegawaiDao;
 import com.neurix.hris.master.biodata.model.*;
+import com.neurix.hris.master.golongan.dao.GolonganDao;
+import com.neurix.hris.master.golongan.model.ImGolonganEntity;
+import com.neurix.hris.master.golonganPkwt.dao.GolonganPkwtDao;
+import com.neurix.hris.master.golonganPkwt.model.ImGolonganPkwtEntity;
 import com.neurix.hris.master.jenisPegawai.dao.JenisPegawaiDao;
 import com.neurix.hris.master.jenisPegawai.model.ImHrisJenisPegawaiEntity;
 import com.neurix.hris.master.jenisPegawai.model.JenisPegawai;
@@ -109,6 +114,16 @@ public class MutasiBoImpl implements MutasiBo {
     private KeluargaDao keluargaDao;
     private StudyJurusanDao studyJurusanDao;
     private TunjLainPegawaiDao tunjLainPegawaiDao;
+    private GolonganDao golonganDao;
+    private GolonganPkwtDao golonganPkwtDao;
+
+    public void setGolonganDao(GolonganDao golonganDao) {
+        this.golonganDao = golonganDao;
+    }
+
+    public void setGolonganPkwtDao(GolonganPkwtDao golonganPkwtDao) {
+        this.golonganPkwtDao = golonganPkwtDao;
+    }
 
     public void setStudyJurusanDao(StudyJurusanDao studyJurusanDao) {
         this.studyJurusanDao = studyJurusanDao;
@@ -407,6 +422,30 @@ public class MutasiBoImpl implements MutasiBo {
                         logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
                         throw new GeneralBOException("Error when retrieving Next Mutasi Id, " + e.getMessage());
                     }
+
+                    ImBiodataEntity biodataEntity = new ImBiodataEntity();
+                    try{
+                        biodataEntity = biodataDao.getById("nip", mutasi.getNip());
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
+                    }
+                    String level = "-";
+                    if(biodataEntity.getGolongan() != null && !"".equalsIgnoreCase(biodataEntity.getGolongan())) {
+                        try {
+                            if (biodataEntity.getTipePegawai().equalsIgnoreCase(CommonConstant.PEGAWAI_PKWT)) {
+                                ImGolonganPkwtEntity golongan = golonganPkwtDao.getById("golonganPkwtId", biodataEntity.getGolongan());
+                                level = golongan.getGolonganPkwtName();
+                            } else {
+                                ImGolonganEntity golongan = golonganDao.getById("golonganId", biodataEntity.getGolongan());
+                                level = golongan.getGolonganName();
+                            }
+                        } catch (HibernateException e) {
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Golongan by ID, " + e.getMessage());
+                        }
+                    }
+
                     itMutasiEntity.setMutasiId(mutasiId);
                     itMutasiEntity.setNip(mutasi.getNip());
                     itMutasiEntity.setBranchLamaId(mutasi.getBranchLamaId());
@@ -417,8 +456,13 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setMenggantikanNip(mutasi.getPenggantiNip());
                     itMutasiEntity.setStatus(mutasi.getStatus());
                     itMutasiEntity.setTipeMutasi(mutasi.getTipeMutasi());
-                    itMutasiEntity.setLevelLama(mutasi.getLevelLama());
-                    itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
+                    itMutasiEntity.setLevelLama(level);
+                    itMutasiEntity.setLevelLamaName(level);
+                    itMutasiEntity.setLevelBaru(level);
+                    itMutasiEntity.setLevelBaruName(level);
+//                    itMutasiEntity.setLevelLama(mutasi.getLevelLama());
+//                    itMutasiEntity.setLevelLamaName(mutasi.getLevelLamaName());
+
 
                     if("M".equalsIgnoreCase(mutasi.getStatus()) || "R".equalsIgnoreCase(mutasi.getStatus())){
                         itMutasiEntity.setBranchBaruId(mutasi.getBranchBaruId());
