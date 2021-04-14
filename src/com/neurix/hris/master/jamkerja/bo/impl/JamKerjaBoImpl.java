@@ -57,7 +57,7 @@ public class JamKerjaBoImpl implements JamKerjaBo {
 
     @Override
     public void saveEdit(JamKerja bean) throws GeneralBOException {
-        logger.info("[ShiftBoImpl.saveEdit] start process >>>");
+        logger.info("[JamKerjaBoImpl.saveEdit] start process >>>");
 
         boolean saved = false;
 
@@ -72,8 +72,8 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                 entityData = jamKerjaDao.getById("jamKerjaId", jamKerjaId);
                 jamKerjaHistoryId = jamKerjaDao.getNextJamKerjaHistoryId();
             } catch (HibernateException e) {
-                logger.error("[AlatBoImpl.saveEdit] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when searching data alat by Kode alat, please inform to your admin...," + e.getMessage());
+                logger.error("[JamKerjaBoImpl.saveEdit] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when searching data by ID, please inform to your admin...," + e.getMessage());
             }
 
 
@@ -115,17 +115,17 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                     jamKerjaDao.addAndSaveHistory(jamKerjaHistory);
                     saved = true;
                 } catch (HibernateException e) {
-                    logger.error("[ShiftBoImpl.saveEdit] Error, " + e.getMessage());
+                    logger.error("[JamKerjaBoImpl.saveEdit] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
                 }
             }
         }
-        logger.info("[ShiftBoImpl.saveEdit] end process <<<");
+        logger.info("[JamKerjaBoImpl.saveEdit] end process <<<");
     }
 
     @Override
     public JamKerja saveAdd(JamKerja bean) throws GeneralBOException {
-        logger.info("[ShiftBoImpl.saveAdd] start process >>>");
+        logger.info("[JamKerjaBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
             List<ImHrisJamKerja> jamKerjaList = new ArrayList();
@@ -135,13 +135,14 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                 logger.error("[JamKerjaBoImpl.saveAdd] Error, " + e.getMessage());
                 throw new GeneralBOException("Error when retrieving Jam Kerja by Branch and Hari, " + e.getMessage());
             }
+
             if (jamKerjaList.size() == 0) {
                 String jkId;
                 try {
                     // Generating ID, get from postgre sequence
                     jkId = jamKerjaDao.getNextJamKerjaId();
                 } catch (HibernateException e) {
-                    logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[jamKerjaBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
                 }
 
@@ -165,7 +166,7 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                 try {
                     jamKerjaDao.addAndSave(entityData);
                 } catch (HibernateException e) {
-                    logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
+                    logger.error("[JamKerjaBoImpl.saveAdd] Error, " + e.getMessage());
                     throw new GeneralBOException("Found problem when saving new data Jam Kerja, please info to your admin..." + e.getMessage());
                 }
             } else {
@@ -174,13 +175,13 @@ public class JamKerjaBoImpl implements JamKerjaBo {
             }
         }
 
-        logger.info("[ShiftBoImpl.saveAdd] end process <<<");
+        logger.info("[JamKerjaBoImpl.saveAdd] end process <<<");
         return null;
     }
 
     @Override
     public List<JamKerja> getByCriteria(JamKerja searchBean) throws GeneralBOException {
-        logger.info("[ShiftBoImpl.getByCriteria] start process >>>");
+        logger.info("[JamKerjaBoImpl.getByCriteria] start process >>>");
 
         // Mapping with collection and put
         List<JamKerja> listOfResult = new ArrayList();
@@ -219,7 +220,7 @@ public class JamKerjaBoImpl implements JamKerjaBo {
 
                 imHrisJamKerjas = jamKerjaDao.getByCriteria(hsCriteria);
             } catch (HibernateException e) {
-                logger.error("[ShiftBoImpl.getByCriteria] Error, " + e.getMessage());
+                logger.error("[JamKerjaBoImpl.getByCriteria] Error, " + e.getMessage());
                 throw new GeneralBOException("Found problem when searching data by criteria, please info to your admin..." + e.getMessage());
             }
 
@@ -297,7 +298,7 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                 }
             }
         }
-        logger.info("[ShiftBoImpl.getByCriteria] end process <<<");
+        logger.info("[JamKerjaBoImpl.getByCriteria] end process <<<");
 
         return listOfResult;
     }
