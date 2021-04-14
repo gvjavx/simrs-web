@@ -2738,7 +2738,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="control-label col-sm-4" >Lama Pelatihan :</label>
+                        <label class="control-label col-sm-4" >Lama Pelatihan (hari) :</label>
                         <div class="col-sm-8">
                             <input type="number" class="form-control" id="jumlahJamPelatihan">
                         </div>
@@ -4078,7 +4078,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4093,7 +4093,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml. Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4167,7 +4167,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -4182,7 +4182,7 @@
                     "<th style='text-align: center; background-color:  #3c8dbc'>Nama Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Judul Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Penyelenggara</th>" +
-                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Jam Pelatihan</th>" +
+                    "<th style='text-align: center; background-color:  #3c8dbc'>Jml Hari Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Sertifikat</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Tanggal Pelatihan</th>" +
                     "<th style='text-align: center; background-color:  #3c8dbc'>Ms. Berlaku Setifikat</th>" +
@@ -5332,7 +5332,7 @@
                     msg+="- Penyelenggara \n";
                 }
                 if (jumlahJamPelatihan==""){
-                    msg+="- Jumlah Jam Pelatihan \n";
+                    msg+="- Jumlah Hari Pelatihan \n";
                 }
                 if (sertifikatPelatihan==""){
                     msg+="- Sertifikat Pelatihan \n";
