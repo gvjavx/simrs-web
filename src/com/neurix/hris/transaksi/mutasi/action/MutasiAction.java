@@ -363,13 +363,13 @@ public class MutasiAction extends BaseMasterAction{
                 logger.error("ERROR, List Data Mutasi masih kosong !");
                 response.setStatus("error");
                 response.setMsg("Error, list mutasi masih kosong.");
-                throw new GeneralBOException("List Data Mutasi masih kosong, mohon cek kembali.");
+//                throw new GeneralBOException("List Data Mutasi masih kosong, mohon cek kembali.");
             }
         }catch (Exception e) {
             logger.error("[mutasiAction.saveMutasi] Error when adding item , Found problem when saving add data, please inform to your admin.", e);
             response.setStatus("error");
-            response.setMsg("Error, "+e.getMessage());
-            throw new GeneralBOException(e.getMessage());
+            response.setMsg(e.getMessage());
+//            throw new GeneralBOException(e.getMessage());
         }
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("saveMutasi");

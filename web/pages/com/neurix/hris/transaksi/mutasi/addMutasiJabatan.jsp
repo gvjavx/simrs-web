@@ -354,7 +354,7 @@
                         <script type='text/javascript'>
                             var functions, mapped;
                             $('#nip2').typeahead({
-                                minLength: 3,
+                                minLength: 2,
                                 source: function (query, process) {
                                     $('#nip1').val("");
                                     functions = [];
@@ -374,7 +374,7 @@
                                         });
                                         process(functions);
                                     }else{
-                                        alert("Nama tidak ditemukan");
+                                        // alert("Nama tidak ditemukan");
                                         $('#nip1').val("");
                                         $('#nip2').val("");
                                         $('#positionLamaId1').val("").change();
@@ -1271,10 +1271,13 @@
         MutasiAction.saveMutasi(tglEfektif, {
             callback: function (res) {
                 console.log(res);
+                // console.log(res.status + " <-> " + res.msg);
                 if(res.status == "success"){
                     $('#info_dialog').dialog('open');
                     window.location.href = "initForm_mutasi.action";
                 }else{
+                    $('#modal-confirm-dialog').modal('hide');
+                    $('#errorMessage').text(res.msg);
                     $('#error_dialog').dialog('open');
                 }
             }

@@ -32,6 +32,8 @@
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
           p:profesiDao-ref="profesiDao"
           p:dokterDao-ref="dokterDao"
+          p:golonganDao-ref="golonganDao"
+          p:golonganPkwtDao-ref="golonganPkwtDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
