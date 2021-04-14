@@ -169,7 +169,7 @@ public class JamKerjaBoImpl implements JamKerjaBo {
                     throw new GeneralBOException("Found problem when saving new data Jam Kerja, please info to your admin..." + e.getMessage());
                 }
             } else {
-                logger.error("[JamKerjaBoImpl.saveAdd] Error, Data dengan Branch dan Hari tersebut sudah ada.");
+                logger.error("[JamKerjaBoImpl.saveAdd] Error, Data Jam Kerja Br dan Hari tersebut sudah ada.");
                 throw new GeneralBOException("Data dengan branch dan hari tersebut sudah tersedia.");
             }
         }
