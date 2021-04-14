@@ -1266,6 +1266,7 @@
     }
 
     function saveAll(){
+        $('#modal-confirm-dialog').modal('hide');
         var tglEfektif  = $("#tanggalEfektif").val();
         dwr.engine.setAsync(true);
         MutasiAction.saveMutasi(tglEfektif, {
@@ -1276,7 +1277,6 @@
                     $('#info_dialog').dialog('open');
                     window.location.href = "initForm_mutasi.action";
                 }else{
-                    $('#modal-confirm-dialog').modal('hide');
                     $('#errorMessage').text(res.msg);
                     $('#error_dialog').dialog('open');
                 }

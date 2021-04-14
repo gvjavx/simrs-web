@@ -581,7 +581,7 @@ public class BiodataDao extends GenericDao<ImBiodataEntity, String> {
                 "\tpegawai.flag = '"+flag+"'\n" + searchNip + searchNama + searchBranchId + searchDivisiId + searchTipePegawai + searchJmlAnak +
 //                "\tAND itPosisi.jenis_pegawai = 'JP01'\n" + // Mencari yg jenis Jabatan NORMAL (Jabatan Utama)
                 "\torder by \n" +
-                "\titPosisi.position_id, itPosisi.jenis_pegawai"; //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
+                "\titPosisi.jenis_pegawai ASC, itPosisi.position_id"; //Memprioritaskan jenis jabatan NORMAL (berdasarkan order jabatan_pegawai ID)
 
 //        String query = "select DISTINCT \n" +
 //                "\titPosisi.branch_id,\n" +
