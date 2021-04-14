@@ -256,7 +256,7 @@ public class BgPendapatanAction {
         } catch (GeneralBOException e){
             logger.error("[BgPendapatanAction.getListParametersBudgeting] ERROR ", e);
             response.setStatus("error");
-            response.setMsg("[BgPendapatanAction.getListParametersBudgeting] ERROR " + e);
+            response.setMsg("[BgPendapatanAction.getListParametersBudgeting] ERROR " + e.getCause());
             return response;
         }
 
