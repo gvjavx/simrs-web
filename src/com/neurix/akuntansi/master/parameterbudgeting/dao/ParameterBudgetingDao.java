@@ -50,18 +50,21 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
         return criteria.list();
     }
 
-    public boolean foundParameterBudgetingByCriteria(String idKategoriBudgeting, String divisi, String master, String idParamRekening){
+    public boolean foundParameterBudgetingByCriteria(String idKategoriBudgeting, String divisi, String master, String rekeningId){
+
+        String where = "";
+        if ("INV".equalsIgnoreCase(master)){
+            where = "WHERE (id_kategori_budgeting, master_id, rekening_id ) = ('"+idKategoriBudgeting+"',  '"+master+"', '"+rekeningId+"')";
+        } else if ("BYA".equalsIgnoreCase(master)){
+            where = "WHERE (id_kategori_budgeting, divisi_id, master_id, rekening_id ) = ('"+idKategoriBudgeting+"', '"+divisi+"', '"+master+"', '"+rekeningId+"')";
+        } else {
+            where = "WHERE (id_kategori_budgeting, divisi_id, master_id, rekening_id ) = ('"+idKategoriBudgeting+"', '"+divisi+"', '"+master+"', '"+rekeningId+"')";
+        }
 
         String SQL = "SELECT id, id_kategori_budgeting, divisi_id, master_id, id_param_rekening \n" +
-                "FROM im_akun_parameter_budgeting \n" +
-                "WHERE (id_kategori_budgeting, divisi_id, master_id, id_param_rekening ) = (:idkategori, :divisi, :master, :idparam)";
+                "FROM im_akun_parameter_budgeting \n" + where;
 
-        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idkategori",idKategoriBudgeting)
-                .setParameter("divisi", divisi)
-                .setParameter("master", master)
-                .setParameter("idparam", idParamRekening)
-                .list();
+        List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
         if (results != null && results.size() > 0){
             return true;
         }
@@ -102,11 +105,10 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
             andWhere += "AND pb.divisi_id = '"+bean.getDivisiId()+"'\n";
         if (bean.getIdParamRekening() != null && !"".equalsIgnoreCase(bean.getIdParamRekening()))
             andWhere +=  "AND pb.id_param_rekening = '"+bean.getIdParamRekening()+"'\n";
-        if (bean.getFlag() != null)
-            andWhere += "AND pb.flag = '"+bean.getFlag()+"'\n";
-
-        if (bean.getIdJenisBudgeting() == null)
-            bean.setIdJenisBudgeting("%");
+        if (bean.getIdJenisBudgeting() != null && !"".equalsIgnoreCase(bean.getIdJenisBudgeting()))
+            andWhere +=  "AND pb.id_jenis_budgeting = '"+bean.getIdJenisBudgeting()+"'\n";
+        if (bean.getFlag() == null || "".equalsIgnoreCase(bean.getFlag()))
+            bean.setFlag("%");
 
         String SQL = "SELECT\n" +
                 "pb.id,\n" +
@@ -119,18 +121,21 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
                 "p.kodering as divisi_id,\n" +
                 "p.position_name as divisi_name,\n" +
                 "pb.id_param_rekening,\n" +
-                "pbr.nama as nama_param_rekening\n" +
+                "pbr.nama as nama_param_rekening,\n" +
+                "kr.rekening_id as rekening_id,\n" +
+                "kr.nama_kode_rekening as nama_kode_rekening\n" +
                 "FROM im_akun_parameter_budgeting pb\n" +
                 "INNER JOIN im_akun_kategori_parameter_budgeting kb ON kb.id = pb.id_kategori_budgeting\n" +
                 "INNER JOIN im_akun_jenis_budgeting jb ON jb.id = kb.id_jenis_budgeting\n" +
-                "LEFT JOIN im_position p ON p.kodering = pb.divisi_id\n" +
+                "LEFT JOIN im_position p ON p.position_id = pb.position_id\n" +
                 "LEFT JOIN im_akun_master m ON m.nomor_master = pb.master_id\n" +
                 "LEFT JOIN im_akun_parameter_budgeting_rekening pbr ON pbr.id = pb.id_param_rekening\n" +
-                "WHERE kb.id_jenis_budgeting LIKE :idjenis \n" +
+                "LEFT JOIN im_akun_kode_rekening kr ON kr.rekening_id = pb.rekening_id\n" +
+                "WHERE pb.flag LIKE :flag \n" +
                 andWhere;
 
         List<Object[]> results = this.sessionFactory.getCurrentSession().createSQLQuery(SQL)
-                .setParameter("idjenis", bean.getIdJenisBudgeting())
+                .setParameter("flag", bean.getFlag())
                 .list();
 
         List<ParameterBudgeting> parameterBudgetings = new ArrayList<>();
@@ -148,6 +153,8 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
                 parameterBudgeting.setNamaDivisi(objToString(obj[8]));
                 parameterBudgeting.setIdParamRekening(objToString(obj[9]));
                 parameterBudgeting.setNamaParamRekening(objToString(obj[10]));
+                parameterBudgeting.setRekeningId(objToString(obj[11]));
+                parameterBudgeting.setNamaKodeRekening(objToString(obj[12]));
                 parameterBudgetings.add(parameterBudgeting);
             }
         }
@@ -165,7 +172,7 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
 
         String filterKodeRekening = "";
         if (tipeKodeRekening != null && !"".equalsIgnoreCase(tipeKodeRekening))
-            filterKodeRekening = "tipe_coa = '"+tipeKodeRekening+"' \n";
+            filterKodeRekening = "AND tipe_coa = '"+tipeKodeRekening+"' \n";
 
         String SQL = "SELECT rekening_id, kode_rekening, nama_kode_rekening, level \n" +
                 "FROM im_akun_kode_rekening \n" +
@@ -189,5 +196,28 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
         }
 
         return kodeRekenings;
+    }
+
+    public String getTipeKodeRekeningById(String id){
+
+        String SQL = "SELECT tipe_rekening_id FROM im_akun_jenis_budgeting \n" +
+                "WHERE id = '"+id+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+        if (list.size() > 0)
+            return list.get(0).toString();
+        return null;
+    }
+
+    public String getKoderingPositionByPositionId(String id){
+
+        String SQL = "SELECT kodering FROM im_position\n" +
+                "WHERE position_id = '"+id+"'";
+
+        List<Object> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        if (list.size() > 0)
+            return list.get(0).toString();
+        return null;
     }
 }

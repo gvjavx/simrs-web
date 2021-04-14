@@ -19,4 +19,6 @@ public interface ParameterBudgetingBo {
     public List<ImMasterEntity> getAllMaster();
     public List<ImAkunParameterBudgetingRekeningEntity> getAllParameterRekening();
     public List<KodeRekening> getListKodeRekeningByTipeCoa(String tipeCoa);
+    public String getTipeKodeRekeningFromJenisBudgetingById(String id);
+    public String getKoderingFromPositionByPositionId(String id);
 }

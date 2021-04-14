@@ -1684,3 +1684,19 @@ UPDATE im_akun_kode_rekening SET tipe_coa = '02', flag_divisi = 'Y', flag_master
     WHERE id = 'BYA'
 
 --
+
+--2021-04-14
+
+    UPDATE im_akun_kode_rekening
+    SET tipe_coa = '01' WHERE kode_rekening ILIKE '1%';
+
+    UPDATE im_akun_kode_rekening
+    SET tipe_coa = '02' WHERE kode_rekening ILIKE '4%';
+
+    UPDATE im_akun_kode_rekening
+    SET tipe_coa = '03' WHERE kode_rekening ILIKE '5%';
+
+    ALTER TABLE im_akun_parameter_budgeting
+    ADD COLUMN position_id VARCHAR(50);
+
+--

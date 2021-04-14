@@ -35,6 +35,15 @@
             font-size: 14px;
             margin-bottom: 30px;
         }
+        #view_add_item_rekening:hover {
+            cursor: pointer;
+        }
+        #view_edit_item_rekening:hover {
+            cursor: pointer;
+        }
+        /*#view_delete_item_rekening:hover {*/
+            /*cursor: pointer;*/
+        /*}*/
     </style>
 </head>
 
@@ -160,7 +169,7 @@
                                             <td>Master</td>
                                             <td>Divisi</td>
                                             <td>Item</td>
-                                            <td>Action</td>
+                                            <td align="center" width="150px">Action</td>
                                         </tr>
                                         </thead>
                                         <tbody id="body_search">
@@ -209,7 +218,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_edit_jenis" class="form-control" onchange="listKetegoriByJenis('sel_edit_kategori', this.value)">
+                                <select id="sel_edit_jenis" class="form-control" onchange="listKetegoriByJenis('sel_edit_kategori', this.value);showMasterAndDivision('edit');resetIfChange('edit')">
 
                                 </select>
                             </table>
@@ -227,7 +236,7 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="edit-master">
                         <td>
                             <label class="control-label"><small>Master :</small></label>
                         </td>
@@ -239,17 +248,16 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="edit-divisi">
                         <td>
                             <label class="control-label"><small>Divisi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <select id="sel_edit_divisi" class="form-control select2" style="width: 100%">
-
+                                <select id="sel_edit_divisi" class="form-control select2" style="width: 100%" onchange="koderingPosition('edit', this.value)">
                                 </select>
+                                <input type="hidden" id="sel_edit_kodering"/>
                             </table>
-
                         </td>
                     </tr>
                     <tr>
@@ -258,7 +266,8 @@
                         </td>
                         <td>
                             <table>
-                                <input type="text" class="form-control" id="sel_edit_item_rekening" style="margin-top:7px;"/>
+                                <input type="text" class="form-control" id="view_edit_item_rekening" onclick="showDetailCoa('edit');" placeholder="Klik Untuk Input" style="margin-top:7px;" readonly/>
+                                <input type="hidden" id="sel_edit_item_rekening"/>
                                 <%--<select id="sel_edit_item_rekening" class="form-control select2" style="width: 100%">--%>
                                 <%--</select>--%>
                             </table>
@@ -295,7 +304,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_delete_jenis" class="form-control" onchange="listKetegoriByJenis('sel_delete_kategori', this.value)" disabled>
+                                <select id="sel_delete_jenis" class="form-control" onchange="listKetegoriByJenis('sel_delete_kategori', this.value);showMasterAndDivision('delete')" disabled>
 
                                 </select>
                             </table>
@@ -313,7 +322,7 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="delete-master">
                         <td>
                             <label class="control-label"><small>Master :</small></label>
                         </td>
@@ -325,17 +334,16 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="delete-divisi">
                         <td>
                             <label class="control-label"><small>Divisi :</small></label>
                         </td>
                         <td>
                             <table>
                                 <select id="sel_delete_divisi" class="form-control select2" style="width: 100%" disabled>
-
                                 </select>
+                                <input type="hidden" id="sel_delete_kodering"/>
                             </table>
-
                         </td>
                     </tr>
                     <tr>
@@ -344,7 +352,8 @@
                         </td>
                         <td>
                             <table>
-                                <input type="text" class="form-control" id="sel_delete_item_rekening" style="margin-top:7px;"/>
+                                <input type="text" class="form-control" id="view_delete_item_rekening" style="margin-top:7px;" onclick="" placeholder="Klik Untuk Input" readonly/>
+                                <input type="hidden" id="sel_delete_item_rekening"/>
                                 <%--<select id="sel_delete_item_rekening" class="form-control select2" style="width: 100%" disabled>--%>
                                 <%--</select>--%>
                             </table>
@@ -354,9 +363,9 @@
                 </table>
             </div>
             <div class="modal-footer" style="background-color: #cacaca">
-                <button type="button" class="btn btn-danger" onclick="saveDelete()"><i class="fa fa-check"></i> Delete
-                </button>
                 <button type="button" class="btn btn-warning" data-dismiss="modal"><i class="fa fa-times"></i> Close
+                </button>
+                <button type="button" class="btn btn-danger" onclick="saveDelete()"><i class="fa fa-trash"></i> Delete
                 </button>
             </div>
         </div>
@@ -379,7 +388,7 @@
                         </td>
                         <td>
                             <table>
-                                <select id="sel_add_jenis" class="form-control" onchange="listKetegoriByJenis('sel_add_kategori', this.value)">
+                                <select id="sel_add_jenis" class="form-control" onchange="listKetegoriByJenis('sel_add_kategori', this.value);showMasterAndDivision('add');resetIfChange('add')">
 
                                 </select>
                             </table>
@@ -397,7 +406,7 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="add-master">
                         <td>
                             <label class="control-label"><small>Master :</small></label>
                         </td>
@@ -409,15 +418,16 @@
                             </table>
                         </td>
                     </tr>
-                    <tr>
+                    <tr id="add-divisi">
                         <td>
                             <label class="control-label"><small>Divisi :</small></label>
                         </td>
                         <td>
                             <table>
-                                <select id="sel_add_divisi" class="form-control select2" style="width: 100%">
+                                <select id="sel_add_divisi" class="form-control select2" style="width: 100%" onchange="koderingPosition('add', this.value)">
 
                                 </select>
+                                <input type="hidden" id="sel_add_kodering"/>
                             </table>
 
                         </td>
@@ -428,7 +438,7 @@
                         </td>
                         <td>
                             <table>
-                                <input type="text" class="form-control"  style="margin-top:7px;" onclick="showDetailCoa('add')" readonly/>
+                                <input type="text" class="form-control" id="view_add_item_rekening" style="margin-top:7px;" onclick="showDetailCoa('add')" placeholder="Klik Untuk Input" readonly/>
                                 <input type="hidden" id="sel_add_item_rekening">
                                 <%--<select id="sel_add_item_rekening" class="form-control select2" style="width: 100%">--%>
                                 <%--</select>--%>
@@ -466,7 +476,7 @@
                         <td>Action</td>
                     </tr>
                     </thead>
-                    <tbody id="add-list-coa">
+                    <tbody id="list-coa">
                     <%--<s:iterator value="#session.listOfCoa" var="row">--%>
                         <%--<tr>--%>
                             <%--<td><s:property value="kodeRekening"/></td>--%>
@@ -535,7 +545,7 @@
     $(document).ready(function () {
         listJenisBudgeting("sel_search_jenis");
         listMaster("sel_search_master");
-        listPosition("sel_search_divisi");
+        listPosition('search');
         listRekening("sel_search_item_rekening");
     });
 
@@ -574,11 +584,18 @@
         ParameterBudgetingAction.getAllPosition(function (res) {
             var str = "<option value=''> - </option>";
             $.each(res, function (i, item) {
-                str += '<option value="'+item.kodering+'">'+item.positionName+'</option>';
+                str += '<option value="'+item.positionId+'">'+item.positionName+'</option>';
             });
-            $("#"+elid).html(str);
+            $("#sel_"+elid+"_divisi").html(str);
         });
     }
+
+    function koderingPosition(elid, positionId) {
+        ParameterBudgetingAction.getKoderingByPositionId(positionId, function (res) {
+            $("#sel_"+elid+"_kodering").val(res);
+        });
+    }
+
     function listMaster(elid) {
         ParameterBudgetingAction.getAllMaster(function (res) {
             var str = "<option value=''> - </option>";
@@ -622,10 +639,10 @@
                         '<td>'+item.namaKategoriBudgeting+'</td>'+
                         '<td>'+nullEscape(item.namaMaster)+'</td>'+
                         '<td>'+nullEscape(item.namaDivisi)+'</td>'+
-                        '<td>'+nullEscape(item.namaParamRekening)+'</td>'+
+                        '<td>'+nullEscape(item.namaKodeRekening)+'</td>'+
                         '<td align="center">' +
                         '<button class="btn btn-primary btn-sm" onclick="edit(\''+item.id+'\')"><i class="fa fa-edit"></i> Edit</button>'+
-                        '<button class="btn btn-danger btn-sm" onclick="showDelete(\''+item.id+'\')"><i class="fa fa-time"></i> Delete</button>'+
+                        '<button class="btn btn-danger btn-sm" onclick="showDelete(\''+item.id+'\')"><i class="fa fa-trash"></i> Delete</button>'+
                         '</td>'+
                         '</tr>';
             });
@@ -652,16 +669,18 @@
             listJenisBudgeting("sel_edit_jenis");
             listKetegoriByJenis("sel_edit_kategori", res.idJenisBudgeting);
             listMaster("sel_edit_master");
-            listPosition("sel_edit_divisi");
-//            listRekening("sel_edit_item_rekening");
+            listPosition("edit");
 
             $("#sel_edit_jenis").val(res.idJenisBudgeting);
             $("#sel_edit_master").val(res.masterId);
             $("#sel_edit_divisi").val(res.divisiId);
-            $("#sel_edit_item_rekening").val(res.idParamRekening);
+            $("#view_edit_item_rekening").val(res.namaKodeRekening);
+            $("#sel_edit_item_rekening").val(res.rekeningId);
             $("#sel_edit_kategori").val(res.idKategoriBudgeting);
             $("#id_edit").val(res.id);
             $("#flag_edit").val("Y");
+            showMasterAndDivision('edit');
+
         });
     }
 
@@ -671,16 +690,17 @@
             listJenisBudgeting("sel_delete_jenis");
             listKetegoriByJenis("sel_delete_kategori", res.idJenisBudgeting);
             listMaster("sel_delete_master");
-            listPosition("sel_delete_divisi");
-//            listRekening("sel_delete_item_rekening");
+            listPosition("delete");
 
             $("#sel_delete_jenis").val(res.idJenisBudgeting);
             $("#sel_delete_master").val(res.masterId);
             $("#sel_delete_divisi").val(res.divisiId);
-            $("#sel_delete_item_rekening").val(res.idParamRekening);
+            $("#view_delete_item_rekening").val(res.namaKodeRekening);
+            $("#sel_delete_item_rekening").val(res.rekeningId);
             $("#sel_delete_kategori").val(res.idKategoriBudgeting);
             $("#id_delete").val(res.id);
             $("#flag_delete").val("N");
+            showMasterAndDivision('delete');
         });
     }
 
@@ -688,7 +708,7 @@
         $("#modal-add").modal('show');
         listJenisBudgeting("sel_add_jenis");
         listMaster("sel_add_master");
-        listPosition("sel_add_divisi");
+        listPosition("add");
 //        listRekening("sel_add_item_rekening");
     }
 
@@ -702,11 +722,12 @@
         var idKategori      = $("#sel_edit_kategori").val();
         var masterId        = $("#sel_edit_master").val();
         var divisiId        = $("#sel_edit_divisi").val();
+        var kodering        = $("#sel_edit_kodering").val();
         var idParam         = $("#sel_edit_item_rekening").val();
         var flag            = $("#flag_edit").val();
         var arData          = [];
 
-        arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam, "flag":flag});
+        arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":kodering, "position_id" : divisiId, "rekening_id":idParam, "flag":flag});
         var stData          = JSON.stringify(arData);
         ParameterBudgetingAction.saveEdit(stData, function (res) {
             dwr.engine.setAsync(false);
@@ -733,11 +754,12 @@
         var idKategori      = $("#sel_delete_kategori").val();
         var masterId        = $("#sel_delete_master").val();
         var divisiId        = $("#sel_delete_divisi").val();
+        var kodering         = $("#sel_delete_kodering").val();
         var idParam         = $("#sel_delete_item_rekening").val();
         var flag            = $("#flag_delete").val();
         var arData          = [];
 
-        arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam, "flag":flag});
+        arData.push({"id":id, "id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId,"divisi_id":kodering, "position_id" : divisiId, "rekening_id":idParam, "flag":flag});
         var stData          = JSON.stringify(arData);
         ParameterBudgetingAction.saveEdit(stData, function (res) {
             dwr.engine.setAsync(false);
@@ -761,10 +783,11 @@
         var idKategori      = $("#sel_add_kategori").val();
         var masterId        = $("#sel_add_master").val();
         var divisiId        = $("#sel_add_divisi").val();
+        var kodering        = $("#sel_add_kodering").val();
         var idParam         = $("#sel_add_item_rekening").val();
         var arData          = [];
 
-        arData.push({"id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":divisiId, "id_param_rekening":idParam});
+        arData.push({"id_jenis_budgeting":idJenis, "id_kategori_budgeting":idKategori, "master_id":masterId, "divisi_id":kodering, "position_id" : divisiId ,"rekening_id":idParam});
         var stData          = JSON.stringify(arData);
         ParameterBudgetingAction.saveAdd(stData, function (res) {
             dwr.engine.setAsync(false);
@@ -779,21 +802,73 @@
     }
 
     function showDetailCoa(idelement) {
-        $("#modal-view-coa").modal('show');
-        ParameterBudgetingAction.getListKodeRekeningByTipeCoa( function (res) {
 
-            var str = "";
-            $.each(res.list, function (i, item) {
-                str += "<tr>" +
-                    "<td>"+item.kodeRekening+"</td>" +
-                    "<td>"+item.namaKodeRekening+"</td>" +
-                    "<td align='center'><button class='btn btn-sm btn-default'><i class='fa fa-check'></i> Pilih</button></td>" +
-                    "</tr>";
-            })
+        var idJenisBudgeting = "";
+        if (idelement == "add")
+            idJenisBudgeting = $("#sel_add_jenis option:selected").val();
+        if (idelement == "edit")
+            idJenisBudgeting = $("#sel_edit_jenis option:selected").val();
 
-            console.log(res.list);
-            $("#"+idelement+"-list-coa").html(str);
-        });
+        if (idJenisBudgeting == ""){
+            alert("Pilih Jenis Budgeting Terlebih Dahulu");
+        } else {
+            $("#modal-view-coa").modal('show');
+            ParameterBudgetingAction.getTipeKodeRekening(idJenisBudgeting, function (res_idJenis) {
+
+                ParameterBudgetingAction.getListKodeRekeningByTipeCoa(res_idJenis, function (res) {
+
+                    var str = "";
+                    if (res.list.length == 0){
+                        str += "<tr><td colspan='3' align='center'> Tipe Coa Belum Di Setting Pada Master Kode Rekening </td></tr>"
+                    } else {
+                        $.each(res.list, function (i, item) {
+                            str += "<tr>" +
+                                "<td>"+item.kodeRekening+"</td>" +
+                                "<td>"+item.namaKodeRekening+"</td>"+
+                                "<td align='center'>";
+                            if (item.bLevel == 5){
+                                str += "<button class='btn btn-sm btn-default' onclick=\"setToInputRekening(\'"+item.rekeningId+"\',\'"+item.namaKodeRekening+"\', \'"+idelement+"\')\"><i class='fa fa-check'></i> Pilih</button>";
+                            }
+                            str += "</td>" +
+                                "</tr>";
+                        });
+                    }
+
+
+                    //console.log(res.list.length);
+                    $("#list-coa").html(str);
+                });
+            });
+        }
+    }
+
+    function setToInputRekening(rekeningId, namaKodeRekening, idelement) {
+        $("#sel_"+idelement+"_item_rekening").val(rekeningId);
+        $("#view_"+idelement+"_item_rekening").val(namaKodeRekening);
+        $("#modal-view-coa").modal('hide');
+    }
+
+    function showMasterAndDivision(idelement) {
+
+        var jenis = $("#sel_"+idelement+"_jenis option:selected").val();
+
+        if(jenis == "INV"){
+            $("#"+idelement+"-master").hide();
+            $("#"+idelement+"-divisi").hide();
+        } else if (jenis == "BYA"){
+            $("#"+idelement+"-master").hide();
+            $("#"+idelement+"-divisi").show();
+        } else {
+            $("#"+idelement+"-master").show();
+            $("#"+idelement+"-divisi").show();
+        }
+    }
+
+    function resetIfChange(idelement) {
+        if(idelement == "edit"){
+            $("#sel_"+idelement+"_item_rekening").val('');
+            $("#view_"+idelement+"_item_rekening").val('');
+        }
     }
 
 
