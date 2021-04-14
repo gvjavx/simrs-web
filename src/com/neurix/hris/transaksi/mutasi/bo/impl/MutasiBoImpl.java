@@ -515,6 +515,7 @@ public class MutasiBoImpl implements MutasiBo {
                         logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
                         throw new GeneralBOException("Error when check Tipe Profesi, " + e.getMessage());
                     }
+                    /*
                     List<ImSimrsDokterEntity> dokterEntities = new ArrayList();
                     if("true".equalsIgnoreCase(profLamaIsDokter) && !"true".equalsIgnoreCase(profBaruIsDokter)){
                         try{
@@ -537,8 +538,8 @@ public class MutasiBoImpl implements MutasiBo {
                                 throw new GeneralBOException("Error when update and save Dokter, " + e.getMessage());
                             }
                         }
-                    }
-
+                    } else
+                    */
                     if(!"true".equalsIgnoreCase(profLamaIsDokter) && "true".equalsIgnoreCase(profBaruIsDokter)){
                         ImBiodataEntity biodata = new ImBiodataEntity();
                         List<ItPersonilPositionEntity> personilPosition = new ArrayList();
@@ -1674,7 +1675,7 @@ public class MutasiBoImpl implements MutasiBo {
                 kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
             }catch (HibernateException e){
                 logger.error("[MutasiBoImpl.createDokter] Error, " +e.getMessage());
-                throw new GeneralBOException("Error when retrieving kodering, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving kodering for kodering dokter, " + e.getMessage());
             }
 
             // creating object entity serializable
