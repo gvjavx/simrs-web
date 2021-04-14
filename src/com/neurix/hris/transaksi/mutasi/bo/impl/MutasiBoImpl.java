@@ -506,15 +506,15 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setLastUpdate(bean.getLastUpdate());
                     itMutasiEntity.setNoSk(mutasi.getNoSk());
 
-                    //RAKA-13APR2021 ==> Handle Perubahan Profesi Dokter
-                    String profLamaIsDokter, profBaruIsDokter = "";
-                    try{
-                        profLamaIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiLamaId(),"dokter");
-                        profBaruIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiBaruId(),"dokter");
-                    }catch (HibernateException e){
-                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                        throw new GeneralBOException("Error when check Tipe Profesi, " + e.getMessage());
-                    }
+                    //RAKA-13APR2021 ==> Handle Perubahan Profesi Dokter [BELUM DIUJI]
+//                    String profLamaIsDokter, profBaruIsDokter = "";
+//                    try{
+//                        profLamaIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiLamaId(),"dokter");
+//                        profBaruIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiBaruId(),"dokter");
+//                    }catch (HibernateException e){
+//                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+//                        throw new GeneralBOException("Error when check Tipe Profesi, " + e.getMessage());
+//                    }
                     /*
                     List<ImSimrsDokterEntity> dokterEntities = new ArrayList();
                     if("true".equalsIgnoreCase(profLamaIsDokter) && !"true".equalsIgnoreCase(profBaruIsDokter)){
@@ -540,32 +540,32 @@ public class MutasiBoImpl implements MutasiBo {
                         }
                     } else
                     */
-                    if(!"true".equalsIgnoreCase(profLamaIsDokter) && "true".equalsIgnoreCase(profBaruIsDokter)){
-                        ImBiodataEntity biodata = new ImBiodataEntity();
-                        List<ItPersonilPositionEntity> personilPosition = new ArrayList();
-                        try{
-                            biodata = biodataDao.getById("nip", mutasi.getNip());
-                        }catch (HibernateException e){
-                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                            throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
-                        }
-                        try{
-                            Map criteria = new HashMap();
-                            criteria.put("nip", mutasi.getNip());
-                            criteria.put("flag", "Y");
-                            personilPosition = personilPositionDao.getByCriteria(criteria);
-                        }catch (HibernateException e){
-                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                            throw new GeneralBOException("Error when retrieving Personil Position by ID, " + e.getMessage());
-                        }
-
-                        try {
-                            createDokter(biodata, personilPosition.get(0), mutasi);
-                        }catch (HibernateException e){
-                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
-                            throw new GeneralBOException("Error when create Dokter, " + e.getMessage());
-                        }
-                    }
+//                    if(!"true".equalsIgnoreCase(profLamaIsDokter) && "true".equalsIgnoreCase(profBaruIsDokter)){
+//                        ImBiodataEntity biodata = new ImBiodataEntity();
+//                        List<ItPersonilPositionEntity> personilPosition = new ArrayList();
+//                        try{
+//                            biodata = biodataDao.getById("nip", mutasi.getNip());
+//                        }catch (HibernateException e){
+//                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
+//                        }
+//                        try{
+//                            Map criteria = new HashMap();
+//                            criteria.put("nip", mutasi.getNip());
+//                            criteria.put("flag", "Y");
+//                            personilPosition = personilPositionDao.getByCriteria(criteria);
+//                        }catch (HibernateException e){
+//                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Error when retrieving Personil Position by ID, " + e.getMessage());
+//                        }
+//
+//                        try {
+//                            createDokter(biodata, personilPosition.get(0), mutasi);
+//                        }catch (HibernateException e){
+//                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+//                            throw new GeneralBOException("Error when create Dokter, " + e.getMessage());
+//                        }
+//                    }
                     //RAKA-end
 
                     String mutDocId;
