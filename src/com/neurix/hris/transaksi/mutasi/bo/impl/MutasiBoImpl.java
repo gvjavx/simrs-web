@@ -1,9 +1,16 @@
 package com.neurix.hris.transaksi.mutasi.bo.impl;
 
+import com.neurix.authorization.company.dao.AreasBranchesUsersDao;
 import com.neurix.authorization.company.dao.BranchDao;
+import com.neurix.authorization.company.model.AreaBranchUser;
+import com.neurix.authorization.company.model.ImAreasBranchesUsers;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
+import com.neurix.authorization.role.model.ImRoles;
+import com.neurix.authorization.user.dao.UserDao;
+import com.neurix.authorization.user.dao.UserRoleDao;
+import com.neurix.authorization.user.model.*;
 import com.neurix.common.constant.CommonConstant;
 import com.neurix.common.exception.GeneralBOException;
 import com.neurix.common.util.CommonUtil;
@@ -120,6 +127,22 @@ public class MutasiBoImpl implements MutasiBo {
     private TunjLainPegawaiDao tunjLainPegawaiDao;
     private GolonganDao golonganDao;
     private GolonganPkwtDao golonganPkwtDao;
+
+    private UserDao userDao;
+    private AreasBranchesUsersDao areasBranchesUsersDao;
+    private UserRoleDao userRoleDao;
+
+    public void setUserDao(UserDao userDao) {
+        this.userDao = userDao;
+    }
+
+    public void setAreasBranchesUsersDao(AreasBranchesUsersDao areasBranchesUsersDao) {
+        this.areasBranchesUsersDao = areasBranchesUsersDao;
+    }
+
+    public void setUserRoleDao(UserRoleDao userRoleDao) {
+        this.userRoleDao = userRoleDao;
+    }
 
     public void setGolonganDao(GolonganDao golonganDao) {
         this.golonganDao = golonganDao;
@@ -1459,6 +1482,45 @@ public class MutasiBoImpl implements MutasiBo {
                 }
             }
             // END
+
+            // Update flag N pada Dokter berdasarkan nip / id dokter
+            List<ImSimrsDokterEntity> dokterEntities = new ArrayList();
+            try{
+                dokterEntities = dokterDao.getDataDokterById(mutasi.getNip());
+            }catch (HibernateException e){
+                logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Dokter by ID, " + e.getMessage());
+            }
+
+            if(dokterEntities.size()>0){
+                dokterEntities.get(0).setFlag("N");
+                dokterEntities.get(0).setAction("U");
+                dokterEntities.get(0).setLastUpdate(mutasi.getLastUpdate());
+                dokterEntities.get(0).setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                try {
+                    dokterDao.updateAndSave(dokterEntities.get(0));
+                }catch (HibernateException e){
+                    logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                    throw new GeneralBOException("Error when update and save Dokter, " + e.getMessage());
+                }
+            }
+            // END
+
+            // Update flag N pada user berdasarkan nip / user_id
+            User user = new User();
+            user.setUserId(mutasi.getNip());
+            user.setAction("D");
+            user.setFlag("N");
+            user.setLastUpdate(mutasi.getLastUpdate());
+            user.setLastUpdateWho(mutasi.getLastUpdateWho());
+            try {
+                deleteUser(user);
+            }catch (HibernateException e){
+                logger.error("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when update data User, please inform to your admin...," + e.getMessage());
+            }
+            // END
         }
 
         logger.info("[MutasiBoImpl.nonAktifAllPegawaiByCriteria] END <<<");
@@ -1646,6 +1708,100 @@ public class MutasiBoImpl implements MutasiBo {
         }
 
         logger.info("[MutasiBoImpl.saveHistoryJabatan] END <<<");
+    }
+
+    private void deleteUser(User usersDelete) throws GeneralBOException {
+        logger.info("[MutasiBoImpl.saveDelete] start process >>>");
+
+        if (usersDelete != null) {
+            String userId = usersDelete.getUserId();
+            ImUsersPK primaryKey = new ImUsersPK();
+            primaryKey.setId(userId);
+
+            ImUsers imUsersOld = null;
+            try {
+                imUsersOld = userDao.getById(primaryKey, "Y");
+            } catch (HibernateException e) {
+                logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+            }
+
+            if (imUsersOld != null) {
+                Map hsCriteria = new HashMap();
+                hsCriteria.put("user_id", userId);
+                hsCriteria.put("flag", "Y");
+
+                //cek into im_areas_branches_users
+                ImAreasBranchesUsers imAreasBranchesUsers = null;
+                try {
+                    imAreasBranchesUsers = areasBranchesUsersDao.getAreasBranchesUsersByUserId(userId, "Y");
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                }
+
+                if (imAreasBranchesUsers != null) {
+                    imAreasBranchesUsers.setFlag("N");
+                    imAreasBranchesUsers.setLastUpdate(usersDelete.getLastUpdate());
+                    imAreasBranchesUsers.setLastUpdateWho(usersDelete.getLastUpdateWho());
+
+                    try {
+                        areasBranchesUsersDao.updateAndSave(imAreasBranchesUsers);
+                    } catch (HibernateException e) {
+                        logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data ara-branch-user, please info to your admin..." + e.getMessage());
+                    }
+
+                }
+
+                List<ImRoles> listOfImRoles = new ArrayList<ImRoles>(imUsersOld.getImRoles());
+                ImRoles itemImRoles = listOfImRoles.get(0);
+
+                ImUsersRolesPK primaryKeyUserRole = new ImUsersRolesPK();
+                primaryKeyUserRole.setUserId(userId);
+                primaryKeyUserRole.setRoleId(itemImRoles.getRoleId());
+
+                ImUsersRoles imUsersRolesOld = null;
+                try {
+                    imUsersRolesOld = userRoleDao.getByCompositeKey(primaryKeyUserRole, "Y");
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving delete data users, please info to your admin..." + e.getMessage());
+                }
+
+                if (imUsersRolesOld != null) {
+                    imUsersRolesOld.setFlag("N");
+                    imUsersRolesOld.setLastUpdate(usersDelete.getLastUpdate());
+                    imUsersRolesOld.setLastUpdateWho(usersDelete.getLastUpdateWho());
+
+                    try {
+                        userRoleDao.updateAndSave(imUsersRolesOld);
+                    } catch (HibernateException e) {
+                        logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                        throw new GeneralBOException("Found problem when saving deactive data user-role, please info to your admin..." + e.getMessage());
+                    }
+                }
+
+                imUsersOld.setFlag("N");
+                imUsersOld.setLastUpdate(usersDelete.getLastUpdate());
+                imUsersOld.setLastUpdateWho(usersDelete.getLastUpdateWho());
+                try {
+                    userDao.updateAndSave(imUsersOld);
+                } catch (HibernateException e) {
+                    logger.error("[MutasiBoImpl.saveDelete] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving deactive data user, please info to your admin..." + e.getMessage());
+                }
+
+            } else {
+                logger.error("[MutasiBoImpl.saveDelete] Error, Found problem when deleting data users, cause no have userId in database, please info to your admin.");
+                throw new GeneralBOException("Found problem when deleting data users, cause np have userId in database, please info to your admin.");
+            }
+
+        } else {
+            logger.error("[MutasiBoImpl.saveDelete] Error, Found problem when deleting data users, cause no have userId in database, please info to your admin.");
+            throw new GeneralBOException("Found problem when deleting data users, cause np have userId in database, please info to your admin.");
+        }
+        logger.info("[MutasiBoImpl.saveDelete] end process <<<");
     }
 
     private void createDokter(ImBiodataEntity biodata, ItPersonilPositionEntity personilPosition, Mutasi bean) throws GeneralBOException{
