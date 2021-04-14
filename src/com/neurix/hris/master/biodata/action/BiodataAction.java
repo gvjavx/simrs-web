@@ -3643,11 +3643,13 @@ public class BiodataAction extends BaseMasterAction {
             // END
 
             // set ke object personilPosition untuk direturn dan print log error bila tidak ditemukan;
-            if (filteredPosition == null || filteredPosition.size() == 0)
+            if (filteredPosition == null || filteredPosition.size() == 0) {
                 logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan pada session");
-            throw new GeneralBOException("ERROR, Data tidak ditemukan dalam session.");
-            else
+                throw new GeneralBOException("ERROR, Data tidak ditemukan dalam session.");
+            }
+            else {
                 personilPosition = filteredPosition.get(0);
+            }
         }
 
         return personilPosition;
