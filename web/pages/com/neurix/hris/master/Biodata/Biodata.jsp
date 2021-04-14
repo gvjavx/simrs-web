@@ -3092,7 +3092,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-4" >Status Keluarga:</label>
                         <div class="col-sm-8">
-                            <select class="form-control" id="statusKeluarga" name="statusKeluarga" >
+                            <select class="form-control" id="statusKeluarga" name="statusKeluarga" onchange="genderPasangan()">
                             </select>
                         </div>
                     </div>
@@ -5425,10 +5425,8 @@
 
             <s:if test="isAdd()">
             if (url == 'addKeluarga') {
-                if (keluargaName == '') {
-                    alert('Name Must be Entry')
-                } else if(tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5441,8 +5439,8 @@
                     }
                 }
             } else {
-                if(tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5458,10 +5456,8 @@
             </s:if>
             <s:else>
             if (url == 'addKeluarga') {
-                if (keluargaName == '') {
-                    alert('Name Must be Entry')
-                }else if (tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -5474,8 +5470,8 @@
                     }
                 }
             } else {
-                if (tanggalLahir == ''){
-                    alert('Tanggal Lahir Must be Entry')
+                if (keluargaName == '' || statusKeluarga == '' || genderKeluarga == '' || tanggalLahir == '') {
+                    alert('All Field Must be Entry.')
                 } else {
                     if (confirm('Are you sure you want to save this Record?')) {
                         dwr.engine.setAsync(false);
@@ -6461,11 +6457,23 @@
     }
 
 
+    function genderPasangan(){
+        var statusKeluarga = $('#statusKeluarga').val();
 
+        if(statusKeluarga == "S") {
+            $("#genderKeluarga").val("L").change();
+        } else if (statusKeluarga == "I"){
+            $("#genderKeluarga").val("P").change();
+        }
+
+    }
 
     window.listStatusKeluarga = function () {
         var gender = document.getElementById("gender").value;
         $('#statusKeluarga').empty();
+        $('#statusKeluarga').append($("<option></option>")
+            .attr("value", "")
+            .text("-"));
         if (gender == 'L') {
             $('#statusKeluarga').append($("<option></option>")
                 .attr("value", "I")
