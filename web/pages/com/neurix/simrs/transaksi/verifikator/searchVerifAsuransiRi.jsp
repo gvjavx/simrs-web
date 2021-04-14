@@ -867,6 +867,7 @@
         if(!cekSession()){
             var table = "";
             var data = [];
+            var tempCover = [];
             var trfTtl = 0;
             $('#body_tindakan_cover').html('');
             $('#loading_page').show();
@@ -906,6 +907,13 @@
                                     "<td>" + select + "</td>" +
                                     "</tr>";
 
+                                if("umum" == item.jenisPasien){
+                                    tempCover.push({
+                                        'id': 'cover_'+i,
+                                        'jenis': item.jenisPasien
+                                    });
+                                }
+
                             });
 
                             if(table != ''){
@@ -936,6 +944,11 @@
                         var cek = $('.select2').length;
                         if(cek > 0){
                             $('.select2').select2();
+                        }
+                        if(tempCover.length > 0){
+                            $.each(tempCover, function (i, item) {
+                                $('#'+item.id).val(item.jenis).trigger('change').attr('disabled', true);
+                            });
                         }
                     }
                 });

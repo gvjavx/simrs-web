@@ -118,6 +118,9 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                 if(bean.getIdKategoriLab() != null && !"".equalsIgnoreCase(bean.getIdKategoriLab())){
                     headerPemeriksaanEntity.setIdKategoriLab(bean.getIdKategoriLab());
                 }
+                if(bean.getJenisPeriksaPasien() != null && !"".equalsIgnoreCase(bean.getJenisPeriksaPasien())){
+                    headerPemeriksaanEntity.setJenisPasien(bean.getJenisPeriksaPasien());
+                }
                 headerPemeriksaanEntity.setAction(bean.getAction());
                 headerPemeriksaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 headerPemeriksaanEntity.setLastUpdate(bean.getLastUpdate());
@@ -286,6 +289,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
             pemeriksaanEntity.setCreatedDate(bean.getCreatedDate());
             pemeriksaanEntity.setLastUpdateWho(bean.getLastUpdateWho());
             pemeriksaanEntity.setLastUpdate(bean.getLastUpdate());
+            pemeriksaanEntity.setJenisPasien(bean.getJenisPeriksaPasien());
 
             try {
                 headerPemeriksaanDao.addAndSave(pemeriksaanEntity);
@@ -1155,6 +1159,7 @@ public class PeriksaLabBoImpl implements PeriksaLabBo {
                     periksaLab.setCreatedDate(entity.getCreatedDate());
                     periksaLab.setLastUpdateWho(entity.getLastUpdateWho());
                     periksaLab.setLastUpdate(entity.getLastUpdate());
+                    periksaLab.setJenisPeriksaPasien(entity.getJenisPasien());
 
                     List<UploadHasilPemeriksaan> tempDalam = new ArrayList<>();
                     List<ItSimrsUploadHasilPemeriksaanEntity> dalam = new ArrayList<>();

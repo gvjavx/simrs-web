@@ -199,6 +199,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     String idKategori = obj.getString("id_kategori_lab");
                     String waktuPending = obj.getString("waktu_pending");
                     String ttdPengirim = obj.getString("ttd_pengirim");
+                    String jenisPemeriksaan = obj.getString("jenis_pemeriksaan");
                     List<PeriksaLab> periksaLabList = new ArrayList<>();
 
                     if (listPemeriksaan != null) {
@@ -242,6 +243,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     periksaLab.setIdKategoriLab(idKategori);
                     periksaLab.setIsLuar(isLuar);
                     periksaLab.setIsJustLab("N");
+                    periksaLab.setJenisPeriksaPasien(jenisPemeriksaan);
 
                     if (waktuPending != null && !"".equalsIgnoreCase(waktuPending)) {
                         periksaLab.setIsPending("Y");
@@ -503,6 +505,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     String listPemeriksaan = obj.getString("list_pemeriksaan");
                     String isPeriksaLuar = obj.getString("is_luar");
                     String idKategoriLab = obj.getString("id_kategori_lab");
+                    String jenisPemeriksaan = obj.getString("jenis_pemeriksaan");
                     List<PeriksaLab> periksaLabList = new ArrayList<>();
 
                     if (listPemeriksaan != null) {
@@ -547,6 +550,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
                     periksaLab.setLastUpdateWho(userLogin);
                     periksaLab.setLastUpdate(updateTime);
                     periksaLab.setIdKategoriLab(idKategoriLab);
+                    periksaLab.setJenisPeriksaPasien(jenisPemeriksaan);
 
                     if (periksaLabList.size() > 0) {
                         periksaLab.setListLab(periksaLabList);

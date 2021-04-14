@@ -21,6 +21,8 @@ import com.neurix.simrs.master.dokter.bo.DokterBo;
 import com.neurix.simrs.master.dokter.model.Dokter;
 import com.neurix.simrs.master.jenisperiksapasien.bo.JenisPriksaPasienBo;
 import com.neurix.simrs.master.jenisperiksapasien.model.JenisPriksaPasien;
+import com.neurix.simrs.master.kategorilab.bo.KategoriLabBo;
+import com.neurix.simrs.master.kategorilab.model.ImSimrsKategoriLabEntity;
 import com.neurix.simrs.master.obat.model.Obat;
 import com.neurix.simrs.master.pasien.bo.PasienBo;
 import com.neurix.simrs.master.pasien.model.Pasien;
@@ -2004,9 +2006,10 @@ public class RawatInapAction extends BaseMasterAction {
         try {
             ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
             RawatInapBo rawatInapBo = (RawatInapBo) ctx.getBean("rawatInapBoProxy");
+            KategoriLabBo kategoriLabBo = (KategoriLabBo) ctx.getBean("kategoriLabBoProxy");
             Timestamp now = new Timestamp(System.currentTimeMillis());
             String user = CommonUtil.userLogin();
-            String branchId = CommonUtil.userBranchLogin();
+
             JSONObject object = new JSONObject(data);
             if (object != null) {
                 String noChekcup = object.getString("no_checkup");
@@ -2022,11 +2025,10 @@ public class RawatInapAction extends BaseMasterAction {
                 String rsRujukan = null;
                 String tglKontrol = null;
                 String kategoriLab = null;
-                String unitLab = null;
                 String isOrderLab = null;
                 String idRuanganLama = null;
                 String isMeninggal = "";
-                JSONArray jsonParameter = new JSONArray();
+                String listPemeriksaan = null;
 
                 if (object.has("id_ruangan")) {
                     idRuangan = object.getString("id_ruangan");
@@ -2043,11 +2045,8 @@ public class RawatInapAction extends BaseMasterAction {
                 if (object.has("kategori_lab")) {
                     kategoriLab = object.getString("kategori_lab");
                 }
-                if (object.has("unit_lab")) {
-                    unitLab = object.getString("unit_lab");
-                }
-                if (object.has("parameter")) {
-                    jsonParameter = object.getJSONArray("parameter");
+                if (object.has("list_pemeriksaan")) {
+                    listPemeriksaan = object.getString("list_pemeriksaan");
                 }
                 if (object.has("is_order_lab")) {
                     isOrderLab = object.getString("is_order_lab");
@@ -2059,39 +2058,53 @@ public class RawatInapAction extends BaseMasterAction {
                     isMeninggal = object.getString("is_meninggal");
                 }
 
-                List<OrderPeriksaLab> orderPeriksaLab = new ArrayList<>();
-
                 if (idDetailCheckup != null && !"".equalsIgnoreCase(idDetailCheckup) && idRawatInap != null && !"".equalsIgnoreCase(idRawatInap)) {
                     RawatInap rawatInap = new RawatInap();
                     if ("Y".equalsIgnoreCase(isOrderLab)) {
-                        for (int i = 0; i < jsonParameter.length(); i++) {
-                            String value = jsonParameter.getString(i);
-                            OrderPeriksaLab order = new OrderPeriksaLab();
-                            order.setIdDetailCheckup(idDetailCheckup);
-                            order.setIdPemeriksaan(unitLab);
-                            order.setIdLabDetail(value);
-                            order.setIsPemeriksaan("N");
-                            order.setAction("C");
-                            order.setFlag("Y");
-                            order.setCreatedWho(user);
-                            order.setCreatedDate(now);
-                            order.setLastUpdateWho(user);
-                            order.setLastUpdate(now);
-                            if ("KAL00000001".equalsIgnoreCase(kategoriLab)) {
-                                order.setKeterangan("radiologi");
+                        if (listPemeriksaan != null) {
+                            List<OrderPeriksaLab> detailList = new ArrayList<>();
+                            JSONArray json = new JSONArray(listPemeriksaan);
+                            for (int i = 0; i < json.length(); i++) {
+                                JSONObject ob = json.getJSONObject(i);
+                                OrderPeriksaLab periksa = new OrderPeriksaLab();
+                                periksa.setIdPemeriksaan(ob.getString("id_pemeriksaan"));
+                                periksa.setNamaPemeriksaan(ob.getString("nama_pemeriksaan"));
+                                String listParameter = ob.getString("list_parameter");
+                                if (listParameter != null) {
+                                    JSONArray jsn = new JSONArray(listParameter);
+                                    for (int j = 0; j < jsn.length(); j++) {
+                                        JSONObject oc = jsn.getJSONObject(j);
+                                        OrderPeriksaLab detail = new OrderPeriksaLab();
+                                        detail.setIdDetailCheckup(idDetailCheckup);
+                                        detail.setIdPemeriksaan(ob.getString("id_pemeriksaan"));
+                                        detail.setNamaPemeriksaan(ob.getString("nama_pemeriksaan"));
+                                        detail.setIdLabDetail(oc.getString("id_parameter"));
+                                        detail.setNamaDetailPemeriksaan(oc.getString("nama_parameter"));
+                                        detail.setFlag("Y");
+                                        detail.setAction("C");
+                                        detail.setCreatedWho(user);
+                                        detail.setCreatedDate(now);
+                                        detail.setLastUpdateWho(user);
+                                        detail.setLastUpdate(now);
+                                        detail.setIsPemeriksaan("N");
+                                        ImSimrsKategoriLabEntity kategoriLabEntity = kategoriLabBo.getDataLab(kategoriLab);
+                                        if(kategoriLabEntity != null){
+                                            detail.setKeterangan(kategoriLabEntity.getKategori());
+                                            detail.setIdKategoriLab(kategoriLab);
+                                        }
+                                        detailList.add(detail);
+                                    }
+                                } else {
+                                    response.setStatus("error");
+                                    response.setMsg("Data order jenis parameter pemeriksaan tidak ditemukan");
+                                    return response;
+                                }
                             }
-                            if ("KAL00000002".equalsIgnoreCase(kategoriLab)) {
-                                order.setKeterangan("lab");
-                            }
-                            orderPeriksaLab.add(order);
-                        }
-
-                        if (orderPeriksaLab.size() > 0) {
-                            response = saveLabCheckup(orderPeriksaLab);
-                            if ("success".equalsIgnoreCase(response.getStatus())) {
-                                rawatInap.setIsOrderLab("Y");
-                            } else {
-                                return response;
+                            if (detailList.size() > 0) {
+                                response = saveLabCheckup(detailList);
+                                if ("success".equalsIgnoreCase(response.getStatus())) {
+                                    rawatInap.setIsOrderLab("Y");
+                                }
                             }
                         }
                     }
@@ -2372,7 +2385,7 @@ public class RawatInapAction extends BaseMasterAction {
 
                         riwayatTindakan.setNamaTindakan("Pemeriksaan " + entity.getKategoriLabName()+namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
-                        riwayatTindakan.setJenisPasien(jenPasien);
+                        riwayatTindakan.setJenisPasien(entity.getJenisPeriksaPasien());
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
                         riwayatTindakan.setCreatedWho(user);

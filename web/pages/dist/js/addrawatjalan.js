@@ -1,4 +1,4 @@
-function getJenisResep() {
+function getJenisResep(id) {
     strSelect = "";
     var arBodyJenisResep = [];
     if (jenisPeriksaPasien == "rekanan") {
@@ -28,14 +28,14 @@ function getJenisResep() {
     } else if (jenisPeriksaPasien == "umum") {
         arBodyJenisResep.push({"nilai": "umum", "label": "UMUM"});
     } else if (jenisPeriksaPasien == "bpjs_rekanan") {
-        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS"});
+        arBodyJenisResep.push({"nilai": "bpjs", "label": "BPJS REKANAN"});
     }
 
     var strSelect = "";
     $.each(arBodyJenisResep, function (i, item) {
         strSelect += "<option value='" + item.nilai + "'>" + item.label + "</option>";
     });
-    $("#select-jenis-resep").html(strSelect);
+    $("#"+id).html(strSelect);
 }
 
 function cekRekakanops() {
@@ -352,6 +352,7 @@ function selectKeterangan(idKtg) {
             $('#form-rujuk_internal').hide();
             $('#form_eksekutif').hide();
             $('#form_order_pemeriksaan').hide();
+            $('#body_order_pemeriksaan').html('');
 
         } else if (idKtg == "lanjut_paket") {
             var idpel = $('#h_id_pelayanan_paket_pilih').val();
@@ -962,6 +963,7 @@ function showModal(select) {
 
     } else if (select == 4) {
         dokterDpjp();
+        getJenisResep('select-jenis-pemeriksaan');
         $('#body_pemeriksaan').html('');
         $('#is_luar, #is_pending_lab').prop('checked', false);
         $('#is_luar, #is_pending_lab').attr('disabled', false);
@@ -987,7 +989,7 @@ function showModal(select) {
         });
         $('.tgl').inputmask('dd-mm-yyyy', {'placeholder': 'dd-mm-yyyy'});
         $('#form_ttd').show();
-        $('#lab_kategori, #lab_lab').attr('disabled', false);
+        $('#lab_kategori, #lab_lab, #select-jenis-pemeriksaan').attr('disabled', false);
         $('#lab_kategori, #lab_lab').val('').trigger('change');
         $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
         $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
@@ -1023,7 +1025,7 @@ function showModal(select) {
         $('#resep_nama_obat_serupa').attr("onchange", "var warn =$('#war_rep_obat_serupa').is(':visible'); if (warn){$('#cor_rep_obat_serupa').show().fadeOut(3000);$('#war_rep_obat_serupa').hide()}; setStokObatApotek(this, \'serupa\')");
         $('#body_detail').html('');
         $('#modal-resep-head').modal({show: true, backdrop: 'static'});
-        getJenisResep();
+        getJenisResep('select-jenis-resep');
         var option = '<option value="">[Select One]</option>';
         dwr.engine.setAsync(true);
         CheckupAction.getListJenisObat(function (res) {
@@ -1494,6 +1496,7 @@ function saveLab(id) {
     var idPemeriksaan = $('.id_jenis_pemeriksaan');
     var parameterPemeriksaan = $('.nama_parameter_pemeriksaan');
     var idParameter = $('.id_parameter_pemeriksaan');
+    var jenisPemeriksaan = $('#select-jenis-pemeriksaan').val();
 
     if(table > 0){
         var saveCek = false;
@@ -1556,7 +1559,8 @@ function saveLab(id) {
                         'id_header_pemeriksaan': id,
                         'list_pemeriksaan': JSON.stringify(pemeriksan),
                         'is_luar': isLuar,
-                        'id_kategori_lab': idKategori
+                        'id_kategori_lab': idKategori,
+                        'jenis_pemeriksaan': jenisPemeriksaan
                     }
                     var result = JSON.stringify(data);
                     $('#save_lab').hide();
@@ -1586,7 +1590,8 @@ function saveLab(id) {
                         'nama_dokter_pengirim':namaDokter,
                         'id_kategori_lab': idKategori,
                         'waktu_pending': waktu,
-                        'ttd_pengirim': ttdPengirim
+                        'ttd_pengirim': ttdPengirim,
+                        'jenis_pemeriksaan': jenisPemeriksaan
                     }
                     var result = JSON.stringify(data);
                     $('#save_lab').hide();
@@ -1688,7 +1693,7 @@ function listLab() {
                     btn = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
                     print = '<a target="_blank" href="printLabRadiologi_' + urlPage + '.action?id=' + idDetailCheckup + '&tipe=' + tipe + '&lab=' + item.idHeaderPemeriksaan + '"><img border="0" class="hvr-grow" src="' + contextPath + '/pages/images/icons8-print-25.png" style="cursor: pointer;"></a>';
                 } else if ("Antrian" == item.statusPeriksaName) {
-                    btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idHeaderPemeriksaan + '\', \'' + item.idKategoriLab + '\', \'' + item.isPeriksaLuar + '\', \'' + item.statusPeriksaName + '\', \'' + tanggal + '\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
+                    btn = '<img border="0" class="hvr-grow" onclick="editLab(\'' + item.idHeaderPemeriksaan + '\', \'' + item.idKategoriLab + '\', \'' + item.isPeriksaLuar + '\', \'' + item.statusPeriksaName + '\', \'' + tanggal + '\', \''+item.jenisPeriksaPasien+'\')" src="' + contextPath + '/pages/images/icons8-create-25.png" style="cursor: pointer;">';
                 }
 
                 if ("paket_perusahaan" == jenisPeriksaPasien || "paket_individu" == jenisPeriksaPasien) {
@@ -1982,12 +1987,14 @@ function editDiagnosa(id, idDiagnosa, jenis, ket) {
     $('#modal-diagnosa').modal({show: true, backdrop: 'static'});
 }
 
-function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal) {
+function editLab(id, idKategoriLab, isLuar, statusPeriksa, tanggal, jenisPasien) {
     $('#form_ttd').hide();
     $('#load_lab, #warning_lab, #war_kategori_lab, #war_lab, #war_parameter').hide();
     $('#save_lab').attr('onclick', 'saveLab(\'' + id + '\')').show();
     $('#lab_kategori').val(idKategoriLab).trigger('change').attr('disabled', true);
     $('#body_pemeriksaan').html('');
+    $('#select-jenis-pemeriksaan').val(jenisPasien).attr('disabled', true);
+
     if ("Pending" == statusPeriksa) {
         $('#form_is_pending').show();
         var tgl = converterDate(new Date(tanggal));
@@ -4749,6 +4756,7 @@ function addListPemeriksaan(){
             $('#jam_pending').attr('disabled', true);
             $('#lab_parameter_luar').val(null);
             $('#lab_luar').val(null);
+            $('#select-jenis-pemeriksaan').attr('disabled', true);
             var par = $('.parameter_luar');
             $.each(par, function (i, item) {
                 if (i != 0) {
@@ -4795,6 +4803,7 @@ function delPemeriksaan(id){
         $('#jam_pending').attr('disabled', false);
         $('#cek_luar').css('cursor', 'pointer');
         $('#cek_pending').css('cursor', 'pointer');
+        $('#select-jenis-pemeriksaan').attr('disabled', false);
     }
 }
 
@@ -4817,6 +4826,7 @@ function resetPemeriksaan(){
     });
     $('#cek_luar').css('cursor', 'pointer');
     $('#cek_pending').css('cursor', 'pointer');
+    $('#select-jenis-pemeriksaan').attr('disabled', false);
 }
 
 function addOrderListPemeriksaan(){

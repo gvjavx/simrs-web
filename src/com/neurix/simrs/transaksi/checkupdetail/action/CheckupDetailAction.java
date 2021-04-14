@@ -1227,7 +1227,6 @@ public class CheckupDetailAction extends BaseMasterAction {
                 String listPemeriksaan = null;
                 String kategoriLab = null;
                 String isOrderLab = null;
-                JSONArray jsonParameter = new JSONArray();
                 String poliLain = null;
                 String idDokter = null;
                 String metodeBayar = null;
@@ -4505,7 +4504,7 @@ public class CheckupDetailAction extends BaseMasterAction {
 
                         riwayatTindakan.setNamaTindakan("Pemeriksaan " + entity.getKategoriLabName()+namaLab);
                         riwayatTindakan.setKeterangan(entity.getKategori());
-                        riwayatTindakan.setJenisPasien(jenPasien);
+                        riwayatTindakan.setJenisPasien(entity.getJenisPeriksaPasien());
                         riwayatTindakan.setAction("C");
                         riwayatTindakan.setFlag("Y");
                         riwayatTindakan.setCreatedWho(user);

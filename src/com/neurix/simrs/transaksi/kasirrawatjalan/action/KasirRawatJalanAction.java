@@ -361,6 +361,7 @@ public class KasirRawatJalanAction extends BaseMasterAction {
                 RiwayatTindakan riwayatTindakan = new RiwayatTindakan();
                 riwayatTindakan.setNoCheckup(checkup.getNoCheckup());
                 riwayatTindakan.setBranchId(CommonUtil.userBranchLogin());
+                riwayatTindakan.setJenisPasien(jenisPasien);
 
                 try {
                     riwayatTindakanList = kasirRawatJalanBoProxy.getListAllTindakan(riwayatTindakan);
