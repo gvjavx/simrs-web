@@ -128,38 +128,49 @@ public class JamKerjaBoImpl implements JamKerjaBo {
         logger.info("[ShiftBoImpl.saveAdd] start process >>>");
 
         if (bean!=null) {
-
-            String jkId;
+            List<ImHrisJamKerja> jamKerjaList = new ArrayList();
             try {
-                // Generating ID, get from postgre sequence
-                jkId = jamKerjaDao.getNextJamKerjaId();
+                jamKerjaList = jamKerjaDao.getJamKerjaByBranchAndHari(bean.getBranchId(), bean.getHariKerja());
             } catch (HibernateException e) {
-                logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                logger.error("[JamKerjaBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Error when retrieving Jam Kerja by Branch and Hari, " + e.getMessage());
             }
+            if (jamKerjaList.size() == 0) {
+                String jkId;
+                try {
+                    // Generating ID, get from postgre sequence
+                    jkId = jamKerjaDao.getNextJamKerjaId();
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when getting sequence alat id, please info to your admin..." + e.getMessage());
+                }
 
-            ImHrisJamKerja entityData = new ImHrisJamKerja();
+                ImHrisJamKerja entityData = new ImHrisJamKerja();
 
-            entityData.setJamKerjaId(jkId);
-            entityData.setStatusGiling(bean.getStatusGiling());
-            entityData.setTipePegawaiId(bean.getTipePegawaiId());
-            entityData.setHariKerja(bean.getHariKerja());
-            entityData.setBranchId(bean.getBranchId());
-            entityData.setJamAwalKerja(bean.getJamAwalKerja());
-            entityData.setJamAkhirKerja(bean.getJamAkhirKerja());
-            entityData.setIstirahatAwal(bean.getIstirahatAwal());
-            entityData.setIstirahatAkhir(bean.getIstirahatAkhir());
-            entityData.setFlag(bean.getFlag());
-            entityData.setAction(bean.getAction());
-            entityData.setCreateDateWho(bean.getCreatedWho());
-            entityData.setLastUpdateWho(bean.getLastUpdateWho());
-            entityData.setCreatedDate(bean.getCreatedDate());
-            entityData.setLastUpdate(bean.getLastUpdate());
-            try {
-                jamKerjaDao.addAndSave(entityData);
-            } catch (HibernateException e) {
-                logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
-                throw new GeneralBOException("Found problem when saving new data alat, please info to your admin..." + e.getMessage());
+                entityData.setJamKerjaId(jkId);
+                entityData.setStatusGiling(bean.getStatusGiling());
+                entityData.setTipePegawaiId(bean.getTipePegawaiId());
+                entityData.setHariKerja(bean.getHariKerja());
+                entityData.setBranchId(bean.getBranchId());
+                entityData.setJamAwalKerja(bean.getJamAwalKerja());
+                entityData.setJamAkhirKerja(bean.getJamAkhirKerja());
+                entityData.setIstirahatAwal(bean.getIstirahatAwal());
+                entityData.setIstirahatAkhir(bean.getIstirahatAkhir());
+                entityData.setFlag(bean.getFlag());
+                entityData.setAction(bean.getAction());
+                entityData.setCreateDateWho(bean.getCreatedWho());
+                entityData.setLastUpdateWho(bean.getLastUpdateWho());
+                entityData.setCreatedDate(bean.getCreatedDate());
+                entityData.setLastUpdate(bean.getLastUpdate());
+                try {
+                    jamKerjaDao.addAndSave(entityData);
+                } catch (HibernateException e) {
+                    logger.error("[ShiftBoImpl.saveAdd] Error, " + e.getMessage());
+                    throw new GeneralBOException("Found problem when saving new data Jam Kerja, please info to your admin..." + e.getMessage());
+                }
+            } else {
+                logger.error("[JamKerjaBoImpl.saveAdd] Error, Data dengan Branch dan Hari tersebut sudah ada.");
+                throw new GeneralBOException("Data dengan branch dan hari tersebut sudah tersedia.");
             }
         }
 
