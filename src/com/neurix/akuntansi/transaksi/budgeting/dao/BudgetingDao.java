@@ -1,6 +1,7 @@
 package com.neurix.akuntansi.transaksi.budgeting.dao;
 
 import com.neurix.akuntansi.master.kodeRekening.model.ImKodeRekeningEntity;
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.tipeRekening.model.TipeRekening;
 import com.neurix.akuntansi.transaksi.budgeting.model.Budgeting;
 import com.neurix.akuntansi.transaksi.budgeting.model.ItAkunBudgetingEntity;

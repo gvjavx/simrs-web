@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.parameterbudgeting.action;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.bo.ParameterBudgetingBo;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunJenisBudgetingEntity;
@@ -44,6 +45,7 @@ public class ParameterBudgetingAction {
         logger.info("[ParameterBudgetingAction.resetAllSession] START >>>");
         HttpSession session = ServletActionContext.getRequest().getSession();
         session.removeAttribute("listOfParameterBudgeting");
+        session.removeAttribute("listOfCoa");
         logger.info("[ParameterBudgetingAction.resetAllSession] END <<<");
     }
 
@@ -277,5 +279,28 @@ public class ParameterBudgetingAction {
 
         logger.info("[ParameterBudgetingAction.getAllKatagoriByIdJenis] END <<<");
         return null;
+    }
+
+    public CrudResponse getListKodeRekeningByTipeCoa(String tipeCoa){
+        logger.info("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] START >>>");
+
+        ApplicationContext ctx = ContextLoader.getCurrentWebApplicationContext();
+        ParameterBudgetingBo parameterBudgetingBo = (ParameterBudgetingBo) ctx.getBean("parameterBudgetingBoProxy");
+
+        List<KodeRekening> kodeRekeningList = new ArrayList<>();
+
+        CrudResponse response = new CrudResponse();
+
+        try {
+            kodeRekeningList = parameterBudgetingBo.getListKodeRekeningByTipeCoa(tipeCoa);
+        } catch (GeneralBOException e){
+            logger.info("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] ERROR .",e);
+            response.hasError("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] ERROR ."+e.getMessage());
+        }
+
+        logger.info("[ParameterBudgetingAction.getListKodeRekeningByTipeCoa] END <<<");
+        response.hasSuccess("berhasil");
+        response.setList(kodeRekeningList);
+        return response;
     }
 }

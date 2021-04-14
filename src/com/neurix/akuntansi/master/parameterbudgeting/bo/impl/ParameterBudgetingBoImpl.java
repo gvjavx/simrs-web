@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.parameterbudgeting.bo.impl;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.dao.MasterDao;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.bo.ParameterBudgetingBo;
@@ -227,6 +228,23 @@ public class ParameterBudgetingBoImpl implements ParameterBudgetingBo{
         logger.info("[ParameterBudgetingBoImpl.getAllParameterRekening] START >>>");
         logger.info("[ParameterBudgetingBoImpl.getAllParameterRekening] END <<<");
         return parameterBudgetingRekeningDao.getAll();
+    }
+
+    @Override
+    public List<KodeRekening> getListKodeRekeningByTipeCoa(String tipeCoa) {
+        logger.info("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] START >>>");
+
+        List<KodeRekening> kodeRekeningList = new ArrayList<>();
+
+        try {
+            kodeRekeningList = parameterBudgetingDao.getListKodeRekeningByTipeKodeRekening(tipeCoa);
+        } catch (HibernateException e){
+            logger.error("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] ERROR. ", e);
+            throw new GeneralBOException("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] ERROR. ]", e);
+        }
+
+        logger.info("[ParameterBudgetingBoImpl.getListKodeRekeningByTipeCoa] END <<<");
+        return kodeRekeningList;
     }
 
     private String getNextId(){

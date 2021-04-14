@@ -428,7 +428,8 @@
                         </td>
                         <td>
                             <table>
-                                <input type="text" class="form-control" id="sel_add_item_rekening" style="margin-top:7px;"/>
+                                <input type="text" class="form-control"  style="margin-top:7px;" onclick="showDetailCoa('add')" readonly/>
+                                <input type="hidden" id="sel_add_item_rekening">
                                 <%--<select id="sel_add_item_rekening" class="form-control select2" style="width: 100%">--%>
                                 <%--</select>--%>
                             </table>
@@ -447,64 +448,66 @@
     </div>
 </div>
 
-<%--<div class="modal fade" id="modal-loading-dialog">--%>
-    <%--<div class="modal-dialog">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header" style="background-color: #00a65a">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Saving ...--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body">--%>
-                <%--<div id="waiting-content" style="text-align: center">--%>
-                    <%--<h4>Please don't close this window, server is processing your request ...</h4>--%>
-                    <%--<img border="0" style="width: 130px; height: 120px; margin-top: 20px"--%>
-                         <%--src="<s:url value="/pages/images/sayap-logo-nmu.png"/>"--%>
-                         <%--name="image_indicator_write">--%>
-                    <%--<br>--%>
-                    <%--<img class="spin" border="0"--%>
-                         <%--style="width: 50px; height: 50px; margin-top: -70px; margin-left: 45px"--%>
-                         <%--src="<s:url value="/pages/images/plus-logo-nmu-2.png"/>"--%>
-                         <%--name="image_indicator_write">--%>
-                <%--</div>--%>
+<div class="modal fade" id="modal-view-coa">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> List COA
+                </h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-bordered" style="font-size: 13px">
+                    <thead>
+                    <tr>
+                        <td>COA</td>
+                        <td>Nama COA</td>
+                        <td>Action</td>
+                    </tr>
+                    </thead>
+                    <tbody id="add-list-coa">
+                    <%--<s:iterator value="#session.listOfCoa" var="row">--%>
+                        <%--<tr>--%>
+                            <%--<td><s:property value="kodeRekening"/></td>--%>
+                            <%--<td><s:property value="namaKodeRekening"/></td>--%>
+                            <%--<td align="center">--%>
+                            <%--<button class="btn btn-primary btn-sm" onclick="edit('<s:property value="rekeningId"/>')"><i class="fa fa-edit"></i> Pilih</button>--%>
+                            <%--</td>--%>
+                        <%--</tr>--%>
+                    <%--</s:iterator>--%>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
 
-                <%--<div class="alert alert-danger alert-dismissible" style="display: none" id="warning_fin_waiting">--%>
-                    <%--<h4><i class="icon fa fa-ban"></i> Warning!</h4>--%>
-                    <%--<p id="msg_fin_error_waiting"></p>--%>
-                <%--</div>--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer">--%>
-                <%--<button type="button" class="btn btn-sm btn-success" onclick="link()" style="display: none;" id="delete_con"><i class="fa fa-check"></i> Ok--%>
+<div class="modal fade" id="modal-success-dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #00a65a">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info"></i> Success
+                </h4>
+            </div>
+            <div class="modal-body" style="text-align: center">
+                <img border="0" src="<s:url value="/pages/images/icon_success.png"/>"
+                     name="icon_success">
+                Record has been saved successfully.
+            </div>
+            <div class="modal-footer">
+                <%--<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No--%>
                 <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
-
-<%--<div class="modal fade" id="modal-success-dialog">--%>
-    <%--<div class="modal-dialog modal-sm">--%>
-        <%--<div class="modal-content">--%>
-            <%--<div class="modal-header" style="background-color: #00a65a">--%>
-                <%--<button type="button" class="close" data-dismiss="modal" aria-label="Close">--%>
-                    <%--<span aria-hidden="true">&times;</span></button>--%>
-                <%--<h4 class="modal-title"><i class="fa fa-info"></i> Success--%>
-                <%--</h4>--%>
-            <%--</div>--%>
-            <%--<div class="modal-body" style="text-align: center">--%>
-                <%--<img border="0" src="<s:url value="/pages/images/icon_success.png"/>"--%>
-                     <%--name="icon_success">--%>
-                <%--Record has been saved successfully.--%>
-            <%--</div>--%>
-            <%--<div class="modal-footer">--%>
-                <%--&lt;%&ndash;<button type="button" class="btn btn-sm btn-default" data-dismiss="modal"><i class="fa fa-times"></i> No&ndash;%&gt;--%>
-                <%--&lt;%&ndash;</button>&ndash;%&gt;--%>
-                <%--<button type="button" class="btn btn-sm btn-success" onclick="link()"><i class="fa fa-check"></i> Ok--%>
-                <%--</button>--%>
-            <%--</div>--%>
-        <%--</div>--%>
-    <%--</div>--%>
-<%--</div>--%>
+                <button type="button" class="btn btn-sm btn-success" onclick="link()"><i class="fa fa-check"></i> Ok
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="modal fade" id="modal-confirm-dialog">
     <div class="modal-dialog modal-sm">
@@ -650,7 +653,7 @@
             listKetegoriByJenis("sel_edit_kategori", res.idJenisBudgeting);
             listMaster("sel_edit_master");
             listPosition("sel_edit_divisi");
-            listRekening("sel_edit_item_rekening");
+//            listRekening("sel_edit_item_rekening");
 
             $("#sel_edit_jenis").val(res.idJenisBudgeting);
             $("#sel_edit_master").val(res.masterId);
@@ -669,7 +672,7 @@
             listKetegoriByJenis("sel_delete_kategori", res.idJenisBudgeting);
             listMaster("sel_delete_master");
             listPosition("sel_delete_divisi");
-            listRekening("sel_delete_item_rekening");
+//            listRekening("sel_delete_item_rekening");
 
             $("#sel_delete_jenis").val(res.idJenisBudgeting);
             $("#sel_delete_master").val(res.masterId);
@@ -686,7 +689,7 @@
         listJenisBudgeting("sel_add_jenis");
         listMaster("sel_add_master");
         listPosition("sel_add_divisi");
-        listRekening("sel_add_item_rekening");
+//        listRekening("sel_add_item_rekening");
     }
 
     function saveEdit() {
@@ -772,6 +775,24 @@
             }
             $("#modal-add").modal('hide');
 //            link();
+        });
+    }
+
+    function showDetailCoa(idelement) {
+        $("#modal-view-coa").modal('show');
+        ParameterBudgetingAction.getListKodeRekeningByTipeCoa( function (res) {
+
+            var str = "";
+            $.each(res.list, function (i, item) {
+                str += "<tr>" +
+                    "<td>"+item.kodeRekening+"</td>" +
+                    "<td>"+item.namaKodeRekening+"</td>" +
+                    "<td align='center'><button class='btn btn-sm btn-default'><i class='fa fa-check'></i> Pilih</button></td>" +
+                    "</tr>";
+            })
+
+            console.log(res.list);
+            $("#"+idelement+"-list-coa").html(str);
         });
     }
 

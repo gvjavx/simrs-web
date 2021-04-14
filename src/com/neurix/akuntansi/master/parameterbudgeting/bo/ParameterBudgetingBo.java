@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.parameterbudgeting.bo;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.master.model.ImMasterEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.*;
 import com.neurix.authorization.position.model.ImPosition;
@@ -17,4 +18,5 @@ public interface ParameterBudgetingBo {
     public List<ImPosition> getAllPosition();
     public List<ImMasterEntity> getAllMaster();
     public List<ImAkunParameterBudgetingRekeningEntity> getAllParameterRekening();
+    public List<KodeRekening> getListKodeRekeningByTipeCoa(String tipeCoa);
 }

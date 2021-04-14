@@ -1,5 +1,6 @@
 package com.neurix.akuntansi.master.parameterbudgeting.dao;
 
+import com.neurix.akuntansi.master.kodeRekening.model.KodeRekening;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ImAkunParameterBudgetingEntity;
 import com.neurix.akuntansi.master.parameterbudgeting.model.ParameterBudgeting;
 import com.neurix.common.dao.GenericDao;
@@ -158,5 +159,35 @@ public class ParameterBudgetingDao extends GenericDao<ImAkunParameterBudgetingEn
         if (obj != null)
             return (String) obj;
         return null;
+    }
+
+    public List<KodeRekening> getListKodeRekeningByTipeKodeRekening(String tipeKodeRekening){
+
+        String filterKodeRekening = "";
+        if (tipeKodeRekening != null && !"".equalsIgnoreCase(tipeKodeRekening))
+            filterKodeRekening = "tipe_coa = '"+tipeKodeRekening+"' \n";
+
+        String SQL = "SELECT rekening_id, kode_rekening, nama_kode_rekening, level \n" +
+                "FROM im_akun_kode_rekening \n" +
+                "WHERE flag = 'Y' \n" + filterKodeRekening +
+                "ORDER BY kode_rekening;";
+
+        List<Object[]> list = this.sessionFactory.getCurrentSession().createSQLQuery(SQL).list();
+
+        List<KodeRekening> kodeRekenings = new ArrayList<>();
+        if (list.size() > 0){
+
+            for (Object[] obj : list){
+                KodeRekening kodeRekening = new KodeRekening();
+                kodeRekening.setRekeningId(obj[0].toString());
+                kodeRekening.setKodeRekening(obj[1].toString());
+                kodeRekening.setNamaKodeRekening(obj[2].toString());
+                kodeRekening.setbLevel((BigInteger) obj[3]);
+                kodeRekenings.add(kodeRekening);
+            }
+
+        }
+
+        return kodeRekenings;
     }
 }
