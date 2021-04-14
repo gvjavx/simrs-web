@@ -1,5 +1,6 @@
 package com.neurix.hris.transaksi.mutasi.bo.impl;
 
+import com.neurix.authorization.company.dao.BranchDao;
 import com.neurix.authorization.position.dao.PositionDao;
 import com.neurix.authorization.position.model.ImPosition;
 import com.neurix.authorization.position.model.Position;
@@ -27,6 +28,7 @@ import com.neurix.hris.master.kualifikasiCalonPejabat.model.KualifikasiCalonPeja
 import com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao;
 import com.neurix.hris.master.payrollSkalaGaji.model.ImPayrollSkalaGajiEntity;
 import com.neurix.hris.master.pelatihanJabatan.model.PelatihanJabatan;
+import com.neurix.hris.master.profesi.dao.ProfesiDao;
 import com.neurix.hris.master.sertifikat.dao.SertifikatDao;
 import com.neurix.hris.master.sertifikat.model.ImSertifikatEntity;
 import com.neurix.hris.master.sertifikat.model.Sertifikat;
@@ -65,6 +67,8 @@ import com.neurix.hris.transaksi.personilPosition.model.ItPersonilPositionEntity
 import com.neurix.hris.transaksi.personilPosition.model.PersonilPosition;
 import com.neurix.hris.transaksi.smk.dao.SmkHistoryGolonganDao;
 import com.neurix.hris.transaksi.smk.model.ImtHistorySmkGolonganEntity;
+import com.neurix.simrs.master.dokter.dao.DokterDao;
+import com.neurix.simrs.master.dokter.model.ImSimrsDokterEntity;
 import com.neurix.simrs.master.jenisperiksapasien.model.ImJenisPeriksaPasienEntity;
 import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
@@ -123,6 +127,22 @@ public class MutasiBoImpl implements MutasiBo {
 
     public void setGolonganPkwtDao(GolonganPkwtDao golonganPkwtDao) {
         this.golonganPkwtDao = golonganPkwtDao;
+    }
+
+    private ProfesiDao profesiDao;
+    private DokterDao dokterDao;
+    private BranchDao branchDao;
+
+    public void setBranchDao(BranchDao branchDao) {
+        this.branchDao = branchDao;
+    }
+
+    public void setDokterDao(DokterDao dokterDao) {
+        this.dokterDao = dokterDao;
+    }
+
+    public void setProfesiDao(ProfesiDao profesiDao) {
+        this.profesiDao = profesiDao;
     }
 
     public void setStudyJurusanDao(StudyJurusanDao studyJurusanDao) {
@@ -485,6 +505,68 @@ public class MutasiBoImpl implements MutasiBo {
                     itMutasiEntity.setCreatedDate(bean.getCreatedDate());
                     itMutasiEntity.setLastUpdate(bean.getLastUpdate());
                     itMutasiEntity.setNoSk(mutasi.getNoSk());
+
+                    //RAKA-13APR2021 ==> Handle Perubahan Profesi Dokter
+                    String profLamaIsDokter, profBaruIsDokter = "";
+                    try{
+                        profLamaIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiLamaId(),"dokter");
+                        profBaruIsDokter = profesiDao.cekTipeProfesi(mutasi.getProfesiBaruId(),"dokter");
+                    }catch (HibernateException e){
+                        logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                        throw new GeneralBOException("Error when check Tipe Profesi, " + e.getMessage());
+                    }
+                    /*
+                    List<ImSimrsDokterEntity> dokterEntities = new ArrayList();
+                    if("true".equalsIgnoreCase(profLamaIsDokter) && !"true".equalsIgnoreCase(profBaruIsDokter)){
+                        try{
+                            dokterEntities = dokterDao.getDataDokterById(mutasi.getNip());
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Dokter by ID, " + e.getMessage());
+                        }
+
+                        if(dokterEntities.size()>0){
+                            dokterEntities.get(0).setFlag("N");
+                            dokterEntities.get(0).setAction("U");
+                            dokterEntities.get(0).setLastUpdate(mutasi.getLastUpdate());
+                            dokterEntities.get(0).setLastUpdateWho(mutasi.getLastUpdateWho());
+
+                            try {
+                                dokterDao.updateAndSave(dokterEntities.get(0));
+                            }catch (HibernateException e){
+                                logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                                throw new GeneralBOException("Error when update and save Dokter, " + e.getMessage());
+                            }
+                        }
+                    } else
+                    */
+                    if(!"true".equalsIgnoreCase(profLamaIsDokter) && "true".equalsIgnoreCase(profBaruIsDokter)){
+                        ImBiodataEntity biodata = new ImBiodataEntity();
+                        List<ItPersonilPositionEntity> personilPosition = new ArrayList();
+                        try{
+                            biodata = biodataDao.getById("nip", mutasi.getNip());
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Biodata by ID, " + e.getMessage());
+                        }
+                        try{
+                            Map criteria = new HashMap();
+                            criteria.put("nip", mutasi.getNip());
+                            criteria.put("flag", "Y");
+                            personilPosition = personilPositionDao.getByCriteria(criteria);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when retrieving Personil Position by ID, " + e.getMessage());
+                        }
+
+                        try {
+                            createDokter(biodata, personilPosition.get(0), mutasi);
+                        }catch (HibernateException e){
+                            logger.error("[MutasiBoImpl.saveMutasi] Error, " + e.getMessage());
+                            throw new GeneralBOException("Error when create Dokter, " + e.getMessage());
+                        }
+                    }
+                    //RAKA-end
 
                     String mutDocId;
                     try{
@@ -1564,5 +1646,71 @@ public class MutasiBoImpl implements MutasiBo {
         }
 
         logger.info("[MutasiBoImpl.saveHistoryJabatan] END <<<");
+    }
+
+    private void createDokter(ImBiodataEntity biodata, ItPersonilPositionEntity personilPosition, Mutasi bean) throws GeneralBOException{
+        List<ImSimrsDokterEntity> cekDokter = new ArrayList<>();
+        try {
+            cekDokter = dokterDao.getDataDokterById(biodata.getNip());
+        } catch (HibernateException e) {
+            logger.error("[BiodataBoImpl.saveAdd] Error When Cek Dokter By ID. ", e);
+            throw new GeneralBOException("[BiodataBoImpl.saveAdd] Error When Get Dokter By ID. ", e);
+        }
+
+        if (cekDokter.size() == 0) {
+            String kodering = "";
+            try {
+                String seqKodering = dokterDao.getNextKodering();
+
+                Map map = new HashMap<>();
+                map.put("position_id", personilPosition.getPositionId());
+                String koderingPosition = positionDao.getKodringPosition(map).split("\\.")[2];
+
+                Map map1 = new HashMap<>();
+                map1.put("branch_id", personilPosition.getBranchId());
+                String koderingBranch = branchDao.getKodringBranches(map1);
+
+                kodering = koderingBranch + "." + koderingPosition + "." + seqKodering;
+            }catch (HibernateException e){
+                logger.error("[MutasiBoImpl.createDokter] Error, " +e.getMessage());
+                throw new GeneralBOException("Error when retrieving kodering for kodering dokter, " + e.getMessage());
+            }
+
+            // creating object entity serializable
+            ImSimrsDokterEntity entity = new ImSimrsDokterEntity();
+            String namaDgnGelar = biodata.getNamaPegawai();
+            if (biodata.getGelarDepan() != null && !"".equalsIgnoreCase(biodata.getGelarDepan())) {
+                namaDgnGelar = biodata.getGelarDepan() + ". " + namaDgnGelar;
+            }
+            if (biodata.getGelarBelakang() != null && !"".equalsIgnoreCase(biodata.getGelarBelakang())) {
+                namaDgnGelar = namaDgnGelar + ", " + biodata.getGelarBelakang();
+            }
+
+            entity.setIdDokter(biodata.getNip());
+            entity.setNamaDokter(namaDgnGelar);
+            entity.setIdPelayanan("");
+            entity.setKuota("");
+            entity.setKodering(kodering);
+            entity.setLat("");
+            entity.setLon("");
+            entity.setFlagCall("");
+            entity.setFlagTele("");
+            entity.setKuotaTele("");
+
+            entity.setFlag("Y");
+            entity.setAction("C");
+            entity.setCreatedWho(bean.getLastUpdateWho());
+            entity.setLastUpdateWho(bean.getLastUpdateWho());
+            entity.setCreatedDate(bean.getLastUpdate());
+            entity.setLastUpdate(bean.getLastUpdate());
+
+            try {
+                // insert into database
+                dokterDao.addAndSave(entity);
+            } catch (HibernateException e) {
+                logger.error("[MutasiBoImpl.saveAdd] Error, " + e.getMessage());
+                throw new GeneralBOException("Found problem when saving new data Dokter, please info to your admin..." + e.getMessage());
+            }
+        }
     }
 }

@@ -30,6 +30,8 @@
           p:pelatihanJabatanUserDao-ref="pelatihanJabatanUserDao"
           p:studyJurusanDao-ref="studyJurusanDao"
           p:tunjLainPegawaiDao-ref="tunjLainPegawaiDao"
+          p:profesiDao-ref="profesiDao"
+          p:dokterDao-ref="dokterDao"
     />
 
     <bean id="mutasiBoProxy" class="org.springframework.aop.framework.ProxyFactoryBean"
@@ -64,6 +66,10 @@
     <bean id="historyJabatanPegawaiDao" class="com.neurix.hris.transaksi.personilPosition.dao.HistoryJabatanPegawaiDao"
           p:sessionFactory-ref="sessionFactory" />
     <bean id="skalaGajiDao" class="com.neurix.hris.master.payrollSkalaGaji.dao.PayrollSkalaGajiDao"
+          p:sessionFactory-ref="sessionFactory" />
+    <bean id="profesiDao" class="com.neurix.hris.master.profesi.dao.ProfesiDao"
+          p:sessionFactory-ref="sessionFactory"/>
+    <bean id="dokterDao" class="com.neurix.simrs.master.dokter.dao.DokterDao"
           p:sessionFactory-ref="sessionFactory" />
 
 

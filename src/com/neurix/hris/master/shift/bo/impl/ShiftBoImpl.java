@@ -132,7 +132,7 @@ public class ShiftBoImpl implements ShiftBo {
                 }
             }else{
                 logger.error("[ShiftBoImpl.saveDelete] Data sudah digunakan dalam Transaksi, data tidak bisa dihapus.");
-                throw new GeneralBOException("Data sudah digunakan pada transaksi, Data tidak bisa.");
+                throw new GeneralBOException("Data sudah digunakan pada transaksi, Data tidak bisa dihapus.");
             }
         }
 

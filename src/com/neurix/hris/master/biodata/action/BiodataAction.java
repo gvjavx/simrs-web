@@ -335,8 +335,10 @@ public class BiodataAction extends BaseMasterAction {
                 logId = userBo.saveErrorMessage(e.getMessage(), "UserBO.getComboUserWithCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[UserAction.initComboUser] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[UserAction.initComboUser] Error when get combo User," + "[" + logId + "] Found problem when retrieving combo User data, please inform to your admin.", e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[BiodataAction.initComboUser] end process <<<");
@@ -394,6 +396,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getPersonalByCriteria");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.edit] Error when retrieving edit data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.edit] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
@@ -451,6 +454,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getAlatById");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.delete] Error when retrieving delete data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -510,6 +514,7 @@ public class BiodataAction extends BaseMasterAction {
                         logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
                     } catch (GeneralBOException e1) {
                         logger.error("[UserAction.save] Error when saving error,", e1);
+                        throw new GeneralBOException(e1.getMessage());
                     }
                     logger.error("[UserAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                     addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
@@ -616,9 +621,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataPengalaman");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataPengalaman] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.searchDataPengalaman] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[BiodataAction.searchDataPengalaman] end process >>>");
         return pengalamanKerjas;
@@ -639,9 +646,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataReward");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataReward] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.searchDataReward] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[BiodataAction.searchDataReward] end process >>>");
         return listOfsearchReward;
@@ -662,9 +671,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataSertifikat");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataSertifikat] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.searchDataSertifikat] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[BiodataAction.searchDataSertifikat] end process >>>");
         return listOfsearchSertifikat;
@@ -685,9 +696,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.searchDataPengalaman");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataReward] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.searchDataSertifikat] Error when Search Data Pengalaman Kerja," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[BiodataAction.searchDataPelatihanJabatan] end process >>>");
         return listOfsearchSertifikat;
@@ -776,6 +789,7 @@ public class BiodataAction extends BaseMasterAction {
                                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
                             } catch (GeneralBOException e1) {
                                 logger.error("[BiodataAction.save] Error when saving error,", e1);
+                                throw new GeneralBOException(e1.getMessage());
                             }
                             logger.error("[BiodataAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                             addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
@@ -802,12 +816,14 @@ public class BiodataAction extends BaseMasterAction {
                             biodataBoProxy.saveEditDokterKso(editBiodata);
                         } catch (GeneralBOException e) {
                             logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                            throw new GeneralBOException(e.getMessage());
                         }
                     } else {
                         try {
                             biodataBoProxy.saveEdit(editBiodata);
                         } catch (GeneralBOException e) {
                             logger.error("[BiodataAction.save] Error, " + e.getMessage());
+                            throw new GeneralBOException(e.getMessage());
                         }
                     }
 
@@ -878,6 +894,7 @@ public class BiodataAction extends BaseMasterAction {
                             logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "UserAction.save");
                         } catch (GeneralBOException e1) {
                             logger.error("[BiodataAction.save] Error when saving error,", e1);
+                            throw new GeneralBOException(e1.getMessage());
                         }
                         logger.error("[BiodataAction.save] Error when uploading and saving user," + "[" + logId + "] Found problem when saving edit data, please inform to your admin.", e);
                         addActionError("Error, " + "[code=" + logId + "] Found problem when uploading and saving user, please inform to your admin. Cause : " + e.getMessage());
@@ -1444,6 +1461,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.getAlatById");
                 } catch (GeneralBOException e1) {
                     logger.error("[AlatAction.delete] Error when retrieving delete data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[CutiPegawaiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1479,7 +1497,8 @@ public class BiodataAction extends BaseMasterAction {
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.getAlatById");
             } catch (GeneralBOException e1) {
-                logger.error("[AlatAction.delete] Error when retrieving delete data,", e1);
+                logger.error("[BiodataAction.delete] Error when retrieving delete data,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[CutiPegawaiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1509,9 +1528,10 @@ public class BiodataAction extends BaseMasterAction {
                 try {
                     logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.getAlatById");
                 } catch (GeneralBOException e1) {
-                    logger.error("[AlatAction.delete] Error when retrieving delete data,", e1);
+                    logger.error("[BiodataAction.delete] Error when retrieving delete data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
-                logger.error("[CutiPegawaiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+                logger.error("[BiodataAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
                 return "failure";
             }
@@ -1543,9 +1563,10 @@ public class BiodataAction extends BaseMasterAction {
             try {
                 logId = cutiPegawaiBoProxy.saveErrorMessage(e.getMessage(), "CutiPegawaiBO.getAlatById");
             } catch (GeneralBOException e1) {
-                logger.error("[AlatAction.delete] Error when retrieving delete data,", e1);
+                logger.error("[BiodataAction.delete] Error when retrieving delete data,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
-            logger.error("[CutiPegawaiAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
+            logger.error("[BiodataAction.delete] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
             return "failure";
         }
@@ -1610,6 +1631,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewStudy");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.viewStudy] Error when retrieving delete data,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.viewStudy] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1638,6 +1660,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = sppdBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewSppd");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.viewSppd] Error when retrieving delete data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.viewSppd] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1674,6 +1697,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = sppdBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewSppd");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.viewSppd] Error when retrieving delete data,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.viewSppd] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1702,6 +1726,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = sppdBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewSppd");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.viewSppd] Error when retrieving delete data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.viewSppd] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1738,6 +1763,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewSppd");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.viewSppd] Error when retrieving delete data,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.viewSppd] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1766,6 +1792,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewSppd");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.viewSppd] Error when retrieving delete data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.viewSppd] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1802,6 +1829,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "BiodataAction.viewSppd");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.viewSppd] Error when retrieving delete data,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.viewSppd] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for delete, please inform to your admin.");
@@ -1920,9 +1948,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataEditPengalamanKerja] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.save] Error when searching  by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[BiodataAction.searchDataEditPengalamanKerja] end process >>>");
@@ -1944,6 +1974,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataEditPengalamanKerja] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.save] Error when searching  by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
@@ -1967,6 +1998,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataEditPengalamanKerja] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.save] Error when searching  by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
@@ -1990,9 +2022,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.getByCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.searchDataEditPengalamanKerja] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.save] Error when searching  by criteria," + "[" + logId + "] Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[BiodataAction.searchDataEditPelatihan] end process >>>");
@@ -2183,6 +2217,7 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataBO.saveAddPengalaman");
             } catch (GeneralBOException e1) {
                 logger.error("[pengalamanKerjaAction.saveAdd] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[pengalamanKerjaAction.saveAdd] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
@@ -2265,9 +2300,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataBO.saveAddReward");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.saveAdd] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.saveAddReward] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
     }
 
@@ -2308,6 +2345,7 @@ public class BiodataAction extends BaseMasterAction {
 
                 if (image == null) {
                     logger.error("Buffered Image is null");
+                    throw new GeneralBOException("Buffered Image is null");
                 } else {
                     File f = new File(uploadFile);
                     // write the image
@@ -2316,6 +2354,7 @@ public class BiodataAction extends BaseMasterAction {
                 }
             } catch (Exception e) {
                 logger.error(e);
+                throw new GeneralBOException(e.getMessage());
             }
 
             sertifikat.setCreatedWho(userLogin);
@@ -2349,9 +2388,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "BiodataBO.saveAddReward");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.saveAdd] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.saveAddSertifikat] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
     }
 
@@ -2500,6 +2541,7 @@ public class BiodataAction extends BaseMasterAction {
 
             if (image == null) {
                 logger.error("Buffered Image is null");
+                throw new GeneralBOException("Buffered Image is null");
             } else {
                 File f = new File(uploadFile);
                 // write the image
@@ -2508,6 +2550,7 @@ public class BiodataAction extends BaseMasterAction {
             }
         } catch (Exception e) {
             logger.error(e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         HttpSession session = ServletActionContext.getRequest().getSession();
@@ -2635,9 +2678,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "pengalamanKerjaBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[biodataAction.saveAddReward] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[biodataAction.saveAddReward] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
     }
 
@@ -2687,9 +2732,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "pengalamanKerjaBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[biodataAction.saveAddReward] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[biodataAction.saveAddReward] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
     }
 
@@ -2731,6 +2778,7 @@ public class BiodataAction extends BaseMasterAction {
 
                 if (image == null) {
                     logger.error("Buffered Image is null");
+                    throw new GeneralBOException("Buffered Image is Null");
                 } else {
                     File f = new File(uploadFile);
                     // write the image
@@ -2739,6 +2787,7 @@ public class BiodataAction extends BaseMasterAction {
                 }
             } catch (Exception e) {
                 logger.error(e);
+                throw new GeneralBOException(e.getMessage());
             }
 
             sertifikat.setCreatedWho(userLogin);
@@ -2757,9 +2806,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[biodataAction.saveAddDataPelatihan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[biodataAction.saveAddDataPelatihan] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
     }
 
@@ -2801,6 +2852,7 @@ public class BiodataAction extends BaseMasterAction {
 
                 if (image == null) {
                     logger.error("Buffered Image is null");
+                    throw new GeneralBOException("Buffered Image is Null");
                 } else {
                     File f = new File(uploadFile);
                     // write the image
@@ -2809,6 +2861,7 @@ public class BiodataAction extends BaseMasterAction {
                 }
             } catch (Exception e) {
                 logger.error(e);
+                throw new GeneralBOException(e.getMessage());
             }
 
             sertifikat.setCreatedWho(userLogin);
@@ -2827,9 +2880,11 @@ public class BiodataAction extends BaseMasterAction {
                 logId = studyBoProxy.saveErrorMessage(e.getMessage(), "biodataBO.saveAdd");
             } catch (GeneralBOException e1) {
                 logger.error("[biodataAction.saveAddDataPelatihan] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[biodataAction.saveAddDataPelatihan] Error when adding item ," + "[" + logId + "] Found problem when saving add data, please inform to your admin.", e);
             addActionError("Error, " + "[code=" + logId + "] Found problem when saving add data, please inform to your admin.\n" + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
     }
 
@@ -3259,14 +3314,17 @@ public class BiodataAction extends BaseMasterAction {
                     logId = payrollBoProxy.saveErrorMessage(e.getMessage(), "printReportBiodata");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.printReportBiodata] Error when downloading ,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.printReportBiodata] Error when print report ," + "[" + logId + "] Found problem when downloading data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when downloading data, please inform to your admin.");
+                throw new GeneralBOException(e.getMessage());
             }
 
         } else {
             logger.error("[BiodataAction.printReportBiodata] Error when print report, please inform to your admin.");
             addActionError("Error, Found problem when downloading data, please inform to your admin.");
+            throw new GeneralBOException("Error, Found problem when downloading data.");
         }
 
         logger.info("[BiodataAction.printReportBiodata] end process <<<");
@@ -3291,8 +3349,10 @@ public class BiodataAction extends BaseMasterAction {
                 logId = biodataBo.saveErrorMessage(e.getMessage(), "BiodataBo.getComboDesaWithCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.initComboPersonil] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.initComboPersonil] Error when ," + "[" + logId + "] Found problem when retrieving combo data, please inform to your admin.", e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[BiodataAction.initComboPersonil] end process <<<");
@@ -3318,8 +3378,10 @@ public class BiodataAction extends BaseMasterAction {
                 logId = biodataBo.saveErrorMessage(e.getMessage(), "DesaBo.getComboDesaWithCriteria");
             } catch (GeneralBOException e1) {
                 logger.error("[BiodataAction.initComboAllPersonil] Error when saving error,", e1);
+                throw new GeneralBOException(e1.getMessage());
             }
             logger.error("[BiodataAction.initComboAllPersonil] Error when get combo lokasi kebun," + "[" + logId + "] Found problem when retrieving combo lokasi kebun data, please inform to your admin.", e);
+            throw new GeneralBOException(e.getMessage());
         }
 
         logger.info("[BiodataAction.initComboLokasiKebun] end process <<<");
@@ -3368,6 +3430,7 @@ public class BiodataAction extends BaseMasterAction {
                     response.setStatus("success");
             } catch (GeneralBOException e) {
                 logger.error("[BiodataAction.checkAvailJenisPegawaiDefault] ERROR, ", e);
+                throw new GeneralBOException(e.getMessage());
             }
         } else
             response.setStatus("success");
@@ -3386,6 +3449,7 @@ public class BiodataAction extends BaseMasterAction {
         } catch (GeneralBOException e) {
             logger.error("[BiodataAction.initComboJenisPegawai] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
             addActionError("Error, Found problem when searching data by criteria, please inform to your admin");
+            throw new GeneralBOException(e.getMessage());
         }
 
         listOfComboJenisPegawai.addAll(jenisPegawais);
@@ -3408,6 +3472,7 @@ public class BiodataAction extends BaseMasterAction {
             } catch (GeneralBOException e) {
                 logger.error("[BiodataAction.listPersonilPosition] Error when searching data by criteria, Found problem when searching data by criteria, please inform to your admin.", e);
                 addActionError("Error, Found problem when searching data by criteria, please inform to your admin");
+                throw new GeneralBOException(e.getMessage());
             }
         }
 
@@ -3567,9 +3632,10 @@ public class BiodataAction extends BaseMasterAction {
         HttpSession session = ServletActionContext.getRequest().getSession();
         List<PersonilPosition> listOfResultPersonil = (List<PersonilPosition>) session.getAttribute("listOfPersonilPosition");
 
-        if (listOfResultPersonil == null || listOfResultPersonil.size() == 0)
+        if (listOfResultPersonil == null || listOfResultPersonil.size() == 0) {
             logger.error("[BiodataAction.initEditSessionPosition] ERROR Session tidak ditemukan");
-        else {
+            throw new GeneralBOException("ERROR, Session (Jabatan Pegawai) tidak ditemukan");
+        }else {
             // mencari pada session list berdasarkan nip dan position id
             List<PersonilPosition> filteredPosition = listOfResultPersonil.stream().filter(
                     p -> p.getNip().equalsIgnoreCase(nip) &&
@@ -3578,10 +3644,13 @@ public class BiodataAction extends BaseMasterAction {
             // END
 
             // set ke object personilPosition untuk direturn dan print log error bila tidak ditemukan;
-            if (filteredPosition == null || filteredPosition.size() == 0)
+            if (filteredPosition == null || filteredPosition.size() == 0) {
                 logger.error("[BiodataAction.initEditSessionPosition] ERROR data tidak ditemukan pada session");
-            else
+                throw new GeneralBOException("ERROR, Data tidak ditemukan dalam session.");
+            }
+            else {
                 personilPosition = filteredPosition.get(0);
+            }
         }
 
         return personilPosition;
@@ -3756,6 +3825,7 @@ public class BiodataAction extends BaseMasterAction {
             jenisPegawais = biodataBo.getAllJenisPegawai();
         } catch (GeneralBOException e) {
             logger.error("[BiodataAction.checkIsJenisPegawaiDefault] ERROR. ", e);
+            throw new GeneralBOException(e.getMessage());
         }
 
 
@@ -3783,6 +3853,7 @@ public class BiodataAction extends BaseMasterAction {
             seq = biodataBo.getSeqNip();
         } catch (GeneralBOException e) {
             logger.error("[BiodataAction.getSeqNip] Failed to get Sequence.");
+            throw new GeneralBOException("Failed retrieving sequence");
         }
 
         logger.info("[BiodataAction.getSeqNip] END >>>>>>");
@@ -3805,6 +3876,7 @@ public class BiodataAction extends BaseMasterAction {
                     logId = biodataBoProxy.saveErrorMessage(e.getMessage(), "PersonalBO.getPersonalByCriteria");
                 } catch (GeneralBOException e1) {
                     logger.error("[BiodataAction.ksoToKaryawan] Error when retrieving edit data,", e1);
+                    throw new GeneralBOException(e1.getMessage());
                 }
                 logger.error("[BiodataAction.ksoToKaryawan] Error when retrieving item," + "[" + logId + "] Found problem when retrieving data, please inform to your admin.", e);
                 addActionError("Error, " + "[code=" + logId + "] Found problem when retrieving data for edit, please inform to your admin.");
@@ -3874,6 +3946,7 @@ public class BiodataAction extends BaseMasterAction {
             user.setAreaId(branch.getAreaId());
         }catch (HibernateException e){
             logger.error("[BiodataAction.createUser] Error, " + e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
 
         String rawPassword = user.getPassword();
@@ -3895,6 +3968,7 @@ public class BiodataAction extends BaseMasterAction {
             user.setSuccessMessage("Successfully Entry New Data");
         }catch (GeneralBOException e){
             logger.error("[BiodataAction] Error, " +e.getMessage());
+            throw new GeneralBOException(e.getMessage());
         }
         logger.info("[BiodataAction.createUser] end process >>>");
     }

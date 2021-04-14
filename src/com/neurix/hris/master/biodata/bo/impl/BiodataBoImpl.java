@@ -466,7 +466,7 @@ public class BiodataBoImpl implements BiodataBo {
 
         if (bean != null) {
             String cekTipePgw = cekStatusPgw(bean.getNip(), bean.getTipePegawai());
-            if (cekTipePgw.equalsIgnoreCase("true")) {
+//            if (cekTipePgw.equalsIgnoreCase("true")) {
 
                 // Sigit 2020-01-06, jika flag dokter kso tidak mengecek jabatan aktif, START
                 String cekJabatanAktif = "";
@@ -1756,9 +1756,9 @@ public class BiodataBoImpl implements BiodataBo {
 //                } else {
 //                    throw new GeneralBOException("Peringatan!!!, Harus ada jabatan aktif (normal) minimal 1");
 //                }
-            } else {
-                throw new GeneralBOException("Peringatan!!!, Tipe Karyawan tetap tidak boleh diganti dengan Tipe Karyawan PKWT");
-            }
+//            } else {
+//                throw new GeneralBOException("Peringatan!!!, Tipe Karyawan tetap tidak boleh diganti dengan Tipe Karyawan PKWT");
+//            }
         }
         logger.info("[BiodataBoImpl.saveEdit] end process <<<");
     }
