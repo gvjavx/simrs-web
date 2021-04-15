@@ -304,6 +304,9 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             headerCheckup.setNoKtp(headerList.getNoKtp());
             headerCheckup.setTempatLahir(headerList.getTempatLahir());
             headerCheckup.setTglLahir(headerList.getTglLahir());
+            if(headerList.getTglLahir() != null){
+                headerCheckup.setUmur(CommonUtil.calculateAge(headerList.getTglLahir(), true)+" Tahun");
+            }
             headerCheckup.setStTglLahir(headerCheckup.getTglLahir().toString());
             headerCheckup.setDesaId(headerList.getDesaId());
             headerCheckup.setJalan(headerList.getJalan());
@@ -447,10 +450,12 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
                 detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
 
-                if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-                    detailCheckupEntity.setMetodePembayaran("tunai");
-                }else{
+                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
                     detailCheckupEntity.setMetodePembayaran("non_tunai");
+                }else{
+                    if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                        detailCheckupEntity.setMetodePembayaran("tunai");
+                    }
                 }
 
                 detailCheckupEntity.setNoRujukan(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan()) ? bean.getNoRujukan() : null);

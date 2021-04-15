@@ -120,6 +120,8 @@ public class PermintaanGiziAction extends BaseTransactionAction {
                         }else{
                             reportParams.put("ruang",rawatInap.getNamaRangan());
                         }
+                        reportParams.put("bentukDiet", rawatInap.getBentukGizi());
+                        reportParams.put("jenisDiet", rawatInap.getJenisDiet());
                         break;
                     }
                 }

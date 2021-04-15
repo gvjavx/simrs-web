@@ -2540,16 +2540,17 @@
                         if("umum" == jenisPasien){
                             $('#form-nominal_uang_muka').show();
                             $('#pembayaran').val('tunai');
+                            $('#form_eksekutif').show();
                         }else{
                             $('#form-nominal_uang_muka').hide();
                             $('#pembayaran').val('');
+                            $('#form_eksekutif').hide();
                         }
                         $('#h_id_order_lab').val(null);
                         $('#form-lab').hide();
                         $('#form_dokter_poli').show();
                         $('#is_daftar_pj').val("N");
                         $('#text_centang').text(" Uang Muka");
-                        $('#form_eksekutif').show();
                         $('#cek_cek').hide();
                         $('#uang_muka, #uang_muka_val').val('');
                         $('#cek_is_uang_muka').prop('checked', false);

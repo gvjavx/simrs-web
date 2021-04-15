@@ -905,7 +905,7 @@ public class PeriksaLabAction extends BaseTransactionAction {
             reportParams.put("diagnosa", checkup.getNamaDiagnosa());
 
             reportParams.put("idDokterPengirim", labData.getIdDokterPengirim());
-            reportParams.put("dokterPengirim", labData.getDokterPengirim());
+            reportParams.put("dokterPengirim", labData.getNamaDokterPengirim());
             reportParams.put("idPetugas", labData.getIdPetugas());
             reportParams.put("namaPetugas", labData.getNamaPetugas());
             reportParams.put("idValidator", labData.getIdValidator());

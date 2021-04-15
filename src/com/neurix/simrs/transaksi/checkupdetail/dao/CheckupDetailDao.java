@@ -248,9 +248,9 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     "um.id, \n" +
                     "um.id_detail_checkup, \n" +
                     "dt.tgl_cekup, \n" +
-                    "jp.keterangan as jenis_pasien\n" +
-                    "FROM \n" +
-                    "it_simrs_header_checkup hd\n" +
+                    "jp.keterangan as jenis_pasien,\n" +
+                    "hd.tgl_lahir\n"+
+                    "FROM it_simrs_header_checkup hd\n" +
                     "INNER JOIN (" +
                     "SELECT a.* FROM(\n" +
                     "SELECT *, rank() OVER (PARTITION BY no_checkup ORDER BY created_date DESC) as rank \n" +
@@ -356,6 +356,10 @@ public class CheckupDetailDao extends GenericDao<ItSimrsHeaderDetailCheckupEntit
                     headerDetailCheckup.setIdJenisPeriksaPasien(obj[13] == null ? "" : obj[13].toString());
                     headerDetailCheckup.setTglCekup(obj[16] != null ? java.sql.Date.valueOf(obj[16].toString()) : null);
                     headerDetailCheckup.setJenisPeriksaPasien(obj[17] != null ? obj[17].toString() : null);
+                    headerDetailCheckup.setTanggalLahir(obj[18] != null ? (java.sql.Date) obj[18]: null);
+                    if(headerDetailCheckup.getTanggalLahir() != null){
+                        headerDetailCheckup.setUmur(CommonUtil.calculateAge(headerDetailCheckup.getTanggalLahir(), true)+" Tahun");
+                    }
 
                     if (!"".equalsIgnoreCase(headerDetailCheckup.getDesaId())) {
                         List<Object[]> objDesaList = getListAlamatByDesaId(headerDetailCheckup.getDesaId());

@@ -2529,6 +2529,24 @@ ALTER TABLE public.it_simrs_order_periksa_lab
 ALTER TABLE it_simrs_header_pemeriksaan
 ADD COLUMN jenis_pasien VARCHAR(100);
 
+--FUNCTION PRINT REPORT AS
+INSERT INTO im_functions VALUES
+(6918, 'print', '/verifasrj/printVerifikasiTindakan_verifasrj.action', 2335, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6919, 'print', '/verifasri/printVerifikasiTindakan_verifasri.action', 2338, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6918, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6919, 38, 'Y', now(), now(), 'admin', 'admin');
+
+--FUNCTION PRINT REPORT REKANAN
+INSERT INTO im_functions VALUES
+(6920, 'print', '/verifrekananrj/printVerifikasiTindakan_verifrekananrj.action', 6904, null, now(), 'admin', now(), 'admin', 'Y','C', null),
+(6921, 'print', '/verifrekananri/printVerifikasiTindakan_verifrekananri.action', 6907, null, now(), 'admin', now(), 'admin', 'Y','C', null);
+
+INSERT INTO im_func_roles VALUES
+(6920, 38, 'Y', now(), now(), 'admin', 'admin'),
+(6921, 38, 'Y', now(), now(), 'admin', 'admin');
+
 
 
 

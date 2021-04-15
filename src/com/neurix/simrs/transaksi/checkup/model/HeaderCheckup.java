@@ -203,6 +203,15 @@ public class HeaderCheckup {
     private String idHeaderPemeriksaan;
     private List<UploadHasilPemeriksaan> uploadHasil = new ArrayList<>();
     private List<String> listPemeriksaan = new ArrayList<>();
+    private String umur;
+
+    public String getUmur() {
+        return umur;
+    }
+
+    public void setUmur(String umur) {
+        this.umur = umur;
+    }
 
     public List<String> getListPemeriksaan() {
         return listPemeriksaan;

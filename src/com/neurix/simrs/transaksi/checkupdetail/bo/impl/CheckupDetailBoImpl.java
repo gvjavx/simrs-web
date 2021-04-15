@@ -802,10 +802,12 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
 
-        if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
-            detailCheckupEntity.setMetodePembayaran("tunai");
-        }else{
+        if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
             detailCheckupEntity.setMetodePembayaran("non_tunai");
+        }else{
+            if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                detailCheckupEntity.setMetodePembayaran("tunai");
+            }
         }
 
         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {

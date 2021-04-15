@@ -130,7 +130,7 @@
                                     <tr>
                                         <td><b>Umur</b></td>
                                         <td>
-                                            <table><s:label name="periksaLab.umur"></s:label></table>
+                                            <table><s:property value="periksaLab.umur"></s:property> Tahun</table>
                                         </td>
                                     </tr>
                                     <tr>
