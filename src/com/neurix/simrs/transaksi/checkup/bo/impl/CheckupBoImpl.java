@@ -396,7 +396,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
     public void saveAdd(HeaderCheckup bean) throws GeneralBOException {
         logger.info("[CheckupBoImpl.saveAdd] Start >>>>>>>");
         if (bean != null) {
-            String id = "";
             ItSimrsHeaderChekupEntity headerEntity = new ItSimrsHeaderChekupEntity();
             headerEntity.setNoCheckup(bean.getNoCheckup());
             headerEntity.setIdPasien(bean.getIdPasien());
@@ -443,17 +442,15 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
             if (bean.getIdPelayanan() != null && !"".equalsIgnoreCase(bean.getIdPelayanan())) {
                 ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
 
-                id = "";
-                id = getNextDetailCheckupId();
-                detailCheckupEntity.setIdDetailCheckup("DCM" + id);
+                detailCheckupEntity.setIdDetailCheckup("DCM" + getNextDetailCheckupId());
                 detailCheckupEntity.setNoCheckup(headerEntity.getNoCheckup());
                 detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
                 detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
 
-                if ("asuransi".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
+                if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+                    detailCheckupEntity.setMetodePembayaran("tunai");
+                }else{
                     detailCheckupEntity.setMetodePembayaran("non_tunai");
-                } else {
-                    detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran() != null && !"".equalsIgnoreCase(bean.getMetodePembayaran()) ? bean.getMetodePembayaran() : null);
                 }
 
                 detailCheckupEntity.setNoRujukan(bean.getNoRujukan() != null && !"".equalsIgnoreCase(bean.getNoRujukan()) ? bean.getNoRujukan() : null);
@@ -473,11 +470,6 @@ public class CheckupBoImpl extends BpjsService implements CheckupBo {
                 detailCheckupEntity.setLastUpdate(bean.getLastUpdate());
                 detailCheckupEntity.setLastUpdateWho(bean.getLastUpdateWho());
                 detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
-                if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
-                    if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
-                        detailCheckupEntity.setMetodePembayaran("tunai");
-                    }
-                }
                 detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
 
                 if ("paket_perusahaan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {

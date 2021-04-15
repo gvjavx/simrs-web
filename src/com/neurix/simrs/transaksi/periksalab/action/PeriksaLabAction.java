@@ -96,8 +96,11 @@ public class PeriksaLabAction extends BaseTransactionAction {
                 periksaLab.setJenisKelamin(jk);
                 periksaLab.setTempatLahir(checkup.getTempatLahir());
                 periksaLab.setTglLahir(checkup.getTglLahir() == null ? null : checkup.getTglLahir().toString());
-                String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
-                periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                if(checkup.getTglLahir() != null){
+                    String formatDate = new SimpleDateFormat("dd-MM-yyyy").format(checkup.getTglLahir());
+                    periksaLab.setTempatTglLahir(checkup.getTempatLahir() + ", " + formatDate);
+                    periksaLab.setUmur(CommonUtil.calculateAge(checkup.getTglLahir(), true));
+                }
                 periksaLab.setIdJenisPeriksa(checkup.getIdJenisPeriksaPasien());
                 periksaLab.setNik(checkup.getNoKtp());
                 periksaLab.setUrlKtp(checkup.getUrlKtp());

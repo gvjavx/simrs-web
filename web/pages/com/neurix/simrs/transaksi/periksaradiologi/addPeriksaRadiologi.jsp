@@ -128,6 +128,12 @@
                                         </td>
                                     </tr>
                                     <tr>
+                                        <td><b>Umur</b></td>
+                                        <td>
+                                            <table><s:label name="periksaLab.umur"></s:label></table>
+                                        </td>
+                                    </tr>
+                                    <tr>
                                         <td><b>Jenis Pasien</b></td>
                                         <td>
                                             <table>

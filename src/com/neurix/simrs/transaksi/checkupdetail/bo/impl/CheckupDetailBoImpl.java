@@ -776,11 +776,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         CrudResponse response = new CrudResponse();
 
         // create new detail
-        String id = "";
-        id = getNextDetailCheckupId();
-
         ItSimrsHeaderDetailCheckupEntity detailCheckupEntity = new ItSimrsHeaderDetailCheckupEntity();
-        detailCheckupEntity.setIdDetailCheckup("DCM" + id);
+        detailCheckupEntity.setIdDetailCheckup("DCM" + getNextDetailCheckupId());
         detailCheckupEntity.setNoCheckup(bean.getNoCheckup());
         detailCheckupEntity.setIdPelayanan(bean.getIdPelayanan());
         detailCheckupEntity.setFlag("Y");
@@ -792,7 +789,6 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setTglAntrian(bean.getCreatedDate());
         detailCheckupEntity.setNoSep(bean.getNoSep());
         detailCheckupEntity.setTarifBpjs(bean.getTarifBpjs());
-        detailCheckupEntity.setMetodePembayaran(bean.getMetodePembayaran());
         detailCheckupEntity.setKodeCbg(bean.getKodeCbg());
         detailCheckupEntity.setBranchId(bean.getBranchId());
         detailCheckupEntity.setIdJenisPeriksaPasien(bean.getIdJenisPeriksaPasien());
@@ -805,10 +801,11 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
         detailCheckupEntity.setFlagKunjungan(bean.getFlagKunjungan());
         detailCheckupEntity.setIsEksekutif(bean.getIsEksekutif());
         detailCheckupEntity.setIsVaksin(bean.getIsVaksin());
-        if(bean.getIsEksekutif() != null && !"".equalsIgnoreCase(bean.getIsEksekutif())){
-            if("Y".equalsIgnoreCase(bean.getIsEksekutif())){
-                detailCheckupEntity.setMetodePembayaran("tunai");
-            }
+
+        if("umum".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "paket_individu".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())){
+            detailCheckupEntity.setMetodePembayaran("tunai");
+        }else{
+            detailCheckupEntity.setMetodePembayaran("non_tunai");
         }
 
         if ("bpjs".equalsIgnoreCase(bean.getIdJenisPeriksaPasien()) || "bpjs_rekanan".equalsIgnoreCase(bean.getIdJenisPeriksaPasien())) {
@@ -881,8 +878,8 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
             }
         }
 
+        // save to table rawat inap
         if (bean.getRawatInap()) {
-            // save to table rawat inap
             RawatInap rawatInap = new RawatInap();
             rawatInap.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
             rawatInap.setIdRuangan(bean.getIdRuangan());
@@ -970,8 +967,9 @@ public class CheckupDetailBoImpl extends CheckupModuls implements CheckupDetailB
                 ItSimrsUangMukaPendaftaranEntity uangMukaPendaftaranEntity = new ItSimrsUangMukaPendaftaranEntity();
                 if (bean.getBranchId() != null && !bean.getBranchId().equalsIgnoreCase("")) {
                     uangMukaPendaftaranEntity.setId("UM" + bean.getBranchId() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
-                } else
+                } else{
                     uangMukaPendaftaranEntity.setId("UM" + CommonUtil.userBranchLogin() + dateFormater("MM") + dateFormater("yy") + uangMukaDao.getNextId());
+                }
                 uangMukaPendaftaranEntity.setIdDetailCheckup(detailCheckupEntity.getIdDetailCheckup());
                 uangMukaPendaftaranEntity.setFlag("Y");
                 uangMukaPendaftaranEntity.setAction("C");
